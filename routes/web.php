@@ -10,7 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
+Auth::routes();
+Route::get('/','EscritorioController@reservas')->name('reserva');
+Route::get('/escritorio', 'EscritorioController@index')->name('escritorio');

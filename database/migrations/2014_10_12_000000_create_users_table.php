@@ -14,13 +14,36 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->engine = 'InnoDB';
+            $table->increments('id');
+            $table->string('nombre',100);
+            $table->string('razon_social',100);
+            $table->string('email',100)->unique();
             $table->string('password');
             $table->rememberToken();
-            $table->timestamps();
+            $table->integer('id_franquicia')->unsigned();
+            $table->integer('id_rol')->unsigned()->index();
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('intervalo_reserva',20);
+            $table->string('correo_adm',100)->nullable();
+            $table->string('telefono_adm',20)->nullable();
+            $table->string('nombre_adm',100)->nullable();
+            $table->string('caida_reserva',15)->nullable();
+            $table->string('cuit_cuil',11)->nullable();
+            $table->string('direccion',150)->nullable();
+            $table->string('telefono',20)->nullable();
+            $table->integer('id_estado')->unsigned();
+            
+            $table->foreign('id_franquicia','usuario_franquicia_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            
+            $table->foreign('id_estado','usuario_estado_id')
+                ->references('id')->on('estado_usuario')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 
@@ -31,6 +54,11 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        
+        Schema::table("users",function(Blueprint $table){
+            $table->dropForeign('usuario_franquicia_id');
+            $table->dropForeign('usuario_estado_id');
+        });
         Schema::dropIfExists('users');
     }
 }
