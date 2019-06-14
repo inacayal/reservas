@@ -67503,7 +67503,7 @@ function (_Component) {
           },
           images: {
             1: "eventos/torta-roja.png",
-            2: "eventos/couple-red.png",
+            2: "eventos/pareja-roja.png",
             3: "eventos/equipo-rojo.png",
             4: "eventos/anillo-rojo.png"
           }
