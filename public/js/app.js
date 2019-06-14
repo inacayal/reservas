@@ -67947,8 +67947,13 @@ __webpack_require__.r(__webpack_exports__);
 
 function Exito(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: props.show ? "half-width" : "hidden"
-  });
+    className: props.show ? "full-width" : "hidden"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
+    "class": "highlight-title"
+  }, "\xA1Has reservado exitosamente!"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    src: "/checkmark-2.png",
+    width: "30%"
+  }));
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (Exito); //<Select {...props.select} titulo="Selecciona la ubicación donde quieres estar" change={props.change} toggle={props.showToggle} />
