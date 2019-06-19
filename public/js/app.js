@@ -67188,7 +67188,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
  */
 
 
-__webpack_require__(/*! ./components/reserva/Main */ "./resources/js/components/reserva/Main.jsx");
+__webpack_require__(/*! ./reserva/Main */ "./resources/js/reserva/Main.jsx");
 
 /***/ }),
 
@@ -67250,10 +67250,10 @@ if (token) {
 
 /***/ }),
 
-/***/ "./resources/js/components/buttons/Button.jsx":
-/*!****************************************************!*\
-  !*** ./resources/js/components/buttons/Button.jsx ***!
-  \****************************************************/
+/***/ "./resources/js/componentes/buttons/Button.jsx":
+/*!*****************************************************!*\
+  !*** ./resources/js/componentes/buttons/Button.jsx ***!
+  \*****************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -67284,10 +67284,10 @@ function Button(props) {
 
 /***/ }),
 
-/***/ "./resources/js/components/input/Select.jsx":
-/*!**************************************************!*\
-  !*** ./resources/js/components/input/Select.jsx ***!
-  \**************************************************/
+/***/ "./resources/js/componentes/control/Navigation.jsx":
+/*!*********************************************************!*\
+  !*** ./resources/js/componentes/control/Navigation.jsx ***!
+  \*********************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -67297,49 +67297,165 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _buttons_Button_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../buttons/Button.jsx */ "./resources/js/componentes/buttons/Button.jsx");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
- //holds reservation state
 
-function Select(props) {
-  var options = Object.keys(props.list).map(function (ind) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-      keyvalue: ind,
-      name: props.name,
-      onClick: props.change,
-      className: ind === props.selected ? "option selected" : "option"
-    }, props.list[ind]);
-  });
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
-    name: props.name,
-    className: "hidden"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-    value: props.selected
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
-    htmlFor: props.name,
-    className: "select"
+
+
+
+function Navigation(props) {
+  var panels = [];
+
+  for (var key = 0; key < props.panels.length; key++) {
+    panels.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+      onClick: props.jumpTo,
+      key: key,
+      className: props.current === key ? "box-padding pointer highlight-nav" : "pointer highlight-hover box-padding",
+      jump: key
+    }, key + 1));
+  }
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: props.show ? "flex-row bottom-transparent" : "border-box flex-row",
-    onClick: props.toggle,
-    name: props.name
+    className: "row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "select-title"
-  }, props.selected ? props.list[props.selected] : props.titulo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "margin-left"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "highlight fas fa-angle-down"
-  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-    className: props.show ? "option-list" : "hidden"
-  }, options)));
+    className: "col-sm-12 nav-list flex-row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_buttons_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props.first, {
+    click: props.click,
+    disabled: props.current === 0
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_buttons_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props.left, {
+    click: props.click,
+    disabled: props.current === 0
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+    className: "nav-list flex-row"
+  }, panels), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_buttons_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props.right, {
+    click: props.click,
+    disabled: props.current === props.panels.length - 1
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_buttons_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props.last, {
+    click: props.click,
+    disabled: props.current === props.panels.length - 1
+  })))));
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (Select);
+/* harmony default export */ __webpack_exports__["default"] = (Navigation);
 
 /***/ }),
 
-/***/ "./resources/js/components/input/Text.jsx":
-/*!************************************************!*\
-  !*** ./resources/js/components/input/Text.jsx ***!
-  \************************************************/
+/***/ "./resources/js/componentes/input/Select.jsx":
+/*!***************************************************!*\
+  !*** ./resources/js/componentes/input/Select.jsx ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+ //holds reservation state
+
+var Select =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Select, _Component);
+
+  function Select(props) {
+    _classCallCheck(this, Select);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Select).call(this, props));
+  }
+
+  _createClass(Select, [{
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(newProps) {
+      if (!newProps.show) {
+        this.props.input.current.focus();
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "relative"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+        name: this.props.name,
+        className: "hidden"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+        value: this.props.selected
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        htmlFor: this.props.name,
+        className: "select inherit-width"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: this.props.show ? "full-width flex-row bottom-transparent relative" : "full-width relative border-box flex-row",
+        onClick: !this.props.show ? this.props.toggle : function (e) {
+          return e.preventDefault();
+        },
+        select: this.props.name
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "select-title"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: this.props.show ? "hidden" : ""
+      }, this.props.selected ? this.props.list[this.props.selected] : this.props.titulo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "text",
+        defaultValue: this.props.selected ? this.props.list[this.props.selected] : this.props.search,
+        ref: this.props.input,
+        onBlur: this.props.toggle,
+        className: this.props.show ? "" : "hidden",
+        select: this.props.name
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "margin-left"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: this.props.show ? "highlight fas fa-search" : "highlight fas fa-angle-down"
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "absolute full-width"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+        className: this.props.show ? "option-list" : "hidden"
+      }, Object.keys(this.props.list).map(function (ind) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          key: ind,
+          keyvalue: ind,
+          select: this.props.name,
+          onMouseDown: this.props.change,
+          className: ind === this.props.selected ? "option selected" : "option"
+        }, this.props.list[ind]);
+      }, this)))));
+    }
+  }]);
+
+  return Select;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(Select));
+
+/***/ }),
+
+/***/ "./resources/js/componentes/input/Text.jsx":
+/*!*************************************************!*\
+  !*** ./resources/js/componentes/input/Text.jsx ***!
+  \*************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -67353,10 +67469,8 @@ __webpack_require__.r(__webpack_exports__);
  //holds reservation state
 
 function Text(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: props.container
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", {
-    className: "highlight h3 no-margin full-width"
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "highlight no-margin bold"
   }, props.titulo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: props.classes
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
@@ -67370,40 +67484,10 @@ function Text(props) {
 
 /***/ }),
 
-/***/ "./resources/js/components/miscellaneous/Imagen.jsx":
-/*!**********************************************************!*\
-  !*** ./resources/js/components/miscellaneous/Imagen.jsx ***!
-  \**********************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-
-
-
-function Imagen(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-    src: props.source,
-    onClick: props.change,
-    name: props.name,
-    keyvalue: props.keyVal,
-    className: props["class"]
-  }));
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (Imagen);
-
-/***/ }),
-
-/***/ "./resources/js/components/reserva/Main.jsx":
-/*!**************************************************!*\
-  !*** ./resources/js/components/reserva/Main.jsx ***!
-  \**************************************************/
+/***/ "./resources/js/reserva/Main.jsx":
+/*!***************************************!*\
+  !*** ./resources/js/reserva/Main.jsx ***!
+  \***************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -67414,13 +67498,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _steps_Local_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./steps/Local.jsx */ "./resources/js/components/reserva/steps/Local.jsx");
-/* harmony import */ var _steps_Calendario_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./steps/Calendario.jsx */ "./resources/js/components/reserva/steps/Calendario.jsx");
-/* harmony import */ var _steps_Ubicacion_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./steps/Ubicacion.jsx */ "./resources/js/components/reserva/steps/Ubicacion.jsx");
-/* harmony import */ var _steps_Datos_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./steps/Datos.jsx */ "./resources/js/components/reserva/steps/Datos.jsx");
-/* harmony import */ var _steps_Exito_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./steps/Exito.jsx */ "./resources/js/components/reserva/steps/Exito.jsx");
-/* harmony import */ var _steps_Evento_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./steps/Evento.jsx */ "./resources/js/components/reserva/steps/Evento.jsx");
-/* harmony import */ var _Navigation_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Navigation.jsx */ "./resources/js/components/reserva/Navigation.jsx");
+/* harmony import */ var _pasos_Local_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pasos/Local.jsx */ "./resources/js/reserva/pasos/Local.jsx");
+/* harmony import */ var _pasos_Evento_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pasos/Evento.jsx */ "./resources/js/reserva/pasos/Evento.jsx");
+/* harmony import */ var _pasos_Exito_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pasos/Exito.jsx */ "./resources/js/reserva/pasos/Exito.jsx");
+/* harmony import */ var _componentes_control_Navigation_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../componentes/control/Navigation.jsx */ "./resources/js/componentes/control/Navigation.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -67440,9 +67521,6 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-
-
 
 
 
@@ -67470,6 +67548,8 @@ function (_Component) {
           name: "local",
           show: false,
           selected: null,
+          search: "",
+          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
           list: {
             1: "Local 1",
             2: "Local 2",
@@ -67480,49 +67560,65 @@ function (_Component) {
           name: "ubicacion",
           show: false,
           selected: null,
+          search: "",
+          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
           list: {
             1: "Terraza",
             2: "Salón",
             3: "Vereda"
-          },
-          images: {
-            1: "ubicaciones/terraza-roja.png",
-            2: "ubicaciones/lampara-roja.png",
-            3: "ubicaciones/banco-rojo.png"
           }
         },
         evento: {
           name: "evento",
           show: false,
           selected: null,
+          search: "",
+          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
           list: {
             1: "Cumpleaños",
             2: "Cita",
             3: "Amigos",
             4: "Boda"
-          },
-          images: {
-            1: "eventos/torta-roja.png",
-            2: "eventos/pareja-roja.png",
-            3: "eventos/equipo-rojo.png",
-            4: "eventos/anillo-rojo.png"
+          }
+        },
+        hora: {
+          name: "hora",
+          show: false,
+          selected: null,
+          search: "",
+          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
+          list: {
+            1: "Hora 1",
+            2: "Hora 2",
+            3: "Hora 3",
+            4: "Hora 4"
+          }
+        },
+        personas: {
+          name: "personas",
+          show: false,
+          selected: null,
+          search: "",
+          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
+          list: {
+            1: "Persona 1",
+            2: "Persona 2",
+            3: "Persona 3",
+            4: "Persona 4"
           }
         }
       }
     };
-    _this.panels = ["Selecciona el local donde vas a reservar", "Selecciona el dia y hora de tu reserva", "Selecciona el lugar de tu reserva", "Selecciona el tipo de evento", "Deja tus datos personales", "Exito"];
     _this.onCalendarChange = _this.onCalendarChange.bind(_assertThisInitialized(_this));
     _this.clickNavigation = _this.clickNavigation.bind(_assertThisInitialized(_this));
     /** start Select */
 
     _this.selectOption = _this.selectOption.bind(_assertThisInitialized(_this));
-    _this.onLocalChange = _this.onLocalChange.bind(_assertThisInitialized(_this));
-    _this.onUbicacionChange = _this.onUbicacionChange.bind(_assertThisInitialized(_this));
-    _this.onEventoChange = _this.onEventoChange.bind(_assertThisInitialized(_this));
+    _this.showOptions = _this.showOptions.bind(_assertThisInitialized(_this));
     /** start Select */
 
     _this.jumpPanel = _this.jumpPanel.bind(_assertThisInitialized(_this));
-    _this.showOptions = _this.showOptions.bind(_assertThisInitialized(_this));
+    _this.panels = [0, 1, 2];
     return _this;
   }
 
@@ -67538,7 +67634,7 @@ function (_Component) {
   }, {
     key: "showOptions",
     value: function showOptions(e) {
-      var name = e.currentTarget.getAttribute('name');
+      var name = e.currentTarget.getAttribute('select');
       var select = this.state.select;
       var trigger = select[name];
       trigger.show = !trigger.show;
@@ -67551,36 +67647,15 @@ function (_Component) {
     key: "selectOption",
     value: function selectOption(e) {
       var value = e.target.getAttribute('keyvalue');
-      var name = e.target.getAttribute('name');
+      var name = e.target.getAttribute('select');
       var select = this.state.select;
       var trigger = select[name];
-      trigger.show = false;
-
-      if (value !== select[name].selected) {
-        trigger.selected = value;
-      } else {
-        trigger.selected = null;
-      }
-
+      trigger.selected = value !== select[name].selected ? value : null;
+      trigger.input;
       select[name] = trigger;
       this.setState({
         select: select
       });
-    }
-  }, {
-    key: "onLocalChange",
-    value: function onLocalChange(ev) {
-      this.selectOption(ev);
-    }
-  }, {
-    key: "onUbicacionChange",
-    value: function onUbicacionChange(e) {
-      this.selectOption(e);
-    }
-  }, {
-    key: "onEventoChange",
-    value: function onEventoChange(e) {
-      this.selectOption(e);
     }
     /** end select functions */
 
@@ -67634,65 +67709,55 @@ function (_Component) {
           tab: this.panels[0],
           icon: "fa fa-angle-double-left",
           "class": "nav-reserva pointer",
-          container: "small center-margin",
+          container: "box-padding",
           type: "first"
         },
         last: {
           tab: this.panels[this.panels.length - 1],
           icon: "fa fa-angle-double-right",
           "class": "nav-reserva pointer",
-          container: "small center-margin",
+          container: "box-padding",
           type: "last"
         },
         right: {
           tab: this.state.navPanel + 1,
           icon: "fa fa-angle-right",
           "class": "nav-reserva pointer",
-          container: "small center-margin",
+          container: "box-padding",
           type: "next"
         },
         left: {
           tab: this.state.navPanel - 1,
           icon: "fa fa-angle-left",
           "class": "nav-reserva pointer",
-          container: "small center-margin",
+          container: "box-padding",
           type: "prev"
         },
         current: this.state.navPanel
       };
-      var selectLocal = {
+      var selectHandlers = {
         showToggle: this.showOptions,
-        select: this.state.select.local
-      };
-      var selectUbicacion = {
-        showToggle: this.showOptions,
-        select: this.state.select.ubicacion
-      };
-      var selectEvento = {
-        showToggle: this.showOptions,
-        select: this.state.select.evento
+        change: this.selectOption,
+        preventBlur: this.noBlur
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "align-center"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_steps_Local_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, selectLocal, {
-        change: this.onLocalChange,
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_pasos_Local_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, selectHandlers, {
+        select: this.state.select.local,
         show: this.state.navPanel === 0
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_steps_Calendario_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({}, this.state.fecha, {
-        onChange: this.onCalendarChange,
-        show: this.state.navPanel === 1
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_steps_Ubicacion_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], _extends({}, selectUbicacion, {
-        change: this.onUbicacionChange,
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_pasos_Evento_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({}, selectHandlers, {
+        eventos: this.state.select.evento,
+        persona: this.state.select.personas,
+        hora: this.state.select.hora,
+        ubicacion: this.state.select.ubicacion,
+        show: this.state.navPanel === 1,
+        fecha: this.state.fecha,
+        onCalendarChange: this.onCalendarChange
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_pasos_Exito_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
         show: this.state.navPanel === 2
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_steps_Evento_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], _extends({}, selectEvento, {
-        change: this.onEventoChange,
-        show: this.state.navPanel === 3
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_steps_Datos_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
-        show: this.state.navPanel === 4
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_steps_Exito_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
-        show: this.state.navPanel === 5
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Navigation_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], _extends({}, buttons, {
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_Navigation_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], _extends({}, buttons, {
         panels: this.panels,
         click: this.clickNavigation,
         jumpTo: this.jumpPanel
@@ -67711,10 +67776,10 @@ if (document.getElementById('reserva-container')) {
 
 /***/ }),
 
-/***/ "./resources/js/components/reserva/Navigation.jsx":
-/*!********************************************************!*\
-  !*** ./resources/js/components/reserva/Navigation.jsx ***!
-  \********************************************************/
+/***/ "./resources/js/reserva/pasos/Evento.jsx":
+/*!***********************************************!*\
+  !*** ./resources/js/reserva/pasos/Evento.jsx ***!
+  \***********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -67724,169 +67789,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _buttons_Button_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../buttons/Button.jsx */ "./resources/js/components/buttons/Button.jsx");
+/* harmony import */ var _componentes_input_Select_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../componentes/input/Select.jsx */ "./resources/js/componentes/input/Select.jsx");
+/* harmony import */ var _componentes_input_Text_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../componentes/input/Text.jsx */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-calendar */ "./node_modules/react-calendar/dist/entry.js");
+/* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_calendar__WEBPACK_IMPORTED_MODULE_4__);
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-
-
-
-
-function Navigation(props) {
-  var len = props.panels.length - 1;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "flex h-center flex-row contained"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_buttons_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props.first, {
-    click: props.click,
-    disabled: props.current === 0
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_buttons_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props.left, {
-    click: props.click,
-    disabled: props.current === 0
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-    className: "nav-list flex flex-row h-center large"
-  }, props.panels.map(function (ind, key) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-      onClick: props.jumpTo,
-      key: key,
-      className: props.current === key ? "small box-padding pointer highlight-nav" : "small pointer highlight-hover box-padding",
-      jump: key
-    }, key + 1);
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_buttons_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props.right, {
-    click: props.click,
-    disabled: props.current === len
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_buttons_Button_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props.last, {
-    click: props.click,
-    disabled: props.current === len
-  })));
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (Navigation);
-
-/***/ }),
-
-/***/ "./resources/js/components/reserva/steps/Calendario.jsx":
-/*!**************************************************************!*\
-  !*** ./resources/js/components/reserva/steps/Calendario.jsx ***!
-  \**************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-calendar */ "./node_modules/react-calendar/dist/entry.js");
-/* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_calendar__WEBPACK_IMPORTED_MODULE_2__);
-
-
-
-
-function Calendario(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: props.show ? "align-center" : "hidden"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
-    className: "highlight-title"
-  }, "\xBFQu\xE9 dia quieres reservar?"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "date",
-    value: props.value,
-    className: "hidden"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_calendar__WEBPACK_IMPORTED_MODULE_2___default.a, {
-    value: props.value,
-    onChange: props.onChange
-  }));
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (Calendario);
-
-/***/ }),
-
-/***/ "./resources/js/components/reserva/steps/Datos.jsx":
-/*!*********************************************************!*\
-  !*** ./resources/js/components/reserva/steps/Datos.jsx ***!
-  \*********************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _input_Select_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../input/Select.jsx */ "./resources/js/components/input/Select.jsx");
-/* harmony import */ var _input_Text_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../input/Text.jsx */ "./resources/js/components/input/Text.jsx");
-
-
-
-
-
-function Datos(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: props.show ? "align-center flex flex-column v-center" : "hidden"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
-    className: "highlight-title"
-  }, "D\xE9janos tus datos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "flex flex-row h-center full-width"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_input_Text_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    titulo: "Nombre",
-    name: "nombre",
-    value: props.nombre,
-    classes: "border-box input-text margin-box",
-    container: "half"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_input_Text_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    titulo: "Apellido",
-    name: "apellido",
-    value: props.apellido,
-    classes: "border-box input-text margin-box",
-    container: "half"
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "flex flex-row h-center full-width"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_input_Text_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    titulo: "Correo Electr\xF3nico",
-    name: "correo",
-    value: props.correo,
-    classes: "border-box input-text margin-box",
-    container: "full-width"
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "flex flex-row h-center full-width"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_input_Text_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    titulo: "Tel\xE9fono",
-    name: "telefono",
-    value: props.telefono,
-    classes: "border-box input-text margin-box",
-    container: "full-width"
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "flex flex-row h-center full-width"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_input_Text_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    titulo: "N\xFAmero de Documento",
-    name: "dni",
-    value: props.dni,
-    classes: "border-box input-text margin-box",
-    container: "full-width"
-  })));
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (Datos); //<Select {...props.select} titulo="Selecciona la ubicación donde quieres estar" change={props.change} toggle={props.showToggle} />
-
-/***/ }),
-
-/***/ "./resources/js/components/reserva/steps/Evento.jsx":
-/*!**********************************************************!*\
-  !*** ./resources/js/components/reserva/steps/Evento.jsx ***!
-  \**********************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _input_Select_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../input/Select.jsx */ "./resources/js/components/input/Select.jsx");
-/* harmony import */ var _miscellaneous_Imagen_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../miscellaneous/Imagen.jsx */ "./resources/js/components/miscellaneous/Imagen.jsx");
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 
 
@@ -67894,43 +67802,114 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 function Evento(props) {
-  var imgs = props.select.images;
-  var displayImgs = Object.keys(imgs).map(function (ind) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_miscellaneous_Imagen_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
-      key: ind,
-      keyVal: ind,
-      source: imgs[ind],
-      change: props.change,
-      "class": props.select.selected === ind ? "highlight-image image" : "image",
-      name: props.select.name
-    });
-  });
-  react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_input_Select_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props.select, {
+  react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props.select, {
     titulo: "Selecciona tipo de evento de tu reserva",
     change: props.change,
     toggle: props.showToggle
   }));
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: props.show ? "align-center" : "hidden"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
-    "class": "highlight-title"
-  }, "Seleccionar Evento"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "flex flex-row h-center box-padding"
-  }, displayImgs), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_input_Select_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props.select, {
+    className: props.show ? "container" : "hidden"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+    className: "bold highlight-title align-center"
+  }, "Datos de la reserva"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row box-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-6 box-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "date",
+    value: props.value,
+    className: "hidden"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_calendar__WEBPACK_IMPORTED_MODULE_4___default.a, {
+    value: props.value,
+    onChange: props.onCalendarChange
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6 box-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-12 text-left"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "highlight bold no-margin"
+  }, "Selecciona el evento"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props.ubicacion, {
+    hideSearch: props.hideSearch,
     titulo: "Selecciona tipo de evento de tu reserva",
     change: props.change,
     toggle: props.showToggle
-  })));
+  })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-12 text-left"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "highlight bold no-margin"
+  }, "Selecciona tu ubicaci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props.eventos, {
+    titulo: "Selecciona la ubicaci\xF3n donde quieres estar",
+    change: props.change,
+    toggle: props.showToggle
+  })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6 text-left"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "highlight bold no-margin"
+  }, "Selecciona las personas"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props.persona, {
+    titulo: "Selecciona la cantidad de personas",
+    change: props.change,
+    toggle: props.showToggle
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6 text-left"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "highlight bold no-margin"
+  }, "Selecciona la hora"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props.hora, {
+    titulo: "Selecciona la hora de la reserva",
+    change: props.change,
+    toggle: props.showToggle
+  })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-12"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "highlight bold no-margin text-left"
+  }, "Horario de atención del:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "text"
+  }, "" + props.fecha)))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row box-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+    className: "bold highlight-title align-center"
+  }, "Datos de contacto")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row box-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    titulo: "Nombre  y Apellido",
+    name: "name",
+    value: props.nombre,
+    classes: "border-box input-text margin-box"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    titulo: "Correo Electr\xF3nico",
+    name: "email",
+    value: props.correo,
+    classes: "border-box input-text margin-box"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    titulo: "Tel\xE9fono",
+    name: "telefono",
+    value: props.telefono,
+    classes: "border-box input-text margin-box",
+    container: "full-width"
+  }))));
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (Evento);
 
 /***/ }),
 
-/***/ "./resources/js/components/reserva/steps/Exito.jsx":
-/*!*********************************************************!*\
-  !*** ./resources/js/components/reserva/steps/Exito.jsx ***!
-  \*********************************************************/
+/***/ "./resources/js/reserva/pasos/Exito.jsx":
+/*!**********************************************!*\
+  !*** ./resources/js/reserva/pasos/Exito.jsx ***!
+  \**********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -67940,8 +67919,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _input_Select_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../input/Select.jsx */ "./resources/js/components/input/Select.jsx");
-
 
 
 
@@ -67949,7 +67926,7 @@ function Exito(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: props.show ? "full-width" : "hidden"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
-    "class": "highlight-title"
+    className: "highlight-title"
   }, "\xA1Has reservado exitosamente!"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
     src: "/checkmark-2.png",
     width: "30%"
@@ -67960,10 +67937,10 @@ function Exito(props) {
 
 /***/ }),
 
-/***/ "./resources/js/components/reserva/steps/Local.jsx":
-/*!*********************************************************!*\
-  !*** ./resources/js/components/reserva/steps/Local.jsx ***!
-  \*********************************************************/
+/***/ "./resources/js/reserva/pasos/Local.jsx":
+/*!**********************************************!*\
+  !*** ./resources/js/reserva/pasos/Local.jsx ***!
+  \**********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -67973,7 +67950,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _input_Select_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../input/Select.jsx */ "./resources/js/components/input/Select.jsx");
+/* harmony import */ var _componentes_input_Select_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../componentes/input/Select.jsx */ "./resources/js/componentes/input/Select.jsx");
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 
@@ -67983,9 +67960,10 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 function Local(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: props.show ? "" : "hidden"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
-    className: "highlight-title"
-  }, "Seleccionar local"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_input_Select_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props.select, {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+    className: "bold highlight-title"
+  }, "Seleccionar local"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props.select, {
+    hideSearch: props.hideSearch,
     titulo: "Selecciona el local donde vas a reservar",
     change: props.change,
     toggle: props.showToggle
@@ -67993,57 +67971,6 @@ function Local(props) {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (Local);
-
-/***/ }),
-
-/***/ "./resources/js/components/reserva/steps/Ubicacion.jsx":
-/*!*************************************************************!*\
-  !*** ./resources/js/components/reserva/steps/Ubicacion.jsx ***!
-  \*************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _input_Select_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../input/Select.jsx */ "./resources/js/components/input/Select.jsx");
-/* harmony import */ var _miscellaneous_Imagen_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../miscellaneous/Imagen.jsx */ "./resources/js/components/miscellaneous/Imagen.jsx");
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-
-
-
-
-
-function Ubicacion(props) {
-  var imgs = props.select.images;
-  var displayImgs = Object.keys(imgs).map(function (ind) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_miscellaneous_Imagen_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
-      key: ind,
-      keyVal: ind,
-      source: imgs[ind],
-      change: props.change,
-      "class": props.select.selected === ind ? "highlight-image image" : "image",
-      name: props.select.name
-    });
-  });
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: props.show ? "align-center" : "hidden"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
-    "class": "highlight-title"
-  }, "Seleccionar Ubicaci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "flex flex-row h-center box-padding"
-  }, displayImgs), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_input_Select_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({}, props.select, {
-    titulo: "Selecciona la ubicaci\xF3n donde quieres estar",
-    change: props.change,
-    toggle: props.showToggle
-  })));
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (Ubicacion);
 
 /***/ }),
 

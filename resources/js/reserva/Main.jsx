@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Local from './steps/Local.jsx';
-import Calendario from './steps/Calendario.jsx';
-import Ubicacion from './steps/Ubicacion.jsx';
-import Datos from "./steps/Datos.jsx";
-import Exito from "./steps/Exito.jsx";
-import Evento from "./steps/Evento.jsx";
-import Navigation from './Navigation.jsx';
+import Local from './pasos/Local.jsx';
+import Evento from "./pasos/Evento.jsx";
+import Exito from "./pasos/Exito.jsx";
+import Navigation from '../componentes/control/Navigation.jsx';
 
 //holds reservation state
 export default class Main extends Component {
@@ -19,7 +16,9 @@ export default class Main extends Component {
                 local:{
                     name:"local",
                     show:false,
-                    selected:null,
+                    selected: null,
+                    search: "",
+                    input: React.createRef(),
                     list: {
                         1: "Local 1",
                         2: "Local 2",
@@ -30,54 +29,63 @@ export default class Main extends Component {
                     name:"ubicacion",
                     show: false,
                     selected: null,
+                    search: "",
+                    input: React.createRef(),
                     list: {
                         1: "Terraza",
                         2: "Salón",
                         3: "Vereda"
-                    },
-                    images: {
-                        1: "ubicaciones/terraza-roja.png",
-                        2: "ubicaciones/lampara-roja.png",
-                        3: "ubicaciones/banco-rojo.png",
                     }
                 },
                 evento: {
                     name: "evento",
                     show: false,
                     selected: null,
+                    search: "",
+                    input: React.createRef(),
                     list: {
                         1: "Cumpleaños",
                         2: "Cita",
                         3: "Amigos",
                         4: "Boda"
-                    },
-                    images: {
-                        1: "eventos/torta-roja.png",
-                        2: "eventos/pareja-roja.png",
-                        3: "eventos/equipo-rojo.png",
-                        4: "eventos/anillo-rojo.png"
+                    }
+                },
+                hora: {
+                    name: "hora",
+                    show: false,
+                    selected: null,
+                    search: "",
+                    input: React.createRef(),
+                    list: {
+                        1: "Hora 1",
+                        2: "Hora 2",
+                        3: "Hora 3",
+                        4: "Hora 4"
+                    }
+                },
+                personas: {
+                    name: "personas",
+                    show: false,
+                    selected: null,
+                    search: "",
+                    input: React.createRef(),
+                    list: {
+                        1: "Persona 1",
+                        2: "Persona 2",
+                        3: "Persona 3",
+                        4: "Persona 4"
                     }
                 },
             }
         };
-        this.panels = [
-            "Selecciona el local donde vas a reservar",
-            "Selecciona el dia y hora de tu reserva",
-            "Selecciona el lugar de tu reserva",
-            "Selecciona el tipo de evento",
-            "Deja tus datos personales",
-            "Exito"
-        ];
         this.onCalendarChange = this.onCalendarChange.bind(this);
         this.clickNavigation = this.clickNavigation.bind(this);
         /** start Select */
         this.selectOption = this.selectOption.bind(this);
-        this.onLocalChange = this.onLocalChange.bind(this);
-        this.onUbicacionChange = this.onUbicacionChange.bind(this);
-        this.onEventoChange = this.onEventoChange.bind(this);
+        this.showOptions = this.showOptions.bind(this);
         /** start Select */
         this.jumpPanel = this.jumpPanel.bind(this);
-        this.showOptions = this.showOptions.bind(this);
+        this.panels = [0,1,2];
     }
     
     onCalendarChange (date) {
@@ -87,7 +95,7 @@ export default class Main extends Component {
     }
     /** start select functions */
     showOptions(e){
-        let name = e.currentTarget.getAttribute('name');
+        let name = e.currentTarget.getAttribute('select');
         let select = this.state.select;
         let trigger = select[name];
         trigger.show = !trigger.show;
@@ -96,28 +104,13 @@ export default class Main extends Component {
     }
     selectOption(e){
         let value = e.target.getAttribute('keyvalue');
-        let name = e.target.getAttribute('name');
+        let name = e.target.getAttribute('select');
         let select = this.state.select;
         let trigger = select[name];
-        trigger.show = false;
-        if (value !== select[name].selected) {
-            trigger.selected = value;
-        } else {
-            trigger.selected = null;
-        }
+        trigger.selected = (value !== select[name].selected) ? value : null;
+        trigger.input
         select[name] = trigger;
-        this.setState({ select });
-    }
-    onLocalChange (ev) {
-        this.selectOption(ev);
-    }
-
-    onUbicacionChange(e){
-        this.selectOption(e);
-    }
-
-    onEventoChange(e) {
-        this.selectOption(e);
+        this.setState({select});
     }
     /** end select functions */
 
@@ -157,53 +150,43 @@ export default class Main extends Component {
                 tab: this.panels[0],
                 icon: "fa fa-angle-double-left",
                 class: "nav-reserva pointer",
-                container: "small center-margin",
+                container: "box-padding",
                 type: "first"
             },
             last:{
-                tab: this.panels[this.panels.length - 1],
+                tab: this.panels[this.panels.length-1],
                 icon: "fa fa-angle-double-right",
                 class: "nav-reserva pointer",
-                container: "small center-margin",
+                container: "box-padding",
                 type: "last"
             },
             right: {
                 tab: this.state.navPanel+1,
                 icon: "fa fa-angle-right",
                 class: "nav-reserva pointer",
-                container: "small center-margin",
+                container: "box-padding",
                 type:"next"
             },
             left: {
                 tab: this.state.navPanel-1,
                 icon: "fa fa-angle-left",
                 class: "nav-reserva pointer",
-                container: "small center-margin",
+                container: "box-padding",
                 type: "prev"
             },
             current:this.state.navPanel
         };
-        const selectLocal = {
+        const selectHandlers = {
             showToggle:this.showOptions,
-            select:this.state.select.local
+            change: this.selectOption,
+            preventBlur:this.noBlur
         };
-        const selectUbicacion = {
-            showToggle: this.showOptions,
-            select: this.state.select.ubicacion
-        }
-        const selectEvento = {
-            showToggle: this.showOptions,
-            select: this.state.select.evento
-        }
         return (
             <div className="container">
                 <div className="align-center">
-                    <Local {...selectLocal} change={this.onLocalChange} show={this.state.navPanel === 0}/>
-                    <Calendario {...this.state.fecha} onChange={this.onCalendarChange} show={this.state.navPanel === 1}/>
-                    <Ubicacion {...selectUbicacion} change={this.onUbicacionChange} show={this.state.navPanel === 2}/>
-                    <Evento {...selectEvento} change={this.onEventoChange} show={this.state.navPanel === 3} />
-                    <Datos show={this.state.navPanel === 4}/>
-                    <Exito show={this.state.navPanel === 5}/>
+                    <Local {...selectHandlers} select={this.state.select.local} show={this.state.navPanel === 0}/>
+                    <Evento {...selectHandlers} eventos={this.state.select.evento} persona={this.state.select.personas} hora={this.state.select.hora} ubicacion={this.state.select.ubicacion} show={this.state.navPanel === 1} fecha={this.state.fecha} onCalendarChange={this.onCalendarChange}/>
+                    <Exito show={this.state.navPanel === 2}/>
                 </div>
                 <Navigation {...buttons} panels ={this.panels} click={this.clickNavigation} jumpTo={this.jumpPanel}/>
             </div>

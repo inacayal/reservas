@@ -24,6 +24,7 @@
   --border:#e5e5e5;
   --highlight-blue:#006edc;
   --no-highlight:#e6e6e6;
+  --text-color:#636b6f;
 }
 html,body {
     background-color: #fff;
@@ -37,13 +38,6 @@ html,body {
 .full-height {
     height: 100vh;
 }
-
-.small{
-    width:10%;
-}
-.large{
-    width:60%;
-}
 .box-padding{
     padding:10px;
     margin:0px;
@@ -51,12 +45,22 @@ html,body {
 .highlight-hover:hover{
     background-color:var(--no-highlight);
 }
-.h3{
-    font-weight:bold;
+.relative{
+    position:relative;
+}
+.text-left{
     text-align:left;
 }
-.center-margin{
-    margin:auto 5px;
+.bold{
+    font-weight: bold;
+}
+.text{
+    color:var(--text-color);
+    font-weight:200;
+}
+.absolute{
+    position:absolute;
+    z-index:1;
 }
 .nav-reserva{
     background-color:transparent;
@@ -86,11 +90,6 @@ html,body {
 .flex-column{
     flex-direction:column;
 }
-
-.flex-row{
-    flex-direction:row;
-}
-
 .position-ref {
     position: relative;
 }
@@ -125,6 +124,9 @@ html,body {
 .half-width{
     width:50%;
 }
+label{
+    display:block;
+}
 /* Start input classes */
 /* Start select */
 .image{
@@ -136,11 +138,6 @@ html,body {
     border-color:var(--highlight-blue) ;
 }
 .align-center{
-    margin:auto;
-    max-width:50vw;
-    width:60vw;
-}
-.react-calendar{
     margin:auto;
 }
 .highlight-title{
@@ -160,6 +157,9 @@ html,body {
 .no-margin{
     margin:0px
 }
+.no-padding{
+    padding:0px;
+}
 ul.option-list {
     list-style: none;
     padding: 0px;
@@ -167,10 +167,12 @@ ul.option-list {
     border:solid 1px var(--border);
     border-top:0px;
     margin-top:-1px;
+    background-color:white;
 }
 .nav-list{
     list-style: none;
     padding:0px 15px;
+    margin:auto;
 }
 .bottom-transparent{
     padding:5px 10px;
@@ -197,8 +199,11 @@ ul.option-list {
     cursor:pointer;
 }
 li.option {
-    padding: 5px 10px;
+    padding: 5px;
     text-align:left;
+}
+.inherit-width{
+    width:inherit;
 }
 /*
 hover options
@@ -218,7 +223,8 @@ input[type=text] {
     width:100%;
     font-size:16px;
     color:#636b6f;
-    font-weight:200 !important;
+    font-weight:200;
+    font-family: inherit;
 }
 input:focus,
 select:focus,
@@ -240,7 +246,6 @@ button:focus {
 .hidden{
     display:none; 
 }
-
 .flex-row{
     display:flex;
     flex-direction:row;
@@ -252,12 +257,29 @@ button:focus {
 .margin-left{
     margin-left:10px;
 }
+/** start react calendar*/
 .react-calendar__month-view__days__day--weekend{
     color:var(--light-danger) !important;
 }
 .react-calendar{
     border:solid 1px var(--border) !important;
+    width:100% !important;
+    font-family:inherit !important;
 }
+.react-calendar__month-view__days__day{
+    font-weight:200 !important;
+}
+.react-calendar__month-view__days__day--neighboringMonth{
+    color:var(--border) !important;
+    font-weight:200!important;
+}
+/** end react calendar*/
 .half{
     width:50%;
+}
+.sixty {
+    width: 60%;
+}
+.fourty {
+    width: 40%;
 }

@@ -5,8 +5,8 @@ import ReactDOM from 'react-dom';
 
 function Text(props) {
     return (
-        <div className={props.container}>
-            <h4 className="highlight h3 no-margin full-width">{props.titulo}</h4>
+        <div>
+            <h6 className="highlight no-margin bold">{props.titulo}</h6>
             <div className={props.classes}>
                 <input type="text" name={props.name} value={props.value}/>
             </div>
