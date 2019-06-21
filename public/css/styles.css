@@ -172,7 +172,7 @@ ul.option-list {
 .nav-list{
     list-style: none;
     padding:0px 15px;
-    margin:auto;
+    margin:auto 0px;
 }
 .bottom-transparent{
     padding:5px 10px;

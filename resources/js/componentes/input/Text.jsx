@@ -13,4 +13,4 @@ function Text(props) {
         </div>
     );
 }
-export default Text;
+export default React.memo(Text);

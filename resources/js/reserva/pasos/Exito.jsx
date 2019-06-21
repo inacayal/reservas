@@ -10,5 +10,4 @@ function Exito(props) {
     );
 }
 
-export default Exito;
-//<Select {...props.select} titulo="Selecciona la ubicación donde quieres estar" change={props.change} toggle={props.showToggle} />
+export default React.memo(Exito);

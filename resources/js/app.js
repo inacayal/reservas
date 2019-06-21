@@ -13,3 +13,4 @@ require('./bootstrap');
  */
 
 require('./reserva/Main');
+require('./escritorio/Main');

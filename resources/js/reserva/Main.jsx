@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Local from './pasos/Local.jsx';
 import Evento from "./pasos/Evento.jsx";
 import Exito from "./pasos/Exito.jsx";
-import Navigation from '../componentes/control/Navigation.jsx';
+import Pagination from '../componentes/control/Pagination.jsx';
 
 //holds reservation state
 export default class Main extends Component {
@@ -145,37 +145,6 @@ export default class Main extends Component {
     }
 
     render() {
-        const buttons = {
-            first:{
-                tab: this.panels[0],
-                icon: "fa fa-angle-double-left",
-                class: "nav-reserva pointer",
-                container: "box-padding",
-                type: "first"
-            },
-            last:{
-                tab: this.panels[this.panels.length-1],
-                icon: "fa fa-angle-double-right",
-                class: "nav-reserva pointer",
-                container: "box-padding",
-                type: "last"
-            },
-            right: {
-                tab: this.state.navPanel+1,
-                icon: "fa fa-angle-right",
-                class: "nav-reserva pointer",
-                container: "box-padding",
-                type:"next"
-            },
-            left: {
-                tab: this.state.navPanel-1,
-                icon: "fa fa-angle-left",
-                class: "nav-reserva pointer",
-                container: "box-padding",
-                type: "prev"
-            },
-            current:this.state.navPanel
-        };
         const selectHandlers = {
             showToggle:this.showOptions,
             change: this.selectOption,
@@ -183,12 +152,12 @@ export default class Main extends Component {
         };
         return (
             <div className="container">
-                <div className="align-center">
+                <div className="row">
                     <Local {...selectHandlers} select={this.state.select.local} show={this.state.navPanel === 0}/>
                     <Evento {...selectHandlers} eventos={this.state.select.evento} persona={this.state.select.personas} hora={this.state.select.hora} ubicacion={this.state.select.ubicacion} show={this.state.navPanel === 1} fecha={this.state.fecha} onCalendarChange={this.onCalendarChange}/>
                     <Exito show={this.state.navPanel === 2}/>
                 </div>
-                <Navigation {...buttons} panels ={this.panels} click={this.clickNavigation} jumpTo={this.jumpPanel}/>
+                <Pagination show={this.state.navPanel} panels ={this.panels} click={this.clickNavigation} jumpTo={this.jumpPanel}/>
             </div>
         );
     }
