@@ -4,7 +4,7 @@ import Select from "../../componentes/input/Select.jsx";
 
 function Local(props){
     return (
-        <div className={(props.show) ? "" : "hidden"}>
+        <div className={(props.current) ? "" : "hidden"}>
             <div className="col-sm-12">
                 <h3 className="bold highlight-title">seleccionar local</h3>
                 <Select {...props.select} hideSearch={props.hideSearch} titulo="selecciona el local donde vas a reservar" change={props.change} toggle={props.showToggle} />
@@ -12,5 +12,4 @@ function Local(props){
         </div>
     );
 }
-
-export default React.memo(Local);
+export default Local;

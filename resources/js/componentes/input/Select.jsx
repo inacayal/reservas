@@ -27,7 +27,7 @@ class Select extends Component{
                         <div className="margin-left"><i className={(this.props.show) ? "highlight fas fa-search" : "highlight fas fa-angle-down"}></i></div>
                     </div>
                     <div className="absolute full-width">
-                        <ul className={(this.props.show) ? "option-list" : "hidden"}>
+                        <ul className={(this.props.show) ? "option-list b-left b-right b-down" : "hidden"}>
                             {
                                 Object.keys(this.props.list).map(function (ind) {
                                     return <li key={ind} keyvalue={ind} select={this.props.name} onMouseDown={this.props.change} className={(ind === this.props.selected) ? "option selected" : "option"}>{this.props.list[ind]}</li>;
@@ -41,4 +41,4 @@ class Select extends Component{
     }
 }
 
-export default React.memo(Select);
+export default Select;

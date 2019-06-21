@@ -51,6 +51,9 @@ html,body {
 .text-left{
     text-align:left;
 }
+.text-right{
+    text-align:right;
+}
 .bold{
     font-weight: bold;
 }
@@ -64,9 +67,11 @@ html,body {
 }
 .nav-reserva{
     background-color:transparent;
-    color:var(--light-danger);
     padding:10px;
     border-color:transparent;
+}
+.light-danger{
+    color:var(--light-danger);
 }
 .nav-reserva:disabled {
     color:rgba(227, 52, 47, 0.4);
@@ -86,6 +91,9 @@ html,body {
 }
 .h-center{
     justify-content: center;
+}
+.h-end{
+    justify-content: flex-end;
 }
 .flex-column{
     flex-direction:column;
@@ -160,24 +168,47 @@ label{
 .no-padding{
     padding:0px;
 }
-ul.option-list {
+.border-right{
+    border-left: 1px solid var(--border);
+}
+.option-list {
     list-style: none;
     padding: 0px;
     margin: 0px;
-    border:solid 1px var(--border);
     border-top:0px;
     margin-top:-1px;
     background-color:white;
+}
+.pull-up{
+    margin-top:-3px;
+}
+.b-left{
+    border-left:solid 1px var(--border);
+}
+.b-right{
+    border-right:solid 1px var(--border);
+}
+.b-down{
+    border-bottom:solid 1px var(--border);
+}
+.bordered{
+    border:solid 1px var(--border);
 }
 .nav-list{
     list-style: none;
     padding:0px 15px;
     margin:auto 0px;
 }
+.reduce-padding{
+    padding:2px 10px;
+}
 .bottom-transparent{
     padding:5px 10px;
     border:solid 1px var(--border);
     border-bottom-color:transparent;
+}
+.border-bottom{
+    border-bottom:solid 1px var(--border);
 }
 .highlight {
     color: var(--light-danger);
@@ -240,6 +271,9 @@ button:focus {
 }
 .margin-box {
     margin: 5px;
+}
+.add-padding{
+    padding: 100px 10px 0px 10px;
 }
 /* End text input */
 /* End input classes*/

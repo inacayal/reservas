@@ -6,7 +6,7 @@ import Calendar from 'react-calendar';
 
 function Evento(props) {
     return (
-        <div className={(props.show) ? "container" : "hidden"}>
+        <div className={(props.current) ? "container" : "hidden"}>
             <h3 className="bold highlight-title align-center">datos de la reserva</h3>
             <div className="row box-padding justify-content-center">
                 <div className="col-sm-5 box-padding">
@@ -17,7 +17,7 @@ function Evento(props) {
                     <div className="row">
                         <div className="col-md-12 text-left">
                             <h6 className="highlight bold no-margin">selecciona el evento</h6>
-                            <Select {...props.ubicacion} hideSearch={props.hideSearch} titulo="selecciona tipo de evento de tu reserva" change={props.change} toggle={props.showToggle} />
+                            <Select {...props.ubicacion} titulo="selecciona tipo de evento de tu reserva" change={props.change} toggle={props.showToggle} />
                         </div>
                     </div>
                     <div className="row">
@@ -64,4 +64,4 @@ function Evento(props) {
     );
 }
 
-export default React.memo(Evento);
+export default Evento;

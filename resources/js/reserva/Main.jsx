@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Local from './pasos/Local.jsx';
 import Evento from "./pasos/Evento.jsx";
 import Exito from "./pasos/Exito.jsx";
-import Pagination from '../componentes/control/Pagination.jsx';
+import Paginado from '../componentes/control/Paginado.jsx';
 
 //holds reservation state
 export default class Main extends Component {
@@ -83,11 +83,12 @@ export default class Main extends Component {
         /** start Select */
         this.selectOption = this.selectOption.bind(this);
         this.showOptions = this.showOptions.bind(this);
-        /** start Select */
-        this.jumpPanel = this.jumpPanel.bind(this);
-        this.panels = [0,1,2];
-    }
-    
+        this.panels = {
+            0:"Local",
+            1:"Evento",
+            2:"Exito"
+        };
+    };
     onCalendarChange (date) {
         this.setState({
             fecha:date
@@ -108,7 +109,6 @@ export default class Main extends Component {
         let select = this.state.select;
         let trigger = select[name];
         trigger.selected = (value !== select[name].selected) ? value : null;
-        trigger.input
         select[name] = trigger;
         this.setState({select});
     }
@@ -120,44 +120,23 @@ export default class Main extends Component {
 
     clickNavigation(e){
         e.preventDefault();
-        let elem = e.currentTarget.getAttribute('type');
-        let navPanel=this.state.navPanel;
-        switch (elem){
-            case "next":
-                navPanel = navPanel + 1;
-            break;
-            case "prev":
-                navPanel = navPanel - 1;
-            break;
-            case "first":
-                navPanel = 0;
-            break;
-            case "last":
-                navPanel = this.panels.length - 1;
-            break;
-        }
-        this.setState({navPanel});
-    }
-
-    jumpPanel (e){
-        let navPanel = parseInt(e.target.getAttribute("jump"));
+        let navPanel = parseInt(e.currentTarget.getAttribute('data'));
         this.setState({navPanel});
     }
 
     render() {
         const selectHandlers = {
             showToggle:this.showOptions,
-            change: this.selectOption,
-            preventBlur:this.noBlur
+            change: this.selectOption
         };
         return (
             <div className="container">
                 <div className="row">
-                    <Local {...selectHandlers} select={this.state.select.local} show={this.state.navPanel === 0}/>
-                    <Evento {...selectHandlers} eventos={this.state.select.evento} persona={this.state.select.personas} hora={this.state.select.hora} ubicacion={this.state.select.ubicacion} show={this.state.navPanel === 1} fecha={this.state.fecha} onCalendarChange={this.onCalendarChange}/>
-                    <Exito show={this.state.navPanel === 2}/>
+                    <Local {...selectHandlers} select={this.state.select.local} current={this.state.navPanel === 0}/>
+                    <Evento {...selectHandlers} eventos={this.state.select.evento} persona={this.state.select.personas} hora={this.state.select.hora} ubicacion={this.state.select.ubicacion} current={this.state.navPanel === 1} fecha={this.state.fecha} onCalendarChange={this.onCalendarChange}/>
+                    <Exito current={this.state.navPanel === 2}/>
                 </div>
-                <Pagination show={this.state.navPanel} panels ={this.panels} click={this.clickNavigation} jumpTo={this.jumpPanel}/>
+                <Paginado current={this.state.navPanel} panels ={this.panels} click={this.clickNavigation}/>
             </div>
         );
     }
