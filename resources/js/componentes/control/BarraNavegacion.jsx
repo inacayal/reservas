@@ -1,8 +1,22 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Button from '../misc/Button';
+import ButtonList from '../complex/ButtonList';
 
 function BarraNavegacion(props) {
+    let items = [
+        {
+            title:(
+                <i className="fas fa-bell"/>
+            ),
+            class: "btn highlight-title reduce-padding margin-box"
+        },
+        {
+            title: (
+                <i className="fas fa-power-off" />
+            ),
+            class:"btn light-danger margin-box reduce-padding"
+        }
+    ];
     return (
         <div className="container border-bottom">
             <div className="row">
@@ -12,16 +26,11 @@ function BarraNavegacion(props) {
                     </h4>
                 </div>
                 <div className="col-sm-4 no-padding">
-                    <div className="container no-padding">
-                        <div className="flex-row h-end">
-                            <div>
-                                <Button type="" onClick={props.func} class="btn btn-primary reduce-padding margin-box" icon="fas fa-bell" title="" />       
-                            </div>
-                            <div>
-                                <Button type="" onClick={props.func} class="btn btn-danger reduce-padding margin-box" icon="fas fa-power-off" title="" />
-                            </div>
-                        </div>
-                    </div>
+                    <ButtonList
+                        clickHandler={props.func}
+                        displayList="flex-row h-end nav-list"
+                        elemClass="light-danger nav-reserva pointer"
+                        elems={items} />
                 </div>
             </div>
         </div>

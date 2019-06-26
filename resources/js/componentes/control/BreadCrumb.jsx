@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import ButtonList from '../complex/ButtonList';
 
 function BreadCrumb(props) {
     return (
-        <ul className="option-list no-border flex-row">
-            <li className="option"> Opcion 1</li>
-            <li className="option"> Opcion 2</li>
-            <li className="option"> Opcion 3</li>
-            <li className="option"> Opcion 4</li>
-            <li className="option"> Opcion 5</li>
-        </ul>
+        <div className="full-width">
+            <ButtonList
+                clickHandler={props.change}
+                displayList="nav-list no-padding flex-row"
+                container="inline-block v-align-center"
+                elems={props.items} />
+        </div>
     );
 }
-export default React.memo(BreadCrumb);
+export default BreadCrumb;

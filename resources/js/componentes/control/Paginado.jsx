@@ -1,46 +1,85 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import List from '../misc/List';
+import ButtonList from '../complex/ButtonList';
 
 function Paginado(props) {
     let s = parseInt(props.current);
-    let panels = Object.keys(props.panels);
-    let leftOperators = [
-        { 
-            icon: "fa fa-angle-double-left",
-            data: "0",
-            disabled: s === 0
-        },
-        { 
-            icon: "fa fa-angle-left", 
-            data: (s - 1).toString(), 
-            disabled: s === 0 
-        }
-    ];
-    let rightOperators = [
-        { 
-            icon: "fa fa-angle-right", 
-            data: (s + 1).toString(), 
-            disabled: s === panels.length - 1 
-        },
-        { 
-            icon: "fa fa-angle-double-right", 
-            data: panels.length - 1, 
-            disabled: s === panels.length-1 
-        }
-    ];
-    let panelList = panels.map(
-        function(e, i){
-            return {
-                title: props.panels[e].toString(),
-                data: panels[e].toString(),
-                class: (props.current == e) ? "box-padding pointer highlight-nav nav-reserva" : "pointer highlight-hover box-padding nav-reserva text"
+    let pages = Object.keys(props.pages);
+    let panelList = [];
+    let leftOperators = [];
+    let rightOperators = [];
+    
+    if (props.enableMaxSides) {
+        leftOperators = [
+            {
+                title: (
+                    <i className="fa fa-angle-double-left"/>
+                ),
+                data: "0",
+                disabled: s === 0
+            },
+            {
+                title: (
+                    <i className="fa fa-angle-left" />
+                ),
+                data: props.leftData.toString(),
+                disabled: s === 0
             }
-        }
-    );
+        ];
+        rightOperators = [
+            {
+                title: (
+                    <i className="fa fa-angle-right" />
+                ),
+                data: (s + 1).toString(),
+                disabled: s === pages.length - 1
+            },
+            {
+                title: (
+                    <i className="fa fa-angle-double-right" />
+                ),
+                data: pages.length - 1,
+                disabled: s === pages.length - 1
+            }
+        ];
+    }else{
+        leftOperators = [
+            {
+                title: (
+                    <i className="fa fa-angle-left" />
+                ),
+                data: props.leftData.toString(),
+                title: (props.leftTitle) ? props.leftTitle : "",
+                container: "half text-left"
+            }
+        ];
+        rightOperators = [
+            {
+                title: (
+                    <i className="fa fa-angle-right" />
+                ),
+                data: props.rightData.toString(),
+                title: (props.rightTitle) ? props.rightTitle : "",
+                container:"half text-right"
+            }
+        ];
+    }
+    if (pages.length > 0){
+        panelList = pages.map(
+            function(e, i){
+                return {
+                    title: props.pages[e],
+                    data: pages[e],
+                    class: (props.current == e) ? "box-padding pointer highlight-nav nav-reserva" : "pointer highlight-hover box-padding nav-reserva text"
+                }
+            }
+        );
+    }
+
     return (
         <div>
-            <List 
+            <ButtonList 
+                container="half"
                 clickHandler={props.click} 
                 displayList="nav-list flex-row" 
                 elemClass="light-danger nav-reserva pointer" 

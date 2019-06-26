@@ -132,11 +132,29 @@ export default class Main extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <Local {...selectHandlers} select={this.state.select.local} current={this.state.navPanel === 0}/>
-                    <Evento {...selectHandlers} eventos={this.state.select.evento} persona={this.state.select.personas} hora={this.state.select.hora} ubicacion={this.state.select.ubicacion} current={this.state.navPanel === 1} fecha={this.state.fecha} onCalendarChange={this.onCalendarChange}/>
-                    <Exito current={this.state.navPanel === 2}/>
+                    <Local 
+                        {...selectHandlers} 
+                        select={this.state.select.local} 
+                        current={this.state.navPanel === 0}/>
+                    <Evento 
+                        {...selectHandlers} 
+                        eventos={this.state.select.evento} 
+                        persona={this.state.select.personas} 
+                        hora={this.state.select.hora} 
+                        ubicacion={this.state.select.ubicacion} 
+                        current={this.state.navPanel === 1} 
+                        fecha={this.state.fecha} 
+                        onCalendarChange={this.onCalendarChange}/>
+                    <Exito 
+                        current={this.state.navPanel === 2}/>
                 </div>
-                <Paginado current={this.state.navPanel} panels ={this.panels} click={this.clickNavigation}/>
+                <Paginado 
+                    leftData={this.state.navPanel-1}
+                    rightData={this.state.navPanel+1}
+                    current={this.state.navPanel} 
+                    pages ={this.panels} 
+                    click={this.clickNavigation}
+                    enableMaxSides={true}/>
             </div>
         );
     }
