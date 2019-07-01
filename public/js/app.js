@@ -67281,10 +67281,10 @@ function Button(props) {
 
 /***/ }),
 
-/***/ "./resources/js/componentes/basic/Toggle.jsx":
-/*!***************************************************!*\
-  !*** ./resources/js/componentes/basic/Toggle.jsx ***!
-  \***************************************************/
+/***/ "./resources/js/componentes/basic/Card.jsx":
+/*!*************************************************!*\
+  !*** ./resources/js/componentes/basic/Card.jsx ***!
+  \*************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -67294,32 +67294,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Button */ "./resources/js/componentes/basic/Button.jsx");
 
 
 
-
-function Toggle(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "margin-box"
-  }, props.right ? "Mostrando calendario semanal" : "Mostrando calendario mensual"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: props.right ? "inline-block toggle text-right" : "inline-block toggle text-left"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Button__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    container: props.right ? "inline-block toggle text-right" : "inline-block toggle text-left",
-    data: props.belongs,
-    "class": "circle",
-    click: props.changeSide
-  })));
+function Card(props) {
+  //buttons is an array of the actions to perform in the current box
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: props.containerClass,
+    data: props.data
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: props.titleClass
+  }, props.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: props.contentClass
+  }, props.content), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: props.descriptionClass
+  }, props.description), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: props.footerClass
+  }, props.footer));
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(Toggle));
+/* harmony default export */ __webpack_exports__["default"] = (react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(Card));
 
 /***/ }),
 
-/***/ "./resources/js/componentes/complex/ButtonList.jsx":
-/*!*********************************************************!*\
-  !*** ./resources/js/componentes/complex/ButtonList.jsx ***!
-  \*********************************************************/
+/***/ "./resources/js/componentes/complex/allUse/ButtonList.jsx":
+/*!****************************************************************!*\
+  !*** ./resources/js/componentes/complex/allUse/ButtonList.jsx ***!
+  \****************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -67329,7 +67330,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _basic_Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../basic/Button */ "./resources/js/componentes/basic/Button.jsx");
+/* harmony import */ var _basic_Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../basic/Button */ "./resources/js/componentes/basic/Button.jsx");
 
 
 
@@ -67358,10 +67359,10 @@ function ButtonList(props) {
 
 /***/ }),
 
-/***/ "./resources/js/componentes/complex/MonthCalendar.jsx":
-/*!************************************************************!*\
-  !*** ./resources/js/componentes/complex/MonthCalendar.jsx ***!
-  \************************************************************/
+/***/ "./resources/js/componentes/complex/allUse/CardList.jsx":
+/*!**************************************************************!*\
+  !*** ./resources/js/componentes/complex/allUse/CardList.jsx ***!
+  \**************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -67371,10 +67372,299 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ButtonList */ "./resources/js/componentes/complex/ButtonList.jsx");
+/* harmony import */ var _basic_Card__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../basic/Card */ "./resources/js/componentes/basic/Card.jsx");
+
+
+
+
+function CardList(props) {
+  //props.elems is an object array with properties title and icon
+  //props.elemClass is a set of classes for list
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+    className: props.displayList
+  }, props.elems.map(function (e, i) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+      key: i,
+      className: e.container["class"] ? e.container["class"] : props.container ? props.container : ""
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_Card__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      data: e.container.data,
+      title: e.title.data,
+      titleClass: e.title["class"],
+      description: e.description.data,
+      descriptionClass: e.description["class"],
+      content: e.content.data,
+      contentClass: e.content["class"],
+      footer: e.footer.data,
+      footerClass: e.footer["class"]
+    }));
+  }));
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (CardList);
+
+/***/ }),
+
+/***/ "./resources/js/componentes/complex/calendar/Calendar.jsx":
+/*!****************************************************************!*\
+  !*** ./resources/js/componentes/complex/calendar/Calendar.jsx ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Calendar; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _views_Day__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./views/Day */ "./resources/js/componentes/complex/calendar/views/Day.jsx");
+/* harmony import */ var _views_DayCalendar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./views/DayCalendar */ "./resources/js/componentes/complex/calendar/views/DayCalendar.jsx");
+/* harmony import */ var _views_WeekCalendar__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./views/WeekCalendar */ "./resources/js/componentes/complex/calendar/views/WeekCalendar.jsx");
+/* harmony import */ var _views_MonthCalendar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./views/MonthCalendar */ "./resources/js/componentes/complex/calendar/views/MonthCalendar.jsx");
+/* harmony import */ var _allUse_ButtonList__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var _funciones_getMonthLength__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../funciones/getMonthLength */ "./resources/js/funciones/getMonthLength.jsx");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+
+
+
+
+
+
+var Calendar =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Calendar, _Component);
+
+  function Calendar(props) {
+    var _this;
+
+    _classCallCheck(this, Calendar);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Calendar).call(this, props));
+    var date = new Date();
+    _this.state = {
+      show: "2",
+      date: date,
+      controls: [{
+        title: "Meses",
+        data: "0",
+        "class": "box-transparent highlight-hover h-padding small-v-padding bordered transparent-border"
+      }, {
+        title: "Semanas",
+        data: "1",
+        "class": "box-transparent highlight-hover bordered h-padding small-v-padding transparent-border"
+      }, {
+        title: "Días",
+        data: "2",
+        "class": "blue-background highlight-border h-padding small-v-padding"
+      }]
+    };
+    _this.changeWeekCalendar = _this.changeWeekCalendar.bind(_assertThisInitialized(_this));
+    _this.changeDayCalendar = _this.changeDayCalendar.bind(_assertThisInitialized(_this));
+    _this.changeView = _this.changeView.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(Calendar, [{
+    key: "changeView",
+    value: function changeView(e) {
+      var show = e.currentTarget.getAttribute('data');
+      var controls = this.state.controls.map(function (e, i) {
+        e["class"] = i == show ? "blue-background highlight-border h-padding small-v-padding" : "box-transparent highlight-hover h-padding small-v-padding bordered transparent-border";
+        return e;
+      });
+      this.setState({
+        show: show,
+        controls: controls
+      });
+    }
+  }, {
+    key: "changeDayCalendar",
+    value: function changeDayCalendar(e) {
+      e.preventDefault();
+      var offset = parseInt(e.currentTarget.getAttribute('data'));
+      var date = new Date(this.state.date);
+      date.setDate(date.getDate() + offset);
+      this.setState({
+        date: date
+      });
+    }
+  }, {
+    key: "changeWeekCalendar",
+    value: function changeWeekCalendar(e) {
+      e.preventDefault();
+      var offset = parseInt(e.currentTarget.getAttribute('data'));
+      var date = new Date(this.state.date);
+      date.setMonth(date.getMonth() + offset);
+      this.setState({
+        date: date
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row justify-content-end box-padding"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        clickHandler: this.changeView,
+        displayList: "flex-row h-center nav-list no-padding",
+        elems: this.state.controls
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: this.state.show === "2" ? "row" : "hidden"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_views_DayCalendar__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        actions: this.props.actions,
+        show: this.state.show === "2",
+        date: this.state.date,
+        changeCurrentWeek: this.changeDayCalendar,
+        data: this.props.data,
+        dataTitle: "Días feriados de " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__["MONTHS"][this.state.date.getMonth()] + " " + this.state.date.getFullYear()
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: this.state.show === "1" ? "row" : "hidden"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_views_WeekCalendar__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        changeCurrentMonth: this.changeWeekCalendar,
+        show: this.state.show === "2",
+        date: this.state.date,
+        data: this.props.data,
+        actions: this.props.actions
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: this.state.show === "2" ? "row" : "hidden"
+      }));
+    }
+  }]);
+
+  return Calendar;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+
+
+/***/ }),
+
+/***/ "./resources/js/componentes/complex/calendar/views/Day.jsx":
+/*!*****************************************************************!*\
+  !*** ./resources/js/componentes/complex/calendar/views/Day.jsx ***!
+  \*****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+function Day() {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Day);
+
+/***/ }),
+
+/***/ "./resources/js/componentes/complex/calendar/views/DayCalendar.jsx":
+/*!*************************************************************************!*\
+  !*** ./resources/js/componentes/complex/calendar/views/DayCalendar.jsx ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
+/* harmony import */ var _allUse_CardList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../allUse/CardList */ "./resources/js/componentes/complex/allUse/CardList.jsx");
+/* harmony import */ var _funciones_weekGenerator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../funciones/weekGenerator */ "./resources/js/funciones/weekGenerator.jsx");
+/* harmony import */ var _funciones_calendarNavigation__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../funciones/calendarNavigation */ "./resources/js/funciones/calendarNavigation.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+
+ //components
+
+
+ //functions
+
+
+ //constants
+
+
+
+function DayCalendar(props) {
+  //show current week as it goes, highlighting today
+  //pass today in props
+  var sideTitles = Object(_funciones_calendarNavigation__WEBPACK_IMPORTED_MODULE_5__["default"])({
+    left: -7,
+    right: 7
+  }, 'semana');
+  var week = Object(_funciones_weekGenerator__WEBPACK_IMPORTED_MODULE_4__["generateDayWeek"])(props.date, props.data, props.actions);
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: props.show ? "container" : "hidden"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, "Mostrando " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_6__["MONTHS"][props.date.getMonth()] + " " + props.date.getFullYear()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row h-center"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_allUse_CardList__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    displayList: "justify no-padding full-width flex-row nav-list h-center",
+    elems: week
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    clickHandler: props.changeCurrentWeek,
+    elemClass: "box-transparent",
+    displayList: "flex-row nav-list full-width",
+    elems: sideTitles
+  })));
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(DayCalendar));
+
+/***/ }),
+
+/***/ "./resources/js/componentes/complex/calendar/views/MonthCalendar.jsx":
+/*!***************************************************************************!*\
+  !*** ./resources/js/componentes/complex/calendar/views/MonthCalendar.jsx ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
 /* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-calendar */ "./node_modules/react-calendar/dist/entry.js");
 /* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_calendar__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 
 
 
@@ -67395,7 +67685,7 @@ function MonthCalendar(props) {
     className: "box-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "highlight-title"
-  }, "Días feriados de " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_4__["MONTHS"][props.date.getMonth()] + " " + props.date.getFullYear()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, "Días feriados de " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_4__["MONTHS"][props.date.getMonth()] + " " + props.date.getFullYear()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
     clickHandler: props.daySelection,
     displayList: "flex-column h-center nav-list no-padding",
     elems: props.info
@@ -67406,10 +67696,10 @@ function MonthCalendar(props) {
 
 /***/ }),
 
-/***/ "./resources/js/componentes/complex/WeekCalendar.jsx":
-/*!***********************************************************!*\
-  !*** ./resources/js/componentes/complex/WeekCalendar.jsx ***!
-  \***********************************************************/
+/***/ "./resources/js/componentes/complex/calendar/views/WeekCalendar.jsx":
+/*!**************************************************************************!*\
+  !*** ./resources/js/componentes/complex/calendar/views/WeekCalendar.jsx ***!
+  \**************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -67419,59 +67709,63 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ButtonList */ "./resources/js/componentes/complex/ButtonList.jsx");
-/* harmony import */ var _funciones_generateWeek__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../funciones/generateWeek */ "./resources/js/funciones/generateWeek.jsx");
-/* harmony import */ var _funciones_weekNavigation__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../funciones/weekNavigation */ "./resources/js/funciones/weekNavigation.jsx");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+/* harmony import */ var _funciones_generateMonth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../funciones/generateMonth */ "./resources/js/funciones/generateMonth.jsx");
+/* harmony import */ var _funciones_calendarNavigation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../funciones/calendarNavigation */ "./resources/js/funciones/calendarNavigation.jsx");
+/* harmony import */ var _funciones_getMonthLength__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../funciones/getMonthLength */ "./resources/js/funciones/getMonthLength.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var _allUse_ButtonList__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
+/* harmony import */ var _allUse_CardList__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../allUse/CardList */ "./resources/js/componentes/complex/allUse/CardList.jsx");
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+ //funciones
 
 
 
+ //Constants
+
+ //complex
 
 
 
 
-function WeeklyCalendar(props) {
-  //show current week as it goes, highlighting today
-  //pass today in props
-  var sideTitles = Object(_funciones_weekNavigation__WEBPACK_IMPORTED_MODULE_4__["default"])(props);
-
-  var _generateWeek = Object(_funciones_generateWeek__WEBPACK_IMPORTED_MODULE_3__["default"])(props.date, props.offset, props.data),
-      _generateWeek2 = _slicedToArray(_generateWeek, 2),
-      week = _generateWeek2[0],
-      feriados = _generateWeek2[1];
-
+function WeekCalendar(props) {
+  var month = props.date.getMonth();
+  var navigation = Object(_funciones_calendarNavigation__WEBPACK_IMPORTED_MODULE_3__["default"])({
+    left: -1,
+    right: 1
+  }, 'mes');
+  var weeks = Object(_funciones_generateMonth__WEBPACK_IMPORTED_MODULE_2__["default"])(props.date, props.data, props.actions);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: props.show ? "container" : "hidden"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    clickHandler: props.click,
-    displayList: "flex-row h-center nav-list",
-    elems: week,
-    container: "nav-reserva no-padding"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    displayList: "flex-row nav-list",
-    elemClass: "box-transparent",
-    container: "half",
-    clickHandler: props.changeCurrentWeek,
-    elems: sideTitles
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "padding-box"
+    className: !props.show ? "full-width" : "hidden"
+  }, "Mostrando " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__["MONTHS"][month] + " " + props.date.getFullYear(), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "highlight-title"
-  }, props.dataTitle), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    clickHandler: props.clickInfo,
-    displayList: "flex-column h-center nav-list no-padding",
-    elems: feriados,
-    container: props.elemClass
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    clickHandler: props.changeCurrentMonth,
+    elemClass: "box-transparent",
+    displayList: "flex-row nav-list full-width no-padding",
+    elems: navigation
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row b-down"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "justify full-width flex-row nav-list h-center box-padding"
+  }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__["DAYS"].map(function (e, i) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      key: i,
+      className: "same-width box-transparent highlight-title text-center"
+    }, e);
+  }))), weeks.map(function (e, i) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      key: i,
+      className: "row"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_allUse_CardList__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      displayList: "justify no-padding full-width flex-row nav-list h-center",
+      elems: e
+    }));
   })));
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(WeeklyCalendar));
+/* harmony default export */ __webpack_exports__["default"] = (WeekCalendar);
 
 /***/ }),
 
@@ -67488,7 +67782,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _complex_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../complex/ButtonList */ "./resources/js/componentes/complex/ButtonList.jsx");
+/* harmony import */ var _complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
 
 
 
@@ -67513,7 +67807,7 @@ function BarraNavegacion(props) {
     className: "col-sm-8"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Nombre de usuario")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-sm-4 no-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_complex_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
     clickHandler: props.func,
     displayList: "flex-row h-end nav-list",
     elemClass: "light-danger nav-reserva pointer",
@@ -67538,7 +67832,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _complex_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../complex/ButtonList */ "./resources/js/componentes/complex/ButtonList.jsx");
+/* harmony import */ var _complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
 
 
 
@@ -67546,7 +67840,7 @@ __webpack_require__.r(__webpack_exports__);
 function BreadCrumb(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "full-width"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_complex_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
     clickHandler: props.change,
     displayList: "nav-list no-padding flex-row",
     container: "inline-block v-align-center",
@@ -67571,7 +67865,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _complex_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../complex/ButtonList */ "./resources/js/componentes/complex/ButtonList.jsx");
+/* harmony import */ var _complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -67647,7 +67941,7 @@ function Paginado(props) {
     });
   }
 
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_complex_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
     container: "half",
     clickHandler: props.click,
     displayList: "nav-list flex-row",
@@ -68132,7 +68426,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_complex_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../componentes/complex/ButtonList */ "./resources/js/componentes/complex/ButtonList.jsx");
+/* harmony import */ var _componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../componentes/complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
 
 
 
@@ -68148,7 +68442,7 @@ function Lateral(props) {
       onClick: props.changePanel,
       data: i,
       className: props.current == i ? "highlight-title box-transparent full-width text-left box-padding" : "box-transparent full-width text-left box-padding highlight-hover"
-    }, e.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    }, e.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
       clickHandler: props.changeSub,
       displayList: props.current == i ? "nav-list" : "hidden",
       container: "full-width",
@@ -68288,7 +68582,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _subElements_DiasFeriados__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./subElements/DiasFeriados */ "./resources/js/escritorio/paneles/horarios/subElements/DiasFeriados.jsx");
 /* harmony import */ var _subElements_HorarioAtencion__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./subElements/HorarioAtencion */ "./resources/js/escritorio/paneles/horarios/subElements/HorarioAtencion.jsx");
-/* harmony import */ var _componentes_complex_ButtonList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/complex/ButtonList */ "./resources/js/componentes/complex/ButtonList.jsx");
+/* harmony import */ var _componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -68336,7 +68630,7 @@ function (_Component) {
         className: this.props.panel ? "full-width container" : "hidden"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: !this.props.currentSub ? "row" : "hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_ButtonList__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_4__["default"], {
         clickHandler: this.props.selectInnerElement,
         displayList: "flex-row h-center nav-list",
         elems: this.props.subElements,
@@ -68371,12 +68665,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-calendar */ "./node_modules/react-calendar/dist/entry.js");
-/* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_calendar__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _componentes_complex_WeekCalendar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/complex/WeekCalendar */ "./resources/js/componentes/complex/WeekCalendar.jsx");
-/* harmony import */ var _componentes_complex_MonthCalendar__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../componentes/complex/MonthCalendar */ "./resources/js/componentes/complex/MonthCalendar.jsx");
-/* harmony import */ var _componentes_basic_Toggle__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../componentes/basic/Toggle */ "./resources/js/componentes/basic/Toggle.jsx");
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var _componentes_complex_calendar_Calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/complex/calendar/Calendar */ "./resources/js/componentes/complex/calendar/Calendar.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var _funciones_generateMonth__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../funciones/generateMonth */ "./resources/js/funciones/generateMonth.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -68397,15 +68688,52 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 //React Components
 
-
  //Complex Components
-
-
- //Basic Components
 
  //Constants
 
+ //Functions
 
+ //Feriados should be on this format when doing ajax request
+
+var formattedFeriados = {
+  1559358000000: {
+    apertura: "apertura1",
+    cierre: "cierre1",
+    descripcion: "descripcion1",
+    estado: 1
+  },
+  1560481200000: {
+    apertura: "apertura2",
+    cierre: "cierre2",
+    descripcion: "descripcion2",
+    estado: 1
+  },
+  1561345200000: {
+    apertura: "apertura3",
+    cierre: "cierre3",
+    descripcion: "descripcion3",
+    estado: 1
+  },
+  1561518000000: {
+    apertura: "apertura4",
+    cierre: "cierre4",
+    descripcion: "descripcion4",
+    estado: 1
+  },
+  1561690800000: {
+    apertura: "apertura4",
+    cierre: "cierre4",
+    descripcion: "descripcion4",
+    estado: 1
+  },
+  1561777200000: {
+    apertura: "apertura5",
+    cierre: "cierre5",
+    descripcion: "descripcion5",
+    estado: 0
+  }
+};
 
 var DiasFeriados =
 /*#__PURE__*/
@@ -68419,148 +68747,48 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(DiasFeriados).call(this, props));
     _this.state = {
-      side: true,
-      date: new Date(),
-      weekOffset: 0,
-      feriados: [{
-        fecha: new Date("06/01/2019"),
-        apertura: "apertura1",
-        cierre: "cierre1",
-        descripcion: "descripcion1",
-        estado: 1
-      }, {
-        fecha: new Date("06/28/2019"),
-        apertura: "apertura2",
-        cierre: "cierre2",
-        descripcion: "descripcion2",
-        estado: 1
-      }, {
-        fecha: new Date("06/26/2019"),
-        apertura: "apertura3",
-        cierre: "cierre3",
-        descripcion: "descripcion3",
-        estado: 1
-      }, {
-        fecha: new Date("06/14/2019"),
-        apertura: "apertura4",
-        cierre: "cierre4",
-        descripcion: "descripcion4",
-        estado: 1
-      }, {
-        fecha: new Date("06/24/2019"),
-        apertura: "apertura4",
-        cierre: "cierre4",
-        descripcion: "descripcion4",
-        estado: 1
-      }, {
-        fecha: new Date("06/29/2019"),
-        apertura: "apertura5",
-        cierre: "cierre5",
-        descripcion: "descripcion5",
-        estado: 0
-      }]
+      feriados: formattedFeriados
     };
-    _this.changeToggleSide = _this.changeToggleSide.bind(_assertThisInitialized(_this));
-    _this.onDateChange = _this.onDateChange.bind(_assertThisInitialized(_this));
-    _this.changeCurrentWeek = _this.changeCurrentWeek.bind(_assertThisInitialized(_this));
-    _this.paintSelectedDay = _this.paintSelectedDay.bind(_assertThisInitialized(_this));
-    _this.estados = {
-      1: "Apertura",
-      2: "Cerrado"
+    _this.actions = {
+      agregar: _this.eliminarFeriado.bind(_assertThisInitialized(_this)),
+      editar: _this.editarFeriado.bind(_assertThisInitialized(_this)),
+      ver: _this.verFeriado.bind(_assertThisInitialized(_this)),
+      eliminar: _this.eliminarFeriado.bind(_assertThisInitialized(_this))
     };
-    _this.feriadosSemana = {};
-    _this.feriadosMes = _this.formatFeriados();
     return _this;
   }
 
   _createClass(DiasFeriados, [{
-    key: "paintSelectedDay",
-    value: function paintSelectedDay(e) {
-      e.preventDefault();
-      console.log('paint');
+    key: "agregarFeriado",
+    value: function agregarFeriado(e) {
+      console.log("this.agregarFeriado");
     }
   }, {
-    key: "changeCurrentWeek",
-    value: function changeCurrentWeek(e) {
-      e.preventDefault();
-      var weekOffset = e.currentTarget.getAttribute('data');
-      this.setState({
-        weekOffset: weekOffset
-      });
+    key: "editarFeriado",
+    value: function editarFeriado(e) {
+      console.log("this.editarFeriado");
     }
   }, {
-    key: "onDateChange",
-    value: function onDateChange(e) {
-      console.log("dateChange");
+    key: "verFeriado",
+    value: function verFeriado(e) {
+      console.log("this.verFeriado");
     }
   }, {
-    key: "shouldComponentUpdate",
-    value: function shouldComponentUpdate(nextProps, nextState) {
-      return !nextProps.show || nextProps.show || nextState.side !== this.state.side || nextState.weekOffset !== this.state.weekOffset;
-    }
-  }, {
-    key: "changeToggleSide",
-    value: function changeToggleSide(e) {
-      this.setState({
-        side: !this.state.side
-      });
-    }
-  }, {
-    key: "formatFeriados",
-    value: function formatFeriados() {
-      var _this2 = this;
-
-      return this.state.feriados.map(function (e) {
-        var elem = {
-          title: e.estado ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-            className: "text-left container"
-          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-            className: "bold highlight"
-          }, "fecha "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_6__["DAYS"][e.fecha.getDay()] + " " + e.fecha.getDate() + " " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_6__["MONTHS"][e.fecha.getMonth()]), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-            className: "bold highlight"
-          }, " apertura "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, e.apertura), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-            className: "bold highlight"
-          }, " cierre "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, e.cierre), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-            className: "bold highlight"
-          }, " descripcion "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, e.descripcion)) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-            className: "text-left container"
-          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-            className: "bold highlight"
-          }, "fecha "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_6__["DAYS"][e.fecha.getDay()] + " " + e.fecha.getDate() + " " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_6__["MONTHS"][e.fecha.getMonth()]), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-            className: "bold highlight"
-          }, " Sin Apertura")),
-          "class": "box-transparent highlight-hover text-left full-width"
-        };
-        _this2.feriadosSemana[e.fecha.setHours(0, 0, 0, 0).toString()] = elem;
-        return elem;
-      }, this);
+    key: "eliminarFeriado",
+    value: function eliminarFeriado(e) {
+      console.log("this.eliminarFeriado");
     }
   }, {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.props.show ? "full-width" : "hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row justify-content-end box-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Toggle__WEBPACK_IMPORTED_MODULE_5__["default"], {
-        right: this.state.side,
-        changeSide: this.changeToggleSide,
-        belongs: "horarios"
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_WeekCalendar__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        show: this.state.side,
-        date: this.state.date,
-        clickInfo: this.paintSelectedDay,
-        click: this.onDateChange,
-        changeCurrentWeek: this.changeCurrentWeek,
-        data: this.feriadosSemana,
-        dataTitle: "Días feriados de " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_6__["MONTHS"][this.state.date.getMonth()] + " " + this.state.date.getFullYear(),
-        offset: this.state.weekOffset
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_MonthCalendar__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        show: this.state.side,
-        info: this.feriadosMes,
-        date: this.state.date,
-        dateChange: this.onDateChange,
-        daySelection: this.paintSelectedDay
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_calendar_Calendar__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        changeView: this.changeView,
+        views: this.buttons,
+        actions: this.actions,
+        controls: this.state.calendarControl,
+        data: this.state.feriados
       }));
     }
   }]);
@@ -68674,95 +68902,274 @@ function Ubicaciones(props) {
 
 /***/ }),
 
-/***/ "./resources/js/funciones/generateWeek.jsx":
-/*!*************************************************!*\
-  !*** ./resources/js/funciones/generateWeek.jsx ***!
-  \*************************************************/
+/***/ "./resources/js/funciones/calendarNavigation.jsx":
+/*!*******************************************************!*\
+  !*** ./resources/js/funciones/calendarNavigation.jsx ***!
+  \*******************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return generateWeek; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return calendarNavigation; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+
+
+function calendarNavigation(offset, titulo) {
+  return [{
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "line-v-middle highlight middle-font fas fa-angle-left"
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: "text "
+    }, titulo + " anterior")),
+    data: String(offset.left),
+    container: "half"
+  }, {
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: "text"
+    }, titulo + " siguiente"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "line-v-middle middle-font highlight fas fa-angle-right"
+    })),
+    data: String(offset.right),
+    container: "half text-right"
+  }];
+}
+
+/***/ }),
+
+/***/ "./resources/js/funciones/generateActions.jsx":
+/*!****************************************************!*\
+  !*** ./resources/js/funciones/generateActions.jsx ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return generateActions; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+
+
+function generateActions(hasEvents, actions, data) {
+  return hasEvents ? [{
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "smaller-text text-center"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fas fa-eye inline-box side-margin"
+    })),
+    click: actions.ver,
+    data: data
+  }, {
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "smaller-text text-center"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fas fa-pen inline-box side-margin"
+    })),
+    click: actions.editar,
+    data: data
+  }, {
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "smaller-text text-center"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fas fa-trash inline-box side-margin"
+    })),
+    click: actions.eliminar,
+    data: data
+  }] : [{
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "smaller-text"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fas fa-plus-circle inline-box side-margin"
+    })),
+    click: actions.agregar,
+    data: data
+  }];
+}
+
+/***/ }),
+
+/***/ "./resources/js/funciones/generateMonth.jsx":
+/*!**************************************************!*\
+  !*** ./resources/js/funciones/generateMonth.jsx ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return generateMonth; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var _weekGenerator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./weekGenerator */ "./resources/js/funciones/weekGenerator.jsx");
 
 
 
-function generateWeek(date, off, feriados) {
-  //numbers must have min sec hr set to 0
-  var week = [];
-  var day = date.getDay() - off;
-  var dayNumber = date.getDate();
-  var filter = [];
 
-  for (var i = 0; i < _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_2__["DAYS"].length; i++) {
-    var newDay = new Date();
-    newDay.setHours(0, 0, 0, 0);
-    newDay.setDate(dayNumber + (i - day));
-    var today = i === day;
-    var elem = {
-      title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "content"
-      }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_2__["DAYS"][newDay.getDay()]), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: today ? "content c-title highlight-title" : "content c-title light-danger"
-      }, newDay.getDate()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "content"
-      }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_2__["MONTHS"][newDay.getMonth()])),
-      "class": today ? "box-transparent pointer border-box box-padding margin-box highlight-title" : "pointer box-padding border-box margin-box box-transparent",
-      data: newDay,
-      feriado: feriados[newDay.toLocaleDateString]
-    };
-    var fr = feriados[newDay.getTime().toString()];
 
-    if (fr) {
-      filter.push(fr);
-    }
+function moveToFirstWeek(date) {
+  var copyDate = new Date(date);
 
-    week.push(elem);
+  while (copyDate.getMonth() === date.getMonth()) {
+    copyDate = new Date(copyDate);
+    copyDate.setDate(copyDate.getDate() - 7);
   }
 
-  return [week, filter];
+  return copyDate;
+}
+
+function generateMonth(date, data, actions) {
+  var datePointer = moveToFirstWeek(date);
+  var evalDate = new Date(datePointer);
+  evalDate.setDate(evalDate.getDate() - datePointer.getDay() + 6);
+  var month = evalDate.getMonth() === date.getMonth() ? [Object(_weekGenerator__WEBPACK_IMPORTED_MODULE_3__["generateMonthWeek"])(datePointer, data, actions, true, date)] : [];
+  var evalMonth = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1;
+
+  while (evalMonth === datePointer.getMonth() || date.getMonth() === datePointer.getMonth()) {
+    evalMonth = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1;
+    datePointer = new Date(datePointer);
+    datePointer.setDate(datePointer.getDate() + 7);
+    evalDate = new Date(datePointer);
+    evalDate.setDate(evalDate.getDate() - datePointer.getDay());
+    if (evalDate.getMonth() === date.getMonth()) month.push(Object(_weekGenerator__WEBPACK_IMPORTED_MODULE_3__["generateMonthWeek"])(datePointer, data, actions, true, date));
+  }
+
+  return month;
 }
 
 /***/ }),
 
-/***/ "./resources/js/funciones/weekNavigation.jsx":
+/***/ "./resources/js/funciones/getMonthLength.jsx":
 /*!***************************************************!*\
-  !*** ./resources/js/funciones/weekNavigation.jsx ***!
+  !*** ./resources/js/funciones/getMonthLength.jsx ***!
   \***************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return weekNavigation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return getMonthLength; });
+function getMonthLength(month, year) {
+  var date = new Date(year, month, 0).getDate();
+  return date;
+}
+
+/***/ }),
+
+/***/ "./resources/js/funciones/weekGenerator.jsx":
+/*!**************************************************!*\
+  !*** ./resources/js/funciones/weekGenerator.jsx ***!
+  \**************************************************/
+/*! exports provided: generateDayWeek, generateMonthWeek */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "generateDayWeek", function() { return generateDayWeek; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "generateMonthWeek", function() { return generateMonthWeek; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var _componentes_basic_Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../componentes/basic/Button */ "./resources/js/componentes/basic/Button.jsx");
+/* harmony import */ var _componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../componentes/complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
+/* harmony import */ var _generateActions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./generateActions */ "./resources/js/funciones/generateActions.jsx");
 
 
-function weekNavigation(props) {
-  return [{
-    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-      className: "line-v-middle highlight middle-font fas fa-angle-left"
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-      className: "text "
-    }, " ver la semana anterior")),
-    data: String(parseInt(props.offset) - 7)
-  }, {
-    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-      className: "text"
-    }, "ver próxima semana "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-      className: "line-v-middle middle-font highlight fas fa-angle-right"
-    })),
-    data: String(parseInt(props.offset) + 7),
-    container: "half text-right"
-  }];
+
+
+
+
+function generateDayWeek(date, data, actions, currentDate) {
+  var week = [];
+  var day = date.getDay();
+  var today = new Date();
+  return _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_2__["DAYS"].map(function (e, i) {
+    var datePtr = new Date(date);
+    datePtr.setDate(datePtr.getDate() + (i - day));
+    datePtr.setHours(0, 0, 0, 0);
+    var stringDate = datePtr.getTime().toString();
+    var acciones = Object(_generateActions__WEBPACK_IMPORTED_MODULE_5__["default"])(data[stringDate], actions, stringDate);
+    var todayCond = today.getDate() === datePtr.getDate() && today.getMonth() === datePtr.getMonth() && today.getFullYear() === datePtr.getFullYear();
+    var elem = {
+      title: {
+        data: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_2__["DAYS"][datePtr.getDay()],
+        "class": ""
+      },
+      content: {
+        data: datePtr.getDate(),
+        "class": todayCond ? "content c-title highlight-title" : "content c-title light-danger"
+      },
+      description: {
+        data: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_2__["MONTHS"][datePtr.getMonth()],
+        "class": ""
+      },
+      footer: {
+        data: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          displayList: "flex-row nav-list no-padding",
+          container: "align-center",
+          elemClass: "box-transparent highlight-hover full-width text-left",
+          elems: acciones
+        }),
+        "class": ""
+      },
+      container: {
+        data: datePtr,
+        "class": todayCond ? "same-width box-transparent highlight-title text-center" : "text-center box-transparent same-width"
+      }
+    };
+    return elem;
+  });
+}
+function generateMonthWeek(date, data, actions, currentDate) {
+  var week = [];
+  var day = date.getDay();
+  var today = new Date();
+  return _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_2__["DAYS"].map(function (e, i) {
+    var datePtr = new Date(date);
+    datePtr.setDate(datePtr.getDate() + (i - day));
+    datePtr.setHours(0, 0, 0, 0);
+    var stringDate = datePtr.getTime().toString();
+    var acciones = Object(_generateActions__WEBPACK_IMPORTED_MODULE_5__["default"])(data[stringDate], actions, stringDate);
+    var todayCond = today.getDate() === datePtr.getDate() && today.getMonth() === datePtr.getMonth() && today.getFullYear() === datePtr.getFullYear();
+    var elem = {
+      title: {
+        data: datePtr.getDate(),
+        "class": todayCond ? "content c-title highlight-title" : currentDate.getMonth() !== datePtr.getMonth() ? "content c-title" : "content c-title light-danger"
+      },
+      content: {
+        data: "",
+        "class": ""
+      },
+      description: {
+        data: "",
+        "class": ""
+      },
+      footer: {
+        data: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          displayList: "flex-row nav-list no-padding",
+          container: "align-center",
+          elemClass: "box-transparent highlight-hover full-width text-left",
+          elems: acciones
+        }),
+        "class": ""
+      },
+      container: {
+        data: datePtr,
+        "class": currentDate.getMonth() !== datePtr.getMonth() ? "background-border same-width text-center box-padding" : "same-width box-transparent text-center box-padding"
+      }
+    };
+    return elem;
+  });
 }
 
 /***/ }),

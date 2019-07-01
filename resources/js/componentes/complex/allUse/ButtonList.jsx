@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Button from '../basic/Button'
+import Button from '../../basic/Button'
 
 function ButtonList(props) {
     //props.elems is an object array with properties title and icon

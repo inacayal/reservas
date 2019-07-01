@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import ButtonList from '../../componentes/complex/ButtonList';
+import ButtonList from '../../componentes/complex/allUse/ButtonList';
 
 function Lateral(props) {
     return (

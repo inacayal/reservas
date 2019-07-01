@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import ButtonList from '../complex/ButtonList';
+import ButtonList from '../complex/allUse/ButtonList';
 
 function Paginado(props) {
     let s = parseInt(props.current);

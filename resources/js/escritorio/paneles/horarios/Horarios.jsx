@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import DiasFeriados from './subElements/DiasFeriados';
 import HorarioAtencion from './subElements/HorarioAtencion';
-import ButtonList from '../../../componentes/complex/ButtonList';
+import ButtonList from '../../../componentes/complex/allUse/ButtonList';
 
 export class Horarios extends Component {
     constructor(props){
