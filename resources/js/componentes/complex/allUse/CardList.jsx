@@ -11,15 +11,12 @@ function CardList(props) {
                 props.elems.map((e, i) =>
                     <li key={i} className={(e.container.class) ? e.container.class : (props.container) ? props.container : ""}>
                         <Card
+                            containerClick={e.container.click}
                             data={e.container.data}
                             title={e.title.data}
                             titleClass={e.title.class}
-                            description={e.description.data}
-                            descriptionClass={e.description.class}
                             content={e.content.data}
-                            contentClass={e.content.class}
-                            footer={e.footer.data}
-                            footerClass={e.footer.class}/>
+                            contentClass={e.content.class}/>
                     </li>
                 )
             }

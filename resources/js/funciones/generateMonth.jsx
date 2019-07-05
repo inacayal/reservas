@@ -1,39 +1,104 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import getMonthLength from './getMonthLength';
 import { DAYS, MONTHS } from '../constantes/DaysMonths';
-import {generateMonthWeek} from './weekGenerator';
+import {assignMonthElementType} from './generateCards';
+import {generateActions} from './generateActions';
 
-function moveToFirstWeek(date){
-    let copyDate = new Date(date);
-    while (copyDate.getMonth() === date.getMonth()){
-        copyDate = new Date(copyDate);
-        copyDate.setDate(copyDate.getDate()-7);
+function evalFirstWeek (date,type){
+    let day = date.getDay(),
+        evalDate = new Date(date),
+        res = [];
+    //ver el primer dia de esta semana
+    evalDate.setDate(evalDate.getDate()-day);
+    while(evalDate.getMonth()!==date.getMonth()){
+        let elem = assignMonthElementType(
+            null,
+            type,
+            null,
+            evalDate.getTime()
+        );
+        res.push(elem);
+        evalDate = new Date(evalDate);
+        evalDate.setDate(evalDate.getDate()+1);
     }
-    return copyDate;
+    return res;
 }
 
-export default function generateMonth (date,data,actions){
-    
-    let datePointer = moveToFirstWeek(date);
-    let evalDate = new Date(datePointer);
-    
-    evalDate.setDate(evalDate.getDate()-datePointer.getDay()+6);
-
-    let month = (evalDate.getMonth() === date.getMonth()) ? 
-        [generateMonthWeek(datePointer, data, actions, true, date)] 
-        : [];
-    
-    let evalMonth = date.getMonth()-1 < 0 ? 11 : date.getMonth()-1;
-
-    while (evalMonth === datePointer.getMonth() || date.getMonth() === datePointer.getMonth()){
-        evalMonth = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1;
-        datePointer = new Date(datePointer);
-        datePointer.setDate(datePointer.getDate() + 7);
-        evalDate = new Date(datePointer);
-        evalDate.setDate(evalDate.getDate() -datePointer.getDay());
-        if(evalDate.getMonth() === date.getMonth())
-            month.push(generateMonthWeek(datePointer, data, actions, true, date));
+function evalLastWeek(date,type){
+    let day = date.getDay(),
+        evalDate = new Date(date),
+        res = [];
+    //ver el primer dia de esta semana
+    evalDate.setDate(evalDate.getDate() + 6 - day);
+    while (evalDate.getMonth() !== date.getMonth()) {
+        let elem = assignMonthElementType(
+            null,
+            type,
+            null,
+            evalDate.getTime()
+        );
+        res.push(elem);
+        evalDate = new Date(evalDate);
+        evalDate.setDate(evalDate.getDate() - 1);
     }
+    return (res||[]).reverse();
+}
+export default function generateMonth (date,data,actions,type){
+    let monthLength = getMonthLength(
+            date.getMonth()+1,
+            date.getFullYear()
+        ),
+        datePtr = new Date(date),
+        month = [],
+        week = [],
+        today = new Date(),
+        monthEnd=null;
+
+    let dateStr = datePtr.setDate(datePtr.getDate() - datePtr.getDate() + 1);
     
+    for (let ptr = 0; ptr<monthLength; ptr++){
+        let weekCtr = datePtr.getDay(),
+            elem = {};
+        
+        if (ptr===0){
+            week = evalFirstWeek(
+                datePtr,
+                type
+            );
+        }
+
+        if(ptr===monthLength-1){
+            monthEnd = evalLastWeek(
+                datePtr,
+                type
+            );
+            weekCtr = 6;
+        }
+        elem = assignMonthElementType(
+            generateActions(
+                data[dateStr], 
+                actions.outer, 
+                dateStr, 
+                false, 
+                type
+            ),
+            type,
+            data[dateStr],
+            dateStr
+        );
+        
+        week.push(elem);
+        
+        if (weekCtr === 6) {
+            weekCtr = 0;
+            month.push(monthEnd === null ? week : week.concat(monthEnd));
+            week = [];
+        } else weekCtr++;
+        
+        datePtr = new Date(datePtr);
+        dateStr = datePtr.setDate(datePtr.getDate() + 1);
+        datePtr.setHours(0, 0, 0, 0);
+    }
     return month;
 }

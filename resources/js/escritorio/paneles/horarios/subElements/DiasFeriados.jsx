@@ -54,11 +54,31 @@ export default class DiasFeriados extends Component {
             feriados: formattedFeriados
         };
         this.actions = {
-            agregar: this.eliminarFeriado.bind(this),
-            editar: this.editarFeriado.bind(this),
-            ver: this.verFeriado.bind(this),
-            eliminar: this.eliminarFeriado.bind(this)
+            outer:{
+                agregar: this.eliminarFeriado.bind(this),
+                editar: this.editarFeriado.bind(this),
+                ver: this.verFeriado.bind(this),
+                eliminar: this.eliminarFeriado.bind(this)
+            },
+            inner:{}
         };
+        this.calendarControl = [
+                {
+                    title: "Anual",
+                    data: "0",
+                    class: "box-transparent highlight-hover h-padding small-v-padding bordered transparent-border"
+                },
+                {
+                    title: "Mensual",
+                    data: "1",
+                    class: "box-transparent highlight-hover bordered h-padding small-v-padding transparent-border"
+                },
+                {
+                    title: "Semanal",
+                    data: "2",
+                    class: "blue-background highlight-border h-padding small-v-padding"
+                }
+            ];
     }
 
     agregarFeriado(e){
@@ -81,10 +101,9 @@ export default class DiasFeriados extends Component {
         return (
             <div className={(this.props.show) ? "full-width" : "hidden"}>
                 <Calendar 
-                    changeView={this.changeView}
-                    views={this.buttons}
+                    type="feriados"
                     actions={this.actions}
-                    controls={this.state.calendarControl}
+                    controls={this.calendarControl}
                     data={this.state.feriados}/>
             </div>
         );

@@ -39,17 +39,9 @@ const sidebar = [//get on ajax request
         title: "Reservas",
         sub: [
             {
-                title:"Reservas 1",
+                title:"Configuración",
                 data: "0"
             },
-            {
-                title: "Reservas 2",
-                data: "1"
-            },
-            {
-                title: "#eservas 3",
-                data: "2"
-            }
         ]
     },
     {
@@ -58,12 +50,8 @@ const sidebar = [//get on ajax request
         title: "Horarios",
         sub: [
             {
-                title: 'Horario de atención',
-                data: "0"
-            },
-            {
                 title: 'Días Feriados',
-                data: "1"
+                data: "0"
             }
         ]
     },
@@ -179,13 +167,13 @@ export default class Main extends Component {
                             crumb[1] = e;
                         } else {
                             crumb.pop();
-                            e.class = "box-transparent box-padding highlight-hover";
+                            e.class = "box-transparent box-padding highlight-hover full-width text-left";
                         }
                     } else {
-                        e.class = "highlight-title box-transparent box-padding";
+                        e.class = "highlight-title box-transparent box-padding full-width text-left";
                         crumb.push(e)
                     };
-                } else e.class = "box-transparent box-padding highlight-hover"
+                } else e.class = "box-transparent box-padding highlight-hover full-width text-left"
                 return e;
             }
         );
@@ -195,7 +183,7 @@ export default class Main extends Component {
     restoreSubElements(elements){
         return elements.map(
             e => {
-                e.class = "box-transparent box-padding highlight-hover";
+                e.class = "box-transparent box-padding highlight-hover full-width text-left";
                 return e;
             }
         );
@@ -206,13 +194,12 @@ export default class Main extends Component {
         let sidebar = this.state.sidebar;
         let crumb = [];
         sidebar[this.state.showing].sub = this.restoreSubElements(sidebar[this.state.showing].sub);
-        crumb = (this.state.crumb.length > 1) ? 
-            this.state.crumb.slice(0, 1) : [{
-                title: sidebar[showing].title,
-                data: showing,
-                class: "c-title small-v-padding box-transparent h-padding highlight-title full-width text-left",
-                click: this.changePanel
-            }];
+        crumb = [{
+            title: sidebar[showing].title,
+            data: showing,
+            class: "c-title small-v-padding box-transparent h-padding highlight-title full-width text-left",
+            click: this.changePanel
+        }];
         this.setState({ showing: showing, crumb:crumb, sidebar:sidebar});
     }
 
@@ -237,11 +224,23 @@ export default class Main extends Component {
                             </div>
                             <div className="row">
                                 <Escritorio classes={(this.state.showing === "0") ? "full-width" : "hidden"} />
-                                <Reservas classes={(this.state.showing === "1") ? "full-width" : "hidden"} />
-                                <Horarios panel={this.state.showing === "2"} selectInnerElement={this.changeSubElement} subElements={this.state.sidebar[2].sub} currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null}/>
+                                
+                                <Reservas panel={this.state.showing === "1"} 
+                                    selectInnerElement={this.changeSubElement} 
+                                    subElements={this.state.sidebar[1].sub} 
+                                    currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null}/>
+
+                                <Horarios panel={this.state.showing === "2"} 
+                                    selectInnerElement={this.changeSubElement} 
+                                    subElements={this.state.sidebar[2].sub} 
+                                    currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null}/>
+
                                 <Ubicaciones classes={(this.state.showing === "3") ? "full-width" : "hidden"} />
+
                                 <Eventos classes={(this.state.showing === "4") ? "full-width" : "hidden"} />
+
                                 <Locales classes={(this.state.showing === "5") ? "full-width" : "hidden"} />
+                                
                                 <Configuracion classes={(this.state.showing === "6") ? "full-width" : "hidden"} />
                             </div>
                         </div>

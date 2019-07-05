@@ -24,18 +24,35 @@
   --border:#e5e5e5;
   --highlight-blue:#006edc;
   --no-highlight:#e6e6e6;
-  --text-color:#636b6f;
+  --text-color:#000000;
 }
 html,body {
     background-color: #fff;
-    color: #636b6f;
+    color: var(--text-color);
     font-family: 'Nunito', sans-serif;
     font-weight: 200;
     height: 100vh;
     margin: 0;
 }
+.button-border{
+    border-radius:15px;
+}
+.border-box-no-padding{
+    padding:2px 4px;
+    border:solid 1px var(--border) !important;
+}
+.aprobado{
+    color:var(--success);
+}
+.pendiente{
+    color:var(--orange);
+}
+.rechazado{
+    color:var(--danger);
+}
 .side-margin{
-    margin:0px 2px;
+    margin-left:2px;
+    margin-right:2px;
 }
 
 .full-height {
@@ -45,11 +62,21 @@ html,body {
     padding:10px;
     margin:0px;
 }
+.sub-title{
+    font-size:20px;
+}
+.v-padding{
+    padding-top:11px;
+    padding-bottom:11px
+}
 .highlight-hover:hover{
     background-color:var(--no-highlight);
 }
 .background-border{
     background-color:var(--border);
+}
+.extra-left-padding{
+    padding-left:80px;
 }
 .relative{
     position:relative;
@@ -61,7 +88,7 @@ html,body {
     text-align:right;
 }
 .bold{
-    font-weight: bold;
+    font-weight: bold !important;
 }
 .text{
     color:var(--text-color);
@@ -96,9 +123,13 @@ html,body {
 .week-row{
     width:14.3%;
 }
-.highlight-nav{
+.highlight-nav,
+.blue-highlight-hover:hover {
     background-color:var(--highlight-blue);
-    color:white;
+    color:white !important;
+}
+.fix-height{
+    height:80px;
 }
 .pointer:hover{
     cursor:pointer
@@ -167,6 +198,12 @@ html,body {
 .half-width{
     width:50%;
 }
+.third-width{
+    width:30%;
+}
+.seventh-width{
+    width:70%;
+}
 label{
     display:block;
 }
@@ -220,6 +257,9 @@ label{
 }
 .border-right{
     border-left: 1px solid var(--border);
+}
+.border-bottom{
+    border-bottom: 1px solid var(--border);
 }
 .option-list {
     list-style: none;

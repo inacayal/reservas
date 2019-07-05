@@ -1,38 +1,24 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-//components
-import ButtonList from '../../allUse/ButtonList';
-import CardList from '../../allUse/CardList';
+import generateDay from '../../../../funciones/generateDay';
 
-//functions
-import {generateDayWeek} from '../../../../funciones/weekGenerator';
-import calendarNavigation from '../../../../funciones/calendarNavigation';
-//constants
-import { MONTHS } from '../../../../constantes/DaysMonths';
+//estos son los dias de atencion de la semana.
 
 function DayCalendar(props) {
-    //show current week as it goes, highlighting today
-    //pass today in props
-    var sideTitles = calendarNavigation({ left: -7, right: 7 }, 'semana');
-    let week = generateDayWeek(props.date, props.data, props.actions);
+    if (props.horarios){
+        let dayReservationHours = generateDay(
+            props.horarios.horarios,
+            props.horarios.intervalo,
+            props.horarios.caida
+        );
+        return (
+            <div>
+            </div>
+        )
+    }
     return (
-        <div className={props.show ? "container" : "hidden"}>
-            <div className="row">
-                {"Mostrando " + MONTHS[props.date.getMonth()] + " " + props.date.getFullYear()}
-            </div>
-            <div className="row h-center">
-                <CardList
-                    displayList="justify no-padding full-width flex-row nav-list h-center"
-                    elems={week} />
-            </div>
-            <div className="row">
-                <ButtonList
-                    clickHandler={props.changeCurrentWeek}
-                    elemClass="box-transparent"
-                    displayList="flex-row nav-list full-width"
-                    elems={sideTitles} />
-            </div>
+        <div>
         </div>
-    );
+    )
 }
 export default React.memo(DayCalendar);
