@@ -15,7 +15,9 @@ class CreateUsuarioEventoTable extends Migration
     {
         Schema::create('usuario_evento', function (Blueprint $table) {
             $table->integer('id_usuario')->unsigned();
-            $table->integer('id_evento')->unsigned();
+            $table->increments('id_evento');
+            $table->string('nombre',45);
+            $table->string('descripcion',45);
             $table->string('promocion');
 
             $table->foreign('id_usuario','usuario_evento_users_id_usuario_id')

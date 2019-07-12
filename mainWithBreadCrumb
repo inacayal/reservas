@@ -18,7 +18,20 @@ const sidebar = [//get on ajax request
         data: "0",
         disabled: false,
         title: "Escritorio",
-        sub: []
+        sub: [
+            {
+                title:"Escritorio 1",
+                data:"0"
+            },
+            {
+                title: "Escritorio 2",
+                data: "1"
+            },
+            {
+                title:"Escritorio 3",
+                data: "2"
+            }
+        ]
     },
     {
         data: "1",
@@ -46,13 +59,39 @@ const sidebar = [//get on ajax request
         data: "3",
         disabled: false,
         title: "Ubicaciones",
-        sub: []
+        sub: [
+            {
+                title: 'Ubicaciones 1',
+                data: "0"
+            },
+            {
+                title: 'Ubicaciones 2',
+                data: "1"
+            },
+            {
+                title: 'Ubicaciones 3',
+                data: "2"
+            }
+        ]
     },
     {
         data: "4",
         disabled: false,
         title: "Eventos",
-        sub: []
+        sub: [
+            {
+                title: 'Eventos 1',
+                data: "0"
+            },
+            {
+                title: 'Eventos 2',
+                data: "1"
+            },
+            {
+                title: 'Eventos 3',
+                data: "2"
+            },
+        ]
     },
     {
         data: "5",
@@ -185,26 +224,24 @@ export default class Main extends Component {
                             </div>
                             <div className="row">
                                 <Escritorio classes={(this.state.showing === "0") ? "full-width" : "hidden"} />
+                                
                                 <Reservas panel={this.state.showing === "1"} 
                                     crumbControl={this.changeCrumb}
                                     selectInnerElement={this.changeSubElement} 
                                     subElements={this.state.sidebar[1].sub} 
                                     currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null}/>
+
                                 <Horarios panel={this.state.showing === "2"} 
                                     selectInnerElement={this.changeSubElement} 
                                     subElements={this.state.sidebar[2].sub} 
                                     currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null}/>
-                                <Ubicaciones 
-                                    panel={this.state.showing === "3"}
-                                    selectInnerElement={this.changeSubElement}
-                                    subElements={this.state.sidebar[3].sub}
-                                    currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null}/>
-                                <Eventos 
-                                    panel={this.state.showing === "4"}
-                                    selectInnerElement={this.changeSubElement}
-                                    subElements={this.state.sidebar[4].sub}
-                                    currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null} />
+
+                                <Ubicaciones classes={(this.state.showing === "3") ? "full-width" : "hidden"} />
+
+                                <Eventos classes={(this.state.showing === "4") ? "full-width" : "hidden"} />
+
                                 <Locales classes={(this.state.showing === "5") ? "full-width" : "hidden"} />
+                                
                                 <Configuracion classes={(this.state.showing === "6") ? "full-width" : "hidden"} />
                             </div>
                         </div>

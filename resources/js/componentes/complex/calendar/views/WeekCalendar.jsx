@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 //components
 import ButtonList from '../../allUse/ButtonList';
 import CardList from '../../allUse/CardList';
+import Button from '../../../basic/Button';
 
 //functions
 import generateWeek from '../../../../funciones/generateWeek';

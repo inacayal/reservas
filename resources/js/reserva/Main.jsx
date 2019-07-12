@@ -75,7 +75,7 @@ export default class Main extends Component {
                         3: "Persona 3",
                         4: "Persona 4"
                     }
-                },
+                }
             }
         };
         this.onCalendarChange = this.onCalendarChange.bind(this);
@@ -138,6 +138,7 @@ export default class Main extends Component {
                         current={this.state.navPanel === 0}/>
                     <Evento 
                         {...selectHandlers} 
+                        displayTitles={true}
                         eventos={this.state.select.evento} 
                         persona={this.state.select.personas} 
                         hora={this.state.select.hora} 

@@ -88,7 +88,7 @@ export function assignActionsByStatus(
                     data: data
                 }
             ];
-            break;
+        break;
     }
 }
 
@@ -105,7 +105,10 @@ export function generateActions(
     switch(type){
         case 'reservas':
         if(!enableTitles){
-            acciones = [{}];
+            acciones = [{
+                click: actions.ver,
+                data: data
+            }];
         }else {
             if(hasEvents){
                 if(!show){

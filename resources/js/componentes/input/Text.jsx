@@ -5,10 +5,12 @@ import ReactDOM from 'react-dom';
 
 function Text(props) {
     return (
-        <div>
+        <div className={props.container ? props.container : ""}>
             <h6 className="highlight no-margin bold">{props.titulo}</h6>
             <div className={props.classes}>
-                <input type="text" name={props.name} value={props.value}/>
+                <textarea name={props.name} rows={props.rows} className="full-width box-transparent">
+                    {props.value}
+                </textarea>
             </div>
         </div>
     );

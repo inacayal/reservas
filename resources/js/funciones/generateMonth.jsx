@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import getMonthLength from './getMonthLength';
 import { DAYS, MONTHS } from '../constantes/DaysMonths';
-import {assignMonthElementType} from './generateCards';
 import {generateActions} from './generateActions';
+import assignMonthElementType from './generateCardsForMonth';
+import getMonthLength from './getMonthLength';
 
 function evalFirstWeek (date,type){
     let day = date.getDay(),

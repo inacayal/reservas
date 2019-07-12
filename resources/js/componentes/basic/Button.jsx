@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 
 function Button(props) {
     return (
-        <div>
+        <div className={props.container ? props.container : ""}>
             <button 
+                type={props.type ? props.type : ""}
                 data={(props.data) ? props.data : ""} 
                 onClick={props.click} 
                 className={props.class} 
