@@ -77,7 +77,7 @@ export default function generateMonth (date,data,actions,type){
         }
         elem = assignMonthElementType(
             generateActions(
-                data[dateStr], 
+                data[dateStr]||null, 
                 actions.outer, 
                 dateStr, 
                 false, 

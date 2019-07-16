@@ -312,13 +312,13 @@ export default class Reservas extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            show:"2",
             data: data,
             date:new Date(),
             weekRender:true,
             dayRender:true,
             agregar:false,
             agregarDate:new Date(),
+            show:"2",
             controls: [
                 {
                     title: "Anual",
@@ -442,6 +442,7 @@ export default class Reservas extends Component {
             }
         };
         
+        this.guardarConfiguracion = this.guardarConfiguracion.bind(this);
         this.agregarReserva = this.agregarReserva.bind(this);
         this.verCalendario = this.verCalendario.bind(this);
         this.verDia = this.verDia.bind(this);
@@ -468,6 +469,12 @@ export default class Reservas extends Component {
             }
         };
     }
+
+    guardarConfiguracion(e){
+        e.preventDefault();
+        console.log('guardar');
+    }
+
     showOptions(e) {
         let name = e.currentTarget.getAttribute('select');
         let select = this.state.select;
@@ -478,10 +485,10 @@ export default class Reservas extends Component {
     }
 
     selectOption(e) {
-        let value = e.target.getAttribute('keyvalue');
-        let name = e.target.getAttribute('select');
-        let select = this.state.select;
-        let trigger = select[name];
+        let value = e.target.getAttribute('keyvalue'),
+            name = e.target.getAttribute('select'),
+            select = this.state.select,
+            trigger = select[name];
         trigger.selected = (value !== select[name].selected) ? value : null;
         select[name] = trigger;
         this.setState({ select });
@@ -519,7 +526,8 @@ export default class Reservas extends Component {
         console.log('verReserva');
     }
 
-    verCalendario(){
+    verCalendario(e){
+        e.preventDefault();
         this.setState({agregar:!this.state.agregar});
     }
 
@@ -576,10 +584,13 @@ export default class Reservas extends Component {
                 </div>
                 <div className={(this.props.currentSub === "0") ? "row" : "hidden"}>
                     <Configuracion 
+                        changePanel={this.props.changePanel}
+                        verCalendario={this.actions.inner.verCalendario}
                         showOptions={this.showOptions}
                         selectOption={this.selectOption}
                         caida={this.state.select.caida}
-                        intervalo={this.state.select.intervalo}/>
+                        intervalo={this.state.select.intervalo}
+                        guardarConfiguracion={this.guardarConfiguracion}/>
                 </div>
             </div>
         );

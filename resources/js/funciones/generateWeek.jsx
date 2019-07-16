@@ -13,13 +13,13 @@ export default function generateWeek(date, data, actions,currentDate,type) {
                         generateActions(
                             data[i], 
                             actions.outer, 
-                            i, 
+                            i.toString(), 
                             true, 
                             type
                         ),
                         type,
                         data[i],
-                        i,
+                        i.toString(),
                         actions
                     );
                     return elem;

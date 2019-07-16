@@ -87,7 +87,7 @@ export default class Calendar extends Component {
     }
 
     componentDidUpdate(prevProps){
-        if (prevProps.date !== this.props.date || prevProps.show !== this.props.show){
+        if ((prevProps.date !== this.props.date || prevProps.show !== this.props.show) && this.props.type==='reservas'){
             this.setState({ date: this.props.date, show: this.props.show})
         }
     }

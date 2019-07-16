@@ -181,16 +181,23 @@ export default class Main extends Component {
                     <div className="col-md-9">
                         <div className="container">
                             <div className="row">
-                                <BreadCrumb change={this.changeCrumb} items={this.state.crumb} />
+                                <BreadCrumb 
+                                    change={this.changeCrumb} 
+                                    items={this.state.crumb} />
                             </div>
                             <div className="row">
-                                <Escritorio classes={(this.state.showing === "0") ? "full-width" : "hidden"} />
-                                <Reservas panel={this.state.showing === "1"} 
+                                <Escritorio 
+                                    classes={(this.state.showing === "0") ? "full-width" : "hidden"} />
+                                <Reservas 
+                                    changePanel={this.changePanel}
+                                    panel={this.state.showing === "1"} 
                                     crumbControl={this.changeCrumb}
                                     selectInnerElement={this.changeSubElement} 
                                     subElements={this.state.sidebar[1].sub} 
                                     currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null}/>
-                                <Horarios panel={this.state.showing === "2"} 
+                                <Horarios 
+                                    changePanel={this.changePanel}
+                                    panel={this.state.showing === "2"} 
                                     selectInnerElement={this.changeSubElement} 
                                     subElements={this.state.sidebar[2].sub} 
                                     currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null}/>
@@ -204,8 +211,10 @@ export default class Main extends Component {
                                     selectInnerElement={this.changeSubElement}
                                     subElements={this.state.sidebar[4].sub}
                                     currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null} />
-                                <Locales classes={(this.state.showing === "5") ? "full-width" : "hidden"} />
-                                <Configuracion classes={(this.state.showing === "6") ? "full-width" : "hidden"} />
+                                <Locales 
+                                    classes={(this.state.showing === "5") ? "full-width" : "hidden"} />
+                                <Configuracion 
+                                    classes={(this.state.showing === "6") ? "full-width" : "hidden"} />
                             </div>
                         </div>
                     </div>

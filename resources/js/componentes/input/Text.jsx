@@ -8,9 +8,12 @@ function Text(props) {
         <div className={props.container ? props.container : ""}>
             <h6 className="highlight no-margin bold">{props.titulo}</h6>
             <div className={props.classes}>
-                <textarea name={props.name} rows={props.rows} className="full-width box-transparent">
-                    {props.value}
-                </textarea>
+                <textarea 
+                    name={props.name} 
+                    rows={props.rows} 
+                    className="full-width box-transparent"
+                    onChange={props.changeValue}
+                    defaultValue={props.value}/>
             </div>
         </div>
     );

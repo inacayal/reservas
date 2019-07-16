@@ -53,8 +53,12 @@ export default function assignMonthElementType(
              */
             let date = new Date(data),
                 today = new Date(),
-                todayCond = today.getDate() === date.getDate() && today.getMonth() === date.getMonth() && today.getFullYear() === date.getFullYear();
-            structure = sectionData !== null ? {
+                todayCond = today.getDate() === date.getDate() && today.getMonth() === date.getMonth() && today.getFullYear() === date.getFullYear(),
+                containerClass = todayCond ?
+                    "same-width text-center box-padding highlight-title fix-height" :
+                    "same-width text-center box-padding light-danger fix-height";
+                
+            structure = sectionData!==null ? {
                 title: {
                     data: date.getDate(),
                     class: todayCond ?
@@ -62,16 +66,20 @@ export default function assignMonthElementType(
                         "content c-title text-center light-danger",
                 },
                 content: {
-                    data: <ButtonList
-                        displayList="flex-row nav-list no-padding"
-                        container="align-center"
-                        elemClass="box-transparent highlight-hover full-width text-left side-margin button-border border-box"
-                        elems={acciones} />
+                    data: acciones.length>1 ? 
+                        <ButtonList
+                            displayList="flex-row nav-list no-padding"
+                            container="align-center"
+                            elemClass="box-transparent highlight-hover full-width text-left side-margin button-border border-box"
+                            elems={acciones} /> 
+                        : ""
                 },
                 container: {
-                    class: todayCond ?
-                        "same-width text-center box-padding highlight-title" :
-                        "same-width text-center box-padding light-danger"
+                    class: sectionData ? 
+                        sectionData.estado===0 ? 
+                            containerClass + " background-border" 
+                            : containerClass
+                        : containerClass
                 }
             } : {
                     title: {
@@ -80,7 +88,7 @@ export default function assignMonthElementType(
                     },
                     content: {},
                     container: {
-                        class: "background-border same-width text-center box-padding"
+                        class: "background-border same-width text-center box-padding fix-height"
                     }
                 };
             break;

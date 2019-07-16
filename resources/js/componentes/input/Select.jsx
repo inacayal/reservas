@@ -16,7 +16,7 @@ class Select extends Component{
         return(
             <div className="relative">
                 <select name={this.props.name} className="hidden" >
-                    <option value={this.props.selected}></option>
+                    <option defaultValue={this.props.selected}></option>
                 </select>
                 <label htmlFor={this.props.name} className="select inherit-width">
                     <div className={(this.props.show) ? "full-width flex-row bottom-transparent relative" : "full-width relative border-box flex-row"} onClick={(!this.props.show) ? this.props.toggle : e => e.preventDefault()} select={this.props.name}>

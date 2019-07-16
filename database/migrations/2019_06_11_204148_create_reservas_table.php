@@ -40,7 +40,7 @@ class CreateReservasTable extends Migration
                 ->onUpdate('cascade');
 
             $table->foreign('id_evento','reservas_tipo_evento_id_evento')
-                ->references('id')->on('tipo_evento')
+                ->references('id')->on('usuario_evento')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             
@@ -58,7 +58,7 @@ class CreateReservasTable extends Migration
      */
     public function down()
     {
-        Schema::table("usuario_feriados",function(Blueprint $table){
+        Schema::table("reservas",function(Blueprint $table){
             $table->dropForeign('reservas_ubicacion_id_ubicacion');
             $table->dropForeign('reservas_users_id');
             $table->dropForeign('reservas_tipo_evento_id_evento');
