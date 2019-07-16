@@ -9,6 +9,7 @@ import { DAYS, MONTHS } from '../../../../constantes/DaysMonths';
 //complex
 import ButtonList from '../../allUse/ButtonList';
 import CardList from '../../allUse/CardList';
+import Button from '../../../basic/Button';
 
 
 function MonthCalendar(props) {
@@ -16,26 +17,28 @@ function MonthCalendar(props) {
     let navigation = calendarNavigation({ left: -1, right: 1}, 'mes');
     let weeks = generateMonth(props.date,props.data,props.actions,props.type);
     return (
-        <div className={props.show ? "full-width" : "hidden"}>
-            <div className=" bold">
-                {"Mostrando " + MONTHS[month] + " " + props.date.getFullYear()}
+        <div className={props.show ? "container" : "hidden"}>
+            <div className="row bold">
+                <span className="align-center side-margin inline-block">{"Mostrando " + MONTHS[month] + " " + props.date.getFullYear()}</span>
             </div>
-            <div className="container">
-                <div className="row b-down">
-                    <div className="justify full-width flex-row nav-list h-center ">
-                        {DAYS.map(
-                            (e, i) => <div key={i} className="box-padding same-width box-transparent highlight-title text-center">{e}</div>
-                        )}
-                    </div>
+            <div className="row b-down">
+                <div className="container justify full-width flex-row nav-list ">
+                    {DAYS.map(
+                        (e, i) => <div key={i} className="box-padding same-width box-transparent highlight-title text-center">{e}</div>
+                    )}
                 </div>
-                {weeks.map(
-                    (e, i) => 
-                        <div key={i} className="row">
-                            <CardList
-                            displayList="justify no-padding full-width flex-row nav-list h-center"
-                            elems={e} />
-                        </div>
-                )}
+            </div>
+            <div className="row">
+                <div className="container">
+                    {weeks.map(
+                        (e, i) =>
+                            <div key={i} className="row">
+                                <CardList
+                                    displayList="justify no-padding full-width flex-row nav-list h-center"
+                                    elems={e} />
+                            </div>
+                    )}
+                </div>
             </div>
             <div className="row">
                 <ButtonList

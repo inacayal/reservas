@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {assignWeekElementType} from './generateCards';
 import {DAYS} from '../constantes/DaysMonths';
 import {generateActions} from './generateActions';
+import assignWeekElementType from './generateCardsForWeek';
 
 export default function generateWeek(date, data, actions,currentDate,type) {
     switch (type){
@@ -13,13 +13,13 @@ export default function generateWeek(date, data, actions,currentDate,type) {
                         generateActions(
                             data[i], 
                             actions.outer, 
-                            i, 
+                            i.toString(), 
                             true, 
                             type
                         ),
                         type,
                         data[i],
-                        i,
+                        i.toString(),
                         actions
                     );
                     return elem;

@@ -11,7 +11,7 @@ function CardList(props) {
                 props.elems.map((e, i) =>
                     <li key={i} 
                         className={(e.container.class) ? e.container.class : (props.container) ? props.container : ""}
-                        onClick={e.container.click ? e.container.click : e=>false}
+                        onClick={e.container.click}
                         data={e.container.data}>
                         <Card
                             title={e.title.data}

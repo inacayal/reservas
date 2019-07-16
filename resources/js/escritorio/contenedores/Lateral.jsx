@@ -5,7 +5,7 @@ import ButtonList from '../../componentes/complex/allUse/ButtonList';
 function Lateral(props) {
     return (
         <div>
-            <ul className="nav-list">
+            <ul className="nav-list no-padding">
                 {
                     props.items.map(
                         (e, i) => (

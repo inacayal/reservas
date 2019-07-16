@@ -7,13 +7,13 @@ import Calendar from 'react-calendar';
 function Evento(props) {
     return (
         <div className={(props.current) ? "container" : "hidden"}>
-            <h3 className="bold highlight-title align-center">datos de la reserva</h3>
+            <h3 className={props.displayTitles ? "bold highlight-title align-center" : "hidden"}>datos de la reserva</h3>
             <div className="row box-padding justify-content-center">
-                <div className="col-sm-5 box-padding">
+                <div className="col-sm-5 no-padding">
                     <input type="date" value={props.value} className="hidden" />
                     <Calendar value={props.value} onChange={props.onCalendarChange} />
                 </div>
-                <div className="col-md-7 box-padding">
+                <div className="col-md-7 h-padding">
                     <div className="row">
                         <div className="col-md-12 text-left">
                             <h6 className="highlight bold no-margin">selecciona el evento</h6>
@@ -47,17 +47,17 @@ function Evento(props) {
                 </div>
             </div>
             <div className="row box-padding">
-                <h3 className="bold highlight-title align-center">datos de contacto</h3>
+                <h3 className={props.displayTitles ? "bold highlight-title align-center" : "hidden"}>datos de contacto</h3>
             </div>
             <div className="row box-padding">
                 <div className="col-sm-4">
-                    <Text titulo="nombre  y apellido" name="name" value={props.nombre} classes={"border-box input-text margin-box"} />
+                    <Text rows={1} titulo="nombre  y apellido" name="name" value={props.nombre} classes={"border-box input-text margin-box"} />
                 </div>
                 <div className="col-sm-4">
-                    <Text titulo="correo electrónico" name="email" value={props.correo} classes={"border-box input-text margin-box"} />
+                    <Text rows={1} titulo="correo electrónico" name="email" value={props.correo} classes={"border-box input-text margin-box"} />
                 </div>
                 <div className="col-sm-4">
-                    <Text titulo="teléfono" name="telefono" value={props.telefono} classes={"border-box input-text margin-box"} container="full-width" />
+                    <Text rows={1} titulo="teléfono" name="telefono" value={props.telefono} classes={"border-box input-text margin-box"} container="full-width" />
                 </div>
             </div>
         </div>

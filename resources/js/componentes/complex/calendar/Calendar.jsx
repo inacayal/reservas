@@ -11,10 +11,9 @@ import {MONTHS,monthRows,monthIndex} from '../../../constantes/DaysMonths';
 export default class Calendar extends Component {
     constructor(props){
         super(props);
-        let date = new Date();
         this.state={
             show:this.props.show,
-            date: date,
+            date: this.props.date,
             controls:this.props.controls
         };
         this.changeWeekCalendar = this.changeWeekCalendar.bind(this);
@@ -94,19 +93,30 @@ export default class Calendar extends Component {
         )
         this.setState({show:"1",date:date, controls:controls});
     }
+
+    componentDidUpdate(prevProps){
+        if ((prevProps.date !== this.props.date || prevProps.show !== this.props.show) && this.props.type==='reservas'){
+            this.setState({ date: this.props.date, show: this.props.show})
+        }
+    }
+
     render(){
         return(
             <div className="container">
-                <div className="row justify-content-end box-padding">
+                <div className="row justify-content-end v-padding">
                     <ButtonList
                         clickHandler={this.changeView}
                         displayList="flex-row h-center nav-list no-padding"
                         elems={this.state.controls} />
+                </div>
+                <div className="row">
                     <DayCalendar
+                        data={this.props.data}
+                        type={this.props.type}
+                        actions={this.props.actions}
+                        show={this.state.show === "3"}
                         horarios={this.props.horariosReserva} 
                         render={this.props.dayRender}
-                        show={this.state.show === "3"}
-                        data={this.props.data}
                         date={this.state.date}/>
                     <WeekCalendar
                         render={this.props.weekRender}

@@ -17,6 +17,7 @@ class CreateUbicacionesTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('id_usuario')->unsigned();
+            $table->string('nombre',45);
             $table->string('descripcion',50);
             $table->integer('cantidad_maxima')->unsigned();
             $table->integer('id_estado')->unsigned();

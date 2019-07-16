@@ -15,7 +15,7 @@ export default function generateYear(date,handler){
                 clickHandler={handler}
                 elems={monthRows[row]}
                 displayList="flex-row no-margin nav-list full-width no-padding h-center"
-                container="third-width"
+                container="thirty"
                 elemClass="box-padding highlight-hover box-transparent full-width"/>
         );
     }

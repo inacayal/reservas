@@ -15,6 +15,7 @@ class CreateSemanaUsuarioTable extends Migration
     {
         Schema::create('semana_usuario', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->increments('id');
             $table->integer('id_usuario')->unsigned();
             $table->integer('id_dia_semana')->unsigned();
             $table->time('apertura_reserva');
@@ -39,7 +40,7 @@ class CreateSemanaUsuarioTable extends Migration
      */
     public function down()
     {
-        Schema::table("usuario_feriados",function(Blueprint $table){
+        Schema::table("semana_usuario",function(Blueprint $table){
             $table->dropForeign('usuario_dia_semana_id_dia_semana');
             $table->dropForeign('usuario_users_id_usuario');
         });

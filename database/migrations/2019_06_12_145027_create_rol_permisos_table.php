@@ -37,9 +37,9 @@ class CreateRolPermisosTable extends Migration
      */
     public function down()
     {
-        Schema::table("usuario_feriados",function(Blueprint $table){
-            $table->dropForeign('usuario_dia_semana_id_dia_semana');
-            $table->dropForeign('usuario_users_id_usuario');
+        Schema::table("rol_permisos",function(Blueprint $table){
+            $table->dropForeign('rol_permisos_permisos_id_permiso');
+            $table->dropForeign('rol_permisos_roles_id_rol');
         });
         Schema::dropIfExists('rol_permisos');
     }

@@ -88,7 +88,7 @@ export function assignActionsByStatus(
                     data: data
                 }
             ];
-            break;
+        break;
     }
 }
 
@@ -105,13 +105,10 @@ export function generateActions(
     switch(type){
         case 'reservas':
         if(!enableTitles){
-            acciones = [
-                {
-                    title:"",
-                    click:actions.ver,
-                    data:data
-                }
-            ];
+            acciones = [{
+                click: actions.ver,
+                data: data
+            }];
         }else {
             if(hasEvents){
                 if(!show){
@@ -190,17 +187,7 @@ export function generateActions(
                     class: (!enableTitles) ? "box-transparent highlight-hover full-width text-right" : null
                 }
             ] : [
-                    {
-                        title: (
-                            <div className="smaller-text text bold">
-                                <i className="fas fa-plus-circle inline-box side-margin" />
-                                {(enableTitles) ? 'Agregar' : ''}
-                            </div>
-                        ),
-                        click: actions.agregar,
-                        data: data,
-                        class: (!enableTitles) ? "box-transparent highlight-hover full-width text-right" : null
-                    }
+                    {}
                 ];
             if (!enableTitles && hasEvents)
                 acciones.push({

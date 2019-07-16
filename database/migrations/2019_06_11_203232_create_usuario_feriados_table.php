@@ -15,6 +15,7 @@ class CreateUsuarioFeriadosTable extends Migration
     {
         Schema::create('usuario_feriados', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->increments('id');
             $table->integer('id_usuario')->unsigned();
             $table->date('fecha_feriado');
             $table->integer('id_estado')->unsigned();

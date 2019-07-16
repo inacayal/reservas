@@ -47,6 +47,9 @@ html,body {
 .pendiente{
     color:var(--orange);
 }
+.light-title{
+    font-size:20px;
+}
 .rechazado{
     color:var(--danger);
 }
@@ -54,7 +57,10 @@ html,body {
     margin-left:2px;
     margin-right:2px;
 }
-
+.v-padding{
+    padding-top:10px;
+    padding-bottom:10px;
+}
 .full-height {
     height: 100vh;
 }
@@ -65,9 +71,15 @@ html,body {
 .sub-title{
     font-size:20px;
 }
-.v-padding{
-    padding-top:11px;
-    padding-bottom:11px
+.no-top-padding{
+    padding-top:0px;
+}
+.negative-margin{
+    margin-top:25px;
+}
+.limit-height-half{
+    max-height:60vh;
+    overflow-y: auto;
 }
 .highlight-hover:hover{
     background-color:var(--no-highlight);
@@ -77,6 +89,9 @@ html,body {
 }
 .extra-left-padding{
     padding-left:80px;
+}
+.medium-left-padding {
+    padding-left: 20px;
 }
 .relative{
     position:relative;
@@ -143,6 +158,13 @@ html,body {
 .h-center{
     justify-content: center;
 }
+.no-h-padding{
+    padding-right:0px;
+    padding-left:0px;
+}
+.big-font{
+    font-size:48px;
+}
 .h-end{
     justify-content: flex-end;
 }
@@ -198,9 +220,6 @@ html,body {
 .half-width{
     width:50%;
 }
-.third-width{
-    width:30%;
-}
 .seventh-width{
     width:70%;
 }
@@ -218,10 +237,12 @@ label{
     border:solid 1px var(--highlight-blue) ;
 }
 .align-center{
-    margin:auto;
+    margin-top:auto;
+    margin-bottom:auto;
 }
 .h-align-center{
-    margin:0px auto;
+    margin-left:auto;
+    margin-right:auto;
 }
 .v-align-center{
     margin:auto 0px;
@@ -440,4 +461,16 @@ button:focus {
 }
 .fourty {
     width: 40%;
+}
+.thirty {
+    width: 30%;
+}
+.seventy{
+    width: 70%;
+}
+.twenty{
+    width: 20%;
+}
+.eighty{
+    width: 80%;
 }
