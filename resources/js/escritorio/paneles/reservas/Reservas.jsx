@@ -334,11 +334,12 @@ export default class Reservas extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            show:"0",
+            show:"2",
             data: data,
             actions:[],
             weekRender:true,
-            dayRender:true
+            dayRender:true,
+
         };
         this.calendarControl = [
             {
@@ -369,17 +370,12 @@ export default class Reservas extends Component {
                 expandir: this.expandirReservaSemanal.bind(this)
             },
             inner:{
-                ver: this.verReserva,
-                aceptar: this.aceptarReserva,
-                rechazar: this.rechazarReserva,
-                revertir: this.revertirReserva
+                ver: this.verReserva.bind(this),
+                aceptar: this.aceptarReserva.bind(this),
+                rechazar: this.rechazarReserva.bind(this),
+                revertir: this.revertirReserva.bind(this)
             }
         };
-        this.verDia = this.verDia.bind(this);
-        this.verReserva = this.verReserva.bind(this);
-        this.aceptarReserva = this.aceptarReserva.bind(this);
-        this.rechazarReserva = this.rechazarReserva.bind(this);
-        this.revertirReserva = this.revertirReserva.bind(this);
     }
 
     revertirReserva(){
@@ -406,8 +402,17 @@ export default class Reservas extends Component {
         console.log('verReserva');
     }
 
-    verDia(){
-        console.log('verDia');
+    verDia(e){
+        let day = e.currentTarget.getAttribute('data');
+        this.calendarControl.map(
+            (e,i) => {
+                e.class = i===3 ? 
+                    "blue-background highlight-border h-padding small-v-padding"
+                    : "box-transparent highlight-hover bordered h-padding small-v-padding transparent-border";
+                return e;
+            }
+        );
+        this.setState({show:"3"});
     }
 
     render() {
@@ -415,6 +420,7 @@ export default class Reservas extends Component {
             <div className={(this.props.panel) ? "full-width container" : "hidden"}>
                 <div className={(this.props.currentSub !== "0") ? "row" : "hidden"}>
                     <Calendar
+                        show={this.state.show}
                         horariosReserva={horariosReserva}
                         weekRender={this.state.weekRender}
                         dayRender={this.state.dayRender}

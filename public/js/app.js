@@ -67301,10 +67301,7 @@ function Card(props) {
   //buttons is an array of the actions to perform in the current box
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: props.containerClass,
-    data: props.data,
-    onClick: props.containerClick ? props.containerClick : function (e) {
-      return false;
-    }
+    data: props.data
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: props.titleClass
   }, props.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -67384,10 +67381,12 @@ function CardList(props) {
   }, props.elems.map(function (e, i) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
       key: i,
-      className: e.container["class"] ? e.container["class"] : props.container ? props.container : ""
+      className: e.container["class"] ? e.container["class"] : props.container ? props.container : "",
+      onClick: e.container.click ? e.container.click : function (e) {
+        return false;
+      },
+      data: e.container.data
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_Card__WEBPACK_IMPORTED_MODULE_2__["default"], {
-      containerClick: e.container.click,
-      data: e.container.data,
       title: e.title.data,
       titleClass: e.title["class"],
       content: e.content.data,
@@ -67420,7 +67419,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _views_MonthCalendar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./views/MonthCalendar */ "./resources/js/componentes/complex/calendar/views/MonthCalendar.jsx");
 /* harmony import */ var _allUse_ButtonList__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
 /* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
-/* harmony import */ var _funciones_getMonthLength__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../funciones/getMonthLength */ "./resources/js/funciones/getMonthLength.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -67448,7 +67446,6 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-
 var Calendar =
 /*#__PURE__*/
 function (_Component) {
@@ -67462,7 +67459,7 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Calendar).call(this, props));
     var date = new Date();
     _this.state = {
-      show: "2",
+      show: _this.props.show,
       date: date,
       controls: _this.props.controls
     };
@@ -67528,6 +67525,15 @@ function (_Component) {
         date: date
       });
     }
+    /*static getDerivedStateFromProps(props,state){
+        console.log(props.show,state.date);
+        return {
+            show:props.show,
+            controls:state.controls,
+            date:state.date
+        }
+    }*/
+
   }, {
     key: "handleMonthClick",
     value: function handleMonthClick(e) {
@@ -67557,17 +67563,13 @@ function (_Component) {
         clickHandler: this.changeView,
         displayList: "flex-row h-center nav-list no-padding",
         elems: this.state.controls
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: this.state.show === "3" ? "row" : "hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_views_DayCalendar__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_views_DayCalendar__WEBPACK_IMPORTED_MODULE_3__["default"], {
         horarios: this.props.horariosReserva,
         render: this.props.dayRender,
         show: this.state.show === "3",
         data: this.props.data,
         date: this.state.date
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: this.state.show === "2" ? "row" : "hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_views_WeekCalendar__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_views_WeekCalendar__WEBPACK_IMPORTED_MODULE_4__["default"], {
         render: this.props.weekRender,
         type: this.props.type,
         actions: this.props.actions,
@@ -67576,18 +67578,14 @@ function (_Component) {
         changeCurrentWeek: this.changeDayCalendar,
         data: this.props.data,
         dataTitle: "Días feriados de " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__["MONTHS"][this.state.date.getMonth()] + " " + this.state.date.getFullYear()
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: this.state.show === "1" ? "row" : "hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_views_MonthCalendar__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_views_MonthCalendar__WEBPACK_IMPORTED_MODULE_5__["default"], {
         type: this.props.type,
         changeCurrentMonth: this.changeWeekCalendar,
-        show: this.state.show === "2",
+        show: this.state.show === "1",
         date: this.state.date,
         data: this.props.data,
         actions: this.props.actions
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: this.state.show === "0" ? "row" : "hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_views_YearCalendar__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_views_YearCalendar__WEBPACK_IMPORTED_MODULE_2__["default"], {
         handleMonthClick: this.handleMonthClick,
         show: this.state.show === "0",
         changeCurrentYear: this.changeYearCalendar,
@@ -67623,8 +67621,10 @@ __webpack_require__.r(__webpack_exports__);
 
 function DayCalendar(props) {
   if (props.horarios) {
-    var dayReservationHours = Object(_funciones_generateDay__WEBPACK_IMPORTED_MODULE_2__["default"])(props.horarios.horarios, props.horarios.intervalo, props.horarios.caida);
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null);
+    var dayReservationHours = Object(_funciones_generateDay__WEBPACK_IMPORTED_MODULE_2__["default"])(props.horarios.horarios, props.horarios.intervalo, props.horarios.caida, props.data);
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: props.show ? "row full-width" : "hidden"
+    });
   }
 
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null);
@@ -67673,7 +67673,7 @@ function MonthCalendar(props) {
   }, 'mes');
   var weeks = Object(_funciones_generateMonth__WEBPACK_IMPORTED_MODULE_2__["default"])(props.date, props.data, props.actions, props.type);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: !props.show ? "full-width" : "hidden"
+    className: props.show ? "full-width" : "hidden"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: " bold"
   }, "Mostrando " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__["MONTHS"][month] + " " + props.date.getFullYear()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -68913,7 +68913,8 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(DiasFeriados).call(this, props));
     _this.state = {
-      feriados: formattedFeriados
+      feriados: formattedFeriados,
+      show: "2"
     };
     _this.actions = {
       outer: {
@@ -68966,6 +68967,7 @@ function (_Component) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.props.show ? "full-width" : "hidden"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_calendar_Calendar__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        show: this.state.show,
         type: "feriados",
         actions: this.actions,
         controls: this.calendarControl,
@@ -69355,7 +69357,7 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Reservas).call(this, props));
     _this.state = {
-      show: "0",
+      show: "2",
       data: data,
       actions: [],
       weekRender: true,
@@ -69384,17 +69386,12 @@ function (_Component) {
         expandir: _this.expandirReservaSemanal.bind(_assertThisInitialized(_this))
       },
       inner: {
-        ver: _this.verReserva,
-        aceptar: _this.aceptarReserva,
-        rechazar: _this.rechazarReserva,
-        revertir: _this.revertirReserva
+        ver: _this.verReserva.bind(_assertThisInitialized(_this)),
+        aceptar: _this.aceptarReserva.bind(_assertThisInitialized(_this)),
+        rechazar: _this.rechazarReserva.bind(_assertThisInitialized(_this)),
+        revertir: _this.revertirReserva.bind(_assertThisInitialized(_this))
       }
     };
-    _this.verDia = _this.verDia.bind(_assertThisInitialized(_this));
-    _this.verReserva = _this.verReserva.bind(_assertThisInitialized(_this));
-    _this.aceptarReserva = _this.aceptarReserva.bind(_assertThisInitialized(_this));
-    _this.rechazarReserva = _this.rechazarReserva.bind(_assertThisInitialized(_this));
-    _this.revertirReserva = _this.revertirReserva.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -69433,8 +69430,15 @@ function (_Component) {
     }
   }, {
     key: "verDia",
-    value: function verDia() {
-      console.log('verDia');
+    value: function verDia(e) {
+      var day = e.currentTarget.getAttribute('data');
+      this.calendarControl.map(function (e, i) {
+        e["class"] = i === 3 ? "blue-background highlight-border h-padding small-v-padding" : "box-transparent highlight-hover bordered h-padding small-v-padding transparent-border";
+        return e;
+      });
+      this.setState({
+        show: "3"
+      });
     }
   }, {
     key: "render",
@@ -69444,6 +69448,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.props.currentSub !== "0" ? "row" : "hidden"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_calendar_Calendar__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        show: this.state.show,
         horariosReserva: horariosReserva,
         weekRender: this.state.weekRender,
         dayRender: this.state.dayRender,
@@ -69677,12 +69682,16 @@ function assignActionsByStatus(estado, actions, data) {
   }
 }
 function generateActions(hasEvents, actions, data, enableTitles, type, show) {
-  var acciones = [];
+  var acciones = [{}];
 
   switch (type) {
     case 'reservas':
       if (!enableTitles) {
-        acciones = [{}];
+        acciones = [{
+          title: "",
+          click: actions.ver,
+          data: data
+        }];
       } else {
         if (hasEvents) {
           if (!show) {
@@ -70015,7 +70024,7 @@ function assignWeekElementType(acciones, type, sectionData, data, actions, show)
           }, "Descripci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, " " + sectionData.descripcion))) : ""
         },
         container: {
-          "class": sectionData ? sectionData.estado === 1 ? "box-padding margin-box box-transparent full-width border-bottom" : "box-padding margin-box full-width background-border border-bottom" : "box-padding margin-box box-transparent full-width border-bottom"
+          "class": sectionData ? sectionData.estado === 1 ? "box-padding box-transparent full-width border-bottom" : "box-padding full-width background-border border-bottom" : "box-padding box-transparent full-width border-bottom"
         }
       };
       break;
@@ -70029,6 +70038,7 @@ function assignMonthElementType(acciones, type, sectionData, data) {
       var resDate = new Date(data),
           tday = new Date(),
           cond = tday.getDate() === resDate.getDate() && tday.getMonth() === resDate.getMonth() && tday.getFullYear() === resDate.getFullYear();
+      resDate.setHours(0, 0, 0, 0);
       structure = sectionData !== null ? {
         title: {
           data: resDate.getDate(),
@@ -70038,7 +70048,7 @@ function assignMonthElementType(acciones, type, sectionData, data) {
         container: {
           data: data,
           "class": "same-width text-center box-padding highlight-hover pointer fix-height blue-highlight-hover",
-          click: acciones[0].click
+          click: acciones ? acciones[0].click : null
         }
       } : {
         title: {
@@ -70169,7 +70179,7 @@ function generateDayCard() {
         elemClass: "box-transparent highlight-hover full-width text-right border-box-no-padding button-border",
         elems: acciones
       }))),
-      "class": ""
+      x: x
     },
     content: {},
     container: {
@@ -70194,11 +70204,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _generateCards__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./generateCards */ "./resources/js/funciones/generateCards.jsx");
+
 
 
 
 function generateDayReservationHours(data, intervalo) {
-  return Object.keys(data).map(function (e, i) {
+  return Object.keys(data).map(function (e) {
     var startTime = data[e].apertura.split(':'),
         strHr = parseInt(startTime[0]),
         strMn = parseInt(startTime[1]),
@@ -70215,7 +70227,7 @@ function generateDayReservationHours(data, intervalo) {
         hrPtr++;
       }
 
-      hourArray.push(hrPtr + ":" + (mnPtr === 0 ? "00" : mnPtr) + ":00");
+      hourArray.push(hrPtr.toString() + ":" + (mnPtr === 0 ? "00" : mnPtr.toString()));
       mnPtr += intervalo;
     }
 
@@ -70223,9 +70235,9 @@ function generateDayReservationHours(data, intervalo) {
   });
 }
 
-function generateDay(data, intervalo, caida) {
-  var reservationHours = generateDayReservationHours(data, parseInt(intervalo));
-  console.log(reservationHours);
+function generateDay(horarioData, intervalo, caida, reservacionesData, stateDate) {
+  var reservationHours = generateDayReservationHours(horarioData, parseInt(intervalo), reservacionesData, stateDate);
+  console.log(reservacionesData);
 }
 
 /***/ }),
@@ -70899,8 +70911,8 @@ function Local(props) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Proyectos\Reservas\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Proyectos\Reservas\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\laravel\reservas\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\laravel\reservas\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

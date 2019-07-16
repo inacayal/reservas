@@ -51,7 +51,8 @@ export default class DiasFeriados extends Component {
     constructor(props){
         super(props);
         this.state= {
-            feriados: formattedFeriados
+            feriados: formattedFeriados,
+            show:"2"
         };
         this.actions = {
             outer:{
@@ -63,22 +64,22 @@ export default class DiasFeriados extends Component {
             inner:{}
         };
         this.calendarControl = [
-                {
-                    title: "Anual",
-                    data: "0",
-                    class: "box-transparent highlight-hover h-padding small-v-padding bordered transparent-border"
-                },
-                {
-                    title: "Mensual",
-                    data: "1",
-                    class: "box-transparent highlight-hover bordered h-padding small-v-padding transparent-border"
-                },
-                {
-                    title: "Semanal",
-                    data: "2",
-                    class: "blue-background highlight-border h-padding small-v-padding"
-                }
-            ];
+            {
+                title: "Anual",
+                data: "0",
+                class: "box-transparent highlight-hover h-padding small-v-padding bordered transparent-border"
+            },
+            {
+                title: "Mensual",
+                data: "1",
+                class: "box-transparent highlight-hover bordered h-padding small-v-padding transparent-border"
+            },
+            {
+                title: "Semanal",
+                data: "2",
+                class: "blue-background highlight-border h-padding small-v-padding"
+            }
+        ];
     }
 
     agregarFeriado(e){
@@ -101,6 +102,7 @@ export default class DiasFeriados extends Component {
         return (
             <div className={(this.props.show) ? "full-width" : "hidden"}>
                 <Calendar 
+                    show={this.state.show}
                     type="feriados"
                     actions={this.actions}
                     controls={this.calendarControl}

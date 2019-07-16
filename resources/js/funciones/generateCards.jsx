@@ -253,9 +253,9 @@ export function assignWeekElementType(
                 container: {
                     class: sectionData ? 
                         sectionData.estado === 1 ? 
-                            "box-padding margin-box box-transparent full-width border-bottom" 
-                            : "box-padding margin-box full-width background-border border-bottom" 
-                        : "box-padding margin-box box-transparent full-width border-bottom"
+                            "box-padding box-transparent full-width border-bottom" 
+                            : "box-padding full-width background-border border-bottom" 
+                        : "box-padding box-transparent full-width border-bottom"
                 }
             };
             break;
@@ -274,6 +274,7 @@ export function assignMonthElementType(
             let resDate = new Date(data),
                 tday = new Date(),
                 cond = tday.getDate() === resDate.getDate() && tday.getMonth() === resDate.getMonth() && tday.getFullYear() === resDate.getFullYear();
+            resDate.setHours(0,0,0,0);
             structure = sectionData !== null ? {
                 title: {
                     data: resDate.getDate(),
@@ -285,7 +286,7 @@ export function assignMonthElementType(
                 container: {
                     data: data,
                     class: "same-width text-center box-padding highlight-hover pointer fix-height blue-highlight-hover",
-                    click: acciones[0].click
+                    click: acciones ? acciones[0].click : null
                 }
             } : {
                     title: {
@@ -425,8 +426,7 @@ export function generateDayCard(
                             elems={acciones} />
                     </div>
                 </div>
-            ),
-            class: ""
+            ),x 
         },
         content: {},
         container: {

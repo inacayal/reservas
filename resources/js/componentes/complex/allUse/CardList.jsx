@@ -9,10 +9,11 @@ function CardList(props) {
         <ul className={props.displayList}>
             {
                 props.elems.map((e, i) =>
-                    <li key={i} className={(e.container.class) ? e.container.class : (props.container) ? props.container : ""}>
+                    <li key={i} 
+                        className={(e.container.class) ? e.container.class : (props.container) ? props.container : ""}
+                        onClick={e.container.click ? e.container.click : e=>false}
+                        data={e.container.data}>
                         <Card
-                            containerClick={e.container.click}
-                            data={e.container.data}
                             title={e.title.data}
                             titleClass={e.title.class}
                             content={e.content.data}

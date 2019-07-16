@@ -9,10 +9,12 @@ function DayCalendar(props) {
         let dayReservationHours = generateDay(
             props.horarios.horarios,
             props.horarios.intervalo,
-            props.horarios.caida
+            props.horarios.caida,
+            props.data
         );
+
         return (
-            <div>
+            <div className={props.show ? "row full-width" : "hidden"}>
             </div>
         )
     }

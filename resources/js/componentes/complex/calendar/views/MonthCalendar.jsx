@@ -16,7 +16,7 @@ function MonthCalendar(props) {
     let navigation = calendarNavigation({ left: -1, right: 1}, 'mes');
     let weeks = generateMonth(props.date,props.data,props.actions,props.type);
     return (
-        <div className={!props.show ? "full-width" : "hidden"}>
+        <div className={props.show ? "full-width" : "hidden"}>
             <div className=" bold">
                 {"Mostrando " + MONTHS[month] + " " + props.date.getFullYear()}
             </div>

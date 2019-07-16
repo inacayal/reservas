@@ -87,7 +87,6 @@ export default function generateMonth (date,data,actions,type){
             data[dateStr],
             dateStr
         );
-        
         week.push(elem);
         
         if (weekCtr === 6) {

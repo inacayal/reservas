@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import generateCardsForReservation from './generateCards';
 
 function generateDayReservationHours(
     data,
     intervalo
 ){
     return Object.keys(data).map(
-        (e,i) => {
+        e => {
             let startTime = data[e].apertura.split(':'),
                 strHr = parseInt(startTime[0]),
                 strMn = parseInt(startTime[1]),
@@ -22,7 +23,7 @@ function generateDayReservationHours(
                     mnPtr=0;
                     hrPtr++;
                 }
-                hourArray.push(hrPtr + ":" + (mnPtr===0 ? "00" : mnPtr)+ ":00");
+                hourArray.push(hrPtr.toString() +":"+ (mnPtr===0 ? "00" : mnPtr.toString()));
                 mnPtr+=intervalo;
             }
             return hourArray;
@@ -31,13 +32,17 @@ function generateDayReservationHours(
 }
 
 export default function generateDay(
-    data,
+    horarioData,
     intervalo,
-    caida
+    caida,
+    reservacionesData,
+    stateDate
 ){
     let reservationHours = generateDayReservationHours(
-        data,
-        parseInt(intervalo)
+        horarioData,
+        parseInt(intervalo),
+        reservacionesData,
+        stateDate
     );
-    console.log(reservationHours);
+    console.log(reservacionesData);
 }

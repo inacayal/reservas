@@ -101,11 +101,17 @@ export function generateActions(
     type,
     show
 ){
-    let acciones = [];
+    let acciones = [{}];
     switch(type){
         case 'reservas':
         if(!enableTitles){
-            acciones = [{}];
+            acciones = [
+                {
+                    title:"",
+                    click:actions.ver,
+                    data:data
+                }
+            ];
         }else {
             if(hasEvents){
                 if(!show){

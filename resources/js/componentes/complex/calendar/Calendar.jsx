@@ -6,15 +6,14 @@ import WeekCalendar from './views/WeekCalendar';
 import MonthCalendar from './views/MonthCalendar';
 
 import ButtonList from '../allUse/ButtonList';
-import {DAYS,MONTHS,monthRows,monthIndex} from '../../../constantes/DaysMonths';
-import getMonthLength from '../../../funciones/getMonthLength';
+import {MONTHS,monthRows,monthIndex} from '../../../constantes/DaysMonths';
 
 export default class Calendar extends Component {
     constructor(props){
         super(props);
         let date = new Date();
         this.state={
-            show:"2",
+            show:this.props.show,
             date: date,
             controls:this.props.controls
         };
@@ -70,6 +69,15 @@ export default class Calendar extends Component {
         this.setState({date:date});
     }
 
+    /*static getDerivedStateFromProps(props,state){
+        console.log(props.show,state.date);
+        return {
+            show:props.show,
+            controls:state.controls,
+            date:state.date
+        }
+    }*/
+
     handleMonthClick(e){
         e.preventDefault();
         let newMonth = e.currentTarget.getAttribute('data');
@@ -86,7 +94,6 @@ export default class Calendar extends Component {
         )
         this.setState({show:"1",date:date, controls:controls});
     }
-
     render(){
         return(
             <div className="container">
@@ -95,16 +102,12 @@ export default class Calendar extends Component {
                         clickHandler={this.changeView}
                         displayList="flex-row h-center nav-list no-padding"
                         elems={this.state.controls} />
-                </div>
-                <div className={(this.state.show === "3") ? "row" : "hidden"}>
                     <DayCalendar
                         horarios={this.props.horariosReserva} 
                         render={this.props.dayRender}
                         show={this.state.show === "3"}
                         data={this.props.data}
                         date={this.state.date}/>
-                </div>
-                <div className={(this.state.show === "2") ? "row" : "hidden"}>
                     <WeekCalendar
                         render={this.props.weekRender}
                         type={this.props.type} 
@@ -114,17 +117,13 @@ export default class Calendar extends Component {
                         changeCurrentWeek={this.changeDayCalendar}
                         data={this.props.data}
                         dataTitle={"Días feriados de " + MONTHS[this.state.date.getMonth()] + " " + this.state.date.getFullYear()}/>
-                </div>
-                <div className={(this.state.show === "1") ? "row" : "hidden"}>
                     <MonthCalendar 
                         type={this.props.type}
                         changeCurrentMonth={this.changeWeekCalendar}
-                        show={this.state.show === "2"}
+                        show={this.state.show === "1"}
                         date={this.state.date}
                         data={this.props.data}
                         actions={this.props.actions}/>
-                </div>
-                <div className={(this.state.show === "0") ? "row" : "hidden"}>
                     <YearCalendar
                         handleMonthClick={this.handleMonthClick}
                         show={this.state.show==="0"}
