@@ -7,37 +7,49 @@ export default function generateUbicacionesCard(
     ubicaciones,
     actions
 ){
-    return ubicaciones.map(
+    return Object.keys(ubicaciones).map(
         e => {
             let acciones = generateActions(
                 true,
                 actions,
-                e.id,
+                e,
                 true,
                 'feriados',
                 false
             );
             return {
                 title:{
-                    data:e.nombre,
-                    class:"text-center full-width box-padding c-title light-danger"
-                },
-                content:{
                     data:(
-                        <div className="content">
-                            <div className="inline-block big-font">{e.capacidad}</div>
-                            <div className="inline-block margin-box full-width bold">capacidad máxima</div>
-                            <div className="inline-block">{e.descripcion}</div>
+                        <div className="full-width ">
+                            <span className="c-title text-super light-danger side-margin inline-block align-center">{ubicaciones[e].nombre}</span>
                             <ButtonList
-                                displayList="flex-row full-width nav-list h-center no-h-padding v-padding"
-                                container="side-margin half"
+                                displayList="flex-row nav-list h-center no-padding inline-block  align-center"
+                                container="side-margin inline-block"
                                 elemClass="full-width box-transparent highlight-hover border-box button-border"
                                 elems={acciones} />
                         </div>
                     ),
+                    class:""
+                },
+                content:{
+                    data:(
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-md-9">
+                                    <div>{ubicaciones[e].descripcion}</div>
+                                </div>
+                                <div className="col-md-3 big-font text-right no-padding">
+                                    <div className="big-font">
+                                        <span className="smaller-text side-margin bold">capacidad</span>
+                                        <span className="big-font side-margin">{ubicaciones[e].capacidad} </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ),
                 },
                 container:{
-                    class:"box-padding border-box margin-box col-sm"
+                    class:"box-padding border-bottom margin-box"
                 }
             }
         }

@@ -23,7 +23,7 @@ const sidebar = [//get on ajax request
     {
         data: "1",
         disabled: false,
-        title: "Reservas",
+        title: "Reservaciones",
         sub: [
             {
                 title:"Configuración",
@@ -34,7 +34,7 @@ const sidebar = [//get on ajax request
     {
         data: "2",
         disabled: false,
-        title: "Horarios",
+        title: "Horarios de atención",
         sub: [
             {
                 title: 'Días Feriados',
@@ -76,7 +76,7 @@ const sidebar = [//get on ajax request
     {
         data: "6",
         disabled: false,
-        title: "Configuración",
+        title: "Configuración de usuario",
         sub: [
             {
                 title: 'Configuracion 1',
@@ -107,7 +107,7 @@ export default class Main extends Component {
             crumb: [{ 
                 title: "Escritorio", 
                 data: "0",
-                class:"c-title box-transparent small-v-padding h-padding highlight-title full-width text-left",
+                class:"box-transparent small-v-padding highlight-title full-width text-left",
                 click: this.changePanel
             }]
         };
@@ -158,7 +158,7 @@ export default class Main extends Component {
         crumb = [{
             title: sidebar[showing].title,
             data: showing,
-            class: "c-title small-v-padding box-transparent h-padding highlight-title full-width text-left",
+            class: "small-v-padding box-transparent h-padding highlight-title full-width text-left",
             click: this.changePanel
         }];
         this.setState({ showing: showing, crumb:crumb, sidebar:sidebar});
@@ -211,8 +211,11 @@ export default class Main extends Component {
                                     selectInnerElement={this.changeSubElement}
                                     subElements={this.state.sidebar[4].sub}
                                     currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null} />
-                                <Locales 
-                                    classes={(this.state.showing === "5") ? "full-width" : "hidden"} />
+                                <Locales
+                                    panel={this.state.showing === "5"}
+                                    selectInnerElement={this.changeSubElement}
+                                    subElements={this.state.sidebar[5].sub}
+                                    currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null} />
                                 <Configuracion 
                                     classes={(this.state.showing === "6") ? "full-width" : "hidden"} />
                             </div>

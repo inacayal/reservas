@@ -86,6 +86,23 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/interopRequireDefault.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    "default": obj
+  };
+}
+
+module.exports = _interopRequireDefault;
+
+/***/ }),
+
 /***/ "./node_modules/axios/index.js":
 /*!*************************************!*\
   !*** ./node_modules/axios/index.js ***!
@@ -6133,6 +6150,68 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/classnames/index.js":
+/*!******************************************!*\
+  !*** ./node_modules/classnames/index.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+  Copyright (c) 2017 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+	'use strict';
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames () {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg) && arg.length) {
+				var inner = classNames.apply(null, arg);
+				if (inner) {
+					classes.push(inner);
+				}
+			} else if (argType === 'object') {
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
+					}
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if ( true && module.exports) {
+		classNames.default = classNames;
+		module.exports = classNames;
+	} else if (true) {
+		// register as 'classnames', consistent with npm package name
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function () {
+			return classNames;
+		}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {}
+}());
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/react-calendar/dist/Calendar.css":
 /*!***************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/react-calendar/dist/Calendar.css ***!
@@ -6236,6 +6315,736 @@ function toComment(sourceMap) {
 	return '/*# ' + data + ' */';
 }
 
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/activeElement.js":
+/*!***************************************************!*\
+  !*** ./node_modules/dom-helpers/activeElement.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+exports.__esModule = true;
+exports.default = activeElement;
+
+var _ownerDocument = _interopRequireDefault(__webpack_require__(/*! ./ownerDocument */ "./node_modules/dom-helpers/ownerDocument.js"));
+
+function activeElement(doc) {
+  if (doc === void 0) {
+    doc = (0, _ownerDocument.default)();
+  }
+
+  try {
+    return doc.activeElement;
+  } catch (e) {
+    /* ie throws if no active element */
+  }
+}
+
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/class/addClass.js":
+/*!****************************************************!*\
+  !*** ./node_modules/dom-helpers/class/addClass.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+exports.__esModule = true;
+exports.default = addClass;
+
+var _hasClass = _interopRequireDefault(__webpack_require__(/*! ./hasClass */ "./node_modules/dom-helpers/class/hasClass.js"));
+
+function addClass(element, className) {
+  if (element.classList) element.classList.add(className);else if (!(0, _hasClass.default)(element, className)) if (typeof element.className === 'string') element.className = element.className + ' ' + className;else element.setAttribute('class', (element.className && element.className.baseVal || '') + ' ' + className);
+}
+
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/class/hasClass.js":
+/*!****************************************************!*\
+  !*** ./node_modules/dom-helpers/class/hasClass.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = hasClass;
+
+function hasClass(element, className) {
+  if (element.classList) return !!className && element.classList.contains(className);else return (" " + (element.className.baseVal || element.className) + " ").indexOf(" " + className + " ") !== -1;
+}
+
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/class/index.js":
+/*!*************************************************!*\
+  !*** ./node_modules/dom-helpers/class/index.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _addClass = _interopRequireDefault(__webpack_require__(/*! ./addClass */ "./node_modules/dom-helpers/class/addClass.js"));
+
+exports.addClass = _addClass.default;
+
+var _removeClass = _interopRequireDefault(__webpack_require__(/*! ./removeClass */ "./node_modules/dom-helpers/class/removeClass.js"));
+
+exports.removeClass = _removeClass.default;
+
+var _hasClass = _interopRequireDefault(__webpack_require__(/*! ./hasClass */ "./node_modules/dom-helpers/class/hasClass.js"));
+
+exports.hasClass = _hasClass.default;
+var _default = {
+  addClass: _addClass.default,
+  removeClass: _removeClass.default,
+  hasClass: _hasClass.default
+};
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/class/removeClass.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/dom-helpers/class/removeClass.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function replaceClassName(origClass, classToRemove) {
+  return origClass.replace(new RegExp('(^|\\s)' + classToRemove + '(?:\\s|$)', 'g'), '$1').replace(/\s+/g, ' ').replace(/^\s*|\s*$/g, '');
+}
+
+module.exports = function removeClass(element, className) {
+  if (element.classList) element.classList.remove(className);else if (typeof element.className === 'string') element.className = replaceClassName(element.className, className);else element.setAttribute('class', replaceClassName(element.className && element.className.baseVal || '', className));
+};
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/events/off.js":
+/*!************************************************!*\
+  !*** ./node_modules/dom-helpers/events/off.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _inDOM = _interopRequireDefault(__webpack_require__(/*! ../util/inDOM */ "./node_modules/dom-helpers/util/inDOM.js"));
+
+var off = function off() {};
+
+if (_inDOM.default) {
+  off = function () {
+    if (document.addEventListener) return function (node, eventName, handler, capture) {
+      return node.removeEventListener(eventName, handler, capture || false);
+    };else if (document.attachEvent) return function (node, eventName, handler) {
+      return node.detachEvent('on' + eventName, handler);
+    };
+  }();
+}
+
+var _default = off;
+exports.default = _default;
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/events/on.js":
+/*!***********************************************!*\
+  !*** ./node_modules/dom-helpers/events/on.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _inDOM = _interopRequireDefault(__webpack_require__(/*! ../util/inDOM */ "./node_modules/dom-helpers/util/inDOM.js"));
+
+var on = function on() {};
+
+if (_inDOM.default) {
+  on = function () {
+    if (document.addEventListener) return function (node, eventName, handler, capture) {
+      return node.addEventListener(eventName, handler, capture || false);
+    };else if (document.attachEvent) return function (node, eventName, handler) {
+      return node.attachEvent('on' + eventName, function (e) {
+        e = e || window.event;
+        e.target = e.target || e.srcElement;
+        e.currentTarget = node;
+        handler.call(node, e);
+      });
+    };
+  }();
+}
+
+var _default = on;
+exports.default = _default;
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/ownerDocument.js":
+/*!***************************************************!*\
+  !*** ./node_modules/dom-helpers/ownerDocument.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = ownerDocument;
+
+function ownerDocument(node) {
+  return node && node.ownerDocument || document;
+}
+
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/query/contains.js":
+/*!****************************************************!*\
+  !*** ./node_modules/dom-helpers/query/contains.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _inDOM = _interopRequireDefault(__webpack_require__(/*! ../util/inDOM */ "./node_modules/dom-helpers/util/inDOM.js"));
+
+var _default = function () {
+  // HTML DOM and SVG DOM may have different support levels,
+  // so we need to check on context instead of a document root element.
+  return _inDOM.default ? function (context, node) {
+    if (context.contains) {
+      return context.contains(node);
+    } else if (context.compareDocumentPosition) {
+      return context === node || !!(context.compareDocumentPosition(node) & 16);
+    } else {
+      return fallback(context, node);
+    }
+  } : fallback;
+}();
+
+exports.default = _default;
+
+function fallback(context, node) {
+  if (node) do {
+    if (node === context) return true;
+  } while (node = node.parentNode);
+  return false;
+}
+
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/query/isWindow.js":
+/*!****************************************************!*\
+  !*** ./node_modules/dom-helpers/query/isWindow.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = getWindow;
+
+function getWindow(node) {
+  return node === node.window ? node : node.nodeType === 9 ? node.defaultView || node.parentWindow : false;
+}
+
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/style/getComputedStyle.js":
+/*!************************************************************!*\
+  !*** ./node_modules/dom-helpers/style/getComputedStyle.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+exports.__esModule = true;
+exports.default = _getComputedStyle;
+
+var _camelizeStyle = _interopRequireDefault(__webpack_require__(/*! ../util/camelizeStyle */ "./node_modules/dom-helpers/util/camelizeStyle.js"));
+
+var rposition = /^(top|right|bottom|left)$/;
+var rnumnonpx = /^([+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|))(?!px)[a-z%]+$/i;
+
+function _getComputedStyle(node) {
+  if (!node) throw new TypeError('No Element passed to `getComputedStyle()`');
+  var doc = node.ownerDocument;
+  return 'defaultView' in doc ? doc.defaultView.opener ? node.ownerDocument.defaultView.getComputedStyle(node, null) : window.getComputedStyle(node, null) : {
+    //ie 8 "magic" from: https://github.com/jquery/jquery/blob/1.11-stable/src/css/curCSS.js#L72
+    getPropertyValue: function getPropertyValue(prop) {
+      var style = node.style;
+      prop = (0, _camelizeStyle.default)(prop);
+      if (prop == 'float') prop = 'styleFloat';
+      var current = node.currentStyle[prop] || null;
+      if (current == null && style && style[prop]) current = style[prop];
+
+      if (rnumnonpx.test(current) && !rposition.test(prop)) {
+        // Remember the original values
+        var left = style.left;
+        var runStyle = node.runtimeStyle;
+        var rsLeft = runStyle && runStyle.left; // Put in the new values to get a computed value out
+
+        if (rsLeft) runStyle.left = node.currentStyle.left;
+        style.left = prop === 'fontSize' ? '1em' : current;
+        current = style.pixelLeft + 'px'; // Revert the changed values
+
+        style.left = left;
+        if (rsLeft) runStyle.left = rsLeft;
+      }
+
+      return current;
+    }
+  };
+}
+
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/style/index.js":
+/*!*************************************************!*\
+  !*** ./node_modules/dom-helpers/style/index.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+exports.__esModule = true;
+exports.default = style;
+
+var _camelizeStyle = _interopRequireDefault(__webpack_require__(/*! ../util/camelizeStyle */ "./node_modules/dom-helpers/util/camelizeStyle.js"));
+
+var _hyphenateStyle = _interopRequireDefault(__webpack_require__(/*! ../util/hyphenateStyle */ "./node_modules/dom-helpers/util/hyphenateStyle.js"));
+
+var _getComputedStyle2 = _interopRequireDefault(__webpack_require__(/*! ./getComputedStyle */ "./node_modules/dom-helpers/style/getComputedStyle.js"));
+
+var _removeStyle = _interopRequireDefault(__webpack_require__(/*! ./removeStyle */ "./node_modules/dom-helpers/style/removeStyle.js"));
+
+var _properties = __webpack_require__(/*! ../transition/properties */ "./node_modules/dom-helpers/transition/properties.js");
+
+var _isTransform = _interopRequireDefault(__webpack_require__(/*! ../transition/isTransform */ "./node_modules/dom-helpers/transition/isTransform.js"));
+
+function style(node, property, value) {
+  var css = '';
+  var transforms = '';
+  var props = property;
+
+  if (typeof property === 'string') {
+    if (value === undefined) {
+      return node.style[(0, _camelizeStyle.default)(property)] || (0, _getComputedStyle2.default)(node).getPropertyValue((0, _hyphenateStyle.default)(property));
+    } else {
+      (props = {})[property] = value;
+    }
+  }
+
+  Object.keys(props).forEach(function (key) {
+    var value = props[key];
+
+    if (!value && value !== 0) {
+      (0, _removeStyle.default)(node, (0, _hyphenateStyle.default)(key));
+    } else if ((0, _isTransform.default)(key)) {
+      transforms += key + "(" + value + ") ";
+    } else {
+      css += (0, _hyphenateStyle.default)(key) + ": " + value + ";";
+    }
+  });
+
+  if (transforms) {
+    css += _properties.transform + ": " + transforms + ";";
+  }
+
+  node.style.cssText += ';' + css;
+}
+
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/style/removeStyle.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/dom-helpers/style/removeStyle.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = removeStyle;
+
+function removeStyle(node, key) {
+  return 'removeProperty' in node.style ? node.style.removeProperty(key) : node.style.removeAttribute(key);
+}
+
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/transition/isTransform.js":
+/*!************************************************************!*\
+  !*** ./node_modules/dom-helpers/transition/isTransform.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = isTransform;
+var supportedTransforms = /^((translate|rotate|scale)(X|Y|Z|3d)?|matrix(3d)?|perspective|skew(X|Y)?)$/i;
+
+function isTransform(property) {
+  return !!(property && supportedTransforms.test(property));
+}
+
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/transition/properties.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/dom-helpers/transition/properties.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+exports.__esModule = true;
+exports.default = exports.animationEnd = exports.animationDelay = exports.animationTiming = exports.animationDuration = exports.animationName = exports.transitionEnd = exports.transitionDuration = exports.transitionDelay = exports.transitionTiming = exports.transitionProperty = exports.transform = void 0;
+
+var _inDOM = _interopRequireDefault(__webpack_require__(/*! ../util/inDOM */ "./node_modules/dom-helpers/util/inDOM.js"));
+
+var transform = 'transform';
+exports.transform = transform;
+var prefix, transitionEnd, animationEnd;
+exports.animationEnd = animationEnd;
+exports.transitionEnd = transitionEnd;
+var transitionProperty, transitionDuration, transitionTiming, transitionDelay;
+exports.transitionDelay = transitionDelay;
+exports.transitionTiming = transitionTiming;
+exports.transitionDuration = transitionDuration;
+exports.transitionProperty = transitionProperty;
+var animationName, animationDuration, animationTiming, animationDelay;
+exports.animationDelay = animationDelay;
+exports.animationTiming = animationTiming;
+exports.animationDuration = animationDuration;
+exports.animationName = animationName;
+
+if (_inDOM.default) {
+  var _getTransitionPropert = getTransitionProperties();
+
+  prefix = _getTransitionPropert.prefix;
+  exports.transitionEnd = transitionEnd = _getTransitionPropert.transitionEnd;
+  exports.animationEnd = animationEnd = _getTransitionPropert.animationEnd;
+  exports.transform = transform = prefix + "-" + transform;
+  exports.transitionProperty = transitionProperty = prefix + "-transition-property";
+  exports.transitionDuration = transitionDuration = prefix + "-transition-duration";
+  exports.transitionDelay = transitionDelay = prefix + "-transition-delay";
+  exports.transitionTiming = transitionTiming = prefix + "-transition-timing-function";
+  exports.animationName = animationName = prefix + "-animation-name";
+  exports.animationDuration = animationDuration = prefix + "-animation-duration";
+  exports.animationTiming = animationTiming = prefix + "-animation-delay";
+  exports.animationDelay = animationDelay = prefix + "-animation-timing-function";
+}
+
+var _default = {
+  transform: transform,
+  end: transitionEnd,
+  property: transitionProperty,
+  timing: transitionTiming,
+  delay: transitionDelay,
+  duration: transitionDuration
+};
+exports.default = _default;
+
+function getTransitionProperties() {
+  var style = document.createElement('div').style;
+  var vendorMap = {
+    O: function O(e) {
+      return "o" + e.toLowerCase();
+    },
+    Moz: function Moz(e) {
+      return e.toLowerCase();
+    },
+    Webkit: function Webkit(e) {
+      return "webkit" + e;
+    },
+    ms: function ms(e) {
+      return "MS" + e;
+    }
+  };
+  var vendors = Object.keys(vendorMap);
+  var transitionEnd, animationEnd;
+  var prefix = '';
+
+  for (var i = 0; i < vendors.length; i++) {
+    var vendor = vendors[i];
+
+    if (vendor + "TransitionProperty" in style) {
+      prefix = "-" + vendor.toLowerCase();
+      transitionEnd = vendorMap[vendor]('TransitionEnd');
+      animationEnd = vendorMap[vendor]('AnimationEnd');
+      break;
+    }
+  }
+
+  if (!transitionEnd && 'transitionProperty' in style) transitionEnd = 'transitionend';
+  if (!animationEnd && 'animationName' in style) animationEnd = 'animationend';
+  style = null;
+  return {
+    animationEnd: animationEnd,
+    transitionEnd: transitionEnd,
+    prefix: prefix
+  };
+}
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/util/camelize.js":
+/*!***************************************************!*\
+  !*** ./node_modules/dom-helpers/util/camelize.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = camelize;
+var rHyphen = /-(.)/g;
+
+function camelize(string) {
+  return string.replace(rHyphen, function (_, chr) {
+    return chr.toUpperCase();
+  });
+}
+
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/util/camelizeStyle.js":
+/*!********************************************************!*\
+  !*** ./node_modules/dom-helpers/util/camelizeStyle.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+exports.__esModule = true;
+exports.default = camelizeStyleName;
+
+var _camelize = _interopRequireDefault(__webpack_require__(/*! ./camelize */ "./node_modules/dom-helpers/util/camelize.js"));
+
+/**
+ * Copyright 2014-2015, Facebook, Inc.
+ * All rights reserved.
+ * https://github.com/facebook/react/blob/2aeb8a2a6beb00617a4217f7f8284924fa2ad819/src/vendor/core/camelizeStyleName.js
+ */
+var msPattern = /^-ms-/;
+
+function camelizeStyleName(string) {
+  return (0, _camelize.default)(string.replace(msPattern, 'ms-'));
+}
+
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/util/hyphenate.js":
+/*!****************************************************!*\
+  !*** ./node_modules/dom-helpers/util/hyphenate.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = hyphenate;
+var rUpper = /([A-Z])/g;
+
+function hyphenate(string) {
+  return string.replace(rUpper, '-$1').toLowerCase();
+}
+
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/util/hyphenateStyle.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/dom-helpers/util/hyphenateStyle.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+exports.__esModule = true;
+exports.default = hyphenateStyleName;
+
+var _hyphenate = _interopRequireDefault(__webpack_require__(/*! ./hyphenate */ "./node_modules/dom-helpers/util/hyphenate.js"));
+
+/**
+ * Copyright 2013-2014, Facebook, Inc.
+ * All rights reserved.
+ * https://github.com/facebook/react/blob/2aeb8a2a6beb00617a4217f7f8284924fa2ad819/src/vendor/core/hyphenateStyleName.js
+ */
+var msPattern = /^ms-/;
+
+function hyphenateStyleName(string) {
+  return (0, _hyphenate.default)(string).replace(msPattern, '-ms-');
+}
+
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/util/inDOM.js":
+/*!************************************************!*\
+  !*** ./node_modules/dom-helpers/util/inDOM.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _default = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+
+exports.default = _default;
+module.exports = exports["default"];
+
+/***/ }),
+
+/***/ "./node_modules/dom-helpers/util/scrollbarSize.js":
+/*!********************************************************!*\
+  !*** ./node_modules/dom-helpers/util/scrollbarSize.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+exports.__esModule = true;
+exports.default = scrollbarSize;
+
+var _inDOM = _interopRequireDefault(__webpack_require__(/*! ./inDOM */ "./node_modules/dom-helpers/util/inDOM.js"));
+
+var size;
+
+function scrollbarSize(recalc) {
+  if (!size && size !== 0 || recalc) {
+    if (_inDOM.default) {
+      var scrollDiv = document.createElement('div');
+      scrollDiv.style.position = 'absolute';
+      scrollDiv.style.top = '-9999px';
+      scrollDiv.style.width = '50px';
+      scrollDiv.style.height = '50px';
+      scrollDiv.style.overflow = 'scroll';
+      document.body.appendChild(scrollDiv);
+      size = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+      document.body.removeChild(scrollDiv);
+    }
+  }
+
+  return size;
+}
+
+module.exports = exports["default"];
 
 /***/ }),
 
@@ -37312,6 +38121,207 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./node_modules/prop-types-extra/lib/componentOrElement.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/prop-types-extra/lib/componentOrElement.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _createChainableTypeChecker = __webpack_require__(/*! ./utils/createChainableTypeChecker */ "./node_modules/prop-types-extra/lib/utils/createChainableTypeChecker.js");
+
+var _createChainableTypeChecker2 = _interopRequireDefault(_createChainableTypeChecker);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function validate(props, propName, componentName, location, propFullName) {
+  var propValue = props[propName];
+  var propType = typeof propValue === 'undefined' ? 'undefined' : _typeof(propValue);
+
+  if (_react2.default.isValidElement(propValue)) {
+    return new Error('Invalid ' + location + ' `' + propFullName + '` of type ReactElement ' + ('supplied to `' + componentName + '`, expected a ReactComponent or a ') + 'DOMElement. You can usually obtain a ReactComponent or DOMElement ' + 'from a ReactElement by attaching a ref to it.');
+  }
+
+  if ((propType !== 'object' || typeof propValue.render !== 'function') && propValue.nodeType !== 1) {
+    return new Error('Invalid ' + location + ' `' + propFullName + '` of value `' + propValue + '` ' + ('supplied to `' + componentName + '`, expected a ReactComponent or a ') + 'DOMElement.');
+  }
+
+  return null;
+}
+
+exports.default = (0, _createChainableTypeChecker2.default)(validate);
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/prop-types-extra/lib/deprecated.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/prop-types-extra/lib/deprecated.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = deprecated;
+
+var _warning = __webpack_require__(/*! warning */ "./node_modules/warning/browser.js");
+
+var _warning2 = _interopRequireDefault(_warning);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var warned = {};
+
+function deprecated(validator, reason) {
+  return function validate(props, propName, componentName, location, propFullName) {
+    var componentNameSafe = componentName || '<<anonymous>>';
+    var propFullNameSafe = propFullName || propName;
+
+    if (props[propName] != null) {
+      var messageKey = componentName + '.' + propName;
+
+      (0, _warning2.default)(warned[messageKey], 'The ' + location + ' `' + propFullNameSafe + '` of ' + ('`' + componentNameSafe + '` is deprecated. ' + reason + '.'));
+
+      warned[messageKey] = true;
+    }
+
+    for (var _len = arguments.length, args = Array(_len > 5 ? _len - 5 : 0), _key = 5; _key < _len; _key++) {
+      args[_key - 5] = arguments[_key];
+    }
+
+    return validator.apply(undefined, [props, propName, componentName, location, propFullName].concat(args));
+  };
+}
+
+/* eslint-disable no-underscore-dangle */
+function _resetWarned() {
+  warned = {};
+}
+
+deprecated._resetWarned = _resetWarned;
+/* eslint-enable no-underscore-dangle */
+
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/prop-types-extra/lib/elementType.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/prop-types-extra/lib/elementType.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactIs = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
+
+var _createChainableTypeChecker = __webpack_require__(/*! ./utils/createChainableTypeChecker */ "./node_modules/prop-types-extra/lib/utils/createChainableTypeChecker.js");
+
+var _createChainableTypeChecker2 = _interopRequireDefault(_createChainableTypeChecker);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function elementType(props, propName, componentName, location, propFullName) {
+  var propValue = props[propName];
+
+  if (_react2.default.isValidElement(propValue)) {
+    return new Error('Invalid ' + location + ' `' + propFullName + '` of type ReactElement ' + ('supplied to `' + componentName + '`,expected an element type (a string ') + ', component class, or function component).');
+  }
+
+  if (!(0, _reactIs.isValidElementType)(propValue)) {
+    return new Error('Invalid ' + location + ' `' + propFullName + '` of value `' + propValue + '` ' + ('supplied to `' + componentName + '`, expected an element type (a string ') + ', component class, or function component).');
+  }
+
+  return null;
+}
+
+exports.default = (0, _createChainableTypeChecker2.default)(elementType);
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/prop-types-extra/lib/utils/createChainableTypeChecker.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/prop-types-extra/lib/utils/createChainableTypeChecker.js ***!
+  \*******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = createChainableTypeChecker;
+/**
+ * Copyright 2013-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
+
+// Mostly taken from ReactPropTypes.
+
+function createChainableTypeChecker(validate) {
+  function checkType(isRequired, props, propName, componentName, location, propFullName) {
+    var componentNameSafe = componentName || '<<anonymous>>';
+    var propFullNameSafe = propFullName || propName;
+
+    if (props[propName] == null) {
+      if (isRequired) {
+        return new Error('Required ' + location + ' `' + propFullNameSafe + '` was not specified ' + ('in `' + componentNameSafe + '`.'));
+      }
+
+      return null;
+    }
+
+    for (var _len = arguments.length, args = Array(_len > 6 ? _len - 6 : 0), _key = 6; _key < _len; _key++) {
+      args[_key - 6] = arguments[_key];
+    }
+
+    return validate.apply(undefined, [props, propName, componentNameSafe, location, propFullNameSafe].concat(args));
+  }
+
+  var chainedCheckType = checkType.bind(null, false);
+  chainedCheckType.isRequired = checkType.bind(null, true);
+
+  return chainedCheckType;
+}
+module.exports = exports['default'];
+
+/***/ }),
+
 /***/ "./node_modules/prop-types/checkPropTypes.js":
 /*!***************************************************!*\
   !*** ./node_modules/prop-types/checkPropTypes.js ***!
@@ -38076,6 +39086,896 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 module.exports = ReactPropTypesSecret;
 
+
+/***/ }),
+
+/***/ "./node_modules/react-bootstrap-modal/lib/Body.js":
+/*!********************************************************!*\
+  !*** ./node_modules/react-bootstrap-modal/lib/Body.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ModalBody = function (_React$Component) {
+  _inherits(ModalBody, _React$Component);
+
+  function ModalBody() {
+    _classCallCheck(this, ModalBody);
+
+    return _possibleConstructorReturn(this, _React$Component.apply(this, arguments));
+  }
+
+  ModalBody.getDefaultPrefix = function getDefaultPrefix() {
+    return 'modal';
+  };
+
+  ModalBody.prototype.render = function render() {
+    var _props = this.props,
+        modalPrefix = _props.modalPrefix,
+        children = _props.children,
+        className = _props.className,
+        props = _objectWithoutProperties(_props, ['modalPrefix', 'children', 'className']);
+
+    var prefix = modalPrefix || ModalBody.getDefaultPrefix();
+
+    return _react2.default.createElement(
+      'div',
+      _extends({}, props, { className: (0, _classnames2.default)(className, prefix + '-body') }),
+      children
+    );
+  };
+
+  return ModalBody;
+}(_react2.default.Component);
+
+ModalBody.propTypes = {
+  /**
+   * A css class applied to the Component
+   */
+  modalPrefix: _propTypes2.default.string
+};
+
+exports.default = ModalBody;
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/react-bootstrap-modal/lib/Dismiss.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/react-bootstrap-modal/lib/Dismiss.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var chain = function chain(a, b) {
+  return function () {
+    a && a.apply(undefined, arguments);
+    b && b.apply(undefined, arguments);
+  };
+};
+
+var Dismiss = function (_React$Component) {
+  _inherits(Dismiss, _React$Component);
+
+  function Dismiss() {
+    _classCallCheck(this, Dismiss);
+
+    return _possibleConstructorReturn(this, _React$Component.apply(this, arguments));
+  }
+
+  Dismiss.prototype.render = function render() {
+    var _props = this.props,
+        Tag = _props.component,
+        children = _props.children,
+        props = _objectWithoutProperties(_props, ['component', 'children']);
+
+    return _react2.default.createElement(
+      Tag,
+      _extends({}, props, {
+        onClick: chain(props.onClick, this.context.onModalHide)
+      }),
+      children
+    );
+  };
+
+  return Dismiss;
+}(_react2.default.Component);
+
+Dismiss.propTypes = {
+  component: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.func])
+};
+Dismiss.defaultProps = {
+  component: 'button'
+};
+Dismiss.contextTypes = {
+  onModalHide: _propTypes2.default.func
+};
+exports.default = Dismiss;
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/react-bootstrap-modal/lib/Fade.js":
+/*!********************************************************!*\
+  !*** ./node_modules/react-bootstrap-modal/lib/Fade.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _fadeStyles;
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Transition = __webpack_require__(/*! react-transition-group/Transition */ "./node_modules/react-transition-group/Transition.js");
+
+var _Transition2 = _interopRequireDefault(_Transition);
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var fadeStyles = (_fadeStyles = {}, _fadeStyles[_Transition.ENTERING] = 'in', _fadeStyles[_Transition.ENTERED] = 'in', _fadeStyles);
+
+var Fade = function (_React$Component) {
+  _inherits(Fade, _React$Component);
+
+  function Fade(props, context) {
+    _classCallCheck(this, Fade);
+
+    return _possibleConstructorReturn(this, _React$Component.call(this, props, context));
+  }
+
+  Fade.prototype.render = function render() {
+    var _props = this.props,
+        className = _props.className,
+        children = _props.children,
+        props = _objectWithoutProperties(_props, ['className', 'children']);
+
+    return _react2.default.createElement(
+      _Transition2.default,
+      props,
+      function (status, innerProps) {
+        return _react2.default.cloneElement(children, _extends({}, innerProps, {
+          className: (0, _classnames2.default)('fade', className, children.props.className, fadeStyles[status])
+        }));
+      }
+    );
+  };
+
+  return Fade;
+}(_react2.default.Component);
+
+exports.default = Fade;
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/react-bootstrap-modal/lib/Footer.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/react-bootstrap-modal/lib/Footer.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ModalFooter = function (_React$Component) {
+  _inherits(ModalFooter, _React$Component);
+
+  function ModalFooter() {
+    _classCallCheck(this, ModalFooter);
+
+    return _possibleConstructorReturn(this, _React$Component.apply(this, arguments));
+  }
+
+  ModalFooter.getDefaultPrefix = function getDefaultPrefix() {
+    return 'modal';
+  };
+
+  ModalFooter.prototype.render = function render() {
+    var _props = this.props,
+        modalPrefix = _props.modalPrefix,
+        children = _props.children,
+        className = _props.className,
+        props = _objectWithoutProperties(_props, ['modalPrefix', 'children', 'className']);
+
+    var prefix = modalPrefix || ModalFooter.getDefaultPrefix();
+
+    return _react2.default.createElement(
+      'div',
+      _extends({}, props, { className: (0, _classnames2.default)(className, prefix + '-footer') }),
+      children
+    );
+  };
+
+  return ModalFooter;
+}(_react2.default.Component);
+
+ModalFooter.propTypes = {
+  /**
+   * A css class applied to the Component
+   */
+  modalPrefix: _propTypes2.default.string
+};
+
+exports.default = ModalFooter;
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/react-bootstrap-modal/lib/Header.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/react-bootstrap-modal/lib/Header.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _Dismiss = __webpack_require__(/*! ./Dismiss */ "./node_modules/react-bootstrap-modal/lib/Dismiss.js");
+
+var _Dismiss2 = _interopRequireDefault(_Dismiss);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ModalHeader = function (_React$Component) {
+  _inherits(ModalHeader, _React$Component);
+
+  function ModalHeader() {
+    _classCallCheck(this, ModalHeader);
+
+    return _possibleConstructorReturn(this, _React$Component.apply(this, arguments));
+  }
+
+  ModalHeader.getDefaultPrefix = function getDefaultPrefix() {
+    return 'modal';
+  };
+
+  ModalHeader.prototype.render = function render() {
+    var _props = this.props,
+        modalPrefix = _props.modalPrefix,
+        closeButton = _props.closeButton,
+        children = _props.children,
+        className = _props.className,
+        label = _props['aria-label'],
+        props = _objectWithoutProperties(_props, ['modalPrefix', 'closeButton', 'children', 'className', 'aria-label']);
+
+    var prefix = modalPrefix || ModalHeader.getDefaultPrefix();
+
+    return _react2.default.createElement(
+      'div',
+      _extends({}, props, {
+        className: (0, _classnames2.default)(className, prefix + '-header')
+      }),
+      closeButton && _react2.default.createElement(
+        _Dismiss2.default,
+        {
+          className: 'close',
+          'aria-label': label
+        },
+        _react2.default.createElement(
+          'span',
+          { 'aria-hidden': 'true' },
+          '\xD7'
+        )
+      ),
+      children
+    );
+  };
+
+  return ModalHeader;
+}(_react2.default.Component);
+
+ModalHeader._isModalHeader = true;
+ModalHeader.propTypes = {
+  closeButton: _propTypes2.default.bool,
+  /**
+   * A css class applied to the Component
+   */
+  modalPrefix: _propTypes2.default.string,
+
+  'aria-label': _propTypes2.default.string
+};
+ModalHeader.defaultProps = {
+  closeButton: false,
+  'aria-label': 'Close Modal'
+};
+ModalHeader.contextTypes = {
+  onModalHide: _propTypes2.default.func
+};
+exports.default = ModalHeader;
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/react-bootstrap-modal/lib/Modal.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/react-bootstrap-modal/lib/Modal.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _componentOrElement = __webpack_require__(/*! prop-types-extra/lib/componentOrElement */ "./node_modules/prop-types-extra/lib/componentOrElement.js");
+
+var _componentOrElement2 = _interopRequireDefault(_componentOrElement);
+
+var _reactDom = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+
+var _Modal = __webpack_require__(/*! react-overlays/lib/Modal */ "./node_modules/react-overlays/lib/Modal.js");
+
+var _Modal2 = _interopRequireDefault(_Modal);
+
+var _isOverflowing = __webpack_require__(/*! react-overlays/lib/utils/isOverflowing */ "./node_modules/react-overlays/lib/utils/isOverflowing.js");
+
+var _isOverflowing2 = _interopRequireDefault(_isOverflowing);
+
+var _Fade = __webpack_require__(/*! ./Fade */ "./node_modules/react-bootstrap-modal/lib/Fade.js");
+
+var _Fade2 = _interopRequireDefault(_Fade);
+
+var _Body = __webpack_require__(/*! ./Body */ "./node_modules/react-bootstrap-modal/lib/Body.js");
+
+var _Body2 = _interopRequireDefault(_Body);
+
+var _Header = __webpack_require__(/*! ./Header */ "./node_modules/react-bootstrap-modal/lib/Header.js");
+
+var _Header2 = _interopRequireDefault(_Header);
+
+var _Title = __webpack_require__(/*! ./Title */ "./node_modules/react-bootstrap-modal/lib/Title.js");
+
+var _Title2 = _interopRequireDefault(_Title);
+
+var _Footer = __webpack_require__(/*! ./Footer */ "./node_modules/react-bootstrap-modal/lib/Footer.js");
+
+var _Footer2 = _interopRequireDefault(_Footer);
+
+var _Dismiss = __webpack_require__(/*! ./Dismiss */ "./node_modules/react-bootstrap-modal/lib/Dismiss.js");
+
+var _Dismiss2 = _interopRequireDefault(_Dismiss);
+
+var _ownerDocument = __webpack_require__(/*! dom-helpers/ownerDocument */ "./node_modules/dom-helpers/ownerDocument.js");
+
+var _ownerDocument2 = _interopRequireDefault(_ownerDocument);
+
+var _inDOM = __webpack_require__(/*! dom-helpers/util/inDOM */ "./node_modules/dom-helpers/util/inDOM.js");
+
+var _inDOM2 = _interopRequireDefault(_inDOM);
+
+var _scrollbarSize = __webpack_require__(/*! dom-helpers/util/scrollbarSize */ "./node_modules/dom-helpers/util/scrollbarSize.js");
+
+var _scrollbarSize2 = _interopRequireDefault(_scrollbarSize);
+
+var _style = __webpack_require__(/*! dom-helpers/style */ "./node_modules/dom-helpers/style/index.js");
+
+var _style2 = _interopRequireDefault(_style);
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var baseIndex = {};
+var PREFIX = 'modal';
+
+var getZIndex = void 0;
+
+var omit = function omit(obj, keys) {
+  return Object.keys(obj).reduce(function (o, key) {
+    if (keys.indexOf(key) === -1) o[key] = obj[key];
+    return o;
+  }, {});
+};
+
+function DialogTransition(props) {
+  return _react2.default.createElement(_Fade2.default, _extends({}, props, { timeout: Modal.TRANSITION_DURATION }));
+}
+function BackdropTransition(props) {
+  return _react2.default.createElement(_Fade2.default, _extends({}, props, { timeout: Modal.BACKDROP_TRANSITION_DURATION }));
+}
+
+var Modal = function (_React$Component) {
+  _inherits(Modal, _React$Component);
+
+  Modal.getDefaultPrefix = function getDefaultPrefix() {
+    return PREFIX;
+  };
+
+  Modal.prototype.getChildContext = function getChildContext() {
+    return this._context || (this._context = { onModalHide: this.props.onHide });
+  };
+
+  function Modal() {
+    _classCallCheck(this, Modal);
+
+    var _this = _possibleConstructorReturn(this, _React$Component.call(this));
+
+    _this.handleEntering = _this.handleEntering.bind(_this);
+    _this.handleExiting = _this.handleExiting.bind(_this);
+
+    _this.state = {
+      classes: ''
+    };
+    return _this;
+  }
+
+  Modal.prototype.componentDidMount = function componentDidMount() {
+    var _this2 = this;
+
+    getZIndex = getZIndex || function () {
+      var modal = document.createElement('div'),
+          backdrop = document.createElement('div'),
+          zIndexFactor = void 0;
+
+      modal.className = 'modal hide';
+      backdrop.className = 'modal-backdrop hide';
+
+      document.body.appendChild(modal);
+      document.body.appendChild(backdrop);
+
+      baseIndex.modal = +(0, _style2.default)(modal, 'z-index');
+      baseIndex.backdrop = +(0, _style2.default)(backdrop, 'z-index');
+      zIndexFactor = baseIndex.modal - baseIndex.backdrop;
+
+      document.body.removeChild(modal);
+      document.body.removeChild(backdrop);
+
+      return function (type) {
+        return baseIndex[type] + zIndexFactor * (_this2.props.manager.modals.length - 1);
+      };
+    }();
+  };
+
+  Modal.prototype.handleEntering = function handleEntering() {
+    this._show.apply(this, arguments);
+
+    if (this.props.onEntering) {
+      this.props.onEntering();
+    }
+  };
+
+  Modal.prototype.handleExiting = function handleExiting() {
+    this._removeAttentionClasses();
+    if (this.props.onExiting) {
+      this.props.onExiting();
+    }
+  };
+
+  Modal.prototype.render = function render() {
+    var _this3 = this;
+
+    var _props = this.props,
+        className = _props.className,
+        children = _props.children,
+        keyboard = _props.keyboard,
+        transition = _props.transition,
+        modalPrefix = _props.modalPrefix,
+        dialogClassName = _props.dialogClassName,
+        container = _props.container,
+        onEnter = _props.onEnter,
+        onEntered = _props.onEntered,
+        onExit = _props.onExit,
+        onExited = _props.onExited,
+        props = _objectWithoutProperties(_props, ['className', 'children', 'keyboard', 'transition', 'modalPrefix', 'dialogClassName', 'container', 'onEnter', 'onEntered', 'onExit', 'onExited']);
+
+    var _state = this.state,
+        dialog = _state.dialog,
+        classes = _state.classes,
+        backdrop = _state.backdrop;
+
+
+    delete props.manager;
+    var elementProps = omit(props, Object.keys(Modal.propTypes));
+
+    var prefix = modalPrefix || Modal.getDefaultPrefix();
+
+    if (transition === true) transition = DialogTransition;
+
+    var modal = _react2.default.createElement(
+      'div',
+      _extends({}, elementProps, {
+        ref: function ref(r) {
+          return _this3.dialog = r;
+        },
+        style: dialog,
+        className: (0, _classnames2.default)(className, prefix, { in: props.show && !transition }),
+        onClick: this.props.backdrop ? function (e) {
+          return _this3.handleBackdropClick(e);
+        } : null
+      }),
+      _react2.default.createElement(
+        'div',
+        {
+          key: 'modal',
+          ref: function ref(r) {
+            return _this3.innerRef = r;
+          },
+          className: (0, _classnames2.default)(prefix + '-dialog', dialogClassName, classes, (props.small || props.sm) && prefix + '-sm', (props.large || props.lg) && prefix + '-lg')
+        },
+        _react2.default.createElement(
+          'div',
+          { className: prefix + '-content' },
+          children
+        )
+      )
+    );
+
+    return _react2.default.createElement(
+      _Modal2.default,
+      {
+        keyboard: keyboard,
+        ref: function ref(_ref) {
+          _this3.modal = _ref && _ref.modal;
+          _this3.backdrop = _ref && _ref.backdrop;
+        },
+        container: container,
+        backdrop: props.backdrop,
+        show: props.show,
+        backdropStyle: backdrop,
+        backdropClassName: prefix + '-backdrop',
+        containerClassName: prefix + '-open',
+        transition: transition || undefined,
+        backdropTransition: transition ? BackdropTransition : undefined,
+        onHide: this.props.onHide,
+        onEnter: onEnter,
+        onEntering: this.handleEntering,
+        onEntered: onEntered,
+        onExit: onExit,
+        onExiting: this.handleExiting,
+        onExited: onExited
+      },
+      modal
+    );
+  };
+
+  Modal.prototype.attention = function attention() {
+    var _this4 = this;
+
+    var attentionClass = this.props.attentionClass;
+
+
+    if (attentionClass) this.setState({ classes: '' }, function () {
+      if (_this4.props.show) {
+        // eslint-disable-next-line no-unused-expressions
+        _this4.innerRef.offsetWidth;
+        _this4.setState({
+          classes: attentionClass + ' animated'
+        });
+      }
+    });
+  };
+
+  Modal.prototype.handleBackdropClick = function handleBackdropClick(e) {
+    if (e.target !== e.currentTarget) return;
+    if (this.props.backdrop === 'static') return this.attention();
+
+    this.props.onHide();
+  };
+
+  Modal.prototype._show = function _show() {
+    if (this.props.show) this.setState(this._getStyles());
+  };
+
+  Modal.prototype._getStyles = function _getStyles() {
+    if (!_inDOM2.default) return {};
+
+    var node = (0, _reactDom.findDOMNode)(this.dialog),
+        doc = (0, _ownerDocument2.default)(node),
+        scrollHt = node.scrollHeight,
+        bodyIsOverflowing = (0, _isOverflowing2.default)(this.props.container || doc.body),
+        modalIsOverflowing = scrollHt > doc.documentElement.clientHeight;
+
+    return {
+      dialog: {
+        zIndex: getZIndex('modal'),
+        paddingRight: bodyIsOverflowing && !modalIsOverflowing ? (0, _scrollbarSize2.default)() : void 0,
+        paddingLeft: !bodyIsOverflowing && modalIsOverflowing ? (0, _scrollbarSize2.default)() : void 0
+      },
+      backdrop: {
+        zIndex: getZIndex('backdrop')
+      }
+    };
+  };
+
+  Modal.prototype._removeAttentionClasses = function _removeAttentionClasses() {
+    this.setState({ classes: '' });
+  };
+
+  return Modal;
+}(_react2.default.Component);
+
+Modal.propTypes = {
+  show: _propTypes2.default.bool,
+
+  /** sizes **/
+  small: _propTypes2.default.bool,
+  sm: _propTypes2.default.bool,
+  large: _propTypes2.default.bool,
+  lg: _propTypes2.default.bool,
+  /** --- **/
+
+  backdrop: _propTypes2.default.oneOf(['static', true, false]),
+  keyboard: _propTypes2.default.bool,
+  animate: _propTypes2.default.bool,
+  transition: _propTypes2.default.any,
+  container: _propTypes2.default.oneOfType([_componentOrElement2.default, _propTypes2.default.func]),
+
+  onHide: _propTypes2.default.func,
+  onEnter: _propTypes2.default.func,
+  onEntering: _propTypes2.default.func,
+  onEntered: _propTypes2.default.func,
+  onExit: _propTypes2.default.func,
+  onExiting: _propTypes2.default.func,
+  onExited: _propTypes2.default.func,
+
+  modalPrefix: _propTypes2.default.string,
+  dialogClassName: _propTypes2.default.string,
+  attentionClass: _propTypes2.default.string
+};
+Modal.defaultProps = {
+  backdrop: true,
+  keyboard: true,
+  animate: true,
+  transition: true,
+  container: _inDOM2.default ? document.body : null,
+  attentionClass: 'shake',
+  manager: (_Modal2.default.getDefaultProps ? _Modal2.default.getDefaultProps() : _Modal2.default.defaultProps).manager
+};
+Modal.childContextTypes = {
+  onModalHide: _propTypes2.default.func
+};
+
+
+Modal.injectCSSPrefix = function (prefix) {
+  PREFIX = prefix;
+};
+
+function getDefaultPrefix() {
+  return PREFIX;
+}
+
+_Body2.default.getDefaultPrefix = getDefaultPrefix;
+_Header2.default.getDefaultPrefix = getDefaultPrefix;
+_Title2.default.getDefaultPrefix = getDefaultPrefix;
+_Footer2.default.getDefaultPrefix = getDefaultPrefix;
+
+Modal.Body = _Body2.default;
+Modal.Header = _Header2.default;
+Modal.Title = _Title2.default;
+Modal.Footer = _Footer2.default;
+Modal.Dismiss = _Dismiss2.default;
+
+Modal.BaseModal = Modal;
+
+Modal.TRANSITION_DURATION = 300;
+Modal.BACKDROP_TRANSITION_DURATION = 150;
+
+exports.default = Modal;
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/react-bootstrap-modal/lib/Title.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/react-bootstrap-modal/lib/Title.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ModalTitle = function (_React$Component) {
+  _inherits(ModalTitle, _React$Component);
+
+  function ModalTitle() {
+    _classCallCheck(this, ModalTitle);
+
+    return _possibleConstructorReturn(this, _React$Component.apply(this, arguments));
+  }
+
+  ModalTitle.getDefaultPrefix = function getDefaultPrefix() {
+    return 'modal';
+  };
+
+  ModalTitle.prototype.render = function render() {
+    var _props = this.props,
+        modalPrefix = _props.modalPrefix,
+        className = _props.className,
+        props = _objectWithoutProperties(_props, ['modalPrefix', 'className']);
+
+    var prefix = modalPrefix || ModalTitle.getDefaultPrefix();
+
+    return _react2.default.createElement('h4', _extends({}, props, {
+      className: (0, _classnames2.default)(className, prefix + '-title')
+    }));
+  };
+
+  return ModalTitle;
+}(_react2.default.Component);
+
+ModalTitle.propTypes = {
+  /**
+   * A css class applied to the Component
+   */
+  modalPrefix: _propTypes2.default.string
+};
+exports.default = ModalTitle;
+module.exports = exports['default'];
 
 /***/ }),
 
@@ -63484,6 +65384,2040 @@ function polyfill(Component) {
 
 /***/ }),
 
+/***/ "./node_modules/react-overlays/lib/LegacyPortal.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/react-overlays/lib/LegacyPortal.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _componentOrElement = __webpack_require__(/*! prop-types-extra/lib/componentOrElement */ "./node_modules/prop-types-extra/lib/componentOrElement.js");
+
+var _componentOrElement2 = _interopRequireDefault(_componentOrElement);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _getContainer = __webpack_require__(/*! ./utils/getContainer */ "./node_modules/react-overlays/lib/utils/getContainer.js");
+
+var _getContainer2 = _interopRequireDefault(_getContainer);
+
+var _ownerDocument = __webpack_require__(/*! ./utils/ownerDocument */ "./node_modules/react-overlays/lib/utils/ownerDocument.js");
+
+var _ownerDocument2 = _interopRequireDefault(_ownerDocument);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * The `<Portal/>` component renders its children into a new "subtree" outside of current component hierarchy.
+ * You can think of it as a declarative `appendChild()`, or jQuery's `$.fn.appendTo()`.
+ * The children of `<Portal/>` component will be appended to the `container` specified.
+ */
+var Portal = function (_React$Component) {
+  _inherits(Portal, _React$Component);
+
+  function Portal() {
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, Portal);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this._mountOverlayTarget = function () {
+      if (!_this._overlayTarget) {
+        _this._overlayTarget = document.createElement('div');
+        _this._portalContainerNode = (0, _getContainer2.default)(_this.props.container, (0, _ownerDocument2.default)(_this).body);
+        _this._portalContainerNode.appendChild(_this._overlayTarget);
+      }
+    }, _this._unmountOverlayTarget = function () {
+      if (_this._overlayTarget) {
+        _this._portalContainerNode.removeChild(_this._overlayTarget);
+        _this._overlayTarget = null;
+      }
+      _this._portalContainerNode = null;
+    }, _this._renderOverlay = function () {
+      var overlay = !_this.props.children ? null : _react2.default.Children.only(_this.props.children);
+
+      // Save reference for future access.
+      if (overlay !== null) {
+        _this._mountOverlayTarget();
+
+        var initialRender = !_this._overlayInstance;
+
+        _this._overlayInstance = _reactDom2.default.unstable_renderSubtreeIntoContainer(_this, overlay, _this._overlayTarget, function () {
+          if (initialRender && _this.props.onRendered) {
+            _this.props.onRendered();
+          }
+        });
+      } else {
+        // Unrender if the component is null for transitions to null
+        _this._unrenderOverlay();
+        _this._unmountOverlayTarget();
+      }
+    }, _this._unrenderOverlay = function () {
+      if (_this._overlayTarget) {
+        _reactDom2.default.unmountComponentAtNode(_this._overlayTarget);
+        _this._overlayInstance = null;
+      }
+    }, _this.getMountNode = function () {
+      return _this._overlayTarget;
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  Portal.prototype.componentDidMount = function componentDidMount() {
+    this._isMounted = true;
+    this._renderOverlay();
+  };
+
+  Portal.prototype.componentDidUpdate = function componentDidUpdate() {
+    this._renderOverlay();
+  };
+
+  Portal.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+    if (this._overlayTarget && nextProps.container !== this.props.container) {
+      this._portalContainerNode.removeChild(this._overlayTarget);
+      this._portalContainerNode = (0, _getContainer2.default)(nextProps.container, (0, _ownerDocument2.default)(this).body);
+      this._portalContainerNode.appendChild(this._overlayTarget);
+    }
+  };
+
+  Portal.prototype.componentWillUnmount = function componentWillUnmount() {
+    this._isMounted = false;
+    this._unrenderOverlay();
+    this._unmountOverlayTarget();
+  };
+
+  Portal.prototype.render = function render() {
+    return null;
+  };
+
+  return Portal;
+}(_react2.default.Component);
+
+Portal.displayName = 'Portal';
+Portal.propTypes = {
+  /**
+   * A Node, Component instance, or function that returns either. The `container` will have the Portal children
+   * appended to it.
+   */
+  container: _propTypes2.default.oneOfType([_componentOrElement2.default, _propTypes2.default.func]),
+
+  onRendered: _propTypes2.default.func
+};
+exports.default = Portal;
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/react-overlays/lib/Modal.js":
+/*!**************************************************!*\
+  !*** ./node_modules/react-overlays/lib/Modal.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _activeElement = __webpack_require__(/*! dom-helpers/activeElement */ "./node_modules/dom-helpers/activeElement.js");
+
+var _activeElement2 = _interopRequireDefault(_activeElement);
+
+var _contains = __webpack_require__(/*! dom-helpers/query/contains */ "./node_modules/dom-helpers/query/contains.js");
+
+var _contains2 = _interopRequireDefault(_contains);
+
+var _inDOM = __webpack_require__(/*! dom-helpers/util/inDOM */ "./node_modules/dom-helpers/util/inDOM.js");
+
+var _inDOM2 = _interopRequireDefault(_inDOM);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _componentOrElement = __webpack_require__(/*! prop-types-extra/lib/componentOrElement */ "./node_modules/prop-types-extra/lib/componentOrElement.js");
+
+var _componentOrElement2 = _interopRequireDefault(_componentOrElement);
+
+var _deprecated = __webpack_require__(/*! prop-types-extra/lib/deprecated */ "./node_modules/prop-types-extra/lib/deprecated.js");
+
+var _deprecated2 = _interopRequireDefault(_deprecated);
+
+var _elementType = __webpack_require__(/*! prop-types-extra/lib/elementType */ "./node_modules/prop-types-extra/lib/elementType.js");
+
+var _elementType2 = _interopRequireDefault(_elementType);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _warning = __webpack_require__(/*! warning */ "./node_modules/warning/browser.js");
+
+var _warning2 = _interopRequireDefault(_warning);
+
+var _ModalManager = __webpack_require__(/*! ./ModalManager */ "./node_modules/react-overlays/lib/ModalManager.js");
+
+var _ModalManager2 = _interopRequireDefault(_ModalManager);
+
+var _Portal = __webpack_require__(/*! ./Portal */ "./node_modules/react-overlays/lib/Portal.js");
+
+var _Portal2 = _interopRequireDefault(_Portal);
+
+var _RefHolder = __webpack_require__(/*! ./RefHolder */ "./node_modules/react-overlays/lib/RefHolder.js");
+
+var _RefHolder2 = _interopRequireDefault(_RefHolder);
+
+var _addEventListener = __webpack_require__(/*! ./utils/addEventListener */ "./node_modules/react-overlays/lib/utils/addEventListener.js");
+
+var _addEventListener2 = _interopRequireDefault(_addEventListener);
+
+var _addFocusListener = __webpack_require__(/*! ./utils/addFocusListener */ "./node_modules/react-overlays/lib/utils/addFocusListener.js");
+
+var _addFocusListener2 = _interopRequireDefault(_addFocusListener);
+
+var _getContainer = __webpack_require__(/*! ./utils/getContainer */ "./node_modules/react-overlays/lib/utils/getContainer.js");
+
+var _getContainer2 = _interopRequireDefault(_getContainer);
+
+var _ownerDocument = __webpack_require__(/*! ./utils/ownerDocument */ "./node_modules/react-overlays/lib/utils/ownerDocument.js");
+
+var _ownerDocument2 = _interopRequireDefault(_ownerDocument);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint-disable react/prop-types */
+
+var modalManager = new _ModalManager2.default();
+
+/**
+ * Love them or hate them, `<Modal/>` provides a solid foundation for creating dialogs, lightboxes, or whatever else.
+ * The Modal component renders its `children` node in front of a backdrop component.
+ *
+ * The Modal offers a few helpful features over using just a `<Portal/>` component and some styles:
+ *
+ * - Manages dialog stacking when one-at-a-time just isn't enough.
+ * - Creates a backdrop, for disabling interaction below the modal.
+ * - It properly manages focus; moving to the modal content, and keeping it there until the modal is closed.
+ * - It disables scrolling of the page content while open.
+ * - Adds the appropriate ARIA roles are automatically.
+ * - Easily pluggable animations via a `<Transition/>` component.
+ *
+ * Note that, in the same way the backdrop element prevents users from clicking or interacting
+ * with the page content underneath the Modal, Screen readers also need to be signaled to not to
+ * interact with page content while the Modal is open. To do this, we use a common technique of applying
+ * the `aria-hidden='true'` attribute to the non-Modal elements in the Modal `container`. This means that for
+ * a Modal to be truly modal, it should have a `container` that is _outside_ your app's
+ * React hierarchy (such as the default: document.body).
+ */
+
+var Modal = function (_React$Component) {
+  _inherits(Modal, _React$Component);
+
+  function Modal() {
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, Modal);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _initialiseProps.call(_this), _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  Modal.prototype.omitProps = function omitProps(props, propTypes) {
+
+    var keys = Object.keys(props);
+    var newProps = {};
+    keys.map(function (prop) {
+      if (!Object.prototype.hasOwnProperty.call(propTypes, prop)) {
+        newProps[prop] = props[prop];
+      }
+    });
+
+    return newProps;
+  };
+
+  Modal.prototype.render = function render() {
+    var _props = this.props,
+        show = _props.show,
+        container = _props.container,
+        children = _props.children,
+        Transition = _props.transition,
+        backdrop = _props.backdrop,
+        className = _props.className,
+        style = _props.style,
+        onExit = _props.onExit,
+        onExiting = _props.onExiting,
+        onEnter = _props.onEnter,
+        onEntering = _props.onEntering,
+        onEntered = _props.onEntered;
+
+
+    var dialog = _react2.default.Children.only(children);
+    var filteredProps = this.omitProps(this.props, Modal.propTypes);
+
+    var mountModal = show || Transition && !this.state.exited;
+    if (!mountModal) {
+      return null;
+    }
+
+    var _dialog$props = dialog.props,
+        role = _dialog$props.role,
+        tabIndex = _dialog$props.tabIndex;
+
+
+    if (role === undefined || tabIndex === undefined) {
+      dialog = (0, _react.cloneElement)(dialog, {
+        role: role === undefined ? 'document' : role,
+        tabIndex: tabIndex == null ? '-1' : tabIndex
+      });
+    }
+
+    if (Transition) {
+      dialog = _react2.default.createElement(
+        Transition,
+        {
+          appear: true,
+          unmountOnExit: true,
+          'in': show,
+          onExit: onExit,
+          onExiting: onExiting,
+          onExited: this.handleHidden,
+          onEnter: onEnter,
+          onEntering: onEntering,
+          onEntered: onEntered
+        },
+        dialog
+      );
+    }
+
+    return _react2.default.createElement(
+      _Portal2.default,
+      {
+        ref: this.setMountNode,
+        container: container,
+        onRendered: this.onPortalRendered
+      },
+      _react2.default.createElement(
+        'div',
+        _extends({
+          ref: this.setModalNodeRef,
+          role: role || 'dialog'
+        }, filteredProps, {
+          style: style,
+          className: className
+        }),
+        backdrop && this.renderBackdrop(),
+        _react2.default.createElement(
+          _RefHolder2.default,
+          { ref: this.setDialogRef },
+          dialog
+        )
+      )
+    );
+  };
+
+  Modal.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+    if (nextProps.show) {
+      this.setState({ exited: false });
+    } else if (!nextProps.transition) {
+      // Otherwise let handleHidden take care of marking exited.
+      this.setState({ exited: true });
+    }
+  };
+
+  Modal.prototype.componentWillUpdate = function componentWillUpdate(nextProps) {
+    if (!this.props.show && nextProps.show) {
+      this.checkForFocus();
+    }
+  };
+
+  Modal.prototype.componentDidMount = function componentDidMount() {
+    this._isMounted = true;
+    if (this.props.show) {
+      this.onShow();
+    }
+  };
+
+  Modal.prototype.componentDidUpdate = function componentDidUpdate(prevProps) {
+    var transition = this.props.transition;
+
+
+    if (prevProps.show && !this.props.show && !transition) {
+      // Otherwise handleHidden will call this.
+      this.onHide();
+    } else if (!prevProps.show && this.props.show) {
+      this.onShow();
+    }
+  };
+
+  Modal.prototype.componentWillUnmount = function componentWillUnmount() {
+    var _props2 = this.props,
+        show = _props2.show,
+        transition = _props2.transition;
+
+
+    this._isMounted = false;
+
+    if (show || transition && !this.state.exited) {
+      this.onHide();
+    }
+  };
+
+  Modal.prototype.autoFocus = function autoFocus() {
+    if (!this.props.autoFocus) {
+      return;
+    }
+
+    var dialogElement = this.getDialogElement();
+    var currentActiveElement = (0, _activeElement2.default)((0, _ownerDocument2.default)(this));
+
+    if (dialogElement && !(0, _contains2.default)(dialogElement, currentActiveElement)) {
+      this.lastFocus = currentActiveElement;
+
+      if (!dialogElement.hasAttribute('tabIndex')) {
+        (0, _warning2.default)(false, 'The modal content node does not accept focus. For the benefit of ' + 'assistive technologies, the tabIndex of the node is being set ' + 'to "-1".');
+
+        dialogElement.setAttribute('tabIndex', -1);
+      }
+
+      dialogElement.focus();
+    }
+  };
+
+  Modal.prototype.restoreLastFocus = function restoreLastFocus() {
+    // Support: <=IE11 doesn't support `focus()` on svg elements (RB: #917)
+    if (this.lastFocus && this.lastFocus.focus) {
+      this.lastFocus.focus();
+      this.lastFocus = null;
+    }
+  };
+
+  Modal.prototype.getDialogElement = function getDialogElement() {
+    return _reactDom2.default.findDOMNode(this.dialog);
+  };
+
+  Modal.prototype.isTopModal = function isTopModal() {
+    return this.props.manager.isTopModal(this);
+  };
+
+  return Modal;
+}(_react2.default.Component);
+
+Modal.propTypes = _extends({}, _Portal2.default.propTypes, {
+
+  /**
+   * Set the visibility of the Modal
+   */
+  show: _propTypes2.default.bool,
+
+  /**
+   * A Node, Component instance, or function that returns either. The Modal is appended to it's container element.
+   *
+   * For the sake of assistive technologies, the container should usually be the document body, so that the rest of the
+   * page content can be placed behind a virtual backdrop as well as a visual one.
+   */
+  container: _propTypes2.default.oneOfType([_componentOrElement2.default, _propTypes2.default.func]),
+
+  /**
+   * A callback fired when the Modal is opening.
+   */
+  onShow: _propTypes2.default.func,
+
+  /**
+   * A callback fired when either the backdrop is clicked, or the escape key is pressed.
+   *
+   * The `onHide` callback only signals intent from the Modal,
+   * you must actually set the `show` prop to `false` for the Modal to close.
+   */
+  onHide: _propTypes2.default.func,
+
+  /**
+   * Include a backdrop component.
+   */
+  backdrop: _propTypes2.default.oneOfType([_propTypes2.default.bool, _propTypes2.default.oneOf(['static'])]),
+
+  /**
+   * A function that returns a backdrop component. Useful for custom
+   * backdrop rendering.
+   *
+   * ```js
+   *  renderBackdrop={props => <MyBackdrop {...props} />}
+   * ```
+   */
+  renderBackdrop: _propTypes2.default.func,
+
+  /**
+   * A callback fired when the escape key, if specified in `keyboard`, is pressed.
+   */
+  onEscapeKeyDown: _propTypes2.default.func,
+
+  /**
+   * Support for this function will be deprecated. Please use `onEscapeKeyDown` instead
+   * A callback fired when the escape key, if specified in `keyboard`, is pressed.
+   * @deprecated
+   */
+  onEscapeKeyUp: (0, _deprecated2.default)(_propTypes2.default.func, 'Please use onEscapeKeyDown instead for consistency'),
+
+  /**
+   * A callback fired when the backdrop, if specified, is clicked.
+   */
+  onBackdropClick: _propTypes2.default.func,
+
+  /**
+   * A style object for the backdrop component.
+   */
+  backdropStyle: _propTypes2.default.object,
+
+  /**
+   * A css class or classes for the backdrop component.
+   */
+  backdropClassName: _propTypes2.default.string,
+
+  /**
+   * A css class or set of classes applied to the modal container when the modal is open,
+   * and removed when it is closed.
+   */
+  containerClassName: _propTypes2.default.string,
+
+  /**
+   * Close the modal when escape key is pressed
+   */
+  keyboard: _propTypes2.default.bool,
+
+  /**
+   * A `react-transition-group@2.0.0` `<Transition/>` component used
+   * to control animations for the dialog component.
+   */
+  transition: _elementType2.default,
+
+  /**
+   * A `react-transition-group@2.0.0` `<Transition/>` component used
+   * to control animations for the backdrop components.
+   */
+  backdropTransition: _elementType2.default,
+
+  /**
+   * When `true` The modal will automatically shift focus to itself when it opens, and
+   * replace it to the last focused element when it closes. This also
+   * works correctly with any Modal children that have the `autoFocus` prop.
+   *
+   * Generally this should never be set to `false` as it makes the Modal less
+   * accessible to assistive technologies, like screen readers.
+   */
+  autoFocus: _propTypes2.default.bool,
+
+  /**
+   * When `true` The modal will prevent focus from leaving the Modal while open.
+   *
+   * Generally this should never be set to `false` as it makes the Modal less
+   * accessible to assistive technologies, like screen readers.
+   */
+  enforceFocus: _propTypes2.default.bool,
+
+  /**
+   * When `true` The modal will restore focus to previously focused element once
+   * modal is hidden
+   */
+  restoreFocus: _propTypes2.default.bool,
+
+  /**
+   * Callback fired before the Modal transitions in
+   */
+  onEnter: _propTypes2.default.func,
+
+  /**
+   * Callback fired as the Modal begins to transition in
+   */
+  onEntering: _propTypes2.default.func,
+
+  /**
+   * Callback fired after the Modal finishes transitioning in
+   */
+  onEntered: _propTypes2.default.func,
+
+  /**
+   * Callback fired right before the Modal transitions out
+   */
+  onExit: _propTypes2.default.func,
+
+  /**
+   * Callback fired as the Modal begins to transition out
+   */
+  onExiting: _propTypes2.default.func,
+
+  /**
+   * Callback fired after the Modal finishes transitioning out
+   */
+  onExited: _propTypes2.default.func,
+
+  /**
+   * A ModalManager instance used to track and manage the state of open
+   * Modals. Useful when customizing how modals interact within a container
+   */
+  manager: _propTypes2.default.object.isRequired
+});
+Modal.defaultProps = {
+  show: false,
+  backdrop: true,
+  keyboard: true,
+  autoFocus: true,
+  enforceFocus: true,
+  restoreFocus: true,
+  onHide: function onHide() {},
+  manager: modalManager,
+  renderBackdrop: function renderBackdrop(props) {
+    return _react2.default.createElement('div', props);
+  }
+};
+
+var _initialiseProps = function _initialiseProps() {
+  var _this2 = this;
+
+  this.state = { exited: !this.props.show };
+
+  this.renderBackdrop = function () {
+    var _props3 = _this2.props,
+        backdropStyle = _props3.backdropStyle,
+        backdropClassName = _props3.backdropClassName,
+        renderBackdrop = _props3.renderBackdrop,
+        Transition = _props3.backdropTransition;
+
+
+    var backdropRef = function backdropRef(ref) {
+      return _this2.backdrop = ref;
+    };
+
+    var backdrop = renderBackdrop({
+      ref: backdropRef,
+      style: backdropStyle,
+      className: backdropClassName,
+      onClick: _this2.handleBackdropClick
+    });
+
+    if (Transition) {
+      backdrop = _react2.default.createElement(
+        Transition,
+        {
+          appear: true,
+          'in': _this2.props.show
+        },
+        backdrop
+      );
+    }
+
+    return backdrop;
+  };
+
+  this.onPortalRendered = function () {
+    _this2.autoFocus();
+
+    if (_this2.props.onShow) {
+      _this2.props.onShow();
+    }
+  };
+
+  this.onShow = function () {
+    var doc = (0, _ownerDocument2.default)(_this2);
+    var container = (0, _getContainer2.default)(_this2.props.container, doc.body);
+
+    _this2.props.manager.add(_this2, container, _this2.props.containerClassName);
+
+    _this2._onDocumentKeydownListener = (0, _addEventListener2.default)(doc, 'keydown', _this2.handleDocumentKeyDown);
+
+    _this2._onDocumentKeyupListener = (0, _addEventListener2.default)(doc, 'keyup', _this2.handleDocumentKeyUp);
+
+    _this2._onFocusinListener = (0, _addFocusListener2.default)(_this2.enforceFocus);
+  };
+
+  this.onHide = function () {
+    _this2.props.manager.remove(_this2);
+
+    _this2._onDocumentKeydownListener.remove();
+
+    _this2._onDocumentKeyupListener.remove();
+
+    _this2._onFocusinListener.remove();
+
+    if (_this2.props.restoreFocus) {
+      _this2.restoreLastFocus();
+    }
+  };
+
+  this.setMountNode = function (ref) {
+    _this2.mountNode = ref ? ref.getMountNode() : ref;
+  };
+
+  this.setModalNodeRef = function (ref) {
+    _this2.modalNode = ref;
+  };
+
+  this.setDialogRef = function (ref) {
+    _this2.dialog = ref;
+  };
+
+  this.handleHidden = function () {
+    _this2.setState({ exited: true });
+    _this2.onHide();
+
+    if (_this2.props.onExited) {
+      var _props4;
+
+      (_props4 = _this2.props).onExited.apply(_props4, arguments);
+    }
+  };
+
+  this.handleBackdropClick = function (e) {
+    if (e.target !== e.currentTarget) {
+      return;
+    }
+
+    if (_this2.props.onBackdropClick) {
+      _this2.props.onBackdropClick(e);
+    }
+
+    if (_this2.props.backdrop === true) {
+      _this2.props.onHide();
+    }
+  };
+
+  this.handleDocumentKeyDown = function (e) {
+    if (_this2.props.keyboard && e.keyCode === 27 && _this2.isTopModal()) {
+      if (_this2.props.onEscapeKeyDown) {
+        _this2.props.onEscapeKeyDown(e);
+      }
+
+      _this2.props.onHide();
+    }
+  };
+
+  this.handleDocumentKeyUp = function (e) {
+    if (_this2.props.keyboard && e.keyCode === 27 && _this2.isTopModal()) {
+      if (_this2.props.onEscapeKeyUp) {
+        _this2.props.onEscapeKeyUp(e);
+      }
+    }
+  };
+
+  this.checkForFocus = function () {
+    if (_inDOM2.default) {
+      _this2.lastFocus = (0, _activeElement2.default)();
+    }
+  };
+
+  this.enforceFocus = function () {
+    if (!_this2.props.enforceFocus || !_this2._isMounted || !_this2.isTopModal()) {
+      return;
+    }
+
+    var dialogElement = _this2.getDialogElement();
+    var currentActiveElement = (0, _activeElement2.default)((0, _ownerDocument2.default)(_this2));
+
+    if (dialogElement && !(0, _contains2.default)(dialogElement, currentActiveElement)) {
+      dialogElement.focus();
+    }
+  };
+};
+
+Modal.Manager = _ModalManager2.default;
+
+exports.default = Modal;
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/react-overlays/lib/ModalManager.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/react-overlays/lib/ModalManager.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _class = __webpack_require__(/*! dom-helpers/class */ "./node_modules/dom-helpers/class/index.js");
+
+var _class2 = _interopRequireDefault(_class);
+
+var _style = __webpack_require__(/*! dom-helpers/style */ "./node_modules/dom-helpers/style/index.js");
+
+var _style2 = _interopRequireDefault(_style);
+
+var _scrollbarSize = __webpack_require__(/*! dom-helpers/util/scrollbarSize */ "./node_modules/dom-helpers/util/scrollbarSize.js");
+
+var _scrollbarSize2 = _interopRequireDefault(_scrollbarSize);
+
+var _isOverflowing = __webpack_require__(/*! ./utils/isOverflowing */ "./node_modules/react-overlays/lib/utils/isOverflowing.js");
+
+var _isOverflowing2 = _interopRequireDefault(_isOverflowing);
+
+var _manageAriaHidden = __webpack_require__(/*! ./utils/manageAriaHidden */ "./node_modules/react-overlays/lib/utils/manageAriaHidden.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function findIndexOf(arr, cb) {
+  var idx = -1;
+  arr.some(function (d, i) {
+    if (cb(d, i)) {
+      idx = i;
+      return true;
+    }
+  });
+  return idx;
+}
+
+function findContainer(data, modal) {
+  return findIndexOf(data, function (d) {
+    return d.modals.indexOf(modal) !== -1;
+  });
+}
+
+function setContainerStyle(state, container) {
+  var style = { overflow: 'hidden' };
+
+  // we are only interested in the actual `style` here
+  // becasue we will override it
+  state.style = {
+    overflow: container.style.overflow,
+    paddingRight: container.style.paddingRight
+  };
+
+  if (state.overflowing) {
+    // use computed style, here to get the real padding
+    // to add our scrollbar width
+    style.paddingRight = parseInt((0, _style2.default)(container, 'paddingRight') || 0, 10) + (0, _scrollbarSize2.default)() + 'px';
+  }
+
+  (0, _style2.default)(container, style);
+}
+
+function removeContainerStyle(_ref, container) {
+  var style = _ref.style;
+
+
+  Object.keys(style).forEach(function (key) {
+    return container.style[key] = style[key];
+  });
+}
+/**
+ * Proper state managment for containers and the modals in those containers.
+ *
+ * @internal Used by the Modal to ensure proper styling of containers.
+ */
+
+var ModalManager = function ModalManager() {
+  var _this = this;
+
+  var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      _ref2$hideSiblingNode = _ref2.hideSiblingNodes,
+      hideSiblingNodes = _ref2$hideSiblingNode === undefined ? true : _ref2$hideSiblingNode,
+      _ref2$handleContainer = _ref2.handleContainerOverflow,
+      handleContainerOverflow = _ref2$handleContainer === undefined ? true : _ref2$handleContainer;
+
+  _classCallCheck(this, ModalManager);
+
+  this.add = function (modal, container, className) {
+    var modalIdx = _this.modals.indexOf(modal);
+    var containerIdx = _this.containers.indexOf(container);
+
+    if (modalIdx !== -1) {
+      return modalIdx;
+    }
+
+    modalIdx = _this.modals.length;
+    _this.modals.push(modal);
+
+    if (_this.hideSiblingNodes) {
+      (0, _manageAriaHidden.hideSiblings)(container, modal.mountNode);
+    }
+
+    if (containerIdx !== -1) {
+      _this.data[containerIdx].modals.push(modal);
+      return modalIdx;
+    }
+
+    var data = {
+      modals: [modal],
+      //right now only the first modal of a container will have its classes applied
+      classes: className ? className.split(/\s+/) : [],
+
+      overflowing: (0, _isOverflowing2.default)(container)
+    };
+
+    if (_this.handleContainerOverflow) {
+      setContainerStyle(data, container);
+    }
+
+    data.classes.forEach(_class2.default.addClass.bind(null, container));
+
+    _this.containers.push(container);
+    _this.data.push(data);
+
+    return modalIdx;
+  };
+
+  this.remove = function (modal) {
+    var modalIdx = _this.modals.indexOf(modal);
+
+    if (modalIdx === -1) {
+      return;
+    }
+
+    var containerIdx = findContainer(_this.data, modal);
+    var data = _this.data[containerIdx];
+    var container = _this.containers[containerIdx];
+
+    data.modals.splice(data.modals.indexOf(modal), 1);
+
+    _this.modals.splice(modalIdx, 1);
+
+    // if that was the last modal in a container,
+    // clean up the container
+    if (data.modals.length === 0) {
+      data.classes.forEach(_class2.default.removeClass.bind(null, container));
+
+      if (_this.handleContainerOverflow) {
+        removeContainerStyle(data, container);
+      }
+
+      if (_this.hideSiblingNodes) {
+        (0, _manageAriaHidden.showSiblings)(container, modal.mountNode);
+      }
+      _this.containers.splice(containerIdx, 1);
+      _this.data.splice(containerIdx, 1);
+    } else if (_this.hideSiblingNodes) {
+      //otherwise make sure the next top modal is visible to a SR
+      (0, _manageAriaHidden.ariaHidden)(false, data.modals[data.modals.length - 1].mountNode);
+    }
+  };
+
+  this.isTopModal = function (modal) {
+    return !!_this.modals.length && _this.modals[_this.modals.length - 1] === modal;
+  };
+
+  this.hideSiblingNodes = hideSiblingNodes;
+  this.handleContainerOverflow = handleContainerOverflow;
+  this.modals = [];
+  this.containers = [];
+  this.data = [];
+};
+
+exports.default = ModalManager;
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/react-overlays/lib/Portal.js":
+/*!***************************************************!*\
+  !*** ./node_modules/react-overlays/lib/Portal.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _componentOrElement = __webpack_require__(/*! prop-types-extra/lib/componentOrElement */ "./node_modules/prop-types-extra/lib/componentOrElement.js");
+
+var _componentOrElement2 = _interopRequireDefault(_componentOrElement);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _getContainer = __webpack_require__(/*! ./utils/getContainer */ "./node_modules/react-overlays/lib/utils/getContainer.js");
+
+var _getContainer2 = _interopRequireDefault(_getContainer);
+
+var _ownerDocument = __webpack_require__(/*! ./utils/ownerDocument */ "./node_modules/react-overlays/lib/utils/ownerDocument.js");
+
+var _ownerDocument2 = _interopRequireDefault(_ownerDocument);
+
+var _LegacyPortal = __webpack_require__(/*! ./LegacyPortal */ "./node_modules/react-overlays/lib/LegacyPortal.js");
+
+var _LegacyPortal2 = _interopRequireDefault(_LegacyPortal);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * The `<Portal/>` component renders its children into a new "subtree" outside of current component hierarchy.
+ * You can think of it as a declarative `appendChild()`, or jQuery's `$.fn.appendTo()`.
+ * The children of `<Portal/>` component will be appended to the `container` specified.
+ */
+var Portal = function (_React$Component) {
+  _inherits(Portal, _React$Component);
+
+  function Portal() {
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, Portal);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _React$Component.call.apply(_React$Component, [this].concat(args))), _this), _this.setContainer = function () {
+      var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this.props;
+
+      _this._portalContainerNode = (0, _getContainer2.default)(props.container, (0, _ownerDocument2.default)(_this).body);
+    }, _this.getMountNode = function () {
+      return _this._portalContainerNode;
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  Portal.prototype.componentDidMount = function componentDidMount() {
+    this.setContainer();
+    this.forceUpdate(this.props.onRendered);
+  };
+
+  Portal.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+    if (nextProps.container !== this.props.container) {
+      this.setContainer(nextProps);
+    }
+  };
+
+  Portal.prototype.componentWillUnmount = function componentWillUnmount() {
+    this._portalContainerNode = null;
+  };
+
+  Portal.prototype.render = function render() {
+    return this.props.children && this._portalContainerNode ? _reactDom2.default.createPortal(this.props.children, this._portalContainerNode) : null;
+  };
+
+  return Portal;
+}(_react2.default.Component);
+
+Portal.displayName = 'Portal';
+Portal.propTypes = {
+  /**
+   * A Node, Component instance, or function that returns either. The `container` will have the Portal children
+   * appended to it.
+   */
+  container: _propTypes2.default.oneOfType([_componentOrElement2.default, _propTypes2.default.func]),
+
+  onRendered: _propTypes2.default.func
+};
+exports.default = _reactDom2.default.createPortal ? Portal : _LegacyPortal2.default;
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/react-overlays/lib/RefHolder.js":
+/*!******************************************************!*\
+  !*** ./node_modules/react-overlays/lib/RefHolder.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var propTypes = {
+  children: _propTypes2.default.node
+};
+
+/**
+ * Internal helper component to allow attaching a non-conflicting ref to a
+ * child element that may not accept refs.
+ */
+
+var RefHolder = function (_React$Component) {
+  _inherits(RefHolder, _React$Component);
+
+  function RefHolder() {
+    _classCallCheck(this, RefHolder);
+
+    return _possibleConstructorReturn(this, _React$Component.apply(this, arguments));
+  }
+
+  RefHolder.prototype.render = function render() {
+    return this.props.children;
+  };
+
+  return RefHolder;
+}(_react2.default.Component);
+
+RefHolder.propTypes = propTypes;
+
+exports.default = RefHolder;
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/react-overlays/lib/utils/addEventListener.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/react-overlays/lib/utils/addEventListener.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+exports.default = function (node, event, handler, capture) {
+  (0, _on2.default)(node, event, handler, capture);
+
+  return {
+    remove: function remove() {
+      (0, _off2.default)(node, event, handler, capture);
+    }
+  };
+};
+
+var _on = __webpack_require__(/*! dom-helpers/events/on */ "./node_modules/dom-helpers/events/on.js");
+
+var _on2 = _interopRequireDefault(_on);
+
+var _off = __webpack_require__(/*! dom-helpers/events/off */ "./node_modules/dom-helpers/events/off.js");
+
+var _off2 = _interopRequireDefault(_off);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/react-overlays/lib/utils/addFocusListener.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/react-overlays/lib/utils/addFocusListener.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = addFocusListener;
+/**
+ * Firefox doesn't have a focusin event so using capture is easiest way to get bubbling
+ * IE8 can't do addEventListener, but does have onfocusin, so we use that in ie8
+ *
+ * We only allow one Listener at a time to avoid stack overflows
+ */
+function addFocusListener(handler) {
+  var useFocusin = !document.addEventListener;
+  var remove = void 0;
+
+  if (useFocusin) {
+    document.attachEvent('onfocusin', handler);
+    remove = function remove() {
+      return document.detachEvent('onfocusin', handler);
+    };
+  } else {
+    document.addEventListener('focus', handler, true);
+    remove = function remove() {
+      return document.removeEventListener('focus', handler, true);
+    };
+  }
+
+  return { remove: remove };
+}
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/react-overlays/lib/utils/getContainer.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/react-overlays/lib/utils/getContainer.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = getContainer;
+
+var _reactDom = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function getContainer(container, defaultContainer) {
+  container = typeof container === 'function' ? container() : container;
+  return _reactDom2.default.findDOMNode(container) || defaultContainer;
+}
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/react-overlays/lib/utils/isOverflowing.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/react-overlays/lib/utils/isOverflowing.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = isOverflowing;
+
+var _isWindow = __webpack_require__(/*! dom-helpers/query/isWindow */ "./node_modules/dom-helpers/query/isWindow.js");
+
+var _isWindow2 = _interopRequireDefault(_isWindow);
+
+var _ownerDocument = __webpack_require__(/*! dom-helpers/ownerDocument */ "./node_modules/dom-helpers/ownerDocument.js");
+
+var _ownerDocument2 = _interopRequireDefault(_ownerDocument);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function isBody(node) {
+  return node && node.tagName.toLowerCase() === 'body';
+}
+
+function bodyIsOverflowing(node) {
+  var doc = (0, _ownerDocument2.default)(node);
+  var win = (0, _isWindow2.default)(doc);
+  var fullWidth = win.innerWidth;
+
+  // Support: ie8, no innerWidth
+  if (!fullWidth) {
+    var documentElementRect = doc.documentElement.getBoundingClientRect();
+    fullWidth = documentElementRect.right - Math.abs(documentElementRect.left);
+  }
+
+  return doc.body.clientWidth < fullWidth;
+}
+
+function isOverflowing(container) {
+  var win = (0, _isWindow2.default)(container);
+
+  return win || isBody(container) ? bodyIsOverflowing(container) : container.scrollHeight > container.clientHeight;
+}
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/react-overlays/lib/utils/manageAriaHidden.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/react-overlays/lib/utils/manageAriaHidden.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.ariaHidden = ariaHidden;
+exports.hideSiblings = hideSiblings;
+exports.showSiblings = showSiblings;
+
+var BLACKLIST = ['template', 'script', 'style'];
+
+var isHidable = function isHidable(_ref) {
+  var nodeType = _ref.nodeType,
+      tagName = _ref.tagName;
+  return nodeType === 1 && BLACKLIST.indexOf(tagName.toLowerCase()) === -1;
+};
+
+var siblings = function siblings(container, mount, cb) {
+  mount = [].concat(mount);
+
+  [].forEach.call(container.children, function (node) {
+    if (mount.indexOf(node) === -1 && isHidable(node)) {
+      cb(node);
+    }
+  });
+};
+
+function ariaHidden(show, node) {
+  if (!node) {
+    return;
+  }
+  if (show) {
+    node.setAttribute('aria-hidden', 'true');
+  } else {
+    node.removeAttribute('aria-hidden');
+  }
+}
+
+function hideSiblings(container, mountNode) {
+  siblings(container, mountNode, function (node) {
+    return ariaHidden(true, node);
+  });
+}
+
+function showSiblings(container, mountNode) {
+  siblings(container, mountNode, function (node) {
+    return ariaHidden(false, node);
+  });
+}
+
+/***/ }),
+
+/***/ "./node_modules/react-overlays/lib/utils/ownerDocument.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/react-overlays/lib/utils/ownerDocument.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+exports.default = function (componentOrElement) {
+  return (0, _ownerDocument2.default)(_reactDom2.default.findDOMNode(componentOrElement));
+};
+
+var _reactDom = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _ownerDocument = __webpack_require__(/*! dom-helpers/ownerDocument */ "./node_modules/dom-helpers/ownerDocument.js");
+
+var _ownerDocument2 = _interopRequireDefault(_ownerDocument);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/react-transition-group/Transition.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/react-transition-group/Transition.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = exports.EXITING = exports.ENTERED = exports.ENTERING = exports.EXITED = exports.UNMOUNTED = void 0;
+
+var PropTypes = _interopRequireWildcard(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var _reactDom = _interopRequireDefault(__webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js"));
+
+var _reactLifecyclesCompat = __webpack_require__(/*! react-lifecycles-compat */ "./node_modules/react-lifecycles-compat/react-lifecycles-compat.es.js");
+
+var _PropTypes = __webpack_require__(/*! ./utils/PropTypes */ "./node_modules/react-transition-group/utils/PropTypes.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
+
+var UNMOUNTED = 'unmounted';
+exports.UNMOUNTED = UNMOUNTED;
+var EXITED = 'exited';
+exports.EXITED = EXITED;
+var ENTERING = 'entering';
+exports.ENTERING = ENTERING;
+var ENTERED = 'entered';
+exports.ENTERED = ENTERED;
+var EXITING = 'exiting';
+/**
+ * The Transition component lets you describe a transition from one component
+ * state to another _over time_ with a simple declarative API. Most commonly
+ * it's used to animate the mounting and unmounting of a component, but can also
+ * be used to describe in-place transition states as well.
+ *
+ * ---
+ *
+ * **Note**: `Transition` is a platform-agnostic base component. If you're using
+ * transitions in CSS, you'll probably want to use
+ * [`CSSTransition`](https://reactcommunity.org/react-transition-group/css-transition)
+ * instead. It inherits all the features of `Transition`, but contains
+ * additional features necessary to play nice with CSS transitions (hence the
+ * name of the component).
+ *
+ * ---
+ *
+ * By default the `Transition` component does not alter the behavior of the
+ * component it renders, it only tracks "enter" and "exit" states for the
+ * components. It's up to you to give meaning and effect to those states. For
+ * example we can add styles to a component when it enters or exits:
+ *
+ * ```jsx
+ * import { Transition } from 'react-transition-group';
+ *
+ * const duration = 300;
+ *
+ * const defaultStyle = {
+ *   transition: `opacity ${duration}ms ease-in-out`,
+ *   opacity: 0,
+ * }
+ *
+ * const transitionStyles = {
+ *   entering: { opacity: 0 },
+ *   entered:  { opacity: 1 },
+ * };
+ *
+ * const Fade = ({ in: inProp }) => (
+ *   <Transition in={inProp} timeout={duration}>
+ *     {state => (
+ *       <div style={{
+ *         ...defaultStyle,
+ *         ...transitionStyles[state]
+ *       }}>
+ *         I'm a fade Transition!
+ *       </div>
+ *     )}
+ *   </Transition>
+ * );
+ * ```
+ *
+ * There are 4 main states a Transition can be in:
+ *  - `'entering'`
+ *  - `'entered'`
+ *  - `'exiting'`
+ *  - `'exited'`
+ *
+ * Transition state is toggled via the `in` prop. When `true` the component
+ * begins the "Enter" stage. During this stage, the component will shift from
+ * its current transition state, to `'entering'` for the duration of the
+ * transition and then to the `'entered'` stage once it's complete. Let's take
+ * the following example (we'll use the
+ * [useState](https://reactjs.org/docs/hooks-reference.html#usestate) hook):
+ *
+ * ```jsx
+ * function App() {
+ *   const [inProp, setInProp] = useState(false);
+ *   return (
+ *     <div>
+ *       <Transition in={inProp} timeout={500}>
+ *         {state => (
+ *           // ...
+ *         )}
+ *       </Transition>
+ *       <button onClick={() => setInProp(true)}>
+ *         Click to Enter
+ *       </button>
+ *     </div>
+ *   );
+ * }
+ * ```
+ *
+ * When the button is clicked the component will shift to the `'entering'` state
+ * and stay there for 500ms (the value of `timeout`) before it finally switches
+ * to `'entered'`.
+ *
+ * When `in` is `false` the same thing happens except the state moves from
+ * `'exiting'` to `'exited'`.
+ */
+
+exports.EXITING = EXITING;
+
+var Transition =
+/*#__PURE__*/
+function (_React$Component) {
+  _inheritsLoose(Transition, _React$Component);
+
+  function Transition(props, context) {
+    var _this;
+
+    _this = _React$Component.call(this, props, context) || this;
+    var parentGroup = context.transitionGroup; // In the context of a TransitionGroup all enters are really appears
+
+    var appear = parentGroup && !parentGroup.isMounting ? props.enter : props.appear;
+    var initialStatus;
+    _this.appearStatus = null;
+
+    if (props.in) {
+      if (appear) {
+        initialStatus = EXITED;
+        _this.appearStatus = ENTERING;
+      } else {
+        initialStatus = ENTERED;
+      }
+    } else {
+      if (props.unmountOnExit || props.mountOnEnter) {
+        initialStatus = UNMOUNTED;
+      } else {
+        initialStatus = EXITED;
+      }
+    }
+
+    _this.state = {
+      status: initialStatus
+    };
+    _this.nextCallback = null;
+    return _this;
+  }
+
+  var _proto = Transition.prototype;
+
+  _proto.getChildContext = function getChildContext() {
+    return {
+      transitionGroup: null // allows for nested Transitions
+
+    };
+  };
+
+  Transition.getDerivedStateFromProps = function getDerivedStateFromProps(_ref, prevState) {
+    var nextIn = _ref.in;
+
+    if (nextIn && prevState.status === UNMOUNTED) {
+      return {
+        status: EXITED
+      };
+    }
+
+    return null;
+  }; // getSnapshotBeforeUpdate(prevProps) {
+  //   let nextStatus = null
+  //   if (prevProps !== this.props) {
+  //     const { status } = this.state
+  //     if (this.props.in) {
+  //       if (status !== ENTERING && status !== ENTERED) {
+  //         nextStatus = ENTERING
+  //       }
+  //     } else {
+  //       if (status === ENTERING || status === ENTERED) {
+  //         nextStatus = EXITING
+  //       }
+  //     }
+  //   }
+  //   return { nextStatus }
+  // }
+
+
+  _proto.componentDidMount = function componentDidMount() {
+    this.updateStatus(true, this.appearStatus);
+  };
+
+  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+    var nextStatus = null;
+
+    if (prevProps !== this.props) {
+      var status = this.state.status;
+
+      if (this.props.in) {
+        if (status !== ENTERING && status !== ENTERED) {
+          nextStatus = ENTERING;
+        }
+      } else {
+        if (status === ENTERING || status === ENTERED) {
+          nextStatus = EXITING;
+        }
+      }
+    }
+
+    this.updateStatus(false, nextStatus);
+  };
+
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    this.cancelNextCallback();
+  };
+
+  _proto.getTimeouts = function getTimeouts() {
+    var timeout = this.props.timeout;
+    var exit, enter, appear;
+    exit = enter = appear = timeout;
+
+    if (timeout != null && typeof timeout !== 'number') {
+      exit = timeout.exit;
+      enter = timeout.enter; // TODO: remove fallback for next major
+
+      appear = timeout.appear !== undefined ? timeout.appear : enter;
+    }
+
+    return {
+      exit: exit,
+      enter: enter,
+      appear: appear
+    };
+  };
+
+  _proto.updateStatus = function updateStatus(mounting, nextStatus) {
+    if (mounting === void 0) {
+      mounting = false;
+    }
+
+    if (nextStatus !== null) {
+      // nextStatus will always be ENTERING or EXITING.
+      this.cancelNextCallback();
+
+      var node = _reactDom.default.findDOMNode(this);
+
+      if (nextStatus === ENTERING) {
+        this.performEnter(node, mounting);
+      } else {
+        this.performExit(node);
+      }
+    } else if (this.props.unmountOnExit && this.state.status === EXITED) {
+      this.setState({
+        status: UNMOUNTED
+      });
+    }
+  };
+
+  _proto.performEnter = function performEnter(node, mounting) {
+    var _this2 = this;
+
+    var enter = this.props.enter;
+    var appearing = this.context.transitionGroup ? this.context.transitionGroup.isMounting : mounting;
+    var timeouts = this.getTimeouts();
+    var enterTimeout = appearing ? timeouts.appear : timeouts.enter; // no enter animation skip right to ENTERED
+    // if we are mounting and running this it means appear _must_ be set
+
+    if (!mounting && !enter) {
+      this.safeSetState({
+        status: ENTERED
+      }, function () {
+        _this2.props.onEntered(node);
+      });
+      return;
+    }
+
+    this.props.onEnter(node, appearing);
+    this.safeSetState({
+      status: ENTERING
+    }, function () {
+      _this2.props.onEntering(node, appearing);
+
+      _this2.onTransitionEnd(node, enterTimeout, function () {
+        _this2.safeSetState({
+          status: ENTERED
+        }, function () {
+          _this2.props.onEntered(node, appearing);
+        });
+      });
+    });
+  };
+
+  _proto.performExit = function performExit(node) {
+    var _this3 = this;
+
+    var exit = this.props.exit;
+    var timeouts = this.getTimeouts(); // no exit animation skip right to EXITED
+
+    if (!exit) {
+      this.safeSetState({
+        status: EXITED
+      }, function () {
+        _this3.props.onExited(node);
+      });
+      return;
+    }
+
+    this.props.onExit(node);
+    this.safeSetState({
+      status: EXITING
+    }, function () {
+      _this3.props.onExiting(node);
+
+      _this3.onTransitionEnd(node, timeouts.exit, function () {
+        _this3.safeSetState({
+          status: EXITED
+        }, function () {
+          _this3.props.onExited(node);
+        });
+      });
+    });
+  };
+
+  _proto.cancelNextCallback = function cancelNextCallback() {
+    if (this.nextCallback !== null) {
+      this.nextCallback.cancel();
+      this.nextCallback = null;
+    }
+  };
+
+  _proto.safeSetState = function safeSetState(nextState, callback) {
+    // This shouldn't be necessary, but there are weird race conditions with
+    // setState callbacks and unmounting in testing, so always make sure that
+    // we can cancel any pending setState callbacks after we unmount.
+    callback = this.setNextCallback(callback);
+    this.setState(nextState, callback);
+  };
+
+  _proto.setNextCallback = function setNextCallback(callback) {
+    var _this4 = this;
+
+    var active = true;
+
+    this.nextCallback = function (event) {
+      if (active) {
+        active = false;
+        _this4.nextCallback = null;
+        callback(event);
+      }
+    };
+
+    this.nextCallback.cancel = function () {
+      active = false;
+    };
+
+    return this.nextCallback;
+  };
+
+  _proto.onTransitionEnd = function onTransitionEnd(node, timeout, handler) {
+    this.setNextCallback(handler);
+    var doesNotHaveTimeoutOrListener = timeout == null && !this.props.addEndListener;
+
+    if (!node || doesNotHaveTimeoutOrListener) {
+      setTimeout(this.nextCallback, 0);
+      return;
+    }
+
+    if (this.props.addEndListener) {
+      this.props.addEndListener(node, this.nextCallback);
+    }
+
+    if (timeout != null) {
+      setTimeout(this.nextCallback, timeout);
+    }
+  };
+
+  _proto.render = function render() {
+    var status = this.state.status;
+
+    if (status === UNMOUNTED) {
+      return null;
+    }
+
+    var _this$props = this.props,
+        children = _this$props.children,
+        childProps = _objectWithoutPropertiesLoose(_this$props, ["children"]); // filter props for Transtition
+
+
+    delete childProps.in;
+    delete childProps.mountOnEnter;
+    delete childProps.unmountOnExit;
+    delete childProps.appear;
+    delete childProps.enter;
+    delete childProps.exit;
+    delete childProps.timeout;
+    delete childProps.addEndListener;
+    delete childProps.onEnter;
+    delete childProps.onEntering;
+    delete childProps.onEntered;
+    delete childProps.onExit;
+    delete childProps.onExiting;
+    delete childProps.onExited;
+
+    if (typeof children === 'function') {
+      return children(status, childProps);
+    }
+
+    var child = _react.default.Children.only(children);
+
+    return _react.default.cloneElement(child, childProps);
+  };
+
+  return Transition;
+}(_react.default.Component);
+
+Transition.contextTypes = {
+  transitionGroup: PropTypes.object
+};
+Transition.childContextTypes = {
+  transitionGroup: function transitionGroup() {}
+};
+Transition.propTypes =  true ? {
+  /**
+   * A `function` child can be used instead of a React element. This function is
+   * called with the current transition status (`'entering'`, `'entered'`,
+   * `'exiting'`, `'exited'`, `'unmounted'`), which can be used to apply context
+   * specific props to a component.
+   *
+   * ```jsx
+   * <Transition in={this.state.in} timeout={150}>
+   *   {state => (
+   *     <MyComponent className={`fade fade-${state}`} />
+   *   )}
+   * </Transition>
+   * ```
+   */
+  children: PropTypes.oneOfType([PropTypes.func.isRequired, PropTypes.element.isRequired]).isRequired,
+
+  /**
+   * Show the component; triggers the enter or exit states
+   */
+  in: PropTypes.bool,
+
+  /**
+   * By default the child component is mounted immediately along with
+   * the parent `Transition` component. If you want to "lazy mount" the component on the
+   * first `in={true}` you can set `mountOnEnter`. After the first enter transition the component will stay
+   * mounted, even on "exited", unless you also specify `unmountOnExit`.
+   */
+  mountOnEnter: PropTypes.bool,
+
+  /**
+   * By default the child component stays mounted after it reaches the `'exited'` state.
+   * Set `unmountOnExit` if you'd prefer to unmount the component after it finishes exiting.
+   */
+  unmountOnExit: PropTypes.bool,
+
+  /**
+   * Normally a component is not transitioned if it is shown when the `<Transition>` component mounts.
+   * If you want to transition on the first mount set `appear` to `true`, and the
+   * component will transition in as soon as the `<Transition>` mounts.
+   *
+   * > Note: there are no specific "appear" states. `appear` only adds an additional `enter` transition.
+   */
+  appear: PropTypes.bool,
+
+  /**
+   * Enable or disable enter transitions.
+   */
+  enter: PropTypes.bool,
+
+  /**
+   * Enable or disable exit transitions.
+   */
+  exit: PropTypes.bool,
+
+  /**
+   * The duration of the transition, in milliseconds.
+   * Required unless `addEndListener` is provided.
+   *
+   * You may specify a single timeout for all transitions:
+   *
+   * ```jsx
+   * timeout={500}
+   * ```
+   *
+   * or individually:
+   *
+   * ```jsx
+   * timeout={{
+   *  appear: 500,
+   *  enter: 300,
+   *  exit: 500,
+   * }}
+   * ```
+   *
+   * - `appear` defaults to the value of `enter`
+   * - `enter` defaults to `0`
+   * - `exit` defaults to `0`
+   *
+   * @type {number | { enter?: number, exit?: number, appear?: number }}
+   */
+  timeout: function timeout(props) {
+    var pt = _PropTypes.timeoutsShape;
+    if (!props.addEndListener) pt = pt.isRequired;
+
+    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    return pt.apply(void 0, [props].concat(args));
+  },
+
+  /**
+   * Add a custom transition end trigger. Called with the transitioning
+   * DOM node and a `done` callback. Allows for more fine grained transition end
+   * logic. **Note:** Timeouts are still used as a fallback if provided.
+   *
+   * ```jsx
+   * addEndListener={(node, done) => {
+   *   // use the css transitionend event to mark the finish of a transition
+   *   node.addEventListener('transitionend', done, false);
+   * }}
+   * ```
+   */
+  addEndListener: PropTypes.func,
+
+  /**
+   * Callback fired before the "entering" status is applied. An extra parameter
+   * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
+   *
+   * @type Function(node: HtmlElement, isAppearing: bool) -> void
+   */
+  onEnter: PropTypes.func,
+
+  /**
+   * Callback fired after the "entering" status is applied. An extra parameter
+   * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
+   *
+   * @type Function(node: HtmlElement, isAppearing: bool)
+   */
+  onEntering: PropTypes.func,
+
+  /**
+   * Callback fired after the "entered" status is applied. An extra parameter
+   * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
+   *
+   * @type Function(node: HtmlElement, isAppearing: bool) -> void
+   */
+  onEntered: PropTypes.func,
+
+  /**
+   * Callback fired before the "exiting" status is applied.
+   *
+   * @type Function(node: HtmlElement) -> void
+   */
+  onExit: PropTypes.func,
+
+  /**
+   * Callback fired after the "exiting" status is applied.
+   *
+   * @type Function(node: HtmlElement) -> void
+   */
+  onExiting: PropTypes.func,
+
+  /**
+   * Callback fired after the "exited" status is applied.
+   *
+   * @type Function(node: HtmlElement) -> void
+   */
+  onExited: PropTypes.func // Name the function so it is clearer in the documentation
+
+} : undefined;
+
+function noop() {}
+
+Transition.defaultProps = {
+  in: false,
+  mountOnEnter: false,
+  unmountOnExit: false,
+  appear: false,
+  enter: true,
+  exit: true,
+  onEnter: noop,
+  onEntering: noop,
+  onEntered: noop,
+  onExit: noop,
+  onExiting: noop,
+  onExited: noop
+};
+Transition.UNMOUNTED = 0;
+Transition.EXITED = 1;
+Transition.ENTERING = 2;
+Transition.ENTERED = 3;
+Transition.EXITING = 4;
+
+var _default = (0, _reactLifecyclesCompat.polyfill)(Transition);
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./node_modules/react-transition-group/utils/PropTypes.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/react-transition-group/utils/PropTypes.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.classNamesShape = exports.timeoutsShape = void 0;
+
+var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var timeoutsShape =  true ? _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.shape({
+  enter: _propTypes.default.number,
+  exit: _propTypes.default.number,
+  appear: _propTypes.default.number
+}).isRequired]) : undefined;
+exports.timeoutsShape = timeoutsShape;
+var classNamesShape =  true ? _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.shape({
+  enter: _propTypes.default.string,
+  exit: _propTypes.default.string,
+  active: _propTypes.default.string
+}), _propTypes.default.shape({
+  enter: _propTypes.default.string,
+  enterDone: _propTypes.default.string,
+  enterActive: _propTypes.default.string,
+  exit: _propTypes.default.string,
+  exitDone: _propTypes.default.string,
+  exitActive: _propTypes.default.string
+})]) : undefined;
+exports.classNamesShape = classNamesShape;
+
+/***/ }),
+
 /***/ "./node_modules/react/cjs/react.development.js":
 /*!*****************************************************!*\
   !*** ./node_modules/react/cjs/react.development.js ***!
@@ -67104,6 +71038,78 @@ module.exports = function (css) {
 
 /***/ }),
 
+/***/ "./node_modules/warning/browser.js":
+/*!*****************************************!*\
+  !*** ./node_modules/warning/browser.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright 2014-2015, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
+
+
+
+/**
+ * Similar to invariant but only logs a warning if the condition is not met.
+ * This can be used to log issues in development environments in critical
+ * paths. Removing the logging code for production environments will keep the
+ * same logic and follow the same code paths.
+ */
+
+var warning = function() {};
+
+if (true) {
+  warning = function(condition, format, args) {
+    var len = arguments.length;
+    args = new Array(len > 2 ? len - 2 : 0);
+    for (var key = 2; key < len; key++) {
+      args[key - 2] = arguments[key];
+    }
+    if (format === undefined) {
+      throw new Error(
+        '`warning(condition, format, ...args)` requires a warning ' +
+        'message argument'
+      );
+    }
+
+    if (format.length < 10 || (/^[s\W]*$/).test(format)) {
+      throw new Error(
+        'The warning format should be able to uniquely identify this ' +
+        'warning. Please, use a more descriptive format than: ' + format
+      );
+    }
+
+    if (!condition) {
+      var argIndex = 0;
+      var message = 'Warning: ' +
+        format.replace(/%s/g, function() {
+          return args[argIndex++];
+        });
+      if (typeof console !== 'undefined') {
+        console.error(message);
+      }
+      try {
+        // This error was thrown as a convenience so that you can use this stack
+        // to find the callsite that caused this warning to fire.
+        throw new Error(message);
+      } catch(x) {}
+    }
+  };
+}
+
+module.exports = warning;
+
+
+/***/ }),
+
 /***/ "./node_modules/webpack/buildin/global.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -67985,7 +71991,7 @@ function BreadCrumb(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
     clickHandler: props.change,
     displayList: "nav-list no-padding flex-row",
-    container: "inline-block v-align-center",
+    container: "inline-block v-align-center v-padding",
     elems: props.items
   }));
 }
@@ -68093,6 +72099,42 @@ function Paginado(props) {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(Paginado));
+
+/***/ }),
+
+/***/ "./resources/js/componentes/input/Numeric.jsx":
+/*!****************************************************!*\
+  !*** ./resources/js/componentes/input/Numeric.jsx ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+
+ //holds reservation state
+
+function Numeric(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: props.container ? props.container : ""
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "highlight no-margin bold"
+  }, props.titulo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: props.classes
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "number",
+    name: props.name,
+    className: "full-width box-transparent",
+    onChange: props.changeValue,
+    value: props.value
+  })));
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(Numeric));
 
 /***/ }),
 
@@ -68233,7 +72275,7 @@ function Text(props) {
     rows: props.rows,
     className: "full-width box-transparent",
     onChange: props.changeValue,
-    defaultValue: props.value
+    value: props.value
   })));
 }
 
@@ -68407,7 +72449,7 @@ var sidebar = [//get on ajax request
 }, {
   data: "1",
   disabled: false,
-  title: "Reservas",
+  title: "Reservaciones",
   sub: [{
     title: "Configuración",
     data: "0"
@@ -68415,7 +72457,7 @@ var sidebar = [//get on ajax request
 }, {
   data: "2",
   disabled: false,
-  title: "Horarios",
+  title: "Horarios de atención",
   sub: [{
     title: 'Días Feriados',
     data: "0"
@@ -68447,7 +72489,7 @@ var sidebar = [//get on ajax request
 }, {
   data: "6",
   disabled: false,
-  title: "Configuración",
+  title: "Configuración de usuario",
   sub: [{
     title: 'Configuracion 1',
     data: "0"
@@ -68480,7 +72522,7 @@ function (_Component) {
       crumb: [{
         title: "Escritorio",
         data: "0",
-        "class": "c-title box-transparent small-v-padding h-padding highlight-title full-width text-left",
+        "class": "box-transparent small-v-padding highlight-title full-width text-left",
         click: _this.changePanel
       }]
     };
@@ -68540,7 +72582,7 @@ function (_Component) {
       crumb = [{
         title: sidebar[showing].title,
         data: showing,
-        "class": "c-title small-v-padding box-transparent h-padding highlight-title full-width text-left",
+        "class": "small-v-padding box-transparent h-padding highlight-title full-width text-left",
         click: this.changePanel
       }];
       this.setState({
@@ -68602,7 +72644,10 @@ function (_Component) {
         subElements: this.state.sidebar[4].sub,
         currentSub: this.state.crumb[1] ? this.state.crumb[1].data : null
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_paneles_locales_Locales__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        classes: this.state.showing === "5" ? "full-width" : "hidden"
+        panel: this.state.showing === "5",
+        selectInnerElement: this.changeSubElement,
+        subElements: this.state.sidebar[5].sub,
+        currentSub: this.state.crumb[1] ? this.state.crumb[1].data : null
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_paneles_configuracion_Configuracion__WEBPACK_IMPORTED_MODULE_4__["default"], {
         classes: this.state.showing === "6" ? "full-width" : "hidden"
       }))))));
@@ -68740,7 +72785,9 @@ __webpack_require__.r(__webpack_exports__);
 function Escritorio(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: props.classes
-  }, "Escritorio");
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "small-v-padding box-transparent h-padding highlight-title full-width text-left c-title"
+  }, "Escritorio"));
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(Escritorio));
@@ -68761,9 +72808,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_basic_Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/Button */ "./resources/js/componentes/basic/Button.jsx");
+/* harmony import */ var _componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
 /* harmony import */ var _componentes_complex_allUse_CardList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/complex/allUse/CardList */ "./resources/js/componentes/complex/allUse/CardList.jsx");
 /* harmony import */ var _funciones_generateEventosCard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../funciones/generateEventosCard */ "./resources/js/funciones/generateEventosCard.jsx");
+/* harmony import */ var _subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./subElements/AgregarFormulario */ "./resources/js/escritorio/paneles/eventos/subElements/AgregarFormulario.jsx");
+/* harmony import */ var _funciones_generateActions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../funciones/generateActions */ "./resources/js/funciones/generateActions.jsx");
+/* harmony import */ var _modal_Modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../modal/Modal */ "./resources/js/modal/Modal.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -68788,6 +72838,9 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
+
+
 var Eventos =
 /*#__PURE__*/
 function (_Component) {
@@ -68800,68 +72853,321 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Eventos).call(this, props));
     _this.state = {
-      eventos: [{
-        id: 1,
-        nombre: "Cumpleaños",
-        descripcion: "",
-        promocion: "50% de descuento para el cumpleañero si reservas un fin de semana."
-      }, {
-        id: 2,
-        nombre: "Negocios",
-        descripcion: "",
-        promocion: "50% de descuento en bebidas si reservas antes de las 21hs."
-      }, {
-        id: 3,
-        nombre: "Amigos",
-        descripcion: "",
-        promocion: "10% de descuento en comidas compartidas si reservas antes de las 18hs."
-      }]
+      formulario: false,
+      agregar: null,
+      editar: null,
+      open: false,
+      eventos: {
+        1: {
+          nombre: "Cumpleaños",
+          descuento: 50,
+          promocion: "50% de descuento para el cumpleañero si reservas un fin de semana."
+        },
+        2: {
+          nombre: "Negocios",
+          descuento: 50,
+          promocion: "50% de descuento en bebidas si reservas antes de las 21hs."
+        },
+        3: {
+          nombre: "Amigos",
+          descuento: 10,
+          promocion: "10% de descuento en comidas compartidas si reservas antes de las 18hs."
+        }
+      }
     };
-    _this.agregar = _this.agregar.bind(_assertThisInitialized(_this));
-    _this.editar = _this.editar.bind(_assertThisInitialized(_this));
-    _this.eliminar = _this.eliminar.bind(_assertThisInitialized(_this));
+    _this.agregarEvento = _this.agregarEvento.bind(_assertThisInitialized(_this));
+    _this.editarEvento = _this.editarEvento.bind(_assertThisInitialized(_this));
+    _this.eliminarEvento = _this.eliminarEvento.bind(_assertThisInitialized(_this));
+    _this.verEventos = _this.verEventos.bind(_assertThisInitialized(_this));
+    _this.editAddControls = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_6__["panelNavigation"])(_this.verEvento, _this.agregarEvento);
+    _this.formNavigation = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_6__["formNavigation"])(_this.verEventos, _this.eliminarEvento);
+    _this.formActions = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_6__["formActions"])(_this.verEventos, _this.guardarEvento);
+    _this.closeModal = _this.closeModal.bind(_assertThisInitialized(_this));
     _this.actions = {
-      agregar: _this.agregar,
-      editar: _this.editar,
-      eliminar: _this.eliminar
+      agregar: _this.agregarEvento,
+      editar: _this.editarEvento,
+      eliminar: _this.eliminarEvento
     };
     return _this;
   }
 
   _createClass(Eventos, [{
-    key: "agregar",
-    value: function agregar(e) {}
+    key: "closeModal",
+    value: function closeModal(e) {
+      this.setState({
+        open: false
+      });
+    }
   }, {
-    key: "eliminar",
-    value: function eliminar(e) {}
+    key: "agregarEvento",
+    value: function agregarEvento(e) {
+      var id = e.currentTarget.getAttribute('data');
+      this.setState({
+        agregar: id,
+        editar: null,
+        formulario: true
+      });
+    }
   }, {
-    key: "editar",
-    value: function editar(e) {}
+    key: "editarEvento",
+    value: function editarEvento(e) {
+      var id = e.currentTarget.getAttribute('data');
+      this.setState({
+        agregar: null,
+        editar: id,
+        formulario: true
+      });
+    }
+  }, {
+    key: "verEventos",
+    value: function verEventos(e) {
+      e.preventDefault();
+      this.setState({
+        agregar: null,
+        editar: null,
+        formulario: false
+      });
+    }
+  }, {
+    key: "eliminarEvento",
+    value: function eliminarEvento(e) {
+      e.preventDefault();
+      this.setState({
+        open: true
+      });
+    }
   }, {
     key: "render",
     value: function render() {
       var eventos = Object(_funciones_generateEventosCard__WEBPACK_IMPORTED_MODULE_4__["default"])(this.state.eventos, this.actions);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.props.panel ? "container" : "hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Button__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "smaller-text text bold"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fas fa-plus-circle inline-box side-margin"
-        }), "Agregar Eventos"),
-        click: this.agregar,
-        "class": "box-transparent highlight-hover border-box button-border inline-block",
-        disabled: false
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: this.state.formulario ? "hidden" : "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "small-v-padding box-transparent h-padding highlight-title full-width text-left c-title"
+      }, "Eventos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        displayList: "flex-row nav-list no-padding inline-block  align-center",
+        container: "side-margin inline-block",
+        elems: this.state.editar ? this.editAddControls : [this.editAddControls[1]]
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_CardList__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        displayList: "row h-align-center full-width nav-list no-padding",
+        displayList: "full-width nav-list no-padding",
         elems: eventos
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_Modal__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        open: this.state.open,
+        closeModal: this.closeModal,
+        title: "Eliminar Evento",
+        content: "\xBFest\xE1s seguro de eliminar este evento? "
+      })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: this.state.formulario ? "row" : "hidden"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        title: this.state.editar ? "Editar " + this.state.eventos[this.state.editar].nombre : "Agregar evento",
+        formActions: this.formActions,
+        formNavigation: this.formNavigation,
+        show: this.state.formulario,
+        data: this.state.eventos,
+        editar: this.state.editar,
+        agregar: this.state.agregar
       })));
     }
   }]);
 
   return Eventos;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+
+
+/***/ }),
+
+/***/ "./resources/js/escritorio/paneles/eventos/subElements/AgregarFormulario.jsx":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/escritorio/paneles/eventos/subElements/AgregarFormulario.jsx ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return AgregarFormulario; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-calendar */ "./node_modules/react-calendar/dist/entry.js");
+/* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_calendar__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/input/Numeric */ "./resources/js/componentes/input/Numeric.jsx");
+/* harmony import */ var _componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../componentes/complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+
+
+
+var AgregarFormulario =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(AgregarFormulario, _Component);
+
+  function AgregarFormulario(props) {
+    var _this;
+
+    _classCallCheck(this, AgregarFormulario);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(AgregarFormulario).call(this, props));
+    _this.state = {
+      input: {
+        descuento: 0,
+        promocion: "",
+        nombre_evento: ""
+      }
+    };
+    _this.onNumberChange = _this.onNumberChange.bind(_assertThisInitialized(_this));
+    _this.onTextChange = _this.onTextChange.bind(_assertThisInitialized(_this));
+    _this.editarEvento = _this.editarEvento.bind(_assertThisInitialized(_this));
+    _this.agregarEvento = _this.agregarEvento.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(AgregarFormulario, [{
+    key: "onNumberChange",
+    value: function onNumberChange(e) {
+      var input = e.currentTarget,
+          name = input.getAttribute('name'),
+          numberInput = this.state.input;
+      numberInput[name] = input.value;
+      this.setState({
+        numeric: numberInput
+      });
+    }
+  }, {
+    key: "onTextChange",
+    value: function onTextChange(e) {
+      var input = e.currentTarget,
+          name = input.getAttribute('name'),
+          textInputs = this.state.input;
+      textInputs[name] = input.value;
+      this.setState({
+        text: textInputs
+      });
+    }
+  }, {
+    key: "editarEvento",
+    value: function editarEvento(id) {
+      var evento = this.props.data[id],
+          input = this.state.input;
+      input.promocion = evento.promocion;
+      input.descuento = parseInt(evento.descuento);
+      input.nombre_evento = evento.nombre;
+      this.setState({
+        input: input
+      });
+    }
+  }, {
+    key: "agregarEvento",
+    value: function agregarEvento() {
+      var input = this.state.input;
+      input.promocion = "";
+      input.descuento = 0;
+      input.nombre_evento = "";
+      this.setState({
+        input: input
+      });
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps, prevState) {
+      if (this.props.show) {
+        if (this.props.editar && this.props.editar !== prevProps.editar) return this.editarEvento(this.props.editar);
+        if (this.props.agregar !== prevProps.agregar) return this.agregarEvento();
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        className: "box-padding full-width"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        displayList: "flex-row nav-list no-padding inline-block  align-center",
+        container: "side-margin inline-block",
+        elems: this.props.editar ? this.props.formNavigation : [this.props.formNavigation[0]]
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row sub-title box-padding"
+      }, this.props.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row box-padding "
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        container: "full-width",
+        changeValue: this.onTextChange,
+        titulo: "Nombre de evento",
+        name: "nombre_Evento",
+        rows: 1,
+        value: this.state.input.nombre_evento,
+        classes: "border-box input-text margin-box full-width"
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        container: "full-width",
+        changeValue: this.onNumberChange,
+        titulo: "Descuento",
+        name: "descuento",
+        value: this.state.input.descuento,
+        classes: "border-box input-text margin-box full-width"
+      })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        container: "full-width",
+        changeValue: this.onTextChange,
+        titulo: "Promoci\xF3n del evento",
+        name: "promocion",
+        rows: 4,
+        value: this.state.input.promocion,
+        classes: "border-box input-text margin-box full-width"
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row justify-content-end"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        displayList: "flex-row nav-list no-padding inline-block  align-center",
+        container: "side-margin inline-block",
+        elems: this.props.formActions
+      }))));
+    }
+  }]);
+
+  return AgregarFormulario;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
 
@@ -68886,8 +73192,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
 /* harmony import */ var _componentes_complex_allUse_CardList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/complex/allUse/CardList */ "./resources/js/componentes/complex/allUse/CardList.jsx");
 /* harmony import */ var _funciones_generateWeek__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../funciones/generateWeek */ "./resources/js/funciones/generateWeek.jsx");
-/* harmony import */ var _componentes_basic_Button__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/Button */ "./resources/js/componentes/basic/Button.jsx");
-/* harmony import */ var _subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./subElements/AgregarFormulario */ "./resources/js/escritorio/paneles/horarios/subElements/AgregarFormulario.jsx");
+/* harmony import */ var _subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./subElements/AgregarFormulario */ "./resources/js/escritorio/paneles/horarios/subElements/AgregarFormulario.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var _funciones_generateActions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../funciones/generateActions */ "./resources/js/funciones/generateActions.jsx");
+/* harmony import */ var _modal_Modal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../modal/Modal */ "./resources/js/modal/Modal.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -68914,6 +73222,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
+
 var Horarios =
 /*#__PURE__*/
 function (_Component) {
@@ -68927,7 +73237,10 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Horarios).call(this, props));
     _this.state = {
       show: "1",
-      editar: false,
+      agregar: false,
+      editar: null,
+      formulario: false,
+      open: false,
       atencion: {
         0: {
           apertura: "15:00:00",
@@ -68967,41 +73280,71 @@ function (_Component) {
       },
       acciones: {
         outer: {
-          agregar: _this.eliminarAtencion.bind(_assertThisInitialized(_this)),
-          editar: _this.editarAtencion.bind(_assertThisInitialized(_this)),
-          eliminar: _this.eliminarAtencion.bind(_assertThisInitialized(_this))
+          agregar: _this.agregarHorario.bind(_assertThisInitialized(_this)),
+          editar: _this.editarHorario.bind(_assertThisInitialized(_this)),
+          eliminar: _this.eliminarHorario.bind(_assertThisInitialized(_this))
         },
         inner: {}
       }
     };
+    _this.closeModal = _this.closeModal.bind(_assertThisInitialized(_this));
     _this.verHorarios = _this.verHorarios.bind(_assertThisInitialized(_this));
+    _this.eliminarHorario = _this.eliminarHorario.bind(_assertThisInitialized(_this));
+    _this.editAddControls = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_8__["formNavigation"])(_this.verHorarios, _this.eliminarHorario);
+    _this.formActions = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_8__["formActions"])(_this.verHorarios, _this.guardarHorario);
     return _this;
   }
 
   _createClass(Horarios, [{
-    key: "agregarAtencion",
-    value: function agregarAtencion(e) {
-      console.log("this.agregarAtencion");
+    key: "guardarHorario",
+    value: function guardarHorario(e) {
+      console.log("this.guardarHorario");
     }
   }, {
-    key: "editarAtencion",
-    value: function editarAtencion(e) {
+    key: "editarHorario",
+    value: function editarHorario(e) {
       e.preventDefault();
-      var target = e.currentTarget.getAttribute('data');
+      var dateString = e.currentTarget.getAttribute('data');
       this.setState({
-        editar: !this.state.editar
+        agregar: null,
+        editar: dateString,
+        formulario: true
       });
     }
   }, {
-    key: "eliminarAtencion",
-    value: function eliminarAtencion(e) {
-      console.log("this.eliminarAtencion");
+    key: "agregarHorario",
+    value: function agregarHorario(e) {
+      e.preventDefault();
+      var dateString = e.currentTarget.getAttribute('data');
+      this.setState({
+        agregar: dateString,
+        editar: null,
+        formulario: true
+      });
     }
   }, {
     key: "verHorarios",
     value: function verHorarios(e) {
+      e.preventDefault();
       this.setState({
-        editar: !this.state.editar
+        agregar: null,
+        editar: null,
+        formulario: false
+      });
+    }
+  }, {
+    key: "closeModal",
+    value: function closeModal(e) {
+      this.setState({
+        open: false
+      });
+    }
+  }, {
+    key: "eliminarHorario",
+    value: function eliminarHorario(e) {
+      e.preventDefault();
+      this.setState({
+        open: true
       });
     }
   }, {
@@ -69013,18 +73356,25 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.props.currentSub !== "0" ? "row" : "hidden"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: this.state.editar ? "full-width" : "hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Button__WEBPACK_IMPORTED_MODULE_6__["default"], {
-        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "smaller-text text bold"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fas fa-arrow-left inline-box side-margin"
-        }), "Volver"),
-        click: this.verHorarios,
-        "class": "box-transparent highlight-hover border-box button-border inline-block",
-        disabled: false
+        className: "no-padding box-transparent highlight-title full-width text-left c-title"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "text-super"
+      }, "Horarios de atenci\xF3n")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: this.state.formulario ? "full-width" : "hidden"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        displayList: "flex-row nav-list no-padding inline-block  align-center",
+        container: "side-margin inline-block",
+        elems: this.state.editar ? this.editAddControls : [this.editAddControls[0]]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        title: this.state.editar ? "Editar horario del " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__["DAYS"][this.state.editar] : "Agregar horario para el " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__["DAYS"][this.state.agregar],
+        formActions: this.formActions,
+        show: this.state.formulario,
+        showCalendar: false,
+        data: this.state.atencion,
+        editar: this.state.editar,
+        agregar: this.state.agregar
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: this.state.editar ? "hidden" : "full-width flex-row nav-list h-center"
+        className: this.state.formulario ? "hidden" : "full-width flex-row nav-list h-center"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_CardList__WEBPACK_IMPORTED_MODULE_4__["default"], {
         displayList: "justify no-padding full-width flex-column nav-list h-center",
         elems: diasAtencion
@@ -69033,6 +73383,11 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_DiasFeriados__WEBPACK_IMPORTED_MODULE_2__["default"], {
         show: this.props.currentSub === "0",
         changePanel: this.props.changePanel
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_Modal__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        open: this.state.open,
+        closeModal: this.closeModal,
+        title: "Eliminar Horario",
+        content: "\xBFest\xE1s seguro de eliminar este horario?"
       })));
     }
   }]);
@@ -69060,7 +73415,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-calendar */ "./node_modules/react-calendar/dist/entry.js");
 /* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_calendar__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
-/* harmony import */ var _componentes_basic_Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../componentes/basic/Button */ "./resources/js/componentes/basic/Button.jsx");
+/* harmony import */ var _componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../componentes/complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
 /* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
 /* harmony import */ var _componentes_basic_Toggle__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../componentes/basic/Toggle */ "./resources/js/componentes/basic/Toggle.jsx");
 /* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
@@ -69112,11 +73467,8 @@ function (_Component) {
       date: new Date(),
       right: true,
       text: {
-        descripcion: {
-          value: ""
-        }
+        descripcion: ""
       },
-      editar: false,
       select: {
         apertura_hora: {
           name: "apertura_hora",
@@ -69168,7 +73520,7 @@ function (_Component) {
       var input = e.currentTarget,
           name = input.getAttribute('name'),
           textInputs = this.state.text;
-      textInputs[name].value = input.value;
+      textInputs[name] = input.value;
       this.setState({
         text: textInputs
       });
@@ -69182,13 +73534,12 @@ function (_Component) {
       select.apertura_minuto.selected = null;
       select.cierre_hora.selected = null;
       select.cierre_minuto.selected = null;
-      textInput.descripcion.value = "";
+      textInput.descripcion = "";
       this.setState({
         date: new Date(),
         select: select,
         text: textInput,
-        right: true,
-        editar: false
+        right: true
       });
     }
   }, {
@@ -69220,7 +73571,7 @@ function (_Component) {
     key: "editarFeriado",
     value: function editarFeriado(dateString) {
       var feriado = this.props.data[dateString],
-          date = new Date(dateString),
+          date = new Date(parseInt(dateString)),
           apertura = feriado.apertura.split(':'),
           cierre = feriado.cierre.split(':'),
           select = this.state.select,
@@ -69229,13 +73580,12 @@ function (_Component) {
       select.apertura_minuto.selected = apertura[1];
       select.cierre_hora.selected = cierre[0];
       select.cierre_minuto.selected = cierre[1];
-      textInput.descripcion.value = feriado.descripcion;
+      textInput.descripcion = feriado.descripcion;
       this.setState({
         select: select,
         date: date,
-        right: feriado.estado === 1,
-        text: textInput,
-        editar: true
+        right: feriado.estado == 1,
+        text: textInput
       });
     }
   }, {
@@ -69256,31 +73606,43 @@ function (_Component) {
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps, prevState) {
-      if (prevProps.show) if (this.props.editar.enable) this.editarFeriado(this.props.editar.data);else if (!this.props.editar.enable) this.agregarFeriado();
+      if (this.props.show) {
+        if (this.props.editar && this.props.editar !== prevProps.editar) return this.editarFeriado(this.props.editar);
+        if (this.props.agregar !== prevProps.agregar) return this.agregarFeriado();
+      }
     }
   }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "box-padding container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        className: "box-padding row"
+      var classes = this.props.showCalendar ? {
+        calendar: "col-md-6 box-padding",
+        form: "col-lg-6 no-padding",
+        inputSelect: "col-md-12 box-padding",
+        inputText: "col-md-12 no-padding"
+      } : {
+        calendar: "hidden",
+        form: "col-lg-12 box-padding",
+        inputSelect: "col-md-6 box-padding",
+        inputText: "col-md-6 box-padding"
+      };
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        className: "full-width"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: this.props.showCalendar ? "col-md-6 box-padding" : "hidden"
+        className: classes.calendar
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_calendar__WEBPACK_IMPORTED_MODULE_2___default.a, {
         value: this.state.date,
         onChange: this.calendarChange
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: this.props.showCalendar ? "col-md-6 box-padding" : "col-md-12 box-padding"
+        className: classes.form
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row sub-title"
-      }, this.props.editar.enable ? "Editando " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__["DAYS"][this.state.date.getDay()] + " " + this.state.date.getDate() + " " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__["MONTHS"][this.state.date.getMonth()] + " " + this.state.date.getFullYear() : "Agregar día Feriado"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, this.props.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row justify-content-end"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Toggle__WEBPACK_IMPORTED_MODULE_6__["default"], {
         rightTitle: "Laboral",
@@ -69289,7 +73651,15 @@ function (_Component) {
         right: this.state.right,
         changeSide: this.changeToggleSide
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: this.state.right ? "row" : "hidden"
+        className: "container row full-width no-margin no-padding"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-12 no-padding no-margin"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container row no-padding no-margin"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: this.state.right ? classes.inputSelect : "hidden"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "no-padding col-md-12 bold light-danger"
       }, "Apertura"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -69297,7 +73667,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__["default"], _extends({}, this.state.select.apertura_hora, {
         titulo: "horas",
         change: this.selectOption,
-        toggle: this.showToggle
+        toggle: this.showOptions
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-2 no-padding bold align-center"
       }, "horas"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -69305,11 +73675,11 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__["default"], _extends({}, this.state.select.apertura_minuto, {
         titulo: "minutos",
         change: this.selectOption,
-        toggle: this.showToggle
+        toggle: this.showOptions
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-2 no-padding bold align-center"
       }, "minutos")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: this.state.right ? "row" : "hidden"
+        className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "no-padding col-md-12 bold light-danger"
       }, "Cierre"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -69317,7 +73687,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__["default"], _extends({}, this.state.select.cierre_hora, {
         titulo: "horas",
         change: this.selectOption,
-        toggle: this.showToggle
+        toggle: this.showOptions
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-2 no-padding bold align-center"
       }, "horas"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -69325,45 +73695,27 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__["default"], _extends({}, this.state.select.cierre_minuto, {
         titulo: "minutos",
         change: this.selectOption,
-        toggle: this.showToggle
+        toggle: this.showOptions
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-2 no-padding bold align-center"
-      }, "minutos")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-12 no-padding"
+      }, "minutos"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: classes.inputText
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_3__["default"], {
         changeValue: this.onTextChange,
         titulo: "Descripci\xF3n",
         name: "descripcion",
-        value: this.state.text.descripcion.value,
+        value: this.state.text.descripcion,
         rows: 4,
         classes: "border-box input-text margin-box full-width"
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row justify-content-end"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Button__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "smaller-text text bold"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fas fa-times-circle inline-box side-margin"
-        }), "Cancelar"),
-        type: "submit",
-        click: this.props.cancelar,
-        container: "inline-block side-margin",
-        "class": "box-transparent highlight-hover border-box button-border",
-        disabled: false
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Button__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "smaller-text text bold"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fas fa-check-circle inline-box side-margin"
-        }), "Guardar"),
-        type: "submit",
-        click: this.props.guardarFeriado,
-        container: "inline-block side-margin",
-        "class": "box-transparent highlight-hover border-box button-border",
-        disabled: false
-      }))))))));
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        displayList: "flex-row nav-list no-padding inline-block  align-center",
+        container: "side-margin inline-block",
+        elems: this.props.formActions
+      })))))))));
     }
   }]);
 
@@ -69389,9 +73741,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _componentes_complex_calendar_Calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/complex/calendar/Calendar */ "./resources/js/componentes/complex/calendar/Calendar.jsx");
-/* harmony import */ var _componentes_basic_Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/basic/Button */ "./resources/js/componentes/basic/Button.jsx");
+/* harmony import */ var _componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
 /* harmony import */ var _AgregarFormulario__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./AgregarFormulario */ "./resources/js/escritorio/paneles/horarios/subElements/AgregarFormulario.jsx");
 /* harmony import */ var _funciones_generateMonth__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../funciones/generateMonth */ "./resources/js/funciones/generateMonth.jsx");
+/* harmony import */ var _funciones_generateActions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../funciones/generateActions */ "./resources/js/funciones/generateActions.jsx");
+/* harmony import */ var _modal_Modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../modal/Modal */ "./resources/js/modal/Modal.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -69417,6 +73772,9 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
  //Functions
+
+
+
 
  //Feriados should be on this format when doing ajax request
 
@@ -69481,10 +73839,8 @@ function (_Component) {
       formulario: false,
       date: new Date(),
       intervalo: 10,
-      editar: {
-        enable: false,
-        data: ""
-      },
+      editar: null,
+      agregar: false,
       controls: [{
         title: "Anual",
         data: "0",
@@ -69506,14 +73862,16 @@ function (_Component) {
       },
       inner: {}
     };
-    _this.toggleEditAdd = _this.toggleEditAdd.bind(_assertThisInitialized(_this));
     _this.guardarFeriado = _this.guardarFeriado.bind(_assertThisInitialized(_this));
-    _this.toggleEditAdd = _this.toggleEditAdd.bind(_assertThisInitialized(_this));
     _this.verFeriado = _this.verFeriado.bind(_assertThisInitialized(_this));
     _this.eliminarFeriado = _this.eliminarFeriado.bind(_assertThisInitialized(_this));
     _this.editarFeriado = _this.editarFeriado.bind(_assertThisInitialized(_this));
     _this.agregarFeriado = _this.agregarFeriado.bind(_assertThisInitialized(_this));
     _this.verCalendario = _this.verCalendario.bind(_assertThisInitialized(_this));
+    _this.closeModal = _this.closeModal.bind(_assertThisInitialized(_this));
+    _this.editAddControls = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_6__["panelNavigation"])(_this.props.changePanel, _this.agregarFeriado, "2");
+    _this.formNavigation = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_6__["formNavigation"])(_this.verCalendario, _this.eliminarFeriado);
+    _this.formActions = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_6__["formActions"])(_this.verCalendario, _this.guardarFeriado);
     return _this;
   }
 
@@ -69534,87 +73892,81 @@ function (_Component) {
       });
     }
   }, {
-    key: "eliminarFeriado",
-    value: function eliminarFeriado(e) {
-      console.log("this.eliminarFeriado");
-    }
-  }, {
     key: "editarFeriado",
     value: function editarFeriado(e) {
       e.preventDefault();
       var dateString = parseInt(e.currentTarget.getAttribute('data'));
-      this.toggleEditAdd(true, true, dateString);
+      this.setState({
+        agregar: null,
+        editar: new Date(dateString),
+        formulario: true
+      });
     }
   }, {
     key: "agregarFeriado",
     value: function agregarFeriado(e) {
       e.preventDefault();
-      this.toggleEditAdd(false, true, null);
+      this.setState({
+        agregar: true,
+        editar: null,
+        formulario: true
+      });
     }
   }, {
     key: "verCalendario",
     value: function verCalendario(e) {
       e.preventDefault();
-      this.toggleEditAdd(false, false, null);
+      this.setState({
+        agregar: null,
+        editar: null,
+        formulario: false
+      });
     }
   }, {
-    key: "toggleEditAdd",
-    value: function toggleEditAdd(editarBool, formBool, data) {
-      var editar = this.state.editar;
-      editar.enable = editarBool;
-      editar.data = data ? data : "";
+    key: "closeModal",
+    value: function closeModal(e) {
       this.setState({
-        editar: editar,
-        formulario: formBool
+        open: false
+      });
+    }
+  }, {
+    key: "eliminarFeriado",
+    value: function eliminarFeriado(e) {
+      e.preventDefault();
+      this.setState({
+        open: true
       });
     }
   }, {
     key: "render",
     value: function render() {
-      //console.log(this.state.editar,this.state.agregar);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.props.show ? "full-width" : "hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_Modal__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        open: this.state.open,
+        closeModal: this.closeModal,
+        title: "Eliminar Horario",
+        content: "\xBFest\xE1s seguro de eliminar este horario?"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.state.formulario ? "full-width" : "hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "smaller-text text bold"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fas fa-arrow-left inline-box side-margin"
-        }), "Volver"),
-        click: this.verCalendario,
-        "class": "box-transparent highlight-hover border-box button-border inline-block",
-        disabled: false
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        displayList: "flex-row nav-list no-padding inline-block  align-center",
+        container: "side-margin inline-block",
+        elems: this.state.editar ? this.formNavigation : [this.formNavigation[0]]
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AgregarFormulario__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        title: this.state.editar ? "Editar feriado del " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_8__["DAYS"][this.state.editar.getDay()] + " " + this.state.editar.getDate() + " " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_8__["MONTHS"][this.state.editar.getMonth()] : "Agregar Feriado",
+        formActions: this.formActions,
         show: this.state.formulario,
         showCalendar: true,
         data: this.state.feriados,
-        editar: this.state.editar,
-        cancelar: this.verCalendario,
-        guardarFeriado: this.guardarFeriado
+        editar: this.state.editar ? this.state.editar.getTime() : null,
+        agregar: this.state.agregar
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.state.formulario ? "hidden" : "full-width"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "smaller-text text bold"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fas fa-arrow-left inline-box side-margin"
-        }), "Volver"),
-        data: "2",
-        click: this.props.changePanel,
-        container: "inline-block side-margin",
-        "class": "box-transparent highlight-hover border-box button-border",
-        disabled: false
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "smaller-text text bold"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fas fa-plus-circle inline-box side-margin"
-        }), "Agregar feriados"),
-        click: this.agregarFeriado,
-        container: "inline-block side-margin",
-        "class": "box-transparent highlight-hover border-box button-border inline-block",
-        disabled: false
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        displayList: "flex-row nav-list no-padding inline-block  align-center",
+        container: "side-margin inline-block",
+        elems: this.editAddControls
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_calendar_Calendar__WEBPACK_IMPORTED_MODULE_2__["default"], {
         show: this.state.show,
         date: this.state.date,
@@ -69642,20 +73994,100 @@ function (_Component) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Locales; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
+/* harmony import */ var _funciones_generateActions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../funciones/generateActions */ "./resources/js/funciones/generateActions.jsx");
+/* harmony import */ var _modal_Modal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../modal/Modal */ "./resources/js/modal/Modal.jsx");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 
 
-function Locales(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: props.classes
-  }, "Locales");
-}
 
-/* harmony default export */ __webpack_exports__["default"] = (react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(Locales));
+
+
+
+var Locales =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Locales, _Component);
+
+  function Locales(props) {
+    var _this;
+
+    _classCallCheck(this, Locales);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Locales).call(this, props));
+    _this.state = {
+      open: false
+    };
+    _this.eliminar = _this.eliminar.bind(_assertThisInitialized(_this));
+    _this.volver = _this.volver.bind(_assertThisInitialized(_this));
+    _this.editHandlers = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_3__["formNavigation"])(_this.volver, _this.eliminar);
+    _this.closeModal = _this.closeModal.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(Locales, [{
+    key: "volver",
+    value: function volver(e) {
+      console.log('volver');
+    }
+  }, {
+    key: "eliminar",
+    value: function eliminar(e) {
+      this.setState({
+        open: true
+      });
+    }
+  }, {
+    key: "closeModal",
+    value: function closeModal(e) {
+      this.setState({
+        open: false
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: this.props.panel ? "full-width container" : "hidden"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        displayList: "flex-row nav-list no-padding inline-block  align-center",
+        container: "side-margin inline-block",
+        elems: this.editHandlers
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_Modal__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        open: this.state.open,
+        closeModal: this.closeModal,
+        title: "props.title",
+        content: "props.content"
+      })));
+    }
+  }]);
+
+  return Locales;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+
 
 /***/ }),
 
@@ -69676,7 +74108,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _subElements_Configuracion__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./subElements/Configuracion */ "./resources/js/escritorio/paneles/reservas/subElements/Configuracion.jsx");
 /* harmony import */ var _componentes_complex_calendar_Calendar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/complex/calendar/Calendar */ "./resources/js/componentes/complex/calendar/Calendar.jsx");
 /* harmony import */ var _subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./subElements/AgregarFormulario */ "./resources/js/escritorio/paneles/reservas/subElements/AgregarFormulario.jsx");
-/* harmony import */ var _componentes_basic_Button__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/basic/Button */ "./resources/js/componentes/basic/Button.jsx");
+/* harmony import */ var _componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
+/* harmony import */ var _funciones_generateActions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../funciones/generateActions */ "./resources/js/funciones/generateActions.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -69694,6 +74127,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -70151,6 +74585,8 @@ function (_Component) {
     _this.showOptions = _this.showOptions.bind(_assertThisInitialized(_this));
     _this.selectOption = _this.selectOption.bind(_assertThisInitialized(_this));
     _this.guardarNuevaReserva = _this.guardarNuevaReserva.bind(_assertThisInitialized(_this));
+    _this.formActions = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_6__["formActions"])(_this.props.changePanel, _this.guardarConfiguracion, "1");
+    _this.panelNavigation = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_6__["panelNavigation"])(_this.props.changePanel, _this.agregarReserva, "1");
     _this.actions = {
       outer: {
         ver: _this.verDia.bind(_assertThisInitialized(_this)),
@@ -70276,6 +74712,14 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.props.currentSub !== "0" ? "container" : "hidden"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "no-padding box-transparent highlight-title full-width text-left c-title"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "text-super"
+      }, "Reservaciones"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        displayList: "flex-row nav-list no-padding inline-block  align-center",
+        container: "side-margin inline-block",
+        elems: [this.panelNavigation[1]]
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.state.agregar ? "row" : "hidden"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_4__["default"], {
         verCalendario: this.actions.inner.verCalendario,
@@ -70286,16 +74730,7 @@ function (_Component) {
         onCalendarChange: this.onCalendarChange
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.state.agregar ? "hidden" : "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Button__WEBPACK_IMPORTED_MODULE_5__["default"], {
-        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "smaller-text text bold"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fas fa-plus-circle inline-box side-margin"
-        }), "Agregar reserva"),
-        click: this.actions.inner.agregar,
-        "class": "box-transparent highlight-hover border-box button-border inline-block",
-        disabled: false
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_calendar_Calendar__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_calendar_Calendar__WEBPACK_IMPORTED_MODULE_3__["default"], {
         show: this.state.show,
         horariosReserva: horariosReserva,
         date: this.state.date,
@@ -70308,13 +74743,13 @@ function (_Component) {
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.props.currentSub === "0" ? "row" : "hidden"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_Configuracion__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        changePanel: this.props.changePanel,
+        formNavigation: this.panelNavigation,
+        formActions: this.formActions,
         verCalendario: this.actions.inner.verCalendario,
         showOptions: this.showOptions,
         selectOption: this.selectOption,
         caida: this.state.select.caida,
-        intervalo: this.state.select.intervalo,
-        guardarConfiguracion: this.guardarConfiguracion
+        intervalo: this.state.select.intervalo
       })));
     }
   }]);
@@ -70420,7 +74855,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
-/* harmony import */ var _componentes_basic_Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/basic/Button */ "./resources/js/componentes/basic/Button.jsx");
+/* harmony import */ var _componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -70463,21 +74898,19 @@ function (_Component) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         className: "full-width"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container no-padding"
+        className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row v-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "smaller-text text bold"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fas fa-arrow-left inline-box side-margin"
-        }), "Volver"),
-        data: "1",
-        click: this.props.changePanel,
-        "class": "box-transparent highlight-hover border-box button-border inline-block",
-        disabled: false
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "no-padding box-transparent highlight-title full-width text-left c-title"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "text-super"
+      }, "Configuraci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        displayList: "flex-row nav-list no-padding inline-block  align-center",
+        container: "side-margin inline-block",
+        elems: [this.props.formNavigation[0]]
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row v-padding"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-6"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
@@ -70498,28 +74931,10 @@ function (_Component) {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-12 text-right no-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "smaller-text text bold"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fas fa-times-circle inline-box side-margin"
-        }), "Cancelar"),
-        data: "1",
-        click: this.props.changePanel,
-        container: "inline-block side-margin",
-        "class": "box-transparent highlight-hover border-box button-border",
-        disabled: false
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "smaller-text text bold"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fas fa-check-circle inline-box side-margin"
-        }), "Guardar"),
-        type: "submit",
-        click: this.props.guardarConfiguracion,
-        container: "inline-block side-margin",
-        "class": "box-transparent highlight-hover border-box button-border",
-        disabled: false
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        displayList: "flex-row nav-list no-padding inline-block  align-center",
+        container: "side-margin inline-block",
+        elems: this.props.formActions
       })))));
     }
   }]);
@@ -70545,9 +74960,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_basic_Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/Button */ "./resources/js/componentes/basic/Button.jsx");
-/* harmony import */ var _componentes_complex_allUse_CardList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/complex/allUse/CardList */ "./resources/js/componentes/complex/allUse/CardList.jsx");
-/* harmony import */ var _funciones_generateUbicacionesCard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../funciones/generateUbicacionesCard */ "./resources/js/funciones/generateUbicacionesCard.jsx");
+/* harmony import */ var _componentes_complex_allUse_CardList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/complex/allUse/CardList */ "./resources/js/componentes/complex/allUse/CardList.jsx");
+/* harmony import */ var _funciones_generateUbicacionesCard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../funciones/generateUbicacionesCard */ "./resources/js/funciones/generateUbicacionesCard.jsx");
+/* harmony import */ var _subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./subElements/AgregarFormulario */ "./resources/js/escritorio/paneles/ubicaciones/subElements/AgregarFormulario.jsx");
+/* harmony import */ var _funciones_generateActions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../funciones/generateActions */ "./resources/js/funciones/generateActions.jsx");
+/* harmony import */ var _componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
+/* harmony import */ var _modal_Modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../modal/Modal */ "./resources/js/modal/Modal.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -70572,6 +74990,9 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
+
+
 var Ubicaciones =
 /*#__PURE__*/
 function (_Component) {
@@ -70584,68 +75005,326 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Ubicaciones).call(this, props));
     _this.state = {
-      ubicaciones: [{
-        id: 1,
-        nombre: "Salón",
-        descripcion: "Salón principal",
-        capacidad: 32
-      }, {
-        id: 2,
-        nombre: "Terraza",
-        descripcion: "techada con jardín",
-        capacidad: 10
-      }, {
-        id: 3,
-        nombre: "Vereda",
-        descripcion: "mesas espaciosas al aire libre",
-        capacidad: 16
-      }]
+      formulario: false,
+      agregar: null,
+      editar: null,
+      open: false,
+      ubicaciones: {
+        1: {
+          nombre: "Salón",
+          descripcion: "Salón principal",
+          capacidad: 32
+        },
+        2: {
+          nombre: "Terraza",
+          descripcion: "techada con jardín",
+          capacidad: 10
+        },
+        3: {
+          nombre: "Vereda",
+          descripcion: "mesas espaciosas al aire libre",
+          capacidad: 16
+        }
+      }
     };
-    _this.agregar = _this.agregar.bind(_assertThisInitialized(_this));
-    _this.editar = _this.editar.bind(_assertThisInitialized(_this));
-    _this.eliminar = _this.eliminar.bind(_assertThisInitialized(_this));
+    _this.agregarUbicacion = _this.agregarUbicacion.bind(_assertThisInitialized(_this));
+    _this.editarUbicacion = _this.editarUbicacion.bind(_assertThisInitialized(_this));
+    _this.verUbicaciones = _this.verUbicaciones.bind(_assertThisInitialized(_this));
+    _this.guardarUbicacion = _this.guardarUbicacion.bind(_assertThisInitialized(_this));
+    _this.eliminarUbicacion = _this.eliminarUbicacion.bind(_assertThisInitialized(_this)), _this.closeModal = _this.closeModal.bind(_assertThisInitialized(_this));
+    _this.editAddControls = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_5__["panelNavigation"])(_this.verUbicaciones, _this.agregarUbicacion);
+    _this.formNavigation = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_5__["formNavigation"])(_this.verUbicaciones, _this.eliminarUbicacion);
+    _this.formActions = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_5__["formActions"])(_this.verUbicaciones, _this.guardarUbicacion);
     _this.actions = {
-      agregar: _this.agregar,
-      editar: _this.editar,
-      eliminar: _this.eliminar
+      agregar: _this.agregarUbicacion,
+      editar: _this.editarUbicacion,
+      eliminar: _this.eliminarUbicacion
     };
     return _this;
   }
 
   _createClass(Ubicaciones, [{
-    key: "agregar",
-    value: function agregar(e) {}
+    key: "guardarUbicacion",
+    value: function guardarUbicacion(e) {
+      console.log('culo');
+    }
   }, {
-    key: "eliminar",
-    value: function eliminar(e) {}
+    key: "agregarUbicacion",
+    value: function agregarUbicacion(e) {
+      var id = e.currentTarget.getAttribute('data');
+      this.setState({
+        agregar: id,
+        editar: null,
+        formulario: true
+      });
+    }
   }, {
-    key: "editar",
-    value: function editar(e) {}
+    key: "closeModal",
+    value: function closeModal(e) {
+      this.setState({
+        open: false
+      });
+    }
+  }, {
+    key: "eliminarUbicacion",
+    value: function eliminarUbicacion(e) {
+      e.preventDefault();
+      this.setState({
+        open: true
+      });
+    }
+  }, {
+    key: "editarUbicacion",
+    value: function editarUbicacion(e) {
+      var id = e.currentTarget.getAttribute('data');
+      this.setState({
+        agregar: null,
+        editar: id,
+        formulario: true
+      });
+    }
+  }, {
+    key: "verUbicaciones",
+    value: function verUbicaciones(e) {
+      e.preventDefault();
+      this.setState({
+        agregar: null,
+        editar: null,
+        formulario: false
+      });
+    }
   }, {
     key: "render",
     value: function render() {
-      var ubicaciones = Object(_funciones_generateUbicacionesCard__WEBPACK_IMPORTED_MODULE_4__["default"])(this.state.ubicaciones, this.actions);
+      var ubicaciones = Object(_funciones_generateUbicacionesCard__WEBPACK_IMPORTED_MODULE_3__["default"])(this.state.ubicaciones, this.actions);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.props.panel ? "container" : "hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Button__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "smaller-text text bold"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fas fa-plus-circle inline-box side-margin"
-        }), "Agregar ubicaciones"),
-        click: this.agregar,
-        "class": "box-transparent highlight-hover border-box button-border inline-block",
-        disabled: false
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: this.state.formulario ? "hidden" : "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "small-v-padding box-transparent h-padding highlight-title full-width text-left c-title"
+      }, "Ubicaciones"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        displayList: "flex-row nav-list no-padding inline-block  align-center",
+        container: "side-margin inline-block",
+        elems: this.state.editar ? this.editAddControls : [this.editAddControls[1]]
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_CardList__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        displayList: "row h-align-center full-width nav-list no-padding",
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_CardList__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        displayList: "full-width nav-list no-padding",
         elems: ubicaciones
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_Modal__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        open: this.state.open,
+        closeModal: this.closeModal,
+        title: "Eliminar Ubicaci\xF3n",
+        content: "\xBFest\xE1s seguro de eliminar este ubicaci\xF3n?"
+      })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: this.state.formulario ? "row" : "hidden"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        title: this.state.editar ? "Editar " + this.state.ubicaciones[this.state.editar].nombre : "Agregar ubicación",
+        formActions: this.formActions,
+        formNavigation: this.formNavigation,
+        show: this.state.formulario,
+        data: this.state.ubicaciones,
+        editar: this.state.editar,
+        agregar: this.state.agregar
       })));
     }
   }]);
 
   return Ubicaciones;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+
+
+/***/ }),
+
+/***/ "./resources/js/escritorio/paneles/ubicaciones/subElements/AgregarFormulario.jsx":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/escritorio/paneles/ubicaciones/subElements/AgregarFormulario.jsx ***!
+  \***************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return AgregarFormulario; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-calendar */ "./node_modules/react-calendar/dist/entry.js");
+/* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_calendar__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/input/Numeric */ "./resources/js/componentes/input/Numeric.jsx");
+/* harmony import */ var _componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../componentes/complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+
+
+
+var AgregarFormulario =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(AgregarFormulario, _Component);
+
+  function AgregarFormulario(props) {
+    var _this;
+
+    _classCallCheck(this, AgregarFormulario);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(AgregarFormulario).call(this, props));
+    _this.state = {
+      input: {
+        capacidad_maxima: 0,
+        descripcion: "",
+        nombre_ubicacion: ""
+      }
+    };
+    _this.onNumberChange = _this.onNumberChange.bind(_assertThisInitialized(_this));
+    _this.onTextChange = _this.onTextChange.bind(_assertThisInitialized(_this));
+    _this.editarUbicacion = _this.editarUbicacion.bind(_assertThisInitialized(_this));
+    _this.agregarUbicacion = _this.agregarUbicacion.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(AgregarFormulario, [{
+    key: "onNumberChange",
+    value: function onNumberChange(e) {
+      var input = e.currentTarget,
+          name = input.getAttribute('name'),
+          numberInput = this.state.input;
+      numberInput[name] = input.value;
+      this.setState({
+        numeric: numberInput
+      });
+    }
+  }, {
+    key: "onTextChange",
+    value: function onTextChange(e) {
+      var input = e.currentTarget,
+          name = input.getAttribute('name'),
+          textInputs = this.state.input;
+      textInputs[name] = input.value;
+      this.setState({
+        text: textInputs
+      });
+    }
+  }, {
+    key: "editarUbicacion",
+    value: function editarUbicacion(id) {
+      var ubicacion = this.props.data[id],
+          input = this.state.input;
+      input.descripcion = ubicacion.descripcion;
+      input.capacidad_maxima = parseInt(ubicacion.capacidad);
+      input.nombre_ubicacion = ubicacion.nombre;
+      this.setState({
+        input: input
+      });
+    }
+  }, {
+    key: "agregarUbicacion",
+    value: function agregarUbicacion() {
+      var input = this.state.input;
+      input.descripcion = "";
+      input.capacidad_maxima = 0;
+      input.nombre_ubicacion = "";
+      this.setState({
+        input: input
+      });
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps, prevState) {
+      if (this.props.show) {
+        if (this.props.editar && this.props.editar !== prevProps.editar) return this.editarUbicacion(this.props.editar);
+        if (this.props.agregar !== prevProps.agregar) return this.agregarUbicacion();
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        className: "box-padding full-width"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        displayList: "flex-row nav-list no-padding inline-block  align-center",
+        container: "side-margin inline-block",
+        elems: this.props.editar ? this.props.formNavigation : [this.props.formNavigation[0]]
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row sub-title box-padding"
+      }, this.props.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row box-padding "
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        container: "full-width",
+        changeValue: this.onTextChange,
+        titulo: "Nombre de ubicaci\xF3n",
+        name: "nombre_ubicacion",
+        rows: 1,
+        value: this.state.input.nombre_ubicacion,
+        classes: "border-box input-text margin-box full-width"
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        container: "full-width",
+        changeValue: this.onNumberChange,
+        titulo: "Capacidad m\xE1xima",
+        name: "capacidad_maxima",
+        value: this.state.input.capacidad_maxima,
+        classes: "border-box input-text margin-box full-width"
+      })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        container: "full-width",
+        changeValue: this.onTextChange,
+        titulo: "Descripci\xF3n",
+        name: "descripcion",
+        rows: 4,
+        value: this.state.input.descripcion,
+        classes: "border-box input-text margin-box full-width"
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row justify-content-end"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        displayList: "flex-row nav-list no-padding inline-block  align-center",
+        container: "side-margin inline-block",
+        elems: this.props.formActions
+      }))));
+    }
+  }]);
+
+  return AgregarFormulario;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
 
@@ -70694,13 +75373,16 @@ function calendarNavigation(offset, titulo) {
 /*!****************************************************!*\
   !*** ./resources/js/funciones/generateActions.jsx ***!
   \****************************************************/
-/*! exports provided: assignActionsByStatus, generateActions */
+/*! exports provided: assignActionsByStatus, generateActions, formNavigation, panelNavigation, formActions */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "assignActionsByStatus", function() { return assignActionsByStatus; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "generateActions", function() { return generateActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "formNavigation", function() { return formNavigation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "panelNavigation", function() { return panelNavigation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "formActions", function() { return formActions; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -70867,6 +75549,71 @@ function generateActions(hasEvents, actions, data, enableTitles, type, show) {
   }
 
   return acciones;
+}
+function formNavigation(volver, eliminar) {
+  return [{
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "smaller-text text bold"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fas fa-arrow-left inline-box side-margin"
+    }), "Volver"),
+    click: volver,
+    "class": "box-transparent highlight-hover border-box button-border inline-block",
+    disabled: false
+  }, {
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "smaller-text text bold"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fas fa-trash inline-box side-margin"
+    }), "Eliminar"),
+    click: eliminar,
+    "class": "box-transparent highlight-hover border-box button-border inline-block",
+    disabled: false
+  }];
+}
+function panelNavigation(volver, agregar, panel) {
+  return [{
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "smaller-text text bold"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fas fa-arrow-left inline-box side-margin"
+    }), "Volver"),
+    click: volver,
+    data: panel,
+    "class": "box-transparent highlight-hover border-box button-border inline-block",
+    disabled: false
+  }, {
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "smaller-text text bold"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fas fa-plus-circle inline-box side-margin"
+    }), "Agregar"),
+    click: agregar,
+    "class": "box-transparent highlight-hover border-box button-border inline-block",
+    disabled: false
+  }];
+}
+function formActions(cancelar, guardar, panel) {
+  return [{
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "smaller-text text bold"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fas fa-times-circle inline-box side-margin"
+    }), "Cancelar"),
+    click: cancelar,
+    data: panel,
+    "class": "box-transparent highlight-hover border-box button-border inline-block",
+    disabled: false
+  }, {
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "smaller-text text bold"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fas fa-check-circle inline-box side-margin"
+    }), "Guardar"),
+    click: guardar,
+    "class": "box-transparent highlight-hover border-box button-border inline-block",
+    disabled: false
+  }];
 }
 
 /***/ }),
@@ -71499,29 +76246,38 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function generateEventosCard(eventos, actions) {
-  return eventos.map(function (e) {
-    var acciones = Object(_generateActions__WEBPACK_IMPORTED_MODULE_3__["generateActions"])(true, actions, e.id, true, 'feriados', false);
+  return Object.keys(eventos).map(function (e) {
+    var acciones = Object(_generateActions__WEBPACK_IMPORTED_MODULE_3__["generateActions"])(true, actions, e, true, 'feriados', false);
     return {
       title: {
-        data: e.nombre,
-        "class": "text-center full-width box-padding c-title light-danger"
-      },
-      content: {
         data: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "content"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "margin-box full-width bold"
-        }, "promoci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, e.promocion), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "inline-block"
-        }, e.descripcion), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
-          displayList: "flex-row full-width nav-list h-center no-h-padding v-padding",
-          container: "side-margin half",
+          className: "full-width"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "c-title text-super light-danger side-margin inline-block align-center"
+        }, eventos[e].nombre), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
+          displayList: "flex-row nav-list h-center no-padding inline-block  align-center",
+          container: "side-margin inline-block",
           elemClass: "full-width box-transparent highlight-hover border-box button-border",
           elems: acciones
         }))
       },
+      content: {
+        data: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "container"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-9"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, eventos[e].promocion)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-3 big-font text-right no-padding"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "big-font"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "big-font side-margin"
+        }, eventos[e].descuento + "%")))))
+      },
       container: {
-        "class": "box-padding border-box margin-box col-sm"
+        "class": "box-padding border-bottom "
       }
     };
   });
@@ -71673,31 +76429,41 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function generateUbicacionesCard(ubicaciones, actions) {
-  return ubicaciones.map(function (e) {
-    var acciones = Object(_generateActions__WEBPACK_IMPORTED_MODULE_3__["generateActions"])(true, actions, e.id, true, 'feriados', false);
+  return Object.keys(ubicaciones).map(function (e) {
+    var acciones = Object(_generateActions__WEBPACK_IMPORTED_MODULE_3__["generateActions"])(true, actions, e, true, 'feriados', false);
     return {
       title: {
-        data: e.nombre,
-        "class": "text-center full-width box-padding c-title light-danger"
+        data: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "full-width "
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "c-title text-super light-danger side-margin inline-block align-center"
+        }, ubicaciones[e].nombre), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
+          displayList: "flex-row nav-list h-center no-padding inline-block  align-center",
+          container: "side-margin inline-block",
+          elemClass: "full-width box-transparent highlight-hover border-box button-border",
+          elems: acciones
+        })),
+        "class": ""
       },
       content: {
         data: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "content"
+          className: "container"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "inline-block big-font"
-        }, e.capacidad), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "inline-block margin-box full-width bold"
-        }, "capacidad m\xE1xima"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "inline-block"
-        }, e.descripcion), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
-          displayList: "flex-row full-width nav-list h-center no-h-padding v-padding",
-          container: "side-margin half",
-          elemClass: "full-width box-transparent highlight-hover border-box button-border",
-          elems: acciones
-        }))
+          className: "row"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-9"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, ubicaciones[e].descripcion)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-3 big-font text-right no-padding"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "big-font"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "smaller-text side-margin bold"
+        }, "capacidad"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "big-font side-margin"
+        }, ubicaciones[e].capacidad, " ")))))
       },
       container: {
-        "class": "box-padding border-box margin-box col-sm"
+        "class": "box-padding border-bottom margin-box"
       }
     };
   });
@@ -71823,6 +76589,38 @@ __webpack_require__.r(__webpack_exports__);
 function getMonthLength(month, year) {
   var date = new Date(year, month, 0).getDate();
   return date;
+}
+
+/***/ }),
+
+/***/ "./resources/js/modal/Modal.jsx":
+/*!**************************************!*\
+  !*** ./resources/js/modal/Modal.jsx ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ConfirmarModal; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_bootstrap_modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-bootstrap-modal */ "./node_modules/react-bootstrap-modal/lib/Modal.js");
+/* harmony import */ var react_bootstrap_modal__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_bootstrap_modal__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+function ConfirmarModal(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_modal__WEBPACK_IMPORTED_MODULE_2___default.a, {
+    show: props.open,
+    onHide: props.closeModal
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_modal__WEBPACK_IMPORTED_MODULE_2___default.a.Header, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_modal__WEBPACK_IMPORTED_MODULE_2___default.a.Title, {
+    id: "ModalHeader"
+  }, props.title)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_modal__WEBPACK_IMPORTED_MODULE_2___default.a.Body, null, props.content), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_modal__WEBPACK_IMPORTED_MODULE_2___default.a.Footer, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_modal__WEBPACK_IMPORTED_MODULE_2___default.a.Dismiss, {
+    className: "btn btn-default"
+  }, "Cancelar")));
 }
 
 /***/ }),

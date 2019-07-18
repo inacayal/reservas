@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import Configuracion from './subElements/Configuracion';
 import Calendar from '../../../componentes/complex/calendar/Calendar';
 import AgregarFormulario from './subElements/AgregarFormulario';
-import Button from '../../../componentes/basic/Button';
+import ButtonList from '../../../componentes/complex/allUse/ButtonList';
+import { formActions, formNavigation, panelNavigation } from '../../../funciones/generateActions';
 
 var horariosReserva = {
     intervalo: "10",
@@ -454,6 +455,9 @@ export default class Reservas extends Component {
         this.selectOption = this.selectOption.bind(this);
         this.guardarNuevaReserva = this.guardarNuevaReserva.bind(this);
         
+        this.formActions = formActions(this.props.changePanel,this.guardarConfiguracion,"1");
+        this.panelNavigation = panelNavigation(this.props.changePanel,this.agregarReserva,"1");
+        
         this.actions = {
             outer:{
                 ver: this.verDia.bind(this),
@@ -550,6 +554,13 @@ export default class Reservas extends Component {
         return (
             <div className={(this.props.panel) ? "full-width" : "hidden"}>
                 <div className={(this.props.currentSub !== "0") ? "container" : "hidden"}>
+                    <div className="no-padding box-transparent highlight-title full-width text-left c-title">
+                        <span className="text-super">Reservaciones</span>
+                        <ButtonList
+                            displayList="flex-row nav-list no-padding inline-block  align-center"
+                            container="side-margin inline-block"
+                            elems={[this.panelNavigation[1]]} />
+                    </div>
                     <div className={this.state.agregar ? "row" : "hidden"}>
                         <AgregarFormulario 
                             verCalendario={this.actions.inner.verCalendario}
@@ -560,16 +571,6 @@ export default class Reservas extends Component {
                             onCalendarChange={this.onCalendarChange} />
                     </div>
                     <div className={this.state.agregar ? "hidden" : "row"}>
-                        <Button
-                            title={(
-                                <div className="smaller-text text bold">
-                                    <i className="fas fa-plus-circle inline-box side-margin" />
-                                    Agregar reserva
-                                </div>
-                            )}
-                            click={this.actions.inner.agregar}
-                            class="box-transparent highlight-hover border-box button-border inline-block"
-                            disabled={false} />
                         <Calendar
                             show={this.state.show}
                             horariosReserva={horariosReserva}
@@ -583,14 +584,14 @@ export default class Reservas extends Component {
                     </div>
                 </div>
                 <div className={(this.props.currentSub === "0") ? "row" : "hidden"}>
-                    <Configuracion 
-                        changePanel={this.props.changePanel}
+                    <Configuracion
+                        formNavigation={this.panelNavigation}
+                        formActions={this.formActions}
                         verCalendario={this.actions.inner.verCalendario}
                         showOptions={this.showOptions}
                         selectOption={this.selectOption}
                         caida={this.state.select.caida}
-                        intervalo={this.state.select.intervalo}
-                        guardarConfiguracion={this.guardarConfiguracion}/>
+                        intervalo={this.state.select.intervalo}/>
                 </div>
             </div>
         );

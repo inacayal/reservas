@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Select from '../../../../componentes/input/Select';
-import Button from '../../../../componentes/basic/Button';
+import ButtonList from '../../../../componentes/complex/allUse/ButtonList';
 export default class Configuracion extends Component {
     constructor(props){
         super(props);
@@ -9,21 +9,17 @@ export default class Configuracion extends Component {
     render(){
         return (
             <form className="full-width"> 
-                <div className="container no-padding">
-                    <div className="row v-padding">
-                        <Button
-                            title={(
-                                <div className="smaller-text text bold">
-                                    <i className="fas fa-arrow-left inline-box side-margin" />
-                                    Volver
-                                </div>
-                            )}
-                            data="1"
-                            click={this.props.changePanel}
-                            class="box-transparent highlight-hover border-box button-border inline-block"
-                            disabled={false} />
-                    </div>
+                <div className="container">
                     <div className="row">
+                        <div className="no-padding box-transparent highlight-title full-width text-left c-title">
+                            <span className="text-super">Configuración</span>
+                            <ButtonList
+                                displayList="flex-row nav-list no-padding inline-block  align-center"
+                                container="side-margin inline-block"
+                                elems={[this.props.formNavigation[0]]} />
+                        </div>
+                    </div>
+                    <div className="row v-padding">
                         <div className="col-md-6">
                             <h6 className="highlight bold no-margin">
                                 Defina el intervalo permitido para la reserva.
@@ -47,30 +43,10 @@ export default class Configuracion extends Component {
                     </div>
                     <div className="row">
                         <div className="col-md-12 text-right no-padding">
-                            <Button
-                                title={(
-                                    <div className="smaller-text text bold">
-                                        <i className="fas fa-times-circle inline-box side-margin" />
-                                        Cancelar
-                                </div>
-                                )}
-                                data="1"
-                                click={this.props.changePanel}
-                                container="inline-block side-margin"
-                                class="box-transparent highlight-hover border-box button-border"
-                                disabled={false} />
-                            <Button
-                                title={(
-                                    <div className="smaller-text text bold">
-                                        <i className="fas fa-check-circle inline-box side-margin" />
-                                        Guardar
-                                    </div>
-                                )}
-                                type="submit"
-                                click={this.props.guardarConfiguracion}
-                                container="inline-block side-margin"
-                                class="box-transparent highlight-hover border-box button-border"
-                                disabled={false} />
+                            <ButtonList
+                                displayList="flex-row nav-list no-padding inline-block  align-center"
+                                container="side-margin inline-block"
+                                elems={this.props.formActions} />
                         </div>
                     </div>
                 </div>

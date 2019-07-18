@@ -8,7 +8,7 @@ function BreadCrumb(props) {
             <ButtonList
                 clickHandler={props.change}
                 displayList="nav-list no-padding flex-row"
-                container="inline-block v-align-center"
+                container="inline-block v-align-center v-padding"
                 elems={props.items} />
         </div>
     );

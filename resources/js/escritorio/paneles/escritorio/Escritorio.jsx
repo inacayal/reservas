@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 function Escritorio(props) {
     return (
         <div className={props.classes}>
-            Escritorio
+            <div className="small-v-padding box-transparent h-padding highlight-title full-width text-left c-title">Escritorio</div>
         </div>
     );
 }

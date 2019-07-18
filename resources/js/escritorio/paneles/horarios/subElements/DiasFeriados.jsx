@@ -3,10 +3,13 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 //Complex Components
 import Calendar from '../../../../componentes/complex/calendar/Calendar';
-import Button from '../../../../componentes/basic/Button';
+import ButtonList from '../../../../componentes/complex/allUse/ButtonList';
 import AgregarFormulario from './AgregarFormulario';
 //Functions
 import generateMonth from '../../../../funciones/generateMonth';
+import { formActions, formNavigation, panelNavigation } from '../../../../funciones/generateActions';
+import ConfirmarModal from '../../../../modal/Modal';
+import {DAYS,MONTHS} from '../../../../constantes/DaysMonths';
 
 //Feriados should be on this format when doing ajax request
 var formattedFeriados = {
@@ -62,10 +65,8 @@ export default class DiasFeriados extends Component {
             formulario:false,
             date:new Date(),
             intervalo:10,
-            editar: {
-                enable:false,
-                data:""
-            },
+            editar: null,
+            agregar:false,
             controls :[
                 {
                     title: "Anual",
@@ -93,14 +94,17 @@ export default class DiasFeriados extends Component {
             inner:{}
         };
 
-        this.toggleEditAdd = this.toggleEditAdd.bind(this);
         this.guardarFeriado = this.guardarFeriado.bind(this);
-        this.toggleEditAdd = this.toggleEditAdd.bind(this);
         this.verFeriado = this.verFeriado.bind(this);
         this.eliminarFeriado = this.eliminarFeriado.bind(this);
         this.editarFeriado = this.editarFeriado.bind(this);
         this.agregarFeriado = this.agregarFeriado.bind(this);
-        this.verCalendario = this.verCalendario.bind(this);
+        this.verCalendario = this.verCalendario.bind(this); 
+        this.closeModal = this.closeModal.bind(this);
+
+        this.editAddControls = panelNavigation(this.props.changePanel, this.agregarFeriado, "2");
+        this.formNavigation = formNavigation(this.verCalendario, this.eliminarFeriado);
+        this.formActions = formActions(this.verCalendario, this.guardarFeriado);
 
     }
 
@@ -115,80 +119,63 @@ export default class DiasFeriados extends Component {
         this.setState({show:"2",date:new Date(dateString)});
     }
     
-    eliminarFeriado(e) {
-        console.log("this.eliminarFeriado");
-    }
-
     editarFeriado(e) {
         e.preventDefault();
         let dateString = parseInt(e.currentTarget.getAttribute('data'));
-        this.toggleEditAdd(true,true,dateString);
+        this.setState({ agregar: null, editar: new Date(dateString), formulario: true });
     }
-    
+
     agregarFeriado(e) {
         e.preventDefault();
-        this.toggleEditAdd(false,true,null);
+        this.setState({ agregar: true, editar: null, formulario: true });
     }
 
     verCalendario(e) {
         e.preventDefault();
-        this.toggleEditAdd(false,false,null);
+        this.setState({ agregar: null, editar: null, formulario: false });
+    }
+    
+    closeModal(e) {
+        this.setState({ open: false });
     }
 
-    toggleEditAdd(editarBool,formBool,data){
-        let editar = this.state.editar;
-        editar.enable = editarBool;
-        editar.data= data ? data : "";
-        this.setState({editar:editar,formulario:formBool});
+    eliminarFeriado(e) {
+        e.preventDefault();
+        this.setState({
+            open: true
+        })
     }
 
     render(){
-        //console.log(this.state.editar,this.state.agregar);
         return (
             <div className={(this.props.show) ? "full-width" : "hidden"}>
+                <ConfirmarModal
+                    open={this.state.open}
+                    closeModal={this.closeModal}
+                    title="Eliminar Horario"
+                    content="¿estás seguro de eliminar este horario?" />        
                 <div className={(this.state.formulario) ? "full-width" : "hidden"}>
-                    <Button
-                        title={(
-                            <div className="smaller-text text bold">
-                                <i className="fas fa-arrow-left inline-box side-margin" />
-                                Volver
-                            </div>
-                        )}
-                        click={this.verCalendario}
-                        class="box-transparent highlight-hover border-box button-border inline-block"
-                        disabled={false} />
+                    <ButtonList
+                        displayList="flex-row nav-list no-padding inline-block  align-center"
+                        container="side-margin inline-block"
+                        elems={this.state.editar ? this.formNavigation : [this.formNavigation[0]]} />
                     <AgregarFormulario
+                        title={this.state.editar ?
+                            "Editar feriado del " + DAYS[this.state.editar.getDay()] + " " + this.state.editar.getDate() + " " +MONTHS[this.state.editar.getMonth()]
+                            : "Agregar Feriado"
+                        }
+                        formActions={this.formActions}
                         show={this.state.formulario}
                         showCalendar={true}
                         data={this.state.feriados}
-                        editar={this.state.editar}
-                        cancelar={this.verCalendario}
-                        guardarFeriado={this.guardarFeriado}/>
+                        editar={this.state.editar ? this.state.editar.getTime() : null}
+                        agregar={this.state.agregar} />
                 </div>
                 <div className={(this.state.formulario) ? "hidden" : "full-width"}>
-                    <Button
-                        title={(
-                            <div className="smaller-text text bold">
-                                <i className="fas fa-arrow-left inline-box side-margin" />
-                                Volver
-                            </div>
-                        )}
-                        data="2"
-                        click={this.props.changePanel}
-                        container="inline-block side-margin"
-                        class="box-transparent highlight-hover border-box button-border"
-                        disabled={false} />
-                    <Button
-                        title={(
-                            <div className="smaller-text text bold">
-                                <i className="fas fa-plus-circle inline-box side-margin" />
-                                Agregar feriados
-                            </div>
-                        )}
-                        click={this.agregarFeriado}
-                        container="inline-block side-margin"
-                        class="box-transparent highlight-hover border-box button-border inline-block"
-                        disabled={false} />
+                    <ButtonList
+                        displayList="flex-row nav-list no-padding inline-block  align-center"
+                        container="side-margin inline-block"
+                        elems={this.editAddControls} />
                     <Calendar
                         show={this.state.show}
                         date={this.state.date} 

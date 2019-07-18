@@ -25,6 +25,7 @@
         "sass-loader": "^7.1.0"
     },
     "dependencies": {
+        "react-bootstrap-modal": "^4.2.0",
         "react-calendar": "^2.19.0"
     }
 }

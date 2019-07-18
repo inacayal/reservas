@@ -19,6 +19,7 @@ class CreateUsuarioEventoTable extends Migration
             $table->string('nombre',45);
             $table->string('descripcion',45);
             $table->string('promocion');
+            $table->integer('descuento')->unsigned();
 
             $table->foreign('id_usuario','usuario_evento_users_id_usuario_id')
                 ->references('id')->on('users')

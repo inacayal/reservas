@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom';
 import Calendar from 'react-calendar';
 
 import Text from '../../../../componentes/input/Text';
-import Button from '../../../../componentes/basic/Button';
+import ButtonList from '../../../../componentes/complex/allUse/ButtonList';
 import Select from '../../../../componentes/input/Select';
 import Toggle from '../../../../componentes/basic/Toggle';
 //Constants
 import {DAYS,MONTHS,HOURS} from '../../../../constantes/DaysMonths';
 import generateHoursFromInterval from '../../../../funciones/generateHoursFromInterval';
+
 export default class AgregarFormulario extends Component {
     constructor(props){
         super(props);
@@ -17,11 +18,8 @@ export default class AgregarFormulario extends Component {
             date: new Date(),
             right: true,
             text: {
-                descripcion: {
-                    value: ""
-                }
+                descripcion: ""
             },
-            editar:false,
             select: {
                 apertura_hora: {
                     name: "apertura_hora",
@@ -74,7 +72,7 @@ export default class AgregarFormulario extends Component {
             name = input.getAttribute('name'),
             textInputs = this.state.text;
 
-        textInputs[name].value = input.value;
+        textInputs[name]= input.value;
         this.setState({ text: textInputs });
     }
 
@@ -86,14 +84,13 @@ export default class AgregarFormulario extends Component {
         select.apertura_minuto.selected = null;
         select.cierre_hora.selected = null;
         select.cierre_minuto.selected = null;
-        textInput.descripcion.value = "";
+        textInput.descripcion = "";
 
         this.setState({
             date: new Date(),
             select: select,
             text: textInput,
-            right: true,
-            editar:false
+            right: true
         });
     }
 
@@ -119,7 +116,7 @@ export default class AgregarFormulario extends Component {
 
     editarFeriado(dateString) {
         let feriado = this.props.data[dateString],
-            date = new Date(dateString),
+            date = new Date(parseInt(dateString)),
             apertura = feriado.apertura.split(':'),
             cierre = feriado.cierre.split(':'),
             select = this.state.select,
@@ -128,14 +125,13 @@ export default class AgregarFormulario extends Component {
         select.apertura_minuto.selected = apertura[1];
         select.cierre_hora.selected = cierre[0];
         select.cierre_minuto.selected = cierre[1];
-        textInput.descripcion.value = feriado.descripcion;
+        textInput.descripcion = feriado.descripcion;
 
         this.setState({
             select: select,
             date: date,
-            right: feriado.estado === 1,
-            text: textInput,
-            editar:true
+            right: feriado.estado == 1,
+            text: textInput
         });
     }
 
@@ -149,128 +145,124 @@ export default class AgregarFormulario extends Component {
     }
 
     componentDidUpdate(prevProps,prevState){
-        if (prevProps.show)
-            if (this.props.editar.enable)
-                this.editarFeriado(this.props.editar.data);
-        else if (!this.props.editar.enable) this.agregarFeriado();
+        if (this.props.show){
+            if (this.props.editar && (this.props.editar !== prevProps.editar))
+                return this.editarFeriado(this.props.editar);
+            if (this.props.agregar!==prevProps.agregar)
+                return this.agregarFeriado();
+        }
     }
 
     render(){
+        const classes = this.props.showCalendar ? {
+            calendar:"col-md-6 box-padding",
+            form: "col-lg-6 no-padding",
+            inputSelect:"col-md-12 box-padding",
+            inputText:"col-md-12 no-padding"
+        } : {
+            calendar: "hidden",
+            form: "col-lg-12 box-padding",
+            inputSelect: "col-md-6 box-padding",
+            inputText: "col-md-6 box-padding"
+        }
         return (
-            <div className="box-padding container">
-                <form className="box-padding row">
-                    <div className="container">
-                        <div className="row">
-                            <div className={this.props.showCalendar ? "col-md-6 box-padding" : "hidden"}>
-                                <Calendar 
-                                    value={this.state.date} 
-                                    onChange={this.calendarChange} />
-                            </div>
-                            <div className={this.props.showCalendar ? "col-md-6 box-padding" : "col-md-12 box-padding"}>
-                                <div className="container">
-                                    <div className="row sub-title">
-                                        {(this.props.editar.enable) ? 
-                                            "Editando " + DAYS[this.state.date.getDay()] + " " + this.state.date.getDate() + " " + MONTHS[this.state.date.getMonth()] + " " + this.state.date.getFullYear()
-                                            : "Agregar día Feriado"
-                                        }
-                                    </div>
-                                    <div className="row justify-content-end">
-                                        <Toggle
-                                            rightTitle="Laboral"
-                                            leftTitle="No laboral"
-                                            name="estado"
-                                            right={this.state.right}
-                                            changeSide={this.changeToggleSide}/>
-                                    </div>
-                                    <div className={this.state.right ? "row" : "hidden"}>
-                                        <div className="no-padding col-md-12 bold light-danger">Apertura</div>
-                                        <div className="col-sm-4 no-padding">
-                                            <Select
-                                                {...this.state.select.apertura_hora}
-                                                titulo  ="horas"
-                                                change={this.selectOption}
-                                                toggle={this.showToggle}  />
-                                        </div>
-                                        <div className="col-sm-2 no-padding bold align-center">
-                                            horas
-                                        </div>
-                                        <div className="col-sm-4 no-padding ">
-                                            <Select
-                                                {...this.state.select.apertura_minuto}
-                                                titulo="minutos"
-                                                change={this.selectOption}
-                                                toggle={this.showToggle} />
-                                        </div>
-                                        <div className="col-sm-2 no-padding bold align-center">
-                                            minutos
-                                        </div>
-                                    </div>
-                                    <div className={this.state.right ? "row" : "hidden"}>
-                                        <div className="no-padding col-md-12 bold light-danger">Cierre</div>
-                                        <div className="col-sm-4 no-padding ">
-                                            <Select
-                                                {...this.state.select.cierre_hora}
-                                                titulo="horas"
-                                                change={this.selectOption}
-                                                toggle={this.showToggle}  />
-                                        </div>
-                                        <div className="col-sm-2 no-padding bold align-center">
-                                            horas
-                                        </div>
-                                        <div className="col-sm-4 no-padding ">
-                                            <Select
-                                                {...this.state.select.cierre_minuto}
-                                                titulo="minutos"
-                                                change={this.selectOption}
-                                                toggle={this.showToggle} />
-                                        </div>
-                                        <div className="col-sm-2 no-padding bold align-center">
-                                            minutos
-                                        </div>
-                                    </div>
-                                    <div className="row" >
-                                        <div className="col-md-12 no-padding">
-                                            <Text 
-                                                changeValue={this.onTextChange}
-                                                titulo="Descripción" 
-                                                name="descripcion" 
-                                                value={this.state.text.descripcion.value} 
-                                                rows={4}
-                                                classes="border-box input-text margin-box full-width" />
-                                        </div>
-                                    </div>
-                                    <div className="row justify-content-end">
-                                        <Button
-                                            title={(
-                                                <div className="smaller-text text bold">
-                                                    <i className="fas fa-times-circle inline-box side-margin" />
-                                                    Cancelar
+            <form className="full-width">
+                <div className="container">
+                    <div className="row">
+                        <div className={classes.calendar}>
+                            <Calendar 
+                                value={this.state.date} 
+                                onChange={this.calendarChange} />
+                        </div>
+                        <div className={classes.form}>
+                            <div className="container">
+                                <div className="row sub-title">
+                                    {this.props.title}
+                                </div>
+                                <div className="row justify-content-end">
+                                    <Toggle
+                                        rightTitle="Laboral"
+                                        leftTitle="No laboral"
+                                        name="estado"
+                                        right={this.state.right}
+                                        changeSide={this.changeToggleSide}/>
+                                </div>
+                                <div className="container row full-width no-margin no-padding">
+                                    <div className="col-md-12 no-padding no-margin">
+                                        <div className="container row no-padding no-margin">
+                                            <div className={this.state.right ? classes.inputSelect : "hidden"}>
+                                                <div className="row">
+                                                    <div className="no-padding col-md-12 bold light-danger">Apertura</div>
+                                                    <div className="col-sm-4 no-padding">
+                                                        <Select
+                                                            {...this.state.select.apertura_hora}
+                                                            titulo="horas"
+                                                            change={this.selectOption}
+                                                            toggle={this.showOptions} />
+                                                    </div>
+                                                    <div className="col-sm-2 no-padding bold align-center">
+                                                        horas
+                                                    </div>
+                                                    <div className="col-sm-4 no-padding ">
+                                                        <Select
+                                                            {...this.state.select.apertura_minuto}
+                                                            titulo="minutos"
+                                                            change={this.selectOption}
+                                                            toggle={this.showOptions} />
+                                                    </div>
+                                                    <div className="col-sm-2 no-padding bold align-center">
+                                                        minutos
+                                                    </div>              
                                                 </div>
-                                            )}
-                                            type="submit"
-                                            click={this.props.cancelar}
-                                            container="inline-block side-margin"
-                                            class="box-transparent highlight-hover border-box button-border"
-                                            disabled={false} />
-                                        <Button
-                                            title={(
-                                                <div className="smaller-text text bold">
-                                                    <i className="fas fa-check-circle inline-box side-margin" />
-                                                    Guardar
+                                                <div className="row">
+                                                    <div className="no-padding col-md-12 bold light-danger">Cierre</div>
+                                                    <div className="col-sm-4 no-padding ">
+                                                        <Select
+                                                            {...this.state.select.cierre_hora}
+                                                            titulo="horas"
+                                                            change={this.selectOption}
+                                                            toggle={this.showOptions} />
+                                                    </div>
+                                                    <div className="col-sm-2 no-padding bold align-center">
+                                                        horas
+                                                    </div>
+                                                    <div className="col-sm-4 no-padding ">
+                                                        <Select
+                                                            {...this.state.select.cierre_minuto}
+                                                            titulo="minutos"
+                                                            change={this.selectOption}
+                                                            toggle={this.showOptions} />
+                                                    </div>
+                                                    <div className="col-sm-2 no-padding bold align-center">
+                                                        minutos
+                                                    </div>
                                                 </div>
-                                            )}
-                                            type="submit"
-                                            click={this.props.guardarFeriado}
-                                            container="inline-block side-margin"
-                                            class="box-transparent highlight-hover border-box button-border"
-                                            disabled={false} />
+                                            </div>
+                                            <div className={classes.inputText}>
+                                                <Text
+                                                    changeValue={this.onTextChange}
+                                                    titulo="Descripción"
+                                                    name="descripcion"
+                                                    value={this.state.text.descripcion}
+                                                    rows={4}
+                                                    classes="border-box input-text margin-box full-width" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="container">
+                                        <div className="row justify-content-end">
+                                            <ButtonList
+                                                displayList="flex-row nav-list no-padding inline-block  align-center"
+                                                container="side-margin inline-block"
+                                                elems={this.props.formActions} />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         );
     }
 }
