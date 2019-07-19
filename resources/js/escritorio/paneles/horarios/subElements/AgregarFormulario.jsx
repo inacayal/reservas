@@ -155,13 +155,13 @@ export default class AgregarFormulario extends Component {
 
     render(){
         const classes = this.props.showCalendar ? {
-            calendar:"col-md-6 box-padding",
-            form: "col-lg-6 no-padding",
+            calendar:"col-md-6",
+            form: "col-lg-6",
             inputSelect:"col-md-12 box-padding",
             inputText:"col-md-12 no-padding"
         } : {
             calendar: "hidden",
-            form: "col-lg-12 box-padding",
+            form: "col-lg-12",
             inputSelect: "col-md-6 box-padding",
             inputText: "col-md-6 box-padding"
         }

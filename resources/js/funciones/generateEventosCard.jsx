@@ -21,7 +21,7 @@ export default function generateEventosCard(
                 title: {
                     data: (
                         <div className="full-width">
-                            <span className="c-title text-super light-danger side-margin inline-block align-center">{eventos[e].nombre}</span>
+                            <span className="sub-title text-super side-margin inline-block align-center">{eventos[e].nombre}</span>
                             <ButtonList
                                 displayList="flex-row nav-list h-center no-padding inline-block  align-center"
                                 container="side-margin inline-block"
@@ -38,9 +38,8 @@ export default function generateEventosCard(
                                     <div>{eventos[e].promocion}</div>
                                 </div>
                                 <div className="col-md-3 big-font text-right no-padding">
-                                    <div className="big-font">
-                                        <span className="big-font side-margin">{eventos[e].descuento+"%"}</span>
-                                    </div>
+                                    <span className="big-font side-margin light-danger">{eventos[e].descuento}</span>
+                                    <span className="side-margin">%</span>
                                 </div>
                             </div>
                         </div>

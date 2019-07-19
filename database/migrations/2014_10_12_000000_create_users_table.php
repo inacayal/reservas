@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->integer('id_franquicia')->unsigned();
+            $table->integer('id_provincia')->unsigned();
             $table->integer('id_rol')->unsigned()->index();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('email_verified_at')->nullable();
@@ -32,7 +33,7 @@ class CreateUsersTable extends Migration
             $table->string('caida_reserva',15)->nullable();
             $table->string('cuit_cuil',11)->nullable();
             $table->string('direccion',150)->nullable();
-            $table->string('telefono',20)->nullable();
+            $table->string('telefono_local',20)->nullable();
             $table->integer('id_estado')->unsigned();
             
             $table->foreign('id_franquicia','usuario_franquicia_id')
@@ -40,6 +41,11 @@ class CreateUsersTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             
+            $table->foreign('id_provincia','usuario_provincia_id')
+                ->references('id')->on('provincias')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
             $table->foreign('id_estado','usuario_estado_id')
                 ->references('id')->on('estado_usuario')
                 ->onDelete('cascade')
@@ -56,6 +62,7 @@ class CreateUsersTable extends Migration
     {
         
         Schema::table("users",function(Blueprint $table){
+            $table->dropForeign('usuario_provincia_id');
             $table->dropForeign('usuario_franquicia_id');
             $table->dropForeign('usuario_estado_id');
         });

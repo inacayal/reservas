@@ -58,20 +58,7 @@ const sidebar = [//get on ajax request
         data: "5",
         disabled: false,
         title: "Locales",
-        sub: [
-            {
-                title: 'Locales 1',
-                data: "0"
-            },
-            {
-                title: 'Locales 2',
-                data: "1"
-            },
-            {
-                title: 'Locales 3',
-                data: "2"
-            }
-        ]
+        sub: []
     },
     {
         data: "6",

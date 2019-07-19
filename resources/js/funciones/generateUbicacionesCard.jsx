@@ -21,7 +21,7 @@ export default function generateUbicacionesCard(
                 title:{
                     data:(
                         <div className="full-width ">
-                            <span className="c-title text-super light-danger side-margin inline-block align-center">{ubicaciones[e].nombre}</span>
+                            <span className="sub-title text-super side-margin inline-block align-center">{ubicaciones[e].nombre}</span>
                             <ButtonList
                                 displayList="flex-row nav-list h-center no-padding inline-block  align-center"
                                 container="side-margin inline-block"
@@ -41,7 +41,7 @@ export default function generateUbicacionesCard(
                                 <div className="col-md-3 big-font text-right no-padding">
                                     <div className="big-font">
                                         <span className="smaller-text side-margin bold">capacidad</span>
-                                        <span className="big-font side-margin">{ubicaciones[e].capacidad} </span>
+                                        <span className="big-font side-margin light-danger">{ubicaciones[e].capacidad} </span>
                                     </div>
                                 </div>
                             </div>

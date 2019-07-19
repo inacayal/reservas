@@ -41,6 +41,7 @@ html,body {
     padding:2px 4px;
     border:solid 1px var(--border) !important;
 }
+
 .aprobado{
     color:var(--success);
 }
@@ -60,6 +61,20 @@ html,body {
 .v-padding{
     padding-top:10px;
     padding-bottom:10px;
+}
+.ReactTable{
+    border: solid 1px transparent !important;
+}
+.ReactTable .rt-thead.-header{
+    box-shadow:none !important;
+    border-bottom:solid 1px var(--border);
+}
+.-pagination{
+    box-shadow:none !important;
+    border-top:solid 1px var(--border) !important;
+}
+.-btn:disabled{
+    background-color: transparent !important;
 }
 .text-super{
     vertical-align: super;
@@ -411,6 +426,9 @@ button:focus {
 .flex-row{
     display:flex;
     flex-direction:row;
+    overflow:auto;
+}
+.h-overflow-auto{
     overflow:auto;
 }
 .circle{

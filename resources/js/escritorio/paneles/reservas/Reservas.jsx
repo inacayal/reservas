@@ -330,6 +330,7 @@ export default class Reservas extends Component {
         this.configuracionFormControls = formActions(this.props.changePanel, this.guardarConfiguracion, "1");
         this.panelNavigation = panelNavigation(this.verCalendario, this.agregarReserva);
         this.configuracionPanelNavigation = panelNavigation(this.props.changePanel, this.agregarReserva,"1");
+        
         this.actions = {
             outer: {
                 ver: this.verDia.bind(this),
