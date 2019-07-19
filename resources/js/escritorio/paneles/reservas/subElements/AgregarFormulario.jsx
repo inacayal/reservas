@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Button from '../../../../componentes/basic/Button';
+import ButtonList from '../../../../componentes/complex/allUse/ButtonList';
 import Evento from '../../../../reserva/pasos/Evento';
 
 export default function agregarFormulario(props){
@@ -10,18 +10,6 @@ export default function agregarFormulario(props){
     };
     return (
         <div>
-            <div>
-                <Button
-                    title={(
-                        <div className="smaller-text text bold">
-                            <i className="fas fa-arrow-left inline-box side-margin" />
-                            Volver
-                        </div>
-                    )}
-                    click={props.verCalendario}
-                    class="box-transparent highlight-hover border-box button-border inline-block"
-                    disabled={false} />
-            </div>
             <form className="text-right">
                 <div className="container">
                     <div className="row">
@@ -37,29 +25,10 @@ export default function agregarFormulario(props){
                             onCalendarChange={props.onCalendarChange} />
                     </div>
                     <div className="row justify-content-end">
-                        <Button
-                            title={(
-                                <div className="smaller-text text bold">
-                                    <i className="fas fa-times-circle inline-box side-margin" />
-                                    Cancelar
-                                </div>
-                            )}
-                            type="submit"
-                            click={props.verCalendario}
-                            container="inline-block side-margin"
-                            class="box-transparent highlight-hover border-box button-border"
-                            disabled={false} />
-                        <Button
-                            title={(
-                                <div className="smaller-text text bold">
-                                    <i className="fas fa-check-circle inline-box side-margin" />
-                                    Guardar
-                                </div>
-                            )}
-                            type="submit"
-                            click={props.verCalendario}
-                            class="box-transparent highlight-hover border-box button-border inline-block"
-                            disabled={false} />
+                        <ButtonList
+                            displayList="flex-row nav-list no-padding inline-block  align-center"
+                            container="side-margin inline-block"
+                            elems={props.formControls} />
                     </div>
                 </div>
             </form>

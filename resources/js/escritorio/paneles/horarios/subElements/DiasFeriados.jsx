@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import Calendar from '../../../../componentes/complex/calendar/Calendar';
 import ButtonList from '../../../../componentes/complex/allUse/ButtonList';
 import AgregarFormulario from './AgregarFormulario';
+import Titulo from '../../../../componentes/complex/allUse/Titulo';
 //Functions
 import generateMonth from '../../../../funciones/generateMonth';
 import { formActions, formNavigation, panelNavigation } from '../../../../funciones/generateActions';
@@ -147,18 +148,22 @@ export default class DiasFeriados extends Component {
     }
 
     render(){
+        const controls = this.state.editar ?
+            this.formNavigation 
+            : this.state.agregar?
+                [this.formNavigation[0]]
+                : this.editAddControls
         return (
             <div className={(this.props.show) ? "full-width" : "hidden"}>
+                <Titulo
+                    title="Días Feriados"
+                    navigation={controls} />
                 <ConfirmarModal
                     open={this.state.open}
                     closeModal={this.closeModal}
-                    title="Eliminar Horario"
-                    content="¿estás seguro de eliminar este horario?" />        
+                    title="Eliminar Feriado"
+                    content="¿estás seguro de eliminar este feriado?" />        
                 <div className={(this.state.formulario) ? "full-width" : "hidden"}>
-                    <ButtonList
-                        displayList="flex-row nav-list no-padding inline-block  align-center"
-                        container="side-margin inline-block"
-                        elems={this.state.editar ? this.formNavigation : [this.formNavigation[0]]} />
                     <AgregarFormulario
                         title={this.state.editar ?
                             "Editar feriado del " + DAYS[this.state.editar.getDay()] + " " + this.state.editar.getDate() + " " +MONTHS[this.state.editar.getMonth()]
@@ -172,10 +177,6 @@ export default class DiasFeriados extends Component {
                         agregar={this.state.agregar} />
                 </div>
                 <div className={(this.state.formulario) ? "hidden" : "full-width"}>
-                    <ButtonList
-                        displayList="flex-row nav-list no-padding inline-block  align-center"
-                        container="side-margin inline-block"
-                        elems={this.editAddControls} />
                     <Calendar
                         show={this.state.show}
                         date={this.state.date} 

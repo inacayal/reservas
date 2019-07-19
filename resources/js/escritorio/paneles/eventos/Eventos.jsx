@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+
 import ButtonList from '../../../componentes/complex/allUse/ButtonList';
 import CardList from '../../../componentes/complex/allUse/CardList';
 import generateEventosCard from '../../../funciones/generateEventosCard';
 import AgregarFormulario from './subElements/AgregarFormulario';
-import { formActions, formNavigation, panelNavigation } from '../../../funciones/generateActions';
 import ConfirmarModal from '../../../modal/Modal';
+import Titulo from '../../../componentes/complex/allUse/Titulo';
+
+import { formActions, formNavigation, panelNavigation } from '../../../funciones/generateActions';
 export default class Eventos extends Component {
     constructor(props) {
         super(props);
@@ -77,32 +80,29 @@ export default class Eventos extends Component {
     }
 
     render() {
-        let eventos = generateEventosCard(
-            this.state.eventos,
-            this.actions
-        );
+        const eventos = generateEventosCard(
+                this.state.eventos,
+                this.actions
+            ), 
+            controls = this.state.formulario ?
+                this.state.editar ?
+                    this.formNavigation
+                    : [this.formNavigation[0]]
+                : [this.editAddControls[1]];
         return (
             <div className={this.props.panel ? "container" : "hidden"}>
+                <Titulo
+                    title="Eventos"
+                    navigation={controls} />
+                <ConfirmarModal
+                    open={this.state.open}
+                    closeModal={this.closeModal}
+                    title="Eliminar Evento"
+                    content="¿estás seguro de eliminar este evento? " />
                 <div className={this.state.formulario ? "hidden" : "row" }>
-                    <div className="small-v-padding box-transparent h-padding highlight-title full-width text-left c-title">Eventos</div>
-                    <ButtonList
-                        displayList="flex-row nav-list no-padding inline-block  align-center"
-                        container="side-margin inline-block"
-                        elems={this.state.editar ? this.editAddControls : [this.editAddControls[1]]} />
-                    <div className="container">
-                        <div className="row">
-                            <CardList
-                                displayList="full-width nav-list no-padding"
-                                elems={eventos} />
-                        </div>
-                        <div className="row">
-                            <ConfirmarModal
-                                open={this.state.open}
-                                closeModal={this.closeModal}
-                                title="Eliminar Evento"
-                                content="¿estás seguro de eliminar este evento? " />
-                        </div>
-                    </div>
+                    <CardList
+                        displayList="full-width nav-list no-padding"
+                        elems={eventos} />
                 </div>
                 <div className={this.state.formulario ?  "row" : "hidden"}>
                     <AgregarFormulario
@@ -112,7 +112,6 @@ export default class Eventos extends Component {
                                 : "Agregar evento"
                         }
                         formActions={this.formActions}
-                        formNavigation={this.formNavigation}
                         show={this.state.formulario}
                         data={this.state.eventos}
                         editar={this.state.editar}

@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import DiasFeriados from './subElements/DiasFeriados';
 import ButtonList from '../../../componentes/complex/allUse/ButtonList';
+import ConfirmarModal from '../../../modal/Modal';
+import Titulo from '../../../componentes/complex/allUse/Titulo';
 
 import CardList from '../../../componentes/complex/allUse/CardList';
 import generateWeek from '../../../funciones/generateWeek';
 import AgregarFormulario from './subElements/AgregarFormulario';
 import { DAYS, MONTHS, HOURS } from '../../../constantes/DaysMonths';
 import { formNavigation, formActions } from '../../../funciones/generateActions';
-import ConfirmarModal from '../../../modal/Modal';
 export class Horarios extends Component {
     constructor(props){
         super(props);
@@ -105,24 +106,31 @@ export class Horarios extends Component {
     }
 
     render() {
-        let diasAtencion = generateWeek(
-            null, 
-            this.state.atencion, 
-            this.state.acciones, 
-            null, 
-            "horarios"
-        );
+        const diasAtencion = generateWeek(
+                null, 
+                this.state.atencion, 
+                this.state.acciones, 
+                null, 
+                "horarios"
+            ),
+            controls = this.state.editar ?
+                this.editAddControls
+                : this.state.agregar ? 
+                    [this.editAddControls[0]]
+                    : [{class:"hidden"}];
+        
         return (
             <div className={(this.props.panel) ? "full-width container" : "hidden"}>
                 <div className={this.props.currentSub !== "0" ? "row" : "hidden"}>
-                    <div className="no-padding box-transparent highlight-title full-width text-left c-title">
-                        <span className="text-super">Horarios de atención</span>
-                    </div>
+                    <Titulo
+                        title="Horarios de Atención"
+                        navigation={controls}/>
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.closeModal}
+                        title="Eliminar Horario"
+                        content="¿estás seguro de eliminar este horario?" />
                     <div className={this.state.formulario ? "full-width" : "hidden"}>
-                        <ButtonList
-                            displayList="flex-row nav-list no-padding inline-block  align-center"
-                            container="side-margin inline-block"
-                            elems={this.state.editar ? this.editAddControls : [this.editAddControls[0]]} />
                         <AgregarFormulario
                             title={this.state.editar ? 
                                 "Editar horario del "+DAYS[this.state.editar]
@@ -145,11 +153,6 @@ export class Horarios extends Component {
                     <DiasFeriados 
                         show={this.props.currentSub==="0"}
                         changePanel={this.props.changePanel}/>
-                    <ConfirmarModal
-                        open={this.state.open}
-                        closeModal={this.closeModal}
-                        title="Eliminar Horario"
-                        content="¿estás seguro de eliminar este horario?" />
                 </div>
             </div>
         );

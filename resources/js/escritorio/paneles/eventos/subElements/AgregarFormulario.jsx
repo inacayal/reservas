@@ -72,18 +72,12 @@ export default class AgregarFormulario extends Component {
 
     render() {
         return (
-            <form className="box-padding full-width">
+            <form className="full-width">
                 <div className="container">
-                    <div className="row">
-                        <ButtonList
-                            displayList="flex-row nav-list no-padding inline-block  align-center"
-                            container="side-margin inline-block"
-                            elems={this.props.editar ? this.props.formNavigation : [this.props.formNavigation[0]]} />
-                    </div>
-                    <div className="row sub-title box-padding">
+                    <div className="row sub-title h-padding">
                         {this.props.title}
                     </div>
-                    <div className="row box-padding ">
+                    <div className="row">
                         <div className="col-md-6">
                             <div className="container">
                                 <div className="row">

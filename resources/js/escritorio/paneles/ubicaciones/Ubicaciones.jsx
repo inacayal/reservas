@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
+import ButtonList from '../../../componentes/complex/allUse/ButtonList';
+import ConfirmarModal from '../../../modal/Modal';
 import CardList from '../../../componentes/complex/allUse/CardList';
 import generateUbicacionesCard from '../../../funciones/generateUbicacionesCard';
 import AgregarFormulario from './subElements/AgregarFormulario';
+import Titulo from '../../../componentes/complex/allUse/Titulo';
+
 import { formActions, formNavigation, panelNavigation} from '../../../funciones/generateActions';
-import ButtonList from '../../../componentes/complex/allUse/ButtonList';
-import ConfirmarModal from '../../../modal/Modal';
 export default class Ubicaciones extends Component {
     constructor(props){
         super(props);
@@ -82,33 +84,30 @@ export default class Ubicaciones extends Component {
     }
 
     render(){
-        let ubicaciones = generateUbicacionesCard(
-            this.state.ubicaciones,
-            this.actions
-        );
+        const ubicaciones = generateUbicacionesCard(
+                this.state.ubicaciones,
+                this.actions
+            ),
+            controls = this.state.formulario?
+                this.state.editar ? 
+                    this.formNavigation
+                : [this.formNavigation[0]]
+            : [this.editAddControls[1]];
         
         return (
             <div className={this.props.panel ? "container" : "hidden"}>
+                <Titulo
+                    title="Ubicaciones"
+                    navigation={controls} />
+                <ConfirmarModal
+                    open={this.state.open}
+                    closeModal={this.closeModal}
+                    title="Eliminar Ubicación"
+                    content="¿estás seguro de eliminar este ubicación?" />
                 <div className={this.state.formulario ? "hidden" : "row"}>
-                    <div className="small-v-padding box-transparent h-padding highlight-title full-width text-left c-title">Ubicaciones</div>
-                    <ButtonList
-                        displayList="flex-row nav-list no-padding inline-block  align-center"
-                        container="side-margin inline-block"
-                        elems={this.state.editar ? this.editAddControls : [this.editAddControls[1]]} />
-                    <div className="container">
-                        <div className="row">
-                            <CardList
-                                displayList="full-width nav-list no-padding"
-                                elems={ubicaciones} />
-                        </div>
-                        <div className="row">
-                            <ConfirmarModal
-                                open={this.state.open}
-                                closeModal={this.closeModal}
-                                title="Eliminar Ubicación"
-                                content="¿estás seguro de eliminar este ubicación?" />
-                        </div>
-                    </div>
+                    <CardList
+                        displayList="full-width nav-list no-padding"
+                        elems={ubicaciones} />
                 </div>
                 <div className={this.state.formulario ? "row" : "hidden"}>
                     <AgregarFormulario
@@ -118,7 +117,6 @@ export default class Ubicaciones extends Component {
                             :"Agregar ubicación"
                         }
                         formActions={this.formActions}
-                        formNavigation={this.formNavigation}
                         show={this.state.formulario}
                         data={this.state.ubicaciones}
                         editar={this.state.editar}

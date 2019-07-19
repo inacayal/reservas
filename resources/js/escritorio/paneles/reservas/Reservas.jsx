@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Configuracion from './subElements/Configuracion';
 import Calendar from '../../../componentes/complex/calendar/Calendar';
 import AgregarFormulario from './subElements/AgregarFormulario';
-import ButtonList from '../../../componentes/complex/allUse/ButtonList';
+import Titulo from '../../../componentes/complex/allUse/Titulo';
 import { formActions, formNavigation, panelNavigation } from '../../../funciones/generateActions';
 
 var horariosReserva = {
@@ -312,6 +312,38 @@ const data = {
 export default class Reservas extends Component {
     constructor(props) {
         super(props);
+
+        this.guardarConfiguracion = this.guardarConfiguracion.bind(this);
+        this.agregarReserva = this.agregarReserva.bind(this);
+        this.verCalendario = this.verCalendario.bind(this);
+        this.verDia = this.verDia.bind(this);
+        this.verReserva = this.verReserva.bind(this);
+        this.aceptarReserva = this.aceptarReserva.bind(this);
+        this.rechazarReserva = this.rechazarReserva.bind(this);
+        this.revertirReserva = this.revertirReserva.bind(this);
+        this.showOptions = this.showOptions.bind(this);
+        this.selectOption = this.selectOption.bind(this);
+        this.guardarNuevaReserva = this.guardarNuevaReserva.bind(this);
+
+
+        this.reservaFormControls = formActions(this.verCalendario, this.guardarNuevaReserva);
+        this.configuracionFormControls = formActions(this.props.changePanel, this.guardarConfiguracion, "1");
+        this.panelNavigation = panelNavigation(this.verCalendario, this.agregarReserva);
+        this.configuracionPanelNavigation = panelNavigation(this.props.changePanel, this.agregarReserva,"1");
+        this.actions = {
+            outer: {
+                ver: this.verDia.bind(this),
+                expandir: this.expandirReservaSemanal.bind(this)
+            },
+            inner: {
+                verCalendario: this.verCalendario,
+                agregar: this.agregarReserva,
+                ver: this.verReserva,
+                aceptar: this.aceptarReserva,
+                rechazar: this.rechazarReserva,
+                revertir: this.revertirReserva
+            }
+        };
         this.state = {
             data: data,
             date:new Date(),
@@ -443,35 +475,6 @@ export default class Reservas extends Component {
             }
         };
         
-        this.guardarConfiguracion = this.guardarConfiguracion.bind(this);
-        this.agregarReserva = this.agregarReserva.bind(this);
-        this.verCalendario = this.verCalendario.bind(this);
-        this.verDia = this.verDia.bind(this);
-        this.verReserva = this.verReserva.bind(this);
-        this.aceptarReserva = this.aceptarReserva.bind(this);
-        this.rechazarReserva = this.rechazarReserva.bind(this);
-        this.revertirReserva = this.revertirReserva.bind(this);
-        this.showOptions = this.showOptions.bind(this);
-        this.selectOption = this.selectOption.bind(this);
-        this.guardarNuevaReserva = this.guardarNuevaReserva.bind(this);
-        
-        this.formActions = formActions(this.props.changePanel,this.guardarConfiguracion,"1");
-        this.panelNavigation = panelNavigation(this.props.changePanel,this.agregarReserva,"1");
-        
-        this.actions = {
-            outer:{
-                ver: this.verDia.bind(this),
-                expandir: this.expandirReservaSemanal.bind(this)
-            },
-            inner:{
-                verCalendario: this.verCalendario,
-                agregar:this.agregarReserva,
-                ver: this.verReserva,
-                aceptar: this.aceptarReserva,
-                rechazar: this.rechazarReserva,
-                revertir: this.revertirReserva
-            }
-        };
     }
 
     guardarConfiguracion(e){
@@ -532,7 +535,9 @@ export default class Reservas extends Component {
 
     verCalendario(e){
         e.preventDefault();
-        this.setState({agregar:!this.state.agregar});
+        this.setState({ 
+            agregar: !this.state.agregar
+        });
     }
 
     verDia(e){
@@ -551,16 +556,15 @@ export default class Reservas extends Component {
     }
 
     render() {
+        const controls = this.state.agregar ?
+            [this.panelNavigation[0]]
+            : [this.panelNavigation[1]];
         return (
             <div className={(this.props.panel) ? "full-width" : "hidden"}>
                 <div className={(this.props.currentSub !== "0") ? "container" : "hidden"}>
-                    <div className="no-padding box-transparent highlight-title full-width text-left c-title">
-                        <span className="text-super">Reservaciones</span>
-                        <ButtonList
-                            displayList="flex-row nav-list no-padding inline-block  align-center"
-                            container="side-margin inline-block"
-                            elems={[this.panelNavigation[1]]} />
-                    </div>
+                    <Titulo
+                        title="Reservaciones"
+                        navigation={controls}/>
                     <div className={this.state.agregar ? "row" : "hidden"}>
                         <AgregarFormulario 
                             verCalendario={this.actions.inner.verCalendario}
@@ -568,7 +572,8 @@ export default class Reservas extends Component {
                             selectOption={this.selectOption}
                             select={this.state.select}
                             date={this.state.agregarDate}
-                            onCalendarChange={this.onCalendarChange} />
+                            onCalendarChange={this.onCalendarChange}
+                            formControls={this.reservaFormControls}/>
                     </div>
                     <div className={this.state.agregar ? "hidden" : "row"}>
                         <Calendar
@@ -585,8 +590,8 @@ export default class Reservas extends Component {
                 </div>
                 <div className={(this.props.currentSub === "0") ? "row" : "hidden"}>
                     <Configuracion
-                        formNavigation={this.panelNavigation}
-                        formActions={this.formActions}
+                        formNavigation={[this.configuracionPanelNavigation[0]]}
+                        formActions={this.configuracionFormControls}
                         verCalendario={this.actions.inner.verCalendario}
                         showOptions={this.showOptions}
                         selectOption={this.selectOption}
