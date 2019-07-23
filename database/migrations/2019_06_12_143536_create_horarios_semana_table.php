@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSemanaUsuarioTable extends Migration
+class CreateHorariosSemanaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,15 @@ class CreateSemanaUsuarioTable extends Migration
      */
     public function up()
     {
-        Schema::create('semana_usuario', function (Blueprint $table) {
+        Schema::create('horarios_semana', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('id_usuario')->unsigned();
             $table->integer('id_dia_semana')->unsigned();
             $table->time('apertura_reserva');
             $table->time('cierre_reserva');
+            $table->time('apertura_atencion');
+            $table->time('cierre_atencion');
 
             $table->foreign('id_usuario','usuario_users_id_usuario')
                 ->references('id')->on('users')
@@ -40,10 +42,10 @@ class CreateSemanaUsuarioTable extends Migration
      */
     public function down()
     {
-        Schema::table("semana_usuario",function(Blueprint $table){
+        Schema::table('horarios_semana',function(Blueprint $table){
             $table->dropForeign('usuario_dia_semana_id_dia_semana');
             $table->dropForeign('usuario_users_id_usuario');
         });
-        Schema::dropIfExists('semana_usuario');
+        Schema::dropIfExists('horarios_semana');
     }
 }
