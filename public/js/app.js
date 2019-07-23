@@ -6231,6 +6231,25 @@ exports.push([module.i, ".react-calendar {\n  width: 350px;\n  max-width: 100%;\
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/react-table-hoc-fixed-columns/lib/styles.css":
+/*!***************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/react-table-hoc-fixed-columns/lib/styles.css ***!
+  \***************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".rthfc .rt-thead.-headerGroups,\n.rthfc .rt-thead.-header {\n  z-index: 3;\n}\n\n.rthfc .rt-thead.-filters {\n  z-index: 2;\n}\n\n.rthfc .rt-th,\n.rthfc .rt-td {\n  background-color: #fff;\n}\n\n.rthfc .-headerGroups .rt-th {\n  background-color: #f7f7f7;\n}\n\n.rthfc.-striped .rt-tr.-odd .rt-td {\n  background-color: #f7f7f7;\n}\n\n.rthfc.-highlight .rt-tr:hover .rt-td {\n  background-color: #f2f2f2;\n}\n\n.rthfc .-filters .rt-th.rthfc-th-fixed-left-last,\n.rthfc .rt-th.rthfc-th-fixed-left-last,\n.rthfc .rt-td.rthfc-td-fixed-left-last {\n  border-right: solid 1px #ccc;\n}\n\n.rthfc .rt-th.rthfc-th-fixed-right-first,\n.rthfc .rt-td.rthfc-td-fixed-right-first {\n  border-left: solid 1px #ccc;\n}\n\n/*------------ Sticky position version: -sp ------------*/\n\n.rthfc.-sp .rt-tbody {\n  overflow: visible;\n  flex: 1 0 auto;\n}\n\n.rthfc.-sp .rt-thead {\n  position: -webkit-sticky;\n  position: sticky;\n}\n\n.rthfc.-sp .rt-thead.-headerGroups {\n  border-bottom-color: #f2f2f2;\n}\n\n.rthfc.-sp .rt-tfoot {\n  position: -webkit-sticky;\n  position: sticky;\n  z-index: 1;\n  bottom: 0px;\n}\n\n.rthfc.-sp .rthfc-th-fixed,\n.rthfc.-sp .rthfc-td-fixed {\n  position: -webkit-sticky;\n  position: sticky;\n  z-index: 1;\n}\n\n.rthfc.-sp .rthfc-th-fixed-left,\n.rthfc.-sp .rthfc-td-fixed-left {\n  left: 0;\n}\n\n.rthfc.-sp .rthfc-th-fixed-right,\n.rthfc.-sp .rthfc-td-fixed-right {\n  left: 0;\n}\n\n/*------------ scroll event version: -se ------------*/\n\n.rthfc.-se .-header .rt-th.rthfc-th-fixed,\n.rthfc.-se .-headerGroups .rt-th.rthfc-th-fixed,\n.rthfc.-se .-filters .rt-th.rthfc-th-fixed,\n.rthfc.-se .rt-td.rthfc-td-fixed {\n  position: relative;\n  z-Index: 1;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/react-table/react-table.css":
 /*!**********************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/react-table/react-table.css ***!
@@ -66778,6 +66797,665 @@ module.exports = exports['default'];
 
 /***/ }),
 
+/***/ "./node_modules/react-table-hoc-fixed-columns/lib/helpers.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/react-table-hoc-fixed-columns/lib/helpers.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.findPrevColumnNotHidden = exports.findNextColumnNotHidden = exports.checkErrors = exports.enableStickyPosition = exports.sortColumns = exports.isNotFixed = exports.isRightFixed = exports.isLeftFixed = exports.getColumnId = void 0;
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+var getColumnId = function getColumnId(column) {
+  if (column.id) return column.id;
+  if (typeof column.accessor === 'string') return column.accessor;
+  return null;
+};
+
+exports.getColumnId = getColumnId;
+
+var isLeftFixed = function isLeftFixed(column) {
+  return [true, 'left'].includes(column.fixed);
+};
+
+exports.isLeftFixed = isLeftFixed;
+
+var isRightFixed = function isRightFixed(column) {
+  return column.fixed === 'right';
+};
+
+exports.isRightFixed = isRightFixed;
+
+var isNotFixed = function isNotFixed(column) {
+  return !column.fixed;
+};
+
+exports.isNotFixed = isNotFixed;
+
+var sortColumns = function sortColumns(columns) {
+  return _toConsumableArray(columns.filter(isLeftFixed)).concat(_toConsumableArray(columns.filter(isNotFixed)), _toConsumableArray(columns.filter(isRightFixed)));
+};
+
+exports.sortColumns = sortColumns;
+
+var enableStickyPosition = function enableStickyPosition() {
+  if (typeof window === 'undefined') return true; // document is undefined in SSR
+
+  var el = document.createElement('a');
+  var mStyle = el.style;
+  mStyle.cssText = 'position:sticky;position:-webkit-sticky;position:-ms-sticky;';
+  return mStyle.position.indexOf('sticky') !== -1;
+};
+
+exports.enableStickyPosition = enableStickyPosition;
+
+var checkErrors = function checkErrors(columns) {
+  var hasGroups = !!columns.find(function (column) {
+    return column.columns;
+  });
+  var fixedColumnsWithoutGroup = columns.filter(function (column) {
+    return column.fixed && !column.columns;
+  }).map(function (_ref) {
+    var Header = _ref.Header;
+    return "'".concat(Header, "'");
+  });
+
+  if (hasGroups && fixedColumnsWithoutGroup.length) {
+    throw new Error("WARNING react-table-hoc-fixed-column:\n          \nYour ReactTable has group and fixed columns outside groups, and that will break UI.\n          \nYou must place ".concat(fixedColumnsWithoutGroup.join(' and '), " columns into a group (even a group with an empty Header label)\n"));
+  }
+
+  var bugWithUnderColumnsFixed = columns.find(function (parentCol) {
+    return !parentCol.fixed && parentCol.columns && parentCol.columns.find(function (col) {
+      return col.fixed;
+    });
+  });
+
+  if (bugWithUnderColumnsFixed) {
+    var childBugs = bugWithUnderColumnsFixed.columns.find(function (_ref2) {
+      var fixed = _ref2.fixed;
+      return fixed;
+    });
+    throw new Error("WARNING react-table-hoc-fixed-column:\n          \nYour ReactTable contain columns group with at least one child columns fixed.\n          \nWhen ReactTable has columns groups, only columns groups can be fixed\n          \nYou must set fixed: 'left' | 'right' for the '".concat(bugWithUnderColumnsFixed.Header, "' column, or remove the fixed property of '").concat(childBugs.Header, "' column."));
+  }
+};
+
+exports.checkErrors = checkErrors;
+
+var findNextColumnNotHidden = function findNextColumnNotHidden(columns, currentIndex) {
+  for (var i = currentIndex + 1; i < columns.length; i += 1) {
+    var column = columns[i];
+    if (column.show !== false) return column;
+  }
+
+  return undefined;
+};
+
+exports.findNextColumnNotHidden = findNextColumnNotHidden;
+
+var findPrevColumnNotHidden = function findPrevColumnNotHidden(columns, currentIndex) {
+  for (var i = currentIndex - 1; i >= 0; i -= 1) {
+    var column = columns[i];
+    if (column.show !== false) return column;
+  }
+
+  return undefined;
+};
+
+exports.findPrevColumnNotHidden = findPrevColumnNotHidden;
+
+/***/ }),
+
+/***/ "./node_modules/react-table-hoc-fixed-columns/lib/index.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/react-table-hoc-fixed-columns/lib/index.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "withFixedColumnsStickyPosition", {
+  enumerable: true,
+  get: function get() {
+    return _stickyPosition.default;
+  }
+});
+Object.defineProperty(exports, "withFixedColumnsScrollEvent", {
+  enumerable: true,
+  get: function get() {
+    return _scrollEvent.default;
+  }
+});
+exports.default = void 0;
+
+var _helpers = __webpack_require__(/*! ./helpers */ "./node_modules/react-table-hoc-fixed-columns/lib/helpers.js");
+
+var _stickyPosition = _interopRequireDefault(__webpack_require__(/*! ./stickyPosition */ "./node_modules/react-table-hoc-fixed-columns/lib/stickyPosition/index.js"));
+
+var _scrollEvent = _interopRequireDefault(__webpack_require__(/*! ./scrollEvent */ "./node_modules/react-table-hoc-fixed-columns/lib/scrollEvent/index.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var withFixedColumns = (0, _helpers.enableStickyPosition)() ? _stickyPosition.default : _scrollEvent.default; // use for legacy browser
+
+var _default = withFixedColumns;
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./node_modules/react-table-hoc-fixed-columns/lib/scrollEvent/index.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/react-table-hoc-fixed-columns/lib/scrollEvent/index.js ***!
+  \*****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
+
+var _uniqid = _interopRequireDefault(__webpack_require__(/*! uniqid */ "./node_modules/uniqid/index.js"));
+
+var _classnames = _interopRequireDefault(__webpack_require__(/*! classnames */ "./node_modules/classnames/index.js"));
+
+var _helpers = __webpack_require__(/*! ../helpers */ "./node_modules/react-table-hoc-fixed-columns/lib/helpers.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _default = function _default(ReactTable) {
+  var ReactTableFixedColumns =
+  /*#__PURE__*/
+  function (_React$Component) {
+    _inherits(ReactTableFixedColumns, _React$Component);
+
+    function ReactTableFixedColumns(props) {
+      var _this;
+
+      _classCallCheck(this, ReactTableFixedColumns);
+
+      _this = _possibleConstructorReturn(this, (ReactTableFixedColumns.__proto__ || Object.getPrototypeOf(ReactTableFixedColumns)).call(this, props));
+
+      _this.onScrollX = function (event) {
+        if (event.nativeEvent.target.getAttribute('class').indexOf('rt-table') === -1) return;
+
+        _this.calculatePos(event.nativeEvent.target);
+      };
+
+      _this.onChangeProperty = function (propertyName) {
+        return function () {
+          var propertyProps = _this.props[propertyName];
+
+          if (propertyProps) {
+            propertyProps.apply(void 0, arguments);
+          }
+
+          _this.calculatePos();
+        };
+      };
+
+      _this.getColumnsWithFixed = function (columns, parentIsfixed, parentIsLastFixed, parentIsFirstFixed) {
+        return columns.map(function (column, index) {
+          var fixed = column.fixed || parentIsfixed || false;
+          var nextColumn = (0, _helpers.findNextColumnNotHidden)(columns, index);
+
+          var _parentIsLastFixed = fixed && parentIsfixed === undefined && nextColumn && !nextColumn.fixed;
+
+          var isLastFixed = fixed && (parentIsfixed ? [true, 'left'].includes(parentIsfixed) && parentIsLastFixed : true) && (parentIsfixed && !nextColumn || !parentIsfixed && nextColumn && !nextColumn.fixed);
+          var prevColumn = (0, _helpers.findPrevColumnNotHidden)(columns, index);
+
+          var _parentIsFirstFixed = fixed && parentIsfixed === undefined && prevColumn && !prevColumn.fixed;
+
+          var isFirstFixed = fixed && (parentIsfixed ? parentIsfixed === 'right' && parentIsFirstFixed : true) && (parentIsfixed && !prevColumn || !parentIsfixed && prevColumn && !prevColumn.fixed);
+
+          var output = _objectSpread({}, column, {
+            fixed: fixed,
+            className: (0, _classnames.default)(column.className, fixed && 'rthfc-td-fixed', (0, _helpers.isLeftFixed)({
+              fixed: fixed
+            }) && 'rthfc-td-fixed-left', (0, _helpers.isRightFixed)({
+              fixed: fixed
+            }) && 'rthfc-td-fixed-right', isLastFixed && 'rthfc-td-fixed-left-last', isFirstFixed && 'rthfc-td-fixed-right-first'),
+            headerClassName: (0, _classnames.default)(column.headerClassName, fixed && 'rthfc-th-fixed', (0, _helpers.isLeftFixed)({
+              fixed: fixed
+            }) && 'rthfc-th-fixed-left', (0, _helpers.isRightFixed)({
+              fixed: fixed
+            }) && 'rthfc-th-fixed-right', (_parentIsLastFixed || parentIsLastFixed && isLastFixed) && 'rthfc-th-fixed-left-last', (_parentIsFirstFixed || parentIsFirstFixed && isFirstFixed) && 'rthfc-th-fixed-right-first')
+          });
+
+          if (column.columns) {
+            output.columns = _this.getColumnsWithFixed(column.columns, fixed, _parentIsLastFixed, _parentIsFirstFixed);
+          }
+
+          return output;
+        });
+      };
+
+      _this.getProps = function () {
+        var getProps = _this.props.getProps;
+        return _objectSpread({}, getProps && getProps.apply(void 0, arguments), {
+          onScroll: _this.onScrollX
+        });
+      };
+
+      (0, _helpers.checkErrors)(_this.props.columns);
+      _this.uniqClassName = _this.props.uniqClassName || (0, _uniqid.default)('rthfc-');
+      _this.onChangePropertyList = {
+        onResizedChange: _this.onChangeProperty('onResizedChange'),
+        onFilteredChange: _this.onChangeProperty('onFilteredChange'),
+        onPageChange: _this.onChangeProperty('onPageChange'),
+        onPageSizeChange: _this.onChangeProperty('onPageSizeChange'),
+        onExpandedChange: _this.onChangeProperty('onExpandedChange')
+      };
+      return _this;
+    }
+
+    _createClass(ReactTableFixedColumns, [{
+      key: "componentDidMount",
+      value: function componentDidMount() {
+        this.tableRef = document.querySelector(".".concat(this.uniqClassName, " .rt-table"));
+        this.calculatePos();
+        this.leftFixedCells = this.tableRef.querySelectorAll(".".concat(this.uniqClassName, " .rthfc-fixed-left"));
+        this.rightFixedCells = this.tableRef.querySelectorAll(".".concat(this.uniqClassName, " .rthfc-fixed-left"));
+      }
+    }, {
+      key: "componentDidUpdate",
+      value: function componentDidUpdate() {
+        this.updatePos();
+      }
+    }, {
+      key: "calculatePos",
+      value: function calculatePos() {
+        var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.tableRef;
+        var scrollLeft = target.scrollLeft,
+            scrollWidth = target.scrollWidth,
+            offsetWidth = target.offsetWidth;
+        this.nextTranslateLeftX = scrollLeft;
+        this.nextTranslateRightX = scrollWidth - scrollLeft - offsetWidth;
+        this.updatePos(target);
+      }
+    }, {
+      key: "updatePos",
+      value: function updatePos() {
+        var _this2 = this;
+
+        var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.tableRef;
+
+        /* eslint-disable no-param-reassign */
+        Array.from(target.querySelectorAll('.rthfc-th-fixed-left, .rthfc-td-fixed-left')).forEach(function (td) {
+          td.style.transform = "translate3d(".concat(_this2.nextTranslateLeftX, "px, 0, 0)");
+        });
+        Array.from(target.querySelectorAll('.rthfc-th-fixed-right, .rthfc-td-fixed-right')).forEach(function (td) {
+          td.style.transform = "translate3d(".concat(-_this2.nextTranslateRightX, "px, 0, 0)");
+        });
+        /* eslint-enable no-param-reassign */
+      }
+    }, {
+      key: "getColumns",
+      value: function getColumns() {
+        var columns = this.props.columns;
+        var sortedColumns = (0, _helpers.sortColumns)(columns);
+        var columnsWithFixed = this.getColumnsWithFixed(sortedColumns);
+        return columnsWithFixed;
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var _props = this.props,
+            className = _props.className,
+            innerRef = _props.innerRef,
+            props = _objectWithoutProperties(_props, ["className", "innerRef"]);
+
+        return _react.default.createElement(ReactTable, _extends({}, props, {
+          ref: innerRef,
+          className: (0, _classnames.default)(className, 'rthfc', '-se', this.uniqClassName),
+          columns: this.getColumns(),
+          getProps: this.getProps
+        }, this.onChangePropertyList));
+      }
+    }]);
+
+    return ReactTableFixedColumns;
+  }(_react.default.Component);
+
+  ReactTableFixedColumns.propTypes = {
+    columns: _propTypes.default.array.isRequired,
+    getProps: _propTypes.default.func,
+    innerRef: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
+    className: _propTypes.default.string,
+    uniqClassName: _propTypes.default.string
+  };
+  ReactTableFixedColumns.defaultProps = {
+    getProps: null,
+    innerRef: null,
+    className: null,
+    uniqClassName: null
+  };
+  return ReactTableFixedColumns;
+};
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./node_modules/react-table-hoc-fixed-columns/lib/stickyPosition/index.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/react-table-hoc-fixed-columns/lib/stickyPosition/index.js ***!
+  \********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
+
+var _uniqid = _interopRequireDefault(__webpack_require__(/*! uniqid */ "./node_modules/uniqid/index.js"));
+
+var _classnames = _interopRequireDefault(__webpack_require__(/*! classnames */ "./node_modules/classnames/index.js"));
+
+var _helpers = __webpack_require__(/*! ../helpers */ "./node_modules/react-table-hoc-fixed-columns/lib/helpers.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _default = function _default(ReactTable) {
+  var ReactTableFixedColumns =
+  /*#__PURE__*/
+  function (_React$Component) {
+    _inherits(ReactTableFixedColumns, _React$Component);
+
+    function ReactTableFixedColumns(props) {
+      var _this;
+
+      _classCallCheck(this, ReactTableFixedColumns);
+
+      _this = _possibleConstructorReturn(this, (ReactTableFixedColumns.__proto__ || Object.getPrototypeOf(ReactTableFixedColumns)).call(this, props));
+
+      _this.onResizedChange = function () {
+        var onResizedChange = _this.props.onResizedChange;
+
+        for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        if (onResizedChange) {
+          onResizedChange.apply(void 0, args);
+        }
+
+        args[0].forEach(function (_ref) {
+          var id = _ref.id,
+              value = _ref.value;
+          _this.columnsWidth[id] = value;
+        });
+
+        _this.forceUpdate();
+      };
+
+      (0, _helpers.checkErrors)(_this.props.columns);
+      _this.columnsWidth = {};
+      _this.uniqClassName = _this.props.uniqClassName || (0, _uniqid.default)('rthfc-');
+      return _this;
+    }
+
+    _createClass(ReactTableFixedColumns, [{
+      key: "componentDidMount",
+      value: function componentDidMount() {
+        this.updateRowsPosition();
+      }
+    }, {
+      key: "componentDidUpdate",
+      value: function componentDidUpdate() {
+        this.updateRowsPosition();
+      }
+    }, {
+      key: "updateRowsPosition",
+      value: function updateRowsPosition() {
+        var headerRows = document.querySelectorAll(".".concat(this.uniqClassName, " .rt-thead"));
+        var topPosition = 0;
+        /* eslint-disable no-param-reassign */
+
+        Array.from(headerRows).forEach(function (row) {
+          row.style.top = "".concat(topPosition, "px");
+          topPosition += row.offsetHeight;
+        });
+        /* eslint-enable no-param-reassign */
+      }
+    }, {
+      key: "getLeftOffsetColumns",
+      value: function getLeftOffsetColumns(columns, index) {
+        var offset = 0;
+
+        for (var i = 0; i < index; i += 1) {
+          var column = columns[i];
+
+          if (column.show !== false) {
+            var id = (0, _helpers.getColumnId)(column);
+            var width = this.columnsWidth[id] || column.width || column.minWidth || 100;
+            offset += width;
+          }
+        }
+
+        return offset;
+      }
+    }, {
+      key: "getRightOffsetColumns",
+      value: function getRightOffsetColumns(columns, index) {
+        var offset = 0;
+
+        for (var i = index + 1; i < columns.length; i += 1) {
+          var column = columns[i];
+
+          if (column.show !== false) {
+            var id = (0, _helpers.getColumnId)(column);
+            var width = this.columnsWidth[id] || column.width || column.minWidth || 100;
+            offset += width;
+          }
+        }
+
+        return offset;
+      }
+    }, {
+      key: "getColumnsWithFixed",
+      value: function getColumnsWithFixed(columns, parentIsfixed, parentIsLastFixed, parentIsFirstFixed) {
+        var _this2 = this;
+
+        return columns.map(function (column, index) {
+          var fixed = column.fixed || parentIsfixed || false;
+          var nextColumn = (0, _helpers.findNextColumnNotHidden)(columns, index);
+
+          var _parentIsLastFixed = fixed && parentIsfixed === undefined && nextColumn && !nextColumn.fixed;
+
+          var isLastFixed = fixed && (parentIsfixed ? [true, 'left'].includes(parentIsfixed) && parentIsLastFixed : true) && (parentIsfixed && !nextColumn || !parentIsfixed && nextColumn && !nextColumn.fixed);
+          var prevColumn = (0, _helpers.findPrevColumnNotHidden)(columns, index);
+
+          var _parentIsFirstFixed = fixed && parentIsfixed === undefined && prevColumn && !prevColumn.fixed;
+
+          var isFirstFixed = fixed && (parentIsfixed ? parentIsfixed === 'right' && parentIsFirstFixed : true) && (parentIsfixed && !prevColumn || !parentIsfixed && prevColumn && !prevColumn.fixed);
+          var columnIsLeftFixed = (0, _helpers.isLeftFixed)({
+            fixed: fixed
+          });
+          var columnIsRightFixed = (0, _helpers.isRightFixed)({
+            fixed: fixed
+          });
+
+          var left = columnIsLeftFixed && _this2.getLeftOffsetColumns(columns, index);
+
+          var right = columnIsRightFixed && _this2.getRightOffsetColumns(columns, index);
+
+          var output = _objectSpread({}, column, {
+            fixed: fixed,
+            className: (0, _classnames.default)(column.className, fixed && 'rthfc-td-fixed', columnIsLeftFixed && 'rthfc-td-fixed-left', columnIsRightFixed && 'rthfc-td-fixed-right', isLastFixed && 'rthfc-td-fixed-left-last', isFirstFixed && 'rthfc-td-fixed-right-first'),
+            style: _objectSpread({}, column.style, {
+              left: left,
+              right: right
+            }),
+            headerClassName: (0, _classnames.default)(column.headerClassName, fixed && 'rthfc-th-fixed', columnIsLeftFixed && 'rthfc-th-fixed-left', columnIsRightFixed && 'rthfc-th-fixed-right', (_parentIsLastFixed || parentIsLastFixed && isLastFixed) && 'rthfc-th-fixed-left-last', (_parentIsFirstFixed || parentIsFirstFixed && isFirstFixed) && 'rthfc-th-fixed-right-first'),
+            headerStyle: _objectSpread({}, column.headerStyle, {
+              left: left,
+              right: right
+            })
+          });
+
+          if (column.columns) {
+            output.columns = _this2.getColumnsWithFixed(column.columns, fixed, _parentIsLastFixed, _parentIsFirstFixed);
+          }
+
+          return output;
+        });
+      }
+    }, {
+      key: "getColumns",
+      value: function getColumns() {
+        var columns = this.props.columns;
+        var sortedColumns = (0, _helpers.sortColumns)(columns);
+        var columnsWithFixed = this.getColumnsWithFixed(sortedColumns);
+        return columnsWithFixed;
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var _props = this.props,
+            className = _props.className,
+            innerRef = _props.innerRef,
+            props = _objectWithoutProperties(_props, ["className", "innerRef"]);
+
+        return _react.default.createElement(ReactTable, _extends({}, props, {
+          ref: innerRef,
+          className: (0, _classnames.default)(className, this.uniqClassName, 'rthfc', '-sp'),
+          columns: this.getColumns(),
+          onResizedChange: this.onResizedChange
+        }));
+      }
+    }]);
+
+    return ReactTableFixedColumns;
+  }(_react.default.Component);
+
+  ReactTableFixedColumns.propTypes = {
+    columns: _propTypes.default.array.isRequired,
+    innerRef: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
+    className: _propTypes.default.string,
+    onResizedChange: _propTypes.default.func,
+    uniqClassName: _propTypes.default.string
+  };
+  ReactTableFixedColumns.defaultProps = {
+    innerRef: null,
+    className: null,
+    onResizedChange: null,
+    uniqClassName: null
+  };
+  return ReactTableFixedColumns;
+};
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./node_modules/react-table-hoc-fixed-columns/lib/styles.css":
+/*!*******************************************************************!*\
+  !*** ./node_modules/react-table-hoc-fixed-columns/lib/styles.css ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../css-loader??ref--6-1!../../postcss-loader/src??ref--6-2!./styles.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/react-table-hoc-fixed-columns/lib/styles.css");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/react-table/es/defaultProps.js":
 /*!*****************************************************!*\
   !*** ./node_modules/react-table/es/defaultProps.js ***!
@@ -73881,6 +74559,48 @@ module.exports = function (css) {
 
 /***/ }),
 
+/***/ "./node_modules/uniqid/index.js":
+/*!**************************************!*\
+  !*** ./node_modules/uniqid/index.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(process) {/* 
+(The MIT License)
+Copyright (c) 2014 Halász Ádám <mail@adamhalasz.com>
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+//  Unique Hexatridecimal ID Generator
+// ================================================
+
+//  Dependencies
+// ================================================
+var pid = process && process.pid ? process.pid.toString(36) : '' ;
+var address = '';
+if(false){ var i, mac, networkInterfaces; } 
+
+//  Exports
+// ================================================
+module.exports = module.exports.default = function(prefix){ return (prefix || '') + address + pid + now().toString(36); }
+module.exports.process = function(prefix){ return (prefix || '') + pid + now().toString(36); }
+module.exports.time    = function(prefix){ return (prefix || '') + now().toString(36); }
+
+//  Helpers
+// ================================================
+function now(){
+    var time = Date.now();
+    var last = now.last || time;
+    return now.last = time > last ? time : last + 1;
+}
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../process/browser.js */ "./node_modules/process/browser.js")))
+
+/***/ }),
+
 /***/ "./node_modules/warning/browser.js":
 /*!*****************************************!*\
   !*** ./node_modules/warning/browser.js ***!
@@ -74310,9 +75030,9 @@ __webpack_require__.r(__webpack_exports__);
 
 function Titulo(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "no-padding box-transparent highlight-title full-width text-left c-title"
+    className: props.container ? props.container : "no-padding box-transparent highlight-title full-width text-left c-title"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "text-super"
+    className: props["class"] ? props["class"] : "text-super"
   }, props.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
     displayList: "flex-row nav-list no-padding inline-block  align-center",
     container: "side-margin inline-block",
@@ -75148,6 +75868,7 @@ function Text(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
     name: props.name,
     rows: props.rows,
+    readOnly: props.readOnly,
     className: "full-width box-transparent",
     onChange: props.changeValue,
     value: props.value
@@ -75355,16 +76076,22 @@ var sidebar = [//get on ajax request
 }, {
   data: "6",
   disabled: false,
-  title: "Configuración de usuario",
+  title: "Configuración",
   sub: [{
-    title: 'Configuracion 1',
+    title: 'Encargado',
     data: "0"
   }, {
-    title: 'Configuracion 2',
+    title: "Ubicacion",
     data: "1"
   }, {
-    title: 'Configuracion 3',
+    title: "Apertura y cierre",
     data: "2"
+  }, {
+    title: "Contacto del local",
+    data: "3"
+  }, {
+    title: "Usuario",
+    data: "4"
   }]
 }]; //holds reservation state
 
@@ -75441,9 +76168,9 @@ function (_Component) {
     key: "changePanel",
     value: function changePanel(e) {
       e.preventDefault();
-      var showing = e.currentTarget.getAttribute('data');
-      var sidebar = this.state.sidebar;
-      var crumb = [];
+      var showing = e.currentTarget.getAttribute('data'),
+          sidebar = this.state.sidebar,
+          crumb = [];
       sidebar[this.state.showing].sub = this.restoreSubElements(sidebar[this.state.showing].sub);
       crumb = [{
         title: sidebar[showing].title,
@@ -75515,7 +76242,11 @@ function (_Component) {
         subElements: this.state.sidebar[5].sub,
         currentSub: this.state.crumb[1] ? this.state.crumb[1].data : null
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_paneles_configuracion_Configuracion__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        classes: this.state.showing === "6" ? "full-width" : "hidden"
+        changePanel: this.changePanel,
+        panel: this.state.showing === "6",
+        selectInnerElement: this.changeSubElement,
+        subElements: this.state.sidebar[6].sub,
+        currentSub: this.state.crumb[1] ? this.state.crumb[1].data : null
       }))))));
     }
   }]);
@@ -75559,7 +76290,7 @@ function Lateral(props) {
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
       onClick: props.changePanel,
       data: i,
-      className: props.current == i ? "highlight-title box-transparent full-width text-left box-padding" : "box-transparent full-width text-left box-padding highlight-hover"
+      className: props.current == i ? "selected no-border bold full-width text-left box-padding" : "box-transparent full-width text-left box-padding highlight-hover"
     }, e.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
       clickHandler: props.changeSub,
       displayList: props.current == i ? "nav-list" : "hidden",
@@ -75615,20 +76346,636 @@ function Navegacion(props) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Configuracion; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
+/* harmony import */ var _componentes_complex_allUse_CardList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/complex/allUse/CardList */ "./resources/js/componentes/complex/allUse/CardList.jsx");
+/* harmony import */ var _componentes_complex_allUse_Titulo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/complex/allUse/Titulo */ "./resources/js/componentes/complex/allUse/Titulo.jsx");
+/* harmony import */ var _modal_Modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../modal/Modal */ "./resources/js/modal/Modal.jsx");
+/* harmony import */ var _subElements_AperturaCierre__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./subElements/AperturaCierre */ "./resources/js/escritorio/paneles/configuracion/subElements/AperturaCierre.jsx");
+/* harmony import */ var _subElements_Contacto__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./subElements/Contacto */ "./resources/js/escritorio/paneles/configuracion/subElements/Contacto.jsx");
+/* harmony import */ var _subElements_Encargado__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./subElements/Encargado */ "./resources/js/escritorio/paneles/configuracion/subElements/Encargado.jsx");
+/* harmony import */ var _subElements_Ubicacion__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./subElements/Ubicacion */ "./resources/js/escritorio/paneles/configuracion/subElements/Ubicacion.jsx");
+/* harmony import */ var _subElements_Usuario__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./subElements/Usuario */ "./resources/js/escritorio/paneles/configuracion/subElements/Usuario.jsx");
+/* harmony import */ var _funciones_generateActions__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../funciones/generateActions */ "./resources/js/funciones/generateActions.jsx");
+/* harmony import */ var _funciones_generateHoursFromInterval__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../../funciones/generateHoursFromInterval */ "./resources/js/funciones/generateHoursFromInterval.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 
 
-function Configuracion(props) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+var Configuracion =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Configuracion, _Component);
+
+  function Configuracion(props) {
+    var _this;
+
+    _classCallCheck(this, Configuracion);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Configuracion).call(this, props));
+    _this.validMinutes = Object(_funciones_generateHoursFromInterval__WEBPACK_IMPORTED_MODULE_12__["default"])(1);
+    _this.state = {
+      input: {
+        adm_email: "",
+        adm_nombre: "",
+        adm_telefono: "",
+        email_local: "",
+        password_local: "",
+        correo_local: "",
+        telefono_local: "",
+        razon_social: "",
+        cuit_cuil: ""
+      },
+      select: {
+        id_provincia: {
+          name: "id_provincia",
+          show: false,
+          selected: null,
+          search: "",
+          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
+          list: {
+            0: "CABA",
+            1: "Buenos Aires",
+            2: "Cordoba",
+            3: "Santa fe"
+          }
+        },
+        apertura_hora: {
+          name: "apertura_hora",
+          show: false,
+          selected: null,
+          search: "",
+          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
+          list: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_13__["HOURS"]
+        },
+        apertura_minuto: {
+          name: "apertura_minuto",
+          show: false,
+          selected: null,
+          search: "",
+          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
+          list: _this.validMinutes
+        },
+        cierre_hora: {
+          name: "cierre_hora",
+          show: false,
+          selected: null,
+          search: "",
+          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
+          list: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_13__["HOURS"]
+        },
+        cierre_minuto: {
+          name: "cierre_minuto",
+          show: false,
+          selected: null,
+          search: "",
+          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
+          list: _this.validMinutes
+        },
+        apertura_dia: {
+          name: "apertura_dia",
+          show: false,
+          selected: null,
+          search: "",
+          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
+          list: Object(_constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_13__["DAYS"])
+        }
+      },
+      atencion: {
+        0: {
+          apertura_hora: "15",
+          apertura_minuto: "20",
+          cierre_hora: "21",
+          cierre_minuto: "00"
+        },
+        1: {
+          apertura_hora: "16",
+          apertura_minuto: "30",
+          cierre_hora: "23",
+          cierre_minuto: "59"
+        },
+        2: {
+          apertura_hora: "16",
+          apertura_minuto: "30",
+          cierre_hora: "23",
+          cierre_minuto: "59"
+        },
+        3: {
+          apertura_hora: "16",
+          apertura_minuto: "30",
+          cierre_hora: "23",
+          cierre_minuto: "59"
+        },
+        4: {
+          apertura_hora: "16",
+          apertura_minuto: "30",
+          cierre_hora: "23",
+          cierre_minuto: "59"
+        },
+        5: {
+          apertura_hora: "16",
+          apertura_minuto: "30",
+          cierre_hora: "23",
+          cierre_minuto: "59"
+        },
+        6: {
+          apertura_hora: "16",
+          apertura_minuto: "30",
+          cierre_hora: "23",
+          cierre_minuto: "59"
+        }
+      }
+    };
+    _this.configurationCards = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_11__["generateConfigurationActions"])(_this.props.selectInnerElement);
+    _this.formActions = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_11__["formActions"])(_this.props.changePanel, _this.guardarConfiguracion, "6");
+    _this.formNavigation = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_11__["formNavigation"])(_this.props.changePanel, null, "6");
+    _this.guardarConfiguracion = _this.guardarConfiguracion.bind(_assertThisInitialized(_this));
+    _this.onTextChange = _this.onTextChange.bind(_assertThisInitialized(_this));
+    _this.showOptions = _this.showOptions.bind(_assertThisInitialized(_this));
+    _this.selectOption = _this.selectOption.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(Configuracion, [{
+    key: "onTextChange",
+    value: function onTextChange(e) {
+      var input = e.currentTarget,
+          name = input.getAttribute('name'),
+          textInputs = this.state.input;
+      textInputs[name] = input.value;
+      this.setState({
+        text: textInputs
+      });
+    }
+  }, {
+    key: "showOptions",
+    value: function showOptions(e) {
+      var name = e.currentTarget.getAttribute('select'),
+          select = this.state.select,
+          trigger = select[name];
+      trigger.show = !trigger.show;
+      select[name] = trigger;
+      this.setState({
+        select: select
+      });
+    }
+  }, {
+    key: "selectOption",
+    value: function selectOption(e) {
+      var value = e.target.getAttribute('keyvalue'),
+          name = e.target.getAttribute('select'),
+          select = this.state.select,
+          trigger = select[name];
+      trigger.selected = value !== select[name].selected ? value : null;
+
+      if (name === 'apertura_dia') {
+        var horario = this.state.atencion[value];
+        select['apertura_hora'].selected = horario.apertura_hora;
+        select['apertura_minuto'].selected = horario.apertura_minuto;
+        select['cierre_hora'].selected = horario.cierre_hora;
+        select['cierre_minuto'].selected = horario.cierre_minuto;
+      }
+
+      select[name] = trigger;
+      this.setState({
+        select: select
+      });
+    }
+  }, {
+    key: "guardarConfiguracion",
+    value: function guardarConfiguracion(e) {
+      e.preventDefault();
+      console.log('guardado');
+    }
+  }, {
+    key: "onTextChange",
+    value: function onTextChange(e) {
+      var input = e.currentTarget,
+          name = input.getAttribute('name'),
+          textInputs = this.state.input;
+      textInputs[name] = input.value;
+      this.setState({
+        text: textInputs
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: this.props.panel ? "full-width" : "hidden"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_Titulo__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        title: "Configuraci\xF3n",
+        navigation: this.props.currentSub ? [this.formNavigation[0]] : []
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: this.props.currentSub ? "hidden" : "full-width container box-padding"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        displayList: "flex-column nav-list align-center full-width",
+        container: "box-padding full-width highlight-hover",
+        elemClass: "box-padding full-width text-left box-transparent",
+        clickHandler: this.props.selectInnerElement,
+        elems: this.props.subElements
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: this.props.currentSub ? "full-width container" : "hidden"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_Encargado__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        formActions: this.formActions,
+        onTextChange: this.onTextChange,
+        text: this.state.input,
+        show: this.props.currentSub ? this.props.currentSub === "0" : true
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_Ubicacion__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        formActions: this.formActions,
+        onTextChange: this.onTextChange,
+        text: this.state.input,
+        select: this.state.select,
+        selectOption: this.selectOption,
+        showOptions: this.showOptions,
+        show: this.props.currentSub ? this.props.currentSub === "1" : true
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_AperturaCierre__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        formActions: this.formActions,
+        onTextChange: this.onTextChange,
+        text: this.state.input,
+        selectOption: this.selectOption,
+        showOptions: this.showOptions,
+        select: this.state.select,
+        show: this.props.currentSub ? this.props.currentSub === "2" : true
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_Contacto__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        formActions: this.formActions,
+        onTextChange: this.onTextChange,
+        text: this.state.input,
+        show: this.props.currentSub ? this.props.currentSub === "3" : true
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_Usuario__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        formActions: this.formActions,
+        onTextChange: this.onTextChange,
+        text: this.state.input,
+        show: this.props.currentSub ? this.props.currentSub === "4" : true
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row box-padding justify-content-end"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        displayList: "flex-row nav-list no-padding inline-block  align-center",
+        container: "side-margin inline-block",
+        elems: this.formActions
+      }))));
+    }
+  }]);
+
+  return Configuracion;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+
+
+/***/ }),
+
+/***/ "./resources/js/escritorio/paneles/configuracion/subElements/AperturaCierre.jsx":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/escritorio/paneles/configuracion/subElements/AperturaCierre.jsx ***!
+  \**************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return AperturaCierre; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+
+
+
+function AperturaCierre(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: props.classes
-  }, "Configuracion");
+    className: props.show ? "row justify-content-end" : "hidden"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "sub-title h-padding full-width border-bottom"
+  }, "Apertura y cierre del local"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-7 box-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "bold light-danger"
+  }, "D\xEDa de la semana"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({}, props.select.apertura_dia, {
+    titulo: "Selecciona el d\xEDa de apertura",
+    change: props.selectOption,
+    toggle: props.showOptions
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-5 box-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "bold light-danger"
+  }, "Apertura"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({}, props.select.apertura_hora, {
+    titulo: "horas",
+    change: props.selectOption,
+    toggle: props.showOptions
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({}, props.select.apertura_minuto, {
+    titulo: "minutos",
+    change: props.selectOption,
+    toggle: props.showOptions
+  })))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-5"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "bold light-danger"
+  }, "Cierre"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({}, props.select.cierre_hora, {
+    titulo: "horas",
+    change: props.selectOption,
+    toggle: props.showOptions
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({}, props.select.cierre_minuto, {
+    titulo: "minutos",
+    change: props.selectOption,
+    toggle: props.showOptions
+  })))))));
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(Configuracion));
+/***/ }),
+
+/***/ "./resources/js/escritorio/paneles/configuracion/subElements/Contacto.jsx":
+/*!********************************************************************************!*\
+  !*** ./resources/js/escritorio/paneles/configuracion/subElements/Contacto.jsx ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Contacto; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
+
+
+
+
+function Contacto(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: props.show ? "row" : "hidden"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "sub-title h-padding full-width border-bottom"
+  }, "Datos de contacto del local"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-6 box-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    container: "full-width",
+    changeValue: props.onTextChange,
+    titulo: "Correo electr\xF3nico",
+    name: "correo_local",
+    rows: 1,
+    value: props.text.correo_local,
+    classes: "border-box input-text margin-box full-width"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-6 box-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    container: "full-width",
+    changeValue: props.onTextChange,
+    titulo: "N\xFAmero de tel\xE9fono",
+    name: "telefono_local",
+    rows: 1,
+    value: props.text.telefono_local,
+    classes: "border-box input-text margin-box full-width"
+  })));
+}
+
+/***/ }),
+
+/***/ "./resources/js/escritorio/paneles/configuracion/subElements/Encargado.jsx":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/escritorio/paneles/configuracion/subElements/Encargado.jsx ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Encargado; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+
+
+
+function Encargado(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: props.show ? "full-width" : "hidden"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "sub-title h-padding full-width border-bottom"
+  }, "Datos de contacto del encargado"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+    action: ""
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    container: "full-width",
+    changeValue: props.onTextChange,
+    titulo: "Nombre",
+    name: "adm_nombre",
+    rows: 1,
+    value: props.text.adm_nombre,
+    classes: "border-box input-text margin-box full-width"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    container: "full-width",
+    changeValue: props.onTextChange,
+    titulo: "Tel\xE9fono de contacto",
+    name: "adm_telefono",
+    rows: 1,
+    value: props.text.adm_telefono,
+    classes: "border-box input-text margin-box full-width"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    container: "full-width",
+    changeValue: props.onTextChange,
+    titulo: "Correo de contacto",
+    name: "adm_email",
+    rows: 1,
+    value: props.text.adm_email,
+    classes: "border-box input-text margin-box full-width"
+  }))))));
+}
+
+/***/ }),
+
+/***/ "./resources/js/escritorio/paneles/configuracion/subElements/Ubicacion.jsx":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/escritorio/paneles/configuracion/subElements/Ubicacion.jsx ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Ubicacion; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+
+
+
+function Ubicacion(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: props.show ? "row" : "hidden"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "sub-title full-width h-padding border-bottom"
+  }, "Ubicaci\xF3n del local"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-6 box-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "bold light-danger"
+  }, " Provincia "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({}, props.select.id_provincia, {
+    titulo: "Selecciona la provincia",
+    change: props.selectOption,
+    toggle: props.showOptions
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-6 box-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    container: "full-width",
+    changeValue: props.onTextChange,
+    titulo: "Direcci\xF3n",
+    name: "direccion_local",
+    rows: 1,
+    value: props.text.direccion_local,
+    classes: "border-box input-text margin-box full-width"
+  })));
+}
+
+/***/ }),
+
+/***/ "./resources/js/escritorio/paneles/configuracion/subElements/Usuario.jsx":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/escritorio/paneles/configuracion/subElements/Usuario.jsx ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Usuario; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+
+
+
+function Usuario(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: props.show ? "full-width" : "hidden"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "sub-title full-width border-bottom"
+  }, "Datos del usuario"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+    action: ""
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row box-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    container: "full-width",
+    changeValue: props.onTextChange,
+    titulo: "Email de usuario",
+    name: "email_local",
+    rows: 1,
+    value: props.text.email_local,
+    readOnly: true,
+    classes: "border-box input-text margin-box full-width"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    container: "full-width",
+    changeValue: props.onTextChange,
+    titulo: "Contrase\xF1a de usuario",
+    name: "password_local",
+    rows: 1,
+    value: props.text.password_local,
+    classes: "border-box input-text margin-box full-width"
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row box-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    container: "full-width",
+    changeValue: props.onTextChange,
+    titulo: "Raz\xF3n Social",
+    name: "razon_social",
+    rows: 1,
+    value: props.text.razon_social,
+    classes: "border-box input-text margin-box full-width"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    container: "full-width",
+    changeValue: props.onTextChange,
+    titulo: "CUIT / CUIL",
+    name: "cuit_cuil",
+    rows: 1,
+    value: props.text.cuit_cuil,
+    classes: "border-box input-text margin-box full-width"
+  }))))));
+}
 
 /***/ }),
 
@@ -75805,6 +77152,11 @@ function (_Component) {
       });
     }
   }, {
+    key: "shouldComponentUpdate",
+    value: function shouldComponentUpdate(nextProps) {
+      return this.props.panel || nextProps.panel;
+    }
+  }, {
     key: "render",
     value: function render() {
       var eventos = Object(_funciones_generateEventosCard__WEBPACK_IMPORTED_MODULE_4__["default"])(this.state.eventos, this.actions),
@@ -75970,13 +77322,13 @@ function (_Component) {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        className: "full-width"
+        className: "full-width box-padding"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row sub-title h-padding"
+        className: "row sub-title border-bottom"
       }, this.props.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
+        className: "row box-padding"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-6"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -76203,6 +77555,11 @@ function (_Component) {
       });
     }
   }, {
+    key: "shouldComponentUpdate",
+    value: function shouldComponentUpdate(nextProps) {
+      return this.props.panel || nextProps.panel;
+    }
+  }, {
     key: "render",
     value: function render() {
       var diasAtencion = Object(_funciones_generateWeek__WEBPACK_IMPORTED_MODULE_7__["default"])(null, this.state.atencion, this.state.acciones, null, "horarios"),
@@ -76214,7 +77571,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.props.currentSub !== "0" ? "row" : "hidden"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_Titulo__WEBPACK_IMPORTED_MODULE_5__["default"], {
-        title: "Horarios de Atenci\xF3n",
+        title: "Horarios de Atención",
         navigation: controls
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_Modal__WEBPACK_IMPORTED_MODULE_4__["default"], {
         open: this.state.open,
@@ -76494,7 +77851,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row sub-title"
+        className: "row sub-title border-bottom"
       }, this.props.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row justify-content-end"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Toggle__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -76853,12 +78210,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_table__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-table */ "./node_modules/react-table/es/index.js");
 /* harmony import */ var react_table_react_table_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-table/react-table.css */ "./node_modules/react-table/react-table.css");
 /* harmony import */ var react_table_react_table_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_table_react_table_css__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
-/* harmony import */ var _modal_Modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../modal/Modal */ "./resources/js/modal/Modal.jsx");
-/* harmony import */ var _componentes_complex_allUse_Titulo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/complex/allUse/Titulo */ "./resources/js/componentes/complex/allUse/Titulo.jsx");
-/* harmony import */ var _subElements_AgregarLocal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./subElements/AgregarLocal */ "./resources/js/escritorio/paneles/locales/subElements/AgregarLocal.jsx");
-/* harmony import */ var _subElements_VerLocal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./subElements/VerLocal */ "./resources/js/escritorio/paneles/locales/subElements/VerLocal.jsx");
-/* harmony import */ var _funciones_generateActions__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../funciones/generateActions */ "./resources/js/funciones/generateActions.jsx");
+/* harmony import */ var react_table_hoc_fixed_columns__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-table-hoc-fixed-columns */ "./node_modules/react-table-hoc-fixed-columns/lib/index.js");
+/* harmony import */ var react_table_hoc_fixed_columns__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_table_hoc_fixed_columns__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var react_table_hoc_fixed_columns_lib_styles_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-table-hoc-fixed-columns/lib/styles.css */ "./node_modules/react-table-hoc-fixed-columns/lib/styles.css");
+/* harmony import */ var react_table_hoc_fixed_columns_lib_styles_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_table_hoc_fixed_columns_lib_styles_css__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/complex/allUse/ButtonList */ "./resources/js/componentes/complex/allUse/ButtonList.jsx");
+/* harmony import */ var _modal_Modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../modal/Modal */ "./resources/js/modal/Modal.jsx");
+/* harmony import */ var _componentes_complex_allUse_Titulo__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../componentes/complex/allUse/Titulo */ "./resources/js/componentes/complex/allUse/Titulo.jsx");
+/* harmony import */ var _subElements_AgregarLocal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./subElements/AgregarLocal */ "./resources/js/escritorio/paneles/locales/subElements/AgregarLocal.jsx");
+/* harmony import */ var _subElements_VerLocal__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./subElements/VerLocal */ "./resources/js/escritorio/paneles/locales/subElements/VerLocal.jsx");
+/* harmony import */ var _funciones_generateActions__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../funciones/generateActions */ "./resources/js/funciones/generateActions.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
@@ -76880,6 +78241,9 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+ //ReactTable
 
 
 
@@ -76911,7 +78275,8 @@ function (_Component) {
       text: {
         nombre: "",
         email: "",
-        password: ""
+        password: "",
+        direccion: ""
       },
       select: {
         provincia: {
@@ -76999,16 +78364,26 @@ function (_Component) {
     _this.verLocales = _this.verLocales.bind(_assertThisInitialized(_this));
     _this.showSingleLocal = _this.showSingleLocal.bind(_assertThisInitialized(_this));
     _this.agregarLocal = _this.agregarLocal.bind(_assertThisInitialized(_this));
-    _this.panelNavigation = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_9__["panelNavigation"])(_this.verLocales, _this.agregarLocal);
+    _this.panelNavigation = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_11__["panelNavigation"])(_this.verLocales, _this.agregarLocal);
     _this.closeModal = _this.closeModal.bind(_assertThisInitialized(_this));
     _this.onTextChange = _this.onTextChange.bind(_assertThisInitialized(_this));
     _this.showOptions = _this.showOptions.bind(_assertThisInitialized(_this));
     _this.selectOption = _this.selectOption.bind(_assertThisInitialized(_this));
-    _this.formActions = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_9__["formActions"])(_this.verLocales, _this.guardarNuevoLocal);
+    _this.formActions = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_11__["formActions"])(_this.verLocales, _this.guardarNuevoLocal);
     _this.guardarNuevoLocal = _this.guardarNuevoLocal.bind(_assertThisInitialized(_this));
     _this.columns = [{
       Header: "Nombre",
       accessor: "nombre",
+      headerClassName: 'bold highlight-title',
+      fixed: "left"
+    }, {
+      Header: "Provincia",
+      accessor: "provincia",
+      headerClassName: 'bold highlight-title',
+      fixed: "left"
+    }, {
+      Header: "Dirección",
+      accessor: "direccion",
       headerClassName: 'bold highlight-title'
     }, {
       Header: "Razón Social",
@@ -77019,16 +78394,8 @@ function (_Component) {
       accessor: "telefono",
       headerClassName: 'bold highlight-title'
     }, {
-      Header: "Provincia",
-      accessor: "provincia",
-      headerClassName: 'bold highlight-title'
-    }, {
       Header: "CUIT / CUIL",
       accessor: "cuitCuil",
-      headerClassName: 'bold highlight-title'
-    }, {
-      Header: "Dirección",
-      accessor: "direccion",
       headerClassName: 'bold highlight-title'
     }, {
       Header: "Administrador",
@@ -77050,7 +78417,8 @@ function (_Component) {
       Header: "Acciones",
       accessor: "acciones",
       className: "text-right",
-      headerClassName: 'bold highlight-title'
+      headerClassName: 'bold highlight-title',
+      fixed: "right"
     }];
     return _this;
   }
@@ -77136,13 +78504,20 @@ function (_Component) {
     key: "generateActionsForElement",
     value: function generateActionsForElement(elem) {
       return [{
-        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "smaller-text text bold text-center"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-eye"
-        }),
+        }), "Ver"),
         data: elem,
         "class": "box-transparent highlight-hover border-box button-border inline-block smaller-text",
         click: this.showSingleLocal
       }];
+    }
+  }, {
+    key: "shouldComponentUpdate",
+    value: function shouldComponentUpdate(nextProps) {
+      return this.props.panel || nextProps.panel;
     }
   }, {
     key: "render",
@@ -77153,26 +78528,27 @@ function (_Component) {
           columns = this.columns,
           data = Object.keys(this.state.locales).map(function (e) {
         return _objectSpread({}, _this2.state.locales[e], {
-          acciones: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          acciones: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_6__["default"], {
             displayList: "flex-row nav-list no-padding inline-block  align-center",
             container: "side-margin inline-block",
             elems: _this2.generateActionsForElement(e)
           })
         });
-      });
+      }),
+          ReactTableFixedColumns = react_table_hoc_fixed_columns__WEBPACK_IMPORTED_MODULE_4___default()(react_table__WEBPACK_IMPORTED_MODULE_2__["default"]);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.props.panel ? "full-width container" : "hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_Titulo__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_Titulo__WEBPACK_IMPORTED_MODULE_8__["default"], {
         title: "Locales",
         navigation: controls
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_Modal__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_Modal__WEBPACK_IMPORTED_MODULE_7__["default"], {
         open: this.state.open,
         closeModal: this.closeModal,
         title: "props.title",
         content: "props.content"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: this.state.formulario || this.state.verLocal ? "hidden" : "row full-width h-overflow-auto"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_table__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        className: this.state.formulario || this.state.verLocal ? "hidden" : "row full-width"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ReactTableFixedColumns, {
         data: data,
         columns: columns,
         minRows: 0,
@@ -77191,7 +78567,7 @@ function (_Component) {
         rowsText: "filas"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.state.formulario ? "row" : "hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_AgregarLocal__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_AgregarLocal__WEBPACK_IMPORTED_MODULE_9__["default"], {
         onTextChange: this.onTextChange,
         text: this.state.text,
         select: this.state.select,
@@ -77200,7 +78576,7 @@ function (_Component) {
         formActions: this.formActions
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.state.verLocal ? "row" : "hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_VerLocal__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_VerLocal__WEBPACK_IMPORTED_MODULE_10__["default"], {
         elem: this.state.verLocal ? this.state.locales[this.state.verLocal] : null
       })));
     }
@@ -77239,15 +78615,15 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 function AgregarLocal(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-    className: "full-width"
+    className: "full-width box-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row sub-title"
+    className: "row sub-title border-bottom"
   }, "Agregar un nuevo local"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row"
+    className: "row box-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3"
+    className: "col-md-4"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["default"], {
     container: "full-width",
     changeValue: props.onTextChange,
@@ -77257,7 +78633,7 @@ function AgregarLocal(props) {
     value: props.text.nombre,
     classes: "border-box input-text margin-box full-width"
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3"
+    className: "col-md-4"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["default"], {
     container: "full-width",
     changeValue: props.onTextChange,
@@ -77267,7 +78643,7 @@ function AgregarLocal(props) {
     value: props.text.email,
     classes: "border-box input-text margin-box full-width"
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3"
+    className: "col-md-4"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["default"], {
     container: "full-width",
     changeValue: props.onTextChange,
@@ -77276,8 +78652,20 @@ function AgregarLocal(props) {
     rows: 1,
     value: props.text.password,
     classes: "border-box input-text margin-box full-width"
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row box-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    container: "full-width",
+    changeValue: props.onTextChange,
+    titulo: "Direcci\xF3n",
+    name: "direccion",
+    rows: 1,
+    value: props.text.direccion,
+    classes: "border-box input-text margin-box full-width"
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3"
+    className: "col-md-6"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "no-padding bold light-danger"
   }, "Provincia"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({}, props.select.provincia, {
@@ -77319,18 +78707,14 @@ function VerLocal(props) {
       className: "container box-padding"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "sub-title row border-bottom"
-    }, "Local"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    }, props.elem.nombre), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "row v-padding"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "col-md-4"
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "bold light-danger"
-    }, "Nombre"), props.elem.nombre), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "col-md-4"
+      className: "col-md-6"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "bold light-danger"
     }, "Correo Electr\xF3nico"), props.elem.email), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "col-md-4"
+      className: "col-md-6"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "bold light-danger"
     }, "Tel\xE9fono"), props.elem.telefono)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -77987,19 +79371,26 @@ function (_Component) {
       });
     }
   }, {
+    key: "shouldComponentUpdate",
+    value: function shouldComponentUpdate(nextProps) {
+      return this.props.panel || nextProps.panel;
+    }
+  }, {
     key: "render",
     value: function render() {
       var controls = this.state.agregar ? [this.panelNavigation[0]] : [this.panelNavigation[1]];
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.props.panel ? "full-width" : "hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: this.props.currentSub !== "0" ? "container" : "hidden"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_Titulo__WEBPACK_IMPORTED_MODULE_5__["default"], {
-        title: "Reservaciones",
-        navigation: controls
+        title: this.props.currentSub ? this.props.subElements[this.props.currentSub].title : "Reservaciones",
+        navigation: this.props.currentSub ? [this.configuracionPanelNavigation[0]] : controls
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: this.props.currentSub !== "0" ? "container" : "hidden"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.state.agregar ? "row" : "hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "full-width sub-title border-bottom"
+      }, "Agregar nueva reserva"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_4__["default"], {
         verCalendario: this.actions.inner.verCalendario,
         showOptions: this.showOptions,
         selectOption: this.selectOption,
@@ -78022,7 +79413,6 @@ function (_Component) {
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.props.currentSub === "0" ? "row" : "hidden"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_Configuracion__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        formNavigation: [this.configuracionPanelNavigation[0]],
         formActions: this.configuracionFormControls,
         verCalendario: this.actions.inner.verCalendario,
         showOptions: this.showOptions,
@@ -78153,16 +79543,6 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "no-padding box-transparent highlight-title full-width text-left c-title"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "text-super"
-      }, "Configuraci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_ButtonList__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        displayList: "flex-row nav-list no-padding inline-block  align-center",
-        container: "side-margin inline-block",
-        elems: [this.props.formNavigation[0]]
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row v-padding"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-6"
@@ -78349,10 +79729,16 @@ function (_Component) {
       });
     }
   }, {
+    key: "shouldComponentUpdate",
+    value: function shouldComponentUpdate(nextProps) {
+      return this.props.panel || nextProps.panel;
+    }
+  }, {
     key: "render",
     value: function render() {
       var ubicaciones = Object(_funciones_generateUbicacionesCard__WEBPACK_IMPORTED_MODULE_5__["default"])(this.state.ubicaciones, this.actions),
           controls = this.state.formulario ? this.state.editar ? this.formNavigation : [this.formNavigation[0]] : [this.editAddControls[1]];
+      console.log('ubicaciones.render');
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.props.panel ? "container" : "hidden"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_complex_allUse_Titulo__WEBPACK_IMPORTED_MODULE_7__["default"], {
@@ -78514,13 +79900,13 @@ function (_Component) {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        className: "full-width"
+        className: "full-width box-padding"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row sub-title h-padding"
+        className: "row sub-title border-bottom"
       }, this.props.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
+        className: "row box-padding"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-6"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -78613,7 +79999,7 @@ function calendarNavigation(offset, titulo) {
 /*!****************************************************!*\
   !*** ./resources/js/funciones/generateActions.jsx ***!
   \****************************************************/
-/*! exports provided: assignActionsByStatus, generateActions, formNavigation, panelNavigation, formActions */
+/*! exports provided: assignActionsByStatus, generateActions, formNavigation, panelNavigation, formActions, generateConfigurationActions */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -78623,6 +80009,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "formNavigation", function() { return formNavigation; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "panelNavigation", function() { return panelNavigation; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "formActions", function() { return formActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "generateConfigurationActions", function() { return generateConfigurationActions; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -78790,7 +80177,7 @@ function generateActions(hasEvents, actions, data, enableTitles, type, show) {
 
   return acciones;
 }
-function formNavigation(volver, eliminar) {
+function formNavigation(volver, eliminar, data) {
   return [{
     title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "smaller-text text bold"
@@ -78799,7 +80186,8 @@ function formNavigation(volver, eliminar) {
     }), "Volver"),
     click: volver,
     "class": "box-transparent highlight-hover border-box button-border inline-block",
-    disabled: false
+    disabled: false,
+    data: data
   }, {
     title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "smaller-text text bold"
@@ -78853,6 +80241,33 @@ function formActions(cancelar, guardar, panel) {
     click: guardar,
     "class": "box-transparent highlight-hover border-box button-border inline-block",
     disabled: false
+  }];
+}
+function generateConfigurationActions(action) {
+  return [{
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "x-big-font border-font"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fas fa-user-tie"
+    })), "Encargado"),
+    data: "0",
+    click: action
+  }, {
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "x-big-font border-font"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fas fa-info-circle"
+    })), "Informaci\xF3n"),
+    data: "1",
+    click: action
+  }, {
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "x-big-font border-font"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fas fa-user"
+    })), "Usuario"),
+    data: "2",
+    click: action
   }];
 }
 

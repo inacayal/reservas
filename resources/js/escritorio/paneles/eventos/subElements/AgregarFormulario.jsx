@@ -72,12 +72,12 @@ export default class AgregarFormulario extends Component {
 
     render() {
         return (
-            <form className="full-width">
+            <form className="full-width box-padding">
                 <div className="container">
-                    <div className="row sub-title h-padding">
+                    <div className="row sub-title border-bottom">
                         {this.props.title}
                     </div>
-                    <div className="row">
+                    <div className="row box-padding">
                         <div className="col-md-6">
                             <div className="container">
                                 <div className="row">

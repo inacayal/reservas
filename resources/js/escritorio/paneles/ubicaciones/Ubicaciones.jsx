@@ -83,6 +83,10 @@ export default class Ubicaciones extends Component {
         this.setState({ agregar: null, editar: null, formulario: false })
     }
 
+    shouldComponentUpdate(nextProps) {
+        return this.props.panel || nextProps.panel;
+    }
+    
     render(){
         const ubicaciones = generateUbicacionesCard(
                 this.state.ubicaciones,
@@ -93,7 +97,7 @@ export default class Ubicaciones extends Component {
                     this.formNavigation
                 : [this.formNavigation[0]]
             : [this.editAddControls[1]];
-        
+        console.log('ubicaciones.render')
         return (
             <div className={this.props.panel ? "container" : "hidden"}>
                 <Titulo

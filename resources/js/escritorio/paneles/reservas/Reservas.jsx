@@ -556,17 +556,22 @@ export default class Reservas extends Component {
         this.setState({show:"3",date:date,controls:controls});
     }
 
+    shouldComponentUpdate(nextProps){
+        return this.props.panel||nextProps.panel;
+    }
+    
     render() {
         const controls = this.state.agregar ?
             [this.panelNavigation[0]]
             : [this.panelNavigation[1]];
         return (
             <div className={(this.props.panel) ? "full-width" : "hidden"}>
+                <Titulo
+                    title={this.props.currentSub ? this.props.subElements[this.props.currentSub].title : "Reservaciones"}
+                    navigation={this.props.currentSub ? [this.configuracionPanelNavigation[0]] : controls}/>
                 <div className={(this.props.currentSub !== "0") ? "container" : "hidden"}>
-                    <Titulo
-                        title="Reservaciones"
-                        navigation={controls}/>
                     <div className={this.state.agregar ? "row" : "hidden"}>
+                        <div className="full-width sub-title border-bottom">Agregar nueva reserva</div>
                         <AgregarFormulario 
                             verCalendario={this.actions.inner.verCalendario}
                             showOptions={this.showOptions}
@@ -591,7 +596,6 @@ export default class Reservas extends Component {
                 </div>
                 <div className={(this.props.currentSub === "0") ? "row" : "hidden"}>
                     <Configuracion
-                        formNavigation={[this.configuracionPanelNavigation[0]]}
                         formActions={this.configuracionFormControls}
                         verCalendario={this.actions.inner.verCalendario}
                         showOptions={this.showOptions}

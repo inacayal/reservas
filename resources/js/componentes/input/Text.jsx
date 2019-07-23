@@ -11,6 +11,7 @@ function Text(props) {
                 <textarea 
                     name={props.name} 
                     rows={props.rows} 
+                    readOnly = {props.readOnly}
                     className="full-width box-transparent"
                     onChange={props.changeValue}
                     value={props.value}/>

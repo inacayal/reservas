@@ -208,7 +208,8 @@ export function generateActions(
 
 export function formNavigation (
     volver,
-    eliminar
+    eliminar,
+    data
 ){
     return [
         {
@@ -220,7 +221,8 @@ export function formNavigation (
             ),
             click: volver,
             class: "box-transparent highlight-hover border-box button-border inline-block",
-            disabled: false
+            disabled: false,
+            data:data
         },
         {
             title: (
@@ -298,4 +300,45 @@ export function formActions(
             disabled: false
         }
     ];
+}
+
+export function generateConfigurationActions(action){
+    return [    
+        {
+            title:(
+                <>
+                    <div className="x-big-font border-font">
+                        <i className="fas fa-user-tie" />
+                    </div>
+                    Encargado
+                </>
+            ),
+            data:"0",
+            click:action
+        },
+        {
+            title:(
+                <>
+                    <div className="x-big-font border-font">
+                        <i className="fas fa-info-circle" />
+                    </div>
+                    Información
+                </>
+            ),
+            data: "1",
+            click: action
+        },
+        {
+            title:(
+                <>
+                    <div className="x-big-font border-font">
+                        <i className="fas fa-user" />
+                    </div>
+                    Usuario
+                </>
+            ),
+            data: "2",
+            click: action
+        }
+    ]
 }

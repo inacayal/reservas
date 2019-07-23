@@ -176,7 +176,7 @@ export default class AgregarFormulario extends Component {
                         </div>
                         <div className={classes.form}>
                             <div className="container">
-                                <div className="row sub-title">
+                                <div className="row sub-title border-bottom">
                                     {this.props.title}
                                 </div>
                                 <div className="row justify-content-end">

@@ -10,7 +10,7 @@ function Lateral(props) {
                     props.items.map(
                         (e, i) => (
                             <li className="full-width" key={i}>
-                                <button onClick={props.changePanel} data={i} className={props.current == i ? "highlight-title box-transparent full-width text-left box-padding": "box-transparent full-width text-left box-padding highlight-hover"}>
+                                <button onClick={props.changePanel} data={i} className={props.current == i ? "selected no-border bold full-width text-left box-padding": "box-transparent full-width text-left box-padding highlight-hover"}>
                                     {e.title}
                                 </button>
                                 <div>

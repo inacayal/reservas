@@ -98,13 +98,16 @@ export class Horarios extends Component {
     closeModal(e) {
         this.setState({ open: false });
     }
+    
     eliminarHorario(e) {
         e.preventDefault();
         this.setState({
             open: true
         })
     }
-
+    shouldComponentUpdate(nextProps) {
+        return this.props.panel || nextProps.panel;
+    }
     render() {
         const diasAtencion = generateWeek(
                 null, 
@@ -118,12 +121,11 @@ export class Horarios extends Component {
                 : this.state.agregar ? 
                     [this.editAddControls[0]]
                     : [{class:"hidden"}];
-        
         return (
             <div className={(this.props.panel) ? "full-width container" : "hidden"}>
                 <div className={this.props.currentSub !== "0" ? "row" : "hidden"}>
                     <Titulo
-                        title="Horarios de Atención"
+                        title={"Horarios de Atención"}
                         navigation={controls}/>
                     <ConfirmarModal
                         open={this.state.open}
@@ -132,7 +134,8 @@ export class Horarios extends Component {
                         content="¿estás seguro de eliminar este horario?" />
                     <div className={this.state.formulario ? "full-width" : "hidden"}>
                         <AgregarFormulario
-                            title={this.state.editar ? 
+                            title={
+                                this.state.editar ? 
                                 "Editar horario del "+DAYS[this.state.editar]
                                 : "Agregar horario para el " + DAYS[this.state.agregar]
                             }

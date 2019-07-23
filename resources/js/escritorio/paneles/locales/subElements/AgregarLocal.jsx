@@ -6,13 +6,13 @@ import ButtonList from '../../../../componentes/complex/allUse/ButtonList';
 
 export default function AgregarLocal(props){
     return (
-        <form className="full-width">
+        <form className="full-width box-padding">
             <div className="container">
-                <div className="row sub-title">
+                <div className="row sub-title border-bottom">
                     Agregar un nuevo local
                 </div>
-                <div className="row">
-                    <div className="col-md-3">
+                <div className="row box-padding">
+                    <div className="col-md-4">
                         <Text
                             container="full-width"
                             changeValue={props.onTextChange}
@@ -22,7 +22,7 @@ export default function AgregarLocal(props){
                             value={props.text.nombre}
                             classes="border-box input-text margin-box full-width" />
                     </div>
-                    <div className="col-md-3">
+                    <div className="col-md-4">
                         <Text
                             container="full-width"
                             changeValue={props.onTextChange}
@@ -32,7 +32,7 @@ export default function AgregarLocal(props){
                             value={props.text.email}
                             classes="border-box input-text margin-box full-width" />
                     </div>
-                    <div className="col-md-3">
+                    <div className="col-md-4">
                         <Text
                             container="full-width"
                             changeValue={props.onTextChange}
@@ -42,10 +42,22 @@ export default function AgregarLocal(props){
                             value={props.text.password}
                             classes="border-box input-text margin-box full-width" />
                     </div>
-                    <div className="col-md-3">
+                </div>
+                <div className="row box-padding">
+                    <div className="col-md-6">
+                        <Text
+                            container="full-width"
+                            changeValue={props.onTextChange}
+                            titulo="Dirección"
+                            name="direccion"
+                            rows={1}
+                            value={props.text.direccion}
+                            classes="border-box input-text margin-box full-width" />
+                    </div>
+                    <div className="col-md-6">
                         <div className="no-padding bold light-danger">
                             Provincia
-                        </div> 
+                        </div>
                         <Select
                             {...props.select.provincia}
                             titulo="Selecciona la provincia"

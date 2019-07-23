@@ -63,19 +63,27 @@ const sidebar = [//get on ajax request
     {
         data: "6",
         disabled: false,
-        title: "Configuración de usuario",
+        title: "Configuración",
         sub: [
             {
-                title: 'Configuracion 1',
+                title: 'Encargado',
                 data: "0"
             },
             {
-                title: 'Configuracion 2',
-                data: "1"
+                title:"Ubicacion",
+                data:"1"
             },
             {
-                title: 'Configuracion 3',
-                data: "2"
+                title:"Apertura y cierre",
+                data:"2"
+            },
+            {
+                title:"Contacto del local",
+                data:"3"
+            },
+            {
+                title:"Usuario",
+                data:"4"
             }
         ]
     }
@@ -138,9 +146,9 @@ export default class Main extends Component {
     }
     changePanel(e){
         e.preventDefault();
-        let showing = e.currentTarget.getAttribute('data');
-        let sidebar = this.state.sidebar;
-        let crumb = [];
+        let showing = e.currentTarget.getAttribute('data'),
+            sidebar = this.state.sidebar,
+            crumb = [];
         sidebar[this.state.showing].sub = this.restoreSubElements(sidebar[this.state.showing].sub);
         crumb = [{
             title: sidebar[showing].title,
@@ -203,8 +211,12 @@ export default class Main extends Component {
                                     selectInnerElement={this.changeSubElement}
                                     subElements={this.state.sidebar[5].sub}
                                     currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null} />
-                                <Configuracion 
-                                    classes={(this.state.showing === "6") ? "full-width" : "hidden"} />
+                                <Configuracion
+                                    changePanel={this.changePanel}
+                                    panel={this.state.showing === "6"}
+                                    selectInnerElement={this.changeSubElement}
+                                    subElements={this.state.sidebar[6].sub}
+                                    currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null} />
                             </div>
                         </div>
                     </div>

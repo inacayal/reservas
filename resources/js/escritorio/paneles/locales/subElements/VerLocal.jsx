@@ -7,18 +7,14 @@ export default function VerLocal(props){
         return (
             <div className="container box-padding">
                 <div className="sub-title row border-bottom">
-                    Local
+                    {props.elem.nombre}
                 </div>
                 <div className="row v-padding">
-                    <div className="col-md-4">
-                        <div className="bold light-danger">Nombre</div>
-                        {props.elem.nombre}
-                    </div>
-                    <div className="col-md-4">
+                    <div className="col-md-6">
                         <div className="bold light-danger">Correo Electrónico</div>
                         {props.elem.email}
                     </div>
-                    <div className="col-md-4">
+                    <div className="col-md-6">
                         <div className="bold light-danger">Teléfono</div>
                         {props.elem.telefono}
                     </div>

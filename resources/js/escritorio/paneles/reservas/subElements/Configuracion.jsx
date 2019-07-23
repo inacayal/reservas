@@ -10,15 +10,6 @@ export default class Configuracion extends Component {
         return (
             <form className="full-width"> 
                 <div className="container">
-                    <div className="row">
-                        <div className="no-padding box-transparent highlight-title full-width text-left c-title">
-                            <span className="text-super">Configuración</span>
-                            <ButtonList
-                                displayList="flex-row nav-list no-padding inline-block  align-center"
-                                container="side-margin inline-block"
-                                elems={[this.props.formNavigation[0]]} />
-                        </div>
-                    </div>
                     <div className="row v-padding">
                         <div className="col-md-6">
                             <h6 className="highlight bold no-margin">

@@ -78,7 +78,11 @@ export default class Eventos extends Component {
             open: true
         })
     }
-
+    
+    shouldComponentUpdate(nextProps) {
+        return this.props.panel || nextProps.panel;
+    }
+    
     render() {
         const eventos = generateEventosCard(
                 this.state.eventos,

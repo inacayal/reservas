@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+
+//ReactTable
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
+import withFixedColumns from "react-table-hoc-fixed-columns";
+import "react-table-hoc-fixed-columns/lib/styles.css";
 
 import ButtonList from '../../../componentes/complex/allUse/ButtonList';
 import ConfirmarModal from '../../../modal/Modal';
@@ -21,7 +25,8 @@ export default class Locales extends Component {
             text:{
                 nombre:"",
                 email:"",
-                password:""
+                password:"",
+                direccion:""
             },
             select:{
                 provincia:{
@@ -121,6 +126,18 @@ export default class Locales extends Component {
             {
                 Header: "Nombre",
                 accessor: "nombre",
+                headerClassName: 'bold highlight-title',
+                fixed: "left"
+            },
+            {
+                Header: "Provincia",
+                accessor: "provincia",
+                headerClassName: 'bold highlight-title',
+                fixed: "left"
+            },
+            {
+                Header: "Dirección",
+                accessor: "direccion",
                 headerClassName: 'bold highlight-title'
             },
             {
@@ -134,18 +151,8 @@ export default class Locales extends Component {
                 headerClassName: 'bold highlight-title'
             },
             {
-                Header: "Provincia",
-                accessor: "provincia",
-                headerClassName: 'bold highlight-title'
-            },
-            {
                 Header: "CUIT / CUIL",
                 accessor: "cuitCuil",
-                headerClassName: 'bold highlight-title'
-            },
-            {
-                Header: "Dirección",
-                accessor: "direccion",
                 headerClassName: 'bold highlight-title'
             },
             {
@@ -167,12 +174,13 @@ export default class Locales extends Component {
                 Header: "Estado",
                 accessor: "estado",
                 headerClassName: 'bold highlight-title'
-            },
+            }, 
             {
                 Header: "Acciones",
                 accessor: "acciones",
                 className: "text-right",
-                headerClassName: 'bold highlight-title'
+                headerClassName: 'bold highlight-title',
+                fixed: "right"
             }
         ];
     }
@@ -232,13 +240,23 @@ export default class Locales extends Component {
     generateActionsForElement(elem){
         return[
             {
-                title:(<i className="fas fa-eye"/>),
+                title:(
+                    <div className="smaller-text text bold text-center">
+                        <i className="fas fa-eye"/>
+                        Ver 
+                    </div>
+                ),
                 data:elem,
                 class:"box-transparent highlight-hover border-box button-border inline-block smaller-text",
                 click:this.showSingleLocal
             }
         ]
     }
+
+    shouldComponentUpdate(nextProps) {
+        return this.props.panel || nextProps.panel;
+    }
+
     render(){
         const controls = this.state.formulario ?
             [this.panelNavigation[0]] 
@@ -247,16 +265,15 @@ export default class Locales extends Component {
                 : [this.panelNavigation[1]],
             columns = this.columns,
             data = Object.keys(this.state.locales).map(
-                e=>{
-                    return {
+                e=>({
                         ...this.state.locales[e],
                         acciones: <ButtonList
                             displayList="flex-row nav-list no-padding inline-block  align-center"
                             container="side-margin inline-block"
                             elems={this.generateActionsForElement(e)} />
-                    }
-                }
-            );
+                    })
+            ),
+            ReactTableFixedColumns = withFixedColumns(ReactTable);
         return (
             <div className={(this.props.panel) ? "full-width container" : "hidden"}>
                 <Titulo
@@ -267,8 +284,8 @@ export default class Locales extends Component {
                     closeModal={this.closeModal}
                     title="props.title"
                     content="props.content"/>
-                <div className={this.state.formulario || this.state.verLocal ? "hidden" : "row full-width h-overflow-auto"}>
-                    <ReactTable
+                <div className={this.state.formulario || this.state.verLocal ? "hidden" : "row full-width"}>
+                    <ReactTableFixedColumns
                         data={data}
                         columns={columns}
                         minRows={0}
