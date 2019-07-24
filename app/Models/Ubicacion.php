@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 23 Jul 2019 19:04:07 +0000.
+ * Date: Wed, 24 Jul 2019 14:46:06 +0000.
  */
 
 namespace App\Models;
@@ -25,9 +25,11 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  *
  * @package App\Models
  */
-class Ubicacione extends Eloquent
+class Ubicacion extends Eloquent
 {
 	public $timestamps = false;
+
+	protected $table = 'ubicaciones';
 
 	protected $casts = [
 		'id_usuario' => 'int',

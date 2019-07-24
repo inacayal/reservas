@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('email',100)->unique();
             $table->string('password');
             $table->rememberToken();
-            $table->integer('id_franquicia')->unsigned();
+            $table->integer('id_franquicia')->unsigned()->nullable();
             $table->integer('id_provincia')->unsigned();
             $table->integer('id_rol')->unsigned()->index();
             $table->timestamp('created_at')->nullable();
@@ -50,6 +50,12 @@ class CreateUsersTable extends Migration
                 ->references('id')->on('estado_usuario')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
+            $table->foreign('id_rol','usuario_roles_id')
+                ->references('id')->on('roles')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        
         });
     }
 
@@ -62,6 +68,7 @@ class CreateUsersTable extends Migration
     {
         
         Schema::table("users",function(Blueprint $table){
+            $table->dropForeign('usuario_roles_id');
             $table->dropForeign('usuario_provincia_id');
             $table->dropForeign('usuario_franquicia_id');
             $table->dropForeign('usuario_estado_id');

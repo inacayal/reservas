@@ -11,6 +11,7 @@ import Horarios from './paneles/horarios/Horarios';
 import Locales from './paneles/locales/Locales';
 import Reservas from './paneles/reservas/Reservas';
 import Ubicaciones from './paneles/ubicaciones/Ubicaciones';
+import Franquicias from './paneles/franquicias/Franquicias';
 import BreadCrumb from '../componentes/control/BreadCrumb';
 
 const sidebar = [//get on ajax request
@@ -86,6 +87,12 @@ const sidebar = [//get on ajax request
                 data:"4"
             }
         ]
+    },
+    {
+        data: "7",
+        disabled: false,
+        title: "Franquicias",
+        sub: []
     }
 ];
 
@@ -216,6 +223,12 @@ export default class Main extends Component {
                                     panel={this.state.showing === "6"}
                                     selectInnerElement={this.changeSubElement}
                                     subElements={this.state.sidebar[6].sub}
+                                    currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null} />
+                                <Franquicias
+                                    changePanel={this.changePanel}
+                                    panel={this.state.showing === "7"}
+                                    selectInnerElement={this.changeSubElement}
+                                    subElements={this.state.sidebar[7].sub}
                                     currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null} />
                             </div>
                         </div>

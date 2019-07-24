@@ -21,6 +21,7 @@ class CreateUsuarioFeriadosTable extends Migration
             $table->integer('id_estado')->unsigned();
             $table->time('apertura');
             $table->time('cierre');
+            $table->string('descripcion',100);
 
             $table->foreign('id_usuario','usuario_feriados_usuario_id')
                 ->references('id')->on('users')

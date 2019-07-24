@@ -10,25 +10,26 @@ namespace App\Models;
 use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
- * Class Permiso
+ * Class EstadoEvento
  * 
  * @property int $id
  * @property string $descripcion
  * 
- * @property \App\Models\RolPermiso $rol_permiso
+ * @property \Illuminate\Database\Eloquent\Collection $usuario_eventos
  *
  * @package App\Models
  */
-class Permiso extends Eloquent
+class EstadoEvento extends Eloquent
 {
+	protected $table = 'estado_evento';
 	public $timestamps = false;
 
 	protected $fillable = [
 		'descripcion'
 	];
 
-	public function rol_permiso()
+	public function usuario_eventos()
 	{
-		return $this->hasOne(\App\Models\RolPermiso::class, 'id_permiso');
+		return $this->hasMany(\App\Models\UsuarioEvento::class, 'id_estado');
 	}
 }

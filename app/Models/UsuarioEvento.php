@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 23 Jul 2019 19:04:07 +0000.
+ * Date: Wed, 24 Jul 2019 15:45:16 +0000.
  */
 
 namespace App\Models;
@@ -18,7 +18,9 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property string $descripcion
  * @property string $promocion
  * @property int $descuento
+ * @property int $id_estado
  * 
+ * @property \App\Models\EstadoEvento $estado_evento
  * @property \App\Models\User $user
  * @property \Illuminate\Database\Eloquent\Collection $reservas
  *
@@ -31,7 +33,8 @@ class UsuarioEvento extends Eloquent
 
 	protected $casts = [
 		'id_usuario' => 'int',
-		'descuento' => 'int'
+		'descuento' => 'int',
+		'id_estado' => 'int'
 	];
 
 	protected $fillable = [
@@ -39,8 +42,14 @@ class UsuarioEvento extends Eloquent
 		'nombre',
 		'descripcion',
 		'promocion',
-		'descuento'
+		'descuento',
+		'id_estado'
 	];
+
+	public function estado_evento()
+	{
+		return $this->belongsTo(\App\Models\EstadoEvento::class, 'id_estado');
+	}
 
 	public function user()
 	{

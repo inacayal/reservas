@@ -1,22 +1,28 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ * Date: Wed, 24 Jul 2019 15:45:16 +0000.
+ */
+
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
+ * Class User
+ * 
  * @property int $id
- * @property int $id_franquicia
- * @property int $id_provincia
- * @property int $id_estado
  * @property string $nombre
  * @property string $razon_social
  * @property string $email
  * @property string $password
  * @property string $remember_token
+ * @property int $id_franquicia
+ * @property int $id_provincia
  * @property int $id_rol
- * @property string $created_at
- * @property string $email_verified_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $email_verified_at
  * @property string $intervalo_reserva
  * @property string $correo_adm
  * @property string $telefono_adm
@@ -25,83 +31,103 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $cuit_cuil
  * @property string $direccion
  * @property string $telefono_local
- * @property EstadoUsuario $estadoUsuario
- * @property User $user
- * @property Provincia $provincia
- * @property HorariosSemana[] $horariosSemanas
- * @property Reserva[] $reservas
- * @property Ubicacione[] $ubicaciones
- * @property UsuarioEvento[] $usuarioEventos
- * @property UsuarioFeriado[] $usuarioFeriados
+ * @property int $id_estado
+ * 
+ * @property \App\Models\EstadoUsuario $estado_usuario
+ * @property \App\Models\User $user
+ * @property \App\Models\Provincia $provincia
+ * @property \Illuminate\Database\Eloquent\Collection $horarios_semanas
+ * @property \Illuminate\Database\Eloquent\Collection $reservas
+ * @property \Illuminate\Database\Eloquent\Collection $ubicaciones
+ * @property \Illuminate\Database\Eloquent\Collection $users
+ * @property \Illuminate\Database\Eloquent\Collection $usuario_eventos
+ * @property \Illuminate\Database\Eloquent\Collection $usuario_feriados
+ *
+ * @package App\Models
  */
-class User extends Model
+class User extends Eloquent
 {
-    /**
-     * @var array
-     */
-    protected $fillable = ['id_franquicia', 'id_provincia', 'id_estado', 'nombre', 'razon_social', 'email', 'password', 'remember_token', 'id_rol', 'created_at', 'email_verified_at', 'intervalo_reserva', 'correo_adm', 'telefono_adm', 'nombre_adm', 'caida_reserva', 'cuit_cuil', 'direccion', 'telefono_local'];
+	public $timestamps = false;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function estadoUsuario()
-    {
-        return $this->belongsTo('App\EstadoUsuario', 'id_estado');
-    }
+	protected $casts = [
+		'id_franquicia' => 'int',
+		'id_provincia' => 'int',
+		'id_rol' => 'int',
+		'id_estado' => 'int'
+	];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo('App\User', 'id_franquicia');
-    }
+	protected $dates = [
+		'email_verified_at'
+	];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function provincia()
-    {
-        return $this->belongsTo('App\Provincia', 'id_provincia');
-    }
+	protected $hidden = [
+		'password',
+		'remember_token'
+	];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function horariosSemanas()
-    {
-        return $this->hasMany('App\HorariosSemana', 'id_usuario');
-    }
+	protected $fillable = [
+		'nombre',
+		'razon_social',
+		'email',
+		'password',
+		'remember_token',
+		'id_franquicia',
+		'id_provincia',
+		'id_rol',
+		'email_verified_at',
+		'intervalo_reserva',
+		'correo_adm',
+		'telefono_adm',
+		'nombre_adm',
+		'caida_reserva',
+		'cuit_cuil',
+		'direccion',
+		'telefono_local',
+		'id_estado'
+	];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function reservas()
-    {
-        return $this->hasMany('App\Reserva', 'id_usuario');
-    }
+	public function estado_usuario()
+	{
+		return $this->belongsTo(\App\Models\EstadoUsuario::class, 'id_estado');
+	}
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function ubicaciones()
-    {
-        return $this->hasMany('App\Ubicacione', 'id_usuario');
-    }
+	public function user()
+	{
+		return $this->belongsTo(\App\Models\User::class, 'id_franquicia');
+	}
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function usuarioEventos()
-    {
-        return $this->hasMany('App\UsuarioEvento', 'id_usuario');
-    }
+	public function provincia()
+	{
+		return $this->belongsTo(\App\Models\Provincia::class, 'id_provincia');
+	}
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function usuarioFeriados()
-    {
-        return $this->hasMany('App\UsuarioFeriado', 'id_usuario');
-    }
+	public function horariosSemanas()
+	{
+		return $this->hasMany(\App\Models\HorariosSemana::class, 'id_usuario');
+	}
+
+	public function reservas()
+	{
+		return $this->hasMany(\App\Models\Reserva::class, 'id_usuario');
+	}
+
+	public function ubicaciones()
+	{
+		return $this->hasMany(\App\Models\Ubicacion::class, 'id_usuario');
+	}
+
+	public function users()
+	{
+		return $this->hasMany(\App\Models\User::class, 'id_franquicia');
+	}
+
+	public function eventos()
+	{
+		return $this->hasMany(\App\Models\UsuarioEvento::class, 'id_usuario');
+	}
+
+	public function feriados()
+	{
+		return $this->hasMany(\App\Models\UsuarioFeriados::class, 'id_usuario');
+	}
 }
