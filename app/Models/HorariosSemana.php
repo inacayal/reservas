@@ -8,7 +8,7 @@
 namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
-
+use App\Traits\crudMethods;
 /**
  * Class HorariosSemana
  * 
@@ -27,6 +27,8 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class HorariosSemana extends Eloquent
 {
+	//use CrudMethods;
+
 	protected $table = 'horarios_semana';
 	public $timestamps = false;
 
@@ -59,5 +61,15 @@ class HorariosSemana extends Eloquent
 	public function user()
 	{
 		return $this->belongsTo(\App\Models\User::class, 'id_usuario');
+	}
+	
+	public static function dataSeeding($user){
+		return [
+			self::class,
+			7,
+			true,
+			$user->horariosSemanas(),
+			$user->intervalo_reserva
+		];
 	}
 }

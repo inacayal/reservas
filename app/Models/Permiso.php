@@ -8,7 +8,6 @@
 namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
-
 /**
  * Class Permiso
  * 
@@ -21,6 +20,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class Permiso extends Eloquent
 {
+
 	public $timestamps = false;
 
 	protected $fillable = [

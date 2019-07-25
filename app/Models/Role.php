@@ -21,6 +21,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class Role extends Eloquent
 {
+
 	public $timestamps = false;
 
 	protected $fillable = [

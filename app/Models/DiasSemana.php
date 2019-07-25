@@ -8,7 +8,7 @@
 namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
-
+use App\Traits\crudMethods;
 /**
  * Class DiasSemana
  * 
@@ -21,6 +21,8 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class DiasSemana extends Eloquent
 {
+	//use CrudMethods;
+
 	protected $table = 'dias_semana';
 	public $timestamps = false;
 

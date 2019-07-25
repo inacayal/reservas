@@ -8,7 +8,7 @@
 namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
-
+use App\Traits\crudMethods;
 /**
  * Class Reserva
  * 
@@ -35,6 +35,8 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class Reserva extends Eloquent
 {
+	//use CrudMethods;
+
 	public $timestamps = false;
 
 	protected $casts = [

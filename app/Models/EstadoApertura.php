@@ -8,7 +8,7 @@
 namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
-
+use App\Traits\crudMethods;
 /**
  * Class EstadoApertura
  * 
@@ -21,6 +21,8 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class EstadoApertura extends Eloquent
 {
+	//use CrudMethods;
+
 	protected $table = 'estado_apertura';
 	public $timestamps = false;
 

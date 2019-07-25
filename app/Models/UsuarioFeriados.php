@@ -8,7 +8,7 @@
 namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
-
+use App\Traits\crudMethods;
 /**
  * Class UsuarioFeriado
  * 
@@ -26,6 +26,8 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class UsuarioFeriados extends Eloquent
 {
+	//use CrudMethods;
+
 	public $timestamps = false;
 
 	protected $casts = [
@@ -55,5 +57,15 @@ class UsuarioFeriados extends Eloquent
 	public function user()
 	{
 		return $this->belongsTo(\App\Models\User::class, 'id_usuario');
+	}
+
+	public static function dataSeeding($user){
+		return [
+			self::class,
+			5,
+			true,
+			$user->feriados(),
+			$user->intervalo_reserva
+		];
 	}
 }

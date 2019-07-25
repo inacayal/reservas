@@ -8,7 +8,7 @@
 namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
-
+use App\Traits\crudMethods;
 /**
  * Class Ubicacione
  * 
@@ -27,6 +27,8 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class Ubicacion extends Eloquent
 {
+	//use CrudMethods;
+	
 	public $timestamps = false;
 
 	protected $table = 'ubicaciones';
@@ -58,5 +60,15 @@ class Ubicacion extends Eloquent
 	public function reservas()
 	{
 		return $this->hasMany(\App\Models\Reserva::class, 'id_ubicacion');
+	}
+	
+	public static function dataSeeding($user){
+		return [
+			self::class,
+			5,
+			false,
+			$user->ubicaciones(),
+			$user->intervalo_reserva
+		];
 	}
 }

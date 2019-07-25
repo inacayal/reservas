@@ -13,3 +13,4 @@
 Auth::routes();
 Route::get('/','EscritorioController@reservas')->name('reserva');
 Route::get('/escritorio', 'EscritorioController@index')->name('escritorio');
+Route::get('/mail', 'EscritorioController@mail')->name('mail');

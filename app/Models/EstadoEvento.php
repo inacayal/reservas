@@ -8,7 +8,7 @@
 namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
-
+use App\Traits\crudMethods;
 /**
  * Class EstadoEvento
  * 
@@ -21,6 +21,8 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class EstadoEvento extends Eloquent
 {
+	//use CrudMethods;
+
 	protected $table = 'estado_evento';
 	public $timestamps = false;
 

@@ -8,6 +8,7 @@
 namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
+use App\Traits\crudMethods;
 
 /**
  * Class Provincia
@@ -21,6 +22,8 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class Provincia extends Eloquent
 {
+	//use CrudMethods;
+	
 	public $timestamps = false;
 
 	protected $fillable = [
