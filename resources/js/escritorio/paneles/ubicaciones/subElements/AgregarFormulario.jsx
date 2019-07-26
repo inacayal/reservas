@@ -1,49 +1,42 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+/**
+ * react calendar date picker
+ */
 import Calendar from 'react-calendar';
-import Numeric from '../../../../componentes/input/Numeric';
-import ButtonList from '../../../../componentes/complex/allUse/ButtonList';
-import Text from '../../../../componentes/input/Text';
+/**
+ * componentes
+ */
+import ButtonList from '../../../../componentes/basic/ButtonList';
+/**
+ * input component and handlers
+ */
+import {Numeric,onNumberChange} from '../../../../componentes/input/Numeric';
+import {Text,onTextChange} from '../../../../componentes/input/Text';
 
 
 export default class AgregarFormulario extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            input:{
+            text:{
                 capacidad_maxima:0,
                 descripcion: "", 
                 nombre_ubicacion:""
             }
         }
-        this.onNumberChange = this.onNumberChange.bind(this);
-        this.onTextChange = this.onTextChange.bind(this);
+        this.onNumberChange = onNumberChange.bind(this);
+        this.onTextChange = onTextChange.bind(this);
+
         this.editarUbicacion = this.editarUbicacion.bind(this);
         this.agregarUbicacion = this.agregarUbicacion.bind(this);
     }
-
-    onNumberChange(e) {
-        let input = e.currentTarget,
-            name = input.getAttribute('name'),
-            numberInput = this.state.input;
-
-        numberInput[name] = input.value;
-        this.setState({ numeric: numberInput });
-    }
-
-    onTextChange(e) {
-        let input = e.currentTarget,
-            name = input.getAttribute('name'),
-            textInputs = this.state.input;
-
-        textInputs[name] = input.value;
-        this.setState({ text: textInputs });
-    }
-
-
     editarUbicacion(id) {
         let ubicacion = this.props.data[id],
-            input = this.state.input;
+            input = this.state.text;
 
         input.descripcion = ubicacion.descripcion;
         input.capacidad_maxima = parseInt(ubicacion.capacidad);
@@ -53,7 +46,7 @@ export default class AgregarFormulario extends Component {
     }
 
     agregarUbicacion() {
-        let input = this.state.input;
+        let input = this.state.text;
         
         input.descripcion = "";
         input.capacidad_maxima = 0;
@@ -88,7 +81,7 @@ export default class AgregarFormulario extends Component {
                                         titulo="Nombre de ubicación"
                                         name="nombre_ubicacion"
                                         rows={1}
-                                        value={this.state.input.nombre_ubicacion}
+                                        value={this.state.text.nombre_ubicacion}
                                         classes="border-box input-text margin-box full-width" />
                                 </div>
                                 <div className="row">
@@ -97,7 +90,7 @@ export default class AgregarFormulario extends Component {
                                         changeValue={this.onNumberChange}
                                         titulo="Capacidad máxima"
                                         name="capacidad_maxima"
-                                        value={this.state.input.capacidad_maxima}
+                                        value={this.state.text.capacidad_maxima}
                                         classes="border-box input-text margin-box full-width" />
                                 </div>
                             </div>
@@ -109,7 +102,7 @@ export default class AgregarFormulario extends Component {
                                 titulo="Descripción"
                                 name="descripcion"
                                 rows={4}
-                                value={this.state.input.descripcion}
+                                value={this.state.text.descripcion}
                                 classes="border-box input-text margin-box full-width" />
                         </div>
                     </div>

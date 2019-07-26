@@ -1,7 +1,16 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Select from '../../../../componentes/input/Select';
-import ButtonList from '../../../../componentes/complex/allUse/ButtonList';
+/**
+ * input components
+ */
+import {Select} from '../../../../componentes/input/Select';
+/**
+ * components
+ */
+import ButtonList from '../../../../componentes/basic/ButtonList';
 export default class Configuracion extends Component {
     constructor(props){
         super(props);

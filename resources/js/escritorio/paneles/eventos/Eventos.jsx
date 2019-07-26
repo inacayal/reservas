@@ -1,14 +1,24 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
-import ButtonList from '../../../componentes/complex/allUse/ButtonList';
-import CardList from '../../../componentes/complex/allUse/CardList';
-import generateEventosCard from '../../../funciones/generateEventosCard';
+/**
+ * componentes
+ */
+import Titulo from '../../../componentes/basic/Titulo';
+import CardList from '../../../componentes/basic/CardList';
+import ButtonList from '../../../componentes/basic/ButtonList';
+import {closeModal,ConfirmarModal} from '../../../componentes/modal/Modal';
+/**
+ * funciones
+ */
+import generateEventosCard from './procedimientos/generateEventosCard';
+import { formActions, formNavigation, panelNavigation } from '../../../funciones/dataActions';
+/**
+ * sub elementos
+ */
 import AgregarFormulario from './subElements/AgregarFormulario';
-import ConfirmarModal from '../../../modal/Modal';
-import Titulo from '../../../componentes/complex/allUse/Titulo';
-
-import { formActions, formNavigation, panelNavigation } from '../../../funciones/generateActions';
 export default class Eventos extends Component {
     constructor(props) {
         super(props);
@@ -45,16 +55,12 @@ export default class Eventos extends Component {
         this.formNavigation = formNavigation(this.verEventos, this.eliminarEvento);
         this.formActions = formActions(this.verEventos, this.guardarEvento);
 
-        this.closeModal = this.closeModal.bind(this);
+        this.closeModal = closeModal.bind(this);
         this.actions = {
             agregar: this.agregarEvento,
             editar: this.editarEvento,
             eliminar: this.eliminarEvento
         };
-    }
-
-    closeModal(e) {
-        this.setState({ open: false });
     }
 
     agregarEvento(e) {

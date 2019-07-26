@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-bootstrap-modal';
-
-export default function ConfirmarModal (props)
+/**
+ * 
+ * @param {*} e 
+ * handler
+ */
+export function closeModal(e) {
+    this.setState({ open: false });
+}
+/**
+ * 
+ * @param {*} props 
+ * component
+ */
+function noMemoModal (props)
 {
     return (
         <Modal
@@ -20,3 +32,4 @@ export default function ConfirmarModal (props)
         </Modal>
     );
 }
+export const ConfirmarModal = React.memo(noMemoModal); 

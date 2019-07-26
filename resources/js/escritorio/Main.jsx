@@ -1,9 +1,17 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-//Navigation Components
+/**
+ * navigation
+ */
 import Lateral from './contenedores/Lateral';
 import Navegacion from './contenedores/Navegacion';
-//Panel Components
+import BreadCrumb from '../componentes/control/BreadCrumb';
+/**
+ * panels
+ */
 import Configuracion from './paneles/configuracion/Configuracion';
 import Escritorio from './paneles/escritorio/Escritorio';
 import Eventos from './paneles/eventos/Eventos';
@@ -12,7 +20,6 @@ import Locales from './paneles/locales/Locales';
 import Reservas from './paneles/reservas/Reservas';
 import Ubicaciones from './paneles/ubicaciones/Ubicaciones';
 import Franquicias from './paneles/franquicias/Franquicias';
-import BreadCrumb from '../componentes/control/BreadCrumb';
 
 const sidebar = [//get on ajax request
     {

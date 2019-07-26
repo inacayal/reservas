@@ -1,15 +1,28 @@
-//React Components
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-//Complex Components
-import Calendar from '../../../../componentes/complex/calendar/Calendar';
-import ButtonList from '../../../../componentes/complex/allUse/ButtonList';
+/**
+ * components
+ */
+import Calendar from '../../../../componentes/calendario/Calendar';
+import ButtonList from '../../../../componentes/basic/ButtonList';
+import Titulo from '../../../../componentes/basic/Titulo';
+/**
+ * sub elements
+ */
 import AgregarFormulario from './AgregarFormulario';
-import Titulo from '../../../../componentes/complex/allUse/Titulo';
-//Functions
-import generateMonth from '../../../../funciones/generateMonth';
-import { formActions, formNavigation, panelNavigation } from '../../../../funciones/generateActions';
-import ConfirmarModal from '../../../../modal/Modal';
+/**
+ * function
+ */
+import generateMonth from '../../../../componentes/calendario/procedimientos/generateMonth';
+import { formActions, formNavigation, panelNavigation } from '../../../../funciones/dataActions';
+import {closeModal,ConfirmarModal} from '../../../../componentes/modal/Modal';
+/**
+ * constants
+ */
+import {NO_DAY_CONTROL} from '../../../../constantes/CalendarControls';
 import {DAYS,MONTHS} from '../../../../constantes/DaysMonths';
 
 //Feriados should be on this format when doing ajax request
@@ -68,23 +81,7 @@ export default class DiasFeriados extends Component {
             intervalo:10,
             editar: null,
             agregar:false,
-            controls :[
-                {
-                    title: "Anual",
-                    data: "0",
-                    class: "box-transparent highlight-hover h-padding small-v-padding bordered transparent-border"
-                },
-                {
-                    title: "Mensual",
-                    data: "1",
-                    class: "box-transparent highlight-hover bordered h-padding small-v-padding transparent-border"
-                },
-                {
-                    title: "Semanal",
-                    data: "2",
-                    class: "blue-background highlight-border h-padding small-v-padding"
-                }
-            ]
+            controls : NO_DAY_CONTROL
         };
         
         this.actions = {
@@ -101,7 +98,7 @@ export default class DiasFeriados extends Component {
         this.editarFeriado = this.editarFeriado.bind(this);
         this.agregarFeriado = this.agregarFeriado.bind(this);
         this.verCalendario = this.verCalendario.bind(this); 
-        this.closeModal = this.closeModal.bind(this);
+        this.closeModal = closeModal.bind(this);
 
         this.editAddControls = panelNavigation(this.props.changePanel, this.agregarFeriado, "2");
         this.formNavigation = formNavigation(this.verCalendario, this.eliminarFeriado);
@@ -136,10 +133,6 @@ export default class DiasFeriados extends Component {
         this.setState({ agregar: null, editar: null, formulario: false });
     }
     
-    closeModal(e) {
-        this.setState({ open: false });
-    }
-
     eliminarFeriado(e) {
         e.preventDefault();
         this.setState({

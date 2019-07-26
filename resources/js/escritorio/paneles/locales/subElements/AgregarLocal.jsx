@@ -1,8 +1,17 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Text from '../../../../componentes/input/Text';
-import Select from '../../../../componentes/input/Select';
-import ButtonList from '../../../../componentes/complex/allUse/ButtonList';
+/**
+ * input components
+ */
+import {Text} from '../../../../componentes/input/Text';
+import {Select} from '../../../../componentes/input/Select';
+/**
+ * basic component
+ */
+import ButtonList from '../../../../componentes/basic/ButtonList';
 
 export default function AgregarLocal(props){
     return (

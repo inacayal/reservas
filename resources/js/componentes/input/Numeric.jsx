@@ -1,9 +1,27 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+/**
+ * 
+ * @param {*} e 
+ * handler
+ */
+export function onNumberChange(e) {
+    let input = e.currentTarget,
+        name = input.getAttribute('name'),
+        numberInput = this.state.input;
 
-//holds reservation state
-
-function Numeric(props) {
+    numberInput[name] = input.value;
+    this.setState({ numeric: numberInput });
+}
+/**
+ * 
+ * @param {*} props 
+ * component
+ */
+function noMemoNumeric(props) {
     return (
         <div className={props.container ? props.container : ""}>
             <h6 className="highlight no-margin bold">{props.titulo}</h6>
@@ -18,4 +36,4 @@ function Numeric(props) {
         </div>
     );
 }
-export default React.memo(Numeric);
+export const Numeric = React.memo(noMemoNumeric);

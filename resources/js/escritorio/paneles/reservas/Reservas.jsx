@@ -1,10 +1,27 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+/**
+ * sub elements
+ */
 import Configuracion from './subElements/Configuracion';
-import Calendar from '../../../componentes/complex/calendar/Calendar';
 import AgregarFormulario from './subElements/AgregarFormulario';
-import Titulo from '../../../componentes/complex/allUse/Titulo';
-import { formActions, formNavigation, panelNavigation } from '../../../funciones/generateActions';
+/**
+ * componentes
+ */
+import Calendar from '../../../componentes/calendario/Calendar';
+import Titulo from '../../../componentes/basic/Titulo';
+/**
+ * funciones
+ */
+import { formActions, formNavigation, panelNavigation } from '../../../funciones/dataActions';
+import {showOptions,selectOption} from '../../../componentes/input/Select';
+/**
+ * constantes
+ */
+import {ALL_CONTROL} from '../../../constantes/CalendarControls';
 
 var horariosReserva = {
     intervalo: "10",
@@ -312,19 +329,23 @@ const data = {
 export default class Reservas extends Component {
     constructor(props) {
         super(props);
-
-        this.guardarConfiguracion = this.guardarConfiguracion.bind(this);
+        
         this.agregarReserva = this.agregarReserva.bind(this);
-        this.verCalendario = this.verCalendario.bind(this);
+        this.guardarConfiguracion = this.guardarConfiguracion.bind(this);
+        this.guardarNuevaReserva = this.guardarNuevaReserva.bind(this);
+        
+        
         this.verDia = this.verDia.bind(this);
+        this.verCalendario = this.verCalendario.bind(this);
         this.verReserva = this.verReserva.bind(this);
+        
         this.aceptarReserva = this.aceptarReserva.bind(this);
         this.rechazarReserva = this.rechazarReserva.bind(this);
         this.revertirReserva = this.revertirReserva.bind(this);
-        this.showOptions = this.showOptions.bind(this);
-        this.selectOption = this.selectOption.bind(this);
-        this.guardarNuevaReserva = this.guardarNuevaReserva.bind(this);
-
+        
+        this.showOptions = showOptions.bind(this);
+        this.selectOption = selectOption.bind(this);
+        
         this.reservaFormControls = formActions(this.verCalendario, this.guardarNuevaReserva);
         this.configuracionFormControls = formActions(this.props.changePanel, this.guardarConfiguracion, "1");
         this.panelNavigation = panelNavigation(this.verCalendario, this.agregarReserva);
@@ -352,28 +373,7 @@ export default class Reservas extends Component {
             agregar:false,
             agregarDate:new Date(),
             show:"2",
-            controls: [
-                {
-                    title: "Anual",
-                    data: "0",
-                    class: "box-transparent highlight-hover h-padding small-v-padding bordered transparent-border"
-                },
-                {
-                    title: "Mensual",
-                    data: "1",
-                    class: "box-transparent highlight-hover bordered h-padding small-v-padding transparent-border"
-                },
-                {
-                    title: "Semanal",
-                    data: "2",
-                    class: "blue-background highlight-border h-padding small-v-padding"
-                },
-                {
-                    title: "Diario",
-                    data: "3",
-                    class: "box-transparent highlight-hover bordered h-padding small-v-padding transparent-border"
-                }
-            ],
+            controls: ALL_CONTROL,
             select:{
                 local: {
                     name: "local",
@@ -480,25 +480,6 @@ export default class Reservas extends Component {
     guardarConfiguracion(e){
         e.preventDefault();
         console.log('guardar');
-    }
-
-    showOptions(e) {
-        let name = e.currentTarget.getAttribute('select');
-        let select = this.state.select;
-        let trigger = select[name];
-        trigger.show = !trigger.show;
-        select[name] = trigger;
-        this.setState({ select });
-    }
-
-    selectOption(e) {
-        let value = e.target.getAttribute('keyvalue'),
-            name = e.target.getAttribute('select'),
-            select = this.state.select,
-            trigger = select[name];
-        trigger.selected = (value !== select[name].selected) ? value : null;
-        select[name] = trigger;
-        this.setState({ select });
     }
 
     agregarReserva(){

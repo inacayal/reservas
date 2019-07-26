@@ -1,9 +1,36 @@
+/**
+ * react basic
+ */
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-
-//holds reservation state
-
-class Select extends Component{
+/**
+ * 
+ * @param {*} e 
+ * handler
+ */
+export function showOptions(e) {
+    let name = e.currentTarget.getAttribute('select');
+    let select = this.state.select;
+    let trigger = select[name];
+    trigger.show = !trigger.show;
+    select[name] = trigger;
+    this.setState({ select });
+}
+/**
+ * 
+ * @param {*} e 
+ * component
+ */
+export function selectOption(e) {
+    let value = e.target.getAttribute('keyvalue'),
+        name = e.target.getAttribute('select'),
+        select = this.state.select,
+        trigger = select[name];
+    trigger.selected = (value !== select[name].selected) ? value : null;
+    select[name] = trigger;
+    this.setState({ select });
+}
+class noMemoSelect extends Component{
     constructor(props){
         super(props);
     }
@@ -41,4 +68,4 @@ class Select extends Component{
     }
 }
 
-export default React.memo(Select);
+export const Select = React.memo(noMemoSelect);

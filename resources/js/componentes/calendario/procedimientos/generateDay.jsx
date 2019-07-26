@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import assignDayElementType from './generateCardsForDay';
-import ButtonList from '../componentes/complex/allUse/ButtonList';
+import assignDayElementType from '../diccionarios/DayDictionary';
+import ButtonList from '../../basic/ButtonList';
 
 function generateHourArray(
     horarios,
@@ -30,8 +30,7 @@ function generateHourArray(
         let findDate = new Date(date).setHours(hrPtr, mnPtr, 0, 0),
             data = dataObject[findDate];
         hourArray.push(
-            assignDayElementType(
-                type,
+            assignDayElementType[type](
                 data,
                 findDate,
                 actions

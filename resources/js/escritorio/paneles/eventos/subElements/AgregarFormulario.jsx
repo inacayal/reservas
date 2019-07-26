@@ -1,62 +1,48 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Calendar from 'react-calendar';
-import Numeric from '../../../../componentes/input/Numeric';
-import ButtonList from '../../../../componentes/complex/allUse/ButtonList';
-import Text from '../../../../componentes/input/Text';
-
+/**
+ * elements
+ */
+import ButtonList from '../../../../componentes/basic/ButtonList';
+/**
+ * handlers and elements
+ */
+import { Numeric,onNumberChange } from '../../../../componentes/input/Numeric';
+import { Text,onTextChange } from '../../../../componentes/input/Text';
 export default class AgregarFormulario extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            input:{
+            text:{
                 descuento:0,
                 promocion: "", 
-                nombre_evento:""
+                nombreEvento:""
             }
         }
-        this.onNumberChange = this.onNumberChange.bind(this);
-        this.onTextChange = this.onTextChange.bind(this);
+        this.onNumberChange = onNumberChange.bind(this);
+        this.onTextChange = onTextChange.bind(this);
         this.editarEvento = this.editarEvento.bind(this);
         this.agregarEvento = this.agregarEvento.bind(this);
     }
 
-    onNumberChange(e) {
-        let input = e.currentTarget,
-            name = input.getAttribute('name'),
-            numberInput = this.state.input;
-
-        numberInput[name] = input.value;
-        this.setState({ numeric: numberInput });
-    }
-
-    onTextChange(e) {
-        let input = e.currentTarget,
-            name = input.getAttribute('name'),
-            textInputs = this.state.input;
-
-        textInputs[name] = input.value;
-        this.setState({ text: textInputs });
-    }
-
-
     editarEvento(id) {
         let evento = this.props.data[id],
-            input = this.state.input;
+            input = this.state.text;
 
         input.promocion = evento.promocion;
         input.descuento = parseInt(evento.descuento);
-        input.nombre_evento = evento.nombre;
+        input.nombreEvento = evento.nombre;
 
         this.setState({input});
     }
 
     agregarEvento() {
-        let input = this.state.input;
+        let input = this.state.text;
         
         input.promocion ="";
         input.descuento = 0;
-        input.nombre_evento ="";
+        input.nombreEvento ="";
 
         this.setState({ input });
     }
@@ -85,9 +71,9 @@ export default class AgregarFormulario extends Component {
                                         container="full-width"
                                         changeValue={this.onTextChange}
                                         titulo="Nombre de evento"
-                                        name="nombre_Evento"
+                                        name="nombreEvento"
                                         rows={1}
-                                        value={this.state.input.nombre_evento}
+                                        value={this.state.text.nombreEvento}
                                         classes="border-box input-text margin-box full-width" />
                                 </div>
                                 <div className="row">
@@ -96,7 +82,7 @@ export default class AgregarFormulario extends Component {
                                         changeValue={this.onNumberChange}
                                         titulo="Descuento"
                                         name="descuento"
-                                        value={this.state.input.descuento}
+                                        value={this.state.text.descuento}
                                         classes="border-box input-text margin-box full-width" />
                                 </div>
                             </div>
@@ -108,7 +94,7 @@ export default class AgregarFormulario extends Component {
                                 titulo="Promoción del evento"
                                 name="promocion"
                                 rows={4}
-                                value={this.state.input.promocion}
+                                value={this.state.text.promocion}
                                 classes="border-box input-text margin-box full-width" />
                         </div>
                     </div>

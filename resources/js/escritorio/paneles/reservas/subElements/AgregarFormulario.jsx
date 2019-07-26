@@ -1,20 +1,23 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import ButtonList from '../../../../componentes/complex/allUse/ButtonList';
+/**
+ * components
+ */
+import ButtonList from '../../../../componentes/basic/ButtonList';
 import Evento from '../../../../reserva/pasos/Evento';
 
 export default function agregarFormulario(props){
-    const selectHandlers = {
-        showToggle: props.showOptions,
-        change: props.selectOption
-    };
     return (
         <div>
             <form className="text-right">
                 <div className="container">
                     <div className="row">
                         <Evento
-                            {...selectHandlers}
+                            showToggle={props.showOptions}
+                            change={props.selectOption}
                             displayTitles={false}
                             eventos={props.select.evento}
                             persona={props.select.personas}

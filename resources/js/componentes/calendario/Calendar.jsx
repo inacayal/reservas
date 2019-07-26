@@ -1,13 +1,24 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import YearCalendar from './views/YearCalendar';
-import DayCalendar from './views/DayCalendar';
-import WeekCalendar from './views/WeekCalendar';
-import MonthCalendar from './views/MonthCalendar';
-
-import ButtonList from '../allUse/ButtonList';
-import {DAYS,MONTHS,monthRows,monthIndex} from '../../../constantes/DaysMonths';
-import getMonthLength from '../../../funciones/getMonthLength';
+/**
+ * vistas
+ */
+import YearCalendar from './vistas/DayCalendar';
+import DayCalendar from './vistas/DayCalendar';
+import WeekCalendar from './vistas/WeekCalendar';
+import MonthCalendar from './vistas/MonthCalendar';
+/**
+ * componentes
+ */
+import ButtonList from '../basic/ButtonList';
+/**
+ * constantes
+ */
+import {DAYS,MONTHS,monthRows,monthIndex} from '../../constantes/DaysMonths';
+import getMonthLength from '../../funciones/getMonthLength';
 
 export default class Calendar extends Component {
     constructor(props){

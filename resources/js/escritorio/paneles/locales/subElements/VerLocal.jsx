@@ -1,8 +1,10 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 export default function VerLocal(props){
-    console.log(props);
     if (props.elem){
         return (
             <div className="container box-padding">

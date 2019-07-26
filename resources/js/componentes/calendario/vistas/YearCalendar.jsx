@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import ButtonList from '../../allUse/ButtonList';
 import Calendar from 'react-calendar';
+
+import ButtonList from '../../basic/ButtonList';
 import {DAYS,MONTHS} from '../../../../constantes/DaysMonths';
-import calendarNavigation from '../../../../funciones/calendarNavigation';
-import generateYear from '../../../../funciones/generateYear';
+import calendarNavigation from '../navegacion/calendarNavigation';
+import generateYear from '../procedimientos/generateYear';
 
 function YearCalendar(props){
-    let navigation = calendarNavigation({ left: -1, right: 1 }, 'año');
-    let months = generateYear(props.date,props.handleMonthClick);
+    const navigation = calendarNavigation(
+            { 
+                left: -1, 
+                right: 1 
+            },
+            'año'
+        ), 
+        months = generateYear(
+            props.date,
+            props.handleMonthClick
+        );
     return (
         <div className={props.show ? "row full-width" : "hidden"}>
             <div className="box-padding row bold">

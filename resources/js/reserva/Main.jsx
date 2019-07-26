@@ -1,9 +1,23 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+/**
+ * pasos de la reserva
+ */
 import Local from './pasos/Local.jsx';
 import Evento from "./pasos/Evento.jsx";
 import Exito from "./pasos/Exito.jsx";
+/**
+ * control
+ */
 import Paginado from '../componentes/control/Paginado.jsx';
+/**
+ * handlers input
+ */
+import { showOptions, selectOption } from '../componentes/input/Select'
+import { onTextChange } from '../componentes/input/Text'
 
 //holds reservation state
 export default class Main extends Component {
@@ -81,8 +95,8 @@ export default class Main extends Component {
         this.onCalendarChange = this.onCalendarChange.bind(this);
         this.clickNavigation = this.clickNavigation.bind(this);
         /** start Select */
-        this.selectOption = this.selectOption.bind(this);
-        this.showOptions = this.showOptions.bind(this);
+        this.selectOption = selectOption.bind(this);
+        this.showOptions = showOptions.bind(this);
         this.panels = {
             0:"Local",
             1:"Evento",
@@ -94,25 +108,6 @@ export default class Main extends Component {
             fecha:date
         });
     }
-    /** start select functions */
-    showOptions(e){
-        let name = e.currentTarget.getAttribute('select');
-        let select = this.state.select;
-        let trigger = select[name];
-        trigger.show = !trigger.show;
-        select[name] = trigger;
-        this.setState({select});
-    }
-    selectOption(e){
-        let value = e.target.getAttribute('keyvalue');
-        let name = e.target.getAttribute('select');
-        let select = this.state.select;
-        let trigger = select[name];
-        trigger.selected = (value !== select[name].selected) ? value : null;
-        select[name] = trigger;
-        this.setState({select});
-    }
-    /** end select functions */
 
     getPanelTitle (panelId) {
         return this.panels[panelId];

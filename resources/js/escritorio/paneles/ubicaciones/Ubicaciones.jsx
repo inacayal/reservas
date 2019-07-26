@@ -1,14 +1,24 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
-import ButtonList from '../../../componentes/complex/allUse/ButtonList';
-import ConfirmarModal from '../../../modal/Modal';
-import CardList from '../../../componentes/complex/allUse/CardList';
-import generateUbicacionesCard from '../../../funciones/generateUbicacionesCard';
+/**
+ * componentes
+ */
+import Titulo from '../../../componentes/basic/Titulo';
+import CardList from '../../../componentes/basic/CardList';
+import ButtonList from '../../../componentes/basic/ButtonList';
+import {ConfirmarModal,closeModal} from '../../../componentes/modal/Modal';
+/**
+ * funciones
+ */
+import generateUbicacionesCard from './procedures/generateUbicacionesCard';
+import { formActions, formNavigation, panelNavigation } from '../../../funciones/dataActions';
+/**
+ * sub elementos
+ */
 import AgregarFormulario from './subElements/AgregarFormulario';
-import Titulo from '../../../componentes/complex/allUse/Titulo';
-
-import { formActions, formNavigation, panelNavigation} from '../../../funciones/generateActions';
 export default class Ubicaciones extends Component {
     constructor(props){
         super(props);
@@ -41,11 +51,13 @@ export default class Ubicaciones extends Component {
         this.verUbicaciones = this.verUbicaciones.bind(this);
         this.guardarUbicacion = this.guardarUbicacion.bind(this);
         this.eliminarUbicacion = this.eliminarUbicacion.bind(this),
-        this.closeModal = this.closeModal.bind(this);
+
+        this.closeModal = closeModal.bind(this);
 
         this.editAddControls = panelNavigation(this.verUbicaciones,this.agregarUbicacion);
         this.formNavigation = formNavigation(this.verUbicaciones, this.eliminarUbicacion);
         this.formActions = formActions(this.verUbicaciones, this.guardarUbicacion);
+
         this.actions = {
             agregar: this.agregarUbicacion,
             editar: this.editarUbicacion,
@@ -60,10 +72,6 @@ export default class Ubicaciones extends Component {
     agregarUbicacion(e){
         let id = e.currentTarget.getAttribute('data');
         this.setState({agregar:id,editar:null,formulario:true});
-    }
-
-    closeModal(e) {
-        this.setState({ open: false });
     }
 
     eliminarUbicacion(e) {

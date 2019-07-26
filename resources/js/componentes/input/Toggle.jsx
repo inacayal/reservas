@@ -1,8 +1,27 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Button from './Button';
-
-function Toggle(props) {
+/**
+ * componentes
+ */
+import Button from '../basic/Button';
+/**
+ * element passed by button 
+ * @param {*} e
+ * handler 
+ */
+export function changeToggleSide(e) {
+    e.preventDefault();
+    this.setState({ right: !this.state.right });
+}
+/**
+ * props 
+ * @param {*} props 
+ * component
+ */
+function noMemoToggle(props) {
     return (
         <div className="inline-block">
             <span className="margin-box smaller-text">{(props.right) ? props.rightTitle : props.leftTitle}</span>
@@ -21,4 +40,4 @@ function Toggle(props) {
         </div>
     );
 }
-export default React.memo(Toggle);
+export const Toggle = React.memo(noMemoToggle);

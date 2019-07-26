@@ -1,15 +1,23 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-//components
-import ButtonList from '../../allUse/ButtonList';
-import CardList from '../../allUse/CardList';
-import Button from '../../../basic/Button';
-
-//functions
-import generateWeek from '../../../../funciones/generateWeek';
-import calendarNavigation from '../../../../funciones/calendarNavigation';
-//constants
-import { MONTHS } from '../../../../constantes/DaysMonths';
+/**
+ * componentes
+ */
+import ButtonList from '../../basic/ButtonList';
+import CardList from '../../basic/CardList';
+import Button from '../../basic/Button';
+/**
+ * funciones
+ */
+import generateWeek from '../procedimientos/generateWeek';
+import calendarNavigation from '../navegacion/calendarNavigation';
+/**
+ * constantes
+ */
+import { MONTHS } from '../../../constantes/DaysMonths';
 
 function WeekCalendar(props) {
     //show current week as it goes, highlighting today
@@ -21,7 +29,7 @@ function WeekCalendar(props) {
             }, 
             'semana'
         ),
-        week = generateWeek(
+        week = generateWeek[props.type](
             props.date, 
             props.data, 
             props.actions,

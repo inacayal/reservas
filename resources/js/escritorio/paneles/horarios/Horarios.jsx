@@ -1,15 +1,29 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+/**
+ * components
+ */
+import Titulo from '../../../componentes/basic/Titulo';
+import CardList from '../../../componentes/basic/CardList';
+import ButtonList from '../../../componentes/basic/ButtonList';
+import {closeModal,ConfirmarModal} from '../../../componentes/modal/Modal';
+/**
+ * sub elements
+ */
 import DiasFeriados from './subElements/DiasFeriados';
-import ButtonList from '../../../componentes/complex/allUse/ButtonList';
-import ConfirmarModal from '../../../modal/Modal';
-import Titulo from '../../../componentes/complex/allUse/Titulo';
-
-import CardList from '../../../componentes/complex/allUse/CardList';
-import generateWeek from '../../../funciones/generateWeek';
 import AgregarFormulario from './subElements/AgregarFormulario';
+/**
+ * functions
+ */
+import generateWeek from '../../../componentes/calendario/procedimientos/generateWeek';
+import { formNavigation, formActions } from '../../../funciones/dataActions';
+/**
+ * constantes
+ */
 import { DAYS, MONTHS, HOURS } from '../../../constantes/DaysMonths';
-import { formNavigation, formActions } from '../../../funciones/generateActions';
 export class Horarios extends Component {
     constructor(props){
         super(props);
@@ -66,7 +80,7 @@ export class Horarios extends Component {
             }
         };
 
-        this.closeModal = this.closeModal.bind(this);
+        this.closeModal = closeModal.bind(this);
         this.verHorarios = this.verHorarios.bind(this);
         this.eliminarHorario = this.eliminarHorario.bind(this);
 
@@ -109,12 +123,12 @@ export class Horarios extends Component {
         return this.props.panel || nextProps.panel;
     }
     render() {
-        const diasAtencion = generateWeek(
+        const diasAtencion = generateWeek['horarios'](
                 null, 
                 this.state.atencion, 
                 this.state.acciones, 
-                null, 
-                "horarios"
+                null,
+                'horarios'
             ),
             controls = this.state.editar ?
                 this.editAddControls

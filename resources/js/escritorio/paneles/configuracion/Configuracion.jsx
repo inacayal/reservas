@@ -1,27 +1,48 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
-import ButtonList from '../../../componentes/complex/allUse/ButtonList';
-import CardList from '../../../componentes/complex/allUse/CardList';
-import Titulo from '../../../componentes/complex/allUse/Titulo';
-import ConfirmarModal from '../../../modal/Modal';
-
+/**
+ * componentes
+ */
+import ButtonList from '../../../componentes/basic/ButtonList';
+import CardList from '../../../componentes/basic/CardList';
+import Titulo from '../../../componentes/basic/Titulo';
+/**
+ * handlers
+ */
+import {showOptions,selectOption} from '../../../componentes/input/Select';
+import {onTextChange} from '../../../componentes/input/Text';
+/**
+ * modal
+ */
+import ConfirmarModal from '../../../componentes/modal/Modal';
+/**
+ * form sub elements
+ */
 import AperturaCierre from './subElements/AperturaCierre';
 import Contacto from './subElements/Contacto';
 import Encargado from './subElements/Encargado';
 import Ubicacion from './subElements/Ubicacion';
 import Usuario from './subElements/Usuario';
-
-import { formActions, formNavigation, panelNavigation, generateConfigurationActions } from '../../../funciones/generateActions';
+/**
+ * funciones
+ */
 import generateHoursFromInterval from '../../../funciones/generateHoursFromInterval';
-import { DAYS, MONTHS, HOURS } from '../../../constantes/DaysMonths';
+import { formActions, formNavigation, panelNavigation, generateConfigurationActions } from '../../../funciones/dataActions';
+/**
+ * constantes
+ */
+import {DAYS,MONTHS,HOURS} from '../../../constantes/DaysMonths';
 
 export default class Configuracion extends Component {
     constructor(props) {
         super(props);
         this.validMinutes = generateHoursFromInterval(1);
         this.state = {
-            input:{
+            text:{
+                email_local:"",
                 adm_email:"",
                 adm_nombre:"",
                 adm_telefono:"",
@@ -30,7 +51,7 @@ export default class Configuracion extends Component {
                 correo_local:"",
                 telefono_local:"",
                 razon_social:"",
-                cuit_cuil:"",
+                cuit_cuil:""
             },
             select: {
                 id_provincia: {
@@ -132,36 +153,15 @@ export default class Configuracion extends Component {
                 }
             }
         };
-
+        
         this.configurationCards = generateConfigurationActions(this.props.selectInnerElement);
-
         this.formActions = formActions(this.props.changePanel,this.guardarConfiguracion,"6");
         this.formNavigation = formNavigation(this.props.changePanel,null,"6");
-        
         this.guardarConfiguracion = this.guardarConfiguracion.bind(this);
-        this.onTextChange = this.onTextChange.bind(this);
-
-        this.showOptions  = this.showOptions.bind(this);
+        
+        this.onTextChange = onTextChange.bind(this);
+        this.showOptions  = showOptions.bind(this);
         this.selectOption = this.selectOption.bind(this);
-    }
-
-    onTextChange(e) {
-        let input = e.currentTarget,
-            name = input.getAttribute('name'),
-            textInputs = this.state.input;
-
-        textInputs[name] = input.value;
-        this.setState({ text: textInputs });
-    }
-
-    showOptions(e) {
-        let name = e.currentTarget.getAttribute('select'),
-            select = this.state.select,
-            trigger = select[name];
-
-        trigger.show = !trigger.show;
-        select[name] = trigger;
-        this.setState({ select });
     }
 
     selectOption(e) {
@@ -186,15 +186,6 @@ export default class Configuracion extends Component {
         console.log('guardado');
     }   
 
-    onTextChange(e) {
-        let input = e.currentTarget,
-            name = input.getAttribute('name'),
-            textInputs = this.state.input;
-
-        textInputs[name] = input.value;
-        this.setState({ text: textInputs });
-    }
-
     render() {
         return (
             <div className={this.props.panel ? "full-width" : "hidden"}>
@@ -213,12 +204,12 @@ export default class Configuracion extends Component {
                     <Encargado 
                         formActions={this.formActions}
                         onTextChange={this.onTextChange}
-                        text={this.state.input}
+                        text={this.state.text}
                         show={this.props.currentSub ? this.props.currentSub === "0" : true}/>
                     <Ubicacion
                         formActions={this.formActions}
                         onTextChange={this.onTextChange}
-                        text={this.state.input}
+                        text={this.state.text}
                         select={this.state.select}
                         selectOption={this.selectOption}
                         showOptions={this.showOptions}
@@ -226,7 +217,7 @@ export default class Configuracion extends Component {
                     <AperturaCierre
                         formActions={this.formActions}
                         onTextChange={this.onTextChange}
-                        text={this.state.input}
+                        text={this.state.text}
                         selectOption={this.selectOption}
                         showOptions={this.showOptions}
                         select={this.state.select}
@@ -234,12 +225,12 @@ export default class Configuracion extends Component {
                     <Contacto
                         formActions={this.formActions}
                         onTextChange={this.onTextChange}
-                        text={this.state.input}
+                        text={this.state.text}
                         show={this.props.currentSub ? this.props.currentSub === "3" : true} />
                     <Usuario
                         formActions={this.formActions}
                         onTextChange={this.onTextChange}
-                        text={this.state.input}
+                        text={this.state.text}
                         show={this.props.currentSub ? this.props.currentSub === "4" : true} />
                     <div className="row box-padding justify-content-end">
                         <ButtonList

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Card from '../../basic/Card';
+import Card from './Card';
 
 function CardList(props) {
     //props.elems is an object array with properties title and icon

@@ -1,19 +1,32 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
-//ReactTable
+/**
+ * react table
+ */
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
 import withFixedColumns from "react-table-hoc-fixed-columns";
 import "react-table-hoc-fixed-columns/lib/styles.css";
-
-import ButtonList from '../../../componentes/complex/allUse/ButtonList';
-import ConfirmarModal from '../../../modal/Modal';
-import Titulo from '../../../componentes/complex/allUse/Titulo';
+/**
+ * componentes
+ */
+import Titulo from '../../../componentes/basic/Titulo';
+import ButtonList from '../../../componentes/basic/ButtonList';
+import {closeModal,ConfirmarModal} from '../../../componentes/modal/Modal';
+/**
+ * sub elementos
+ */
 import AgregarLocal from './subElements/AgregarLocal';
 import VerLocal from './subElements/VerLocal';
-
-import { formActions, formNavigation, panelNavigation } from '../../../funciones/generateActions';
+/**
+ * funciones
+ */
+import {onTextChange} from '../../../componentes/input/Text'
+import {showOptions,selectOption} from '../../../componentes/input/Select'
+import { formActions, formNavigation, panelNavigation } from '../../../funciones/dataActions';
 export default class Locales extends Component {
     constructor(props){
         super(props);
@@ -30,7 +43,7 @@ export default class Locales extends Component {
             },
             select:{
                 provincia:{
-                    name: "id_provincia",
+                    name: "provincia",
                     show: false,
                     selected: null,
                     search: "",
@@ -114,13 +127,15 @@ export default class Locales extends Component {
         this.verLocales = this.verLocales.bind(this);
         this.showSingleLocal = this.showSingleLocal.bind(this);
         this.agregarLocal = this.agregarLocal.bind(this);
-        this.panelNavigation = panelNavigation(this.verLocales,this.agregarLocal);
-        this.closeModal = this.closeModal.bind(this); 
-        this.onTextChange = this.onTextChange.bind(this);
-        this.showOptions = this.showOptions.bind(this);
-        this.selectOption = this.selectOption.bind(this);
-        this.formActions = formActions(this.verLocales,this.guardarNuevoLocal);
         this.guardarNuevoLocal = this.guardarNuevoLocal.bind(this);
+        
+        this.closeModal = closeModal.bind(this); 
+        this.onTextChange = onTextChange.bind(this);
+        this.showOptions = showOptions.bind(this);
+        this.selectOption = selectOption.bind(this);
+        
+        this.panelNavigation = panelNavigation(this.verLocales,this.agregarLocal);
+        this.formActions = formActions(this.verLocales,this.guardarNuevoLocal);
 
         this.columns = [
             {
@@ -201,40 +216,9 @@ export default class Locales extends Component {
         this.setState({formulario:false,verLocal:local})
     }
 
-    closeModal(e){
-        this.setState({open:false});
-    }
-
     guardarNuevoLocal(e){
         e.preventDefault();
         console.log('guardar');
-    }
-
-    onTextChange(e) {
-        let input = e.currentTarget,
-            name = input.getAttribute('name'),
-            textInputs = this.state.text;
-
-        textInputs[name] = input.value;
-        this.setState({ text: textInputs });
-    }
-    showOptions(e) {
-        let name = e.currentTarget.getAttribute('select'),
-            select = this.state.select,
-            trigger = select[name];
-
-        trigger.show = !trigger.show;
-        select[name] = trigger;
-        this.setState({ select });
-    }
-    selectOption(e) {
-        let value = e.target.getAttribute('keyvalue'),
-            name = e.target.getAttribute('select'),
-            select = this.state.select,
-            trigger = select[name];
-        trigger.selected = (value !== select[name].selected) ? value : null;
-        select[name] = trigger;
-        this.setState({ select });
     }
 
     generateActionsForElement(elem){

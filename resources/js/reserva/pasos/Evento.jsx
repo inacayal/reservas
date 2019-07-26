@@ -1,8 +1,17 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Select from "../../componentes/input/Select.jsx";
-import Text from "../../componentes/input/Text.jsx";
+/**
+ * react calendar
+ */
 import Calendar from 'react-calendar';
+/**
+ * input components
+ */
+import { Select } from "../../componentes/input/Select.jsx";
+import { Text } from "../../componentes/input/Text.jsx";
 
 function Evento(props) {
     return (

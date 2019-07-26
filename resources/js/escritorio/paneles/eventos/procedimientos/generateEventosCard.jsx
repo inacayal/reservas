@@ -1,7 +1,16 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import ButtonList from '../componentes/complex/allUse/ButtonList';
-import { generateActions } from './generateActions';
+/**
+ * componentes
+ */
+import ButtonList from '../../../../componentes/basic/ButtonList';
+/**
+ * funciones
+ */
+import { generateActions } from '../../../../funciones/generateActions';
 
 export default function generateEventosCard(
     eventos,
@@ -9,12 +18,11 @@ export default function generateEventosCard(
 ) {
     return Object.keys(eventos).map(
         e => {
-            let acciones = generateActions(
+            let acciones = generateActions['feriados'](
                 true,
                 actions,
                 e,
                 true,
-                'feriados',
                 false
             );
             return {

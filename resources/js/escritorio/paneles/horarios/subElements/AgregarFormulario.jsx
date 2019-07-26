@@ -1,15 +1,24 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Calendar from 'react-calendar';
-
-import Text from '../../../../componentes/input/Text';
-import ButtonList from '../../../../componentes/complex/allUse/ButtonList';
-import Select from '../../../../componentes/input/Select';
-import Toggle from '../../../../componentes/basic/Toggle';
-//Constants
+/**
+ * elements
+ */
+import ButtonList from '../../../../componentes/basic/ButtonList';
+import { changeToggleSide, Toggle } from '../../../../componentes/input/Toggle';
+/**
+ * input elements and handlers
+ */
+import { Select, showOptions, selectOption } from '../../../../componentes/input/Select';
+import { Text, onTextChange } from '../../../../componentes/input/Text';
+/**
+ * constants
+ */
 import {DAYS,MONTHS,HOURS} from '../../../../constantes/DaysMonths';
 import generateHoursFromInterval from '../../../../funciones/generateHoursFromInterval';
-
 export default class AgregarFormulario extends Component {
     constructor(props){
         super(props);
@@ -59,21 +68,13 @@ export default class AgregarFormulario extends Component {
         this.agregarFeriado = this.agregarFeriado.bind(this);
         this.editarFeriado = this.editarFeriado.bind(this);
 
-        this.onTextChange = this.onTextChange.bind(this);
-        this.showOptions = this.showOptions.bind(this);
-        this.selectOption = this.selectOption.bind(this);
-        this.changeToggleSide = this.changeToggleSide.bind(this);
+        this.onTextChange = onTextChange.bind(this);
+        this.showOptions = showOptions.bind(this);
+        this.selectOption = selectOption.bind(this);
+        this.changeToggleSide = changeToggleSide.bind(this);
+        
         this.calendarChange = this.calendarChange.bind(this);
 
-    }
-
-    onTextChange(e) {
-        let input = e.currentTarget,
-            name = input.getAttribute('name'),
-            textInputs = this.state.text;
-
-        textInputs[name]= input.value;
-        this.setState({ text: textInputs });
     }
 
     agregarFeriado() {
@@ -92,26 +93,6 @@ export default class AgregarFormulario extends Component {
             text: textInput,
             right: true
         });
-    }
-
-    showOptions(e) {
-        let name = e.currentTarget.getAttribute('select'),
-            select = this.state.select,
-            trigger = select[name];
-
-        trigger.show = !trigger.show;
-        select[name] = trigger;
-        this.setState({ select });
-    }
-
-    selectOption(e) {
-        let value = e.target.getAttribute('keyvalue'),
-            name = e.target.getAttribute('select'),
-            select = this.state.select,
-            trigger = select[name];
-        trigger.selected = (value !== select[name].selected) ? value : null;
-        select[name] = trigger;
-        this.setState({ select });
     }
 
     editarFeriado(dateString) {
@@ -135,11 +116,7 @@ export default class AgregarFormulario extends Component {
         });
     }
 
-    changeToggleSide(e) {
-        e.preventDefault();
-        this.setState({ right: !this.state.right });
-    }
-
+    
     calendarChange(date) {
         this.setState({date: date});
     }

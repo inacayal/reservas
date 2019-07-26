@@ -1,6 +1,12 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Select from "../../componentes/input/Select.jsx";
+/**
+ * input component
+ */
+import {Select} from "../../componentes/input/Select";
 
 function Local(props){
     return (

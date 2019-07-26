@@ -1,14 +1,28 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import generateDay from '../../../../funciones/generateDay';
-import CardList from '../../allUse/CardList';
-import Button from '../../../basic/Button';
-import {DAYS,MONTHS} from '../../../../constantes/DaysMonths';
-//estos son los dias de atencion de la semana.
+/**
+ * funciones
+ */
+import generateDay from '../procedimientos/generateDay';
+/**
+ * componentes
+ */
+import Button from '../../basic/Button';
+import CardList from '../../basic/CardList';
+/**
+ * constantes
+ */
+import {DAYS,MONTHS} from '../../../constantes/DaysMonths';
 
 function DayCalendar(props) {
     if (props.horarios){
-        let [dayReservationHours,foundLength] = generateDay(
+        const [
+            dayReservationHours,
+            foundLength
+        ] = generateDay(
             props.horarios.horarios,
             props.horarios.intervalo,
             props.horarios.caida,
@@ -29,7 +43,8 @@ function DayCalendar(props) {
                 <div className="limit-height-half">
                     <CardList 
                         displayList="nav-list box-padding"
-                        elems={dayReservationHours}/>
+                        elems={dayReservationHours}
+                    />
                 </div>
             </div>
         )

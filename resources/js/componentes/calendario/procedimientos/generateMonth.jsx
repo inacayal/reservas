@@ -1,50 +1,61 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { DAYS, MONTHS } from '../constantes/DaysMonths';
-import {generateActions} from './generateActions';
-import assignMonthElementType from './generateCardsForMonth';
-import getMonthLength from './getMonthLength';
+import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
+import {generateActions} from '../../../funciones/generateActions';
+import assignMonthElementType from '../diccionarios/MonthDictionary';
+import getMonthLength from '../../../funciones/getMonthLength';
 
-function evalFirstWeek (date,type){
+function evalFirstWeek (
+    date,
+    type
+){
     let day = date.getDay(),
         evalDate = new Date(date),
         res = [];
     //ver el primer dia de esta semana
     evalDate.setDate(evalDate.getDate()-day);
     while(evalDate.getMonth()!==date.getMonth()){
-        let elem = assignMonthElementType(
-            null,
-            type,
-            null,
-            evalDate.getTime()
+        res.push(
+            assignMonthElementType[type](
+                null,
+                null,
+                evalDate.getTime()
+            )
         );
-        res.push(elem);
         evalDate = new Date(evalDate);
         evalDate.setDate(evalDate.getDate()+1);
     }
     return res;
 }
 
-function evalLastWeek(date,type){
+function evalLastWeek(
+    date,
+    type
+){
     let day = date.getDay(),
         evalDate = new Date(date),
         res = [];
     //ver el primer dia de esta semana
     evalDate.setDate(evalDate.getDate() + 6 - day);
     while (evalDate.getMonth() !== date.getMonth()) {
-        let elem = assignMonthElementType(
-            null,
-            type,
-            null,
-            evalDate.getTime()
+        res.push(
+            assignMonthElementType[type](
+                null,
+                null,
+                evalDate.getTime()
+            )
         );
-        res.push(elem);
         evalDate = new Date(evalDate);
         evalDate.setDate(evalDate.getDate() - 1);
     }
     return (res||[]).reverse();
 }
-export default function generateMonth (date,data,actions,type){
+export default function generateMonth (
+    date,
+    data,
+    actions,
+    type
+){
     let monthLength = getMonthLength(
             date.getMonth()+1,
             date.getFullYear()
@@ -75,20 +86,19 @@ export default function generateMonth (date,data,actions,type){
             );
             weekCtr = 6;
         }
-        elem = assignMonthElementType(
-            generateActions(
-                data[dateStr]||null, 
-                actions.outer, 
-                dateStr, 
-                false, 
-                type
-            ),
-            type,
-            data[dateStr],
-            dateStr
-        );
         
-        week.push(elem);
+        week.push(
+            assignMonthElementType[type](
+                generateActions[type](
+                    data[dateStr] || null,
+                    actions.outer,
+                    dateStr,
+                    false
+                ),
+                data[dateStr],
+                dateStr
+            )
+        );
         
         if (weekCtr === 6) {
             weekCtr = 0;

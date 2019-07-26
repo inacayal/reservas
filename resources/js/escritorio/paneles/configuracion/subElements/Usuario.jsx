@@ -1,6 +1,12 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Text from '../../../../componentes/input/Text';
+/**
+ * input elements
+ */
+import {Text} from '../../../../componentes/input/Text';
 
 export default function Usuario(props) {
     return (
