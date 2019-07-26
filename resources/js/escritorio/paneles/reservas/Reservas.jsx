@@ -325,7 +325,6 @@ export default class Reservas extends Component {
         this.selectOption = this.selectOption.bind(this);
         this.guardarNuevaReserva = this.guardarNuevaReserva.bind(this);
 
-
         this.reservaFormControls = formActions(this.verCalendario, this.guardarNuevaReserva);
         this.configuracionFormControls = formActions(this.props.changePanel, this.guardarConfiguracion, "1");
         this.panelNavigation = panelNavigation(this.verCalendario, this.agregarReserva);
