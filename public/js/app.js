@@ -75014,12 +75014,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _vistas_DayCalendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./vistas/DayCalendar */ "./resources/js/componentes/calendario/vistas/DayCalendar.jsx");
-/* harmony import */ var _vistas_WeekCalendar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./vistas/WeekCalendar */ "./resources/js/componentes/calendario/vistas/WeekCalendar.jsx");
-/* harmony import */ var _vistas_MonthCalendar__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./vistas/MonthCalendar */ "./resources/js/componentes/calendario/vistas/MonthCalendar.jsx");
-/* harmony import */ var _basic_ButtonList__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
-/* harmony import */ var _funciones_getMonthLength__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../funciones/getMonthLength */ "./resources/js/funciones/getMonthLength.jsx");
+/* harmony import */ var _vistas_YearCalendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./vistas/YearCalendar */ "./resources/js/componentes/calendario/vistas/YearCalendar.jsx");
+/* harmony import */ var _vistas_DayCalendar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./vistas/DayCalendar */ "./resources/js/componentes/calendario/vistas/DayCalendar.jsx");
+/* harmony import */ var _vistas_WeekCalendar__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./vistas/WeekCalendar */ "./resources/js/componentes/calendario/vistas/WeekCalendar.jsx");
+/* harmony import */ var _vistas_MonthCalendar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./vistas/MonthCalendar */ "./resources/js/componentes/calendario/vistas/MonthCalendar.jsx");
+/* harmony import */ var _basic_ButtonList__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var _funciones_getMonthLength__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../funciones/getMonthLength */ "./resources/js/funciones/getMonthLength.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -75090,8 +75091,8 @@ function (_Component) {
   _createClass(Calendar, [{
     key: "changeCurrentMonth",
     value: function changeCurrentMonth(date) {
-      var index = _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_6__["monthIndex"][date.getMonth()];
-      _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_6__["monthRows"][index[0]][index[1]]["class"] = "";
+      var index = _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__["monthIndex"][date.getMonth()];
+      _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__["monthRows"][index[0]][index[1]]["class"] = "";
     }
   }, {
     key: "changeView",
@@ -75162,12 +75163,10 @@ function (_Component) {
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps) {
-      if ((prevProps.date !== this.props.date || prevProps.show !== this.props.show) && this.props.type === 'reservas') {
-        this.setState({
-          date: this.props.date,
-          show: this.props.show
-        });
-      }
+      if ((prevProps.date !== this.props.date || prevProps.show !== this.props.show) && this.props.type === 'reservas') this.setState({
+        date: this.props.date,
+        show: this.props.show
+      });
     }
   }, {
     key: "render",
@@ -75176,13 +75175,13 @@ function (_Component) {
         className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row justify-content-end v-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_ButtonList__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_ButtonList__WEBPACK_IMPORTED_MODULE_6__["default"], {
         clickHandler: this.changeView,
         displayList: "flex-row h-center nav-list no-padding",
         elems: this.state.controls
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_vistas_DayCalendar__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_vistas_DayCalendar__WEBPACK_IMPORTED_MODULE_3__["default"], {
         data: this.props.data,
         type: this.props.type,
         actions: this.props.actions,
@@ -75190,7 +75189,7 @@ function (_Component) {
         horarios: this.props.horariosReserva,
         render: this.props.dayRender,
         date: this.state.date
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_vistas_WeekCalendar__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_vistas_WeekCalendar__WEBPACK_IMPORTED_MODULE_4__["default"], {
         render: this.props.weekRender,
         type: this.props.type,
         actions: this.props.actions,
@@ -75198,15 +75197,15 @@ function (_Component) {
         date: this.state.date,
         changeCurrentWeek: this.changeDayCalendar,
         data: this.props.data,
-        dataTitle: "Días feriados de " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_6__["MONTHS"][this.state.date.getMonth()] + " " + this.state.date.getFullYear()
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_vistas_MonthCalendar__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        dataTitle: "Días feriados de " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__["MONTHS"][this.state.date.getMonth()] + " " + this.state.date.getFullYear()
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_vistas_MonthCalendar__WEBPACK_IMPORTED_MODULE_5__["default"], {
         type: this.props.type,
         changeCurrentMonth: this.changeWeekCalendar,
         show: this.state.show === "1",
         date: this.state.date,
         data: this.props.data,
         actions: this.props.actions
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_vistas_DayCalendar__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_vistas_YearCalendar__WEBPACK_IMPORTED_MODULE_2__["default"], {
         handleMonthClick: this.handleMonthClick,
         show: this.state.show === "0",
         changeCurrentYear: this.changeYearCalendar,
@@ -75311,7 +75310,7 @@ var assignDayElementType = {
 function generateDayCardFromArray(data, actions, dateStr) {
   var obj = {};
   return data.map(function (e, i) {
-    var acciones = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_4__["assignActionsByStatus"])(e.estado, actions, data);
+    var acciones = _funciones_generateActions__WEBPACK_IMPORTED_MODULE_4__["assignActionsByStatus"][e.estado](actions, data);
     var date = new Date(parseInt(dateStr)),
         classes = i === 0 ? "box-padding no-top-padding" : "box-padding";
     if (i !== data.length - 1) classes += " border-bottom";
@@ -75734,7 +75733,7 @@ function generateCardListForReservationObject(resObject, actions) {
 
 function generateCardsForReservationArray(hourReservations, actions) {
   return hourReservations.map(function (e, i) {
-    var acciones = Object(_funciones_generateActions__WEBPACK_IMPORTED_MODULE_4__["assignActionsByStatus"])(e.estado, actions, e.id),
+    var acciones = _funciones_generateActions__WEBPACK_IMPORTED_MODULE_4__["assignActionsByStatus"][e.estado](actions, e.id),
         classByState = _constantes_CardObject__WEBPACK_IMPORTED_MODULE_6__["CLASSBYSTATE"][e.estado],
         classByIndex = {
       0: "box-padding no-top-padding border-bottom"
@@ -75837,7 +75836,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _diccionarios_DayDictionary__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../diccionarios/DayDictionary */ "./resources/js/componentes/calendario/diccionarios/DayDictionary.jsx");
 /* harmony import */ var _basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/**
+ * react basic
+ */
 
+
+/**
+ * componentes
+ */
 
 
 
@@ -76008,12 +76014,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var generateWeek = {
-  horarios: function horarios(date, data, actions, currentDate, type) {
+  horarios: function horarios(date, data, actions, currentDate) {
     return _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_2__["DAYS"].map(function (e, i) {
-      return _diccionarios_WeekDictionary__WEBPACK_IMPORTED_MODULE_4__["default"][type](_funciones_generateActions__WEBPACK_IMPORTED_MODULE_3__["generateActions"][type](data[i], actions.outer, i.toString(), true, true), data[i], i.toString(), actions);
+      return _diccionarios_WeekDictionary__WEBPACK_IMPORTED_MODULE_4__["default"]['horarios'](_funciones_generateActions__WEBPACK_IMPORTED_MODULE_3__["generateActions"]['horarios'](data[i], actions.outer, i.toString(), true, true), data[i], i.toString(), actions);
     });
   },
-  reservas: function reservas(date, data, actions, currentDate, type) {
+  reservas: function reservas(date, data, actions, currentDate) {
     var dy = date.getDay();
     return _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_2__["DAYS"].map(function (e, i) {
       var datePtr = new Date(date);
@@ -76024,21 +76030,74 @@ var generateWeek = {
         data: data[strDate].reservas,
         show: data[strDate].show
       } : [];
-      return _diccionarios_WeekDictionary__WEBPACK_IMPORTED_MODULE_4__["default"][type](_funciones_generateActions__WEBPACK_IMPORTED_MODULE_3__["generateActions"][type](informacionDia.data, actions.outer, strDate, true, informacionDia.show), data[strDate], strDate, actions);
+      return _diccionarios_WeekDictionary__WEBPACK_IMPORTED_MODULE_4__["default"]['reservas'](_funciones_generateActions__WEBPACK_IMPORTED_MODULE_3__["generateActions"]['reservas'](informacionDia.data, actions.outer, strDate, true, informacionDia.show), data[strDate], strDate, actions);
     });
   },
-  feriados: function feriados(date, data, actions, currentDate, type) {
+  feriados: function feriados(date, data, actions, currentDate) {
     var day = date.getDay();
     return _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_2__["DAYS"].map(function (e, i) {
       var datePtr = new Date(date);
       datePtr.setDate(datePtr.getDate() + (i - day));
       datePtr.setHours(0, 0, 0, 0);
       var strDate = datePtr.getTime();
-      return _diccionarios_WeekDictionary__WEBPACK_IMPORTED_MODULE_4__["default"][type](_funciones_generateActions__WEBPACK_IMPORTED_MODULE_3__["generateActions"][type](data[strDate], actions.outer, strDate, true), data[strDate], strDate, actions);
+      return _diccionarios_WeekDictionary__WEBPACK_IMPORTED_MODULE_4__["default"]['feriados'](_funciones_generateActions__WEBPACK_IMPORTED_MODULE_3__["generateActions"]['feriados'](data[strDate], actions.outer, strDate, true), data[strDate], strDate, actions);
     });
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (generateWeek);
+
+/***/ }),
+
+/***/ "./resources/js/componentes/calendario/procedimientos/generateYear.jsx":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/componentes/calendario/procedimientos/generateYear.jsx ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return generateYear; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/**
+ * react basic
+ */
+
+
+/**
+ * componentes
+ */
+
+
+/**
+ * constantes
+ */
+
+
+function generateYear(date, handler) {
+  var year = [],
+      fourMonths = [],
+      currentIndex = _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_3__["monthIndex"][date.getMonth()].split('');
+  _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_3__["monthRows"][currentIndex[0]][currentIndex[1]]["class"] = "selected box-padding v-padding full-width highlight-border";
+
+  for (var row = 0; row < _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_3__["monthRows"].length; row++) {
+    year.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      key: row,
+      clickHandler: handler,
+      elems: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_3__["monthRows"][row],
+      displayList: "flex-row no-margin nav-list full-width no-padding h-center",
+      container: "thirty",
+      elemClass: "box-padding highlight-hover box-transparent full-width"
+    }));
+  }
+
+  return year;
+}
 
 /***/ }),
 
@@ -76266,7 +76325,7 @@ function WeekCalendar(props) {
     left: -7,
     right: 7
   }, 'semana'),
-      week = _procedimientos_generateWeek__WEBPACK_IMPORTED_MODULE_5__["default"][props.type](props.date, props.data, props.actions, new Date(), props.type);
+      week = _procedimientos_generateWeek__WEBPACK_IMPORTED_MODULE_5__["default"][props.type](props.date, props.data, props.actions, new Date());
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: props.show ? "container" : "hidden"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -76287,6 +76346,74 @@ function WeekCalendar(props) {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(WeekCalendar));
+
+/***/ }),
+
+/***/ "./resources/js/componentes/calendario/vistas/YearCalendar.jsx":
+/*!*********************************************************************!*\
+  !*** ./resources/js/componentes/calendario/vistas/YearCalendar.jsx ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-calendar */ "./node_modules/react-calendar/dist/entry.js");
+/* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_calendar__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _navegacion_calendarNavigation__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../navegacion/calendarNavigation */ "./resources/js/componentes/calendario/navegacion/calendarNavigation.jsx");
+/* harmony import */ var _procedimientos_generateYear__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../procedimientos/generateYear */ "./resources/js/componentes/calendario/procedimientos/generateYear.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/**
+ * react basic
+ */
+
+
+/**
+ * react datepicker
+ */
+
+
+/**
+ * componentes
+ */
+
+
+
+
+/**
+ * constantes
+ */
+
+
+
+function YearCalendar(props) {
+  var navigation = Object(_navegacion_calendarNavigation__WEBPACK_IMPORTED_MODULE_4__["default"])({
+    left: -1,
+    right: 1
+  }, 'año'),
+      months = Object(_procedimientos_generateYear__WEBPACK_IMPORTED_MODULE_5__["default"])(props.date, props.handleMonthClick);
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: props.show ? "row full-width" : "hidden"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "box-padding row bold"
+  }, "Mostrando " + props.date.getFullYear()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "box-padding full-width"
+  }, months), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "full-width"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    clickHandler: props.changeCurrentYear,
+    elemClass: "box-transparent",
+    displayList: "flex-row margin-box nav-list full-width no-padding",
+    elems: navigation
+  })));
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (YearCalendar);
 
 /***/ }),
 
@@ -76685,7 +76812,7 @@ function (_Component) {
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "absolute full-width"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-        className: this.props.show ? "option-list b-left b-right b-down" : "hidden"
+        className: this.props.show ? "option-list b-left b-right b-down max-height" : "hidden"
       }, Object.keys(this.props.list).map(function (ind) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
           key: ind,
@@ -76993,40 +77120,52 @@ var HOURS = {
 var MONTHS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 var monthRows = [[{
   title: "Enero",
-  data: 1
+  data: 1,
+  "class": "box-padding highlight-hover box-transparent full-width"
 }, {
   title: "Febrero",
-  data: 2
+  data: 2,
+  "class": "box-padding highlight-hover box-transparent full-width"
 }, {
   title: "Marzo",
-  data: 3
+  data: 3,
+  "class": "box-padding highlight-hover box-transparent full-width"
 }, {
   title: "Abril",
-  data: 4
+  data: 4,
+  "class": "box-padding highlight-hover box-transparent full-width"
 }], [{
   title: "Mayo",
-  data: 5
+  data: 5,
+  "class": "box-padding highlight-hover box-transparent full-width"
 }, {
   title: "Junio",
-  data: 6
+  data: 6,
+  "class": "box-padding highlight-hover box-transparent full-width"
 }, {
   title: "Julio",
-  data: 7
+  data: 7,
+  "class": "box-padding highlight-hover box-transparent full-width"
 }, {
   title: "Agosto",
-  data: 8
+  data: 8,
+  "class": "box-padding highlight-hover box-transparent full-width"
 }], [{
   title: "Septiembre",
-  data: 9
+  data: 9,
+  "class": "box-padding highlight-hover box-transparent full-width"
 }, {
   title: "Octubre",
-  data: 10
+  data: 10,
+  "class": "box-padding highlight-hover box-transparent full-width"
 }, {
   title: "Noviembre",
-  data: 11
+  data: 11,
+  "class": "box-padding highlight-hover box-transparent full-width"
 }, {
   title: "Diciembre",
-  data: 12
+  data: 12,
+  "class": "box-padding highlight-hover box-transparent full-width"
 }]];
 var monthIndex = ["00", "01", "02", "03", "10", "11", "12", "13", "20", "21", "22", "23", "30", "31", "32", "33"];
 
@@ -77088,7 +77227,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 /**
- * panels
+ * paneles
  */
 
 
@@ -77109,17 +77248,15 @@ var sidebar = [//get on ajax request
   data: "1",
   disabled: false,
   title: "Reservaciones",
-  sub: [{
-    title: "Configuración",
-    data: "0"
-  }]
+  sub: []
 }, {
   data: "2",
   disabled: false,
   title: "Horarios de atención",
   sub: [{
     title: 'Días Feriados',
-    data: "0"
+    data: "0",
+    "class": "box-transparent box-padding highlight-hover full-width text-left"
   }]
 }, {
   data: "3",
@@ -77142,19 +77279,28 @@ var sidebar = [//get on ajax request
   title: "Configuración",
   sub: [{
     title: 'Encargado',
-    data: "0"
+    data: "0",
+    "class": "box-transparent box-padding highlight-hover full-width text-left"
   }, {
     title: "Ubicacion",
-    data: "1"
+    data: "1",
+    "class": "box-transparent box-padding highlight-hover full-width text-left"
   }, {
     title: "Apertura y cierre",
-    data: "2"
+    data: "2",
+    "class": "box-transparent box-padding highlight-hover full-width text-left"
   }, {
     title: "Contacto del local",
-    data: "3"
+    data: "3",
+    "class": "box-transparent box-padding highlight-hover full-width text-left"
   }, {
     title: "Usuario",
-    data: "4"
+    data: "4",
+    "class": "box-transparent box-padding highlight-hover full-width text-left"
+  }, {
+    title: "Reservas",
+    data: "5",
+    "class": "box-transparent box-padding highlight-hover full-width text-left"
   }]
 }, {
   data: "7",
@@ -77176,7 +77322,6 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Main).call(this));
     _this.changePanel = _this.changePanel.bind(_assertThisInitialized(_this));
     _this.changeSubElement = _this.changeSubElement.bind(_assertThisInitialized(_this));
-    _this.restoreSubElements = _this.restoreSubElements.bind(_assertThisInitialized(_this));
     _this.state = {
       showing: "0",
       sidebar: sidebar,
@@ -77194,42 +77339,38 @@ function (_Component) {
     key: "changeSubElement",
     value: function changeSubElement(e) {
       e.preventDefault();
-      var clicked = e.currentTarget.getAttribute('data');
-      var sidebar = this.state.sidebar;
-      var subElements = sidebar[this.state.showing].sub;
-      var crumb = this.state.crumb;
-      subElements.map(function (e, i) {
-        if (i == clicked) {
-          if (crumb[1]) {
-            if (crumb[1].data !== clicked) {
-              e["class"] = "highlight-title box-transparent box-padding";
-              crumb[1] = e;
-            } else {
-              crumb.pop();
-              e["class"] = "box-transparent box-padding highlight-hover full-width text-left";
-            }
-          } else {
-            e["class"] = "highlight-title box-transparent box-padding full-width text-left";
-            crumb.push(e);
-          }
+      var clicked = e.currentTarget.getAttribute('data'),
+          sidebar = this.state.sidebar,
+          showing = this.state.showing,
+          subElements = sidebar[showing].sub,
+          crumb = this.state.crumb;
 
-          ;
-        } else e["class"] = "box-transparent box-padding highlight-hover full-width text-left";
+      if (crumb[1]) {
+        subElements[crumb[1].data]["class"] = "box-transparent box-padding full-width text-left";
 
-        return e;
-      });
-      sidebar[this.state.showing].sub = subElements;
+        if (crumb[1].data !== clicked) {
+          subElements[clicked]["class"] = "box-transparent box-padding highlight-title full-width text-left";
+          crumb[1] = {
+            title: subElements[clicked].title,
+            data: subElements[clicked].data,
+            "class": "box-transparent small-v-padding highlight-title full-width text-left",
+            click: this.changeSubElement
+          };
+        } else crumb.pop();
+      } else {
+        subElements[clicked]["class"] = "box-transparent box-padding highlight-title full-width text-left";
+        crumb[1] = {
+          title: subElements[clicked].title,
+          data: subElements[clicked].data,
+          "class": "box-transparent small-v-padding highlight-title full-width text-left",
+          click: this.changeSubElement
+        };
+      }
+
+      sidebar[showing].sub = subElements;
       this.setState({
         sidebar: sidebar,
         crumb: crumb
-      });
-    }
-  }, {
-    key: "restoreSubElements",
-    value: function restoreSubElements(elements) {
-      return elements.map(function (e) {
-        e["class"] = "box-transparent box-padding highlight-hover full-width text-left";
-        return e;
       });
     }
   }, {
@@ -77238,8 +77379,12 @@ function (_Component) {
       e.preventDefault();
       var showing = e.currentTarget.getAttribute('data'),
           sidebar = this.state.sidebar,
-          crumb = [];
-      sidebar[this.state.showing].sub = this.restoreSubElements(sidebar[this.state.showing].sub);
+          crumb = this.state.crumb;
+
+      if (sidebar[this.state.showing].sub.length > 0 && crumb[1]) {
+        sidebar[this.state.showing].sub[crumb[1].data]["class"] = "box-transparent box-padding full-width text-left";
+      }
+
       crumb = [{
         title: sidebar[showing].title,
         data: showing,
@@ -77436,9 +77581,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _subElements_Encargado__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./subElements/Encargado */ "./resources/js/escritorio/paneles/configuracion/subElements/Encargado.jsx");
 /* harmony import */ var _subElements_Ubicacion__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./subElements/Ubicacion */ "./resources/js/escritorio/paneles/configuracion/subElements/Ubicacion.jsx");
 /* harmony import */ var _subElements_Usuario__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./subElements/Usuario */ "./resources/js/escritorio/paneles/configuracion/subElements/Usuario.jsx");
-/* harmony import */ var _funciones_generateHoursFromInterval__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../../funciones/generateHoursFromInterval */ "./resources/js/funciones/generateHoursFromInterval.jsx");
-/* harmony import */ var _funciones_dataActions__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../../funciones/dataActions */ "./resources/js/funciones/dataActions.jsx");
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var _subElements_Reservas__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./subElements/Reservas */ "./resources/js/escritorio/paneles/configuracion/subElements/Reservas.jsx");
+/* harmony import */ var _funciones_generateHoursFromInterval__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../../funciones/generateHoursFromInterval */ "./resources/js/funciones/generateHoursFromInterval.jsx");
+/* harmony import */ var _funciones_dataActions__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../../funciones/dataActions */ "./resources/js/funciones/dataActions.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -77491,6 +77637,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 /**
  * funciones
  */
@@ -77516,7 +77663,7 @@ function (_Component) {
     _classCallCheck(this, Configuracion);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Configuracion).call(this, props));
-    _this.validMinutes = Object(_funciones_generateHoursFromInterval__WEBPACK_IMPORTED_MODULE_13__["default"])(1);
+    _this.validMinutes = Object(_funciones_generateHoursFromInterval__WEBPACK_IMPORTED_MODULE_14__["default"])(1);
     _this.state = {
       text: (_text = {
         email_local: "",
@@ -77525,6 +77672,40 @@ function (_Component) {
         adm_telefono: ""
       }, _defineProperty(_text, "email_local", ""), _defineProperty(_text, "password_local", ""), _defineProperty(_text, "correo_local", ""), _defineProperty(_text, "telefono_local", ""), _defineProperty(_text, "razon_social", ""), _defineProperty(_text, "cuit_cuil", ""), _text),
       select: {
+        intervalo: {
+          name: "intervalo",
+          show: false,
+          selected: null,
+          search: "",
+          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
+          list: {
+            1: "1 minuto",
+            2: "2 minutos",
+            3: "3 minutos",
+            5: "5 minutos",
+            4: "4 minutos",
+            6: "6 minutos",
+            10: "10 minutos",
+            12: "12 minutos",
+            15: "15 minutos",
+            20: "20 minutos",
+            30: "30 minutos"
+          }
+        },
+        caida: {
+          name: "caida",
+          show: false,
+          selected: null,
+          search: "",
+          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
+          list: {
+            10: "10 minutos",
+            20: "20 minutos",
+            30: "30 minutos",
+            40: "40 minutos",
+            50: "50 minutos"
+          }
+        },
         id_provincia: {
           name: "id_provincia",
           show: false,
@@ -77544,7 +77725,7 @@ function (_Component) {
           selected: null,
           search: "",
           input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
-          list: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_15__["HOURS"]
+          list: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_16__["HOURS"]
         },
         apertura_minuto: {
           name: "apertura_minuto",
@@ -77560,7 +77741,7 @@ function (_Component) {
           selected: null,
           search: "",
           input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
-          list: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_15__["HOURS"]
+          list: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_16__["HOURS"]
         },
         cierre_minuto: {
           name: "cierre_minuto",
@@ -77576,7 +77757,7 @@ function (_Component) {
           selected: null,
           search: "",
           input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
-          list: Object(_constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_15__["DAYS"])
+          list: Object(_constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_16__["DAYS"])
         }
       },
       atencion: {
@@ -77624,9 +77805,9 @@ function (_Component) {
         }
       }
     };
-    _this.configurationCards = Object(_funciones_dataActions__WEBPACK_IMPORTED_MODULE_14__["generateConfigurationActions"])(_this.props.selectInnerElement);
-    _this.formActions = Object(_funciones_dataActions__WEBPACK_IMPORTED_MODULE_14__["formActions"])(_this.props.changePanel, _this.guardarConfiguracion, "6");
-    _this.formNavigation = Object(_funciones_dataActions__WEBPACK_IMPORTED_MODULE_14__["formNavigation"])(_this.props.changePanel, null, "6");
+    _this.configurationCards = Object(_funciones_dataActions__WEBPACK_IMPORTED_MODULE_15__["generateConfigurationActions"])(_this.props.selectInnerElement);
+    _this.formActions = Object(_funciones_dataActions__WEBPACK_IMPORTED_MODULE_15__["formActions"])(_this.props.changePanel, _this.guardarConfiguracion, "6");
+    _this.formNavigation = Object(_funciones_dataActions__WEBPACK_IMPORTED_MODULE_15__["formNavigation"])(_this.props.changePanel, null, "6");
     _this.guardarConfiguracion = _this.guardarConfiguracion.bind(_assertThisInitialized(_this));
     _this.onTextChange = _componentes_input_Text__WEBPACK_IMPORTED_MODULE_6__["onTextChange"].bind(_assertThisInitialized(_this));
     _this.showOptions = _componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__["showOptions"].bind(_assertThisInitialized(_this));
@@ -77711,6 +77892,13 @@ function (_Component) {
         onTextChange: this.onTextChange,
         text: this.state.text,
         show: this.props.currentSub ? this.props.currentSub === "4" : true
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_Reservas__WEBPACK_IMPORTED_MODULE_13__["default"], {
+        formActions: this.formActions,
+        showOptions: this.showOptions,
+        selectOption: this.selectOption,
+        caida: this.state.select.caida,
+        intervalo: this.state.select.intervalo,
+        show: this.props.currentSub ? this.props.currentSub === "5" : true
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row box-padding justify-content-end"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -77938,6 +78126,67 @@ function Encargado(props) {
     rows: 1,
     value: props.text.adm_email,
     classes: "border-box input-text margin-box full-width"
+  }))))));
+}
+
+/***/ }),
+
+/***/ "./resources/js/escritorio/paneles/configuracion/subElements/Reservas.jsx":
+/*!********************************************************************************!*\
+  !*** ./resources/js/escritorio/paneles/configuracion/subElements/Reservas.jsx ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Reservas; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+/**
+ * react basic
+ */
+
+
+/**
+ * input components
+ */
+
+
+/**
+ * components
+ */
+
+
+function Reservas(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+    className: props.show ? "full-width" : "hidden"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "highlight bold no-margin"
+  }, "Defina el intervalo permitido para la reserva."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__["Select"], _extends({}, props.intervalo, {
+    titulo: "selecciona el intervalo de la reserva",
+    toggle: props.showOptions,
+    change: props.selectOption
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "highlight bold no-margin"
+  }, "Defina la duraci\xF3n m\xE1xima de la reserva."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__["Select"], _extends({}, props.caida, {
+    titulo: "selecciona la duraci\xF3n m\xE1xima de la reserva",
+    toggle: props.showOptions,
+    change: props.selectOption
   }))))));
 }
 
@@ -78822,7 +79071,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var diasAtencion = _componentes_calendario_procedimientos_generateWeek__WEBPACK_IMPORTED_MODULE_8__["default"]['horarios'](null, this.state.atencion, this.state.acciones, null, 'horarios'),
+      var diasAtencion = _componentes_calendario_procedimientos_generateWeek__WEBPACK_IMPORTED_MODULE_8__["default"]['horarios'](null, this.state.atencion, this.state.acciones, null),
           controls = this.state.editar ? this.editAddControls : this.state.agregar ? [this.editAddControls[0]] : [{
         "class": "hidden"
       }];
@@ -79989,13 +80238,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _subElements_Configuracion__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./subElements/Configuracion */ "./resources/js/escritorio/paneles/reservas/subElements/Configuracion.jsx");
-/* harmony import */ var _subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./subElements/AgregarFormulario */ "./resources/js/escritorio/paneles/reservas/subElements/AgregarFormulario.jsx");
-/* harmony import */ var _componentes_calendario_Calendar__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/calendario/Calendar */ "./resources/js/componentes/calendario/Calendar.jsx");
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _funciones_dataActions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../funciones/dataActions */ "./resources/js/funciones/dataActions.jsx");
-/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
-/* harmony import */ var _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../constantes/CalendarControls */ "./resources/js/constantes/CalendarControls.jsx");
+/* harmony import */ var _subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./subElements/AgregarFormulario */ "./resources/js/escritorio/paneles/reservas/subElements/AgregarFormulario.jsx");
+/* harmony import */ var _componentes_calendario_Calendar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/calendario/Calendar */ "./resources/js/componentes/calendario/Calendar.jsx");
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _funciones_dataActions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../funciones/dataActions */ "./resources/js/funciones/dataActions.jsx");
+/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
+/* harmony import */ var _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../constantes/CalendarControls */ "./resources/js/constantes/CalendarControls.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -80022,7 +80270,6 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 /**
  * sub elements
  */
-
 
 
 /**
@@ -80357,7 +80604,6 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Reservas).call(this, props));
     _this.agregarReserva = _this.agregarReserva.bind(_assertThisInitialized(_this));
-    _this.guardarConfiguracion = _this.guardarConfiguracion.bind(_assertThisInitialized(_this));
     _this.guardarNuevaReserva = _this.guardarNuevaReserva.bind(_assertThisInitialized(_this));
     _this.verDia = _this.verDia.bind(_assertThisInitialized(_this));
     _this.verCalendario = _this.verCalendario.bind(_assertThisInitialized(_this));
@@ -80365,12 +80611,10 @@ function (_Component) {
     _this.aceptarReserva = _this.aceptarReserva.bind(_assertThisInitialized(_this));
     _this.rechazarReserva = _this.rechazarReserva.bind(_assertThisInitialized(_this));
     _this.revertirReserva = _this.revertirReserva.bind(_assertThisInitialized(_this));
-    _this.showOptions = _componentes_input_Select__WEBPACK_IMPORTED_MODULE_7__["showOptions"].bind(_assertThisInitialized(_this));
-    _this.selectOption = _componentes_input_Select__WEBPACK_IMPORTED_MODULE_7__["selectOption"].bind(_assertThisInitialized(_this));
-    _this.reservaFormControls = Object(_funciones_dataActions__WEBPACK_IMPORTED_MODULE_6__["formActions"])(_this.verCalendario, _this.guardarNuevaReserva);
-    _this.configuracionFormControls = Object(_funciones_dataActions__WEBPACK_IMPORTED_MODULE_6__["formActions"])(_this.props.changePanel, _this.guardarConfiguracion, "1");
-    _this.panelNavigation = Object(_funciones_dataActions__WEBPACK_IMPORTED_MODULE_6__["panelNavigation"])(_this.verCalendario, _this.agregarReserva);
-    _this.configuracionPanelNavigation = Object(_funciones_dataActions__WEBPACK_IMPORTED_MODULE_6__["panelNavigation"])(_this.props.changePanel, _this.agregarReserva, "1");
+    _this.showOptions = _componentes_input_Select__WEBPACK_IMPORTED_MODULE_6__["showOptions"].bind(_assertThisInitialized(_this));
+    _this.selectOption = _componentes_input_Select__WEBPACK_IMPORTED_MODULE_6__["selectOption"].bind(_assertThisInitialized(_this));
+    _this.reservaFormControls = Object(_funciones_dataActions__WEBPACK_IMPORTED_MODULE_5__["formActions"])(_this.verCalendario, _this.guardarNuevaReserva);
+    _this.panelNavigation = Object(_funciones_dataActions__WEBPACK_IMPORTED_MODULE_5__["panelNavigation"])(_this.verCalendario, _this.agregarReserva);
     _this.actions = {
       outer: {
         ver: _this.verDia.bind(_assertThisInitialized(_this)),
@@ -80393,7 +80637,7 @@ function (_Component) {
       agregar: false,
       agregarDate: new Date(),
       show: "2",
-      controls: _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_8__["ALL_CONTROL"],
+      controls: _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_7__["ALL_CONTROL"],
       select: {
         local: {
           name: "local",
@@ -80457,40 +80701,6 @@ function (_Component) {
             3: "Persona 3",
             4: "Persona 4"
           }
-        },
-        intervalo: {
-          name: "intervalo",
-          show: false,
-          selected: null,
-          search: "",
-          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
-          list: {
-            5: "5 minutos",
-            10: "10 minutos",
-            15: "15 minutos",
-            20: "20 minutos",
-            25: "25 minutos",
-            30: "30 minutos",
-            35: "35 minutos",
-            40: "40 minutos",
-            45: "45 minutos",
-            50: "50 minutos",
-            55: "55 minutos"
-          }
-        },
-        caida: {
-          name: "caida",
-          show: false,
-          selected: null,
-          search: "",
-          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
-          list: {
-            10: "10 minutos",
-            20: "20 minutos",
-            30: "30 minutos",
-            40: "40 minutos",
-            50: "50 minutos"
-          }
         }
       }
     };
@@ -80498,12 +80708,6 @@ function (_Component) {
   }
 
   _createClass(Reservas, [{
-    key: "guardarConfiguracion",
-    value: function guardarConfiguracion(e) {
-      e.preventDefault();
-      console.log('guardar');
-    }
-  }, {
     key: "agregarReserva",
     value: function agregarReserva() {
       this.setState({
@@ -80583,16 +80787,16 @@ function (_Component) {
       var controls = this.state.agregar ? [this.panelNavigation[0]] : [this.panelNavigation[1]];
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.props.panel ? "full-width" : "hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_5__["default"], {
-        title: this.props.currentSub ? this.props.subElements[this.props.currentSub].title : "Reservaciones",
-        navigation: this.props.currentSub ? [this.configuracionPanelNavigation[0]] : controls
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        title: "Reservaciones",
+        navigation: controls
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: this.props.currentSub !== "0" ? "container" : "hidden"
+        className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.state.agregar ? "row" : "hidden"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "full-width sub-title border-bottom"
-      }, "Agregar nueva reserva"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }, "Agregar nueva reserva"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_2__["default"], {
         verCalendario: this.actions.inner.verCalendario,
         showOptions: this.showOptions,
         selectOption: this.selectOption,
@@ -80602,7 +80806,7 @@ function (_Component) {
         formControls: this.reservaFormControls
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.state.agregar ? "hidden" : "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_calendario_Calendar__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_calendario_Calendar__WEBPACK_IMPORTED_MODULE_3__["default"], {
         show: this.state.show,
         horariosReserva: horariosReserva,
         date: this.state.date,
@@ -80612,16 +80816,7 @@ function (_Component) {
         controls: this.state.controls,
         data: this.state.data,
         type: "reservas"
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: this.props.currentSub === "0" ? "row" : "hidden"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_subElements_Configuracion__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        formActions: this.configuracionFormControls,
-        verCalendario: this.actions.inner.verCalendario,
-        showOptions: this.showOptions,
-        selectOption: this.selectOption,
-        caida: this.state.select.caida,
-        intervalo: this.state.select.intervalo
-      })));
+      }))));
     }
   }]);
 
@@ -80685,113 +80880,6 @@ function agregarFormulario(props) {
     elems: props.formControls
   })))));
 }
-
-/***/ }),
-
-/***/ "./resources/js/escritorio/paneles/reservas/subElements/Configuracion.jsx":
-/*!********************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/reservas/subElements/Configuracion.jsx ***!
-  \********************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Configuracion; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * react basic
- */
-
-
-/**
- * input components
- */
-
-
-/**
- * components
- */
-
-
-
-var Configuracion =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(Configuracion, _Component);
-
-  function Configuracion(props) {
-    _classCallCheck(this, Configuracion);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(Configuracion).call(this, props));
-  }
-
-  _createClass(Configuracion, [{
-    key: "render",
-    value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        className: "full-width"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row v-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-        className: "highlight bold no-margin"
-      }, "Defina el intervalo permitido para la reserva."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__["Select"], _extends({}, this.props.intervalo, {
-        titulo: "selecciona el intervalo de la reserva",
-        toggle: this.props.showOptions,
-        change: this.props.selectOption
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-        className: "highlight bold no-margin"
-      }, "Defina la duraci\xF3n m\xE1xima de la reserva."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__["Select"], _extends({}, this.props.caida, {
-        titulo: "selecciona la duraci\xF3n m\xE1xima de la reserva",
-        toggle: this.props.showOptions,
-        change: this.props.selectOption
-      })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-12 text-right no-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        displayList: "flex-row nav-list no-padding inline-block  align-center",
-        container: "side-margin inline-block",
-        elems: this.props.formActions
-      })))));
-    }
-  }]);
-
-  return Configuracion;
-}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
-
-
 
 /***/ }),
 
@@ -81427,7 +81515,7 @@ var assignActionsByStatus = {
       data: data
     }];
   },
-  aprobado: function aprobado(actions, data) {
+  pendiente: function pendiente(actions, data) {
     return [{
       title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "smaller-text text bold text-center"
@@ -81454,7 +81542,7 @@ var assignActionsByStatus = {
       data: data
     }];
   },
-  pendiente: function pendiente(actions, data) {
+  aprobado: function aprobado(actions, data) {
     return [{
       title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "smaller-text text bold text-center"

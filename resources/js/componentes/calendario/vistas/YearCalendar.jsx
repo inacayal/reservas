@@ -1,11 +1,22 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+/**
+ * react datepicker
+ */
 import Calendar from 'react-calendar';
-
+/**
+ * componentes
+ */
 import ButtonList from '../../basic/ButtonList';
-import {DAYS,MONTHS} from '../../../../constantes/DaysMonths';
 import calendarNavigation from '../navegacion/calendarNavigation';
 import generateYear from '../procedimientos/generateYear';
+/**
+ * constantes
+ */
+import {DAYS,MONTHS} from '../../../constantes/DaysMonths';
 
 function YearCalendar(props){
     const navigation = calendarNavigation(

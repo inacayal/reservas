@@ -127,8 +127,7 @@ export class Horarios extends Component {
                 null, 
                 this.state.atencion, 
                 this.state.acciones, 
-                null,
-                'horarios'
+                null
             ),
             controls = this.state.editar ?
                 this.editAddControls

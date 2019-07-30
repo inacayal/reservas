@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 /**
  * vistas
  */
-import YearCalendar from './vistas/DayCalendar';
+import YearCalendar from './vistas/YearCalendar';
 import DayCalendar from './vistas/DayCalendar';
 import WeekCalendar from './vistas/WeekCalendar';
 import MonthCalendar from './vistas/MonthCalendar';
@@ -98,9 +98,13 @@ export default class Calendar extends Component {
     }
 
     componentDidUpdate(prevProps){
-        if ((prevProps.date !== this.props.date || prevProps.show !== this.props.show) && this.props.type==='reservas'){
-            this.setState({ date: this.props.date, show: this.props.show})
-        }
+        if (
+            (
+                prevProps.date !== this.props.date 
+                || prevProps.show !== this.props.show
+            ) && this.props.type==='reservas'
+        )
+            this.setState({ date: this.props.date, show: this.props.show});
     }
 
     render(){

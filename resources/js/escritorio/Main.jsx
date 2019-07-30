@@ -10,7 +10,7 @@ import Lateral from './contenedores/Lateral';
 import Navegacion from './contenedores/Navegacion';
 import BreadCrumb from '../componentes/control/BreadCrumb';
 /**
- * panels
+ * paneles
  */
 import Configuracion from './paneles/configuracion/Configuracion';
 import Escritorio from './paneles/escritorio/Escritorio';
@@ -21,7 +21,7 @@ import Reservas from './paneles/reservas/Reservas';
 import Ubicaciones from './paneles/ubicaciones/Ubicaciones';
 import Franquicias from './paneles/franquicias/Franquicias';
 
-const sidebar = [//get on ajax request
+var sidebar = [//get on ajax request
     {
         data: "0",
         disabled: false,
@@ -32,12 +32,7 @@ const sidebar = [//get on ajax request
         data: "1",
         disabled: false,
         title: "Reservaciones",
-        sub: [
-            {
-                title:"Configuración",
-                data: "0"
-            },
-        ]
+        sub: []
     },
     {
         data: "2",
@@ -46,7 +41,8 @@ const sidebar = [//get on ajax request
         sub: [
             {
                 title: 'Días Feriados',
-                data: "0"
+                data: "0",
+                class: "box-transparent box-padding highlight-hover full-width text-left"
             }
         ]
     },
@@ -75,23 +71,33 @@ const sidebar = [//get on ajax request
         sub: [
             {
                 title: 'Encargado',
-                data: "0"
+                data: "0",
+                class: "box-transparent box-padding highlight-hover full-width text-left"
             },
             {
                 title:"Ubicacion",
-                data:"1"
+                data:"1",
+                class: "box-transparent box-padding highlight-hover full-width text-left"
             },
             {
                 title:"Apertura y cierre",
-                data:"2"
+                data:"2",
+                class: "box-transparent box-padding highlight-hover full-width text-left"
             },
             {
                 title:"Contacto del local",
-                data:"3"
+                data:"3",
+                class: "box-transparent box-padding highlight-hover full-width text-left"
             },
             {
                 title:"Usuario",
-                data:"4"
+                data:"4",
+                class: "box-transparent box-padding highlight-hover full-width text-left"
+            },
+            {
+                title: "Reservas",
+                data: "5",
+                class: "box-transparent box-padding highlight-hover full-width text-left"
             }
         ]
     },
@@ -109,10 +115,9 @@ export default class Main extends Component {
         super();
         this.changePanel = this.changePanel.bind(this);
         this.changeSubElement = this.changeSubElement.bind(this);
-        this.restoreSubElements = this.restoreSubElements.bind(this);
         this.state = {
             showing:"0",
-            sidebar: sidebar, 
+            sidebar:sidebar,
             crumb: [{ 
                 title: "Escritorio", 
                 data: "0",
@@ -124,46 +129,47 @@ export default class Main extends Component {
 
     changeSubElement(e){
         e.preventDefault();
-        let clicked = e.currentTarget.getAttribute('data');
-        let sidebar = this.state.sidebar;
-        let subElements = sidebar[this.state.showing].sub;
-        let crumb = this.state.crumb;
-        subElements.map(
-            (e, i) => { 
-                if (i == clicked){
-                    if (crumb[1]){
-                        if (crumb[1].data !== clicked){
-                            e.class = "highlight-title box-transparent box-padding"; 
-                            crumb[1] = e;
-                        } else {
-                            crumb.pop();
-                            e.class = "box-transparent box-padding highlight-hover full-width text-left";
-                        }
-                    } else {
-                        e.class = "highlight-title box-transparent box-padding full-width text-left";
-                        crumb.push(e)
-                    };
-                } else e.class = "box-transparent box-padding highlight-hover full-width text-left"
-                return e;
-            }
-        );
-        sidebar[this.state.showing].sub = subElements;
+        let clicked = e.currentTarget.getAttribute('data'),
+            sidebar = this.state.sidebar,
+            showing = this.state.showing,
+            subElements = sidebar[showing].sub,
+            crumb = this.state.crumb;
+
+        if (crumb[1]){
+            subElements[crumb[1].data].class = "box-transparent box-padding full-width text-left";
+            if (crumb[1].data !== clicked) {
+                subElements[clicked].class = "box-transparent box-padding highlight-title full-width text-left";   
+                crumb[1] = {
+                    title: subElements[clicked].title,
+                    data: subElements[clicked].data,
+                    class: "box-transparent small-v-padding highlight-title full-width text-left",
+                    click: this.changeSubElement
+                }; 
+            } else 
+                crumb.pop();
+        } else {
+            subElements[clicked].class = "box-transparent box-padding highlight-title full-width text-left";
+            crumb[1] = {
+                title: subElements[clicked].title,
+                data: subElements[clicked].data,
+                class: "box-transparent small-v-padding highlight-title full-width text-left",
+                click: this.changeSubElement
+            }; 
+        }
+
+        sidebar[showing].sub = subElements;
         this.setState({sidebar:sidebar,crumb:crumb});
     }
-    restoreSubElements(elements){
-        return elements.map(
-            e => {
-                e.class = "box-transparent box-padding highlight-hover full-width text-left";
-                return e;
-            }
-        );
-    }
+
     changePanel(e){
         e.preventDefault();
         let showing = e.currentTarget.getAttribute('data'),
             sidebar = this.state.sidebar,
-            crumb = [];
-        sidebar[this.state.showing].sub = this.restoreSubElements(sidebar[this.state.showing].sub);
+            crumb = this.state.crumb;
+        
+        if (sidebar[this.state.showing].sub.length>0 && crumb[1]){
+            sidebar[this.state.showing].sub[crumb[1].data].class = "box-transparent box-padding full-width text-left";
+        }
         crumb = [{
             title: sidebar[showing].title,
             data: showing,

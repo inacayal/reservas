@@ -17,7 +17,7 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(User::class, function (Faker $faker) {
-	$intervals = [5,10,15,20,30];
+	$intervals = [1,2,3,4,5,6,10,12,15,20,30,60];
 	$selectedInterval=$intervals[rand(0,4)];
 	$cierre = $intervals[rand(0,4)];
 	return [

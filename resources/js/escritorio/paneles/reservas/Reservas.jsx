@@ -6,7 +6,6 @@ import ReactDOM from 'react-dom';
 /**
  * sub elements
  */
-import Configuracion from './subElements/Configuracion';
 import AgregarFormulario from './subElements/AgregarFormulario';
 /**
  * componentes
@@ -331,9 +330,7 @@ export default class Reservas extends Component {
         super(props);
         
         this.agregarReserva = this.agregarReserva.bind(this);
-        this.guardarConfiguracion = this.guardarConfiguracion.bind(this);
         this.guardarNuevaReserva = this.guardarNuevaReserva.bind(this);
-        
         
         this.verDia = this.verDia.bind(this);
         this.verCalendario = this.verCalendario.bind(this);
@@ -347,9 +344,7 @@ export default class Reservas extends Component {
         this.selectOption = selectOption.bind(this);
         
         this.reservaFormControls = formActions(this.verCalendario, this.guardarNuevaReserva);
-        this.configuracionFormControls = formActions(this.props.changePanel, this.guardarConfiguracion, "1");
         this.panelNavigation = panelNavigation(this.verCalendario, this.agregarReserva);
-        this.configuracionPanelNavigation = panelNavigation(this.props.changePanel, this.agregarReserva,"1");
         
         this.actions = {
             outer: {
@@ -437,49 +432,10 @@ export default class Reservas extends Component {
                         3: "Persona 3",
                         4: "Persona 4"
                     }
-                },
-                intervalo: {
-                    name: "intervalo",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {
-                        5: "5 minutos",
-                        10: "10 minutos",
-                        15: "15 minutos",
-                        20: "20 minutos",
-                        25: "25 minutos",
-                        30: "30 minutos",
-                        35: "35 minutos",
-                        40: "40 minutos",
-                        45: "45 minutos",
-                        50: "50 minutos",
-                        55: "55 minutos",
-                    }
-                },
-                caida: {
-                    name: "caida",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {
-                        10: "10 minutos",
-                        20: "20 minutos",
-                        30: "30 minutos",
-                        40: "40 minutos",
-                        50: "50 minutos"
-                    }
                 }
             }
         };
         
-    }
-
-    guardarConfiguracion(e){
-        e.preventDefault();
-        console.log('guardar');
     }
 
     agregarReserva(){
@@ -547,9 +503,9 @@ export default class Reservas extends Component {
         return (
             <div className={(this.props.panel) ? "full-width" : "hidden"}>
                 <Titulo
-                    title={this.props.currentSub ? this.props.subElements[this.props.currentSub].title : "Reservaciones"}
-                    navigation={this.props.currentSub ? [this.configuracionPanelNavigation[0]] : controls}/>
-                <div className={(this.props.currentSub !== "0") ? "container" : "hidden"}>
+                    title={"Reservaciones"}
+                    navigation={controls}/>
+                <div className='container'>
                     <div className={this.state.agregar ? "row" : "hidden"}>
                         <div className="full-width sub-title border-bottom">Agregar nueva reserva</div>
                         <AgregarFormulario 
@@ -573,15 +529,6 @@ export default class Reservas extends Component {
                             data={this.state.data}
                             type="reservas"/>
                     </div>
-                </div>
-                <div className={(this.props.currentSub === "0") ? "row" : "hidden"}>
-                    <Configuracion
-                        formActions={this.configuracionFormControls}
-                        verCalendario={this.actions.inner.verCalendario}
-                        showOptions={this.showOptions}
-                        selectOption={this.selectOption}
-                        caida={this.state.select.caida}
-                        intervalo={this.state.select.intervalo}/>
                 </div>
             </div>
         );

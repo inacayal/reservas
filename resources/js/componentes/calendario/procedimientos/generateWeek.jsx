@@ -18,12 +18,11 @@ const generateWeek = {
         date,
         data,
         actions,
-        currentDate,
-        type
+        currentDate
     ) => DAYS.map(
         (e, i) => {
-            return assignWeekElementType[type](
-                generateActions[type](
+            return assignWeekElementType['horarios'](
+                generateActions['horarios'](
                     data[i],
                     actions.outer,
                     i.toString(),
@@ -40,8 +39,7 @@ const generateWeek = {
         date,
         data,
         actions,
-        currentDate,
-        type
+        currentDate
     ) => {
         let dy = date.getDay();
         return DAYS.map(
@@ -54,8 +52,8 @@ const generateWeek = {
                         data: data[strDate].reservas,
                         show: data[strDate].show
                     } : [];
-                return assignWeekElementType[type](
-                    generateActions[type](
+                return assignWeekElementType['reservas'](
+                    generateActions['reservas'](
                         informacionDia.data,
                         actions.outer,
                         strDate,
@@ -73,8 +71,7 @@ const generateWeek = {
         date,
         data,
         actions,
-        currentDate,
-        type
+        currentDate
     ) => {
         const day = date.getDay();
         return DAYS.map(
@@ -83,8 +80,8 @@ const generateWeek = {
                 datePtr.setDate(datePtr.getDate() + (i - day));
                 datePtr.setHours(0, 0, 0, 0);
                 let strDate = datePtr.getTime();
-                return assignWeekElementType[type](
-                    generateActions[type](
+                return assignWeekElementType['feriados'](
+                    generateActions['feriados'](
                         data[strDate],
                         actions.outer,
                         strDate,

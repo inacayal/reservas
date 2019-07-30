@@ -26,6 +26,7 @@ import Contacto from './subElements/Contacto';
 import Encargado from './subElements/Encargado';
 import Ubicacion from './subElements/Ubicacion';
 import Usuario from './subElements/Usuario';
+import Reservas from './subElements/Reservas';
 /**
  * funciones
  */
@@ -54,6 +55,41 @@ export default class Configuracion extends Component {
                 cuit_cuil:""
             },
             select: {
+
+                intervalo: {
+                    name: "intervalo",
+                    show: false,
+                    selected: null,
+                    search: "",
+                    input: React.createRef(),
+                    list: {
+                        1: "1 minuto",
+                        2: "2 minutos",
+                        3: "3 minutos",
+                        5: "5 minutos",
+                        4: "4 minutos",
+                        6: "6 minutos",
+                        10: "10 minutos",
+                        12: "12 minutos",
+                        15: "15 minutos",
+                        20: "20 minutos",
+                        30: "30 minutos"
+                    }
+                },
+                caida: {
+                    name: "caida",
+                    show: false,
+                    selected: null,
+                    search: "",
+                    input: React.createRef(),
+                    list: {
+                        10: "10 minutos",
+                        20: "20 minutos",
+                        30: "30 minutos",
+                        40: "40 minutos",
+                        50: "50 minutos"
+                    }
+                },
                 id_provincia: {
                     name: "id_provincia",
                     show: false,
@@ -232,6 +268,13 @@ export default class Configuracion extends Component {
                         onTextChange={this.onTextChange}
                         text={this.state.text}
                         show={this.props.currentSub ? this.props.currentSub === "4" : true} />
+                    <Reservas
+                        formActions={this.formActions}
+                        showOptions={this.showOptions}
+                        selectOption={this.selectOption}
+                        caida={this.state.select.caida}
+                        intervalo={this.state.select.intervalo}
+                        show = {this.props.currentSub ? this.props.currentSub === "5" : true} />
                     <div className="row box-padding justify-content-end">
                         <ButtonList
                             displayList="flex-row nav-list no-padding inline-block  align-center"

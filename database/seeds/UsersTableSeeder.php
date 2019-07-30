@@ -84,7 +84,7 @@ class UsersTableSeeder extends Seeder
             '\\App\\Models\\Ubicacion',
             '\\App\\Models\\UsuarioEvento',
         ];
-        factory(App\User::class, 10)->create()->each(function ($user) use ($modelsToMigrate) {
+        factory(App\User::class, 10)->create()->each(function ($user) use ($modelsToSeed) {
             foreach($modelsToSeed as $model) {
                 $this->assignDataByClass(...$model::dataSeeding($user));
             }

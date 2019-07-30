@@ -14,7 +14,7 @@ export const assignActionsByStatus = {
                 <div className="smaller-text text bold text-center">
                     <i className="fas fa-eye inline-box side-margin" />
                     Ver reserva
-                    </div>
+                </div>
             ),
             click: actions.ver,
             data: data
@@ -30,7 +30,7 @@ export const assignActionsByStatus = {
             data: data
         }
     ],
-    aprobado: (
+    pendiente: (
         actions,
         data
     ) => [
@@ -65,7 +65,7 @@ export const assignActionsByStatus = {
             data: data
         }
     ],
-    pendiente: (
+    aprobado: (
         actions,
         data
     ) => [

@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
             $table->integer('id_rol')->unsigned()->index();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('intervalo_reserva',20);
+            $table->integer('intervalo_reserva')->unsigned();
             $table->string('correo_adm',100)->nullable();
             $table->string('telefono_adm',20)->nullable();
             $table->string('nombre_adm',100)->nullable();
@@ -55,7 +55,11 @@ class CreateUsersTable extends Migration
                 ->references('id')->on('roles')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-        
+            
+            $table->foreign('intervalo_reserva','usuario_intervalos_id')
+                ->references('id')->on('intervalos')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 
@@ -72,6 +76,7 @@ class CreateUsersTable extends Migration
             $table->dropForeign('usuario_provincia_id');
             $table->dropForeign('usuario_franquicia_id');
             $table->dropForeign('usuario_estado_id');
+            $table->dropForeign('usuario_intervalos_id');
         });
         Schema::dropIfExists('users');
     }

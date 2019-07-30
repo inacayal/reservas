@@ -333,11 +333,14 @@ function generateCardsForReservationArray(
 ) {
     return hourReservations.map(
         (e, i) => {
-            let acciones = assignActionsByStatus(e.estado, actions, e.id),
-                classByState = CLASSBYSTATE[e.estado],
-                classByIndex = {
-                    0: "box-padding no-top-padding border-bottom"
-                };
+            let acciones = assignActionsByStatus[e.estado](
+                actions, 
+                e.id
+            ),
+            classByState = CLASSBYSTATE[e.estado],
+            classByIndex = {
+                0: "box-padding no-top-padding border-bottom"
+            };
             classByIndex[hourReservations.length - 1] = hourReservations.length - 1 === 0 ?
                 "box-padding no-top-padding"
                 : "box-padding";

@@ -91,8 +91,7 @@ function generateDayCardFromArray(
     let obj = {};
     return data.map(
         (e, i) => {
-            let acciones = assignActionsByStatus(
-                e.estado,
+            let acciones = assignActionsByStatus[e.estado](
                 actions,
                 data
             );

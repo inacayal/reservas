@@ -33,8 +33,7 @@ function WeekCalendar(props) {
             props.date, 
             props.data, 
             props.actions,
-            new Date(),
-            props.type
+            new Date()
         );
     return (
         <div className={props.show ? "container" : "hidden"}>
