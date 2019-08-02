@@ -180,7 +180,7 @@ export class Horarios extends Component {
             <div className={(this.props.panel) ? "full-width container" : "hidden"}>
                 <div className={this.props.currentSub !== "0" ? "row" : "hidden"}>
                     <Titulo
-                        title={"Horarios de Atención"}
+                        title={"Horarios"}
                         navigation={controls}/>
                     <ConfirmarModal
                         open={this.state.open}
