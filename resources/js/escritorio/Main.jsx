@@ -80,23 +80,18 @@ var sidebar = [//get on ajax request
                 class: "box-transparent box-padding highlight-hover full-width text-left"
             },
             {
-                title:"Apertura y cierre",
+                title:"Contacto del local",
                 data:"2",
                 class: "box-transparent box-padding highlight-hover full-width text-left"
             },
             {
-                title:"Contacto del local",
+                title:"Usuario",
                 data:"3",
                 class: "box-transparent box-padding highlight-hover full-width text-left"
             },
             {
-                title:"Usuario",
-                data:"4",
-                class: "box-transparent box-padding highlight-hover full-width text-left"
-            },
-            {
                 title: "Reservas",
-                data: "5",
+                data: "4",
                 class: "box-transparent box-padding highlight-hover full-width text-left"
             }
         ]

@@ -21,7 +21,6 @@ import ConfirmarModal from '../../../componentes/modal/Modal';
 /**
  * form sub elements
  */
-import AperturaCierre from './subElements/AperturaCierre';
 import Contacto from './subElements/Contacto';
 import Encargado from './subElements/Encargado';
 import Ubicacion from './subElements/Ubicacion';
@@ -101,90 +100,6 @@ export default class Configuracion extends Component {
                         2: "Cordoba",
                         3: "Santa fe"
                     }
-                },
-                apertura_hora: {
-                    name: "apertura_hora",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: HOURS
-                },
-                apertura_minuto: {
-                    name: "apertura_minuto",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: this.validMinutes
-                },
-                cierre_hora: {
-                    name: "cierre_hora",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: HOURS
-                },
-                cierre_minuto: {
-                    name: "cierre_minuto",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: this.validMinutes
-                },
-                apertura_dia: {
-                    name: "apertura_dia",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: Object(DAYS)
-                }
-            },
-            atencion: {
-                0: {
-                    apertura_hora: "15",
-                    apertura_minuto: "20",
-                    cierre_hora: "21",
-                    cierre_minuto: "00",
-                },
-                1: {
-                    apertura_hora: "16",
-                    apertura_minuto: "30",
-                    cierre_hora: "23",
-                    cierre_minuto: "59",
-                },
-                2: {
-                    apertura_hora: "16",
-                    apertura_minuto: "30",
-                    cierre_hora: "23",
-                    cierre_minuto: "59",
-                },
-                3: {
-                    apertura_hora: "16",
-                    apertura_minuto: "30",
-                    cierre_hora: "23",
-                    cierre_minuto: "59",
-                },
-                4: {
-                    apertura_hora: "16",
-                    apertura_minuto: "30",
-                    cierre_hora: "23",
-                    cierre_minuto: "59",
-                },
-                5: {
-                    apertura_hora: "16",
-                    apertura_minuto: "30",
-                    cierre_hora: "23",
-                    cierre_minuto: "59",
-                },
-                6: {
-                    apertura_hora: "16",
-                    apertura_minuto: "30",
-                    cierre_hora: "23",
-                    cierre_minuto: "59",
                 }
             }
         };
@@ -249,31 +164,23 @@ export default class Configuracion extends Component {
                         selectOption={this.selectOption}
                         showOptions={this.showOptions}
                         show={this.props.currentSub ? this.props.currentSub === "1" : true} />
-                    <AperturaCierre
-                        formActions={this.formActions}
-                        onTextChange={this.onTextChange}
-                        text={this.state.text}
-                        selectOption={this.selectOption}
-                        showOptions={this.showOptions}
-                        select={this.state.select}
-                        show={this.props.currentSub ? this.props.currentSub === "2" : true} />
                     <Contacto
                         formActions={this.formActions}
                         onTextChange={this.onTextChange}
                         text={this.state.text}
-                        show={this.props.currentSub ? this.props.currentSub === "3" : true} />
+                        show={this.props.currentSub ? this.props.currentSub === "2" : true} />
                     <Usuario
                         formActions={this.formActions}
                         onTextChange={this.onTextChange}
                         text={this.state.text}
-                        show={this.props.currentSub ? this.props.currentSub === "4" : true} />
+                        show={this.props.currentSub ? this.props.currentSub === "3" : true} />
                     <Reservas
                         formActions={this.formActions}
                         showOptions={this.showOptions}
                         selectOption={this.selectOption}
                         caida={this.state.select.caida}
                         intervalo={this.state.select.intervalo}
-                        show = {this.props.currentSub ? this.props.currentSub === "5" : true} />
+                        show = {this.props.currentSub ? this.props.currentSub === "4" : true} />
                     <div className="row box-padding justify-content-end">
                         <ButtonList
                             displayList="flex-row nav-list no-padding inline-block  align-center"
