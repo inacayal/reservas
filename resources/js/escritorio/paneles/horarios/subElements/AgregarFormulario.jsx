@@ -30,32 +30,64 @@ export default class AgregarFormulario extends Component {
                 descripcion: ""
             },
             select: {
-                apertura_hora: {
-                    name: "apertura_hora",
+                apertura_reserva_hora: {
+                    name: "apertura_reserva_hora",
                     show: false,
                     selected: null,
                     search: "",
                     input: React.createRef(),
                     list: HOURS
                 },
-                apertura_minuto: {
-                    name: "apertura_minuto",
+                apertura_reserva_minuto: {
+                    name: "apertura_reserva_minuto",
                     show: false,
                     selected: null,
                     search: "",
                     input: React.createRef(),
                     list: this.validMinutes
                 },
-                cierre_hora: {
-                    name: "cierre_hora",
+                cierre_reserva_hora: {
+                    name: "cierre_reserva_hora",
                     show: false,
                     selected: null,
                     search: "",
                     input: React.createRef(),
                     list: HOURS
                 },
-                cierre_minuto: {
-                    name: "cierre_minuto",
+                cierre_reserva_minuto: {
+                    name: "cierre_reserva_minuto",
+                    show: false,
+                    selected: null,
+                    search: "",
+                    input: React.createRef(),
+                    list: this.validMinutes
+                },
+                apertura_atencion_hora: {
+                    name: "apertura_atencion_hora",
+                    show: false,
+                    selected: null,
+                    search: "",
+                    input: React.createRef(),
+                    list: HOURS
+                },
+                apertura_atencion_minuto: {
+                    name: "apertura_atencion_minuto",
+                    show: false,
+                    selected: null,
+                    search: "",
+                    input: React.createRef(),
+                    list: this.validMinutes
+                },
+                cierre_atencion_hora: {
+                    name: "cierre_atencion_hora",
+                    show: false,
+                    selected: null,
+                    search: "",
+                    input: React.createRef(),
+                    list: HOURS
+                },
+                cierre_atencion_minuto: {
+                    name: "cierre_atencion_minuto",
                     show: false,
                     selected: null,
                     search: "",
@@ -81,10 +113,15 @@ export default class AgregarFormulario extends Component {
         let select = this.state.select,
             textInput = this.state.text;
 
-        select.apertura_hora.selected = null;
-        select.apertura_minuto.selected = null;
-        select.cierre_hora.selected = null;
-        select.cierre_minuto.selected = null;
+        select.apertura_reserva_hora.selected = null;
+        select.apertura_reserva_minuto.selected = null;
+        select.cierre_reserva_hora.selected = null;
+        select.cierre_reserva_minuto.selected = null;
+        select.apertura_atencion_hora.selected = null;
+        select.apertura_atencion_minuto.selected = null;
+        select.cierre_atencion_hora.selected = null;
+        select.cierre_atencion_minuto.selected = null;
+
         textInput.descripcion = "";
 
         this.setState({
@@ -98,14 +135,22 @@ export default class AgregarFormulario extends Component {
     editarFeriado(dateString) {
         let feriado = this.props.data[dateString],
             date = new Date(parseInt(dateString)),
-            apertura = feriado.apertura.split(':'),
-            cierre = feriado.cierre.split(':'),
+            aperturaR = feriado.reserva.apertura.split(':'),
+            cierreR = feriado.reserva.cierre.split(':'),
+            aperturaA = feriado.atencion.apertura.split(':'),
+            cierreA = feriado.atencion.cierre.split(':'),
             select = this.state.select,
             textInput = this.state.text;
-        select.apertura_hora.selected = apertura[0];
-        select.apertura_minuto.selected = apertura[1];
-        select.cierre_hora.selected = cierre[0];
-        select.cierre_minuto.selected = cierre[1];
+
+        select.apertura_reserva_hora.selected = aperturaR[0];
+        select.apertura_reserva_minuto.selected = aperturaR[1];
+        select.cierre_reserva_hora.selected = cierreR[0];
+        select.cierre_reserva_minuto.selected = cierreR[1];
+        select.apertura_atencion_hora.selected = aperturaA[0];
+        select.apertura_atencion_minuto.selected = aperturaA[1];
+        select.cierre_atencion_hora.selected = cierreA[0];
+        select.cierre_atencion_minuto.selected = cierreA[1];
+        
         textInput.descripcion = feriado.descripcion;
 
         this.setState({
@@ -169,48 +214,96 @@ export default class AgregarFormulario extends Component {
                                         <div className="container row no-padding no-margin">
                                             <div className={this.state.right ? classes.inputSelect : "hidden"}>
                                                 <div className="row">
-                                                    <div className="no-padding col-md-12 bold light-danger">Apertura</div>
+                                                    <div className="bold light-danger border-bottom">Horarios de Reserva</div>
+                                                    <div className="no-padding col-md-12 bold">Apertura</div>
                                                     <div className="col-sm-4 no-padding">
                                                         <Select
-                                                            {...this.state.select.apertura_hora}
+                                                            {...this.state.select.apertura_reserva_hora}
                                                             titulo="horas"
                                                             change={this.selectOption}
                                                             toggle={this.showOptions} />
                                                     </div>
-                                                    <div className="col-sm-2 no-padding bold align-center">
+                                                    <div className="col-sm-2 no-padding align-center">
                                                         horas
                                                     </div>
                                                     <div className="col-sm-4 no-padding ">
                                                         <Select
-                                                            {...this.state.select.apertura_minuto}
+                                                            {...this.state.select.apertura_reserva_minuto}
                                                             titulo="minutos"
                                                             change={this.selectOption}
                                                             toggle={this.showOptions} />
                                                     </div>
-                                                    <div className="col-sm-2 no-padding bold align-center">
+                                                    <div className="col-sm-2 no-padding align-center">
                                                         minutos
                                                     </div>              
                                                 </div>
                                                 <div className="row">
-                                                    <div className="no-padding col-md-12 bold light-danger">Cierre</div>
+                                                    <div className="no-padding col-md-12 bold">Cierre</div>
                                                     <div className="col-sm-4 no-padding ">
                                                         <Select
-                                                            {...this.state.select.cierre_hora}
+                                                            {...this.state.select.cierre_reserva_hora}
                                                             titulo="horas"
                                                             change={this.selectOption}
                                                             toggle={this.showOptions} />
                                                     </div>
-                                                    <div className="col-sm-2 no-padding bold align-center">
+                                                    <div className="col-sm-2 no-padding align-center">
                                                         horas
                                                     </div>
                                                     <div className="col-sm-4 no-padding ">
                                                         <Select
-                                                            {...this.state.select.cierre_minuto}
+                                                            {...this.state.select.cierre_reserva_minuto}
                                                             titulo="minutos"
                                                             change={this.selectOption}
                                                             toggle={this.showOptions} />
                                                     </div>
-                                                    <div className="col-sm-2 no-padding bold align-center">
+                                                    <div className="col-sm-2 no-padding align-center">
+                                                        minutos
+                                                    </div>
+                                                </div>
+                                                <div className="row">
+                                                    <div className="bold light-danger border-bottom">Horarios de Atención</div>
+                                                    <div className="no-padding col-md-12 bold">Apertura</div>
+                                                    <div className="col-sm-4 no-padding">
+                                                        <Select
+                                                            {...this.state.select.apertura_atencion_hora}
+                                                            titulo="horas"
+                                                            change={this.selectOption}
+                                                            toggle={this.showOptions} />
+                                                    </div>
+                                                    <div className="col-sm-2 no-padding align-center">
+                                                        horas
+                                                    </div>
+                                                    <div className="col-sm-4 no-padding ">
+                                                        <Select
+                                                            {...this.state.select.apertura_atencion_minuto}
+                                                            titulo="minutos"
+                                                            change={this.selectOption}
+                                                            toggle={this.showOptions} />
+                                                    </div>
+                                                    <div className="col-sm-2 no-padding align-center">
+                                                        minutos
+                                                    </div>
+                                                </div>
+                                                <div className="row">
+                                                    <div className="no-padding col-md-12 bold">Cierre</div>
+                                                    <div className="col-sm-4 no-padding ">
+                                                        <Select
+                                                            {...this.state.select.cierre_atencion_hora}
+                                                            titulo="horas"
+                                                            change={this.selectOption}
+                                                            toggle={this.showOptions} />
+                                                    </div>
+                                                    <div className="col-sm-2 no-padding align-center">
+                                                        horas
+                                                    </div>
+                                                    <div className="col-sm-4 no-padding ">
+                                                        <Select
+                                                            {...this.state.select.cierre_atencion_minuto}
+                                                            titulo="minutos"
+                                                            change={this.selectOption}
+                                                            toggle={this.showOptions} />
+                                                    </div>
+                                                    <div className="col-sm-2 no-padding align-center">
                                                         minutos
                                                     </div>
                                                 </div>

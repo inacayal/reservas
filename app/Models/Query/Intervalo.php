@@ -5,7 +5,7 @@
  * Date: Wed, 24 Jul 2019 15:45:16 +0000.
  */
 
-namespace App\Models;
+namespace App\Models\Query;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 use App\Traits\crudMethods;
@@ -24,48 +24,23 @@ use App\Traits\crudMethods;
  *
  * @package App\Models
  */
-class UsuarioFeriados extends Eloquent
+class Intervalo extends Eloquent
 {
 	//use CrudMethods;
 
 	public $timestamps = false;
-
-	protected $casts = [
-		'id_usuario' => 'int',
-		'id_estado' => 'int'
-	];
-
-	protected $dates = [
-		'fecha_feriado',
-		'apertura',
-		'cierre'
-	];
-
+	protected $table = 'intervalos';
 	protected $fillable = [
-		'id_usuario',
-		'fecha_feriado',
-		'id_estado',
-		'apertura',
-		'cierre'
+        'descripcion'
 	];
-
-	public function estado_apertura()
-	{
-		return $this->belongsTo(\App\Models\EstadoApertura::class, 'id_estado');
-	}
-
+	/**
+	 * start relations
+	 */
 	public function user()
 	{
-		return $this->belongsTo(\App\Models\User::class, 'id_usuario');
+		return $this->belongsTo(\App\User::class, 'intervalo_reserva');
 	}
-
-	public static function dataSeeding($user){
-		return [
-			self::class,
-			5,
-			true,
-			$user->feriados(),
-			$user->intervalo_reserva
-		];
-	}
+	/**
+	 * end relations
+	 */
 }

@@ -29,42 +29,78 @@ import {DAYS,MONTHS} from '../../../../constantes/DaysMonths';
 var formattedFeriados = {
     1559358000000: {
         id:1,
-        apertura: "15:30",
-        cierre: "19:30",
+        reservas:{
+            apertura: "15:30",
+            cierre: "19:30"
+        },
+        atencion:{
+            apertura: "15:30",
+            cierre: "19:30"
+        },
         descripcion: "descripcion1",
         estado: 1
     },
     1560481200000: {
         id: 2,
-        apertura: "16:30",
-        cierre: "20:00",
+        reserva:{
+            apertura: "16:30",
+            cierre: "20:00",
+        },
+        atencion: {
+            apertura: "15:30",
+            cierre: "19:30"
+        },
         descripcion: "descripcion2",
         estado: 1
     },
     1561345200000: {
         id: 3,
-        apertura: "18:10",
-        cierre: "21:00",
+        reserva:{
+            apertura: "18:10",
+            cierre: "21:00"
+        },
+        atencion: {
+            apertura: "15:30",
+            cierre: "19:30"
+        },
         descripcion: "descripcion3",
         estado: 1
     },
     1561518000000: {
-        apertura: "20:20",
-        cierre: "23:30",
+        atencion:{
+            apertura: "20:20",
+            cierre: "23:30"
+        },
+        reserva:{
+            apertura: "20:20",
+            cierre: "23:30"
+        },
         descripcion: "descripcion4",
         estado: 1
     },
     1561690800000: {
         id: 4,
-        apertura: "17:00",
-        cierre: "19:50",
+        reserva: {
+            apertura: "20:20",
+            cierre: "23:30"
+        },
+        atencion:{
+            apertura: "17:00",
+            cierre: "19:50"
+        },
         descripcion: "descripcion4",
         estado: 1
     },
     1561777200000: {
         id: 14,
-        apertura: "18:40",
-        cierre: "23:50",
+        reserva: {
+            apertura: "20:20",
+            cierre: "23:30"
+        },
+        atencion:{
+            apertura: "18:40",
+            cierre: "23:50"
+        },
         descripcion: "descripcion5",
         estado: 0
     }

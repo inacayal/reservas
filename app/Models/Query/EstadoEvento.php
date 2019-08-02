@@ -5,33 +5,33 @@
  * Date: Wed, 24 Jul 2019 15:45:16 +0000.
  */
 
-namespace App\Models;
+namespace App\Models\Query;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 use App\Traits\crudMethods;
 /**
- * Class EstadoReserva
+ * Class EstadoEvento
  * 
  * @property int $id
  * @property string $descripcion
  * 
- * @property \Illuminate\Database\Eloquent\Collection $reservas
+ * @property \Illuminate\Database\Eloquent\Collection $usuario_eventos
  *
  * @package App\Models
  */
-class EstadoReserva extends Eloquent
+class EstadoEvento extends Eloquent
 {
 	//use CrudMethods;
 
-	protected $table = 'estado_reserva';
+	protected $table = 'estado_evento';
 	public $timestamps = false;
 
 	protected $fillable = [
 		'descripcion'
 	];
 
-	public function reservas()
+	public function eventos()
 	{
-		return $this->hasMany(\App\Models\Reserva::class, 'id_estado');
+		return $this->hasMany(\App\Models\Evento::class, 'id_estado');
 	}
 }

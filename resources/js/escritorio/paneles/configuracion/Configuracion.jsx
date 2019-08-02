@@ -55,7 +55,6 @@ export default class Configuracion extends Component {
                 cuit_cuil:""
             },
             select: {
-
                 intervalo: {
                     name: "intervalo",
                     show: false,

@@ -37,7 +37,7 @@ var sidebar = [//get on ajax request
     {
         data: "2",
         disabled: false,
-        title: "Horarios de atención",
+        title: "Horarios",
         sub: [
             {
                 title: 'Días Feriados',

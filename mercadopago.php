@@ -1,51 +1,194 @@
-<?php
-// Configure your Subject Prefix and Recipient here
-$subjectPrefix = '[Contact via website]';
-$emailTo       = 'edward.tovar@certaconsulting.net';
-$errors = array(); // array to hold validation errors
-$data   = array(); // array to pass back data
-if($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name    = stripslashes(trim($_POST['name']));
-    $email   = stripslashes(trim($_POST['email']));
-    $subject = stripslashes(trim($_POST['subject']));
-    $message = stripslashes(trim($_POST['message']));
-    if (empty($name)) {
-        $errors['name'] = 'Name is required.';
-    }
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors['email'] = 'Email is invalid.';
-    }
-    if (empty($subject)) {
-        $errors['subject'] = 'Subject is required.';
-    }
-    if (empty($message)) {
-        $errors['message'] = 'Message is required.';
-    }
-    // if there are any errors in our errors array, return a success boolean or false
-    if (!empty($errors)) {
-        $data['success'] = false;
-        $data['errors']  = $errors;
-    } else {
-        $subject = "$subjectPrefix $subject";
-        $body    = '
-            <strong>Name: </strong>'.$name.'<br />
-            <strong>Email: </strong>'.$email.'<br />
-            <strong>Message: </strong>'.nl2br($message).'<br />
-        ';
-        $headers  = "MIME-Version: 1.1" . PHP_EOL;
-        $headers .= "Content-type: text/html; charset=utf-8" . PHP_EOL;
-        $headers .= "Content-Transfer-Encoding: 8bit" . PHP_EOL;
-        $headers .= "Date: " . date('r', $_SERVER['REQUEST_TIME']) . PHP_EOL;
-        $headers .= "Message-ID: <" . $_SERVER['REQUEST_TIME'] . md5($_SERVER['REQUEST_TIME']) . '@' . $_SERVER['SERVER_NAME'] . '>' . PHP_EOL;
-        $headers .= "From: " . "=?UTF-8?B?".base64_encode($name)."?=" . "<$email>" . PHP_EOL;
-        $headers .= "Return-Path: $emailTo" . PHP_EOL;
-        $headers .= "Reply-To: $email" . PHP_EOL;
-        $headers .= "X-Mailer: PHP/". phpversion() . PHP_EOL;
-        $headers .= "X-Originating-IP: " . $_SERVER['SERVER_ADDR'] . PHP_EOL;
-        mail($emailTo, "=?utf-8?B?" . base64_encode($subject) . "?=", $body, $headers);
-        $data['success'] = true;
-        $data['message'] = 'Congratulations. Your message has been sent successfully';
-    }
-    // return all our data to an AJAX call
-    echo json_encode($data);
-}
+robin.meurer@gmail.com
+aiesecsc.ema@gmail.com
+anaserrano10@hotmail.com
+dianne_faria@hotmail.com
+fobanegas@gmail.com
+biffa15@yahoo.co.uk
+martinr_lmds@hotmail.com
+lfanego21@gmail.com
+minervo1@gmail.com
+piligbergez@hotmail.com
+catasvaliente@gmail.com
+lfanego21@gmail.com
+marcospherrmann@hotmail.com
+fefeherrmann85@gmail.com
+francolagiovanni@gmail.com
+lfanego21@gmail.com
+francolagiovanni@gmail.com
+tomas.mastro97@gmail.com
+mastromauron@gmail.com
+leandro.luis.valentini@gmail.com
+juani_laplace@hotmail.com
+matias_ottino@yahoo.com.ar
+pato_campos_@hotmail.com
+nicom.953@gmail.com
+jesi_lp@yahoo.com.ar
+noeliaespiro@hotmail.com
+martinr_lmds@hotmail.com
+noeliaespiro@hotmail.com
+ilninno_87@hotmail.com
+martinr_lmds@hotmail.com
+yansen_ivan@hotmail.com
+fobanegas@gmail.com
+aiesecsc.ema@gmail.com
+chelo04_91@hotmail.com
+mer_1611@hotmail.com
+matiasalmang@gmail.com
+dianne_faria@hotmail.com
+mlgluciana@hotmail.com
+contraturnoguardapolvos@gmail.com
+njytito@gmail.com
+biffa15@yahoo.co.uk
+german_fb_115@hotmail.com
+fobanegas@gmail.com
+dianne_faria@hotmail.com
+njytito@gmail.com
+hnbarrionuevo@gmail.com
+donairesantiago@gmail.com
+paulofer85@hotmail.com
+esubissi@gmail.com
+paulofer85@hotmail.com
+tomas.wimp@gmail.com
+edu.moriano@gmail.com
+pablofpalermo@gmail.com
+godyriveros@gmail.com
+rgiordano@ius.austral.edu.ar
+flauros_flammen@hotmail.com
+casabellavicky@hotmail.com
+edu.moriano@gmail.com
+cristianpremiani@gmail.com
+godyriveros@gmail.com
+lfanego21@gmail.com
+agusbosch@hotmail.com
+paulofer85@hotmail.com
+agustina.millefanti@gmail.com
+cocomedina15@hotmail.com
+esubissi@gmail.com
+paulofer85@hotmail.com
+ernestonestor@hotmail.com
+ximenamichemberg@gmail.com
+esubissi@gmail.com
+martinr_lmds@hotmail.com
+jppzabala@gmail.com
+manugery13f@gmail.com
+licha_g@live.com
+goneferreiro@gmail.com
+mxlgallardo@gmail.com
+matutearesti@gmail.com
+vida_jimenez@hotmail.com
+lucasgomezrios@hotmail.com
+j_c_alvado@hotmail.com
+manugery13f@gmail.com
+est_gc_12@hotmail.com
+goneferreiro@gmail.com
+ferminbarra@hotmail.com
+yanflamingo@hotmail.com
+nahuel.josefe@gmail.com
+montanarojoseluciano@gmail.com
+montanarojoseluciano@gmail.com
+taniav179@gmail.com
+mmsantiso@gmail.com
+hnbarrionuevo@gmail.com
+marianocaviglia@hotmail.com
+lfanego21@gmail.com
+martinaquino_125@hotmail.com
+herroujeronimo@hotmail.com
+tuteleiblich@hotmail.com
+navarro.joaquin@outlook.com
+ntachela@gmail.com
+renatoalocilla@gmail.com
+renatoalocilla@gmail.com
+nicopmiranda@gmail.com
+ezealvarez12@gmail.com
+pmperetti@hotmail.com
+ignaciopuga@gmail.com
+valechavanne@hotmail.com
+meri.floresgarcia@gmail.com
+martinr_lmds@hotmail.com
+danileonetti@hotmail.com
+votero79@msn.com
+yo_soy_la_noe@hotmail.com
+moralesjuanjose1@gmail.com
+josesantiagogb@gmail.com
+paulofer85@hotmail.com
+echevarrialuism@gmail.com
+cacao.indumentaria@gmail.com
+tomas.manzanares@usal.edu.ar
+lfanego21@gmail.com
+goneferreiro@gmail.com
+j_c_alvado@hotmail.com
+emanuelpareja@hotmail.com
+rogelio.bytutto@gmail.com
+rogelio.bytutto@gmail.com
+yoerik.94@gmail.com
+yoerik.94@gmail.com
+algortagilardoni@gmail.com
+martinr_lmds@hotmail.com
+djapas@lanacion.com.ar
+leangrecc@gmail.com
+lfanego21@gmail.com
+fer.flores87@gmail.com
+martinr_lmds@hotmail.com
+fer.flores87@gmail.com
+pacman77btarg@gmail.com
+aiesecsc.ema@gmail.com
+tomivazquez@hotmail.com
+elegarros@gmail.com
+tomilagos@hotmail.com
+tomilagos@hotmail.com
+sofia.ines.asis@gmail.com
+emigiana@gmail.com
+sofia.ines.asis@gmail.com
+lfanego21@gmail.com
+ntachela@gmail.com
+lfanego21@gmail.com
+tomas.mastro97@gmail.com
+cejasbymichelle@hotmail.com
+tomas.mastro97@gmail.com
+cejasbymichelle@hotmail.com
+tomas.mastro97@gmail.com
+tallerdelascopias@yahoo.com
+tomas.mastro97@gmail.com
+tallerdelascopias@yahoo.com
+cahizaj@gmail.com
+martinr_lmds@hotmail.com
+trinomios@gmail.com
+trinomios@gmail.com
+diegoarielgm@hotmail.com
+martinr_lmds@hotmail.com
+gasparblaser@gmail.com
+tomas_lum@hotmail.com
+mercedes.volpi@hospitalitaliano.org.ar
+marielasgl@gmail.com
+tsztenberg@gmail.com
+walrusx@hotmail.com
+walrusx@hotmail.com
+enzoefuentes@hotmail.com
+enzoefuentes@hotmail.com
+belencazenave@gmail.com
+luastegiano@gmail.com
+gisela.fernandez@despegar.com
+juancruzhaedo@hotmail.com
+iriney0510@gmail.com
+guada_perona@yahoo.com.ar
+laurisarramia@yahoo.com.ar
+rossi_cg12@hotmail.com
+rogelio.bytutto@gmail.com
+iriney0510@gmail.com
+gisela.fernandez@despegar.com
+eamugrabi@gmail.com
+juancruzhaedo@hotmail.com
+rossi_cg12@hotmail.com
+eamugrabi@gmail.com
+juancruzhaedo@hotmail.com
+soypichiteran@hotmail.com
+sevc86@live.com.ar
+racedojm@gmail.com
+tomas.manzanares@usal.edu.ar
+dariouruar@gmail.com
+nicolaslinoperez@gmail.com
+racedojm@gmail.com
+tomas.manzanares@usal.edu.ar
+lautaro.chamo@gmail.com
+manuscharro@gmail.com
+tomas.mastro97@gmail.com

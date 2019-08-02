@@ -5,7 +5,7 @@
  * Date: Wed, 24 Jul 2019 15:45:16 +0000.
  */
 
-namespace App\Models;
+namespace App\Models\Query;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 
@@ -23,7 +23,7 @@ class Role extends Eloquent
 {
 
 	public $timestamps = false;
-
+	protected $table = 'roles';
 	protected $fillable = [
 		'descripcion'
 	];

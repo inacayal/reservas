@@ -38,7 +38,7 @@ class Reserva extends Eloquent
 	//use CrudMethods;
 
 	public $timestamps = false;
-
+	
 	protected $casts = [
 		'id_usuario' => 'int',
 		'id_ubicacion' => 'int',
@@ -65,23 +65,35 @@ class Reserva extends Eloquent
 		'id_estado'
 	];
 
-	public function estado_reserva()
+	/**
+	 * getters
+	 */
+	public function getHoraReservaAttribute($value)
+    {
+        return strval(strtotime($value)*1000);
+	}
+	public function getDiaReservaAttribute($value)
+    {
+        return strval(strtotime($value)*1000);
+    }
+
+	public function estado()
 	{
-		return $this->belongsTo(\App\Models\EstadoReserva::class, 'id_estado');
+		return $this->belongsTo(\App\Models\Query\EstadoReserva::class, 'id_estado');
 	}
 
-	public function usuario_evento()
+	public function evento()
 	{
-		return $this->belongsTo(\App\Models\UsuarioEvento::class, 'id_evento');
+		return $this->belongsTo(\App\Models\Evento::class, 'id_evento');
 	}
 
-	public function ubicacione()
+	public function ubicacion()
 	{
-		return $this->belongsTo(\App\Models\Ubicacione::class, 'id_ubicacion');
+		return $this->belongsTo(\App\Models\Ubicacion::class, 'id_ubicacion');
 	}
 
 	public function user()
 	{
-		return $this->belongsTo(\App\Models\User::class, 'id_usuario');
+		return $this->belongsTo(\App\User::class, 'id_usuario');
 	}
 }

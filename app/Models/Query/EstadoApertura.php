@@ -5,33 +5,33 @@
  * Date: Wed, 24 Jul 2019 15:45:16 +0000.
  */
 
-namespace App\Models;
+namespace App\Models\Query;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 use App\Traits\crudMethods;
 /**
- * Class EstadoSalon
+ * Class EstadoApertura
  * 
  * @property int $id
  * @property string $descripcion
  * 
- * @property \Illuminate\Database\Eloquent\Collection $ubicaciones
+ * @property \Illuminate\Database\Eloquent\Collection $usuario_feriados
  *
  * @package App\Models
  */
-class EstadoSalon extends Eloquent
+class EstadoApertura extends Eloquent
 {
 	//use CrudMethods;
 
-	protected $table = 'estado_salon';
+	protected $table = 'estado_apertura';
 	public $timestamps = false;
 
 	protected $fillable = [
 		'descripcion'
 	];
 
-	public function ubicaciones()
+	public function feriados()
 	{
-		return $this->hasMany(\App\Models\Ubicacione::class, 'id_estado');
+		return $this->hasMany(\App\Models\Feriado::class, 'id_estado');
 	}
 }

@@ -35,38 +35,80 @@ export class Horarios extends Component {
             open:false,
             atencion: {
                 0: {
-                    apertura: "15:00:00",
-                    cierre: "17:30:00",
+                    reserva:{
+                        apertura: "15:00:00",
+                        cierre: "17:30:00",
+                    },
+                    atencion:{
+                        apertura: "15:00:00",
+                        cierre: "17:30:00",
+                    },
                     estado: "1"
                 },
                 1: {
-                    apertura: "14:30:00",
-                    cierre: "18:00:00",
+                    reserva:{
+                        apertura: "14:30:00",
+                        cierre: "18:00:00",
+                    },
+                    atencion: {
+                        apertura: "14:00:00",
+                        cierre: "19:30:00",
+                    },
                     estado: "1"
                 },
                 2: {
-                    apertura: "16:30:00",
-                    cierre: "20:30:00",
+                    reserva: {
+                        apertura: "16:30:00",
+                        cierre: "20:00:00",
+                    },
+                    atencion: {
+                        apertura: "14:00:00",
+                        cierre: "23:30:00",
+                    },
                     estado: "0"
                 },
                 3: {
-                    apertura: "15:30:00",
-                    cierre: "21:00:00",
+                    reserva: {
+                        apertura: "14:30:00",
+                        cierre: "18:00:00",
+                    },
+                    atencion: {
+                        apertura: "14:00:00",
+                        cierre: "19:30:00",
+                    },
                     estado: "1"
                 },
                 4: {
-                    apertura: "16:00:00",
-                    cierre: "19:30:00",
+                    reserva: {
+                        apertura: "14:30:00",
+                        cierre: "18:00:00",
+                    },
+                    atencion: {
+                        apertura: "14:00:00",
+                        cierre: "19:30:00",
+                    },
                     estado: "1"
                 },
                 5: {
-                    apertura: "17:00:00",
-                    cierre: "22:30:00",
+                    reserva: {
+                        apertura: "14:30:00",
+                        cierre: "18:00:00",
+                    },
+                    atencion: {
+                        apertura: "14:00:00",
+                        cierre: "19:30:00",
+                    },
                     estado: "1"
                 },
                 6: {
-                    apertura: "21:30:00",
-                    cierre: "23:00:00",
+                    reserva: {
+                        apertura: "14:30:00",
+                        cierre: "18:00:00",
+                    },
+                    atencion: {
+                        apertura: "14:00:00",
+                        cierre: "19:30:00",
+                    },
                     estado: "1"
                 }
             },

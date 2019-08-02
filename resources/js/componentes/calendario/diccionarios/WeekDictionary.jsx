@@ -97,8 +97,14 @@ const assignWeekElementType = {
                     sectionData.estado === "1" ?
                         <div className="full-width">
                             <div className="half box-padding inline-block">
-                                <span className="light-danger">Horario de Reservas:</span>
-                                <span>{" " + sectionData.apertura + "-" + sectionData.cierre}</span>
+                                <div>
+                                    <span className="light-danger">Horario de Reservas:</span>
+                                    <span>{" " + sectionData.reserva.apertura + "-" + sectionData.reserva.cierre}</span>
+                                </div>
+                                <div>
+                                    <span className="light-danger">Horario de Atención:</span>
+                                    <span>{" " + sectionData.atencion.apertura + "-" + sectionData.atencion.cierre}</span>
+                                </div>
                             </div>
                             <div className="half box-padding inline-block">
                                 <span className="light-danger">Descripción:</span>
@@ -264,8 +270,14 @@ const assignWeekElementType = {
                     (sectionData.estado === 1) ? (
                         <div className="box-padding full-width">
                             <div className="half inline-block">
-                                <span className="light-danger">Horario de reservas:</span>
-                                <span>{" " + sectionData.apertura + "-" + sectionData.cierre}</span>
+                                <div>
+                                    <span className="light-danger">Horario de reservas:</span>
+                                    <span>{" " + sectionData.reserva.apertura + "-" + sectionData.reserva.cierre}</span>
+                                </div>
+                                <div>
+                                    <span className="light-danger">Horario de atencion:</span>
+                                    <span>{" " + sectionData.atencion.apertura + "-" + sectionData.atencion.cierre}</span>
+                                </div>
                             </div>
                             <div className="half inline-block">
                                 <span className="light-danger">Descripción:</span>

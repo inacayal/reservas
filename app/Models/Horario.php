@@ -25,7 +25,7 @@ use App\Traits\crudMethods;
  *
  * @package App\Models
  */
-class HorariosSemana extends Eloquent
+class Horario extends Eloquent
 {
 	//use CrudMethods;
 
@@ -36,14 +36,6 @@ class HorariosSemana extends Eloquent
 		'id_usuario' => 'int',
 		'id_dia_semana' => 'int'
 	];
-
-	protected $dates = [
-		'apertura_reserva',
-		'cierre_reserva',
-		'apertura_atencion',
-		'cierre_atencion'
-	];
-
 	protected $fillable = [
 		'id_usuario',
 		'id_dia_semana',
@@ -52,17 +44,62 @@ class HorariosSemana extends Eloquent
 		'apertura_atencion',
 		'cierre_atencion'
 	];
+	/**
+	 * getters start
+	 */
+	private function splitValue ($hourAttribute){
+		$res = explode(':',$hourAttribute);
+		return (object) [
+			'hora'=>$res[0],
+			'minuto'=>$res[1]
+		];
+	}
 
+	public function getAperturaReservaAttribute ($value){
+		return $this->splitValue($value);
+	}
+
+	public function getAperturaAtencionAttribute ($value){
+		return $this->splitValue($value);
+	}
+
+	public function getCierreReservaAttribute ($value){
+		return $this->splitValue($value);
+	}
+
+	public function getCierreAtencionAttribute ($value){
+		return $this->splitValue($value);
+	}
+	/**
+	 * getters end
+	 */
 	public function dias_semana()
 	{
-		return $this->belongsTo(\App\Models\DiasSemana::class, 'id_dia_semana');
+		return $this->belongsTo(\App\Models\Query\Semana::class, 'id_dia_semana');
 	}
 
 	public function user()
 	{
 		return $this->belongsTo(\App\Models\User::class, 'id_usuario');
 	}
+
+	public function estado()
+	{
+		return $this->belongsTo(\App\Models\Query\EstadoApertura::class, 'id_estado');
+	}
 	
+	public $options = [
+		'id_provincia'=>'\\App\\Models\\Query\\Provincia'
+	];
+	
+	public static function formattedOptions(){
+		$res = [];
+		foreach($options as $k=>$op){
+			$res[$k] = $op::getFormattedValues();
+		}
+		return $res;
+	}
+
 	public static function dataSeeding($user){
 		return [
 			self::class,

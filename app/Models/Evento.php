@@ -26,7 +26,7 @@ use App\Traits\crudMethods;
  *
  * @package App\Models
  */
-class UsuarioEvento extends Eloquent
+class Evento extends Eloquent
 {
 	//use CrudMethods;
 
@@ -48,19 +48,23 @@ class UsuarioEvento extends Eloquent
 		'id_estado'
 	];
 
-	public function estado_evento()
+	public function estado()
 	{
-		return $this->belongsTo(\App\Models\EstadoEvento::class, 'id_estado');
+		return $this->belongsTo(\App\Models\Query\EstadoEvento::class, 'id_estado');
 	}
 
 	public function user()
 	{
-		return $this->belongsTo(\App\Models\User::class, 'id_usuario');
+		return $this->belongsTo(\App\User::class, 'id_usuario');
 	}
 
 	public function reservas()
 	{
 		return $this->hasMany(\App\Models\Reserva::class, 'id_evento');
+	}
+
+	public static function getOptions(){
+		
 	}
 	
 	public static function dataSeeding($user){

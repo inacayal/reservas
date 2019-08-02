@@ -28,6 +28,7 @@ class CreateReservasTable extends Migration
             $table->text('descripcion_evento');
             $table->timestamp('hora_reserva')->nullable();
             $table->integer('id_estado')->unsigned();
+            $table->date('dia_reserva');
             
             $table->foreign('id_usuario','reservas_users_id')
                 ->references('id')->on('users')

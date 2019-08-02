@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Http\Resources\ConfiguracionResource as Resource;
+use App\Http\Resources\FeriadosResource as Resource;
 use Illuminate\Http\Request;
 
-class ConfiguracionController extends Controller
+class FeriadosController extends Controller
 {
+    protected $model = '\\App\\Models\\UsuarioFeriados';
     public function __construct (){
 
     }
@@ -19,11 +20,16 @@ class ConfiguracionController extends Controller
     public function list ($id){
         $user = User::where('id',$id)->first();
         return response( 
-            new Resource($user),
+            [ 
+                'data' => Resource::collection(
+                    $user
+                        ->feriados
+                        ->groupBy('fecha_feriado')
+                    )
+            ],
             200
         )->header('Content-Type','application/json');
     }
-    
     public function create (){
         return response(['respuesta'=>'create'],200)
             ->header('Content-Type','application/json');

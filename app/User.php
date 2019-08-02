@@ -85,49 +85,59 @@ class User extends Eloquent
 		'telefono_local',
 		'id_estado'
 	];
+	/**
+	 * list select and option menu when querying desktop panel
+	 */
+	public function intervaloReserva(){
+		return $this->hasOne(\App\Models\Intervalo::class, 'intervalo_reserva');
+	}
 
-	public function estado_usuario()
-	{
+	public function estado_usuario(){
 		return $this->belongsTo(\App\Models\EstadoUsuario::class, 'id_estado');
 	}
 
-	public function user()
-	{
-		return $this->belongsTo(\App\Models\User::class, 'id_franquicia');
+	public function franquicia(){
+		return $this->belongsTo(\App\User::class, 'id_franquicia');
 	}
 
-	public function provincia()
-	{
+	public function provincia(){
 		return $this->belongsTo(\App\Models\Provincia::class, 'id_provincia');
 	}
 
-	public function horariosSemanas()
-	{
-		return $this->hasMany(\App\Models\HorariosSemana::class, 'id_usuario');
+	public function horariosSemana(){
+		return $this->hasMany(\App\Models\Horarios::class, 'id_usuario');
 	}
 
-	public function reservas()
-	{
+	public function reservas(){
 		return $this->hasMany(\App\Models\Reserva::class, 'id_usuario');
 	}
 
-	public function ubicaciones()
-	{
+	public function ubicaciones(){
 		return $this->hasMany(\App\Models\Ubicacion::class, 'id_usuario');
 	}
 
-	public function users()
-	{
-		return $this->hasMany(\App\Models\User::class, 'id_franquicia');
+	public function locales(){
+		return $this->hasMany(\App\User::class, 'id_franquicia');
 	}
 
-	public function eventos()
-	{
-		return $this->hasMany(\App\Models\UsuarioEvento::class, 'id_usuario');
+	public function eventos(){
+		return $this->hasMany(\App\Models\Evento::class, 'id_usuario');
 	}
 
-	public function feriados()
-	{
-		return $this->hasMany(\App\Models\UsuarioFeriados::class, 'id_usuario');
+	public function feriados(){
+		return $this->hasMany(\App\Models\Feriado::class, 'id_usuario');
 	}
+
+	public $options = [
+		'id_provincia'=>'\\App\\Models\\Provincia'
+	];
+	
+	public static function formattedOptions(){
+		$select = [];
+		foreach($options as $field=>$model){
+			$select[$field] = $model::getFormattedValues();
+		}
+		return (object) $select;
+	}
+
 }

@@ -75541,9 +75541,11 @@ var assignWeekElementType = {
           className: "full-width"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "half box-padding inline-block"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "light-danger"
-        }, "Horario de Reservas:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, " " + sectionData.apertura + "-" + sectionData.cierre)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, "Horario de Reservas:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, " " + sectionData.reserva.apertura + "-" + sectionData.reserva.cierre)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "light-danger"
+        }, "Horario de Atenci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, " " + sectionData.atencion.apertura + "-" + sectionData.atencion.cierre))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "half box-padding inline-block"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "light-danger"
@@ -75676,9 +75678,11 @@ var assignWeekElementType = {
           className: "box-padding full-width"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "half inline-block"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "light-danger"
-        }, "Horario de reservas:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, " " + sectionData.apertura + "-" + sectionData.cierre)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, "Horario de reservas:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, " " + sectionData.reserva.apertura + "-" + sectionData.reserva.cierre)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "light-danger"
+        }, "Horario de atencion:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, " " + sectionData.atencion.apertura + "-" + sectionData.atencion.cierre))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "half inline-block"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "light-danger"
@@ -77252,7 +77256,7 @@ var sidebar = [//get on ajax request
 }, {
   data: "2",
   disabled: false,
-  title: "Horarios de atención",
+  title: "Horarios",
   sub: [{
     title: 'Días Feriados',
     data: "0",
@@ -78346,6 +78350,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/**
+ * react basic
+ */
 
 
 
@@ -78959,38 +78966,80 @@ function (_Component) {
       open: false,
       atencion: {
         0: {
-          apertura: "15:00:00",
-          cierre: "17:30:00",
+          reserva: {
+            apertura: "15:00:00",
+            cierre: "17:30:00"
+          },
+          atencion: {
+            apertura: "15:00:00",
+            cierre: "17:30:00"
+          },
           estado: "1"
         },
         1: {
-          apertura: "14:30:00",
-          cierre: "18:00:00",
+          reserva: {
+            apertura: "14:30:00",
+            cierre: "18:00:00"
+          },
+          atencion: {
+            apertura: "14:00:00",
+            cierre: "19:30:00"
+          },
           estado: "1"
         },
         2: {
-          apertura: "16:30:00",
-          cierre: "20:30:00",
+          reserva: {
+            apertura: "16:30:00",
+            cierre: "20:00:00"
+          },
+          atencion: {
+            apertura: "14:00:00",
+            cierre: "23:30:00"
+          },
           estado: "0"
         },
         3: {
-          apertura: "15:30:00",
-          cierre: "21:00:00",
+          reserva: {
+            apertura: "14:30:00",
+            cierre: "18:00:00"
+          },
+          atencion: {
+            apertura: "14:00:00",
+            cierre: "19:30:00"
+          },
           estado: "1"
         },
         4: {
-          apertura: "16:00:00",
-          cierre: "19:30:00",
+          reserva: {
+            apertura: "14:30:00",
+            cierre: "18:00:00"
+          },
+          atencion: {
+            apertura: "14:00:00",
+            cierre: "19:30:00"
+          },
           estado: "1"
         },
         5: {
-          apertura: "17:00:00",
-          cierre: "22:30:00",
+          reserva: {
+            apertura: "14:30:00",
+            cierre: "18:00:00"
+          },
+          atencion: {
+            apertura: "14:00:00",
+            cierre: "19:30:00"
+          },
           estado: "1"
         },
         6: {
-          apertura: "21:30:00",
-          cierre: "23:00:00",
+          reserva: {
+            apertura: "14:30:00",
+            cierre: "18:00:00"
+          },
+          atencion: {
+            apertura: "14:00:00",
+            cierre: "19:30:00"
+          },
           estado: "1"
         }
       },
@@ -79203,32 +79252,64 @@ function (_Component) {
         descripcion: ""
       },
       select: {
-        apertura_hora: {
-          name: "apertura_hora",
+        apertura_reserva_hora: {
+          name: "apertura_reserva_hora",
           show: false,
           selected: null,
           search: "",
           input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
           list: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__["HOURS"]
         },
-        apertura_minuto: {
-          name: "apertura_minuto",
+        apertura_reserva_minuto: {
+          name: "apertura_reserva_minuto",
           show: false,
           selected: null,
           search: "",
           input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
           list: _this.validMinutes
         },
-        cierre_hora: {
-          name: "cierre_hora",
+        cierre_reserva_hora: {
+          name: "cierre_reserva_hora",
           show: false,
           selected: null,
           search: "",
           input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
           list: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__["HOURS"]
         },
-        cierre_minuto: {
-          name: "cierre_minuto",
+        cierre_reserva_minuto: {
+          name: "cierre_reserva_minuto",
+          show: false,
+          selected: null,
+          search: "",
+          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
+          list: _this.validMinutes
+        },
+        apertura_atencion_hora: {
+          name: "apertura_atencion_hora",
+          show: false,
+          selected: null,
+          search: "",
+          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
+          list: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__["HOURS"]
+        },
+        apertura_atencion_minuto: {
+          name: "apertura_atencion_minuto",
+          show: false,
+          selected: null,
+          search: "",
+          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
+          list: _this.validMinutes
+        },
+        cierre_atencion_hora: {
+          name: "cierre_atencion_hora",
+          show: false,
+          selected: null,
+          search: "",
+          input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef(),
+          list: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__["HOURS"]
+        },
+        cierre_atencion_minuto: {
+          name: "cierre_atencion_minuto",
           show: false,
           selected: null,
           search: "",
@@ -79252,10 +79333,14 @@ function (_Component) {
     value: function agregarFeriado() {
       var select = this.state.select,
           textInput = this.state.text;
-      select.apertura_hora.selected = null;
-      select.apertura_minuto.selected = null;
-      select.cierre_hora.selected = null;
-      select.cierre_minuto.selected = null;
+      select.apertura_reserva_hora.selected = null;
+      select.apertura_reserva_minuto.selected = null;
+      select.cierre_reserva_hora.selected = null;
+      select.cierre_reserva_minuto.selected = null;
+      select.apertura_atencion_hora.selected = null;
+      select.apertura_atencion_minuto.selected = null;
+      select.cierre_atencion_hora.selected = null;
+      select.cierre_atencion_minuto.selected = null;
       textInput.descripcion = "";
       this.setState({
         date: new Date(),
@@ -79269,14 +79354,20 @@ function (_Component) {
     value: function editarFeriado(dateString) {
       var feriado = this.props.data[dateString],
           date = new Date(parseInt(dateString)),
-          apertura = feriado.apertura.split(':'),
-          cierre = feriado.cierre.split(':'),
+          aperturaR = feriado.reserva.apertura.split(':'),
+          cierreR = feriado.reserva.cierre.split(':'),
+          aperturaA = feriado.atencion.apertura.split(':'),
+          cierreA = feriado.atencion.cierre.split(':'),
           select = this.state.select,
           textInput = this.state.text;
-      select.apertura_hora.selected = apertura[0];
-      select.apertura_minuto.selected = apertura[1];
-      select.cierre_hora.selected = cierre[0];
-      select.cierre_minuto.selected = cierre[1];
+      select.apertura_reserva_hora.selected = aperturaR[0];
+      select.apertura_reserva_minuto.selected = aperturaR[1];
+      select.cierre_reserva_hora.selected = cierreR[0];
+      select.cierre_reserva_minuto.selected = cierreR[1];
+      select.apertura_atencion_hora.selected = aperturaA[0];
+      select.apertura_atencion_minuto.selected = aperturaA[1];
+      select.cierre_atencion_hora.selected = cierreA[0];
+      select.cierre_atencion_minuto.selected = cierreA[1];
       textInput.descripcion = feriado.descripcion;
       this.setState({
         select: select,
@@ -79350,43 +79441,87 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "no-padding col-md-12 bold light-danger"
+        className: "bold light-danger border-bottom"
+      }, "Horarios de Reserva"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "no-padding col-md-12 bold"
       }, "Apertura"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-4 no-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__["Select"], _extends({}, this.state.select.apertura_hora, {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__["Select"], _extends({}, this.state.select.apertura_reserva_hora, {
         titulo: "horas",
         change: this.selectOption,
         toggle: this.showOptions
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-2 no-padding bold align-center"
+        className: "col-sm-2 no-padding align-center"
       }, "horas"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-4 no-padding "
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__["Select"], _extends({}, this.state.select.apertura_minuto, {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__["Select"], _extends({}, this.state.select.apertura_reserva_minuto, {
         titulo: "minutos",
         change: this.selectOption,
         toggle: this.showOptions
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-2 no-padding bold align-center"
+        className: "col-sm-2 no-padding align-center"
       }, "minutos")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "no-padding col-md-12 bold light-danger"
+        className: "no-padding col-md-12 bold"
       }, "Cierre"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-4 no-padding "
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__["Select"], _extends({}, this.state.select.cierre_hora, {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__["Select"], _extends({}, this.state.select.cierre_reserva_hora, {
         titulo: "horas",
         change: this.selectOption,
         toggle: this.showOptions
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-2 no-padding bold align-center"
+        className: "col-sm-2 no-padding align-center"
       }, "horas"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-4 no-padding "
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__["Select"], _extends({}, this.state.select.cierre_minuto, {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__["Select"], _extends({}, this.state.select.cierre_reserva_minuto, {
         titulo: "minutos",
         change: this.selectOption,
         toggle: this.showOptions
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-2 no-padding bold align-center"
+        className: "col-sm-2 no-padding align-center"
+      }, "minutos")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "bold light-danger border-bottom"
+      }, "Horarios de Atenci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "no-padding col-md-12 bold"
+      }, "Apertura"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-sm-4 no-padding"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__["Select"], _extends({}, this.state.select.apertura_atencion_hora, {
+        titulo: "horas",
+        change: this.selectOption,
+        toggle: this.showOptions
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-sm-2 no-padding align-center"
+      }, "horas"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-sm-4 no-padding "
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__["Select"], _extends({}, this.state.select.apertura_atencion_minuto, {
+        titulo: "minutos",
+        change: this.selectOption,
+        toggle: this.showOptions
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-sm-2 no-padding align-center"
+      }, "minutos")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "no-padding col-md-12 bold"
+      }, "Cierre"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-sm-4 no-padding "
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__["Select"], _extends({}, this.state.select.cierre_atencion_hora, {
+        titulo: "horas",
+        change: this.selectOption,
+        toggle: this.showOptions
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-sm-2 no-padding align-center"
+      }, "horas"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-sm-4 no-padding "
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__["Select"], _extends({}, this.state.select.cierre_atencion_minuto, {
+        titulo: "minutos",
+        change: this.selectOption,
+        toggle: this.showOptions
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-sm-2 no-padding align-center"
       }, "minutos"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: classes.inputText
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_6__["Text"], {
@@ -79490,42 +79625,78 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 var formattedFeriados = {
   1559358000000: {
     id: 1,
-    apertura: "15:30",
-    cierre: "19:30",
+    reservas: {
+      apertura: "15:30",
+      cierre: "19:30"
+    },
+    atencion: {
+      apertura: "15:30",
+      cierre: "19:30"
+    },
     descripcion: "descripcion1",
     estado: 1
   },
   1560481200000: {
     id: 2,
-    apertura: "16:30",
-    cierre: "20:00",
+    reserva: {
+      apertura: "16:30",
+      cierre: "20:00"
+    },
+    atencion: {
+      apertura: "15:30",
+      cierre: "19:30"
+    },
     descripcion: "descripcion2",
     estado: 1
   },
   1561345200000: {
     id: 3,
-    apertura: "18:10",
-    cierre: "21:00",
+    reserva: {
+      apertura: "18:10",
+      cierre: "21:00"
+    },
+    atencion: {
+      apertura: "15:30",
+      cierre: "19:30"
+    },
     descripcion: "descripcion3",
     estado: 1
   },
   1561518000000: {
-    apertura: "20:20",
-    cierre: "23:30",
+    atencion: {
+      apertura: "20:20",
+      cierre: "23:30"
+    },
+    reserva: {
+      apertura: "20:20",
+      cierre: "23:30"
+    },
     descripcion: "descripcion4",
     estado: 1
   },
   1561690800000: {
     id: 4,
-    apertura: "17:00",
-    cierre: "19:50",
+    reserva: {
+      apertura: "20:20",
+      cierre: "23:30"
+    },
+    atencion: {
+      apertura: "17:00",
+      cierre: "19:50"
+    },
     descripcion: "descripcion4",
     estado: 1
   },
   1561777200000: {
     id: 14,
-    apertura: "18:40",
-    cierre: "23:50",
+    reserva: {
+      apertura: "20:20",
+      cierre: "23:30"
+    },
+    atencion: {
+      apertura: "18:40",
+      cierre: "23:50"
+    },
     descripcion: "descripcion5",
     estado: 0
   }

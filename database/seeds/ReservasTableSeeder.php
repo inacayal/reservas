@@ -42,7 +42,7 @@ class ReservasTableSeeder extends Seeder
                 $hr = $usr->horariosSemanas;
                 $ubcns = $usr->ubicaciones;
                 $evnts = $usr->eventos;
-                for ($ctr = 0; $ctr<12; $ctr++){
+                for ($ctr = 0; $ctr<80; $ctr++){
                     $st = DateTime::createFromFormat ("d-m-Y",'01-07-2019');
                     $en = DateTime::createFromFormat ("d-m-Y",'30-09-2019');
                     $rdm_timestamp = mt_rand($st->getTimestamp(), $en->getTimestamp());

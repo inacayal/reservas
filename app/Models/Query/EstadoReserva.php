@@ -5,33 +5,33 @@
  * Date: Wed, 24 Jul 2019 15:45:16 +0000.
  */
 
-namespace App\Models;
+namespace App\Models\Query;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 use App\Traits\crudMethods;
 /**
- * Class DiasSemana
+ * Class EstadoReserva
  * 
  * @property int $id
  * @property string $descripcion
  * 
- * @property \Illuminate\Database\Eloquent\Collection $horarios_semanas
+ * @property \Illuminate\Database\Eloquent\Collection $reservas
  *
  * @package App\Models
  */
-class DiasSemana extends Eloquent
+class EstadoReserva extends Eloquent
 {
 	//use CrudMethods;
 
-	protected $table = 'dias_semana';
+	protected $table = 'estado_reserva';
 	public $timestamps = false;
 
 	protected $fillable = [
 		'descripcion'
 	];
 
-	public function horarios_semanas()
+	public function reservas()
 	{
-		return $this->hasMany(\App\Models\HorariosSemana::class, 'id_dia_semana');
+		return $this->hasMany(\App\Models\Reserva::class, 'id_estado');
 	}
 }

@@ -23,7 +23,8 @@ class EscritorioController extends Controller
      */
     public function index()
     {
-        return view('escritorio');
+        $param = json_encode(['pam'=>'param1']);
+        return view('escritorio',compact('param'));
     }
     /**
      * Mostrar formulario de reservas
@@ -33,23 +34,5 @@ class EscritorioController extends Controller
     public function reservas()
     {
         return view('reserva');
-    }
-
-    public function mail()
-    {
-        ini_set( 'display_errors', 1 );
-        ini_set('SMTP','inacayal.com.ar');
-        ini_set('username','soporte@inacayal.com.ar');
-        ini_set('password','Soporte1769*il*');
-        ini_set('sendmail_from', 'soporte@inacayal.com.ar'); 
-        ini_set('smtp_port',25);
-        error_reporting( E_ALL );
-        $from = "soporte@inacayal.com.ar";
-        $to = "geneyelit@gmail.com";
-        $subject = "Checking PHP mail";
-        $message = "PHP mail works just fine";
-        $headers = "From:" . $from;
-        mail($to,$subject,$message, $headers);
-        echo "The email message was sent.";
     }
 }

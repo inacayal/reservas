@@ -49,12 +49,12 @@ class Ubicacion extends Eloquent
 
 	public function estado_salon()
 	{
-		return $this->belongsTo(\App\Models\EstadoSalon::class, 'id_estado');
+		return $this->belongsTo(\App\Models\Query\EstadoSalon::class, 'id_estado');
 	}
 
 	public function user()
 	{
-		return $this->belongsTo(\App\Models\User::class, 'id_usuario');
+		return $this->belongsTo(\App\User::class, 'id_usuario');
 	}
 
 	public function reservas()
