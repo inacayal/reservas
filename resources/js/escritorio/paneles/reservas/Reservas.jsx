@@ -496,6 +496,14 @@ export default class Reservas extends Component {
         return this.props.panel||nextProps.panel;
     }
     
+    componentDidMount() {
+        console.log('reservasMount');
+    }
+
+    componentWillUnmount() {
+        console.log('reservasUnmount');
+    }
+
     render() {
         const controls = this.state.agregar ?
             [this.panelNavigation[0]]

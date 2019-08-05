@@ -103,6 +103,82 @@ var sidebar = [//get on ajax request
         sub: []
     }
 ];
+const COMPONENTES = [
+    (parent)=>(
+        <Escritorio
+            changePanel={parent.changePanel}
+            panel={true}
+            selectInnerElement={parent.changeSubElement}
+            subElements={parent.state.sidebar[1].sub}
+            crumbControl={parent.changeCrumb}
+            currentSub={parent.state.crumb[1] ? parent.state.crumb[1].data : null} />
+    ),
+    (parent)=>(
+        <Reservas
+            changePanel={parent.changePanel}
+            panel={true}
+            selectInnerElement={parent.changeSubElement}
+            subElements={parent.state.sidebar[1].sub}
+            crumbControl={parent.changeCrumb}
+            currentSub={parent.state.crumb[1] ? parent.state.crumb[1].data : null} />
+    ),
+    (parent) => (
+        <Horarios
+            changePanel={parent.changePanel}
+            panel={true}
+            selectInnerElement={parent.changeSubElement}
+            subElements={parent.state.sidebar[2].sub}
+            crumbControl={parent.changeCrumb}
+            currentSub={parent.state.crumb[1] ? parent.state.crumb[1].data : null} />
+    ),
+    (parent) => (
+        <Ubicaciones
+            changePanel={parent.changePanel}
+            panel={true}
+            selectInnerElement={parent.changeSubElement}
+            subElements={parent.state.sidebar[3].sub}
+            crumbControl={parent.changeCrumb}
+            currentSub={parent.state.crumb[1] ? parent.state.crumb[1].data : null} />
+    ),
+    (parent) => (
+        <Eventos
+            changePanel={parent.changePanel}
+            panel={true}
+            selectInnerElement={parent.changeSubElement}
+            subElements={parent.state.sidebar[4].sub}
+            crumbControl={parent.changeCrumb}
+            currentSub={parent.state.crumb[1] ? parent.state.crumb[1].data : null} />
+    ),
+    (parent)=>(
+        <Locales
+            changePanel={parent.changePanel}
+            panel={true}
+            selectInnerElement={parent.changeSubElement}
+            subElements={parent.state.sidebar[5].sub}
+            crumbControl={parent.changeCrumb}
+            currentSub={parent.state.crumb[1] ? parent.state.crumb[1].data : null} />
+    ),
+    (parent) => (
+        <Configuracion
+            changePanel={parent.changePanel}
+            panel={true}
+            selectInnerElement={parent.changeSubElement}
+            subElements={parent.state.sidebar[6].sub}
+            crumbControl={parent.changeCrumb}
+            currentSub={parent.state.crumb[1] ? parent.state.crumb[1].data : null} />
+    ),
+    (parent) => (
+        <Franquicias
+            changePanel={parent.changePanel}
+            panel={true}
+            selectInnerElement={parent.changeSubElement}
+            crumbControl={parent.changeCrumb}
+            subElements={parent.state.sidebar[7].sub}
+            currentSub={parent.state.crumb[1] ? parent.state.crumb[1].data : null} />
+    )
+];
+    
+    
 
 //holds reservation state
 export default class Main extends Component {
@@ -120,6 +196,7 @@ export default class Main extends Component {
                 click: this.changePanel
             }]
         };
+        this.views = COMPONENTES;
     }
 
     changeSubElement(e){
@@ -131,9 +208,9 @@ export default class Main extends Component {
             crumb = this.state.crumb;
 
         if (crumb[1]){
-            subElements[crumb[1].data].class = "box-transparent box-padding full-width text-left";
+            subElements[crumb[1].data].class = "box-transparent box-padding full-width text-left highlight-hover";
             if (crumb[1].data !== clicked) {
-                subElements[clicked].class = "box-transparent box-padding highlight-title full-width text-left";   
+                subElements[clicked].class = "no-border background-border box-padding full-width text-left";   
                 crumb[1] = {
                     title: subElements[clicked].title,
                     data: subElements[clicked].data,
@@ -143,7 +220,7 @@ export default class Main extends Component {
             } else 
                 crumb.pop();
         } else {
-            subElements[clicked].class = "box-transparent box-padding highlight-title full-width text-left";
+            subElements[clicked].class = "no-border box-padding background-border full-width text-left";
             crumb[1] = {
                 title: subElements[clicked].title,
                 data: subElements[clicked].data,
@@ -151,7 +228,6 @@ export default class Main extends Component {
                 click: this.changeSubElement
             }; 
         }
-
         sidebar[showing].sub = subElements;
         this.setState({sidebar:sidebar,crumb:crumb});
     }
@@ -175,6 +251,7 @@ export default class Main extends Component {
     }
 
     render() {
+        const renderComponent =this.views[this.state.showing](this);
         return (
             <div className="container">
                 <div className="row">
@@ -196,48 +273,7 @@ export default class Main extends Component {
                                     items={this.state.crumb} />
                             </div>
                             <div className="row">
-                                <Escritorio 
-                                    classes={(this.state.showing === "0") ? "full-width" : "hidden"} />
-                                <Reservas 
-                                    changePanel={this.changePanel}
-                                    panel={this.state.showing === "1"} 
-                                    crumbControl={this.changeCrumb}
-                                    selectInnerElement={this.changeSubElement} 
-                                    subElements={this.state.sidebar[1].sub} 
-                                    currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null}/>
-                                <Horarios 
-                                    changePanel={this.changePanel}
-                                    panel={this.state.showing === "2"} 
-                                    selectInnerElement={this.changeSubElement} 
-                                    subElements={this.state.sidebar[2].sub} 
-                                    currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null}/>
-                                <Ubicaciones 
-                                    panel={this.state.showing === "3"}
-                                    selectInnerElement={this.changeSubElement}
-                                    subElements={this.state.sidebar[3].sub}
-                                    currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null}/>
-                                <Eventos 
-                                    panel={this.state.showing === "4"}
-                                    selectInnerElement={this.changeSubElement}
-                                    subElements={this.state.sidebar[4].sub}
-                                    currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null} />
-                                <Locales
-                                    panel={this.state.showing === "5"}
-                                    selectInnerElement={this.changeSubElement}
-                                    subElements={this.state.sidebar[5].sub}
-                                    currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null} />
-                                <Configuracion
-                                    changePanel={this.changePanel}
-                                    panel={this.state.showing === "6"}
-                                    selectInnerElement={this.changeSubElement}
-                                    subElements={this.state.sidebar[6].sub}
-                                    currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null} />
-                                <Franquicias
-                                    changePanel={this.changePanel}
-                                    panel={this.state.showing === "7"}
-                                    selectInnerElement={this.changeSubElement}
-                                    subElements={this.state.sidebar[7].sub}
-                                    currentSub={this.state.crumb[1] ? this.state.crumb[1].data : null} />
+                                {renderComponent}
                             </div>
                         </div>
                     </div>

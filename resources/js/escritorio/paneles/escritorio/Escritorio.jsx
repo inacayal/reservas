@@ -4,11 +4,24 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-function Escritorio(props) {
-    return (
-        <div className={props.classes}>
-            <div className="small-v-padding box-transparent h-padding highlight-title full-width text-left c-title">Escritorio</div>
-        </div>
-    );
+export default class Escritorio extends Component {
+    constructor(props){
+        super(props);
+    }
+
+    componentDidMount() {
+        console.log('escritorioMount');
+    }
+
+    componentWillUnmount() {
+        console.log('escritorioUnmount');
+    }
+
+    render () {
+        return (
+            <div className={(this.props.panel) ? "container" : "hidden"}>
+                Escritorio
+            </div>
+        );
+    }
 }
-export default React.memo(Escritorio);

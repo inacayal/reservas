@@ -176,6 +176,14 @@ export default class DiasFeriados extends Component {
         })
     }
 
+    componentDidMount() {
+        console.log('feriadosMount');
+    }
+
+    componentWillUnmount() {
+        console.log('feriadosUnmount');
+    }
+
     render(){
         const controls = this.state.editar ?
             this.formNavigation 

@@ -4,216 +4,34 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 /**
- * components
- */
-import Titulo from '../../../componentes/basic/Titulo';
-import CardList from '../../../componentes/basic/CardList';
-import ButtonList from '../../../componentes/basic/ButtonList';
-import {closeModal,ConfirmarModal} from '../../../componentes/modal/Modal';
-/**
  * sub elements
  */
 import DiasFeriados from './subElements/DiasFeriados';
-import AgregarFormulario from './subElements/AgregarFormulario';
-/**
- * functions
- */
-import generateWeek from '../../../componentes/calendario/procedimientos/generateWeek';
-import { formNavigation, formActions } from '../../../funciones/dataActions';
-/**
- * constantes
- */
-import { DAYS, MONTHS, HOURS } from '../../../constantes/DaysMonths';
+import HorarioSemana from './subElements/HorarioSemana';
 export class Horarios extends Component {
     constructor(props){
         super(props);
-        this.state = {
-            show: "1",
-            agregar: false, 
-            editar: null, 
-            formulario: false,
-            open:false,
-            atencion: {
-                0: {
-                    reserva:{
-                        apertura: "15:00:00",
-                        cierre: "17:30:00",
-                    },
-                    atencion:{
-                        apertura: "15:00:00",
-                        cierre: "17:30:00",
-                    },
-                    estado: "1"
-                },
-                1: {
-                    reserva:{
-                        apertura: "14:30:00",
-                        cierre: "18:00:00",
-                    },
-                    atencion: {
-                        apertura: "14:00:00",
-                        cierre: "19:30:00",
-                    },
-                    estado: "1"
-                },
-                2: {
-                    reserva: {
-                        apertura: "16:30:00",
-                        cierre: "20:00:00",
-                    },
-                    atencion: {
-                        apertura: "14:00:00",
-                        cierre: "23:30:00",
-                    },
-                    estado: "0"
-                },
-                3: {
-                    reserva: {
-                        apertura: "14:30:00",
-                        cierre: "18:00:00",
-                    },
-                    atencion: {
-                        apertura: "14:00:00",
-                        cierre: "19:30:00",
-                    },
-                    estado: "1"
-                },
-                4: {
-                    reserva: {
-                        apertura: "14:30:00",
-                        cierre: "18:00:00",
-                    },
-                    atencion: {
-                        apertura: "14:00:00",
-                        cierre: "19:30:00",
-                    },
-                    estado: "1"
-                },
-                5: {
-                    reserva: {
-                        apertura: "14:30:00",
-                        cierre: "18:00:00",
-                    },
-                    atencion: {
-                        apertura: "14:00:00",
-                        cierre: "19:30:00",
-                    },
-                    estado: "1"
-                },
-                6: {
-                    reserva: {
-                        apertura: "14:30:00",
-                        cierre: "18:00:00",
-                    },
-                    atencion: {
-                        apertura: "14:00:00",
-                        cierre: "19:30:00",
-                    },
-                    estado: "1"
-                }
-            },
-            acciones: {
-                outer:{
-                    agregar: this.agregarHorario.bind(this),
-                    editar: this.editarHorario.bind(this),
-                    eliminar: this.eliminarHorario.bind(this)
-                },
-                inner:{}
-            }
-        };
-
-        this.closeModal = closeModal.bind(this);
-        this.verHorarios = this.verHorarios.bind(this);
-        this.eliminarHorario = this.eliminarHorario.bind(this);
-
-        this.editAddControls = formNavigation(this.verHorarios,this.eliminarHorario);
-        this.formActions = formActions(this.verHorarios, this.guardarHorario);
-    }
-
-    guardarHorario(e) {
-        console.log("this.guardarHorario");
-    }
-
-    editarHorario(e) {
-        e.preventDefault();
-        let dateString = e.currentTarget.getAttribute('data');
-        this.setState({ agregar: null, editar: dateString, formulario: true });
-    }
-
-    agregarHorario(e) {
-        e.preventDefault();
-        let dateString = e.currentTarget.getAttribute('data');
-        this.setState({ agregar: dateString, editar: null, formulario: true });
-    }
-
-    verHorarios(e) {
-        e.preventDefault();
-        this.setState({ agregar: null, editar: null, formulario: false });
-    }
-
-    closeModal(e) {
-        this.setState({ open: false });
-    }
-    
-    eliminarHorario(e) {
-        e.preventDefault();
-        this.setState({
-            open: true
-        })
+        this.state = {};
     }
     shouldComponentUpdate(nextProps) {
         return this.props.panel || nextProps.panel;
     }
     render() {
-        const diasAtencion = generateWeek['horarios'](
-                null, 
-                this.state.atencion, 
-                this.state.acciones, 
-                null
-            ),
-            controls = this.state.editar ?
-                this.editAddControls
-                : this.state.agregar ? 
-                    [this.editAddControls[0]]
-                    : [{class:"hidden"}];
-        return (
-            <div className={(this.props.panel) ? "full-width container" : "hidden"}>
-                <div className={this.props.currentSub !== "0" ? "row" : "hidden"}>
-                    <Titulo
-                        title={"Horarios"}
-                        navigation={controls}/>
-                    <ConfirmarModal
-                        open={this.state.open}
-                        closeModal={this.closeModal}
-                        title="Eliminar Horario"
-                        content="¿estás seguro de eliminar este horario?" />
-                    <div className={this.state.formulario ? "full-width" : "hidden"}>
-                        <AgregarFormulario
-                            title={
-                                this.state.editar ? 
-                                "Editar horario del "+DAYS[this.state.editar]
-                                : "Agregar horario para el " + DAYS[this.state.agregar]
-                            }
-                            formActions={this.formActions}
-                            show={this.state.formulario}
-                            showCalendar={false}
-                            data={this.state.atencion}
-                            editar={this.state.editar}
-                            agregar={this.state.agregar} />
-                    </div>
-                    <div className={this.state.formulario ? "hidden" : "full-width flex-row nav-list h-center"}>
-                        <CardList
-                            displayList="justify no-padding full-width flex-column nav-list h-center"
-                            elems={diasAtencion} />
+        if (this.props.currentSub !== "0") 
+            return (
+                <HorarioSemana 
+                    show = {true}/>
+            );
+        else 
+            return (
+                <div className={(this.props.panel) ? "full-width container" : "hidden"}>
+                    <div className="row">
+                        <DiasFeriados
+                            show={true}
+                            changePanel={this.props.changePanel} />
                     </div>
                 </div>
-                <div className="row">
-                    <DiasFeriados 
-                        show={this.props.currentSub==="0"}
-                        changePanel={this.props.changePanel}/>
-                </div>
-            </div>
-        );
+            );
     }
 }
 export default Horarios;

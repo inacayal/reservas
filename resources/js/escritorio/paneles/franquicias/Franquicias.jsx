@@ -11,6 +11,14 @@ export default class Franquicias extends Component {
         return this.props.panel || nextProps.panel;
     }
 
+    componentDidMount() {
+        console.log('franquiciasMount');
+    }
+
+    componentWillUnmount() {
+        console.log('franquiciasUnmount');
+    }
+    
     render() {
         return (
             <div className={this.props.panel ? "container" : "hidden"}>

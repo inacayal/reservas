@@ -12,7 +12,6 @@ import Titulo from '../../../componentes/basic/Titulo';
 /**
  * handlers
  */
-import {showOptions,selectOption} from '../../../componentes/input/Select';
 import {onTextChange} from '../../../componentes/input/Text';
 /**
  * modal
@@ -29,6 +28,7 @@ import Reservas from './subElements/Reservas';
 /**
  * funciones
  */
+import generateConfigurationCards from './procedimientos/generateConfigurationCards';
 import generateHoursFromInterval from '../../../funciones/generateHoursFromInterval';
 import { formActions, formNavigation, panelNavigation, generateConfigurationActions } from '../../../funciones/dataActions';
 /**
@@ -36,71 +36,60 @@ import { formActions, formNavigation, panelNavigation, generateConfigurationActi
  */
 import {DAYS,MONTHS,HOURS} from '../../../constantes/DaysMonths';
 
+const COMPONENTES = [
+    (parent) => (
+        <Encargado
+            formActions={parent.formActions}
+            onTextChange={parent.onTextChange}
+            text={parent.state.text}
+            show={parent.props.currentSub ? parent.props.currentSub === "0" : true} />
+    ),
+    (parent) => (
+        <Ubicacion
+            formActions={parent.formActions}
+            show={parent.props.currentSub ? parent.props.currentSub === "1" : true} />
+    ),
+    (parent) => (
+        <Contacto
+            formActions={parent.formActions}
+            onTextChange={parent.onTextChange}
+            text={parent.state.text}
+            show={parent.props.currentSub ? parent.props.currentSub === "2" : true} />
+    ),
+    (parent)=> (
+        <Usuario
+            formActions={parent.formActions}
+            onTextChange={parent.onTextChange}
+            text={parent.state.text}
+            show={parent.props.currentSub ? parent.props.currentSub === "3" : true} />
+    ),
+    (parent) => (
+        <Reservas
+            formActions={parent.formActions}
+            show={parent.props.currentSub ? parent.props.currentSub === "4" : true} />
+    )
+];
 export default class Configuracion extends Component {
     constructor(props) {
         super(props);
         this.validMinutes = generateHoursFromInterval(1);
         this.state = {
             text:{
-                email_local:"",
-                adm_email:"",
-                adm_nombre:"",
-                adm_telefono:"",
-                email_local:"",
-                password_local:"",
-                correo_local:"",
-                telefono_local:"",
-                razon_social:"",
-                cuit_cuil:""
-            },
-            select: {
-                intervalo: {
-                    name: "intervalo",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {
-                        1: "1 minuto",
-                        2: "2 minutos",
-                        3: "3 minutos",
-                        5: "5 minutos",
-                        4: "4 minutos",
-                        6: "6 minutos",
-                        10: "10 minutos",
-                        12: "12 minutos",
-                        15: "15 minutos",
-                        20: "20 minutos",
-                        30: "30 minutos"
-                    }
-                },
-                caida: {
-                    name: "caida",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {
-                        10: "10 minutos",
-                        20: "20 minutos",
-                        30: "30 minutos",
-                        40: "40 minutos",
-                        50: "50 minutos"
-                    }
-                },
-                id_provincia: {
-                    name: "id_provincia",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {
-                        0: "CABA",
-                        1: "Buenos Aires",
-                        2: "Cordoba",
-                        3: "Santa fe"
-                    }
-                }
+                email_local:"data1",
+                adm_email:"data2",
+                adm_nombre:"data3",
+                adm_telefono:"data4",
+                password_local:"data6",
+                correo_local:"data7",
+                telefono_local:"data8",
+                razon_social:"data9",
+                cuit_cuil:"data10",
+                id_provincia:"data11",
+                intervalo:"data12",
+                caida:"data13",
+                provincia:"provincia",
+                direccion_local:"direccion de local",
+                show:null
             }
         };
         
@@ -108,27 +97,15 @@ export default class Configuracion extends Component {
         this.formActions = formActions(this.props.changePanel,this.guardarConfiguracion,"6");
         this.formNavigation = formNavigation(this.props.changePanel,null,"6");
         this.guardarConfiguracion = this.guardarConfiguracion.bind(this);
-        
+        this.expandirElemento = this.expandirElemento.bind(this);
         this.onTextChange = onTextChange.bind(this);
-        this.showOptions  = showOptions.bind(this);
-        this.selectOption = this.selectOption.bind(this);
+        this.componentes = COMPONENTES;
+        
     }
 
-    selectOption(e) {
-        let value = e.target.getAttribute('keyvalue'),
-            name = e.target.getAttribute('select'),
-            select = this.state.select,
-            trigger = select[name];
-        trigger.selected = (value !== select[name].selected) ? value : null;
-        if(name==='apertura_dia'){
-            let horario = this.state.atencion[value];
-            select['apertura_hora'].selected = horario.apertura_hora;
-            select['apertura_minuto'].selected = horario.apertura_minuto;
-            select['cierre_hora'].selected = horario.cierre_hora;
-            select['cierre_minuto'].selected = horario.cierre_minuto;
-        }
-        select[name] = trigger;
-        this.setState({ select });
+    expandirElemento (e){
+        let show = e.currentTarget.getAttribute('data');
+        this.setState({ show: this.state.show !== show ? show : null});
     }
 
     guardarConfiguracion(e){
@@ -136,51 +113,38 @@ export default class Configuracion extends Component {
         console.log('guardado');
     }   
 
+    componentDidMount(){
+        console.log('configuracionMount');
+    }
+
+    componentWillUnmount(){
+        console.log('configuracionUnmount');
+    }
+
     render() {
+        const renderComponent = this.props.currentSub ? 
+            this.componentes[this.props.currentSub](this)
+            : null,
+            configurationList = generateConfigurationCards(
+                this.props.selectInnerElement,
+                this.expandirElemento,
+                this.props.subElements,
+                this.state.text,
+                this.state.show
+            );
         return (
             <div className={this.props.panel ? "full-width" : "hidden"}>
                 <Titulo
                     title="Configuración"
                     navigation={this.props.currentSub ? [this.formNavigation[0]] : []}/>
                 <div className={this.props.currentSub ? "hidden" : "full-width container box-padding"}>
-                    <ButtonList
-                        displayList="flex-column nav-list align-center full-width"
-                        container="box-padding full-width highlight-hover"
-                        elemClass="box-padding full-width text-left box-transparent"
-                        clickHandler={this.props.selectInnerElement}
-                        elems={this.props.subElements} />
+                    <CardList
+                        displayList="no-padding flex-column nav-list align-center full-width"
+                        container="full-width highlight-hover"
+                        elems={configurationList} />
                 </div>
                 <div className={this.props.currentSub?"full-width container":"hidden"}>
-                    <Encargado 
-                        formActions={this.formActions}
-                        onTextChange={this.onTextChange}
-                        text={this.state.text}
-                        show={this.props.currentSub ? this.props.currentSub === "0" : true}/>
-                    <Ubicacion
-                        formActions={this.formActions}
-                        onTextChange={this.onTextChange}
-                        text={this.state.text}
-                        select={this.state.select}
-                        selectOption={this.selectOption}
-                        showOptions={this.showOptions}
-                        show={this.props.currentSub ? this.props.currentSub === "1" : true} />
-                    <Contacto
-                        formActions={this.formActions}
-                        onTextChange={this.onTextChange}
-                        text={this.state.text}
-                        show={this.props.currentSub ? this.props.currentSub === "2" : true} />
-                    <Usuario
-                        formActions={this.formActions}
-                        onTextChange={this.onTextChange}
-                        text={this.state.text}
-                        show={this.props.currentSub ? this.props.currentSub === "3" : true} />
-                    <Reservas
-                        formActions={this.formActions}
-                        showOptions={this.showOptions}
-                        selectOption={this.selectOption}
-                        caida={this.state.select.caida}
-                        intervalo={this.state.select.intervalo}
-                        show = {this.props.currentSub ? this.props.currentSub === "4" : true} />
+                    {renderComponent}
                     <div className="row box-padding justify-content-end">
                         <ButtonList
                             displayList="flex-row nav-list no-padding inline-block  align-center"

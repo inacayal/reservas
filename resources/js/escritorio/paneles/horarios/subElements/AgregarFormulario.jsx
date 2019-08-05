@@ -214,7 +214,7 @@ export default class AgregarFormulario extends Component {
                                         <div className="container row no-padding no-margin">
                                             <div className={this.state.right ? classes.inputSelect : "hidden"}>
                                                 <div className="row">
-                                                    <div className="bold light-danger border-bottom">Horarios de Reserva</div>
+                                                    <div className="bold light-danger border-bottom full-width">Horarios de Reserva</div>
                                                     <div className="no-padding col-md-12 bold">Apertura</div>
                                                     <div className="col-sm-4 no-padding">
                                                         <Select
@@ -261,7 +261,7 @@ export default class AgregarFormulario extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="row">
-                                                    <div className="bold light-danger border-bottom">Horarios de Atención</div>
+                                                    <div className="bold light-danger border-bottom top-padding full-width">Horarios de Atención</div>
                                                     <div className="no-padding col-md-12 bold">Apertura</div>
                                                     <div className="col-sm-4 no-padding">
                                                         <Select

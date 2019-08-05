@@ -216,6 +216,14 @@ export default class Locales extends Component {
         this.setState({formulario:false,verLocal:local})
     }
 
+    componentDidMount() {
+        console.log('localesMount');
+    }
+
+    componentWillUnmount() {
+        console.log('localesUnmount');
+    }
+
     guardarNuevoLocal(e){
         e.preventDefault();
         console.log('guardar');

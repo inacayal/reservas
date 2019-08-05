@@ -62,6 +62,9 @@ html,body {
     padding-top:10px;
     padding-bottom:10px;
 }
+.top-padding{
+    padding-top:10px;
+}
 .ReactTable{
     border: solid 1px transparent !important;
     overflow:auto;
@@ -291,6 +294,9 @@ label{
 .image:hover{
     background-color:var(--no-highlight);
     cursor:pointer;
+}
+.normal-text{
+    font-size:15px;
 }
 .contained{
     max-width:50%;

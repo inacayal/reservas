@@ -85,6 +85,14 @@ export default class Eventos extends Component {
         })
     }
     
+    componentDidMount() {
+        console.log('eventosMount');
+    }
+
+    componentWillUnmount() {
+        console.log('eventosUnmount');
+    }
+
     shouldComponentUpdate(nextProps) {
         return this.props.panel || nextProps.panel;
     }
