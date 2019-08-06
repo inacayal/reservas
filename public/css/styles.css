@@ -116,6 +116,9 @@ html,body {
 .extra-left-padding{
     padding-left:80px;
 }
+.extra-m-left-padding {
+    padding-left: 40px;
+}
 .medium-left-padding {
     padding-left: 20px;
 }

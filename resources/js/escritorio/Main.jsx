@@ -72,27 +72,27 @@ var sidebar = [//get on ajax request
             {
                 title: 'Encargado',
                 data: "0",
-                class: "box-transparent box-padding highlight-hover full-width text-left"
+                class: "medium-left-padding box-transparent box-padding highlight-hover full-width text-left"
             },
             {
                 title:"Ubicacion",
                 data:"1",
-                class: "box-transparent box-padding highlight-hover full-width text-left"
+                class: "medium-left-padding box-transparent box-padding highlight-hover full-width text-left"
             },
             {
                 title:"Contacto del local",
                 data:"2",
-                class: "box-transparent box-padding highlight-hover full-width text-left"
+                class: "medium-left-padding box-transparent box-padding highlight-hover full-width text-left"
             },
             {
                 title:"Usuario",
                 data:"3",
-                class: "box-transparent box-padding highlight-hover full-width text-left"
+                class: "medium-left-padding box-transparent box-padding highlight-hover full-width text-left"
             },
             {
                 title: "Reservas",
                 data: "4",
-                class: "box-transparent box-padding highlight-hover full-width text-left"
+                class: "medium-left-padding box-transparent box-padding highlight-hover full-width text-left"
             }
         ]
     },
@@ -208,9 +208,9 @@ export default class Main extends Component {
             crumb = this.state.crumb;
 
         if (crumb[1]){
-            subElements[crumb[1].data].class = "box-transparent box-padding full-width text-left highlight-hover";
+            subElements[crumb[1].data].class = "medium-left-padding box-transparent box-padding full-width text-left highlight-hover";
             if (crumb[1].data !== clicked) {
-                subElements[clicked].class = "no-border background-border box-padding full-width text-left";   
+                subElements[clicked].class = "extra-m-left-padding no-border background-border box-padding full-width text-left";   
                 crumb[1] = {
                     title: subElements[clicked].title,
                     data: subElements[clicked].data,
@@ -220,7 +220,7 @@ export default class Main extends Component {
             } else 
                 crumb.pop();
         } else {
-            subElements[clicked].class = "no-border box-padding background-border full-width text-left";
+            subElements[clicked].class = "extra-m-left-padding no-border box-padding background-border full-width text-left";
             crumb[1] = {
                 title: subElements[clicked].title,
                 data: subElements[clicked].data,
@@ -239,7 +239,7 @@ export default class Main extends Component {
             crumb = this.state.crumb;
         
         if (sidebar[this.state.showing].sub.length>0 && crumb[1]){
-            sidebar[this.state.showing].sub[crumb[1].data].class = "box-transparent box-padding full-width text-left";
+            sidebar[this.state.showing].sub[crumb[1].data].class = "medium-left-padding box-transparent box-padding full-width text-left highlight-hover";
         }
         crumb = [{
             title: sidebar[showing].title,

@@ -11,7 +11,6 @@ import HorarioSemana from './subElements/HorarioSemana';
 export class Horarios extends Component {
     constructor(props){
         super(props);
-        this.state = {};
     }
     shouldComponentUpdate(nextProps) {
         return this.props.panel || nextProps.panel;
@@ -24,13 +23,9 @@ export class Horarios extends Component {
             );
         else 
             return (
-                <div className={(this.props.panel) ? "full-width container" : "hidden"}>
-                    <div className="row">
-                        <DiasFeriados
-                            show={true}
-                            changePanel={this.props.changePanel} />
-                    </div>
-                </div>
+                <DiasFeriados
+                    show={true}
+                    changePanel={this.props.changePanel} />
             );
     }
 }

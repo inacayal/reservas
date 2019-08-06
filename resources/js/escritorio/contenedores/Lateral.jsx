@@ -16,9 +16,8 @@ function Lateral(props) {
                                 <div>
                                     <ButtonList
                                         clickHandler={props.changeSub}
-                                        displayList={(props.current == i) ? "nav-list medium-left-padding" : "hidden"}
+                                        displayList={(props.current == i) ? "nav-list no-padding" : "hidden"}
                                         container="full-width no-padding"
-                                        elemClass="box-transparent box-padding highlight-hover full-width text-left"
                                         elems={e.sub} />
                                 </div>
                             </li>

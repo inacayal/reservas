@@ -159,13 +159,13 @@ export default function generateConfigurationCards (
     return subElements.map(
         (e,i) => {
             const name = e.title.replace(/\s/gi,'_'),
-                actions = <div className="normal-text"><i className="fas fa-eye" />Ver</div>,
+                actions = <div className="normal-text"><i className="fas fa-pen" />Editar</div>,
                 actionList = [
                 {
                     title: (
                         <div className="smaller-text text bold text-center">
-                            <i className="fas fa-eye inline-box side-margin" />
-                            Ver
+                            <i className="fas fa-pen inline-box side-margin" />
+                            Editar
                         </div>
                     ),
                     click: action,
