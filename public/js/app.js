@@ -77175,6 +77175,55 @@ var monthIndex = ["00", "01", "02", "03", "10", "11", "12", "13", "20", "21", "2
 
 /***/ }),
 
+/***/ "./resources/js/escritorio/Lateral.jsx":
+/*!*********************************************!*\
+  !*** ./resources/js/escritorio/Lateral.jsx ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/**
+ * react basic
+ */
+
+
+/**
+ * componentes
+ */
+
+
+
+function Lateral(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+    className: "nav-list no-padding"
+  }, props.items.map(function (e, i) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+      className: "full-width",
+      key: i
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      onClick: props.changePanel,
+      data: i,
+      className: props.current == i ? "selected no-border bold full-width text-left box-padding" : "box-transparent full-width text-left box-padding highlight-hover"
+    }, e.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      clickHandler: props.changeSub,
+      displayList: props.current == i ? "nav-list no-padding" : "hidden",
+      container: "full-width no-padding",
+      elems: e.sub
+    })));
+  })));
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Lateral);
+
+/***/ }),
+
 /***/ "./resources/js/escritorio/Main.jsx":
 /*!******************************************!*\
   !*** ./resources/js/escritorio/Main.jsx ***!
@@ -77189,17 +77238,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _contenedores_Lateral__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./contenedores/Lateral */ "./resources/js/escritorio/contenedores/Lateral.jsx");
-/* harmony import */ var _contenedores_Navegacion__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./contenedores/Navegacion */ "./resources/js/escritorio/contenedores/Navegacion.jsx");
+/* harmony import */ var _Lateral__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Lateral */ "./resources/js/escritorio/Lateral.jsx");
+/* harmony import */ var _Navegacion__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Navegacion */ "./resources/js/escritorio/Navegacion.jsx");
 /* harmony import */ var _componentes_control_BreadCrumb__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../componentes/control/BreadCrumb */ "./resources/js/componentes/control/BreadCrumb.jsx");
-/* harmony import */ var _paneles_configuracion_Configuracion__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./paneles/configuracion/Configuracion */ "./resources/js/escritorio/paneles/configuracion/Configuracion.jsx");
-/* harmony import */ var _paneles_escritorio_Escritorio__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./paneles/escritorio/Escritorio */ "./resources/js/escritorio/paneles/escritorio/Escritorio.jsx");
-/* harmony import */ var _paneles_eventos_Eventos__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./paneles/eventos/Eventos */ "./resources/js/escritorio/paneles/eventos/Eventos.jsx");
-/* harmony import */ var _paneles_horarios_Horarios__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./paneles/horarios/Horarios */ "./resources/js/escritorio/paneles/horarios/Horarios.jsx");
-/* harmony import */ var _paneles_locales_Locales__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./paneles/locales/Locales */ "./resources/js/escritorio/paneles/locales/Locales.jsx");
-/* harmony import */ var _paneles_reservas_Reservas__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./paneles/reservas/Reservas */ "./resources/js/escritorio/paneles/reservas/Reservas.jsx");
-/* harmony import */ var _paneles_ubicaciones_Ubicaciones__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./paneles/ubicaciones/Ubicaciones */ "./resources/js/escritorio/paneles/ubicaciones/Ubicaciones.jsx");
-/* harmony import */ var _paneles_franquicias_Franquicias__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./paneles/franquicias/Franquicias */ "./resources/js/escritorio/paneles/franquicias/Franquicias.jsx");
+/* harmony import */ var _configuracion_Configuracion__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./configuracion/Configuracion */ "./resources/js/escritorio/configuracion/Configuracion.jsx");
+/* harmony import */ var _escritorio_Escritorio__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./escritorio/Escritorio */ "./resources/js/escritorio/escritorio/Escritorio.jsx");
+/* harmony import */ var _eventos_Eventos__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./eventos/Eventos */ "./resources/js/escritorio/eventos/Eventos.jsx");
+/* harmony import */ var _horarios_Horarios__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./horarios/Horarios */ "./resources/js/escritorio/horarios/Horarios.jsx");
+/* harmony import */ var _locales_Locales__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./locales/Locales */ "./resources/js/escritorio/locales/Locales.jsx");
+/* harmony import */ var _reservas_Reservas__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./reservas/Reservas */ "./resources/js/escritorio/reservas/Reservas.jsx");
+/* harmony import */ var _ubicaciones_Ubicaciones__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./ubicaciones/Ubicaciones */ "./resources/js/escritorio/ubicaciones/Ubicaciones.jsx");
+/* harmony import */ var _franquicias_Franquicias__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./franquicias/Franquicias */ "./resources/js/escritorio/franquicias/Franquicias.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -77309,7 +77358,7 @@ var sidebar = [//get on ajax request
   sub: []
 }];
 var COMPONENTES = [function (parent) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_paneles_escritorio_Escritorio__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_escritorio_Escritorio__WEBPACK_IMPORTED_MODULE_6__["default"], {
     changePanel: parent.changePanel,
     panel: true,
     selectInnerElement: parent.changeSubElement,
@@ -77318,7 +77367,7 @@ var COMPONENTES = [function (parent) {
     currentSub: parent.state.crumb[1] ? parent.state.crumb[1].data : null
   });
 }, function (parent) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_paneles_reservas_Reservas__WEBPACK_IMPORTED_MODULE_10__["default"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_reservas_Reservas__WEBPACK_IMPORTED_MODULE_10__["default"], {
     changePanel: parent.changePanel,
     panel: true,
     selectInnerElement: parent.changeSubElement,
@@ -77327,7 +77376,7 @@ var COMPONENTES = [function (parent) {
     currentSub: parent.state.crumb[1] ? parent.state.crumb[1].data : null
   });
 }, function (parent) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_paneles_horarios_Horarios__WEBPACK_IMPORTED_MODULE_8__["default"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_horarios_Horarios__WEBPACK_IMPORTED_MODULE_8__["default"], {
     changePanel: parent.changePanel,
     panel: true,
     selectInnerElement: parent.changeSubElement,
@@ -77336,7 +77385,7 @@ var COMPONENTES = [function (parent) {
     currentSub: parent.state.crumb[1] ? parent.state.crumb[1].data : null
   });
 }, function (parent) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_paneles_ubicaciones_Ubicaciones__WEBPACK_IMPORTED_MODULE_11__["default"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ubicaciones_Ubicaciones__WEBPACK_IMPORTED_MODULE_11__["default"], {
     changePanel: parent.changePanel,
     panel: true,
     selectInnerElement: parent.changeSubElement,
@@ -77345,7 +77394,7 @@ var COMPONENTES = [function (parent) {
     currentSub: parent.state.crumb[1] ? parent.state.crumb[1].data : null
   });
 }, function (parent) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_paneles_eventos_Eventos__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_eventos_Eventos__WEBPACK_IMPORTED_MODULE_7__["default"], {
     changePanel: parent.changePanel,
     panel: true,
     selectInnerElement: parent.changeSubElement,
@@ -77354,7 +77403,7 @@ var COMPONENTES = [function (parent) {
     currentSub: parent.state.crumb[1] ? parent.state.crumb[1].data : null
   });
 }, function (parent) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_paneles_locales_Locales__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_locales_Locales__WEBPACK_IMPORTED_MODULE_9__["default"], {
     changePanel: parent.changePanel,
     panel: true,
     selectInnerElement: parent.changeSubElement,
@@ -77363,7 +77412,7 @@ var COMPONENTES = [function (parent) {
     currentSub: parent.state.crumb[1] ? parent.state.crumb[1].data : null
   });
 }, function (parent) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_paneles_configuracion_Configuracion__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_Configuracion__WEBPACK_IMPORTED_MODULE_5__["default"], {
     changePanel: parent.changePanel,
     panel: true,
     selectInnerElement: parent.changeSubElement,
@@ -77372,7 +77421,7 @@ var COMPONENTES = [function (parent) {
     currentSub: parent.state.crumb[1] ? parent.state.crumb[1].data : null
   });
 }, function (parent) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_paneles_franquicias_Franquicias__WEBPACK_IMPORTED_MODULE_12__["default"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_franquicias_Franquicias__WEBPACK_IMPORTED_MODULE_12__["default"], {
     changePanel: parent.changePanel,
     panel: true,
     selectInnerElement: parent.changeSubElement,
@@ -77479,11 +77528,11 @@ function (_Component) {
         className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_contenedores_Navegacion__WEBPACK_IMPORTED_MODULE_3__["default"], null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Navegacion__WEBPACK_IMPORTED_MODULE_3__["default"], null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-3 no-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_contenedores_Lateral__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Lateral__WEBPACK_IMPORTED_MODULE_2__["default"], {
         current: this.state.showing,
         items: this.state.sidebar,
         changePanel: this.changePanel,
@@ -77514,10 +77563,10 @@ if (document.getElementById('escritorio-container')) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/contenedores/Lateral.jsx":
-/*!**********************************************************!*\
-  !*** ./resources/js/escritorio/contenedores/Lateral.jsx ***!
-  \**********************************************************/
+/***/ "./resources/js/escritorio/Navegacion.jsx":
+/*!************************************************!*\
+  !*** ./resources/js/escritorio/Navegacion.jsx ***!
+  \************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -77527,50 +77576,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _componentes_control_BarraNavegacion__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../componentes/control/BarraNavegacion */ "./resources/js/componentes/control/BarraNavegacion.jsx");
+/**
+ * react basic
+ */
 
 
-
-
-function Lateral(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-    className: "nav-list no-padding"
-  }, props.items.map(function (e, i) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-      className: "full-width",
-      key: i
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-      onClick: props.changePanel,
-      data: i,
-      className: props.current == i ? "selected no-border bold full-width text-left box-padding" : "box-transparent full-width text-left box-padding highlight-hover"
-    }, e.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
-      clickHandler: props.changeSub,
-      displayList: props.current == i ? "nav-list no-padding" : "hidden",
-      container: "full-width no-padding",
-      elems: e.sub
-    })));
-  })));
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (Lateral);
-
-/***/ }),
-
-/***/ "./resources/js/escritorio/contenedores/Navegacion.jsx":
-/*!*************************************************************!*\
-  !*** ./resources/js/escritorio/contenedores/Navegacion.jsx ***!
-  \*************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_control_BarraNavegacion__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../componentes/control/BarraNavegacion */ "./resources/js/componentes/control/BarraNavegacion.jsx");
-
+/**
+ * navegacion top
+ */
 
  //holds reservation state
 
@@ -77588,10 +77602,10 @@ function Navegacion(props) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/configuracion/Configuracion.jsx":
-/*!*************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/configuracion/Configuracion.jsx ***!
-  \*************************************************************************/
+/***/ "./resources/js/escritorio/configuracion/Configuracion.jsx":
+/*!*****************************************************************!*\
+  !*** ./resources/js/escritorio/configuracion/Configuracion.jsx ***!
+  \*****************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -77602,20 +77616,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _componentes_basic_CardList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/CardList */ "./resources/js/componentes/basic/CardList.jsx");
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
-/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
-/* harmony import */ var _subElements_Contacto__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./subElements/Contacto */ "./resources/js/escritorio/paneles/configuracion/subElements/Contacto.jsx");
-/* harmony import */ var _subElements_Encargado__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./subElements/Encargado */ "./resources/js/escritorio/paneles/configuracion/subElements/Encargado.jsx");
-/* harmony import */ var _subElements_Ubicacion__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./subElements/Ubicacion */ "./resources/js/escritorio/paneles/configuracion/subElements/Ubicacion.jsx");
-/* harmony import */ var _subElements_Usuario__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./subElements/Usuario */ "./resources/js/escritorio/paneles/configuracion/subElements/Usuario.jsx");
-/* harmony import */ var _subElements_Reservas__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./subElements/Reservas */ "./resources/js/escritorio/paneles/configuracion/subElements/Reservas.jsx");
-/* harmony import */ var _procedimientos_generateConfigurationCards__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./procedimientos/generateConfigurationCards */ "./resources/js/escritorio/paneles/configuracion/procedimientos/generateConfigurationCards.jsx");
-/* harmony import */ var _funciones_generateHoursFromInterval__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../../funciones/generateHoursFromInterval */ "./resources/js/funciones/generateHoursFromInterval.jsx");
-/* harmony import */ var _funciones_dataActions__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../../funciones/dataActions */ "./resources/js/funciones/dataActions.jsx");
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _componentes_basic_CardList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../componentes/basic/CardList */ "./resources/js/componentes/basic/CardList.jsx");
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
+/* harmony import */ var _subElements_Contacto__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./subElements/Contacto */ "./resources/js/escritorio/configuracion/subElements/Contacto.jsx");
+/* harmony import */ var _subElements_Encargado__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./subElements/Encargado */ "./resources/js/escritorio/configuracion/subElements/Encargado.jsx");
+/* harmony import */ var _subElements_Ubicacion__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./subElements/Ubicacion */ "./resources/js/escritorio/configuracion/subElements/Ubicacion.jsx");
+/* harmony import */ var _subElements_Usuario__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./subElements/Usuario */ "./resources/js/escritorio/configuracion/subElements/Usuario.jsx");
+/* harmony import */ var _subElements_Reservas__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./subElements/Reservas */ "./resources/js/escritorio/configuracion/subElements/Reservas.jsx");
+/* harmony import */ var _procedimientos_generateConfigurationCards__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./procedimientos/generateConfigurationCards */ "./resources/js/escritorio/configuracion/procedimientos/generateConfigurationCards.jsx");
+/* harmony import */ var _funciones_generateHoursFromInterval__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../funciones/generateHoursFromInterval */ "./resources/js/funciones/generateHoursFromInterval.jsx");
+/* harmony import */ var _funciones_dataActions__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../funciones/dataActions */ "./resources/js/funciones/dataActions.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -77810,10 +77824,10 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/configuracion/procedimientos/generateConfigurationCards.jsx":
-/*!*****************************************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/configuracion/procedimientos/generateConfigurationCards.jsx ***!
-  \*****************************************************************************************************/
+/***/ "./resources/js/escritorio/configuracion/procedimientos/generateConfigurationCards.jsx":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/escritorio/configuracion/procedimientos/generateConfigurationCards.jsx ***!
+  \*********************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -77824,7 +77838,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
 /**
  * react basic
  */
@@ -77982,10 +77996,10 @@ function generateConfigurationCards(action, expand, subElements, data, show) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/configuracion/subElements/Contacto.jsx":
-/*!********************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/configuracion/subElements/Contacto.jsx ***!
-  \********************************************************************************/
+/***/ "./resources/js/escritorio/configuracion/subElements/Contacto.jsx":
+/*!************************************************************************!*\
+  !*** ./resources/js/escritorio/configuracion/subElements/Contacto.jsx ***!
+  \************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -77996,8 +78010,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
-/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
 /**
  * react basic
  */
@@ -78039,10 +78053,10 @@ function Contacto(props) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/configuracion/subElements/Encargado.jsx":
-/*!*********************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/configuracion/subElements/Encargado.jsx ***!
-  \*********************************************************************************/
+/***/ "./resources/js/escritorio/configuracion/subElements/Encargado.jsx":
+/*!*************************************************************************!*\
+  !*** ./resources/js/escritorio/configuracion/subElements/Encargado.jsx ***!
+  \*************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -78053,7 +78067,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
 /**
  * react basic
  */
@@ -78110,10 +78124,10 @@ function Encargado(props) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/configuracion/subElements/Reservas.jsx":
-/*!********************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/configuracion/subElements/Reservas.jsx ***!
-  \********************************************************************************/
+/***/ "./resources/js/escritorio/configuracion/subElements/Reservas.jsx":
+/*!************************************************************************!*\
+  !*** ./resources/js/escritorio/configuracion/subElements/Reservas.jsx ***!
+  \************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -78124,7 +78138,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
+/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -78263,10 +78277,10 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/configuracion/subElements/Ubicacion.jsx":
-/*!*********************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/configuracion/subElements/Ubicacion.jsx ***!
-  \*********************************************************************************/
+/***/ "./resources/js/escritorio/configuracion/subElements/Ubicacion.jsx":
+/*!*************************************************************************!*\
+  !*** ./resources/js/escritorio/configuracion/subElements/Ubicacion.jsx ***!
+  \*************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -78277,8 +78291,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
-/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -78401,10 +78415,10 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/configuracion/subElements/Usuario.jsx":
-/*!*******************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/configuracion/subElements/Usuario.jsx ***!
-  \*******************************************************************************/
+/***/ "./resources/js/escritorio/configuracion/subElements/Usuario.jsx":
+/*!***********************************************************************!*\
+  !*** ./resources/js/escritorio/configuracion/subElements/Usuario.jsx ***!
+  \***********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -78415,7 +78429,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
 /**
  * react basic
  */
@@ -78485,10 +78499,10 @@ function Usuario(props) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/escritorio/Escritorio.jsx":
-/*!*******************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/escritorio/Escritorio.jsx ***!
-  \*******************************************************************/
+/***/ "./resources/js/escritorio/escritorio/Escritorio.jsx":
+/*!***********************************************************!*\
+  !*** ./resources/js/escritorio/escritorio/Escritorio.jsx ***!
+  \***********************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -78560,10 +78574,10 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/eventos/Eventos.jsx":
-/*!*************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/eventos/Eventos.jsx ***!
-  \*************************************************************/
+/***/ "./resources/js/escritorio/eventos/Eventos.jsx":
+/*!*****************************************************!*\
+  !*** ./resources/js/escritorio/eventos/Eventos.jsx ***!
+  \*****************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -78574,13 +78588,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _componentes_basic_CardList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/CardList */ "./resources/js/componentes/basic/CardList.jsx");
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
-/* harmony import */ var _procedimientos_generateEventosCard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./procedimientos/generateEventosCard */ "./resources/js/escritorio/paneles/eventos/procedimientos/generateEventosCard.jsx");
-/* harmony import */ var _funciones_dataActions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../funciones/dataActions */ "./resources/js/funciones/dataActions.jsx");
-/* harmony import */ var _subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./subElements/AgregarFormulario */ "./resources/js/escritorio/paneles/eventos/subElements/AgregarFormulario.jsx");
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _componentes_basic_CardList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../componentes/basic/CardList */ "./resources/js/componentes/basic/CardList.jsx");
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
+/* harmony import */ var _procedimientos_generateEventosCard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./procedimientos/generateEventosCard */ "./resources/js/escritorio/eventos/procedimientos/generateEventosCard.jsx");
+/* harmony import */ var _funciones_dataActions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../funciones/dataActions */ "./resources/js/funciones/dataActions.jsx");
+/* harmony import */ var _subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./subElements/AgregarFormulario */ "./resources/js/escritorio/eventos/subElements/AgregarFormulario.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -78767,10 +78781,10 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/eventos/procedimientos/generateEventosCard.jsx":
-/*!****************************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/eventos/procedimientos/generateEventosCard.jsx ***!
-  \****************************************************************************************/
+/***/ "./resources/js/escritorio/eventos/procedimientos/generateEventosCard.jsx":
+/*!********************************************************************************!*\
+  !*** ./resources/js/escritorio/eventos/procedimientos/generateEventosCard.jsx ***!
+  \********************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -78781,8 +78795,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _funciones_generateActions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../funciones/generateActions */ "./resources/js/funciones/generateActions.jsx");
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _funciones_generateActions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../funciones/generateActions */ "./resources/js/funciones/generateActions.jsx");
 /**
  * react basic
  */
@@ -78838,10 +78852,10 @@ function generateEventosCard(eventos, actions) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/eventos/subElements/AgregarFormulario.jsx":
-/*!***********************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/eventos/subElements/AgregarFormulario.jsx ***!
-  \***********************************************************************************/
+/***/ "./resources/js/escritorio/eventos/subElements/AgregarFormulario.jsx":
+/*!***************************************************************************!*\
+  !*** ./resources/js/escritorio/eventos/subElements/AgregarFormulario.jsx ***!
+  \***************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -78854,9 +78868,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-calendar */ "./node_modules/react-calendar/dist/entry.js");
 /* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_calendar__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../componentes/input/Numeric */ "./resources/js/componentes/input/Numeric.jsx");
-/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/input/Numeric */ "./resources/js/componentes/input/Numeric.jsx");
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -79007,10 +79021,10 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/franquicias/Franquicias.jsx":
-/*!*********************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/franquicias/Franquicias.jsx ***!
-  \*********************************************************************/
+/***/ "./resources/js/escritorio/franquicias/Franquicias.jsx":
+/*!*************************************************************!*\
+  !*** ./resources/js/escritorio/franquicias/Franquicias.jsx ***!
+  \*************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -79039,6 +79053,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+/**
+ * react basic
+ */
 
 
 
@@ -79088,10 +79105,10 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/horarios/Horarios.jsx":
-/*!***************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/horarios/Horarios.jsx ***!
-  \***************************************************************/
+/***/ "./resources/js/escritorio/horarios/Horarios.jsx":
+/*!*******************************************************!*\
+  !*** ./resources/js/escritorio/horarios/Horarios.jsx ***!
+  \*******************************************************/
 /*! exports provided: Horarios, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -79102,8 +79119,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _subElements_DiasFeriados__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./subElements/DiasFeriados */ "./resources/js/escritorio/paneles/horarios/subElements/DiasFeriados.jsx");
-/* harmony import */ var _subElements_HorarioSemana__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./subElements/HorarioSemana */ "./resources/js/escritorio/paneles/horarios/subElements/HorarioSemana.jsx");
+/* harmony import */ var _subElements_DiasFeriados__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./subElements/DiasFeriados */ "./resources/js/escritorio/horarios/subElements/DiasFeriados.jsx");
+/* harmony import */ var _subElements_HorarioSemana__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./subElements/HorarioSemana */ "./resources/js/escritorio/horarios/subElements/HorarioSemana.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -79167,10 +79184,10 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/horarios/subElements/AgregarFormulario.jsx":
-/*!************************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/horarios/subElements/AgregarFormulario.jsx ***!
-  \************************************************************************************/
+/***/ "./resources/js/escritorio/horarios/subElements/AgregarFormulario.jsx":
+/*!****************************************************************************!*\
+  !*** ./resources/js/escritorio/horarios/subElements/AgregarFormulario.jsx ***!
+  \****************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -79183,12 +79200,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-calendar */ "./node_modules/react-calendar/dist/entry.js");
 /* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_calendar__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../componentes/input/Toggle */ "./resources/js/componentes/input/Toggle.jsx");
-/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
-/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
-/* harmony import */ var _funciones_generateHoursFromInterval__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../../funciones/generateHoursFromInterval */ "./resources/js/funciones/generateHoursFromInterval.jsx");
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/input/Toggle */ "./resources/js/componentes/input/Toggle.jsx");
+/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var _funciones_generateHoursFromInterval__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../funciones/generateHoursFromInterval */ "./resources/js/funciones/generateHoursFromInterval.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -79551,10 +79568,10 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/horarios/subElements/DiasFeriados.jsx":
-/*!*******************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/horarios/subElements/DiasFeriados.jsx ***!
-  \*******************************************************************************/
+/***/ "./resources/js/escritorio/horarios/subElements/DiasFeriados.jsx":
+/*!***********************************************************************!*\
+  !*** ./resources/js/escritorio/horarios/subElements/DiasFeriados.jsx ***!
+  \***********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -79565,15 +79582,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_calendario_Calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/calendario/Calendar */ "./resources/js/componentes/calendario/Calendar.jsx");
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _AgregarFormulario__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./AgregarFormulario */ "./resources/js/escritorio/paneles/horarios/subElements/AgregarFormulario.jsx");
-/* harmony import */ var _componentes_calendario_procedimientos_generateMonth__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../componentes/calendario/procedimientos/generateMonth */ "./resources/js/componentes/calendario/procedimientos/generateMonth.jsx");
-/* harmony import */ var _funciones_dataActions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../funciones/dataActions */ "./resources/js/funciones/dataActions.jsx");
-/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
-/* harmony import */ var _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../../constantes/CalendarControls */ "./resources/js/constantes/CalendarControls.jsx");
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var _componentes_calendario_Calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/calendario/Calendar */ "./resources/js/componentes/calendario/Calendar.jsx");
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _AgregarFormulario__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./AgregarFormulario */ "./resources/js/escritorio/horarios/subElements/AgregarFormulario.jsx");
+/* harmony import */ var _componentes_calendario_procedimientos_generateMonth__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/calendario/procedimientos/generateMonth */ "./resources/js/componentes/calendario/procedimientos/generateMonth.jsx");
+/* harmony import */ var _funciones_dataActions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../funciones/dataActions */ "./resources/js/funciones/dataActions.jsx");
+/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
+/* harmony import */ var _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../constantes/CalendarControls */ "./resources/js/constantes/CalendarControls.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -79853,10 +79870,10 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/horarios/subElements/HorarioSemana.jsx":
-/*!********************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/horarios/subElements/HorarioSemana.jsx ***!
-  \********************************************************************************/
+/***/ "./resources/js/escritorio/horarios/subElements/HorarioSemana.jsx":
+/*!************************************************************************!*\
+  !*** ./resources/js/escritorio/horarios/subElements/HorarioSemana.jsx ***!
+  \************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -79867,17 +79884,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_calendario_Calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/calendario/Calendar */ "./resources/js/componentes/calendario/Calendar.jsx");
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _componentes_basic_CardList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../componentes/basic/CardList */ "./resources/js/componentes/basic/CardList.jsx");
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _AgregarFormulario__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./AgregarFormulario */ "./resources/js/escritorio/paneles/horarios/subElements/AgregarFormulario.jsx");
-/* harmony import */ var _componentes_calendario_procedimientos_generateWeek__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../componentes/calendario/procedimientos/generateWeek */ "./resources/js/componentes/calendario/procedimientos/generateWeek.jsx");
-/* harmony import */ var _componentes_calendario_procedimientos_generateMonth__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../../componentes/calendario/procedimientos/generateMonth */ "./resources/js/componentes/calendario/procedimientos/generateMonth.jsx");
-/* harmony import */ var _funciones_dataActions__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../../funciones/dataActions */ "./resources/js/funciones/dataActions.jsx");
-/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
-/* harmony import */ var _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../../constantes/CalendarControls */ "./resources/js/constantes/CalendarControls.jsx");
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var _componentes_calendario_Calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/calendario/Calendar */ "./resources/js/componentes/calendario/Calendar.jsx");
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _componentes_basic_CardList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/CardList */ "./resources/js/componentes/basic/CardList.jsx");
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _AgregarFormulario__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./AgregarFormulario */ "./resources/js/escritorio/horarios/subElements/AgregarFormulario.jsx");
+/* harmony import */ var _componentes_calendario_procedimientos_generateWeek__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/calendario/procedimientos/generateWeek */ "./resources/js/componentes/calendario/procedimientos/generateWeek.jsx");
+/* harmony import */ var _componentes_calendario_procedimientos_generateMonth__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../componentes/calendario/procedimientos/generateMonth */ "./resources/js/componentes/calendario/procedimientos/generateMonth.jsx");
+/* harmony import */ var _funciones_dataActions__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../funciones/dataActions */ "./resources/js/funciones/dataActions.jsx");
+/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
+/* harmony import */ var _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../constantes/CalendarControls */ "./resources/js/constantes/CalendarControls.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -80149,10 +80166,10 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/locales/Locales.jsx":
-/*!*************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/locales/Locales.jsx ***!
-  \*************************************************************/
+/***/ "./resources/js/escritorio/locales/Locales.jsx":
+/*!*****************************************************!*\
+  !*** ./resources/js/escritorio/locales/Locales.jsx ***!
+  \*****************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -80170,14 +80187,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_table_hoc_fixed_columns__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_table_hoc_fixed_columns__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var react_table_hoc_fixed_columns_lib_styles_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-table-hoc-fixed-columns/lib/styles.css */ "./node_modules/react-table-hoc-fixed-columns/lib/styles.css");
 /* harmony import */ var react_table_hoc_fixed_columns_lib_styles_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_table_hoc_fixed_columns_lib_styles_css__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
-/* harmony import */ var _subElements_AgregarLocal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./subElements/AgregarLocal */ "./resources/js/escritorio/paneles/locales/subElements/AgregarLocal.jsx");
-/* harmony import */ var _subElements_VerLocal__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./subElements/VerLocal */ "./resources/js/escritorio/paneles/locales/subElements/VerLocal.jsx");
-/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
-/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
-/* harmony import */ var _funciones_dataActions__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../../funciones/dataActions */ "./resources/js/funciones/dataActions.jsx");
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
+/* harmony import */ var _subElements_AgregarLocal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./subElements/AgregarLocal */ "./resources/js/escritorio/locales/subElements/AgregarLocal.jsx");
+/* harmony import */ var _subElements_VerLocal__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./subElements/VerLocal */ "./resources/js/escritorio/locales/subElements/VerLocal.jsx");
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
+/* harmony import */ var _funciones_dataActions__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../funciones/dataActions */ "./resources/js/funciones/dataActions.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
@@ -80534,10 +80551,10 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/locales/subElements/AgregarLocal.jsx":
-/*!******************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/locales/subElements/AgregarLocal.jsx ***!
-  \******************************************************************************/
+/***/ "./resources/js/escritorio/locales/subElements/AgregarLocal.jsx":
+/*!**********************************************************************!*\
+  !*** ./resources/js/escritorio/locales/subElements/AgregarLocal.jsx ***!
+  \**********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -80548,9 +80565,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
-/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 /**
@@ -80639,10 +80656,10 @@ function AgregarLocal(props) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/locales/subElements/VerLocal.jsx":
-/*!**************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/locales/subElements/VerLocal.jsx ***!
-  \**************************************************************************/
+/***/ "./resources/js/escritorio/locales/subElements/VerLocal.jsx":
+/*!******************************************************************!*\
+  !*** ./resources/js/escritorio/locales/subElements/VerLocal.jsx ***!
+  \******************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -80712,10 +80729,10 @@ function VerLocal(props) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/reservas/Reservas.jsx":
-/*!***************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/reservas/Reservas.jsx ***!
-  \***************************************************************/
+/***/ "./resources/js/escritorio/reservas/Reservas.jsx":
+/*!*******************************************************!*\
+  !*** ./resources/js/escritorio/reservas/Reservas.jsx ***!
+  \*******************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -80726,11 +80743,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./subElements/AgregarFormulario */ "./resources/js/escritorio/paneles/reservas/subElements/AgregarFormulario.jsx");
-/* harmony import */ var _subElements_Calendario__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./subElements/Calendario */ "./resources/js/escritorio/paneles/reservas/subElements/Calendario.jsx");
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _funciones_dataActions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../funciones/dataActions */ "./resources/js/funciones/dataActions.jsx");
-/* harmony import */ var _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../constantes/CalendarControls */ "./resources/js/constantes/CalendarControls.jsx");
+/* harmony import */ var _subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./subElements/AgregarFormulario */ "./resources/js/escritorio/reservas/subElements/AgregarFormulario.jsx");
+/* harmony import */ var _subElements_Calendario__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./subElements/Calendario */ "./resources/js/escritorio/reservas/subElements/Calendario.jsx");
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _funciones_dataActions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../funciones/dataActions */ "./resources/js/funciones/dataActions.jsx");
+/* harmony import */ var _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../constantes/CalendarControls */ "./resources/js/constantes/CalendarControls.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -80867,10 +80884,10 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/reservas/subElements/AgregarFormulario.jsx":
-/*!************************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/reservas/subElements/AgregarFormulario.jsx ***!
-  \************************************************************************************/
+/***/ "./resources/js/escritorio/reservas/subElements/AgregarFormulario.jsx":
+/*!****************************************************************************!*\
+  !*** ./resources/js/escritorio/reservas/subElements/AgregarFormulario.jsx ***!
+  \****************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -80881,9 +80898,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _reserva_pasos_Evento__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../reserva/pasos/Evento */ "./resources/js/reserva/pasos/Evento.jsx");
+/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _reserva_pasos_Evento__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../reserva/pasos/Evento */ "./resources/js/reserva/pasos/Evento.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -81051,10 +81068,10 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/reservas/subElements/Calendario.jsx":
-/*!*****************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/reservas/subElements/Calendario.jsx ***!
-  \*****************************************************************************/
+/***/ "./resources/js/escritorio/reservas/subElements/Calendario.jsx":
+/*!*********************************************************************!*\
+  !*** ./resources/js/escritorio/reservas/subElements/Calendario.jsx ***!
+  \*********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -81065,8 +81082,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_calendario_Calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/calendario/Calendar */ "./resources/js/componentes/calendario/Calendar.jsx");
-/* harmony import */ var _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../constantes/CalendarControls */ "./resources/js/constantes/CalendarControls.jsx");
+/* harmony import */ var _componentes_calendario_Calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/calendario/Calendar */ "./resources/js/componentes/calendario/Calendar.jsx");
+/* harmony import */ var _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../constantes/CalendarControls */ "./resources/js/constantes/CalendarControls.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -81525,10 +81542,10 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/ubicaciones/Ubicaciones.jsx":
-/*!*********************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/ubicaciones/Ubicaciones.jsx ***!
-  \*********************************************************************/
+/***/ "./resources/js/escritorio/ubicaciones/Ubicaciones.jsx":
+/*!*************************************************************!*\
+  !*** ./resources/js/escritorio/ubicaciones/Ubicaciones.jsx ***!
+  \*************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -81539,13 +81556,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _componentes_basic_CardList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/CardList */ "./resources/js/componentes/basic/CardList.jsx");
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
-/* harmony import */ var _procedures_generateUbicacionesCard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./procedures/generateUbicacionesCard */ "./resources/js/escritorio/paneles/ubicaciones/procedures/generateUbicacionesCard.jsx");
-/* harmony import */ var _funciones_dataActions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../funciones/dataActions */ "./resources/js/funciones/dataActions.jsx");
-/* harmony import */ var _subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./subElements/AgregarFormulario */ "./resources/js/escritorio/paneles/ubicaciones/subElements/AgregarFormulario.jsx");
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _componentes_basic_CardList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../componentes/basic/CardList */ "./resources/js/componentes/basic/CardList.jsx");
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
+/* harmony import */ var _procedures_generateUbicacionesCard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./procedures/generateUbicacionesCard */ "./resources/js/escritorio/ubicaciones/procedures/generateUbicacionesCard.jsx");
+/* harmony import */ var _funciones_dataActions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../funciones/dataActions */ "./resources/js/funciones/dataActions.jsx");
+/* harmony import */ var _subElements_AgregarFormulario__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./subElements/AgregarFormulario */ "./resources/js/escritorio/ubicaciones/subElements/AgregarFormulario.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -81737,10 +81754,10 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/ubicaciones/procedures/generateUbicacionesCard.jsx":
-/*!********************************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/ubicaciones/procedures/generateUbicacionesCard.jsx ***!
-  \********************************************************************************************/
+/***/ "./resources/js/escritorio/ubicaciones/procedures/generateUbicacionesCard.jsx":
+/*!************************************************************************************!*\
+  !*** ./resources/js/escritorio/ubicaciones/procedures/generateUbicacionesCard.jsx ***!
+  \************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -81751,8 +81768,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _funciones_generateActions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../funciones/generateActions */ "./resources/js/funciones/generateActions.jsx");
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _funciones_generateActions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../funciones/generateActions */ "./resources/js/funciones/generateActions.jsx");
 /**
  * react basic
  */
@@ -81811,10 +81828,10 @@ function generateUbicacionesCard(ubicaciones, actions) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/paneles/ubicaciones/subElements/AgregarFormulario.jsx":
-/*!***************************************************************************************!*\
-  !*** ./resources/js/escritorio/paneles/ubicaciones/subElements/AgregarFormulario.jsx ***!
-  \***************************************************************************************/
+/***/ "./resources/js/escritorio/ubicaciones/subElements/AgregarFormulario.jsx":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/escritorio/ubicaciones/subElements/AgregarFormulario.jsx ***!
+  \*******************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -81827,9 +81844,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-calendar */ "./node_modules/react-calendar/dist/entry.js");
 /* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_calendar__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../componentes/input/Numeric */ "./resources/js/componentes/input/Numeric.jsx");
-/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/input/Numeric */ "./resources/js/componentes/input/Numeric.jsx");
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }

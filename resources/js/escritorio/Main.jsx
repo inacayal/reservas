@@ -6,20 +6,20 @@ import ReactDOM from 'react-dom';
 /**
  * navigation
  */
-import Lateral from './contenedores/Lateral';
-import Navegacion from './contenedores/Navegacion';
+import Lateral from './Lateral';
+import Navegacion from './Navegacion';
 import BreadCrumb from '../componentes/control/BreadCrumb';
 /**
  * paneles
  */
-import Configuracion from './paneles/configuracion/Configuracion';
-import Escritorio from './paneles/escritorio/Escritorio';
-import Eventos from './paneles/eventos/Eventos';
-import Horarios from './paneles/horarios/Horarios';
-import Locales from './paneles/locales/Locales';
-import Reservas from './paneles/reservas/Reservas';
-import Ubicaciones from './paneles/ubicaciones/Ubicaciones';
-import Franquicias from './paneles/franquicias/Franquicias';
+import Configuracion from './configuracion/Configuracion';
+import Escritorio from './escritorio/Escritorio';
+import Eventos from './eventos/Eventos';
+import Horarios from './horarios/Horarios';
+import Locales from './locales/Locales';
+import Reservas from './reservas/Reservas';
+import Ubicaciones from './ubicaciones/Ubicaciones';
+import Franquicias from './franquicias/Franquicias';
 
 var sidebar = [//get on ajax request
     {
