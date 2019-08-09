@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Resources\EventosResource as Resource;
 use App\User;
+use App\Http\Resources\FeriadosResource as Resource;
+use Illuminate\Http\Request;
 
-class EventoController extends Controller
+class FeriadoController extends Controller
 {
-    protected $model = '\\App\\Models\\Evento';
-    public function __construct () {
+    protected $model = '\\App\\Models\\Feriado';
+    public function __construct (){
 
     }
     /**
@@ -17,26 +17,31 @@ class EventoController extends Controller
      * 
      * @param $id must be an integer in db
      */
-    public function list ($id){
-        
+    public function list (
+        $id,
+        $date
+    ){
+        $month = date('m',((int)$date));
+
         $dependency = $this->model::assignDependencyOptions (
-            [],
+            array('feriados' => [$month]),
             'query'  
         );
 
         $user = User::with(
-                $dependency->data    
+                $dependency->data
             )
             ->where('id',$id)
             ->first();
 
         return response( 
-            [
+            [ 
+                'intervalo' => $user->intervalo,
                 'data' => Resource::collection(
                     $user
-                        ->eventos
-                        ->keyBy('id')
-                )
+                        ->feriados
+                        ->keyBy('fecha_feriado')
+                    )
             ],
             200
         )->header('Content-Type','application/json');

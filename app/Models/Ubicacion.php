@@ -10,6 +10,8 @@ namespace App\Models;
 use Reliese\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
 use App\Traits\hasDataFormatting;
+use App\Traits\hasDependencyFormatting;
+
 /**
  * Class Ubicacione
  * 
@@ -28,7 +30,8 @@ use App\Traits\hasDataFormatting;
  */
 class Ubicacion extends Eloquent
 {
-	use hasDataFormatting;
+	use hasDataFormatting,
+		hasDependencyFormatting;
 	/**
 	 * hasDataFormatting trait constants
 	 */
@@ -37,6 +40,15 @@ class Ubicacion extends Eloquent
 	private static $formatOptions = [
 		'keyData'=>'data',
 		'listData'=>'list'
+	];
+	/**
+	 * hasDependencyFormatting trait constants
+	 */
+	private static $dependencies = [
+		'query' => [
+			'ubicaciones'=>'\\App\\Models\\Ubicacion',
+			'ubicaciones.estado'=>'\\App\\Models\\Query\\EstadoUbicacion'
+		]
 	];
 	/**
 	 * Eloquent constants and castings
@@ -58,6 +70,11 @@ class Ubicacion extends Eloquent
 	/**
 	 * Helper methods
 	 */
+	public static function ubicacionesQueryCallback () {
+		return function ($query) {
+			return $query->active();
+		};
+	}
 	/**
 	 * Getter methods
 	 */
@@ -72,6 +89,12 @@ class Ubicacion extends Eloquent
 	}
 	public function reservas(){
 		return $this->hasMany(\App\Models\Reserva::class, 'id_ubicacion');
+	}
+	/**
+	 * Model Scopes
+	 */
+	public function scopeActive($query){
+		return $query->where('id_estado',1);
 	}
 	/**
 	 * Database seeding

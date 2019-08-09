@@ -12,6 +12,7 @@ class UbicacionesResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
+    public $preserveKeys = true;
     public function toArray($request)
     {
         return [
@@ -19,7 +20,7 @@ class UbicacionesResource extends JsonResource
             "nombre" => $this->nombre,
             "descripcion" =>$this->descripcion,
             "capacidad" => $this->cantidad_maxima,
-            "estado" => $this->estado_salon->descripcion
+            "estado" => $this->estado->descripcion
         ];
     }
 }

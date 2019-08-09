@@ -15,26 +15,25 @@ class FeriadosResource extends JsonResource
     public $preserveKeys = true;
     public function toArray($request)
     {
-        $first = $this[0];
         return (object) [
-            "id"=>$first->id,
-            "estado"=>$first->estado->descripcion,
-            "descripcion"=>$first->descripcion,
+            "id"=>$this->id,
+            "estado"=>$this->estado->descripcion,
+            "descripcion"=>$this->descripcion,
             "aperturaReserva"=>[
-                'hora'=>$first->apertura_reserva->hora,
-                'minuto'=>$first->apertura_reserva->minuto
+                'hora'=>$this->apertura_reserva->hora,
+                'minuto'=>$this->apertura_reserva->minuto
             ], 
             "cierreReserva"=> [
-                'hora'=>$first->cierre_reserva->hora,
-                'minuto'=>$first->cierre_reserva->minuto
+                'hora'=>$this->cierre_reserva->hora,
+                'minuto'=>$this->cierre_reserva->minuto
             ] ,
             "aperturaAtencion"=> [
-                'hora'=>$first->apertura_atencion->hora,
-                'minuto'=> $first->apertura_atencion->minuto 
+                'hora'=>$this->apertura_atencion->hora,
+                'minuto'=> $this->apertura_atencion->minuto 
             ], 
             "cierreAtencion"=> [
-                'hora'=>$first->cierre_atencion->hora,
-                'minuto'=>$first->cierre_atencion->minuto
+                'hora'=>$this->cierre_atencion->hora,
+                'minuto'=>$this->cierre_atencion->minuto
             ]
         ];
     }

@@ -2,34 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Http\Resources\FeriadosResource as Resource;
+use App\Http\Resources\HorarioSemanaResource as Resource;
 use Illuminate\Http\Request;
+use App\User;
 
-class FeriadosController extends Controller
+class HorarioController extends Controller
 {
-    protected $model = '\\App\\Models\\UsuarioFeriados';
-    public function __construct (){
+    protected $model = '\\App\\Models\\Horario';
+    public function __construct () {
 
     }
-    /**
-     * get all eventos by user
-     * 
-     * @param $id must be an integer in db
-     */
+
     public function list ($id){
-        $user = User::where('id',$id)->first();
+        $user = User::with('horarios')
+            ->where('id',$id)
+            ->first();
+
         return response( 
-            [ 
-                'data' => Resource::collection(
-                    $user
-                        ->feriados
-                        ->groupBy('fecha_feriado')
-                    )
-            ],
+            Resource::collection(
+                $user
+                    ->horarios
+                    ->keyBy('id_dia_semana')
+            ),
             200
         )->header('Content-Type','application/json');
     }
+
     public function create (){
         return response(['respuesta'=>'create'],200)
             ->header('Content-Type','application/json');

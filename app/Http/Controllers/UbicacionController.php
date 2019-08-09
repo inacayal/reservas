@@ -8,14 +8,29 @@ use App\User;
 
 class UbicacionController extends Controller
 {
-    protected $model = '\\App\\Models\\UsuarioFeriados';
+    protected $model = '\\App\\Models\\Ubicacion';
     public function __construct () {
 
     }
     public function list ($id){
-        $user = User::where('id',$id)->first();
+
+        $dependency = $this->model::assignDependencyOptions (
+            [],
+            'query'  
+        );
+        
+        $user = User::with(
+                $dependency->data
+            )
+            ->where('id',$id)
+            ->first();
+        
         return response( 
-            Resource::collection($user->ubicaciones),
+            Resource::collection(
+                $user
+                    ->ubicaciones
+                    ->keyBy('id')
+            ),
             200
         )->header('Content-Type','application/json');
     }

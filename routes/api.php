@@ -39,17 +39,17 @@ Route::prefix('ubicaciones')->name('ubicaciones.')->group(function (){
 });
 
 Route::prefix('horarios')->name('horarios.')->group(function (){
-    Route::get('/{id}','HorariosController@list')->name('list');
-    Route::put('/update/{id}','HorariosController@update')->name('update');
-    Route::delete('/delete/{id}','HorariosController@delete')->name('delete');
-    Route::post('/create','HorariosController@create')->name('create');
+    Route::get('/{id}','HorarioController@list')->name('list');
+    Route::put('/update/{id}','HorarioController@update')->name('update');
+    Route::delete('/delete/{id}','HorarioController@delete')->name('delete');
+    Route::post('/create','HorarioController@create')->name('create');
 });
 
 Route::prefix('feriados')->name('feriados.')->group(function (){
-    Route::get('/{id}','FeriadosController@list')->name('list');
-    Route::put('/update/{id}','FeriadosController@update')->name('update');
-    Route::delete('/delete/{id}','FeriadosController@delete')->name('delete');
-    Route::post('/create','FeriadosController@create')->name('create');
+    Route::get('/{id}/{date}','FeriadoController@list')->name('list');
+    Route::put('/update/{id}','FeriadoController@update')->name('update');
+    Route::delete('/delete/{id}','FeriadoController@delete')->name('delete');
+    Route::post('/create','FeriadoController@create')->name('create');
 });
 
 Route::prefix('configuracion')->name('configuracion.')->group(function (){

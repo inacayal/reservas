@@ -95,44 +95,33 @@ class User extends Eloquent
 	 * Model relationship methods
 	 */
 	public function intervalo(){
-		return $this->hasOne(\App\Models\Intervalo::class, 'intervalo_reserva');
+		return $this->belongsTo(\App\Models\Query\Intervalo::class, 'intervalo_reserva');
 	}
-
-	public function estado_usuario(){
-		return $this->belongsTo(\App\Models\EstadoUsuario::class, 'id_estado');
+	public function estado(){
+		return $this->belongsTo(\App\Models\Query\EstadoUsuario::class, 'id_estado');
 	}
-
-	
 	public function provincia(){
 		return $this->belongsTo(\App\Models\Provincia::class, 'id_provincia');
 	}
-	
 	public function horarios(){
 		return $this->hasMany(\App\Models\Horario::class, 'id_usuario');
 	}
-	
 	public function reservas(){
 		return $this->hasMany(\App\Models\Reserva::class, 'id_usuario');
 	}
-	
 	public function ubicaciones(){
 		return $this->hasMany(\App\Models\Ubicacion::class, 'id_usuario');
 	}
-	
 	public function franquicia(){
 		return $this->belongsTo(\App\User::class, 'id_franquicia');
 	}
-
 	public function locales(){
 		return $this->hasMany(\App\User::class, 'id_franquicia');
 	}
-
 	public function eventos(){
 		return $this->hasMany(\App\Models\Evento::class, 'id_usuario');
 	}
-
 	public function feriados(){
-		return $this->hasMany(\App\Models\Feriado::class, 'id_usuario')->thisMonth($this->month);
+		return $this->hasMany(\App\Models\Feriado::class, 'id_usuario');
 	}
-
 }

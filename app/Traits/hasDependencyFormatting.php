@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
  */
 trait hasDependencyFormatting
 {
-	public static function getDependencies (
+	private static function getDependencies (
 		string $type
 	) {
 		return self::$dependencies[$type];

@@ -10,6 +10,8 @@ namespace App\Models;
 use Reliese\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
 use App\Traits\hasDataFormatting;
+use App\Traits\hasDependencyFormatting;
+
 /**
  * Class UsuarioEvento
  * 
@@ -29,7 +31,8 @@ use App\Traits\hasDataFormatting;
  */
 class Evento extends Eloquent
 {
-	use hasDataFormatting;
+	use hasDataFormatting,
+		hasDependencyFormatting;
 	/**
 	 * hasDataFormatting trait constants
 	 */
@@ -38,6 +41,15 @@ class Evento extends Eloquent
 	private static $formatOptions = [
 		'keyData'=>'data',
 		'listData'=>'list'
+	];
+	/**
+	 * hasDependencyFormatting trait constants
+	 */
+	private static $dependencies = [
+		'query' => [
+			'eventos'=>'\\App\\Models\\Evento',
+			'eventos.estado'=>'\\App\\Models\\Query\\EstadoEvento'
+		]
 	];
 	/**
 	 * Eloquent constants and castings

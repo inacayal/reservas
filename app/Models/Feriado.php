@@ -9,6 +9,7 @@ namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 use App\Traits\hasDataFormatting;
+use App\Traits\hasDependencyFormatting;
 use Illuminate\Support\Collection;
 /**
  * Class UsuarioFeriado
@@ -27,7 +28,8 @@ use Illuminate\Support\Collection;
  */
 class Feriado extends Eloquent
 {
-	use hasDataFormatting;
+	use hasDataFormatting,
+		hasDependencyFormatting;
 	/**
 	 * HasDataFormatting trait constants
 	 */
@@ -35,6 +37,15 @@ class Feriado extends Eloquent
 	private static $valueKey = '';
 	private static $formatOptions = [
 		'groupData'=>'data'
+	];
+	/**
+	 * hasDependencyFormatting trait constants
+	 */
+	private static $dependencies = [
+		'query' => [
+			'feriados'=>'\\App\\Models\\Feriado',
+			'intervalo'=>'\\App\\Models\\Query\\Intervalo'
+		]
 	];
 	/**
 	 * Eloquent constants and castings
@@ -67,6 +78,11 @@ class Feriado extends Eloquent
 			'hora'=>$res[0],
 			'minuto'=>$res[1]
 		];
+	}
+	public static function feriadosQueryCallback($month){
+		return function ($query) use ($month) {
+			return $query->thisMonth($month);
+		};
 	}
 	/**
 	 * Getter methods

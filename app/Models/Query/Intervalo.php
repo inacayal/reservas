@@ -26,29 +26,15 @@ use App\Traits\crudMethods;
  */
 class Intervalo extends Eloquent
 {
-	//use CrudMethods;
-
 	public $timestamps = false;
 	protected $table = 'intervalos';
 	protected $fillable = [
         'descripcion'
 	];
-	protected static $keyBy = false;
 	/**
 	 * start relations
 	 */
-	public function user()
-	{
-		return $this->belongsTo(\App\User::class, 'intervalo_reserva');
-	}
-	
-	private static $formatAsList = false;
-
-	public static function needsListFormat() {
-		return self::$formatAsList;
-	}
-
-	public static function isGroupable (){
-		return self::$keyBy;
+	public function user(){
+		return $this->hasMany(\App\User::class, 'id','intervalo_reserva');
 	}
 }

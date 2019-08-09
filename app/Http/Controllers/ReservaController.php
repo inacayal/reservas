@@ -29,7 +29,7 @@ class ReservaController extends Controller
             array('reservas' => [$month]),
             'query'  
         );
-
+        
         $user = User::with(
                 $dependency->data
             )->find($id);
