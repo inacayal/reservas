@@ -20,14 +20,14 @@ class ReservaResource extends JsonResource
             $res->push(
                 [   
                     "id"=> $el->id,
-                    "email"=> "isadore.gerhold@example.org",
-                    "nombre"=> "Brandon",
-                    "apellido"=> "Herman",
-                    "telefono"=> "+1-934-779-4987",
+                    "email"=> $el->email,
+                    "nombre"=> $el->nombre,
+                    "apellido"=> $el->apellido,
+                    "telefono"=> $el->telefono,
                     "ubicacion"=> $el->ubicacion->nombre,
-                    "personas"=> 3,
+                    "personas"=> $el->cantidad_personas,
                     "evento"=> $el->evento->nombre,
-                    "descripcion"=> "Sapiente iusto qui commodi quibusdam quas.",
+                    "descripcion"=> $el->descripcion_evento ,
                     "estado"=> $el->estado->descripcion,
                     "hora_reserva"=>$el->hora_reserva
                 ]

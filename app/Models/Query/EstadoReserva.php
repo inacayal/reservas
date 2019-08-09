@@ -25,7 +25,7 @@ class EstadoReserva extends Eloquent
 
 	protected $table = 'estado_reserva';
 	public $timestamps = false;
-
+	protected static $keyBy = false;
 	protected $fillable = [
 		'descripcion'
 	];
@@ -33,5 +33,15 @@ class EstadoReserva extends Eloquent
 	public function reservas()
 	{
 		return $this->hasMany(\App\Models\Reserva::class, 'id_estado');
+	}
+
+	private static $formatAsList = false;
+
+	public static function needsListFormat() {
+		return self::$formatAsList;
+	}
+
+	public static function isGroupable (){
+		return self::$keyBy;
 	}
 }

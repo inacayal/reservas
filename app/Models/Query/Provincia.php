@@ -26,21 +26,22 @@ class Provincia extends Eloquent
 	
 	public $timestamps = false;
 	protected $table = 'provincias';
+	protected static $keyBy = false;
 	protected $fillable = [
 		'nombre'
 	];
-
 	public function users()
 	{
 		return $this->hasMany(\App\User::class, 'id_provincia');
 	}
 
-	public static function getFormattedValues() {
-		$options = self::all();
-		$res = [];
-		foreach ($options as $op){
-			$res[$op->id]=$op->nombre;
-		}
-		return $res;
+	private static $formatAsList = false;
+
+	public static function needsListFormat() {
+		return self::$formatAsList;
+	}
+
+	public static function isGroupable (){
+		return self::$keyBy;
 	}
 }

@@ -24,9 +24,7 @@ import {ALL_CONTROL} from '../../constantes/CalendarControls';
 export default class Reservas extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            agregar: false,
-        };
+        this.state = {agregar: false};
         this.guardarNuevaReserva = this.guardarNuevaReserva.bind(this);
         this.agregarReserva = this.agregarReserva.bind(this);
         this.verCalendario = this.verCalendario.bind(this);
@@ -42,6 +40,7 @@ export default class Reservas extends Component {
         e.preventDefault();
         this.setState({ agregar: !this.state.agregar });
     }
+
     guardarNuevaReserva(e){
         e.preventDefault();
         console.log('guardar');
@@ -49,14 +48,6 @@ export default class Reservas extends Component {
 
     shouldComponentUpdate(nextProps){
         return this.props.panel||nextProps.panel;
-    }
-    
-    componentDidMount() {
-        console.log('reservasMount');
-    }
-
-    componentWillUnmount() {
-        console.log('reservasUnmount');
     }
 
     render() {
@@ -77,7 +68,7 @@ export default class Reservas extends Component {
             );
         
         return (
-            <div className={(this.props.panel) ? "full-width" : "hidden"}>
+            <div className={(this.props.panel) ? "container" : "hidden"}>
                 <Titulo
                     title={"Reservaciones"}
                     navigation={controls}/>

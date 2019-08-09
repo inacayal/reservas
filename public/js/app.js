@@ -75172,7 +75172,7 @@ function (_Component) {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container"
+        className: "container no-padding"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row justify-content-end v-padding"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_ButtonList__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -80129,7 +80129,7 @@ function (_Component) {
         "class": "hidden"
       }];
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: this.props.show ? "full-width container" : "hidden"
+        className: this.props.show ? "container" : "hidden"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_5__["default"], {
@@ -80842,16 +80842,6 @@ function (_Component) {
       return this.props.panel || nextProps.panel;
     }
   }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      console.log('reservasMount');
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      console.log('reservasUnmount');
-    }
-  }, {
     key: "render",
     value: function render() {
       var controls = this.state.agregar ? [this.panelNavigation[0]] : [this.panelNavigation[1]],
@@ -80865,7 +80855,7 @@ function (_Component) {
         agregarReserva: this.agregarReserva
       });
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: this.props.panel ? "full-width" : "hidden"
+        className: this.props.panel ? "container" : "hidden"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__["default"], {
         title: "Reservaciones",
         navigation: controls

@@ -8,7 +8,7 @@
 namespace App;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
-
+use Illuminate\Support\Collection;
 /**
  * Class User
  * 
@@ -49,6 +49,8 @@ class User extends Eloquent
 {
 	public $timestamps = false;
 
+	protected static $month;
+
 	protected $casts = [
 		'id_franquicia' => 'int',
 		'id_provincia' => 'int',
@@ -83,12 +85,13 @@ class User extends Eloquent
 		'cuit_cuil',
 		'direccion',
 		'telefono_local',
-		'id_estado'
+		'id_estado',
+		'month'
 	];
 	/**
 	 * list select and option menu when querying desktop panel
 	 */
-	public function intervaloReserva(){
+	public function intervalo(){
 		return $this->hasOne(\App\Models\Intervalo::class, 'intervalo_reserva');
 	}
 
@@ -96,24 +99,25 @@ class User extends Eloquent
 		return $this->belongsTo(\App\Models\EstadoUsuario::class, 'id_estado');
 	}
 
-	public function franquicia(){
-		return $this->belongsTo(\App\User::class, 'id_franquicia');
-	}
-
+	
 	public function provincia(){
 		return $this->belongsTo(\App\Models\Provincia::class, 'id_provincia');
 	}
-
-	public function horariosSemana(){
-		return $this->hasMany(\App\Models\Horarios::class, 'id_usuario');
+	
+	public function horarios(){
+		return $this->hasMany(\App\Models\Horario::class, 'id_usuario');
 	}
-
+	
 	public function reservas(){
 		return $this->hasMany(\App\Models\Reserva::class, 'id_usuario');
 	}
-
+	
 	public function ubicaciones(){
 		return $this->hasMany(\App\Models\Ubicacion::class, 'id_usuario');
+	}
+	
+	public function franquicia(){
+		return $this->belongsTo(\App\User::class, 'id_franquicia');
 	}
 
 	public function locales(){
@@ -125,19 +129,83 @@ class User extends Eloquent
 	}
 
 	public function feriados(){
-		return $this->hasMany(\App\Models\Feriado::class, 'id_usuario');
+		return $this->hasMany(\App\Models\Feriado::class, 'id_usuario')->thisMonth($this->month);
+	}
+	/**
+	 * traits
+	 */
+	private static $dataKey = '';
+	private static $valueKey = '';
+	private static $formatOptions = [];
+
+	public static function getFormatOptions() {
+		return self::$formatOptions;
 	}
 
-	public $options = [
-		'id_provincia'=>'\\App\\Models\\Provincia'
-	];
+	public static function getModelKeys(){
+		return (object) [
+			'key'=>self::$dataKey,
+			'value'=>self::$valueKey
+		];
+	}
+
+	public static function listCallback(
+		$modelKeys
+	) {
+		return function ($item) use ($modelKeys) {
+			return array(
+				$item[$modelKeys->key] => $item[$modelKeys->value]
+			);
+		};
+	}
+
+    /**
+     * gets collection as key value pair
+     * @param date must be time from javascript divided by 1000.
+     *        timezone considerations must be taken
+     */
+    public static function listData(
+		Collection $data,
+		$model,
+		$keys
+	) {
+		return $data->mapWithKeys(
+			$model::listCallback($keys)
+		);
+	}
 	
-	public static function formattedOptions(){
-		$select = [];
-		foreach($options as $field=>$model){
-			$select[$field] = $model::getFormattedValues();
-		}
-		return (object) $select;
+	public static function groupData(
+		Collection $data,
+		$model,
+		$keys
+    ) {
+		return $data->groupBy($keys->key);
 	}
 
+	public static function keyData(
+		Collection $data,
+		$model,
+		$keys
+    ) {
+		return $data->keyBy($keys->key);
+	}
+
+	public static function getFormattedData(
+		Collection $data
+	){
+		$formattedData = collect([]);
+		$formatOptions = self::getFormatOptions();
+		$modelKeys = self::getModelKeys();
+		$class = self::class;
+		if (count($formatOptions)>0){
+			foreach($formatOptions as $optKey=>$option){
+				$formattedData[$option] = call_user_func_array(
+					$class.'::'.$optKey,
+					[$data,$class,$modelKeys]
+				);
+			}
+			return $formattedData;
+		}
+		return $data;
+	}
 }

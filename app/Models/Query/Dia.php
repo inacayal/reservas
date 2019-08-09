@@ -24,7 +24,7 @@ class Dia extends Eloquent
 	//use CrudMethods;
 	protected $table = 'dias_semana';
 	public $timestamps = false;
-
+	protected static $keyBy = false;
 	protected $fillable = [
 		'descripcion'
 	];
@@ -32,5 +32,8 @@ class Dia extends Eloquent
 	public function horarios()
 	{
 		return $this->hasMany(\App\Models\Horarios::class, 'id_dia_semana');
+	}
+	public function isGroupable (){
+		return self::$keyBy;
 	}
 }

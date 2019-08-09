@@ -109,7 +109,7 @@ export default class Calendar extends Component {
 
     render(){
         return(
-            <div className="container">
+            <div className="container no-padding">
                 <div className="row justify-content-end v-padding">
                     <ButtonList
                         clickHandler={this.changeView}

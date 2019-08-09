@@ -33,6 +33,7 @@ class Intervalo extends Eloquent
 	protected $fillable = [
         'descripcion'
 	];
+	protected static $keyBy = false;
 	/**
 	 * start relations
 	 */
@@ -40,7 +41,14 @@ class Intervalo extends Eloquent
 	{
 		return $this->belongsTo(\App\User::class, 'intervalo_reserva');
 	}
-	/**
-	 * end relations
-	 */
+	
+	private static $formatAsList = false;
+
+	public static function needsListFormat() {
+		return self::$formatAsList;
+	}
+
+	public static function isGroupable (){
+		return self::$keyBy;
+	}
 }

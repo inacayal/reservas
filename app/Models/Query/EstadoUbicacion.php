@@ -19,10 +19,10 @@ use App\Traits\crudMethods;
  *
  * @package App\Models
  */
-class EstadoSalon extends Eloquent
+class EstadoUbicacion extends Eloquent
 {
 	//use CrudMethods;
-
+	protected static $keyBy = false;
 	protected $table = 'estado_salon';
 	public $timestamps = false;
 
@@ -33,5 +33,15 @@ class EstadoSalon extends Eloquent
 	public function ubicaciones()
 	{
 		return $this->hasMany(\App\Models\Ubicacion::class, 'id_estado');
+	}
+
+	private static $formatAsList = false;
+
+	public static function needsListFormat() {
+		return self::$formatAsList;
+	}
+
+	public static function isGroupable (){
+		return self::$keyBy;
 	}
 }

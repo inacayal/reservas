@@ -24,12 +24,16 @@ class Role extends Eloquent
 
 	public $timestamps = false;
 	protected $table = 'roles';
+	protected static $keyBy = false;	
 	protected $fillable = [
 		'descripcion'
 	];
-
 	public function rol_permiso()
 	{
 		return $this->hasOne(\App\Models\RolPermiso::class, 'id_rol');
+	}
+
+	public static function isGroupable (){
+		return self::$keyBy;
 	}
 }

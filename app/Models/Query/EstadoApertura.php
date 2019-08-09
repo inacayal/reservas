@@ -25,7 +25,7 @@ class EstadoApertura extends Eloquent
 
 	protected $table = 'estado_apertura';
 	public $timestamps = false;
-
+	protected static $keyBy = false;
 	protected $fillable = [
 		'descripcion'
 	];
@@ -33,5 +33,20 @@ class EstadoApertura extends Eloquent
 	public function feriados()
 	{
 		return $this->hasMany(\App\Models\Feriado::class, 'id_estado');
+	}
+
+	public function horarios()
+	{
+		return $this->hasMany(\App\Models\Horario::class, 'id_estado');
+	}
+
+	private static $formatAsList = false;
+
+	public static function needsListFormat() {
+		return self::$formatAsList;
+	}
+	
+	public static function isGroupable (){
+		return self::$keyBy;
 	}
 }

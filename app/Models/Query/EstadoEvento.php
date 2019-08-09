@@ -25,7 +25,7 @@ class EstadoEvento extends Eloquent
 
 	protected $table = 'estado_evento';
 	public $timestamps = false;
-
+	protected static $keyBy = false;
 	protected $fillable = [
 		'descripcion'
 	];
@@ -33,5 +33,15 @@ class EstadoEvento extends Eloquent
 	public function eventos()
 	{
 		return $this->hasMany(\App\Models\Evento::class, 'id_estado');
+	}
+
+	private static $formatAsList = false;
+
+	public static function needsListFormat() {
+		return self::$formatAsList;
+	}
+
+	public static function isGroupable (){
+		return self::$keyBy;
 	}
 }

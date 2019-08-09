@@ -187,7 +187,7 @@ export default class HorarioSemana extends Component {
                     [this.editAddControls[0]]
                     : [{ class: "hidden" }];
         return (
-            <div className={(this.props.show) ? "full-width container" : "hidden"}>
+            <div className={(this.props.show) ? "container" : "hidden"}>
                 <div className="row">
                     <Titulo
                         title={"Horarios"}

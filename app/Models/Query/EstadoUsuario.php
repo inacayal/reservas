@@ -25,7 +25,7 @@ class EstadoUsuario extends Eloquent
 
 	protected $table = 'estado_usuario';
 	public $timestamps = false;
-
+	protected static $keyBy = false;
 	protected $fillable = [
 		'descripcion'
 	];
@@ -33,5 +33,15 @@ class EstadoUsuario extends Eloquent
 	public function users()
 	{
 		return $this->hasMany(\App\User::class, 'id_estado');
+	}
+
+	private static $formatAsList = false;
+
+	public static function needsListFormat() {
+		return self::$formatAsList;
+	}
+
+	public static function isGroupable (){
+		return self::$keyBy;
 	}
 }

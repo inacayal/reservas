@@ -18,6 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::prefix('reservas')->name('reservas.')->group(function (){
     Route::get('/{id}/{date}','ReservaController@list')->name('list');
+    Route::get('/agregar/{id}/{date}','ReservaController@listDependencyData')->name('agregar');
     Route::put('/update/{id}','ReservaController@update')->name('update');
     Route::delete('/delete/{id}','ReservaController@delete')->name('delete');
     Route::post('/create','ReservaController@create')->name('create');
