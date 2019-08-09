@@ -47,26 +47,29 @@ use Illuminate\Support\Collection;
  */
 class User extends Eloquent
 {
+	/**
+	 * hasDataFormatting trait constants
+	 */
+	private static $dataKey = '';
+	private static $valueKey = '';
+	private static $formatOptions = [];
+	/**
+	 * Eloquent constants and castings
+	 */
 	public $timestamps = false;
-
-	protected static $month;
-
 	protected $casts = [
 		'id_franquicia' => 'int',
 		'id_provincia' => 'int',
 		'id_rol' => 'int',
 		'id_estado' => 'int'
 	];
-
 	protected $dates = [
 		'email_verified_at'
 	];
-
 	protected $hidden = [
 		'password',
 		'remember_token'
 	];
-
 	protected $fillable = [
 		'nombre',
 		'razon_social',
@@ -89,7 +92,7 @@ class User extends Eloquent
 		'month'
 	];
 	/**
-	 * list select and option menu when querying desktop panel
+	 * Model relationship methods
 	 */
 	public function intervalo(){
 		return $this->hasOne(\App\Models\Intervalo::class, 'intervalo_reserva');
@@ -131,81 +134,5 @@ class User extends Eloquent
 	public function feriados(){
 		return $this->hasMany(\App\Models\Feriado::class, 'id_usuario')->thisMonth($this->month);
 	}
-	/**
-	 * traits
-	 */
-	private static $dataKey = '';
-	private static $valueKey = '';
-	private static $formatOptions = [];
 
-	public static function getFormatOptions() {
-		return self::$formatOptions;
-	}
-
-	public static function getModelKeys(){
-		return (object) [
-			'key'=>self::$dataKey,
-			'value'=>self::$valueKey
-		];
-	}
-
-	public static function listCallback(
-		$modelKeys
-	) {
-		return function ($item) use ($modelKeys) {
-			return array(
-				$item[$modelKeys->key] => $item[$modelKeys->value]
-			);
-		};
-	}
-
-    /**
-     * gets collection as key value pair
-     * @param date must be time from javascript divided by 1000.
-     *        timezone considerations must be taken
-     */
-    public static function listData(
-		Collection $data,
-		$model,
-		$keys
-	) {
-		return $data->mapWithKeys(
-			$model::listCallback($keys)
-		);
-	}
-	
-	public static function groupData(
-		Collection $data,
-		$model,
-		$keys
-    ) {
-		return $data->groupBy($keys->key);
-	}
-
-	public static function keyData(
-		Collection $data,
-		$model,
-		$keys
-    ) {
-		return $data->keyBy($keys->key);
-	}
-
-	public static function getFormattedData(
-		Collection $data
-	){
-		$formattedData = collect([]);
-		$formatOptions = self::getFormatOptions();
-		$modelKeys = self::getModelKeys();
-		$class = self::class;
-		if (count($formatOptions)>0){
-			foreach($formatOptions as $optKey=>$option){
-				$formattedData[$option] = call_user_func_array(
-					$class.'::'.$optKey,
-					[$data,$class,$modelKeys]
-				);
-			}
-			return $formattedData;
-		}
-		return $data;
-	}
 }
