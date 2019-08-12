@@ -29,7 +29,7 @@ class ReservaController extends Controller
             array('reservas' => [$month]),
             'query'  
         );
-        
+
         $user = User::with(
                 $dependency->data
             )->find($id);
@@ -54,7 +54,7 @@ class ReservaController extends Controller
     ){
         $month = date('m',((int)$date));
         $dependency = $this->model::assignDependencyOptions (
-            [],
+            array('feriados'=>[$month]),
             'create'  
         );
 

@@ -9,6 +9,8 @@ namespace App;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
+use App\Traits\hasDataFormatting;
+use App\Traits\hasDependencyFormatting;
 /**
  * Class User
  * 
@@ -47,12 +49,24 @@ use Illuminate\Support\Collection;
  */
 class User extends Eloquent
 {
+	use hasDataFormatting,
+		hasDependencyFormatting;
 	/**
 	 * hasDataFormatting trait constants
 	 */
 	private static $dataKey = '';
 	private static $valueKey = '';
 	private static $formatOptions = [];
+	/**
+	 * hasDependencyFormatting trait constants
+	 */
+	private static $dependencies = [
+		'query' => [
+			'provincia'=>'\\App\\Models\\Query\\Provincia',
+			'intervalo'=>'\\App\\Models\\Query\\Intervalo',
+			'franquicia'=>'\\App\\User'
+		] 
+	];
 	/**
 	 * Eloquent constants and castings
 	 */
@@ -94,17 +108,14 @@ class User extends Eloquent
 	/**
 	 * Model relationship methods
 	 */
-	public function intervalo(){
-		return $this->belongsTo(\App\Models\Query\Intervalo::class, 'intervalo_reserva');
-	}
-	public function estado(){
-		return $this->belongsTo(\App\Models\Query\EstadoUsuario::class, 'id_estado');
-	}
-	public function provincia(){
-		return $this->belongsTo(\App\Models\Provincia::class, 'id_provincia');
-	}
 	public function horarios(){
 		return $this->hasMany(\App\Models\Horario::class, 'id_usuario');
+	}
+	public function eventos(){
+		return $this->hasMany(\App\Models\Evento::class, 'id_usuario');
+	}
+	public function feriados(){
+		return $this->hasMany(\App\Models\Feriado::class, 'id_usuario');
 	}
 	public function reservas(){
 		return $this->hasMany(\App\Models\Reserva::class, 'id_usuario');
@@ -112,16 +123,19 @@ class User extends Eloquent
 	public function ubicaciones(){
 		return $this->hasMany(\App\Models\Ubicacion::class, 'id_usuario');
 	}
+	public function intervalo(){
+		return $this->belongsTo(\App\Models\Query\Intervalo::class, 'intervalo_reserva');
+	}
+	public function provincia(){
+		return $this->belongsTo(\App\Models\Query\Provincia::class, 'id_provincia');
+	}
+	public function estado(){
+		return $this->belongsTo(\App\Models\Query\EstadoUsuario::class, 'id_estado');
+	}
 	public function franquicia(){
 		return $this->belongsTo(\App\User::class, 'id_franquicia');
 	}
 	public function locales(){
 		return $this->hasMany(\App\User::class, 'id_franquicia');
-	}
-	public function eventos(){
-		return $this->hasMany(\App\Models\Evento::class, 'id_usuario');
-	}
-	public function feriados(){
-		return $this->hasMany(\App\Models\Feriado::class, 'id_usuario');
 	}
 }

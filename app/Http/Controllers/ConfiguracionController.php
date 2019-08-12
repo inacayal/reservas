@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class ConfiguracionController extends Controller
 {
+    private $model = '\\App\\User';
     public function __construct (){
 
     }
@@ -17,7 +18,16 @@ class ConfiguracionController extends Controller
      * @param $id must be an integer in db
      */
     public function list ($id){
-        $user = User::where('id',$id)->first();
+        
+        $dependency = $this->model::assignDependencyOptions(
+            [],
+            'query'  
+        );
+
+        $user = User::with(
+                $dependency->data
+            )->find($id);
+
         return response( 
             new Resource($user),
             200

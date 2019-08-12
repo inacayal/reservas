@@ -8,9 +8,9 @@
 namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
+use Illuminate\Support\Collection;
 use App\Traits\hasDataFormatting;
 use App\Traits\hasDependencyFormatting;
-use Illuminate\Support\Collection;
 /**
  * Class UsuarioFeriado
  * 
@@ -36,7 +36,7 @@ class Feriado extends Eloquent
 	private static $dataKey = 'fecha_feriado';
 	private static $valueKey = '';
 	private static $formatOptions = [
-		'groupData'=>'data'
+		'keyData'=>'data'
 	];
 	/**
 	 * hasDependencyFormatting trait constants
