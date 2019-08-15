@@ -6,16 +6,35 @@ import ReactDOM from 'react-dom';
 /**
  * componentes
  */
-import ButtonList from '../basic/ButtonList';
+import {Link} from 'react-router-dom';
 
 function BreadCrumb(props) {
+    let stored = '';
     return (
         <div className="full-width">
-            <ButtonList
-                clickHandler={props.change}
-                displayList="nav-list no-padding flex-row"
-                container="inline-block v-align-center v-padding"
-                elems={props.items} />
+            <ul className="flex-row nav-list box-padding">
+                {
+                    props.items.map(
+                        (e,i) => {
+                            stored += e==='escritorio' ? '/' : e + '/';
+                            return (
+                                <li key={i} className="margin-box">
+                                    {
+                                        i === props.items.length-1 
+                                        ? 
+                                            <div className='inline-block margin-box'>{e}</div>
+                                        : 
+                                            <>
+                                                <Link to={stored}>{e}</Link>
+                                                <div className="margin-box inline-block">/</div>
+                                            </>
+                                    }
+                                </li>
+                            );
+                        }
+                    )
+                }
+            </ul>
         </div>
     );
 }

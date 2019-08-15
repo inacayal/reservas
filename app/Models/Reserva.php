@@ -111,11 +111,23 @@ class Reserva extends Eloquent
 			$date->format("i"),
 			'00'
 		);
+		$tz = new \DateTimeZone("America/Argentina/Buenos_Aires");
+		date_timezone_set($date,$tz);
 		$dateStr = date_format($date,'Y-m-d H:i:s');
 		return strval(strtotime($dateStr)*1000);
 	}
+	
 	public function getDiaReservaAttribute($value){
-		return strval(strtotime($value)*1000);
+		$date = date_create($value);
+		$date->setTime(
+			'00',
+			'00',
+			'00'
+		);
+		$tz = new \DateTimeZone("America/Argentina/Buenos_Aires");
+		date_timezone_set($date,$tz);
+		$dateStr = date_format($date,'Y-m-d H:i:s');
+		return strval(strtotime($dateStr)*1000);
 	}
 	/**
 	 * Model relationship methods

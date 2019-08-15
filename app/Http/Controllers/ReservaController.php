@@ -11,7 +11,7 @@ class ReservaController extends Controller
 {
     protected $model = '\\App\\Models\\Reserva';
     public function __construct () {
-
+        $this->middleware('length');
     }
     /**
      * get all reservations by user
@@ -21,10 +21,9 @@ class ReservaController extends Controller
      */
     public function list (
         $id,
-        $date
+        $month
     ){
-        $month = date('m',((int)$date));
-
+        
         $dependency = $this->model::assignDependencyOptions(
             array('reservas' => [$month]),
             'query'  

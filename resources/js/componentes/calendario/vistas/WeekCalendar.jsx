@@ -22,7 +22,7 @@ import { MONTHS } from '../../../constantes/DaysMonths';
 function WeekCalendar(props) {
     //show current week as it goes, highlighting today
     //pass today in props
-    let sideTitles = calendarNavigation(
+    const sideTitles = calendarNavigation(
             { 
                 left: -7, 
                 right: 7 
