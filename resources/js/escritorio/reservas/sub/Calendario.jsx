@@ -12,6 +12,7 @@ import {GET} from '../../../utils/api';
  */
 import Calendar from '../../../componentes/calendario/Calendar';
 import LoadBar from '../../../componentes/control/LoadBar';
+import Titulo from '../../../componentes/basic/Titulo';
 /**
  * constantes
  */
@@ -89,6 +90,17 @@ export default class Calendario extends Component {
         this.rechazarReserva = this.rechazarReserva.bind(this);
         this.revertirReserva = this.revertirReserva.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
+        this.nav = [
+            {
+                title: (
+                    <div className="smaller-text text bold">
+                        <i className="fas fa-plus-circle inline-box side-margin" />
+                        Agregar nueva
+                    </div>
+                ),
+                to: 'reservas/agregar'
+            }
+        ];
     }
 
     revertirReserva() {
@@ -165,16 +177,23 @@ export default class Calendario extends Component {
     render(){
         if (this.state.data)
             return (
-                <Calendar
-                    show={this.state.show}
-                    horariosReserva={this.state.horarios}
-                    date={this.state.date}
-                    weekRender={this.state.weekRender}
-                    dayRender={this.state.dayRender}
-                    actions={this.actions}
-                    controls={this.state.controls}
-                    data={this.state.data}
-                    type="reservas"/>
+                <>
+                    <Titulo
+                        title={"Reservaciones"}
+                        links={this.nav} />
+                    <div className="container">
+                        <Calendar
+                            show={this.state.show}
+                            horariosReserva={this.state.horarios}
+                            date={this.state.date}
+                            weekRender={this.state.weekRender}
+                            dayRender={this.state.dayRender}
+                            actions={this.actions}
+                            controls={this.state.controls}
+                            data={this.state.data}
+                            type="reservas"/>
+                    </div>
+                </>
                 );
         return (
             <LoadBar

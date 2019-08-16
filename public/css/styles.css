@@ -51,6 +51,9 @@ html,body {
 .light-title{
     font-size:20px;
 }
+.text-top{
+    vertical-align:top;
+}
 .rechazado{
     color:var(--danger);
 }

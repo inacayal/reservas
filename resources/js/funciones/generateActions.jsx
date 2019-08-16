@@ -3,6 +3,14 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+/**
+ * componmentes
+ */
+import Actions from '../componentes/basic/Actions';
+/**
+ * dictionaries
+ */
+import {FeriadosActions,HorariosActions} from './actionDictionaries';
 
 export const assignActionsByStatus = {
     rechazado: (
@@ -84,7 +92,7 @@ export const assignActionsByStatus = {
                 <div className="smaller-text text bold text-center">
                     <i className="fas fa-history inline-box side-margin" />
                     Revertir
-                    </div>
+                </div>
             ),
             click: actions.revertir,
             data: data
@@ -96,6 +104,7 @@ export const generateActions = {
     reservas: (
         hasEvents,
         actions,
+        links,
         data,
         enableTitles,
         show
@@ -158,97 +167,36 @@ export const generateActions = {
         };
     },
     feriados: (
-        hasEvents,
-        actions,
         data,
-        enableTitles,
-        show
+        actions,
+        key,
+        type
     ) => {
-        let acciones = (hasEvents) ? [
-            {
-                title: (
-                    <div className="smaller-text text bold text-center">
-                        <i className="fas fa-pen inline-box side-margin" />
-                        {(enableTitles) ? 'Editar' : ''}
-                    </div>
-                ),
-                click: actions.editar,
-                data: data,
-                class: (!enableTitles) ? "box-transparent highlight-hover full-width text-right" : null
-            },
-            {
-                title: (
-                    <div className="smaller-text text bold text-center">
-                        <i className="fas fa-trash inline-box side-margin" />
-                        {(enableTitles) ? 'Eliminar' : ''}
-                    </div>
-                ),
-                click: actions.eliminar,
-                data: data,
-                class: (!enableTitles) ? "box-transparent highlight-hover full-width text-right" : null
-            }
-        ] : [
-                {}
-            ];
-        if (!enableTitles && hasEvents)
-            acciones.push({
-                title: (
-                    <div className="smaller-text text bold text-center">
-                        <i className="fas fa-eye inline-box side-margin" />
-                        {(enableTitles) ? 'Ver' : ''}
-                    </div>
-                ),
-                click: actions.ver,
-                data: data,
-                class: (!enableTitles) ? "box-transparent highlight-hover full-width text-right" : null
-            });
-        return acciones;
+        const index = data ? 'data' : 'no_data',
+            acciones = FeriadosActions[type][index](
+                key,
+                actions
+            );
+        return (
+            <Actions
+                links={acciones.links}
+                buttons={acciones.buttons} />
+        )
     },
     horarios: (
-        hasEvents,
-        actions,
         data,
-        enableTitles,
-        show
+        key,
+        actions
     ) => {
-        let acciones = (hasEvents) ? [
-            {
-                title: (
-                    <div className="smaller-text text bold text-center">
-                        <i className="fas fa-pen inline-box side-margin" />
-                        {(enableTitles) ? 'Editar' : ''}
-                    </div>
-                ),
-                click: actions.editar,
-                data: data,
-                class: (!enableTitles) ? "box-transparent highlight-hover full-width text-right" : null
-            },
-            {
-                title: (
-                    <div className="smaller-text text bold text-center">
-                        <i className="fas fa-trash inline-box side-margin" />
-                        {(enableTitles) ? 'Eliminar' : ''}
-                    </div>
-                ),
-                click: actions.eliminar,
-                data: data,
-                class: (!enableTitles) ? "box-transparent highlight-hover full-width text-right" : null
-            }
-        ] : [
-                {}
-            ];
-        if (!enableTitles && hasEvents)
-            acciones.push({
-                title: (
-                    <div className="smaller-text text bold text-center">
-                        <i className="fas fa-eye inline-box side-margin" />
-                        {(enableTitles) ? 'Ver' : ''}
-                    </div>
-                ),
-                click: actions.ver,
-                data: data,
-                class: (!enableTitles) ? "box-transparent highlight-hover full-width text-right" : null
-            });
-        return acciones;
+        const index = data ? 'data' : 'no_data',
+            acciones = HorariosActions[index](
+                key,
+                actions
+            );
+        return (
+            <Actions 
+                links={acciones.links}
+                buttons={acciones.buttons}/>
+        );
     }
 };

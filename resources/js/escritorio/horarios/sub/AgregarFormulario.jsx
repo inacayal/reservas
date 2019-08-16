@@ -107,7 +107,6 @@ export default class AgregarFormulario extends Component {
         this.changeToggleSide = changeToggleSide.bind(this);
         
         this.calendarChange = this.calendarChange.bind(this);
-
     }
 
     agregarFeriado() {
@@ -187,7 +186,7 @@ export default class AgregarFormulario extends Component {
             form: "col-lg-12",
             inputSelect: "col-md-6 box-padding",
             inputText: "col-md-6 box-padding"
-        }
+        };
         return (
             <form className="full-width">
                 <div className="container">

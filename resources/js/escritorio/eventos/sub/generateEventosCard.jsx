@@ -18,13 +18,24 @@ export default function generateEventosCard(
 ) {
     return Object.keys(eventos).map(
         e => {
-            let acciones = generateActions['feriados'](
+            const acciones = generateActions['feriados'](
                 true,
                 actions,
                 e,
                 true,
                 false
             );
+            const links = [
+                {
+                    title: (
+                        <div className="smaller-text text bold">
+                            <i className="fas fa-plus-circle inline-box side-margin" />
+                            Editar
+                        </div>
+                    ),
+                    to: '/eventos/editar'
+                }
+            ];
             return {
                 title: {
                     data: (

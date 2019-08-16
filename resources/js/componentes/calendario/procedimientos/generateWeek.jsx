@@ -15,24 +15,20 @@ import assignWeekElementType from '../diccionarios/WeekDictionary';
 
 const generateWeek = {
     horarios: (
-        date,
         data,
-        actions,
-        currentDate
+        actions
     ) => DAYS.map(
         (e, i) => {
+            const actionIndex = data[i] ? 'data' : 'no_data';
             return assignWeekElementType['horarios'](
                 generateActions['horarios'](
                     data[i],
-                    actions.outer,
-                    i.toString(),
-                    true,
-                    true
+                    i,
+                    actions
                 ),
                 data[i],
-                i.toString(),
-                actions
-            )
+                i.toString()
+            );
         }
     ),
     reservas: (
@@ -70,8 +66,7 @@ const generateWeek = {
     feriados: (
         date,
         data,
-        actions,
-        currentDate
+        actions
     ) => {
         const day = date.getDay();
         return DAYS.map(
@@ -83,13 +78,12 @@ const generateWeek = {
                 return assignWeekElementType['feriados'](
                     generateActions['feriados'](
                         data[strDate],
-                        actions.outer,
+                        actions,
                         strDate,
-                        true
+                        'week'
                     ),
                     data[strDate],
-                    strDate,
-                    actions
+                    strDate
                 );
             }
         );

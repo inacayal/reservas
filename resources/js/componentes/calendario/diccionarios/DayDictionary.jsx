@@ -12,6 +12,9 @@ import ButtonList from '../../basic/ButtonList';
  * procedimientos
  */
 import { assignActionsByStatus } from '../../../funciones/generateActions';
+/**
+ * constantes
+ */
 import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
 import { CLASSBYSTATE } from '../../../constantes/CardObject';
 

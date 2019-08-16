@@ -19,7 +19,8 @@ function evalFirstWeek (
             assignMonthElementType[type](
                 null,
                 null,
-                evalDate.getTime()
+                evalDate.getTime(),
+                true
             )
         );
         evalDate = new Date(evalDate);
@@ -42,7 +43,8 @@ function evalLastWeek(
             assignMonthElementType[type](
                 null,
                 null,
-                evalDate.getTime()
+                evalDate.getTime(),
+                true
             )
         );
         evalDate = new Date(evalDate);
@@ -93,10 +95,11 @@ export default function generateMonth (
                     data[dateStr] || null,
                     actions.outer,
                     dateStr,
-                    false
+                    'month'
                 ),
                 data[dateStr],
-                dateStr
+                dateStr,
+                false
             )
         );
         

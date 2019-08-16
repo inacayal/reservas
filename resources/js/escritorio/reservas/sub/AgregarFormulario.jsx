@@ -7,8 +7,8 @@ import ReactDOM from 'react-dom';
  * components
  */
 import { showOptions, selectOption } from '../../../componentes/input/Select';
-import ButtonList from '../../../componentes/basic/ButtonList';
 import Evento from '../../../reserva/pasos/Evento';
+import Titulo from '../../../componentes/basic/Titulo';
 export default class AgregarFormulario extends Component{
     constructor(props){
         super(props);
@@ -82,6 +82,17 @@ export default class AgregarFormulario extends Component{
         };
         this.showOptions = showOptions.bind(this);
         this.selectOption = selectOption.bind(this);
+        this.nav = [
+            {
+                title: (
+                    <div className="smaller-text text bold">
+                        <i className="fas fa-arrow-left inline-box side-margin" />
+                        Volver a reservaciones
+                    </div>
+                ),
+                to: '/reservas'
+            }
+        ];
     }
 
     guardarNuevaReserva() {
@@ -97,8 +108,12 @@ export default class AgregarFormulario extends Component{
     }
 
     render(){
+        console.log(this.props);
         return (
             <div>
+                <Titulo
+                    title='Agregar Reservación'
+                    links={this.nav} />
                 <form className="text-right">
                     <div className="container">
                         <div className="row">

@@ -29,7 +29,8 @@ export default class ReservasRouting extends Component {
         };
     }
 
-    render() { return (
+    render() { 
+        return (
             <>
                 <Route
                     path={this.props.match.url}

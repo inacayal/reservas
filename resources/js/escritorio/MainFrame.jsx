@@ -35,7 +35,7 @@ export default class MainFrame extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-md-3 no-padding">
+                    <div className="col-md-3">
                         <Lateral
                             current={this.props.current}
                             items={this.state.sidebar}/>
@@ -47,8 +47,7 @@ export default class MainFrame extends Component {
                                     items={current.split('/')}/>
                             </div>
                             <div className="row">
-                                <LoadBar />
-                                <div className="full-width">
+                                <div className="col-md-12">
                                     <this.props.render 
                                         sub={this.state.sidebar[this.props.current].sub} 
                                         {...this.props} />

@@ -29,7 +29,7 @@ import {DAYS,MONTHS} from '../../../constantes/DaysMonths';
 var formattedFeriados = {
     1559358000000: {
         id:1,
-        reservas:{
+        reserva:{
             apertura: "15:30",
             cierre: "19:30"
         },
@@ -38,7 +38,7 @@ var formattedFeriados = {
             cierre: "19:30"
         },
         descripcion: "descripcion1",
-        estado: 1
+        estado: 'laboral'
     },
     1560481200000: {
         id: 2,
@@ -51,7 +51,7 @@ var formattedFeriados = {
             cierre: "19:30"
         },
         descripcion: "descripcion2",
-        estado: 1
+        estado: 'laboral'
     },
     1561345200000: {
         id: 3,
@@ -64,9 +64,10 @@ var formattedFeriados = {
             cierre: "19:30"
         },
         descripcion: "descripcion3",
-        estado: 1
+        estado: 'laboral'
     },
     1561518000000: {
+        id:12,
         atencion:{
             apertura: "20:20",
             cierre: "23:30"
@@ -76,7 +77,7 @@ var formattedFeriados = {
             cierre: "23:30"
         },
         descripcion: "descripcion4",
-        estado: 1
+        estado: 'laboral'
     },
     1561690800000: {
         id: 4,
@@ -89,7 +90,7 @@ var formattedFeriados = {
             cierre: "19:50"
         },
         descripcion: "descripcion4",
-        estado: 1
+        estado: 'laboral'
     },
     1561777200000: {
         id: 14,
@@ -102,7 +103,7 @@ var formattedFeriados = {
             cierre: "23:50"
         },
         descripcion: "descripcion5",
-        estado: 0
+        estado: 'no_laboral'
     }
 }
 
@@ -112,39 +113,34 @@ export default class Feriados extends Component {
         this.state= {
             feriados: formattedFeriados,
             show:"2",
-            formulario:false,
             date:new Date(),
             intervalo:10,
-            editar: null,
-            agregar:false,
             controls : NO_DAY_CONTROL
         };
         
         this.actions = {
             outer:{
-                editar: this.editarFeriado.bind(this),
-                eliminar: this.eliminarFeriado.bind(this)
+                editar: () => false,
+                eliminar: ()=>false
             },
             inner:{}
         };
 
-        this.guardarFeriado = this.guardarFeriado.bind(this);
         this.verFeriado = this.verFeriado.bind(this);
         this.eliminarFeriado = this.eliminarFeriado.bind(this);
-        this.editarFeriado = this.editarFeriado.bind(this);
-        this.agregarFeriado = this.agregarFeriado.bind(this);
-        this.verCalendario = this.verCalendario.bind(this); 
         this.closeModal = closeModal.bind(this);
 
-        this.editAddControls = panelNavigation(this.props.changePanel, this.agregarFeriado, "2");
-        this.formNavigation = formNavigation(this.verCalendario, this.eliminarFeriado);
-        this.formActions = formActions(this.verCalendario, this.guardarFeriado);
-
-    }
-
-    guardarFeriado(e){
-        e.preventDefault();
-        console.log("culo");
+        this.nav = [
+            {
+                title: (
+                    <div className="smaller-text text bold">
+                        <i className="fas fa-plus-circle inline-box side-margin" />
+                        Agregar nuevo
+                    </div>
+                ),
+                to: '/horarios/feriados/agregar'
+            }
+        ];
     }
 
     verFeriado(e) {
@@ -153,27 +149,11 @@ export default class Feriados extends Component {
         this.setState({show:"2",date:new Date(dateString)});
     }
     
-    editarFeriado(e) {
-        e.preventDefault();
-        let dateString = parseInt(e.currentTarget.getAttribute('data'));
-        this.setState({ agregar: null, editar: new Date(dateString), formulario: true });
-    }
-
-    agregarFeriado(e) {
-        e.preventDefault();
-        this.setState({ agregar: true, editar: null, formulario: true });
-    }
-
-    verCalendario(e) {
-        e.preventDefault();
-        this.setState({ agregar: null, editar: null, formulario: false });
-    }
-    
     eliminarFeriado(e) {
         e.preventDefault();
         this.setState({
             open: true
-        })
+        });
     }
 
     componentDidMount() {
@@ -189,31 +169,18 @@ export default class Feriados extends Component {
             this.formNavigation 
             : this.state.agregar?
                 [this.formNavigation[0]]
-                : this.editAddControls
+                : this.editAddControls;
         return (
-            <div className="full-width">
+            <>
                 <Titulo
                     title="Feriados"
-                    navigation={controls} />
-                <ConfirmarModal
-                    open={this.state.open}
-                    closeModal={this.closeModal}
-                    title="Eliminar Feriado"
-                    content="¿estás seguro de eliminar este feriado?" />        
-                <div className={(this.state.formulario) ? "full-width" : "hidden"}>
-                    <AgregarFormulario
-                        title={this.state.editar ?
-                            "Editar feriado del " + DAYS[this.state.editar.getDay()] + " " + this.state.editar.getDate() + " " +MONTHS[this.state.editar.getMonth()]
-                            : "Agregar Feriado"
-                        }
-                        formActions={this.formActions}
-                        show={this.state.formulario}
-                        showCalendar={true}
-                        data={this.state.feriados}
-                        editar={this.state.editar ? this.state.editar.getTime() : null}
-                        agregar={this.state.agregar} />
-                </div>
-                <div className={(this.state.formulario) ? "hidden" : "full-width"}>
+                    links={this.nav} />
+                <div className="container">
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.closeModal}
+                        title="Eliminar Feriado"
+                        content="¿estás seguro de eliminar este feriado?" />        
                     <Calendar
                         show={this.state.show}
                         date={this.state.date} 
@@ -222,7 +189,23 @@ export default class Feriados extends Component {
                         controls={this.state.controls}
                         data={this.state.feriados}/>
                 </div>
-            </div>
+            </>
         );
     }
 }
+/**
+ * 
+    <div className={(this.state.formulario) ? "full-width" : "hidden"}>
+        <AgregarFormulario
+            title={this.state.editar ?
+                "Editar feriado del " + DAYS[this.state.editar.getDay()] + " " + this.state.editar.getDate() + " " +MONTHS[this.state.editar.getMonth()]
+                : "Agregar Feriado"
+            }
+            formActions={this.formActions}
+            show={this.state.formulario}
+            showCalendar={true}
+            data={this.state.feriados}
+            editar={this.state.editar ? this.state.editar.getTime() : null}
+            agregar={this.state.agregar} />
+    </div>
+ */

@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 /**
  * react components
  */
-import ButtonList from '../../../componentes/basic/ButtonList';
+import Actions from '../../../componentes/basic/Actions';
 
 
 const configurationCards = {
@@ -160,23 +160,26 @@ export default function generateConfigurationCards (
         (e,i) => {
             const name = e.title.replace(/\s/gi,'_'),
                 actions = <div className="normal-text"><i className="fas fa-pen" />Editar</div>,
-                actionList = [
-                {
-                    title: (
-                        <div className="smaller-text text bold text-center">
-                            <i className="fas fa-pen inline-box side-margin" />
-                            Editar
-                        </div>
-                    ),
-                    click: action,
-                    data: (i).toString()
-                }
-            ];
+                links = [
+                    {
+                        title: (
+                            <div className="smaller-text text bold text-center">
+                                <i className="fas fa-pen inline-box side-margin" />
+                                Editar
+                            </div>
+                        ),
+                        to: e.route
+                    }
+                ];
             return {
                 title:{
                     data:(
-                        <div className="full-width highlight-danger side-margin sub-title">
-                            {e.title}
+                        <div className="full-width sub-title">
+                            <span className='inline-block side-margin text-top'>
+                                {e.title}
+                            </span>
+                            <Actions 
+                                links={links}/>
                         </div>
                     )
                 },

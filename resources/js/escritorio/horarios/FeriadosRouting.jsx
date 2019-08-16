@@ -6,34 +6,29 @@ import ReactDOM from 'react-dom';
 /**
  * sub elements
  */
-import FeriadosRouting from './FeriadosRouting';
+import Feriados from './sub/Feriados';
 import AgregarFormulario from './sub/AgregarFormulario';
-import Horarios from './sub/Horarios';
 /**
  * react router
  */
 import { Route } from 'react-router-dom';
 
-export default function HorariosRouting ({match}) {
+export default function FeriadosRouting({ match }) {
     return (
         <>
-            <Route 
+            <Route
                 path={match.url}
                 exact
-                component = {
-                    (match) => <Horarios {...match}/>
-                } />
-            <Route
-                path={match.url + '/feriados'}
                 component={
-                    (match) => <FeriadosRouting {...match} />
+                    (match) => 
+                        <Feriados {...match} />
                 } />
             <Route
-                path={match.url+'/agregar'}
+                path={match.url + '/agregar'}
                 component={
                     (match) => 
                         <AgregarFormulario
-                            showCalendar = {false}
+                            showCalendar={true}
                             {...match} />
                 } />
             <Route
@@ -41,7 +36,7 @@ export default function HorariosRouting ({match}) {
                 component={
                     (match) => 
                         <AgregarFormulario
-                            showCalendar = {false}
+                            showCalendar={true}
                             {...match} />
                 } />
         </>

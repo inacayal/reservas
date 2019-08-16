@@ -136,36 +136,38 @@ export default class LocalesRouting extends Component {
             ),
             ReactTableFixedColumns = withFixedColumns(ReactTable);
         return (
-            <div className="full-width container">
+            <>
                 <Titulo
                     title="Locales"
-                    navigation={[]} />
-                <div className={this.state.verLocal ? "hidden" : "row full-width"}>
-                    <ReactTableFixedColumns
-                        data={data}
-                        columns={columns}
-                        minRows={0}
-                        previousText={
-                            <div>
-                                <i className="line-v-middle highlight middle-font fas fa-angle-left" />
-                                <span className="text ">Anterior</span>
-                            </div>
-                        }
-                        nextText={
-                            <div>
-                                <span className="text ">Siguiente</span>
-                                <i className="line-v-middle highlight middle-font fas fa-angle-right" />
-                            </div>
-                        }
-                        pageText='Página'
-                        ofText='de'
-                        rowsText='filas' />
+                    navigation={[]}/>
+                <div className="container">
+                    <div className={this.state.verLocal ? "hidden" : "row full-width"}>
+                        <ReactTableFixedColumns
+                            data={data}
+                            columns={columns}
+                            minRows={0}
+                            previousText={
+                                <div>
+                                    <i className="line-v-middle highlight middle-font fas fa-angle-left" />
+                                    <span className="text ">Anterior</span>
+                                </div>
+                            }
+                            nextText={
+                                <div>
+                                    <span className="text ">Siguiente</span>
+                                    <i className="line-v-middle highlight middle-font fas fa-angle-right" />
+                                </div>
+                            }
+                            pageText='Página'
+                            ofText='de'
+                            rowsText='filas'/>
+                    </div>
+                    <div className={this.state.verLocal ? "row" : "hidden"}>
+                        <VerLocal
+                            elem={this.state.verLocal ? this.props.data[this.state.verLocal] : null} />
+                    </div>
                 </div>
-                <div className={this.state.verLocal ? "row" : "hidden"}>
-                    <VerLocal
-                        elem={this.state.verLocal ? this.props.data[this.state.verLocal] : null} />
-                </div>
-            </div>
+            </>
         )
     }
 }

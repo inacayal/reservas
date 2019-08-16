@@ -30,6 +30,17 @@ export default class UbicacionesRouting extends Component {
             editar: this.editarUbicacion,
             eliminar: this.eliminarUbicacion
         };
+        this.nav = [
+            {
+                title: (
+                    <div className="smaller-text text bold">
+                        <i className="fas fa-plus-circle inline-box side-margin" />
+                        Agregar nueva
+                    </div>
+                ),
+                to: '/ubicaciones/agregar'
+            }
+        ];
     }
 
     eliminarUbicacion(e) {
@@ -45,21 +56,23 @@ export default class UbicacionesRouting extends Component {
             this.actions
         );
         return (
-            <div className="container">
+            <>
                 <Titulo
                     title="Ubicaciones"
-                    navigation={[]} />
-                <ConfirmarModal
-                    open={this.state.open}
-                    closeModal={this.closeModal}
-                    title="Eliminar Ubicación"
-                    content="¿estás seguro de eliminar este ubicación?" />
-                <div className={this.state.formulario ? "hidden" : "row"}>
-                    <CardList
-                        displayList="full-width nav-list no-padding"
-                        elems={ubicaciones} />
+                    links={this.nav} />
+                <div className="container">
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.closeModal}
+                        title="Eliminar Ubicación"
+                        content="¿estás seguro de eliminar este ubicación?" />
+                    <div className={this.state.formulario ? "hidden" : "row"}>
+                        <CardList
+                            displayList="full-width nav-list no-padding"
+                            elems={ubicaciones} />
+                    </div>
                 </div>
-            </div>
+            </>
         );
     }
 }

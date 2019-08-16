@@ -17,14 +17,7 @@
                     'disabled'=> false,
                     'title'=> "Reservaciones",
                     'route'=> '/reservas',
-                    'sub'=> [
-                        [
-                            'title'=> 'Agregar',
-                            'route'=> '/reservas/agregar',
-                            'data'=> "0",
-                            'class'=> "box-transparent box-padding highlight-hover full-width text-left"
-                        ]
-                    ]
+                    'sub'=> []
                 ],
                 [
                     'data'=> "2",
@@ -36,7 +29,7 @@
                             'title'=> 'Feriados',
                             'route'=> '/horarios/feriados',
                             'data'=> "0",
-                            'class'=> "box-transparent box-padding highlight-hover full-width text-left"
+                            'class'=> "medium-left-padding box-transparent box-padding highlight-hover full-width text-left"
                         ]
                     ]
                 ],
@@ -45,42 +38,21 @@
                     'disabled'=> false,
                     'title'=> "Ubicaciones",
                     'route'=> '/ubicaciones',
-                    'sub'=> [
-                        [
-                            'title'=> 'Agregar',
-                            'route'=> '/ubicaciones/agregar',
-                            'data'=> "0",
-                            'class'=> "box-transparent box-padding highlight-hover full-width text-left"
-                        ]
-                    ]
+                    'sub'=> []
                 ],
                 [
                     'data'=> "4",
                     'disabled'=> false,
                     'title'=> "Eventos",
                     'route'=> '/eventos',
-                    'sub'=> [
-                        [
-                            'title'=> 'Agregar',
-                            'route'=> '/eventos/agregar',
-                            'data'=> "0",
-                            'class'=> "box-transparent box-padding highlight-hover full-width text-left"
-                        ]
-                    ]
+                    'sub'=> []
                 ],
                 [
                     'data'=> "5",
                     'disabled'=> false,
                     'title'=> "Locales",
                     'route'=> '/locales',
-                    'sub'=> [
-                        [
-                            'title'=> 'Agregar',
-                            'route'=> '/locales/agregar',
-                            'data'=> "0",
-                            'class'=> "box-transparent box-padding highlight-hover full-width text-left"
-                        ]
-                    ]
+                    'sub'=> []
                 ],
                 [
                     'data'=> "6",
@@ -125,14 +97,7 @@
                     'route'=> '/franquicias',
                     'disabled'=> false,
                     'title'=> "Franquicias",
-                    'sub'=> [
-                        [
-                            'title'=> 'Agregar',
-                            'route'=> '/franquicias/agregar',
-                            'data'=> "0",
-                            'class'=> "box-transparent box-padding highlight-hover full-width text-left"
-                        ]
-                    ]
+                    'sub'=> []
                 ]
             ]
         )

@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom';
  * input elements
  */
 import { Select, showOptions, selectOption } from '../../../componentes/input/Select';
+import Actions from '../../../componentes/basic/Actions';
 
 export default class Reservas extends Component {
     constructor(props){
@@ -51,25 +52,43 @@ export default class Reservas extends Component {
         };
         this.showOptions = showOptions.bind(this);
         this.selectOption = selectOption.bind(this);
+        this.nav = [
+            {
+                title: (
+                    <div className="smaller-text text bold">
+                        <i className="fas fa-arrow-left inline-box side-margin" />
+                        Volver a configuración
+                            </div>
+                ),
+                to: '/configuracion'
+            }
+        ];
     }
-
+    
     componentDidMount() {
         console.log('configuracionReservasMount');
     }
-
+    
     componentWillUnmount() {
         console.log('configuracionReservasUnmount');
     }
-
+    
     guardarConfiguracion(e) {
         e.preventDefault();
         console.log('guardado');
     }   
-
+    
     render(){
         return (
             <form className="full-width">
                 <div className="container">
+                    <div className="sub-title h-padding full-width border-bottom">
+                        <span className="side-margin inline-block text-top" >
+                            Reservaciones
+                        </span >
+                        <Actions
+                            links={this.nav} />
+                    </div>
                     <div className="row v-padding">
                         <div className="col-md-6">
                             <h6 className="highlight bold no-margin">

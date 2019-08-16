@@ -45,6 +45,18 @@ export default class EventosRouting extends Component {
             editar: this.editarEvento,
             eliminar: this.eliminarEvento
         };
+        this.nav = [
+            {
+                title: (
+                    <div className="smaller-text text bold">
+                        <i className="fas fa-plus-circle inline-box side-margin" />
+                        Agregar nuevo
+                    </div>
+                ),
+                to: '/eventos/agregar'
+            }
+        ];
+        
     }
 
     eliminarEvento(e) {
@@ -68,21 +80,23 @@ export default class EventosRouting extends Component {
             this.actions
         );
         return (
-            <div className="container">
+            <>
                 <Titulo
                     title="Eventos"
-                    navigation={[]} />
-                <ConfirmarModal
-                    open={this.state.open}
-                    closeModal={this.closeModal}
-                    title="Eliminar Evento"
-                    content="¿estás seguro de eliminar este evento? " />
-                <div className={this.state.formulario ? "hidden" : "row"}>
-                    <CardList
-                        displayList="full-width nav-list no-padding"
-                        elems={eventos} />
+                    links={this.nav} />
+                <div className="container">
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.closeModal}
+                        title="Eliminar Evento"
+                        content="¿estás seguro de eliminar este evento? " />
+                    <div className={this.state.formulario ? "hidden" : "row"}>
+                        <CardList
+                            displayList="full-width nav-list no-padding"
+                            elems={eventos} />
+                    </div>
                 </div>
-            </div>
+            </>
         );
     }
 }
