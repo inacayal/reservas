@@ -1,8 +1,20 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+/**
+ * constantes
+ */
 import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
-import {generateActions} from '../../../funciones/generateActions';
-import assignMonthElementType from '../diccionarios/MonthDictionary';
+import {generateActions} from '../../../acciones/generateActions';
+/**
+ * diccionario
+ */
+import assignMonthElementType from '../diccionarios/assign/MonthDictionary';
+/**
+ * funciones
+ */
 import getMonthLength from '../../../funciones/getMonthLength';
 
 function evalFirstWeek (
@@ -88,7 +100,6 @@ export default function generateMonth (
             );
             weekCtr = 6;
         }
-        
         week.push(
             assignMonthElementType[type](
                 generateActions[type](
@@ -99,7 +110,7 @@ export default function generateMonth (
                 ),
                 data[dateStr],
                 dateStr,
-                false
+                actions.outer
             )
         );
         

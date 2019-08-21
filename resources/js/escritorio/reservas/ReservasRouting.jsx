@@ -12,10 +12,7 @@ import Calendario from './sub/Calendario';
  * componentes
  */
 import Titulo from '../../componentes/basic/Titulo';
-/**
- * funciones
- */
-import { formActions, formNavigation, panelNavigation } from '../../funciones/dataActions';
+
 /**
  * constantes
  */

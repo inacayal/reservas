@@ -10,8 +10,8 @@ import {DAYS} from '../../../constantes/DaysMonths';
 /**
  * funciones
  */
-import {generateActions} from '../../../funciones/generateActions';
-import assignWeekElementType from '../diccionarios/WeekDictionary';
+import {generateActions} from '../../../acciones/generateActions';
+import assignWeekElementType from '../diccionarios/assign/WeekDictionary';
 
 const generateWeek = {
     horarios: (
@@ -34,8 +34,7 @@ const generateWeek = {
     reservas: (
         date,
         data,
-        actions,
-        currentDate
+        actions
     ) => {
         let dy = date.getDay();
         return DAYS.map(
@@ -43,18 +42,17 @@ const generateWeek = {
                 let datePtr = new Date(date);
                 datePtr.setDate(datePtr.getDate() + (i - dy));
                 datePtr.setHours(0, 0, 0, 0);
-                let strDate = datePtr.getTime(),
-                    informacionDia = data[strDate] ? {
-                        data: data[strDate].reservas,
-                        show: data[strDate].show
-                    } : [];
+                let strDate = datePtr.getTime();
+                
+                //cambiar acciones generadas dependiendo de la data
+                //genera objecto actions con asignaciones terminadas
+                
                 return assignWeekElementType['reservas'](
                     generateActions['reservas'](
-                        informacionDia.data,
+                        data[strDate] || null,
                         actions.outer,
                         strDate,
-                        true,
-                        informacionDia.show
+                        'week'
                     ),
                     data[strDate],
                     strDate,

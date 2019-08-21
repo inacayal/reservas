@@ -6,17 +6,17 @@ import ReactDOM from 'react-dom';
 /**
  * componentes
  */
-import CardList from '../../basic/CardList';
-import ButtonList from '../../basic/ButtonList';
+import CardList from '../../../basic/CardList';
+import ButtonList from '../../../basic/ButtonList';
 /**
  * procedimientos
  */
-import { assignActionsByStatus } from '../../../funciones/generateActions';
+import { assignActionsByStatus } from '../../../../acciones/ReservasDictionary';
 /**
  * constantes
  */
-import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
-import { CLASSBYSTATE } from '../../../constantes/CardObject';
+import { DAYS, MONTHS } from '../../../../constantes/DaysMonths';
+import { CLASSBYSTATE } from '../../../../constantes/CardObject';
 
 const assignDayElementType = {
     reservas: (

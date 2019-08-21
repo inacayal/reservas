@@ -10,7 +10,7 @@ import ButtonList from '../../../componentes/basic/ButtonList';
 /**
  * funciones
  */
-import { generateActions } from '../../../funciones/generateActions';
+import { generateActions } from '../../../acciones/generateActions';
 
 export default function generateEventosCard(
     eventos,

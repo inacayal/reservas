@@ -6,27 +6,31 @@ import ReactDOM from 'react-dom';
 /**
  * Components
  */
-import CardList from '../../basic/CardList';
-import ButtonList from '../../basic/ButtonList';
+import CardList from '../../../basic/CardList';
+import ButtonList from '../../../basic/ButtonList';
 /**
  * dictionaries
  */
-import { assignActionsByStatus } from '../../../funciones/generateActions';
-import {FeriadoMonthByState} from './FeriadoByState';
+import { assignActionsByStatus } from '../../../../acciones/generateActions';
 /**
  * constantes
  */
-import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
-import { CLASSBYSTATE, CLASSBYDATE } from '../../../constantes/CardObject';
-import {ReservaMonthByState} from './ReservasByState';
+import { DAYS, MONTHS } from '../../../../constantes/DaysMonths';
+import { CLASSBYSTATE, CLASSBYDATE } from '../../../../constantes/CardObject';
+/**
+ * data dictionaries
+ */
+import { ReservaMonthByState } from '../display/ReservaByState';
+import { FeriadoMonthByState } from '../display/FeriadoByState';
 
 
 const assignMonthElementType = {
     reservas: (
         acciones,
         sectionData,
-        data
-    )=> {
+        data,
+        actions
+    ) => {
         const resDate = new Date(data),
             tday = new Date(),
             cond = tday.getDate() === resDate.getDate() && tday.getMonth() === resDate.getMonth() && tday.getFullYear() === resDate.getFullYear(),
@@ -40,7 +44,8 @@ const assignMonthElementType = {
             resDate,
             titleClass,
             data,
-            acciones
+            acciones,
+            actions
         );
     },
     feriados:(
@@ -56,10 +61,9 @@ const assignMonthElementType = {
         
         if (sectionData) 
             return FeriadoMonthByState["data"][sectionData.estado](
-                CLASSBYDATE[index].title,
+                CLASSBYDATE[index],
                 acciones,
-                date,
-                CLASSBYDATE[index].container
+                date
             );
         return FeriadoMonthByState["no_data"](date,isThisMonth);
     }

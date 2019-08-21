@@ -6,25 +6,24 @@ import ReactDOM from 'react-dom';
 /**
  * componentes
  */
-import CardList from '../../basic/CardList';
-import ButtonList from '../../basic/ButtonList';
+import CardList from '../../../basic/CardList';
+import ButtonList from '../../../basic/ButtonList';
 /**
  * constantes
  */
-import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
-import { CLASSBYSTATE } from '../../../constantes/CardObject';
+import { DAYS, MONTHS } from '../../../../constantes/DaysMonths';
+import { CLASSBYSTATE } from '../../../../constantes/CardObject';
 
 export const FeriadoMonthByState = {
     data: {
         laboral: (
-            titleClass,
+            classes,
             acciones,
-            date,
-            container
+            date
         ) => ({
             title: {
                 data: date.getDate(),
-                class: titleClass,
+                class: classes.title,
             },
             content: {
                 data: (
@@ -32,18 +31,17 @@ export const FeriadoMonthByState = {
                 )
             },
             container: {
-                class: container
+                class: classes.container
             }
         }),
         no_laboral: (
-            titleClass,
+            classes,
             acciones,
-            date,
-            container
+            date
         ) => ({
             title: {
                 data: date.getDate(),
-                class: titleClass
+                class: classes.title
             },
             content: {
                 data: (
@@ -51,7 +49,7 @@ export const FeriadoMonthByState = {
                 )
             },
             container: {
-                class: container
+                class: classes.container
             }
         })
     },

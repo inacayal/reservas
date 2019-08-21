@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 /**
  * componentes
  */
-import assignDayElementType from '../diccionarios/DayDictionary';
+import assignDayElementType from '../diccionarios/assign/DayDictionary';
 import ButtonList from '../../basic/ButtonList';
 
 function generateHourArray(

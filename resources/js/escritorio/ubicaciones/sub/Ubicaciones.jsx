@@ -14,7 +14,6 @@ import { ConfirmarModal, closeModal } from '../../../componentes/modal/Modal';
  * funciones
  */
 import generateUbicacionesCard from './generateUbicacionesCard';
-import { formActions, formNavigation, panelNavigation } from '../../../funciones/dataActions';
 
 export default class UbicacionesRouting extends Component {
     constructor(props) {

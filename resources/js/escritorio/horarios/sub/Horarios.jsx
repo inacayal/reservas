@@ -19,7 +19,6 @@ import AgregarFormulario from './AgregarFormulario';
  */
 import generateWeek from '../../../componentes/calendario/procedimientos/generateWeek';
 import generateMonth from '../../../componentes/calendario/procedimientos/generateMonth';
-import { formActions, formNavigation, panelNavigation } from '../../../funciones/dataActions';
 import { closeModal, ConfirmarModal } from '../../../componentes/modal/Modal';
 /**
  * constants
