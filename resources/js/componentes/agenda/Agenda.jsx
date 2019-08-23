@@ -4,15 +4,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 /**
- * vistas
- */
-import YearCalendar from './vistas/YearCalendar';
-import DayCalendar from './vistas/DayCalendar';
-import WeekCalendar from './vistas/WeekCalendar';
-import MonthCalendar from './vistas/MonthCalendar';
-/**
  * componentes
  */
+import {Elements} from './Elements';
 import ButtonList from '../basic/ButtonList';
 /**
  * constantes
@@ -20,7 +14,7 @@ import ButtonList from '../basic/ButtonList';
 import {DAYS,MONTHS,monthRows,monthIndex} from '../../constantes/DaysMonths';
 import getMonthLength from '../../funciones/getMonthLength';
 
-export default class Calendar extends Component {
+export default class Agenda extends Component {
     constructor(props){
         super(props);
         this.state={
@@ -29,15 +23,27 @@ export default class Calendar extends Component {
             controls:this.props.controls
         };
         this.changeWeekCalendar = this.changeWeekCalendar.bind(this);
-        this.changeDayCalendar = this.changeDayCalendar.bind(this);
+        this.changeMonthCalendar = this.changeMonthCalendar.bind(this);
         this.changeView = this.changeView.bind(this);
         this.changeYearCalendar = this.changeYearCalendar.bind(this);
         this.handleMonthClick = this.handleMonthClick.bind(this);
     }
 
-    changeCurrentMonth(date){
-        let index = monthIndex[date.getMonth()];
-        monthRows[index[0]][index[1]].class = "";
+    changeCurrentMonth(date,offset){
+        let index = monthIndex[this.state.date.getMonth()],
+            isPrev = offset <0; 
+
+        date.setDate(
+            isPrev 
+                ? date.getDate() + offset + (6 - date.getDay())
+                : date.getDate() + offset - date.getDay()
+        );
+
+        if (this.state.date.getMonth() !== date.getMonth()){
+            date.setDate(isPrev ? getMonthLength(date.getMonth()+1,date.getFullYear()) : 1);
+            monthRows[index[0]][index[1]].class = "";
+            this.props.fetchNewMonth(date);
+        }
     }
 
     changeView(e){
@@ -53,26 +59,24 @@ export default class Calendar extends Component {
         this.setState({show:show,controls:controls});
     }
 
-    changeDayCalendar(e) {
+    changeWeekCalendar (e) {
         e.preventDefault();
         let offset = parseInt(e.currentTarget.getAttribute('data'));
         let date = new Date(this.state.date);
-        date.setDate(date.getDate() + offset);
-        if(this.state.date.getMonth()!==date.getMonth())
-            this.changeCurrentMonth(this.state.date);
+        this.changeCurrentMonth(date,offset);
         this.setState({ date: date });
     }
 
-    changeWeekCalendar(e) {
+    changeMonthCalendar (e) {
         e.preventDefault();
         let offset = parseInt(e.currentTarget.getAttribute('data'));
         let date = new Date(this.state.date);
-        this.changeCurrentMonth(date);
         date.setMonth(date.getMonth() + offset);
+        this.changeCurrentMonth(date,offset);
         this.setState({date:date});
     }
 
-    changeYearCalendar(e){
+    changeYearCalendar (e) {
         e.preventDefault();
         let offset = parseInt(e.currentTarget.getAttribute('data'));
         let date = new Date(this.state.date);
@@ -80,12 +84,12 @@ export default class Calendar extends Component {
         this.setState({date:date});
     }
 
-    handleMonthClick(e){
+    handleMonthClick (e) {
         e.preventDefault();
         let newMonth = e.currentTarget.getAttribute('data');
         let date = new Date(this.state.date);
-        this.changeCurrentMonth(date);
         date.setMonth(newMonth-1);
+        this.changeCurrentMonth(date);
         let controls = this.state.controls.map(
             (e,i)=> {
                 e.class = (i===1) ? 
@@ -117,35 +121,7 @@ export default class Calendar extends Component {
                         elems={this.state.controls} />
                 </div>
                 <div className="row">
-                    <DayCalendar
-                        data={this.props.data}
-                        type={this.props.type}
-                        actions={this.props.actions}
-                        show={this.state.show === "3"}
-                        horarios={this.props.horariosReserva} 
-                        render={this.props.dayRender}
-                        date={this.state.date}/>
-                    <WeekCalendar
-                        render={this.props.weekRender}
-                        type={this.props.type} 
-                        actions={this.props.actions}
-                        show={this.state.show === "2"}
-                        date={this.state.date}
-                        changeCurrentWeek={this.changeDayCalendar}
-                        data={this.props.data}
-                        dataTitle={"Días feriados de " + MONTHS[this.state.date.getMonth()] + " " + this.state.date.getFullYear()}/>
-                    <MonthCalendar 
-                        type={this.props.type}
-                        changeCurrentMonth={this.changeWeekCalendar}
-                        show={this.state.show === "1"}
-                        date={this.state.date}
-                        data={this.props.data}
-                        actions={this.props.actions}/>
-                    <YearCalendar
-                        handleMonthClick={this.handleMonthClick}
-                        show={this.state.show==="0"}
-                        changeCurrentYear={this.changeYearCalendar}
-                        date={this.state.date}/>
+                    {Elements[this.state.show](this)}
                 </div>
             </div>
         );

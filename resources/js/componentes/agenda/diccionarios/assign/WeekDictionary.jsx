@@ -9,10 +9,6 @@ import ReactDOM from 'react-dom';
 import CardList from '../../../basic/CardList';
 import ButtonList from '../../../basic/ButtonList';
 /**
- * funciones
- */
-import { assignActionsByStatus } from '../../../../acciones/generateActions';
-/**
  * constantes
  */
 import { DAYS, MONTHS } from '../../../../constantes/DaysMonths';
@@ -24,7 +20,7 @@ import { HorarioByState } from '../display/HorarioByState';
 import { FeriadoWeekByState } from '../display/FeriadoByState';
 import { ReservaWeekByState } from '../display/ReservaByState';
 
-const assignWeekElementType = {
+const WeekDictionary = {
     horarios: (
         acciones,
         sectionData,
@@ -38,6 +34,7 @@ const assignWeekElementType = {
                 sectionData,
                 acciones
             );
+            
         if (data !== 6)
             facade.container.class+=' border-bottom';
         return facade;
@@ -58,7 +55,7 @@ const assignWeekElementType = {
             elC = dt.getDay() !== 6 ?
                 "box-padding margin-box box-transparent full-width border-bottom" :
                 "box-padding margin-box box-transparent full-width";
-        
+
         return ReservaWeekByState[index] (
             dt,
             tcnd,
@@ -91,4 +88,4 @@ const assignWeekElementType = {
     }
 };
 
-export default assignWeekElementType;
+export default WeekDictionary;

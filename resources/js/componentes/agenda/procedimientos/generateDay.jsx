@@ -6,39 +6,40 @@ import ReactDOM from 'react-dom';
 /**
  * componentes
  */
-import assignDayElementType from '../diccionarios/assign/DayDictionary';
+import DayDictionary from '../diccionarios/assign/DayDictionary';
 import ButtonList from '../../basic/ButtonList';
 
 function generateHourArray(
-    horarios,
+    horario,
     intervalo,
-    date,
     dataObject,
     type,
     actions,
     caida
 ){
-    let startTime = horarios.apertura.split(':'),
-        strHr = parseInt(startTime[0]),
-        strMn = parseInt(startTime[1]),
+    let strHr = parseInt(horario.apertura.reserva.hora),
+        strMn = parseInt(horario.apertura.reserva.minuto),
+        endHr = parseInt(horario.cierre.reserva.hora),
+        endMn = parseInt(horario.cierre.reserva.minuto),
         hrPtr = strHr,
         mnPtr = strMn,
-        hourArray=[],
-        endTime = horarios.cierre.split(':'),
-        endHr = parseInt(endTime[0]),
-        endMn = parseInt(endTime[1]);
-    
-    while (hrPtr !== endHr || (hrPtr === endHr && mnPtr <= endMn)){
-        if(mnPtr>=60){
+        hourArray=[];
+
+        while (hrPtr !== endHr || (hrPtr === endHr && mnPtr <= endMn)){
+            if(mnPtr>=60){
             mnPtr=0;
             hrPtr++;
         }
-        let findDate = new Date(date).setHours(hrPtr, mnPtr, 0, 0),
-            data = dataObject[findDate];
+        const find = mnPtr < 10 
+            ? hrPtr + '0' + mnPtr
+            : hrPtr + '' + mnPtr,
+            data = dataObject[find];
+        
         hourArray.push(
-            assignDayElementType[type](
+            DayDictionary[type](
                 data,
-                findDate,
+                find,
+                mnPtr < 10 ? hrPtr + ':0' + mnPtr : hrPtr + ':' + mnPtr,
                 actions
             )
         );
@@ -56,15 +57,12 @@ export default function generateDay(
     type,
     actions
 ){
-    let ceroDate = new Date(date),
-        reservationHours = [];
-    ceroDate.setHours(0,0,0,0);
-    let dateStr = ceroDate.getTime().toString();
+    let reservationHours = [],
+        dateStr = date.getDate();
     return [
         generateHourArray(
-            horariosData[date.getDay()],
+            horariosData[date.getDay()+1],
             parseInt(intervalo),
-            date,
             ((data[dateStr]||{}).reservas||{}),
             type,
             actions,

@@ -10,25 +10,25 @@ import Actions from '../componentes/basic/Actions';
 /**
  * dictionaries
  */
-  
-import { ReservasActions } from './ReservasDictionary';
-import { FeriadosActions } from './FeriadosDictionary';
-import { HorariosActions } from './HorariosDictionary';
+import { ReservasActions } from './ReservasActions';
+import { FeriadosActions } from './FeriadosActions';
+import { HorariosActions } from './HorariosActions';
+import { EventosActions } from './EventosActions';
+import { UbicacionesActions } from './UbicacionesActions';
 
-export const generateActions = {
+export const GenerateActions = {
     reservas: (
         data,
         actions,
         strDate,
-        type
+        type,
+        index
     ) => {
-        const index = data ? 'data' : 'no_data',
-            // reservasActions must be an object with data and no_data indexes
-            acciones = ReservasActions[type][index](
-                actions,
-                strDate,
-                data
-            );
+        const acciones = ReservasActions[type][index](
+            actions,
+            strDate,
+            data
+        );
         return (
             <Actions
                 links={acciones.links}
@@ -66,6 +66,34 @@ export const generateActions = {
             <Actions 
                 links={acciones.links}
                 buttons={acciones.buttons}/>
+        );
+    },
+    ubicaciones: (
+        key,
+        actions
+    ) => {
+        const acciones = UbicacionesActions(
+            key,
+            actions
+        );
+        return (
+            <Actions
+                links={acciones.links}
+                buttons={acciones.buttons} />
+        );
+    },
+    eventos: (
+        key,
+        actions
+    ) => {
+        const acciones = EventosActions(
+            key,
+            actions
+        );
+        return (
+            <Actions
+                links={acciones.links}
+                buttons={acciones.buttons} />
         );
     }
 };

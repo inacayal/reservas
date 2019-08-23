@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 /**
  * components
  */
-import Calendar from '../../../componentes/calendario/Calendar';
+import Agenda from '../../../componentes/agenda/Agenda';
 import ButtonList from '../../../componentes/basic/ButtonList';
 import Titulo from '../../../componentes/basic/Titulo';
 /**
@@ -16,7 +16,6 @@ import AgregarFormulario from './AgregarFormulario';
 /**
  * function
  */
-import generateMonth from '../../../componentes/calendario/procedimientos/generateMonth';
 import {closeModal,ConfirmarModal} from '../../../componentes/modal/Modal';
 /**
  * constants
@@ -192,19 +191,3 @@ export default class Feriados extends Component {
         );
     }
 }
-/**
- * 
-    <div className={(this.state.formulario) ? "full-width" : "hidden"}>
-        <AgregarFormulario
-            title={this.state.editar ?
-                "Editar feriado del " + DAYS[this.state.editar.getDay()] + " " + this.state.editar.getDate() + " " +MONTHS[this.state.editar.getMonth()]
-                : "Agregar Feriado"
-            }
-            formActions={this.formActions}
-            show={this.state.formulario}
-            showCalendar={true}
-            data={this.state.feriados}
-            editar={this.state.editar ? this.state.editar.getTime() : null}
-            agregar={this.state.agregar} />
-    </div>
- */

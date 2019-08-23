@@ -37,7 +37,7 @@ function MonthCalendar(props) {
         props.type
     );
     return (
-        <div className={props.show ? "container" : "hidden"}>
+        <div className="container">
             <div className="row bold">
                 <span className="align-center side-margin inline-block">{"Mostrando " + MONTHS[month] + " " + props.date.getFullYear()}</span>
             </div>

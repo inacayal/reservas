@@ -61,9 +61,11 @@ class Reserva extends Eloquent
 		],
 		'query' => [
 			'reservas'				=>	'\\App\\Models\\Reserva',
+			'horarios'				=>	'\\App\\Models\\Horario',
 			'reservas.ubicacion' 	=>  '\\App\\Models\\Ubicacion',
 			'reservas.evento' 		=>  '\\App\\Models\\Evento',
-			'reservas.estado' 		=>  '\\App\\Models\\Query\\EstadoReserva'
+			'reservas.estado' 		=>  '\\App\\Models\\Query\\EstadoReserva',
+			'intervalo' 			=>  '\\App\\Models\\Query\\Intervalo',
 		]
 	];
 	/**
@@ -96,9 +98,9 @@ class Reserva extends Eloquent
 	/**
 	 * Helper methods
 	 */
-	public static function reservasQueryCallback($month){
-		return function ($query) use ($month) {
-			return $query->thisMonth($month);
+	public static function reservasQueryCallback($month,$year){
+		return function ($query) use ($month,$year) {
+			return $query->thisMonth($month,$year);
 		};
 	}
 	/**
@@ -113,21 +115,14 @@ class Reserva extends Eloquent
 		);
 		$tz = new \DateTimeZone("America/Argentina/Buenos_Aires");
 		date_timezone_set($date,$tz);
-		$dateStr = date_format($date,'Y-m-d H:i:s');
-		return strval(strtotime($dateStr)*1000);
+		$dateStr = date_format($date,'H:i');
+		
+		return (int) str_replace(':','',$dateStr);
 	}
 	
 	public function getDiaReservaAttribute($value){
 		$date = date_create($value);
-		$date->setTime(
-			'00',
-			'00',
-			'00'
-		);
-		$tz = new \DateTimeZone("America/Argentina/Buenos_Aires");
-		date_timezone_set($date,$tz);
-		$dateStr = date_format($date,'Y-m-d H:i:s');
-		return strval(strtotime($dateStr)*1000);
+		return date_format($date,'d');
 	}
 	/**
 	 * Model relationship methods
@@ -147,8 +142,8 @@ class Reserva extends Eloquent
 	/**
 	 * Model scopes
 	 */
-	public function scopeThisMonth($query,$month){
-		return $query->whereMonth('dia_reserva',$month);
+	public function scopeThisMonth($query,$month,$year){
+		return $query->whereMonth('dia_reserva',$month)->whereYear('dia_reserva',$year);
 	}
 	/**
 	 * Database seeding

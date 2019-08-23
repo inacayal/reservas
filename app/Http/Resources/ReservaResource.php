@@ -33,6 +33,9 @@ class ReservaResource extends JsonResource
                 ]
             );
         }
-        return $res->groupBy('hora_reserva');
+        return [
+            'reservas' => $res->groupBy('hora_reserva'),
+            'show' => false
+        ];
     }
 }

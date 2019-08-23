@@ -88,7 +88,8 @@ class Feriado extends Eloquent
 	 * Getter methods
 	 */
 	public function getFechaFeriadoAttribute ($value){
-		return strval(strtotime($value)*1000);
+		$date = date_create($value);
+		return date_format($date,'d');
 	}
 	public function getAperturaReservaAttribute ($value){
 		return $this->splitValue($value);

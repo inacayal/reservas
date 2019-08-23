@@ -31,7 +31,7 @@ function YearCalendar(props){
             props.handleMonthClick
         );
     return (
-        <div className={props.show ? "row full-width" : "hidden"}>
+        <div className="row full-width">
             <div className="box-padding row bold">
                 {"Mostrando " + props.date.getFullYear()}
             </div>

@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Models\Reserva as Reservas;
-use App\Http\Resources\ReservaResource as Resource;
+use App\Http\Resources\ReservaResource;
+use App\Http\Resources\HorarioSemanaResource;
 use App\User as User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,24 +22,31 @@ class ReservaController extends Controller
      */
     public function list (
         $id,
-        $month
+        $month,
+        $year
     ){
         
         $dependency = $this->model::assignDependencyOptions(
-            array('reservas' => [$month]),
+            array('reservas' => [$month,$year]),
             'query'  
         );
 
         $user = User::with(
                 $dependency->data
             )->find($id);
-
-        return response( 
-            Resource::collection(
-                $user
-                    ->reservas
-                    ->groupBy('dia_reserva')
-            ),
+        return response(
+            collect([
+                'reservas' => ReservaResource::collection(
+                    $user->reservas->groupBy('dia_reserva')
+                ),
+                'horarios' => [
+                    'data' => HorarioSemanaResource::collection(
+                        $user->horarios->keyBy('id_dia_semana')
+                    ),
+                    'intervalo'=>$user->intervalo->id,
+                    'caida' => $user->caida_reserva
+                ]
+            ]), 
             200
         )->header('Content-Type','application/json'); 
     }

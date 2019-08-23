@@ -20,21 +20,25 @@ class HorarioSemanaResource extends JsonResource
             "id"=>$this->id,
             "diaSemana"=>$this->id_dia_semana,
             "estado"=>$this->estado->descripcion,
-            "aperturaReserva"=>[
-                'hora'=>$this->apertura_reserva->hora,
-                'minuto'=>$this->apertura_reserva->minuto
-            ], 
-            "cierreReserva"=> [
-                'hora'=>$this->cierre_reserva->hora,
-                'minuto'=>$this->cierre_reserva->minuto
-            ] ,
-            "aperturaAtencion"=> [
-                'hora'=>$this->apertura_atencion->hora,
-                'minuto'=> $this->apertura_atencion->minuto 
-            ], 
-            "cierreAtencion"=> [
-                'hora'=>$this->cierre_atencion->hora,
-                'minuto'=>$this->cierre_atencion->minuto
+            "apertura" => [
+                "reserva" => [
+                    "hora" => $this->apertura_reserva->hora,
+                    "minuto" => $this->apertura_reserva->minuto
+                ],
+                "atencion"=> [
+                    "hora"=>$this->apertura_atencion->hora,
+                    "minuto"=> $this->apertura_atencion->minuto 
+                ]
+            ],
+            "cierre" => [
+                "reserva" => [
+                    "hora" => $this->cierre_reserva->hora,
+                    "minuto" => $this->cierre_reserva->minuto
+                ],
+                "atencion"=> [
+                    "hora"=>$this->cierre_atencion->hora,
+                    "minuto"=>$this->cierre_atencion->minuto
+                ]
             ]
         ];
     }

@@ -23,7 +23,7 @@ function DayCalendar(props) {
             dayReservationHours,
             foundLength
         ] = generateDay(
-            props.horarios.horarios,
+            props.horarios.data,
             props.horarios.intervalo,
             props.horarios.caida,
             props.date,
@@ -32,7 +32,7 @@ function DayCalendar(props) {
             props.actions.inner
         );
         return (
-            <div className={props.show ? "full-width" : "hidden"}>
+            <div className="full-width">
                 <div className="v-padding container">
                     <div className="row bold">
                         <span className="align-center side-margin inline-block">

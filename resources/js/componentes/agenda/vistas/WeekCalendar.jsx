@@ -36,7 +36,7 @@ function WeekCalendar(props) {
             new Date()
         );
     return (
-        <div className={props.show ? "container" : "hidden"}>
+        <div className="container">
             <div className="row bold">
                 {"Mostrando " + MONTHS[props.date.getMonth()] + " " + props.date.getFullYear()}
             </div>

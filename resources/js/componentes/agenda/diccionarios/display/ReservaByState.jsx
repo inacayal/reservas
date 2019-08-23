@@ -9,21 +9,71 @@ import ReactDOM from 'react-dom';
 import CardList from '../../../basic/CardList';
 import ButtonList from '../../../basic/ButtonList';
 /**
+ * funciones
+ */
+import {GenerateActions} from '../../../../acciones/GenerateActions';
+/**
  * constantes
  */
 import { DAYS, MONTHS } from '../../../../constantes/DaysMonths';
 import { CLASSBYSTATE } from '../../../../constantes/CardObject';
-/**
- * funciones
- */
-import { assignActionsByStatus } from '../../../../acciones/ReservasDictionary';
+
+export const ReservaDayByState = {
+    data: (
+        display,
+        reservations
+    ) => ({
+        title: {
+            data: (
+                <div className="container no-padding">
+                    <div className="row">
+                        <div className="col-md-1">
+                            <span className="side-margin light-danger bold inline-block">{display}</span>
+                        </div>
+                        <div className="col-md-11">
+                            <CardList
+                                displayList="nav-list full-width"
+                                elems={reservations} />
+                        </div>
+                    </div>
+                </div>
+            ),
+            class: "box-padding border-bottom"
+        },
+        content: {},
+        container: {
+            class: "padding-box"
+        }
+    }),
+    no_data: (
+        display,
+        reservations
+    ) => ({
+        title: {
+            data: (
+                <div>
+                    <div className="inline-block half">
+                        <div className="line-v-middle light-danger bold side-margin inline-block">{display}</div>
+                    </div>
+                    <div className="inline-block half smaller-text text-right">
+                        Sin reservas
+                    </div>
+                </div>
+            ),
+            class: "box-padding border-bottom"
+        },
+        content: {},
+        container: {
+            class: "padding-box"
+        }
+    })
+};
 
 export const ReservaMonthByState = {
     data: (
         resDate,
         titleClass,
         data,
-        acciones,
         actions
     ) => ({
         title: {
@@ -41,7 +91,6 @@ export const ReservaMonthByState = {
         resDate,
         titleClass,
         data,
-        acciones,
         actions
     ) => ({
         title: {
@@ -150,13 +199,14 @@ function generateCardListForReservationObject(
         (e, i) => {
             let hora = new Date(parseInt(e)),
                 reservaciones = generateCardsForReservationArray(resObject[e], actions);
+            const [hr, mn] = [e.substr(0, e.length / 2), e.substr(e.length / 2, e.length-1)];
             return {
                 title: {
                     data: (
                         <div className="full-width container">
                             <div className="row">
                                 <div className="col-md-1 no-padding">
-                                    <span className="side-margin bold light-danger">{hora.getHours() + ":" + (hora.getMinutes() < 10 ? "0" + hora.getMinutes() : hora.getMinutes())}</span>
+                                    <span className="side-margin bold light-danger">{hr+':'+mn}</span>
                                 </div>
                                 <div className="col-md-11 no-padding">
                                     <CardList
@@ -183,10 +233,13 @@ function generateCardsForReservationArray(
 ) {
     return hourReservations.map(
         (e, i) => {
-            let acciones = assignActionsByStatus[e.estado](
-                actions,
-                e.id
-            ),
+            let acciones = GenerateActions.reservas(
+                    e,
+                    actions,
+                    e.hora_reserva,
+                    'day',
+                    e.estado
+                ),
                 classByState = CLASSBYSTATE[e.estado],
                 classByIndex = {
                     0: "box-padding no-top-padding border-bottom"
@@ -216,11 +269,7 @@ function generateCardsForReservationArray(
                                 </div>
                             </div>
                             <div className="full-width text-right">
-                                <ButtonList
-                                    displayList="flex-row nav-list no-padding h-end"
-                                    container="side-margin"
-                                    elemClass="box-transparent highlight-hover full-width text-right border-box-no-padding button-border"
-                                    elems={acciones} />
+                                {acciones}
                             </div>
                         </div>
                     ),

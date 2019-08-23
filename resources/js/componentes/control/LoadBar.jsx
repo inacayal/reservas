@@ -11,7 +11,7 @@ function LoadBar(props) {
     };
     return (
         <div className="full-width">
-            <div className="background-border" style={style}>{'progress:'+props.loaded}</div>
+            <div className="background-border" style={style}></div>
         </div>
     );
 }

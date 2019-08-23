@@ -13,7 +13,6 @@ import Button from './Button';
 import {Link} from 'react-router-dom';
 
 export default function Actions(props) {
-    console.log(props.buttons);
     return (
         <div className="inline-block side-margin">
             <ul className="flex-row nav-list side-margin no-padding align-center">
@@ -30,10 +29,10 @@ export default function Actions(props) {
                                         {e.title}
                                     </Link>
                                 </li>
-                        )   
-                        :
+                        )
+                    :
                         <>
-                    </>
+                        </>
             }
             {
                 props.buttons

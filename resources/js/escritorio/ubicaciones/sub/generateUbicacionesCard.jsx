@@ -10,7 +10,7 @@ import ButtonList from '../../../componentes/basic/ButtonList';
 /**
  * funciones
  */
-import { generateActions } from '../../../acciones/generateActions';
+import { GenerateActions } from '../../../acciones/GenerateActions';
 
 export default function generateUbicacionesCard(
     ubicaciones,
@@ -18,23 +18,16 @@ export default function generateUbicacionesCard(
 ){
     return Object.keys(ubicaciones).map(
         e => {
-            let acciones = generateActions['feriados'](
-                true,
-                actions,
+            const acciones = GenerateActions.ubicaciones(
                 e,
-                true,
-                false
+                actions
             );
             return {
                 title:{
                     data:(
                         <div className="full-width ">
                             <span className="sub-title text-super side-margin inline-block align-center">{ubicaciones[e].nombre}</span>
-                            <ButtonList
-                                displayList="flex-row nav-list h-center no-padding inline-block  align-center"
-                                container="side-margin inline-block"
-                                elemClass="full-width box-transparent highlight-hover border-box button-border"
-                                elems={acciones} />
+                            {acciones}
                         </div>
                     ),
                     class:""

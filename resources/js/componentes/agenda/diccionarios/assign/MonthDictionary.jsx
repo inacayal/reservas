@@ -8,10 +8,7 @@ import ReactDOM from 'react-dom';
  */
 import CardList from '../../../basic/CardList';
 import ButtonList from '../../../basic/ButtonList';
-/**
- * dictionaries
- */
-import { assignActionsByStatus } from '../../../../acciones/generateActions';
+
 /**
  * constantes
  */
@@ -24,11 +21,12 @@ import { ReservaMonthByState } from '../display/ReservaByState';
 import { FeriadoMonthByState } from '../display/FeriadoByState';
 
 
-const assignMonthElementType = {
+const MonthDictionary = {
     reservas: (
         acciones,
         sectionData,
         data,
+        date,
         actions
     ) => {
         const resDate = new Date(data),
@@ -43,8 +41,7 @@ const assignMonthElementType = {
         return ReservaMonthByState[index](
             resDate,
             titleClass,
-            data,
-            acciones,
+            date,
             actions
         );
     },
@@ -60,16 +57,16 @@ const assignMonthElementType = {
             index = todayCond ? 'today' : 'not_today';
         
         if (sectionData) 
-            return FeriadoMonthByState["data"][sectionData.estado](
+            return FeriadoMonthByState.data[sectionData.estado](
                 CLASSBYDATE[index],
                 acciones,
                 date
             );
-        return FeriadoMonthByState["no_data"](date,isThisMonth);
+        return FeriadoMonthByState.no_data(date,isThisMonth);
     }
 };
 
-export default assignMonthElementType;
+export default MonthDictionary;
 
 
 

@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 /**
  * components
  */
-import Calendar from '../../../componentes/calendario/Calendar';
+import Calendar from '../../../componentes/agenda/Agenda';
 import ButtonList from '../../../componentes/basic/ButtonList';
 import CardList from '../../../componentes/basic/CardList';
 import Titulo from '../../../componentes/basic/Titulo';
@@ -17,8 +17,7 @@ import AgregarFormulario from './AgregarFormulario';
 /**
  * function
  */
-import generateWeek from '../../../componentes/calendario/procedimientos/generateWeek';
-import generateMonth from '../../../componentes/calendario/procedimientos/generateMonth';
+import generateWeek from '../../../componentes/agenda/procedimientos/generateWeek';
 import { closeModal, ConfirmarModal } from '../../../componentes/modal/Modal';
 /**
  * constants
@@ -163,20 +162,3 @@ export default class Horarios extends Component {
         );
     }
 }
-/**
- * 
-    <div className={this.state.formulario ? "full-width" : "hidden"}>
-        <AgregarFormulario
-            title={
-                this.state.editar ?
-                    "Editar horario del " + DAYS[this.state.editar]
-                    : "Agregar horario para el " + DAYS[this.state.agregar]
-            }
-            formActions={this.formActions}
-            show={this.state.formulario}
-            showCalendar={false}
-            data={this.state.atencion}
-            editar={this.state.editar}
-            agregar={this.state.agregar} />
-    </div>
- */

@@ -7,11 +7,11 @@ import ReactDOM from 'react-dom';
  * constantes
  */
 import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
-import {generateActions} from '../../../acciones/generateActions';
+import {GenerateActions} from '../../../acciones/GenerateActions';
 /**
  * diccionario
  */
-import assignMonthElementType from '../diccionarios/assign/MonthDictionary';
+import MonthDictionary from '../diccionarios/assign/MonthDictionary';
 /**
  * funciones
  */
@@ -28,10 +28,11 @@ function evalFirstWeek (
     evalDate.setDate(evalDate.getDate()-day);
     while(evalDate.getMonth()!==date.getMonth()){
         res.push(
-            assignMonthElementType[type](
+            MonthDictionary[type](
                 null,
                 null,
                 evalDate.getTime(),
+                evalDate.getDate(),
                 true
             )
         );
@@ -52,10 +53,11 @@ function evalLastWeek(
     evalDate.setDate(evalDate.getDate() + 6 - day);
     while (evalDate.getMonth() !== date.getMonth()) {
         res.push(
-            assignMonthElementType[type](
+            MonthDictionary[type](
                 null,
                 null,
                 evalDate.getTime(),
+                evalDate.getDate(),
                 true
             )
         );
@@ -101,14 +103,16 @@ export default function generateMonth (
             weekCtr = 6;
         }
         week.push(
-            assignMonthElementType[type](
-                generateActions[type](
+            MonthDictionary[type](
+                GenerateActions[type](
                     data[dateStr] || null,
-                    actions.outer,
-                    dateStr,
-                    'month'
+                    actions,
+                    datePtr.getDate(),
+                    'month',
+                    data[dateStr] ? 'data' : 'no_data'
                 ),
                 data[dateStr],
+                datePtr.getTime(),
                 dateStr,
                 actions.outer
             )
@@ -121,8 +125,8 @@ export default function generateMonth (
         } else weekCtr++;
         
         datePtr = new Date(datePtr);
-        dateStr = datePtr.setDate(datePtr.getDate() + 1);
-        datePtr.setHours(0, 0, 0, 0);
+        datePtr.setDate(datePtr.getDate() + 1);
+        dateStr = datePtr.getDate();
     }
     return month;
 }

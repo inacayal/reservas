@@ -10,7 +10,7 @@ import ButtonList from '../../../componentes/basic/ButtonList';
 /**
  * funciones
  */
-import { generateActions } from '../../../acciones/generateActions';
+import { GenerateActions } from '../../../acciones/GenerateActions';
 
 export default function generateEventosCard(
     eventos,
@@ -18,34 +18,16 @@ export default function generateEventosCard(
 ) {
     return Object.keys(eventos).map(
         e => {
-            const acciones = generateActions['feriados'](
-                true,
-                actions,
+            const acciones = GenerateActions.eventos(
                 e,
-                true,
-                false
+                actions
             );
-            const links = [
-                {
-                    title: (
-                        <div className="smaller-text text bold">
-                            <i className="fas fa-plus-circle inline-box side-margin" />
-                            Editar
-                        </div>
-                    ),
-                    to: '/eventos/editar'
-                }
-            ];
             return {
                 title: {
                     data: (
                         <div className="full-width">
                             <span className="sub-title text-super side-margin inline-block align-center">{eventos[e].nombre}</span>
-                            <ButtonList
-                                displayList="flex-row nav-list h-center no-padding inline-block  align-center"
-                                container="side-margin inline-block"
-                                elemClass="full-width box-transparent highlight-hover border-box button-border"
-                                elems={acciones} />
+                            {acciones}
                         </div>
                     )
                 },
