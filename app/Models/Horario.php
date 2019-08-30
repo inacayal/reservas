@@ -34,6 +34,7 @@ class Horario extends Eloquent
 	 */
 	private static $dataKey = 'id_dia_semana';
 	private static $valueKey = '';
+	private static $resource = '\\App\\Http\\Resources\\HorarioSemanaResource';
 	private static $formatOptions = [
 		'keyData'=>'data'
 	];
@@ -60,8 +61,8 @@ class Horario extends Eloquent
 	private function splitValue ($hourAttribute){
 		$res = explode(':',$hourAttribute);
 		return (object) [
-			'hora'=>$res[0],
-			'minuto'=>$res[1]
+			'hora'=>(int)$res[0],
+			'minuto'=>(int)$res[1]
 		];
 	}
 	/**

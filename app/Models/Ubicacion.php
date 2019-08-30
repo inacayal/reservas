@@ -37,6 +37,7 @@ class Ubicacion extends Eloquent
 	 */
 	private static $dataKey = 'id';
 	private static $valueKey = 'nombre';
+	private static $resource = '\\App\\Http\\Resources\\UbicacionesResource';
 	private static $formatOptions = [
 		'keyData'=>'data',
 		'listData'=>'list'
@@ -65,7 +66,8 @@ class Ubicacion extends Eloquent
 		'nombre',
 		'descripcion',
 		'cantidad_maxima',
-		'id_estado'
+		'id_estado',
+		'maximo_personas'
 	];
 	/**
 	 * Helper methods

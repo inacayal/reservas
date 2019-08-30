@@ -25,6 +25,7 @@
   --highlight-blue:#006edc;
   --no-highlight:#e6e6e6;
   --text-color:#000000;
+  --light-border: #f2f2f2;
 }
 html,body {
     background-color: #fff;
@@ -37,11 +38,19 @@ html,body {
 .button-border{
     border-radius:15px;
 }
+.border-bottom-b{
+    border-bottom:solid 1px var(--highlight-blue);
+}
 .border-box-no-padding{
     padding:2px 4px;
     border:solid 1px var(--border) !important;
 }
-
+.light-bg{
+    background-color:var(--light-border);
+}
+.i-box{
+    padding: 10px !important;
+}
 .aprobado{
     color:var(--success);
 }
@@ -64,6 +73,16 @@ html,body {
 .v-padding{
     padding-top:10px;
     padding-bottom:10px;
+}
+.overlay{
+    position:absolute;
+    top: 0px;
+    left: 15px;
+}
+.box-shadow{
+    -webkit-box-shadow: 0px 2px 3px 0px#e6e6e6;
+    -moz-box-shadow: 0px 2px 3px 0px#e6e6e6;
+    box-shadow: 0px 2px 3px 0px#e6e6e6;
 }
 .top-padding{
     padding-top:10px;
@@ -157,6 +176,9 @@ html,body {
 .x-big-font{
     font-size:72px;
 }
+.padding-left{
+    padding-left:10px;
+}
 .c-title{
     font-size:24px;
     font-weight: bold;
@@ -166,6 +188,11 @@ html,body {
 }
 .nav-reserva:disabled {
     color:rgba(227, 52, 47, 0.4);
+}
+.react-calendar__tile:disabled{
+    background-color:transparent !important;
+    opacity:0.3;
+    color:black !important;
 }
 .nav-sidebar:disabled{
     background-color:var(--border);
@@ -197,6 +224,9 @@ html,body {
     padding-right:0px;
     padding-left:0px;
 }
+.no-right-padding{
+    padding-right:0px;
+}
 .big-font{
     font-size:48px;
 }
@@ -209,6 +239,9 @@ html,body {
 .same-width{
     display:block;
     width:17.33%;
+}
+.block{
+    display:block;
 }
 .flex-column{
     display:flex;
@@ -497,7 +530,7 @@ button:focus {
     color:var(--light-danger) !important;
 }
 .react-calendar{
-    border:solid 1px var(--border) !important;
+    border:solid 1px transparent !important;
     width:100% !important;
     font-family:inherit !important;
 }

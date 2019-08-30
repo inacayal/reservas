@@ -38,6 +38,7 @@ class Evento extends Eloquent
 	 */
 	private static $dataKey = 'id';
 	private static $valueKey = 'nombre';
+	private static $resource = '\\App\\Http\\Resources\\EventosResource';
 	private static $formatOptions = [
 		'keyData'=>'data',
 		'listData'=>'list'
@@ -113,4 +114,5 @@ class Evento extends Eloquent
 			$user->intervalo_reserva
 		];
 	}
+	
 }

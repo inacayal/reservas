@@ -9,7 +9,7 @@ import ReactDOM from 'react-dom';
 import DayDictionary from '../diccionarios/assign/DayDictionary';
 import ButtonList from '../../basic/ButtonList';
 
-function generateHourArray(
+export function generateHourArray(
     horario,
     intervalo,
     dataObject,
@@ -25,16 +25,16 @@ function generateHourArray(
         mnPtr = strMn,
         hourArray=[];
 
-        while (hrPtr !== endHr || (hrPtr === endHr && mnPtr <= endMn)){
-            if(mnPtr>=60){
+    while (hrPtr !== endHr || (hrPtr === endHr && mnPtr <= endMn)){
+        if(mnPtr>=60){
             mnPtr=0;
             hrPtr++;
         }
-        const find = mnPtr < 10 
+        const find = mnPtr < 10
             ? hrPtr + '0' + mnPtr
             : hrPtr + '' + mnPtr,
             data = dataObject[find];
-        
+
         hourArray.push(
             DayDictionary[type](
                 data,
@@ -45,7 +45,7 @@ function generateHourArray(
         );
         mnPtr+=intervalo;
     }
-    return hourArray;
+    return hourArray;   
 }
 
 export default function generateDay(

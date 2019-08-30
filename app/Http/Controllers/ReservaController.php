@@ -25,7 +25,6 @@ class ReservaController extends Controller
         $month,
         $year
     ){
-        
         $dependency = $this->model::assignDependencyOptions(
             array('reservas' => [$month,$year]),
             'query'  
@@ -57,11 +56,12 @@ class ReservaController extends Controller
      */
     public function listDependencyData(
         $id,
-        $date
+        $month,
+        $year
     ){
-        $month = date('m',((int)$date));
+        
         $dependency = $this->model::assignDependencyOptions (
-            array('feriados'=>[$month]),
+            array('feriados'=>[$month,$year]),
             'create'  
         );
 
@@ -70,11 +70,18 @@ class ReservaController extends Controller
             )->where('id',$id)
             ->first();
         
-        return response( 
+        return response(
             $this->formatDependencyData(
                 $dependency->models,
                 $user
-            ),
+            )->merge([
+                'intervalo' => [
+                    "data" => $user->intervalo
+                ],
+                'antelacion' => [
+                    "data" => $user->antelacion_reserva
+                ]
+            ]),
             200
         )->header('Content-Type','application/json'); 
     }

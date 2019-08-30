@@ -35,6 +35,7 @@ class Feriado extends Eloquent
 	 */
 	private static $dataKey = 'fecha_feriado';
 	private static $valueKey = '';
+	private static $resource = '\\App\\Http\\Resources\\FeriadosResource';
 	private static $formatOptions = [
 		'keyData'=>'data'
 	];
@@ -75,8 +76,8 @@ class Feriado extends Eloquent
 	private function splitValue ($hourAttribute){
 		$res = explode(':',$hourAttribute);
 		return (object) [
-			'hora'=>$res[0],
-			'minuto'=>$res[1]
+			'hora'=>(int)$res[0],
+			'minuto'=>(int)$res[1]
 		];
 	}
 	public static function feriadosQueryCallback($month){
@@ -89,7 +90,7 @@ class Feriado extends Eloquent
 	 */
 	public function getFechaFeriadoAttribute ($value){
 		$date = date_create($value);
-		return date_format($date,'d');
+		return (int) date_format($date,'d');
 	}
 	public function getAperturaReservaAttribute ($value){
 		return $this->splitValue($value);

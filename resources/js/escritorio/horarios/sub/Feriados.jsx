@@ -179,7 +179,7 @@ export default class Feriados extends Component {
                         closeModal={this.closeModal}
                         title="Eliminar Feriado"
                         content="¿estás seguro de eliminar este feriado?" />        
-                    <Calendar
+                    <Agenda
                         show={this.state.show}
                         date={this.state.date} 
                         type="feriados"

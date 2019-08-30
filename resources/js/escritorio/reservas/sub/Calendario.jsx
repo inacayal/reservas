@@ -18,47 +18,6 @@ import Titulo from '../../../componentes/basic/Titulo';
  */
 import { ALL_CONTROL } from '../../../constantes/CalendarControls';
 
-var horariosReserva = {
-    intervalo: "10",
-    caida: "20",
-    horarios: {
-        0: {
-            apertura: "15:00:00",
-            cierre: "17:30:00",
-            estado: "1"
-        },
-        1: {
-            apertura: "14:30:00",
-            cierre: "18:00:00",
-            estado: "1"
-        },
-        2: {
-            apertura: "16:30:00",
-            cierre: "20:30:00",
-            estado: "0"
-        },
-        3: {
-            apertura: "15:30:00",
-            cierre: "21:00:00",
-            estado: "1"
-        },
-        4: {
-            apertura: "16:00:00",
-            cierre: "19:30:00",
-            estado: "1"
-        },
-        5: {
-            apertura: "17:00:00",
-            cierre: "22:30:00",
-            estado: "1"
-        },
-        6: {
-            apertura: "21:30:00",
-            cierre: "23:00:00",
-            estado: "1"
-        }
-    }
-};
 export default class Calendario extends Component {
     constructor(props){
         super(props);
@@ -83,6 +42,7 @@ export default class Calendario extends Component {
                 revertir: this.revertirReserva
             }
         };
+        
         this.verDia = this.verDia.bind(this);
         this.verReserva = this.verReserva.bind(this);
         this.aceptarReserva = this.aceptarReserva.bind(this);
@@ -90,6 +50,7 @@ export default class Calendario extends Component {
         this.revertirReserva = this.revertirReserva.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
         this.fetchData = this.fetchData.bind(this);
+
         this.nav = [
             {
                 title: (
@@ -129,6 +90,7 @@ export default class Calendario extends Component {
     }
 
     verDia(e) {
+        console.log('mes');
         let day = parseInt(e.currentTarget.getAttribute('data')),
             date = this.state.date.setDate(day),
             controls = this.state.controls.map(
@@ -145,7 +107,7 @@ export default class Calendario extends Component {
     fetchData( date ){
         this.setState({data:null});
         const request = GET({
-            endpoint: 'reservas' + '/' + 27 + '/' + parseInt(date.getMonth()+1) + '/' + date.getFullYear(),
+            endpoint: 'reservas/' + 27 + '/' + parseInt(date.getMonth()+1) + '/' + date.getFullYear(),
             download: this.downloadHandler
         });
         request
@@ -160,7 +122,7 @@ export default class Calendario extends Component {
             )
             .catch(
                 error => {
-                    console.log('errorFetching')
+                    console.log(error.message);
                 }
             );
     }
@@ -183,7 +145,7 @@ export default class Calendario extends Component {
     }
 
     render(){
-        if (this.state.data && this.state.horarios)
+        if (this.state.data&& this.state.loadFinished)
             return (
                 <>
                     <Titulo

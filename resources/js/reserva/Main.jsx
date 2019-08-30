@@ -27,29 +27,13 @@ export default class Main extends Component {
             fecha: new Date(),
             navPanel: 0,
             select:{
-                local:{
-                    name:"local",
-                    show:false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {
-                        1: "Local 1",
-                        2: "Local 2",
-                        3: "Local 3"
-                    }
-                },
                 ubicacion:{
                     name:"ubicacion",
                     show: false,
                     selected: null,
                     search: "",
                     input: React.createRef(),
-                    list: {
-                        1: "Terraza",
-                        2: "Salón",
-                        3: "Vereda"
-                    }
+                    list: {}
                 },
                 evento: {
                     name: "evento",
@@ -57,12 +41,7 @@ export default class Main extends Component {
                     selected: null,
                     search: "",
                     input: React.createRef(),
-                    list: {
-                        1: "Cumpleaños",
-                        2: "Cita",
-                        3: "Amigos",
-                        4: "Boda"
-                    }
+                    list: {}
                 },
                 hora: {
                     name: "hora",
@@ -70,12 +49,7 @@ export default class Main extends Component {
                     selected: null,
                     search: "",
                     input: React.createRef(),
-                    list: {
-                        1: "Hora 1",
-                        2: "Hora 2",
-                        3: "Hora 3",
-                        4: "Hora 4"
-                    }
+                    list: {}
                 },
                 personas: {
                     name: "personas",
@@ -83,12 +57,7 @@ export default class Main extends Component {
                     selected: null,
                     search: "",
                     input: React.createRef(),
-                    list: {
-                        1: "Persona 1",
-                        2: "Persona 2",
-                        3: "Persona 3",
-                        4: "Persona 4"
-                    }
+                    list: {}
                 }
             }
         };
@@ -140,7 +109,10 @@ export default class Main extends Component {
                         ubicacion={this.state.select.ubicacion} 
                         current={this.state.navPanel === 1} 
                         fecha={this.state.fecha} 
-                        onCalendarChange={this.onCalendarChange}/>
+                        tileDisabled={() => false}
+                        dayChange = {this.onCalendarChange}
+                        monthChange = {() => false}
+                        navChange = {() => false}/>
                     <Exito 
                         current={this.state.navPanel === 2}/>
                 </div>

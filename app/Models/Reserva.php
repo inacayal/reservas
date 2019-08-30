@@ -122,7 +122,7 @@ class Reserva extends Eloquent
 	
 	public function getDiaReservaAttribute($value){
 		$date = date_create($value);
-		return date_format($date,'d');
+		return (int) date_format($date,'d');
 	}
 	/**
 	 * Model relationship methods

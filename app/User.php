@@ -103,7 +103,8 @@ class User extends Eloquent
 		'direccion',
 		'telefono_local',
 		'id_estado',
-		'month'
+		'month',
+		''
 	];
 	/**
 	 * Model relationship methods

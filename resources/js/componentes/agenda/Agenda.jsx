@@ -31,16 +31,20 @@ export default class Agenda extends Component {
 
     changeCurrentMonth(date,offset){
         let index = monthIndex[this.state.date.getMonth()],
-            isPrev = offset <0; 
-
-        date.setDate(
-            isPrev 
-                ? date.getDate() + offset + (6 - date.getDay())
-                : date.getDate() + offset - date.getDay()
-        );
-
+            isPrev = offset <0,
+            nwDate = new Date(date),
+            change = isPrev 
+                ? {
+                    date: date.getDate() + offset + (6 - date.getDay()),
+                    monthLength: getMonthLength(date.getMonth() + 1, date.getFullYear())
+                }
+                : {
+                    date: date.getDate() + offset - date.getDay(),
+                    monthLength: 1
+                };
+        date.setDate(change.date);
         if (this.state.date.getMonth() !== date.getMonth()){
-            date.setDate(isPrev ? getMonthLength(date.getMonth()+1,date.getFullYear()) : 1);
+            date.setDate(change.monthLength);
             monthRows[index[0]][index[1]].class = "";
             this.props.fetchNewMonth(date);
         }
@@ -86,19 +90,19 @@ export default class Agenda extends Component {
 
     handleMonthClick (e) {
         e.preventDefault();
-        let newMonth = e.currentTarget.getAttribute('data');
-        let date = new Date(this.state.date);
+        let newMonth = e.currentTarget.getAttribute('data'),
+            date = new Date(this.state.date);
         date.setMonth(newMonth-1);
-        this.changeCurrentMonth(date);
+        this.changeCurrentMonth(date,0);
         let controls = this.state.controls.map(
             (e,i)=> {
-                e.class = (i===1) ? 
+                e.class = (i===2) ? 
                     "blue-background highlight-border h-padding small-v-padding":
                     "box-transparent highlight-hover bordered h-padding small-v-padding transparent-border";
                 return e;
             }
-        )
-        this.setState({show:"1",date:date, controls:controls});
+        );
+        this.setState({show:"2",date:date, controls:controls});
     }
 
     componentDidUpdate(prevProps){

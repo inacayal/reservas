@@ -55,6 +55,10 @@ trait hasDataFormatting
 		return $data->keyBy($keys->key);
 	}
 
+	public static function getResource(){
+		return self::$resource;
+	}
+
 	public static function getFormattedData(
 		Collection $data
 	){
@@ -64,6 +68,13 @@ trait hasDataFormatting
 		$class = self::class;
 		if (count($formatOptions)>0){
 			foreach($formatOptions as $optKey=>$option){
+				if (property_exists($class,'resource')){
+					$data = call_user_func_array(
+						self::getResource().'::collection',
+						[$data]
+					);
+					$data = $data->collection;
+				}
 				$formattedData[$option] = call_user_func_array(
 					$class.'::'.$optKey,
 					[$data,$class,$modelKeys]
