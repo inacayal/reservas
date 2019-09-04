@@ -39,12 +39,6 @@ class CreateReservasTable extends Migration
                 ->references('id')->on('ubicaciones')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-
-            $table->foreign('id_evento','reservas_tipo_evento_id_evento')
-                ->references('id')->on('usuario_evento')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-            
             $table->foreign('id_estado','reservas_estado_reserva_id_estado')
                 ->references('id')->on('estado_reserva')
                 ->onDelete('cascade')
@@ -62,7 +56,6 @@ class CreateReservasTable extends Migration
         Schema::table("reservas",function(Blueprint $table){
             $table->dropForeign('reservas_ubicacion_id_ubicacion');
             $table->dropForeign('reservas_users_id');
-            $table->dropForeign('reservas_tipo_evento_id_evento');
             $table->dropForeign('reservas_estado_reserva_id_estado');
         });
         Schema::dropIfExists('reservas');

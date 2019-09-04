@@ -35,13 +35,4 @@ class EstadoEvento extends Eloquent
 		return $this->hasMany(\App\Models\Evento::class, 'id_estado');
 	}
 
-	private static $formatAsList = false;
-
-	public static function needsListFormat() {
-		return self::$formatAsList;
-	}
-
-	public static function isGroupable (){
-		return self::$keyBy;
-	}
 }

@@ -34,14 +34,4 @@ class Provincia extends Eloquent
 	{
 		return $this->hasMany(\App\User::class, 'id_provincia');
 	}
-
-	private static $formatAsList = false;
-
-	public static function needsListFormat() {
-		return self::$formatAsList;
-	}
-
-	public static function isGroupable (){
-		return self::$keyBy;
-	}
 }

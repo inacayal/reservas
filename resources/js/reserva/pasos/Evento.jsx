@@ -29,9 +29,9 @@ function Evento(props) {
         [minDate, changeMin] = useState(new Date()),
         [auxDate, changeAux] = useState(showDate),
         [horario, changeHorario] = useState({}),
+        [eventoSelect, changeEventoList] = useState(props.select.eventos),
         horaSelect = props.select.hora,
         minutoSelect = props.select.minuto,
-        eventoSelect = props.select.eventos,
         ubicacionSelect = props.select.ubicaciones,
         ubicacion = props.data.ubicaciones[ubicacionSelect.selected]||{},
         weekDay = props.data.horarios[showDate.getDay()+1],
@@ -86,6 +86,9 @@ function Evento(props) {
         },
         clickCallback = (date) => {
             return (date) => {
+                let auxEvento = eventoSelect;
+                auxEvento.selected = null;
+                auxEvento.list = props.data.horarios[date.getDay() + 1].eventos.list;
                 changeHorario (
                     generateAcceptedHours({
                         antelacion: props.data.antelacion,
@@ -95,7 +98,8 @@ function Evento(props) {
                         fecha: date,
                         min: minDate
                     })
-                )
+                );
+                changeEventoList(auxEvento);
                 changeDate(date);
             }
         },
@@ -129,7 +133,6 @@ function Evento(props) {
             personas: props.select.personas, 
             ubicaciones: ubicacion
         });
-
     return (
         <div className={(props.current) ? "container" : "hidden"}>
             <h3 className={props.displayTitles ? "bold highlight-title align-center" : "hidden"}>datos de la reserva</h3>
@@ -256,8 +259,8 @@ function Evento(props) {
                                 eventoSelect.selected 
                                     ?
                                         <div className="smaller-text">
-                                            <div>{"Descripcion: " +props.data.eventos[eventoSelect.selected].descripcion}</div>
-                                            <div>{"Promo: "+ props.data.eventos[eventoSelect.selected].promocion}</div>
+                                            <div>{"Descripcion: " + props.data.horarios[showDate.getDay() + 1].eventos.data[eventoSelect.selected].descripcion}</div>
+                                            <div>{"Promo: " + props.data.horarios[showDate.getDay() + 1].eventos.data[eventoSelect.selected].promocion}</div>
                                         </div>
                                     :
                                         <></>

@@ -52,18 +52,18 @@ class Reserva extends Eloquent
 	 */
 	private static $dependencies = [
 		'create'=>[
-			'eventos'				=>	'\\App\\Models\\Evento',
-			'feriados'				=>	'\\App\\Models\\Feriado',
 			'horarios'				=>	'\\App\\Models\\Horario',
+			'feriados'				=>	'\\App\\Models\\Feriado',
 			'ubicaciones'			=>	'\\App\\Models\\Ubicacion',
+			'horarios.eventos'		=>  '\\App\\Models\\Query\\HorarioEvento',
 			'ubicaciones.estado' 	=>  '\\App\\Models\\Query\\EstadoUbicacion',
-			'horarios.estado' 		=>  '\\App\\Models\\Query\\EstadoApertura'
+			'horarios.estado' 		=>  '\\App\\Models\\Query\\EstadoApertura',
 		],
 		'query' => [
 			'reservas'				=>	'\\App\\Models\\Reserva',
 			'horarios'				=>	'\\App\\Models\\Horario',
 			'reservas.ubicacion' 	=>  '\\App\\Models\\Ubicacion',
-			'reservas.evento' 		=>  '\\App\\Models\\Evento',
+			'reservas.evento' 		=>  '\\App\\Models\\Query\\HorarioEvento',
 			'reservas.estado' 		=>  '\\App\\Models\\Query\\EstadoReserva',
 			'intervalo' 			=>  '\\App\\Models\\Query\\Intervalo',
 		]
@@ -131,7 +131,7 @@ class Reserva extends Eloquent
 		return $this->belongsTo(\App\Models\Query\EstadoReserva::class, 'id_estado');
 	}
 	public function evento(){
-		return $this->belongsTo(\App\Models\Evento::class, 'id_evento');
+		return $this->belongsTo(\App\Models\Query\HorarioEvento::class, 'id_evento');
 	}
 	public function ubicacion(){
 		return $this->belongsTo(\App\Models\Ubicacion::class, 'id_ubicacion');

@@ -64,7 +64,6 @@ class ReservaController extends Controller
             array('feriados'=>[$month,$year]),
             'create'  
         );
-
         $user = User::with(
                 $dependency->data
             )->where('id',$id)
@@ -92,8 +91,9 @@ class ReservaController extends Controller
     ) {
         $res = [];
         foreach($dataModels as $relation=>$model){
-            if (!strpos($relation,'.'))
+            if (property_exists($model,'formatOptions')){
                 $res[$relation] = $model::getFormattedData($user->{$relation});
+            }
         }
         return collect($res);
     }

@@ -40,16 +40,15 @@ class Evento extends Eloquent
 	private static $valueKey = 'nombre';
 	private static $resource = '\\App\\Http\\Resources\\EventosResource';
 	private static $formatOptions = [
-		'keyData'=>'data',
-		'listData'=>'list'
+		'keyData'=>'data'
 	];
 	/**
 	 * hasDependencyFormatting trait constants
 	 */
 	private static $dependencies = [
 		'query' => [
-			'eventos'=>'\\App\\Models\\Evento',
-			'eventos.estado'=>'\\App\\Models\\Query\\EstadoEvento'
+			'eventos'		=> '\\App\\Models\\Evento',
+			'eventos.estado'=> '\\App\\Models\\Query\\EstadoEvento'
 		]
 	];
 	/**
@@ -90,8 +89,8 @@ class Evento extends Eloquent
 	public function user(){
 		return $this->belongsTo(\App\User::class, 'id_usuario');
 	}
-	public function reservas(){
-		return $this->hasMany(\App\Models\Reserva::class, 'id_evento');
+	public function horario(){
+		return $this->hasMany(\App\Models\Query\HorarioEvento::class, 'id_evento');
 	}
 	/**
 	 * Model Scopes

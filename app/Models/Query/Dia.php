@@ -33,7 +33,4 @@ class Dia extends Eloquent
 	{
 		return $this->hasMany(\App\Models\Horarios::class, 'id_dia_semana');
 	}
-	public function isGroupable (){
-		return self::$keyBy;
-	}
 }

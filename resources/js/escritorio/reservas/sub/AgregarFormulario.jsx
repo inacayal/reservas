@@ -106,6 +106,9 @@ export default class AgregarFormulario extends Component{
                     let select = this.state.select,
                         data = Object.keys(response.data).reduce(
                             (p,e,i) => {
+                                if(e==='horarios'){
+                                    select.eventos.list = response.data[e].data[date.getDay() + 1].eventos.list;
+                                }
                                 if (select[e]){
                                     select[e].list = response.data[e].list;
                                 }

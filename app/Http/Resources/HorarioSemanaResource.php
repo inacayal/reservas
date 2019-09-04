@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\HorarioEventoResource as Eventos;
 use Carbon\Carbon;
 
 class HorarioSemanaResource extends JsonResource
@@ -39,6 +40,12 @@ class HorarioSemanaResource extends JsonResource
                     "hora"=>$this->cierre_atencion->hora,
                     "minuto"=>$this->cierre_atencion->minuto
                 ]
+            ],
+            'eventos' => [
+                'data'=> Eventos::collection($this->eventos->keyBy('id')),
+                'list'=> $this->eventos->mapWithKeys(function ($item) {
+                    return [$item['id'] => $item['nombre_evento']];
+                })
             ]
         ];
     }

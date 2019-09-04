@@ -84298,78 +84298,78 @@ function (_Component) {
       atencion: {
         0: {
           reserva: {
-            apertura: "15:00:00",
-            cierre: "17:30:00"
+            apertura: "15:00",
+            cierre: "17:30"
           },
           atencion: {
-            apertura: "15:00:00",
-            cierre: "17:30:00"
+            apertura: "15:00",
+            cierre: "17:30"
           },
           estado: "laboral"
         },
         1: {
           reserva: {
-            apertura: "14:30:00",
-            cierre: "18:00:00"
+            apertura: "14:30",
+            cierre: "18:00"
           },
           atencion: {
-            apertura: "14:00:00",
-            cierre: "19:30:00"
+            apertura: "14:00",
+            cierre: "19:30"
           },
           estado: "laboral"
         },
         2: {
           reserva: {
-            apertura: "16:30:00",
-            cierre: "20:00:00"
+            apertura: "16:30",
+            cierre: "20:00"
           },
           atencion: {
-            apertura: "14:00:00",
-            cierre: "23:30:00"
+            apertura: "14:00",
+            cierre: "23:30"
           },
           estado: "no_laboral"
         },
         3: {
           reserva: {
-            apertura: "14:30:00",
-            cierre: "18:00:00"
+            apertura: "14:30",
+            cierre: "18:00"
           },
           atencion: {
-            apertura: "14:00:00",
-            cierre: "19:30:00"
+            apertura: "14:00",
+            cierre: "19:30"
           },
           estado: "laboral"
         },
         4: {
           reserva: {
-            apertura: "14:30:00",
-            cierre: "18:00:00"
+            apertura: "14:30",
+            cierre: "18:00"
           },
           atencion: {
-            apertura: "14:00:00",
-            cierre: "19:30:00"
+            apertura: "14:00",
+            cierre: "19:30"
           },
           estado: "laboral"
         },
         5: {
           reserva: {
-            apertura: "14:30:00",
-            cierre: "18:00:00"
+            apertura: "14:30",
+            cierre: "18:00"
           },
           atencion: {
-            apertura: "14:00:00",
-            cierre: "19:30:00"
+            apertura: "14:00",
+            cierre: "19:30"
           },
           estado: "laboral"
         },
         6: {
           reserva: {
-            apertura: "14:30:00",
-            cierre: "18:00:00"
+            apertura: "14:30",
+            cierre: "18:00"
           },
           atencion: {
-            apertura: "14:00:00",
-            cierre: "19:30:00"
+            apertura: "14:00",
+            cierre: "19:30"
           },
           estado: "laboral"
         }
@@ -85336,6 +85336,10 @@ function (_Component) {
       request.then(function (response) {
         var select = _this2.state.select,
             data = Object.keys(response.data).reduce(function (p, e, i) {
+          if (e === 'horarios') {
+            select.eventos.list = response.data[e].data[date.getDay() + 1].eventos.list;
+          }
+
           if (select[e]) {
             select[e].list = response.data[e].list;
           }
@@ -86449,9 +86453,12 @@ function Evento(props) {
       _useState8 = _slicedToArray(_useState7, 2),
       horario = _useState8[0],
       changeHorario = _useState8[1],
+      _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.select.eventos),
+      _useState10 = _slicedToArray(_useState9, 2),
+      eventoSelect = _useState10[0],
+      changeEventoList = _useState10[1],
       horaSelect = props.select.hora,
       minutoSelect = props.select.minuto,
-      eventoSelect = props.select.eventos,
       ubicacionSelect = props.select.ubicaciones,
       ubicacion = props.data.ubicaciones[ubicacionSelect.selected] || {},
       weekDay = props.data.horarios[showDate.getDay() + 1],
@@ -86498,6 +86505,9 @@ function Evento(props) {
   },
       clickCallback = function clickCallback(date) {
     return function (date) {
+      var auxEvento = eventoSelect;
+      auxEvento.selected = null;
+      auxEvento.list = props.data.horarios[date.getDay() + 1].eventos.list;
       changeHorario(Object(_handlers__WEBPACK_IMPORTED_MODULE_6__["generateAcceptedHours"])({
         antelacion: props.data.antelacion,
         feriado: props.data.feriados[date.getDate()],
@@ -86506,6 +86516,7 @@ function Evento(props) {
         fecha: date,
         min: minDate
       }));
+      changeEventoList(auxEvento);
       changeDate(date);
     };
   },
@@ -86687,7 +86698,7 @@ function Evento(props) {
     toggle: props.showToggle
   })), eventoSelect.selected ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "smaller-text"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Descripcion: " + props.data.eventos[eventoSelect.selected].descripcion), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Promo: " + props.data.eventos[eventoSelect.selected].promocion)) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Descripcion: " + props.data.horarios[showDate.getDay() + 1].eventos.data[eventoSelect.selected].descripcion), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Promo: " + props.data.horarios[showDate.getDay() + 1].eventos.data[eventoSelect.selected].promocion)) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-6 text-left relative"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: ubicacionSelect.selected ? "hidden" : "full-width overlay",

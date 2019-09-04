@@ -35,13 +35,4 @@ class EstadoReserva extends Eloquent
 		return $this->hasMany(\App\Models\Reserva::class, 'id_estado');
 	}
 
-	private static $formatAsList = false;
-
-	public static function needsListFormat() {
-		return self::$formatAsList;
-	}
-
-	public static function isGroupable (){
-		return self::$keyBy;
-	}
 }

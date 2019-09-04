@@ -11,7 +11,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
 use App\Traits\hasDataFormatting;
 use Illuminate\Support\Collection;
 /**
- * Class HorariosSemana
+ * Class Horario
  * 
  * @property int $id
  * @property int $id_usuario
@@ -39,9 +39,18 @@ class Horario extends Eloquent
 		'keyData'=>'data'
 	];
 	/**
+	 * hasDependencyFormatting trait constants
+	 */
+	private static $dependencies = [
+		'query' => [
+			'eventos'=>'\\App\\Models\\Evento',
+			'eventos.estado'=>'\\App\\Models\\Query\\EstadoEvento'
+		]
+	];
+	/**
 	 * Eloquent constants and castings
 	 */
-	protected $table = 'horarios_semana';
+	protected $table = 'usuario_horario';
 	public $timestamps = false;
 	protected $casts = [
 		'id_usuario' => 'int',
@@ -91,6 +100,9 @@ class Horario extends Eloquent
 	}
 	public function estado(){
 		return $this->belongsTo(\App\Models\Query\EstadoApertura::class, 'id_estado');
+	}
+	public function eventos(){
+		return $this->hasMany(\App\Models\Query\HorarioEvento::class, 'id_horario','id');
 	}
 	/**
 	 * Database seeding

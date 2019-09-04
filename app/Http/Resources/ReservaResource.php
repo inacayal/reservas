@@ -26,7 +26,7 @@ class ReservaResource extends JsonResource
                     "telefono"=> $el->telefono,
                     "ubicacion"=> $el->ubicacion->nombre,
                     "personas"=> $el->cantidad_personas,
-                    "evento"=> $el->evento->nombre,
+                    "evento"=> $el->evento->nombre_evento,
                     "descripcion"=> $el->descripcion_evento ,
                     "estado"=> $el->estado->descripcion,
                     "hora_reserva"=>$el->hora_reserva
