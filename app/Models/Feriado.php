@@ -9,8 +9,8 @@ namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
-use App\Traits\hasDataFormatting;
-use App\Traits\hasDependencyFormatting;
+use App\Traits\DataFormatting;
+use App\Traits\DependencyFormatting;
 /**
  * Class UsuarioFeriado
  * 
@@ -28,14 +28,14 @@ use App\Traits\hasDependencyFormatting;
  */
 class Feriado extends Eloquent
 {
-	use hasDataFormatting,
-		hasDependencyFormatting;
+	use DataFormatting,
+		DependencyFormatting;
 	/**
 	 * HasDataFormatting trait constants
 	 */
 	private static $dataKey = 'fecha_feriado';
 	private static $valueKey = '';
-	private static $resource = '\\App\\Http\\Resources\\FeriadosResource';
+	private static $dataResource = '\\App\\Http\\Resources\\FeriadosResource';
 	private static $formatOptions = [
 		'keyData'=>'data'
 	];
@@ -112,6 +112,9 @@ class Feriado extends Eloquent
 	}
 	public function user(){
 		return $this->belongsTo(\App\User::class, 'id_usuario');
+	}
+	public function eventos(){
+		return $this->belongsToMany(\App\Models\Evento::class, 'feriado_eventos','id_feriado','id_evento');
 	}
 	/**
 	 * Model Scopes

@@ -19,7 +19,14 @@ class CreateUsuarioPromocionesTable extends Migration
             $table->string('descripcion',50);
             $table->integer('descuento')->unsigned();
             $table->integer('id_estado')->unsigned();
-            $table->foreign('id_estado','usuario_promociones_users_id')
+            $table->integer('id_usuario')->unsigned();
+
+            $table->foreign('id_usuario','usuario_promociones_promociones_id_users_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->foreign('id_estado','usuario_promociones_id_estado_estado_evento_id')
                 ->references('id')->on('estado_evento')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
@@ -35,7 +42,8 @@ class CreateUsuarioPromocionesTable extends Migration
     public function down()
     {
         Schema::table('usuario_promociones', function (Blueprint $table) {
-            $table->dropForeign('usuario_promociones_users_id');
+            $table->dropForeign('usuario_promociones_id_estado_estado_evento_id');
+            $table->dropForeign('usuario_promociones_promociones_id_users_id');
         });
         Schema::dropIfExists('usuario_promociones');
     }

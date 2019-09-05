@@ -17,7 +17,6 @@ class CreateEventosPromocionesTable extends Migration
             $table->increments('id');
             $table->integer('id_evento')->unsigned();
             $table->integer('id_promocion')->unsigned();
-            $table->integer('id_estado')->unsigned();
             
             $table->time('fin_promocion');
             $table->time('inicio_promocion');
@@ -29,11 +28,6 @@ class CreateEventosPromocionesTable extends Migration
 
             $table->foreign('id_promocion','evento_promocion_id_promocion')
                 ->references('id')->on('usuario_promociones')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-
-            $table->foreign('id_estado','eventos_promociones_id_estado_estado_evento_id')
-                ->references('id')->on('estado_evento')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });

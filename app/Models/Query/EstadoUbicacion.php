@@ -8,7 +8,6 @@
 namespace App\Models\Query;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
-use App\Traits\crudMethods;
 /**
  * Class EstadoSalon
  * 
@@ -22,7 +21,6 @@ use App\Traits\crudMethods;
 class EstadoUbicacion extends Eloquent
 {
 	//use CrudMethods;
-	protected static $keyBy = false;
 	protected $table = 'estado_salon';
 	public $timestamps = false;
 

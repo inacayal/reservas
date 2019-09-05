@@ -3,16 +3,27 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Collection;
+use App\Traits\DataFormatting;
 
 class FeriadosResource extends JsonResource
 {
+    use DataFormatting;
     /**
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
+    private static $dataKey = 'id';
+    private static $valueKey = 'nombre';
+    private static $dataResource = 'App\\Http\\Resources\\HorarioEventoResource';
+    private static $formatOptions = [
+        'keyData'=>'data',
+        'listData'=>'list'
+    ];
     public $preserveKeys = true;
+
     public function toArray($request)
     {
         return (object) [
@@ -39,7 +50,8 @@ class FeriadosResource extends JsonResource
                     "hora"=>$this->cierre_atencion->hora,
                     "minuto"=>$this->cierre_atencion->minuto
                 ]
-            ]
+                ],
+                "eventos" => self::getFormattedData($this->eventos->where('id_estado',1))
         ];
     }
 }

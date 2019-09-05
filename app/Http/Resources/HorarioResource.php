@@ -3,18 +3,27 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\HorarioEventoResource as Eventos;
-use Carbon\Carbon;
+use Illuminate\Support\Collection;
+use App\Traits\DataFormatting;
 
-class HorarioSemanaResource extends JsonResource
+class HorarioResource extends JsonResource
 {
+    use DataFormatting;
     /**
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
+    private static $dataKey = 'id';
+    private static $valueKey = 'nombre';
+    private static $dataResource = 'App\\Http\\Resources\\HorarioEventoResource';
+    private static $formatOptions = [
+        'keyData'=>'data',
+        'listData'=>'list'
+    ];
     public $preserveKeys = true;
+    
     public function toArray($request)
     {
         return [
@@ -41,12 +50,8 @@ class HorarioSemanaResource extends JsonResource
                     "minuto"=>$this->cierre_atencion->minuto
                 ]
             ],
-            'eventos' => [
-                'data'=> Eventos::collection($this->eventos->keyBy('id')),
-                'list'=> $this->eventos->mapWithKeys(function ($item) {
-                    return [$item['id'] => $item['nombre_evento']];
-                })
-            ]
+            'eventos' => self::getFormattedData($this->eventos->where('id_estado',1))
         ];
     }
 }
+

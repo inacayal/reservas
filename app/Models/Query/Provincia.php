@@ -8,7 +8,6 @@
 namespace App\Models\Query;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
-use App\Traits\crudMethods;
 
 /**
  * Class Provincia

@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
  * handle dependency formatting
  * must define @param dependency inside class indicating which models this instance depends on
  */
-trait hasDependencyFormatting
+trait DependencyFormatting
 {
 	private static function getDependencies (
 		string $type

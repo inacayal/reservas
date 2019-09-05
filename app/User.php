@@ -9,8 +9,8 @@ namespace App;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
-use App\Traits\hasDataFormatting;
-use App\Traits\hasDependencyFormatting;
+use App\Traits\DataFormatting;
+use App\Traits\DependencyFormatting;
 /**
  * Class User
  * 
@@ -49,8 +49,8 @@ use App\Traits\hasDependencyFormatting;
  */
 class User extends Eloquent
 {
-	use hasDataFormatting,
-		hasDependencyFormatting;
+	use DataFormatting,
+		DependencyFormatting;
 	/**
 	 * hasDataFormatting trait constants
 	 */

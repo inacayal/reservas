@@ -42,10 +42,10 @@ class CreateUsuarioHorarioTable extends Migration
      */
     public function down()
     {
-        Schema::table('horarios_semana',function(Blueprint $table){
+        Schema::table('usuario_horario',function(Blueprint $table){
             $table->dropForeign('usuario_dia_semana_id_dia_semana');
             $table->dropForeign('usuario_users_id_usuario');
         });
-        Schema::dropIfExists('horarios_semana');
+        Schema::dropIfExists('usuario_horario');
     }
 }

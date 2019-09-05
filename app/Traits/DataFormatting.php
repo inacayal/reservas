@@ -5,7 +5,7 @@ use Illuminate\Support\Collection;
 /**
  * managing data and dependency data format
  */
-trait hasDataFormatting
+trait DataFormatting
 {
     
 	public static function getFormatOptions() {
@@ -56,7 +56,7 @@ trait hasDataFormatting
 	}
 
 	public static function getResource(){
-		return self::$resource;
+		return self::$dataResource;
 	}
 
 	public static function getFormattedData(
@@ -68,7 +68,7 @@ trait hasDataFormatting
 		$class = self::class;
 		if (count($formatOptions)>0){
 			foreach($formatOptions as $optKey=>$option){
-				if (property_exists($class,'resource')){
+				if (property_exists($class,'dataResource')){
 					$data = call_user_func_array(
 						self::getResource().'::collection',
 						[$data]

@@ -9,8 +9,8 @@ namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
-use App\Traits\hasDataFormatting;
-use App\Traits\hasDependencyFormatting;
+use App\Traits\DataFormatting;
+use App\Traits\DependencyFormatting;
 
 /**
  * Class Ubicacione
@@ -30,8 +30,8 @@ use App\Traits\hasDependencyFormatting;
  */
 class Ubicacion extends Eloquent
 {
-	use hasDataFormatting,
-		hasDependencyFormatting;
+	use DataFormatting,
+		DependencyFormatting;
 	/**
 	 * hasDataFormatting trait constants
 	 */

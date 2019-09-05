@@ -9,8 +9,8 @@ namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
-use App\Traits\hasDataFormatting;
-use App\Traits\hasDependencyFormatting;
+use App\Traits\DataFormatting;
+use App\Traits\DependencyFormatting;
 /**
  * Class Reserva
  * 
@@ -37,8 +37,8 @@ use App\Traits\hasDependencyFormatting;
  */
 class Reserva extends Eloquent
 {
-	use hasDataFormatting,
-		hasDependencyFormatting;
+	use DataFormatting,
+		DependencyFormatting;
 	/**
 	 * hasDataFormatting trait constants
 	 */
@@ -51,21 +51,24 @@ class Reserva extends Eloquent
 	 * hasDependencyFormatting trait constants
 	 */
 	private static $dependencies = [
-		'create'=>[
-			'horarios'				=>	'\\App\\Models\\Horario',
-			'feriados'				=>	'\\App\\Models\\Feriado',
-			'ubicaciones'			=>	'\\App\\Models\\Ubicacion',
-			'horarios.eventos'		=>  '\\App\\Models\\Query\\HorarioEvento',
-			'ubicaciones.estado' 	=>  '\\App\\Models\\Query\\EstadoUbicacion',
-			'horarios.estado' 		=>  '\\App\\Models\\Query\\EstadoApertura',
+		'create'=> [
+			'horarios'						=>	'\\App\\Models\\Horario',
+			'feriados'						=>	'\\App\\Models\\Feriado',
+			'ubicaciones'					=>	'\\App\\Models\\Ubicacion',
+			'feriados.eventos' 				=>  false,
+			'horarios.eventos'				=> 	false,
+			'horarios.eventos.promociones'	=> 	false,
+			'feriados.eventos.promociones' 				=>  false,
+			'ubicaciones.estado' 			=>  false,
+			'horarios.estado' 				=>  false,
 		],
 		'query' => [
 			'reservas'				=>	'\\App\\Models\\Reserva',
 			'horarios'				=>	'\\App\\Models\\Horario',
 			'reservas.ubicacion' 	=>  '\\App\\Models\\Ubicacion',
-			'reservas.evento' 		=>  '\\App\\Models\\Query\\HorarioEvento',
-			'reservas.estado' 		=>  '\\App\\Models\\Query\\EstadoReserva',
-			'intervalo' 			=>  '\\App\\Models\\Query\\Intervalo',
+			'reservas.evento' 		=>  '\\App\\Models\\Evento',
+			'reservas.estado' 		=>  false,
+			'intervalo' 			=>  false
 		]
 	];
 	/**
@@ -131,7 +134,7 @@ class Reserva extends Eloquent
 		return $this->belongsTo(\App\Models\Query\EstadoReserva::class, 'id_estado');
 	}
 	public function evento(){
-		return $this->belongsTo(\App\Models\Query\HorarioEvento::class, 'id_evento');
+		return $this->belongsTo(\App\Models\Evento::class, 'id_evento');
 	}
 	public function ubicacion(){
 		return $this->belongsTo(\App\Models\Ubicacion::class, 'id_ubicacion');

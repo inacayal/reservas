@@ -8,7 +8,6 @@
 namespace App\Models\Query;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
-use App\Traits\crudMethods;
 /**
  * Class EstadoUsuario
  * 
@@ -25,7 +24,6 @@ class EstadoUsuario extends Eloquent
 
 	protected $table = 'estado_usuario';
 	public $timestamps = false;
-	protected static $keyBy = false;
 	protected $fillable = [
 		'descripcion'
 	];

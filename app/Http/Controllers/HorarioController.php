@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\HorarioSemanaResource as Resource;
+use App\Http\Resources\HorarioResource as Resource;
 use Illuminate\Http\Request;
 use App\User;
 

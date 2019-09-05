@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Reserva as Reservas;
-use App\Http\Resources\ReservaResource;
-use App\Http\Resources\HorarioSemanaResource;
 use App\User as User;
+use App\Models\Reserva as Reservas;
+
+use App\Http\Resources\ReservaResource;
+use App\Http\Resources\HorarioResource;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -33,13 +35,14 @@ class ReservaController extends Controller
         $user = User::with(
                 $dependency->data
             )->find($id);
+
         return response(
             collect([
                 'reservas' => ReservaResource::collection(
                     $user->reservas->groupBy('dia_reserva')
                 ),
                 'horarios' => [
-                    'data' => HorarioSemanaResource::collection(
+                    'data' => HorarioResource::collection(
                         $user->horarios->keyBy('id_dia_semana')
                     ),
                     'intervalo'=>$user->intervalo->id,
@@ -61,9 +64,13 @@ class ReservaController extends Controller
     ){
         
         $dependency = $this->model::assignDependencyOptions (
-            array('feriados'=>[$month,$year]),
+            array(
+                'feriados'=>[$month,$year],
+                'horarios.eventos'
+            ),
             'create'  
         );
+
         $user = User::with(
                 $dependency->data
             )->where('id',$id)
@@ -91,7 +98,7 @@ class ReservaController extends Controller
     ) {
         $res = [];
         foreach($dataModels as $relation=>$model){
-            if (property_exists($model,'formatOptions')){
+            if ($model && property_exists($model,'formatOptions')){
                 $res[$relation] = $model::getFormattedData($user->{$relation});
             }
         }

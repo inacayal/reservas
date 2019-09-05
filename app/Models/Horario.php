@@ -8,7 +8,7 @@
 namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
-use App\Traits\hasDataFormatting;
+use App\Traits\DataFormatting;
 use Illuminate\Support\Collection;
 /**
  * Class Horario
@@ -28,13 +28,13 @@ use Illuminate\Support\Collection;
  */
 class Horario extends Eloquent
 {
-	use hasDataFormatting;
+	use DataFormatting;
 	/**
-	 * hasDataFormatting trait constants
+	 * DataFormatting trait constants
 	 */
 	private static $dataKey = 'id_dia_semana';
 	private static $valueKey = '';
-	private static $resource = '\\App\\Http\\Resources\\HorarioSemanaResource';
+	private static $dataResource = '\\App\\Http\\Resources\\HorarioResource';
 	private static $formatOptions = [
 		'keyData'=>'data'
 	];
@@ -102,7 +102,7 @@ class Horario extends Eloquent
 		return $this->belongsTo(\App\Models\Query\EstadoApertura::class, 'id_estado');
 	}
 	public function eventos(){
-		return $this->hasMany(\App\Models\Query\HorarioEvento::class, 'id_horario','id');
+		return $this->belongsToMany(\App\Models\Evento::class, 'horario_eventos','id_horario','id_evento');
 	}
 	/**
 	 * Database seeding

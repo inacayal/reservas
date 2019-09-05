@@ -9,8 +9,8 @@ namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
-use App\Traits\hasDataFormatting;
-use App\Traits\hasDependencyFormatting;
+use App\Traits\DataFormatting;
+use App\Traits\DependencyFormatting;
 
 /**
  * Class UsuarioEvento
@@ -31,14 +31,14 @@ use App\Traits\hasDependencyFormatting;
  */
 class Evento extends Eloquent
 {
-	use hasDataFormatting,
-		hasDependencyFormatting;
+	use DataFormatting,
+		DependencyFormatting;
 	/**
 	 * hasDataFormatting trait constants
 	 */
 	private static $dataKey = 'id';
 	private static $valueKey = 'nombre';
-	private static $resource = '\\App\\Http\\Resources\\EventosResource';
+	private static $dataResource = '\\App\\Http\\Resources\\EventosResource';
 	private static $formatOptions = [
 		'keyData'=>'data'
 	];
@@ -65,8 +65,6 @@ class Evento extends Eloquent
 		'id_usuario',
 		'nombre',
 		'descripcion',
-		'promocion',
-		'descuento',
 		'id_estado'
 	];
 	/**
@@ -84,13 +82,54 @@ class Evento extends Eloquent
 	 * Model relationship methods
 	 */
 	public function estado(){
-		return $this->belongsTo(\App\Models\Query\EstadoEvento::class, 'id_estado');
+		return $this->belongsTo(
+			\App\Models\Query\EstadoEvento::class,
+			'id_estado'
+		);
 	}
+
 	public function user(){
-		return $this->belongsTo(\App\User::class, 'id_usuario');
+		return $this->belongsTo(
+			\App\User::class,
+			'id_usuario'
+		);
 	}
+
 	public function horario(){
-		return $this->hasMany(\App\Models\Query\HorarioEvento::class, 'id_evento');
+		return $this->hasMany(
+			\App\Models\Query\HorarioEvento::class,
+			'id_evento'
+		);
+	}
+
+	public function promociones(){
+		return $this->belongsToMany(
+			\App\Models\Promociones::class,
+			'eventos_promociones',
+			'id_evento',
+			'id_promocion'
+		)->withPivot(
+			'inicio_promocion',
+			'fin_promocion'
+		);
+	}
+
+	public function horarios(){
+		return $this->belongsToMany(
+			\App\Models\Horario::class,
+			'horario_eventos',
+			'id',
+			'id'
+		);
+	}
+
+	public function feriados(){
+		return $this->belongsToMany(
+			\App\Models\Feriado::class,
+			'feriado_eventos',
+			'id_evento',
+			'id'
+		);
 	}
 	/**
 	 * Model Scopes
