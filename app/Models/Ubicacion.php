@@ -37,7 +37,7 @@ class Ubicacion extends Eloquent
 	 */
 	private static $dataKey = 'id';
 	private static $valueKey = 'nombre';
-	private static $resource = '\\App\\Http\\Resources\\UbicacionesResource';
+	private static $dataResource = '\\App\\Http\\Resources\\UbicacionesResource';
 	private static $formatOptions = [
 		'keyData'=>'data',
 		'listData'=>'list'

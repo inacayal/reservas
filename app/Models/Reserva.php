@@ -55,10 +55,11 @@ class Reserva extends Eloquent
 			'horarios'						=>	'\\App\\Models\\Horario',
 			'feriados'						=>	'\\App\\Models\\Feriado',
 			'ubicaciones'					=>	'\\App\\Models\\Ubicacion',
+			//'promociones'					=>	'\\App\\Models\\Promocion',
 			'feriados.eventos' 				=>  false,
 			'horarios.eventos'				=> 	false,
 			'horarios.eventos.promociones'	=> 	false,
-			'feriados.eventos.promociones' 				=>  false,
+			'feriados.eventos.promociones' 	=>  false,
 			'ubicaciones.estado' 			=>  false,
 			'horarios.estado' 				=>  false,
 		],
@@ -141,6 +142,9 @@ class Reserva extends Eloquent
 	}
 	public function user(){
 		return $this->belongsTo(\App\User::class, 'id_usuario');
+	}
+	public function promocion(){
+		return $this->hasOne(\App\Models\Promocion::class, 'id_promocion');
 	}
 	/**
 	 * Model scopes

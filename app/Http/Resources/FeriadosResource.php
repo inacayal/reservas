@@ -50,8 +50,8 @@ class FeriadosResource extends JsonResource
                     "hora"=>$this->cierre_atencion->hora,
                     "minuto"=>$this->cierre_atencion->minuto
                 ]
-                ],
-                "eventos" => self::getFormattedData($this->eventos->where('id_estado',1))
+            ],
+            "eventos" => self::getFormattedData($this->eventos->where('id_estado',1))
         ];
     }
 }

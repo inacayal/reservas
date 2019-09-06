@@ -121,6 +121,9 @@ class User extends Eloquent
 	public function reservas(){
 		return $this->hasMany(\App\Models\Reserva::class, 'id_usuario');
 	}
+	public function promociones(){
+		return $this->hasMany(\App\Models\Promocion::class, 'id_usuario');
+	}
 	public function ubicaciones(){
 		return $this->hasMany(\App\Models\Ubicacion::class, 'id_usuario');
 	}

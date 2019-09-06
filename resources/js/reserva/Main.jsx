@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
  * pasos de la reserva
  */
 import Local from './pasos/Local.jsx';
-import Evento from "./pasos/Evento.jsx";
+import Evento from "./pasos/evento/Evento.jsx";
 import Exito from "./pasos/Exito.jsx";
 /**
  * control

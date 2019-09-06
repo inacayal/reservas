@@ -23,7 +23,7 @@ class EventoController extends Controller
             [],
             'query'  
         );
-
+        
         $user = User::with(
                 $dependency->data    
             )

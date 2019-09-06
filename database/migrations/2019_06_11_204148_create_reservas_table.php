@@ -27,9 +27,10 @@ class CreateReservasTable extends Migration
             $table->integer('id_evento')->unsigned();
             $table->text('descripcion_evento');
             $table->timestamp('hora_reserva')->nullable();
-            $table->integer('id_estado')->unsigned();
+            $table->integer('id_promocion')->unsigned();
             $table->date('dia_reserva');
-            
+            $table->integer('id_estado')->unsigned();
+
             $table->foreign('id_usuario','reservas_users_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade')
@@ -39,8 +40,14 @@ class CreateReservasTable extends Migration
                 ->references('id')->on('ubicaciones')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
             $table->foreign('id_estado','reservas_estado_reserva_id_estado')
                 ->references('id')->on('estado_reserva')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->foreign('id_promocion','reservas_id_promocion_usuario_promociones_id')
+                ->references('id')->on('usuario_promociones')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });
@@ -54,6 +61,7 @@ class CreateReservasTable extends Migration
     public function down()
     {
         Schema::table("reservas",function(Blueprint $table){
+            $table->dropForeign('reservas_id_promocion_usuario_promociones_id');
             $table->dropForeign('reservas_ubicacion_id_ubicacion');
             $table->dropForeign('reservas_users_id');
             $table->dropForeign('reservas_estado_reserva_id_estado');

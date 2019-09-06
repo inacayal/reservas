@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
  * components
  */
 import { showOptions, selectOption } from '../../../componentes/input/Select';
-import Evento from '../../../reserva/pasos/Evento';
+import Evento from '../../../reserva/pasos/evento/Evento';
 import { GET } from '../../../utils/api';
 import Titulo from '../../../componentes/basic/Titulo';
 import LoadBar from '../../../componentes/control/LoadBar';

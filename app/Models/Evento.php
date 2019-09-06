@@ -104,7 +104,7 @@ class Evento extends Eloquent
 
 	public function promociones(){
 		return $this->belongsToMany(
-			\App\Models\Promociones::class,
+			\App\Models\Promocion::class,
 			'eventos_promociones',
 			'id_evento',
 			'id_promocion'

@@ -62,15 +62,13 @@ class ReservaController extends Controller
         $month,
         $year
     ){
-        
         $dependency = $this->model::assignDependencyOptions (
             array(
-                'feriados'=>[$month,$year],
-                'horarios.eventos'
+                'feriados'=>[$month,$year]
             ),
             'create'  
         );
-
+        
         $user = User::with(
                 $dependency->data
             )->where('id',$id)
