@@ -50,12 +50,19 @@
                 [
                     'data'=> "5",
                     'disabled'=> false,
+                    'title'=> "Promociones",
+                    'route'=> '/',
+                    'sub'=> []
+                ],
+                [
+                    'data'=> "6",
+                    'disabled'=> false,
                     'title'=> "Locales",
                     'route'=> '/locales',
                     'sub'=> []
                 ],
                 [
-                    'data'=> "6",
+                    'data'=> "7",
                     'disabled'=> false,
                     'title'=> "Configuración",
                     'route'=> '/configuracion',
