@@ -3,10 +3,10 @@
  */
 import React, { Component, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import Promociones from './Promociones';
 /**
  * react calendar
  */
+import Promociones from './Promociones';
 import Calendar from 'react-calendar';
 /**
  * CONSTANTS
@@ -14,58 +14,56 @@ import Calendar from 'react-calendar';
 import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
 
 export default function CalendarioEventos(props){
-    const [auxDate, changeAux] = useState(props.showDate),
-        feriado = props.feriados[auxDate.getDate()],
-        dateObj = {
-            dia: DAYS[auxDate.getDay()],
-            fecha: auxDate.getDate(),
-            mes: MONTHS[auxDate.getMonth()],
-            year: auxDate.getFullYear()
-        },
-        dateString = dateObj.dia + " " + dateObj.fecha + " de " + dateObj.mes + " " + dateObj.year,
-        weekDay = props.horarios[props.showDate.getDay() + 1],
-        atencionString = weekDay.apertura.atencion.hora + ":" + (weekDay.apertura.atencion.minuto < 10 ? "0" + weekDay.apertura.atencion.minuto : weekDay.apertura.atencion.minuto) + " - " + weekDay.cierre.atencion.hora + ":" + (weekDay.cierre.atencion.minuto < 10 ? "0" + weekDay.cierre.atencion.minuto : weekDay.apertura.atencion.minuto),
-        reservaString = weekDay.apertura.reserva.hora + ":" + (weekDay.apertura.reserva.minuto < 10 ? "0" + weekDay.apertura.reserva.minuto : weekDay.apertura.reserva.minuto) + " - " + weekDay.cierre.reserva.hora + ":" + (weekDay.cierre.reserva.minuto < 10 ? "0" + weekDay.cierre.reserva.minuto : weekDay.cierre.reserva.minuto),
+    const 
+        [hoverDate, changeHover] = useState(props.showDate),
+        fecha = hoverDate.getDate(),
+        dia = hoverDate.getDay(),
+        mes = hoverDate.getMonth(),
+        year = hoverDate.getFullYear(),
+        hoverData = props.data.feriados.data[fecha] 
+            ? props.data.feriados.data[fecha] 
+            : props.data.horarios.data[dia+1],
+        feriado = props.data.feriados.data[fecha],
+        dateString = DAYS[dia] + " " + fecha + " de " + MONTHS[mes] + " " + year,
+        atencionString = props.current.apertura.atencion.hora + ":" + (props.current.apertura.atencion.minuto < 10 ? "0" + props.current.apertura.atencion.minuto : props.current.apertura.atencion.minuto) + " - " + props.current.cierre.atencion.hora + ":" + (props.current.cierre.atencion.minuto < 10 ? "0" + props.current.cierre.atencion.minuto : props.current.apertura.atencion.minuto),
+        reservaString = props.current.apertura.reserva.hora + ":" + (props.current.apertura.reserva.minuto < 10 ? "0" + props.current.apertura.reserva.minuto : props.current.apertura.reserva.minuto) + " - " + props.current.cierre.reserva.hora + ":" + (props.current.cierre.reserva.minuto < 10 ? "0" + props.current.cierre.reserva.minuto : props.current.cierre.reserva.minuto),
         dayChange = (date) => {
-            props.resetSelect();
             props.clickCallback(date)(date);
-            changeAux(date);
+            changeHover(date);
         }, 
         tileDisabled = ({ activeStartDate, date, view }) => {
             const disableByDate = view === 'month'
-                ? date.getMonth() < activeStartDate.getMonth() || date.getMonth() > activeStartDate.getMonth()
+                ? date.getMonth() < activeStartDate.getMonth() || date.getMonth() > activeStartDate.getMonth() || props.data.horarios.data[date.getDay() + 1].estado === 'no_laboral'
                 : date.getMonth() < activeStartDate.getMonth();
             return disableByDate;
         },
         monthChange = (date) => {
-            props.resetSelect();
             props.fetch(date);
         },
         navChange = ({ activeStartDate, view }) => {
-            props.resetSelect();
             props.fetch(activeStartDate);
         },
         tileContent = ({ date, view }) => {
             const index = date.getDate();
-            return props.feriados[index] !== undefined
+            return props.data.feriados.data[index] !== undefined
                 ?
                 <>
                     <div
-                        className="overlay full-cover box-padding"
-                        onMouseOver={(e) => { changeAux(date) }}
-                        onMouseLeave={(e) => { changeAux(props.showDate) }}
+                        className="full-cover box-padding"
+                        onMouseOver={(e) => { changeHover(date) }}
+                        onMouseLeave={(e) => { changeHover(props.showDate) }}
                         onClick={props.clickCallback}>
                     </div>
                     <p className="no-margin bold smaller-text">
-                        <i className="line-v-middle fas fa-ellipsis-h highlight-title full-cover " />
+                        <i className="line-v-middle fas fa-ellipsis-h highlight-title" />
                     </p>
                 </>
                 : 
                 <>
                     <div
-                        className="overlay full-cover box-padding"
-                        onMouseOver={(e) => { changeAux(date) }}
-                        onMouseLeave={(e) => { changeAux(props.showDate) }}>
+                        className="full-cover box-padding"
+                        onMouseOver={(e) => { changeHover(date) }}
+                        onMouseLeave={(e) => { changeHover(props.showDate) }}>
                     </div>
                     <p></p>
                 </>
@@ -86,7 +84,7 @@ export default function CalendarioEventos(props){
                     onActiveDateChange={navChange}/>
             </div>
             <div className="col-md-4 text-left">
-                <div className="text-left border-box box-padding">
+                <div>
                     {
                         feriado
                             ?
@@ -95,7 +93,6 @@ export default function CalendarioEventos(props){
                                     <h6 className="highlight bold no-margin">
                                         {"Feriado del " + dateString}
                                     </h6>
-                                    <div style={{ border: "solid 2px var(--highlight-blue)", margin: "10px 0px", borderRadius: "3px" }} className="thirty"></div>
                                     <p className="bold no-margin">
                                         {feriado.nombre}
                                     </p>
@@ -103,7 +100,6 @@ export default function CalendarioEventos(props){
                                 <p className="no-margin">
                                     {feriado.nombre}
                                 </p>
-                                <div style={{ border: "solid 2px var(--border)", margin: "10px 0px", borderRadius: "3px" }} className="thirty"></div>
                                 <p className="no-margin">
                                     {"atencion: " + feriado.apertura.atencion.hora + ":" + (feriado.apertura.atencion.minuto < 10 ? "0" + feriado.apertura.atencion.minuto : feriado.apertura.atencion.minuto) + " - " + feriado.cierre.atencion.hora + ":" + (feriado.cierre.atencion.minuto < 10 ? "0" + feriado.cierre.atencion.minuto : feriado.cierre.atencion.minuto)}
                                 </p>
@@ -116,7 +112,6 @@ export default function CalendarioEventos(props){
                                 <h6 className="highlight bold no-margin">
                                     {dateString}
                                 </h6>
-                                <div style={{ border: "solid 2px var(--highlight-blue)", margin: "10px 0px", borderRadius: "3px" }} className="thirty"></div>
                                 <p className="no-margin">
                                     {"atención: " + atencionString}
                                 </p>
@@ -128,7 +123,7 @@ export default function CalendarioEventos(props){
                 </div>
                 <div className="container ">
                     <Promociones 
-                        data={ feriado ? feriado.eventos.data :  weekDay.eventos.data}/> 
+                        data={hoverData.eventos.data}/> 
                 </div>
             </div>
         </div>

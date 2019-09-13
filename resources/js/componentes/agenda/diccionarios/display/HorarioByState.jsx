@@ -26,7 +26,7 @@ export const HorarioByState = {
                     <div className="full-width box-padding" >
                         <div className="seventy inline-block  sub-title">
                             <div className="inline-block side-margin text-top">
-                                {DAYS[data]}
+                                {DAYS[data-1]}
                             </div>
                             <div className="inline-block side-margin">
                                 {acciones}
@@ -44,16 +44,12 @@ export const HorarioByState = {
                         <div className="half box-padding inline-block">
                             <div>
                                 <span className="light-danger">Horario de Reservas:</span>
-                                <span>{" " + sectionData.reserva.apertura + "-" + sectionData.reserva.cierre}</span>
+                                <span>{sectionData.apertura.reserva.hora + ":" + sectionData.apertura.reserva.minuto + "-" + sectionData.cierre.reserva.hora+ ":" + sectionData.cierre.reserva.minuto}</span>
                             </div>
                             <div>
                                 <span className="light-danger">Horario de Atención:</span>
-                                <span>{" " + sectionData.atencion.apertura + "-" + sectionData.atencion.cierre}</span>
+                                <span>{sectionData.apertura.atencion.hora + ":" + sectionData.apertura.atencion.minuto + "-" + sectionData.cierre.atencion.hora + ":" + sectionData.cierre.atencion.minuto}</span>
                             </div>
-                        </div>
-                        <div className="half box-padding inline-block">
-                            <span className="light-danger">Descripción:</span>
-                            <span>{" " + sectionData.descripcion}</span>
                         </div>
                     </div>
                 )

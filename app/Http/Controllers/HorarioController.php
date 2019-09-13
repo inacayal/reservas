@@ -10,7 +10,7 @@ class HorarioController extends Controller
 {
     protected $model = '\\App\\Models\\Horario';
     public function __construct () {
-
+        $this->middleware('length');
     }
 
     public function list ($id){

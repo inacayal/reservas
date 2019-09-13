@@ -6,8 +6,7 @@ import ReactDOM from 'react-dom';
 /**
  * components
  */
-import { showOptions, selectOption } from '../../../componentes/input/Select';
-import Evento from '../../../reserva/pasos/evento/Evento';
+import EventoFrame from '../../../reserva/pasos/evento/EventoFrame';
 import { GET } from '../../../utils/api';
 import Titulo from '../../../componentes/basic/Titulo';
 import LoadBar from '../../../componentes/control/LoadBar';
@@ -18,53 +17,9 @@ export default class AgregarFormulario extends Component{
         this.state = {
             date:new Date(),
             loading:0,
-            loadFinished:false,
-            select: {
-                ubicaciones: {
-                    name: "ubicaciones",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {}
-                },
-                eventos: {
-                    name: "eventos",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {}
-                },
-                hora: {
-                    name: "hora",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {}
-                },
-                minuto: {
-                    name: "minuto",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {}
-                },
-                personas: {
-                    name: "personas",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {}
-                }
-            }
+            loadFinished:false
         };
-
-        this.showOptions = showOptions.bind(this);
-        this.selectOption = selectOption.bind(this);
+        
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
         
@@ -95,31 +50,23 @@ export default class AgregarFormulario extends Component{
     }
 
     fetchData(date) {
-        this.setState({ data:null,isLoading:true,loadFinished:false });
+        this.setState({ 
+            data:null,
+            isLoading:true,
+            loadFinished:false
+        });
+        
         const request = GET({
             endpoint: 'reservas/agregar/' + 27 + '/' + parseInt(date.getMonth() + 1) + '/' + date.getFullYear(),
             download: this.downloadHandler
         });
+        
         request
             .then(
                 response => {
-                    let select = this.state.select,
-                        data = Object.keys(response.data).reduce(
-                            (p,e,i) => {
-                                if(e==='horarios'){
-                                    select.eventos.list = response.data[e].data[date.getDay() + 1].eventos.list;
-                                }
-                                if (select[e]){
-                                    select[e].list = response.data[e].list;
-                                }
-                                p[e] = response.data[e].data||{};
-                                return p;
-                            },
-                            {}
-                        );
+                    const data = response.data;
                     this.setState({
                         data,
-                        select,
                         date,
                         isLoading:false,
                         loadFinished:true
@@ -151,11 +98,8 @@ export default class AgregarFormulario extends Component{
                     <form className="text-right">
                         <div className="container">
                             <div className="row">
-                                <Evento
-                                    showToggle={this.showOptions}
-                                    change={this.selectOption}
+                                <EventoFrame
                                     displayTitles={false}
-                                    select = {this.state.select}
                                     current={true}
                                     fecha={this.state.date}
                                     fetch = {this.fetchData}

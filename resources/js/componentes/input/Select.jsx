@@ -8,27 +8,20 @@ import ReactDOM from 'react-dom';
  * @param {*} e 
  * handler
  */
-export function showOptions(e) {
-    let name = e.currentTarget.getAttribute('select');
-    let select = this.state.select;
-    let trigger = select[name];
-    trigger.show = !trigger.show;
-    select[name] = trigger;
-    this.setState({ select });
+export function showOptions(select) {
+    const selectMimic = Object.assign({},select);
+    selectMimic.show = !selectMimic.show;
+    return selectMimic;
 }
 /**
  * 
  * @param {*} e 
  * component
  */
-export function selectOption(e) {
-    let value = e.target.getAttribute('keyvalue'),
-        name = e.target.getAttribute('select'),
-        select = this.state.select,
-        trigger = select[name];
-    trigger.selected = (value !== select[name].selected) ? value : null;
-    select[name] = trigger;
-    this.setState({ select });
+export function selectOption(select,value) {
+    const selectMimic = Object.assign({}, select);
+    selectMimic.selected = (value !== selectMimic.selected) ? value : null;
+    return selectMimic;
 }
 class noMemoSelect extends Component{
     constructor(props){

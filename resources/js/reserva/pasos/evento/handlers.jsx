@@ -4,87 +4,82 @@
 import React, { Component, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
-export const generateListByLocationCapacity = ({
-    personas,
-    ubicaciones
-}) => {
-    const list = [...Array(ubicaciones.maximo + 1).keys()];
-    list.shift();
-    personas.list = Object.assign({}, list);
+export const generateListByLocationCapacity = (m) => {
+    const l = [...Array(m + 1).keys()];
+    l.shift();
+    return l;
 };
 
 export const generateHourArray = (
-    horario,
-    intervalo,
-    hourArray,
-    start
+    h,
+    i,
+    hA,
+    s
 ) => {
-    let strHr = horario.apertura.reserva.hora,
-        strMn = horario.apertura.reserva.minuto,
-        endHr = horario.cierre.reserva.hora === 0 ? 24 : horario.cierre.reserva.hora,
-        endMn = horario.cierre.reserva.minuto,
-        hrPtr = start.hora,
-        mnPtr = start.minuto,
-        hList = {};
+    let sH = h.apertura.reserva.hora,
+        sM = h.apertura.reserva.minuto,
+        eH = h.cierre.reserva.hora === 0 ? 24 : h.cierre.reserva.hora,
+        eM = h.cierre.reserva.minuto,
+        hP = s.hora,
+        mP = s.minuto,
+        hL = {};
 
-    hourArray[hrPtr] = {};
-    hList[hrPtr] = hrPtr;
+    hA[hP] = {};
+    hL[hP] = hP;
 
-    while (hrPtr !== endHr || (hrPtr === endHr && mnPtr <= endMn)) {
-        if (mnPtr >= 60) {
-            hrPtr++;
-            hourArray[hrPtr] = {};
-            hList[hrPtr] = hrPtr;
-            mnPtr = 0;
+    while (hP !== eH || (hP === eH && mP <= eM)) {
+        if (mP >= 60) {
+            hP++;
+            hA[hP] = {};
+            hL[hP] = hP;
+            mP = 0;
         }
-        hourArray[hrPtr][mnPtr] = mnPtr;
-        mnPtr += intervalo;
+        hA[hP][mP] = mP;
+        mP += i;
     }
-
-    return { hourArray, hList };
+    return { hourArray:hA, hList: hL };
 }
 
 export const calculateOffset = (
-    antelacion,
-    date,
-    data,
-    callBack
+    a,
+    dt,
+    d,
+    c
 ) => {
-    const offset = { dias: parseInt(antelacion / 24), horas: antelacion % 24 },
-        cierreH = parseInt(data.cierre.reserva.hora),
-        cierreM = parseInt(data.cierre.reserva.minuto);
+    const o = { dias: parseInt(a / 24), horas: a % 24 },
+        cH = parseInt(d.cierre.reserva.hora),
+        cM = parseInt(d.cierre.reserva.minuto);
 
-    date.setDate(date.getDate() + offset.dias);
-    date.setHours(date.getHours() + offset.horas, date.getMinutes(), 0, 0);
+    dt.setDate(dt.getDate() + o.dias);
+    dt.setHours(dt.getHours() + o.horas, dt.getMinutes(), 0, 0);
 
-    if (date.getHours() > cierreH || (date.getHours() === cierreH && date.getMinutes() > cierreM)) {
-        date.setDate(date.getDate() + 1);
-        date.setHours(0, 0, 0, 0);
+    if (dt.getHours() > cH || (dt.getHours() === cH && dt.getMinutes() > cM)) {
+        dt.setDate(dt.getDate() + 1);
+        dt.setHours(0, 0, 0, 0);
     }
 
-    callBack(date);
+    c(dt);
 
-    return date;
+    return dt;
 };
 
 export const generateAcceptedHours = ({
-    antelacion,
-    feriado,
-    horario,
-    intervalo,
-    fecha,
-    min
+    a,
+    g,
+    i,
+    f,
+    m
 }) => {
-    const generate = feriado !== undefined ? feriado : horario,
-        strHora = min.getDate() === fecha.getDate() && min.getMonth() === fecha.getMonth() && min.getFullYear() === fecha.getFullYear()
-            ? generate.apertura.reserva.hora + antelacion
-            : generate.apertura.reserva.hora,
-        strMinuto = generate.apertura.reserva.minuto;
+    const 
+        sH = m.getDate() === f.getDate() && m.getMonth() === f.getMonth() && m.getFullYear() === f.getFullYear()
+            ? g.apertura.reserva.hora + a
+            : g.apertura.reserva.hora,
+        sM = g.apertura.reserva.minuto;
 
     return generateHourArray(
-        generate,
-        intervalo,
+        g,
+        i,
         {},
-        { hora: strHora, minuto: strMinuto }
+        { hora: sH, minuto: sM }
     );
 }

@@ -35,6 +35,19 @@ html,body {
     height: 100vh;
     margin: 0;
 }
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+.clearfix:after {
+    content: " ";
+    display: block;
+    clear: both;
+}
 .button-border{
     border-radius:15px;
 }
@@ -75,9 +88,11 @@ html,body {
     padding-bottom:10px;
 }
 .overlay{
+    opacity: 0.5;
+    background-color: white;
+    z-index: 1;
     position:absolute;
-    top: 0px;
-    left: 15px;
+    height:100%;
 }
 .tile-overlay{
     position:absolute;
@@ -146,11 +161,19 @@ html,body {
 .extra-m-left-padding {
     padding-left: 40px;
 }
+.subrayado:hover{
+    text-decoration:underline;
+    text-decoration-color:var(--highlight-blue);
+    cursor:pointer;
+}
 .medium-left-padding {
     padding-left: 20px;
 }
 .relative{
     position:relative;
+}
+.visible {
+    overflow:visible !important;
 }
 .text-left{
     text-align:left;
@@ -457,6 +480,9 @@ li.option:hover {
 .full-cover{
     width: 100% ;
     height:100%;
+    position:absolute;
+    top:0px;
+    left:0px;
 }
 /* End select */
 /* Start text input */
@@ -568,6 +594,12 @@ button:focus {
 }
 .twenty{
     width: 20%;
+}
+.ten {
+    width: 10%;
+}
+.ninety {
+    width: 90%;
 }
 .eighty{
     width: 80%;

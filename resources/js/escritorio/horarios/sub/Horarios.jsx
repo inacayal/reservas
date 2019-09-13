@@ -10,10 +10,15 @@ import Calendar from '../../../componentes/agenda/Agenda';
 import ButtonList from '../../../componentes/basic/ButtonList';
 import CardList from '../../../componentes/basic/CardList';
 import Titulo from '../../../componentes/basic/Titulo';
+import LoadBar from '../../../componentes/control/LoadBar';
+/**
+ * api
+ */
+import { GET } from '../../../utils/api';
 /**
  * sub elements
  */
-import AgregarFormulario from './AgregarFormulario';
+import AgregarFormulario from './AgregarFormulario'; 
 /**
  * function
  */
@@ -29,88 +34,14 @@ export default class Horarios extends Component {
     constructor(props){
         super(props);
         this.state = {
-            show: "1",
             open: false,
-            atencion: {
-                0: {
-                    reserva: {
-                        apertura: "15:00",
-                        cierre: "17:30",
-                    },
-                    atencion: {
-                        apertura: "15:00",
-                        cierre: "17:30",
-                    },
-                    estado: "laboral"
-                },
-                1: {
-                    reserva: {
-                        apertura: "14:30",
-                        cierre: "18:00",
-                    },
-                    atencion: {
-                        apertura: "14:00",
-                        cierre: "19:30",
-                    },
-                    estado: "laboral"
-                },
-                2: {
-                    reserva: {
-                        apertura: "16:30",
-                        cierre: "20:00",
-                    },
-                    atencion: {
-                        apertura: "14:00",
-                        cierre: "23:30",
-                    },
-                    estado: "no_laboral"
-                },
-                3: {
-                    reserva: {
-                        apertura: "14:30",
-                        cierre: "18:00",
-                    },
-                    atencion: {
-                        apertura: "14:00",
-                        cierre: "19:30",
-                    },
-                    estado: "laboral"
-                },
-                4: {
-                    reserva: {
-                        apertura: "14:30",
-                        cierre: "18:00",
-                    },
-                    atencion: {
-                        apertura: "14:00",
-                        cierre: "19:30",
-                    },
-                    estado: "laboral"
-                },
-                5: {
-                    reserva: {
-                        apertura: "14:30",
-                        cierre: "18:00",
-                    },
-                    atencion: {
-                        apertura: "14:00",
-                        cierre: "19:30",
-                    },
-                    estado: "laboral"
-                },
-                6: {
-                    reserva: {
-                        apertura: "14:30",
-                        cierre: "18:00",
-                    },
-                    atencion: {
-                        apertura: "14:00",
-                        cierre: "19:30",
-                    },
-                    estado: "laboral"
-                }
-            }
+            data:{},
+            loading: 0,
+            loadFinished: false
         };
+        
+        this.fetchData = this.fetchData.bind(this);
+        this.downloadHandler = this.downloadHandler.bind(this);
 
         this.closeModal = closeModal.bind(this);
         this.eliminarHorario = this.eliminarHorario.bind(this);
@@ -123,8 +54,42 @@ export default class Horarios extends Component {
         this.setState({ open: false });
     }
 
+    downloadHandler(pEvent) {
+        let
+            loading = Math.round((pEvent.loaded * 100) / pEvent.total),
+            state = loading !== 100 ?
+                { loading, loadFinished: false }
+                : { loading, loadFinished: true };
+        this.setState(state);
+    }
+
+    fetchData() {
+        console.log('culo');
+        this.setState({ 
+            data:null,
+            isLoading:true,
+            loadFinished:false
+        });
+        const request = GET({
+            endpoint: '/horarios/27',
+            download: this.downloadHandler
+        });
+        
+        request
+            .then(
+                response => {
+                    this.setState({ data: response.data });
+                }
+            )
+            .catch(
+                error => {
+                    console.log(error.message)
+                }
+            );
+    }
+
     componentDidMount() {
-        console.log('horariosMount');
+        this.fetchData();
     }
 
     componentWillUnmount() {
@@ -137,28 +102,34 @@ export default class Horarios extends Component {
             open: true
         })
     }
-
     render(){
-        const diasAtencion = generateWeek['horarios'](
-            this.state.atencion,
-            this.actions
-        );
-        return (
-            <>
-                <Titulo
-                    title="Horarios"
-                    links={this.nav}/>
-                <div className="container">
-                    <ConfirmarModal
-                        open={this.state.open}
-                        closeModal={this.closeModal}
-                        title="Eliminar Horario"
-                        content="¿estás seguro de eliminar este horario?" />
-                    <CardList
-                        displayList="justify no-padding full-width flex-column nav-list h-center"
-                        elems={diasAtencion}/>
-                </div>
-            </>
+        if ( this.state.data && this.state.loadFinished ){
+            return (
+                <>
+                    <Titulo
+                        title="Horarios"
+                        links={this.nav} />
+                    <div className="container">
+                        <ConfirmarModal
+                            open={this.state.open}
+                            closeModal={this.closeModal}
+                            title="Eliminar Horario"
+                            content="¿estás seguro de eliminar este horario?" />
+                        <CardList
+                            displayList="justify no-padding full-width flex-column nav-list h-center"
+                            elems={
+                                generateWeek['horarios'](
+                                    this.state.data,
+                                    this.actions
+                                )
+                            } />
+                    </div>
+                </>
+            );
+        }
+        return(
+            <LoadBar
+                loaded={this.state.loading} />
         );
     }
 }

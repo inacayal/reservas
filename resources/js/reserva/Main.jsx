@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
  * pasos de la reserva
  */
 import Local from './pasos/Local.jsx';
-import Evento from "./pasos/evento/Evento.jsx";
+import EventoFrame from "./pasos/evento/EventoFrame.jsx";
 import Exito from "./pasos/Exito.jsx";
 /**
  * control
@@ -25,41 +25,7 @@ export default class Main extends Component {
         super();
         this.state = {
             fecha: new Date(),
-            navPanel: 0,
-            select:{
-                ubicacion:{
-                    name:"ubicacion",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {}
-                },
-                evento: {
-                    name: "evento",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {}
-                },
-                hora: {
-                    name: "hora",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {}
-                },
-                personas: {
-                    name: "personas",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {}
-                }
-            }
+            navPanel: 0
         };
         this.onCalendarChange = this.onCalendarChange.bind(this);
         this.clickNavigation = this.clickNavigation.bind(this);
@@ -100,7 +66,7 @@ export default class Main extends Component {
                         {...selectHandlers} 
                         select={this.state.select.local} 
                         current={this.state.navPanel === 0}/>
-                    <Evento 
+                    <EventoFrame 
                         {...selectHandlers} 
                         displayTitles={true}
                         eventos={this.state.select.evento} 

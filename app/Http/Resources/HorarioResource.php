@@ -26,10 +26,11 @@ class HorarioResource extends JsonResource
     
     public function toArray($request)
     {
+        $trimstr = str_replace(" ","_",$this->estado->descripcion);
         return [
             "id"=>$this->id,
             "diaSemana"=>$this->id_dia_semana,
-            "estado"=>$this->estado->descripcion,
+            "estado"=>strtolower($trimstr),
             "apertura" => [
                 "reserva" => [
                     "hora" => $this->apertura_reserva->hora,

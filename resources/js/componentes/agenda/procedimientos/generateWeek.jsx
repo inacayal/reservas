@@ -18,21 +18,22 @@ const generateWeek = {
         data,
         actions
     ) => DAYS.reduce(
-            (prev, curr, i) => {
-            const actionIndex = data[i] ? 'data' : 'no_data';
-            prev.push(
-                WeekDictionary.horarios(
-                    GenerateActions.horarios(
+            (prev, curr, ind) => {
+                const i = ind+1,  
+                    actionIndex = data[i] ? 'data' : 'no_data';
+                prev.push(
+                    WeekDictionary.horarios(
+                        GenerateActions.horarios(
+                            data[i],
+                            i,
+                            actions
+                        ),
                         data[i],
-                        i,
-                        actions
-                    ),
-                    data[i],
-                    i.toString()
-                )
-            );
-            return prev;
-        },
+                        i.toString()
+                    )
+                );
+                return prev;
+            },
         []
     ),
     reservas: (
