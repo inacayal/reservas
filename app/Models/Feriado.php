@@ -40,26 +40,28 @@ class Feriado extends Eloquent
 	 * when called as main query
 	 */
 	private static $mainFormatOptions = [
-		'keyData'=>'data'
+		'keyData'=>'data',
+		'listData'=>'list'
 	];
 	/**
 	 * when called as a dependency
 	 */
 	private static $dependencyFormatOptions = [
-		'listData'=>'list'
+		'keyData'=>'data'
 	];
 	/**
 	 * hasDependencyFormatting trait constants
 	 */
 	private static $dependencies = [
 		'query' => [
-			'feriados'=>'\\App\\Models\\Feriado',
-			'intervalo'=>'\\App\\Models\\Query\\Intervalo',
-			'eventos' => '\\App\\Models\\Evento'
+			'feriados'	=> '\\App\\Models\\Feriado',
+			'intervalo'	=> '\\App\\Models\\Query\\Intervalo',
+			'eventos' 	=> '\\App\\Models\\Evento'
 		],
 		'create'=> [
-			'feriados'	=>	'\\App\\Models\\Feriado',
-			'eventos'  	=>	'\\App\\Models\\Evento'
+			'feriados'				=>	'\\App\\Models\\Feriado',
+			'eventos'  				=>	'\\App\\Models\\Evento',
+			'eventos.promociones'  	=>	false,
 		],
 	];
 	/**

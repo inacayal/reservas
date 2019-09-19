@@ -87,12 +87,14 @@ class FeriadoController extends Controller
     ) {
         $res = [];
         foreach($dataModels as $relation=>$model){
-            if ($model && property_exists($model,'formatOptions')){
-                $res[$relation] = $model::getFormattedData($user->{$relation},self::$model);
+            $opt = $this->model===$model ? 'mainFormatOptions' : 'dependencyFormatOptions';
+            if ($model && property_exists($model,$opt)){
+                $res[$relation] = $model::getFormattedData($user->{$relation},$opt);
             }
         }
         return collect($res);
     }
+    
     public function create (){
         return response(['respuesta'=>'create'],200)
             ->header('Content-Type','application/json');

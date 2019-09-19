@@ -20,7 +20,7 @@ function CalendarioMemo(props) {
         },
         tileDisabled = ({ activeStartDate, date, view }) => {
             const disableByDate = view === 'month'
-                ? props.data.horarios.data[date.getDay() + 1].estado === 'no_laboral'
+                ? props.data.horarios.data[date.getDay() + 1].estado === 'no_laboral' || props.data.feriados.data[date.getDate()].estado === 'no_laboral'
                 : date.getMonth() < activeStartDate.getMonth() || date.getFullYear() < activeStartDate.getFullYear();
             return disableByDate;
         },

@@ -14,7 +14,9 @@ import Button from '../basic/Button';
  * component
  */
 function noMemoToggle(props) {
-    const [side,changeSide] = useState(false);
+    const [side, changeSide] = props.side !== undefined
+        ? [props.side, props.changeSide] 
+        : useState(false);
     return (
         <div className="inline-block">
             <span className="margin-box smaller-text">{(side) ? props.rightTitle : props.leftTitle}</span>

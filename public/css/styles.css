@@ -161,6 +161,10 @@ html,body {
 .extra-m-left-padding {
     padding-left: 40px;
 }
+.left-padding{
+    padding-left: 10px;
+    padding-right: 0px;
+}
 .subrayado:hover{
     text-decoration:underline;
     text-decoration-color:var(--highlight-blue);

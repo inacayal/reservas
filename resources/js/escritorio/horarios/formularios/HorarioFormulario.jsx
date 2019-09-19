@@ -20,7 +20,7 @@ import { Text, onTextChange } from '../../../componentes/input/Text';
 import {DAYS,MONTHS,HOURS} from '../../../constantes/DaysMonths';
 import generateHoursFromInterval from '../../../funciones/generateHoursFromInterval';
 
-export default class AgregarFormulario extends Component {
+export default class HorarioFormulario extends Component {
     constructor(props){
         super(props);
         this.validMinutes = generateHoursFromInterval(10);

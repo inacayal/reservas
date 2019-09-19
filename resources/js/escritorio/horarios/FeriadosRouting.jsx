@@ -7,8 +7,7 @@ import ReactDOM from 'react-dom';
  * sub elements
  */
 import Feriados from './sub/Feriados';
-import AgregarFormulario from './agregar/AgregarFormulario';
-import EditarFormulario from './editar/EditarFormulario';
+import FeriadoFormulario from './formularios/FeriadoFormulario';
 /**
  * react router
  */
@@ -28,7 +27,7 @@ export default function FeriadosRouting({ match }) {
                 path={match.url + '/agregar'}
                 component={
                     (match) => 
-                        <AgregarFormulario
+                        <FeriadoFormulario
                             showCalendar={true}
                             {...match} />
                 } />
@@ -36,7 +35,7 @@ export default function FeriadosRouting({ match }) {
                 path={match.url + '/editar/:id'}
                 component={
                     (match) => 
-                        <EditarFormulario
+                        <FeriadoFormulario
                             showCalendar={true}
                             {...match} />
                 } />

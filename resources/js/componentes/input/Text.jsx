@@ -23,18 +23,18 @@ export function onTextChange(e) {
  */
 const noMemoText = (props) => {
     const 
-        [text,changeText] = useState(props.value);
+        [text,changeText] = useState(props.value||"");
     return (
         <div className={props.container ? props.container : ""}>
             <h6 className="highlight no-margin bold">{props.titulo}</h6>
             <div className={props.classes}>
                 <textarea 
-                    name={text.name} 
+                    name={props.name} 
                     rows={props.rows} 
                     readOnly = {props.readOnly}
                     className="full-width box-transparent"
-                    onChange={() => changeText(e.currentTarget.value)}
-                    value={text.value}/>
+                    onChange={(e) => changeText(e.currentTarget.value)}
+                    value={text}/>
             </div>
         </div>
     );

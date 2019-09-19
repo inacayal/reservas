@@ -23,7 +23,7 @@ export function onNumberChange(e) {
  */
 function noMemoNumeric(props) {
     const
-        [number, changeNumber] = useState(props.value);
+        [number, changeNumber] = useState(props.value||0);
     return (
         <div className={props.container ? props.container : ""}>
             <h6 className="highlight no-margin bold">{props.titulo}</h6>
@@ -32,8 +32,8 @@ function noMemoNumeric(props) {
                     type="number"
                     name={props.name}
                     className="full-width box-transparent"
-                    onChange={() => changeNumber(e.currentTarget.value)}
-                    value={number.value} />
+                    onChange={(e) => changeNumber(e.currentTarget.value)}
+                    value={number} />
             </div>
         </div>
     );

@@ -7,8 +7,7 @@ import ReactDOM from 'react-dom';
  * sub elements
  */
 import FeriadosRouting from './FeriadosRouting';
-import AgregarFormulario from './agregar/AgregarFormulario';
-import EditarFormulario from './editar/EditarFormulario';
+import HorarioFormulario from './formularios/HorarioFormulario';
 import Horarios from './sub/Horarios';
 /**
  * react router
@@ -33,7 +32,7 @@ export default function HorariosRouting ({match}) {
                 path={match.url+'/agregar'}
                 component={
                     (match) => 
-                        <AgregarFormulario
+                        <HorarioFormulario
                             showCalendar = {false}
                             {...match} />
                 } />
@@ -41,7 +40,7 @@ export default function HorariosRouting ({match}) {
                 path={match.url + '/editar/:id'}
                 component={
                     (match) => 
-                        <EditarFormulario
+                        <HorarioFormulario
                             showCalendar = {false}
                             {...match} />
                 } />
