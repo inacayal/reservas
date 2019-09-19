@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 /**
  * componentes
  */
-import CardList from '../../../basic/CardList';
+import {CardList} from '../../../basic/CardList';
 import ButtonList from '../../../basic/ButtonList';
 /**
  * funciones

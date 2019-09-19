@@ -44,9 +44,16 @@ class Reserva extends Eloquent
 	 */
 	private static $dataKey = 'dia_reserva';
 	private static $valueKey = '';
-	private static $formatOptions = [
+	/**
+	 * when called as main query
+	 */
+	private static $mainFormatOptions = [
 		'groupData'=>'data'
 	];
+	/**
+	 * when called as a dependency
+	 */
+	private static $dependencyFormatOptions = [];
 	/**
 	 * hasDependencyFormatting trait constants
 	 */
@@ -55,7 +62,6 @@ class Reserva extends Eloquent
 			'horarios'						=>	'\\App\\Models\\Horario',
 			'feriados'						=>	'\\App\\Models\\Feriado',
 			'ubicaciones'					=>	'\\App\\Models\\Ubicacion',
-			//'promociones'					=>	'\\App\\Models\\Promocion',
 			'feriados.eventos' 				=>  false,
 			'horarios.eventos'				=> 	false,
 			'horarios.eventos.promociones'	=> 	false,

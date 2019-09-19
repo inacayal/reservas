@@ -28,6 +28,10 @@ class EstadoApertura extends Eloquent
 		'descripcion'
 	];
 
+	public function getDescripcionAttribute($value){
+		return str_replace(' ','_',strtolower($value));
+	}
+
 	public function feriados()
 	{
 		return $this->hasMany(\App\Models\Feriado::class, 'id_estado');

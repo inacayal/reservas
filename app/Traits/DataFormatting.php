@@ -8,8 +8,8 @@ use Illuminate\Support\Collection;
 trait DataFormatting
 {
     
-	public static function getFormatOptions() {
-		return self::$formatOptions;
+	public static function getFormatOptions($format) {
+		return self::$$format;
 	}
 
 	public static function getModelKeys(){
@@ -60,10 +60,11 @@ trait DataFormatting
 	}
 
 	public static function getFormattedData(
-		Collection $data
+		Collection $data,
+		string $opt
 	){
 		$formattedData = collect([]);
-		$formatOptions = self::getFormatOptions();
+		$formatOptions = self::getFormatOptions($opt);
 		$modelKeys = self::getModelKeys();
 		$class = self::class;
 		if (count($formatOptions)>0){

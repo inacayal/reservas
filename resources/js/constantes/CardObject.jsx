@@ -5,11 +5,11 @@ export const CLASSBYSTATE = {
 }
 export const CLASSBYDATE = {
     today: {
-        title: "content c-title highlight-title text-center",
-        container: "same-width text-center box-padding highlight-title fix-height"
+        title: "content highlight-title text-center",
+        container: "same-width text-center box-padding highlight-title fix-height relative"
     },
     not_today: {
-        title: "content c-title text-center light-danger",
-        container: "same-width text-center box-padding light-danger fix-height"
+        title: "content text-center light-danger",
+        container: "same-width text-center box-padding light-danger fix-heigh relative"
     }
 }

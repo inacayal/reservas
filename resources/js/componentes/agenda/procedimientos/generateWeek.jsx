@@ -79,6 +79,7 @@ const generateWeek = {
                 let datePtr = new Date(date);
                 datePtr.setDate(datePtr.getDate() + (i - day));
                 const strDate = datePtr.getDate();
+                console.log(data[strDate]);
                 if (date.getMonth() === datePtr.getMonth())
                     prev.push(
                         WeekDictionary.feriados(

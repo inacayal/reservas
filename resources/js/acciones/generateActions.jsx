@@ -48,6 +48,7 @@ export const GenerateActions = {
             );
         return (
             <Actions
+                overlay = {type==='month' ? true : false}
                 links={acciones.links}
                 buttons={acciones.buttons} />
         );

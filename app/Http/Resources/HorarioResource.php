@@ -18,7 +18,7 @@ class HorarioResource extends JsonResource
     private static $dataKey = 'id';
     private static $valueKey = 'nombre';
     private static $dataResource = 'App\\Http\\Resources\\HorarioEventoResource';
-    private static $formatOptions = [
+    private static $dependencyFormatOptions = [
         'keyData'=>'data',
         'listData'=>'list'
     ];
@@ -26,11 +26,10 @@ class HorarioResource extends JsonResource
     
     public function toArray($request)
     {
-        $trimstr = str_replace(" ","_",$this->estado->descripcion);
         return [
             "id"=>$this->id,
             "diaSemana"=>$this->id_dia_semana,
-            "estado"=>strtolower($trimstr),
+            "estado"=>$this->estado->descripcion,
             "apertura" => [
                 "reserva" => [
                     "hora" => $this->apertura_reserva->hora,
@@ -51,7 +50,7 @@ class HorarioResource extends JsonResource
                     "minuto"=>$this->cierre_atencion->minuto
                 ]
             ],
-            'eventos' => self::getFormattedData($this->eventos->where('id_estado',1))
+            'eventos' => self::getFormattedData($this->eventos->where('id_estado',1),'dependencyFormatOptions')
         ];
     }
 }

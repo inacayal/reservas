@@ -1,7 +1,7 @@
 /**
  * react basic
  */
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import ReactDOM from 'react-dom';
 /**
  * 
@@ -21,18 +21,20 @@ export function onTextChange(e) {
  * @param {*} props 
  * component
  */
-function noMemoText(props) {
+const noMemoText = (props) => {
+    const 
+        [text,changeText] = useState(props.value);
     return (
         <div className={props.container ? props.container : ""}>
             <h6 className="highlight no-margin bold">{props.titulo}</h6>
             <div className={props.classes}>
                 <textarea 
-                    name={props.name} 
+                    name={text.name} 
                     rows={props.rows} 
                     readOnly = {props.readOnly}
                     className="full-width box-transparent"
-                    onChange={props.changeValue}
-                    value={props.value}/>
+                    onChange={() => changeText(e.currentTarget.value)}
+                    value={text.value}/>
             </div>
         </div>
     );

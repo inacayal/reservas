@@ -17,7 +17,7 @@ import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
  * componentes
  */
 import ButtonList from '../../basic/ButtonList';
-import CardList from '../../basic/CardList';
+import {CardList} from '../../basic/CardList';
 import Button from '../../basic/Button';
 
 

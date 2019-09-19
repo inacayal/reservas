@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
  * componentes
  */
 import ButtonList from '../../basic/ButtonList';
-import CardList from '../../basic/CardList';
+import {CardList} from '../../basic/CardList';
 import Button from '../../basic/Button';
 /**
  * funciones
@@ -32,8 +32,7 @@ function WeekCalendar(props) {
         week = generateWeek[props.type](
             props.date, 
             props.data, 
-            props.actions,
-            new Date()
+            props.actions
         );
     return (
         <div className="container">

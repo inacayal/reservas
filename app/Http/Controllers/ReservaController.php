@@ -74,7 +74,7 @@ class ReservaController extends Controller
             )->where('id',$id)
             ->first();
         
-        return response(
+            return response(
             $this->formatDependencyData(
                 $dependency->models,
                 $user
@@ -96,8 +96,9 @@ class ReservaController extends Controller
     ) {
         $res = [];
         foreach($dataModels as $relation=>$model){
-            if ($model && property_exists($model,'formatOptions')){
-                $res[$relation] = $model::getFormattedData($user->{$relation});
+            $opt = $this->model===$model ? 'mainFormatOptions' : 'dependencyFormatOptions';
+            if ($model && property_exists($model,$opt)){
+                $res[$relation] = $model::getFormattedData($user->{$relation},$opt);
             }
         }
         return collect($res);

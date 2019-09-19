@@ -16,7 +16,6 @@ import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
  */
 import Promociones from './Promociones';
 import { Select } from "../../../componentes/input/Select.jsx";
-import { showOptions, selectOption } from '../../../componentes/input/Select';
 import { Text } from "../../../componentes/input/Text.jsx";
 import { generateListByLocationCapacity } from './Handlers';
 
@@ -74,27 +73,6 @@ export default function CalendarioFormulario(props) {
             ? eventos.data[eventoSelect.selected].promociones.data
             : null,
         ubicacion = props.ubicaciones.data[ubicacionSelect.selected] || null,
-        selectWrapper = (
-            target, 
-            action
-        ) => 
-            (e) => 
-                action(
-                    selectOption(
-                        target, 
-                        e.currentTarget.getAttribute('keyvalue')
-                    )
-                ),
-        showWrapper = (
-            target,
-            action
-        ) => 
-            (e) => 
-                action(
-                    showOptions(
-                        target
-                    )
-                ),
         dateChange = () => {
             changeHora(SelectData.hora);
             changeMinuto(SelectData.minuto);
@@ -130,10 +108,9 @@ export default function CalendarioFormulario(props) {
                     <div className="col-md-6 text-left">
                         <h6 className="highlight bold no-margin">Ubicación</h6>
                         <Select
-                            {...ubicacionSelect}
-                            titulo="selecciona la ubicación"
-                            change={selectWrapper(ubicacionSelect, changeUbicacion)}
-                            toggle={showWrapper(ubicacionSelect, changeUbicacion)} />
+                            changeSelect={changeUbicacion}
+                            select = {ubicacionSelect}
+                            titulo="selecciona la ubicación" />
                     </div>
                     <div className="col-md-6 text-left">
                         <div className="container">
@@ -143,10 +120,9 @@ export default function CalendarioFormulario(props) {
                             <div className="row">
                                 <div className="col-sm-5 h-padding text-left" style={{paddingLeft:"0px"}}>
                                     <Select
-                                        {...horaSelect}
-                                        titulo="hora"
-                                        change={selectWrapper(horaSelect, changeHora)}
-                                        toggle={showWrapper(horaSelect, changeHora)} />
+                                        changeSelect={changeHora}
+                                        select = {horaSelect}
+                                        titulo="hora" />
                                 </div>
                                 <div className="col-sm-1 text-center v-align-center h-padding">
                                     <h6 className="c-title" style={{ color: "#bfbfbf" }}>:</h6>
@@ -155,11 +131,10 @@ export default function CalendarioFormulario(props) {
                                     <div
                                         className={horaSelect.selected ? "hidden" : "top-padding full-width overlay"} />
                                     <Select
-                                        {...minutoSelect}
+                                        changeSelect={changeMinuto}
+                                        select = {minutoSelect}
                                         titulo="minutos"
-                                        readOnly={horaSelect.selected ? true : false} 
-                                        change={selectWrapper(minutoSelect, changeMinuto)}
-                                        toggle={showWrapper(minutoSelect, changeMinuto)} />
+                                        readOnly={horaSelect.selected ? true : false} />
                                 </div>
                             </div>
                             <div className="row">
@@ -175,10 +150,9 @@ export default function CalendarioFormulario(props) {
                                 <div className="col-md-12">
                                     <h6 className="highlight bold no-margin">Ocasión</h6>
                                     <Select
-                                        {...eventoSelect}
-                                        titulo="selecciona tipo de evento de tu reserva"
-                                        change={selectWrapper(eventoSelect, changeEvento)}
-                                        toggle={showWrapper(eventoSelect, changeEvento)} />
+                                        changeSelect={changeEvento}
+                                        select = {eventoSelect}
+                                        titulo="selecciona tipo de evento de tu reserva"/>
                                     {
                                         eventoSelect.selected
                                             ?
@@ -197,11 +171,10 @@ export default function CalendarioFormulario(props) {
                                     <div className="full-width">
                                         <h6 className="highlight bold no-margin">Personas</h6>
                                         <Select
-                                            {...personasSelect}
+                                            changeSelect={changePersonas}
+                                            select = {personasSelect}
                                             titulo="selecciona la cantidad de personas"
-                                            readOnly={ubicacionSelect.selected ? true : false}
-                                            change={selectWrapper(personasSelect, changePersonas)}
-                                            toggle={showWrapper(personasSelect, changePersonas)} />
+                                            readOnly={ubicacionSelect.selected ? true : false} />
                                         <div className="smaller-text">{ubicacionSelect.selected ? "Máximo " + ubicacion.maximo + " personas para " + ubicacion.nombre : "Debes seleccionar una ubicación"}</div>
                                     </div>
                                 </div>

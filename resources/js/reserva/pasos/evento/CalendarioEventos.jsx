@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom';
  */
 import Promociones from './Promociones';
 import Calendar from 'react-calendar';
+import {Calendario} from './Calendario';
 /**
  * CONSTANTS
  */
@@ -26,62 +27,18 @@ export default function CalendarioEventos(props){
         feriado = props.data.feriados.data[fecha],
         dateString = DAYS[dia] + " " + fecha + " de " + MONTHS[mes] + " " + year,
         atencionString = props.current.apertura.atencion.hora + ":" + (props.current.apertura.atencion.minuto < 10 ? "0" + props.current.apertura.atencion.minuto : props.current.apertura.atencion.minuto) + " - " + props.current.cierre.atencion.hora + ":" + (props.current.cierre.atencion.minuto < 10 ? "0" + props.current.cierre.atencion.minuto : props.current.apertura.atencion.minuto),
-        reservaString = props.current.apertura.reserva.hora + ":" + (props.current.apertura.reserva.minuto < 10 ? "0" + props.current.apertura.reserva.minuto : props.current.apertura.reserva.minuto) + " - " + props.current.cierre.reserva.hora + ":" + (props.current.cierre.reserva.minuto < 10 ? "0" + props.current.cierre.reserva.minuto : props.current.cierre.reserva.minuto),
-        dayChange = (date) => {
-            props.clickCallback(date)(date);
-            changeHover(date);
-        }, 
-        tileDisabled = ({ activeStartDate, date, view }) => {
-            const disableByDate = view === 'month'
-                ? date.getMonth() < activeStartDate.getMonth() || date.getMonth() > activeStartDate.getMonth() || props.data.horarios.data[date.getDay() + 1].estado === 'no_laboral'
-                : date.getMonth() < activeStartDate.getMonth();
-            return disableByDate;
-        },
-        monthChange = (date) => {
-            props.fetch(date);
-        },
-        navChange = ({ activeStartDate, view }) => {
-            props.fetch(activeStartDate);
-        },
-        tileContent = ({ date, view }) => {
-            const index = date.getDate();
-            return props.data.feriados.data[index] !== undefined
-                ?
-                <>
-                    <div
-                        className="full-cover box-padding"
-                        onMouseOver={(e) => { changeHover(date) }}
-                        onMouseLeave={(e) => { changeHover(props.showDate) }}
-                        onClick={props.clickCallback}>
-                    </div>
-                    <p className="no-margin bold smaller-text">
-                        <i className="line-v-middle fas fa-ellipsis-h highlight-title" />
-                    </p>
-                </>
-                : 
-                <>
-                    <div
-                        className="full-cover box-padding"
-                        onMouseOver={(e) => { changeHover(date) }}
-                        onMouseLeave={(e) => { changeHover(props.showDate) }}>
-                    </div>
-                    <p></p>
-                </>
-        };
+        reservaString = props.current.apertura.reserva.hora + ":" + (props.current.apertura.reserva.minuto < 10 ? "0" + props.current.apertura.reserva.minuto : props.current.apertura.reserva.minuto) + " - " + props.current.cierre.reserva.hora + ":" + (props.current.cierre.reserva.minuto < 10 ? "0" + props.current.cierre.reserva.minuto : props.current.cierre.reserva.minuto);
+
     return (
         <div className="row justify-content-center top-padding">
             <div className="col-md-8 no-padding">
-                <input type="date" value={props.showDate} readOnly className="hidden" />
-                <Calendar
-                    tileClassName='relative'
-                    showNeighboringMonth={false}
-                    value={props.showDate}
+                <Calendario
+                    showDate={props.showDate}
                     minDate={props.minDate}
-                    onClickDay={dayChange}
-                    onClickMonth={monthChange}
-                    tileDisabled={tileDisabled}
-                    tileContent={tileContent}
-                    onActiveDateChange={navChange}/>
+                    data={props.data}
+                    changeHover={changeHover}
+                    fetch={props.fetch}
+                    clickCallback={props.clickCallback}/>
             </div>
             <div className="col-md-4 text-left">
                 <div>

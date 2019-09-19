@@ -8,17 +8,13 @@ import ReactDOM from 'react-dom';
  */
 import Calendar from '../../../componentes/agenda/Agenda';
 import ButtonList from '../../../componentes/basic/ButtonList';
-import CardList from '../../../componentes/basic/CardList';
+import {CardList} from '../../../componentes/basic/CardList';
 import Titulo from '../../../componentes/basic/Titulo';
 import LoadBar from '../../../componentes/control/LoadBar';
 /**
  * api
  */
 import { GET } from '../../../utils/api';
-/**
- * sub elements
- */
-import AgregarFormulario from './AgregarFormulario'; 
 /**
  * function
  */
@@ -103,7 +99,7 @@ export default class Horarios extends Component {
         })
     }
     render(){
-        if ( this.state.data && this.state.loadFinished ){
+        if ( this.state.data && this.state.loadFinished )
             return (
                 <>
                     <Titulo
@@ -115,6 +111,9 @@ export default class Horarios extends Component {
                             closeModal={this.closeModal}
                             title="Eliminar Horario"
                             content="¿estás seguro de eliminar este horario?" />
+                        
+                    </div>
+                    <div>
                         <CardList
                             displayList="justify no-padding full-width flex-column nav-list h-center"
                             elems={
@@ -126,7 +125,6 @@ export default class Horarios extends Component {
                     </div>
                 </>
             );
-        }
         return(
             <LoadBar
                 loaded={this.state.loading} />

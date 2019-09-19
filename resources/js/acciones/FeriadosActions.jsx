@@ -48,7 +48,7 @@ export const FeriadosActions = {
             links: [
                 {
                     title: (
-                        <div className="smaller-text text bold">
+                        <div className="smaller-text decorate-hover  text small-padding">
                             <i className="fas fa-pen inline-box side-margin" />
                         </div>
                     ),
@@ -58,22 +58,21 @@ export const FeriadosActions = {
             buttons: [
                 {
                     title: (
-                        <div className="smaller-text text bold text-center">
-                            <i className="fas fa-trash inline-box side-margin" />
+                        <div className="smaller-text decorate-hover ">
+                            <i className="fas fa-trash side-margin" />
                         </div>
                     ),
                     click: actions.eliminar,
-                    data: key
+                    data: key,
                 },
                 {
                     title: (
-                        <div className="smaller-text text bold text-center">
-                            <i className="fas fa-eye inline-box side-margin" />
+                        <div className="smaller-text decorate-hover ">
+                            <i className="fas fa-eye side-margin" />
                         </div>
                     ),
                     click: actions.ver,
-                    data: key,
-                    class: "box-transparent highlight-hover full-width text-right"
+                    data: key
                 }
             ]
         }),

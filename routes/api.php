@@ -46,7 +46,8 @@ Route::prefix('horarios')->name('horarios.')->group(function (){
 });
 
 Route::prefix('feriados')->name('feriados.')->group(function (){
-    Route::get('/{id}/{date}','FeriadoController@list')->name('list');
+    Route::get('/{id}/{month}/{year}','FeriadoController@list')->name('list');
+    Route::get('agregar/{id}/{month}/{year}','FeriadoController@listDependencyData')->name('list');
     Route::put('/update/{id}','FeriadoController@update')->name('update');
     Route::delete('/delete/{id}','FeriadoController@delete')->name('delete');
     Route::post('/create','FeriadoController@create')->name('create');

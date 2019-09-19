@@ -18,7 +18,7 @@ class FeriadosResource extends JsonResource
     private static $dataKey = 'id';
     private static $valueKey = 'nombre';
     private static $dataResource = 'App\\Http\\Resources\\HorarioEventoResource';
-    private static $formatOptions = [
+    private static $dependencyFormatOptions = [
         'keyData'=>'data',
         'listData'=>'list'
     ];
@@ -51,7 +51,7 @@ class FeriadosResource extends JsonResource
                     "minuto"=>$this->cierre_atencion->minuto
                 ]
             ],
-            "eventos" => self::getFormattedData($this->eventos->where('id_estado',1))
+            "eventos" => self::getFormattedData($this->eventos->where('id_estado',1),$dependencyFormatOptions)
         ];
     }
 }

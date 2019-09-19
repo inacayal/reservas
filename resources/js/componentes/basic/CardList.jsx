@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Card from './Card';
 
-function CardList(props) {
+function CardListMemo(props) {
     //props.elems is an object array with properties title and icon
     //props.elemClass is a set of classes for list
     return (
@@ -24,4 +24,4 @@ function CardList(props) {
         </ul>
     );
 }
-export default CardList;
+export const CardList = React.memo(CardListMemo);

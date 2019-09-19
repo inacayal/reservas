@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
  * componentes
  */
 import Titulo from '../../../componentes/basic/Titulo';
-import CardList from '../../../componentes/basic/CardList';
+import {CardList} from '../../../componentes/basic/CardList';
 import { closeModal, ConfirmarModal } from '../../../componentes/modal/Modal';
 /**
  * funciones

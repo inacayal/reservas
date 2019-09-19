@@ -10,7 +10,7 @@ class FeriadoController extends Controller
 {
     protected $model = '\\App\\Models\\Feriado';
     public function __construct (){
-
+        $this->middleware('length');
     }
     /**
      * get all eventos by user
@@ -19,12 +19,12 @@ class FeriadoController extends Controller
      */
     public function list (
         $id,
-        $date
+        $month,
+        $year
     ){
-        $month = date('m',((int)$date));
 
         $dependency = $this->model::assignDependencyOptions (
-            array('feriados' => [$month]),
+            array('feriados' => [$month,$year]),
             'query'  
         );
 
@@ -45,6 +45,53 @@ class FeriadoController extends Controller
             ],
             200
         )->header('Content-Type','application/json');
+    }
+    /**
+     * this function assigns dependencies and it corresponding callbacks
+     * @param dependencies is an associative array with Reservas dependencies to be eagerly loaded
+     * @param parameters is an associative array with values passed to eager load constructor
+     */
+    public function listDependencyData(
+        $id,
+        $month,
+        $year
+    ){
+        $dependency = $this->model::assignDependencyOptions (
+            array(
+                'feriados'=>[$month,$year]
+            ),
+            'create'  
+        );
+        
+        $user = User::with(
+                $dependency->data
+            )->where('id',$id)
+            ->first();
+        
+        return response(
+            $this->formatDependencyData(
+                $dependency->models,
+                $user
+            )->merge([
+                'intervalo' => [
+                    "data" => $user->intervalo
+                ]
+            ]),
+            200
+        )->header('Content-Type','application/json'); 
+    }
+
+    public function formatDependencyData(
+        array $dataModels,
+        User $user
+    ) {
+        $res = [];
+        foreach($dataModels as $relation=>$model){
+            if ($model && property_exists($model,'formatOptions')){
+                $res[$relation] = $model::getFormattedData($user->{$relation},self::$model);
+            }
+        }
+        return collect($res);
     }
     public function create (){
         return response(['respuesta'=>'create'],200)

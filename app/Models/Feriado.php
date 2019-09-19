@@ -34,10 +34,19 @@ class Feriado extends Eloquent
 	 * HasDataFormatting trait constants
 	 */
 	private static $dataKey = 'fecha_feriado';
-	private static $valueKey = '';
+	private static $valueKey = 'nombre';
 	private static $dataResource = '\\App\\Http\\Resources\\FeriadosResource';
-	private static $formatOptions = [
+	/**
+	 * when called as main query
+	 */
+	private static $mainFormatOptions = [
 		'keyData'=>'data'
+	];
+	/**
+	 * when called as a dependency
+	 */
+	private static $dependencyFormatOptions = [
+		'listData'=>'list'
 	];
 	/**
 	 * hasDependencyFormatting trait constants
@@ -45,8 +54,13 @@ class Feriado extends Eloquent
 	private static $dependencies = [
 		'query' => [
 			'feriados'=>'\\App\\Models\\Feriado',
-			'intervalo'=>'\\App\\Models\\Query\\Intervalo'
-		]
+			'intervalo'=>'\\App\\Models\\Query\\Intervalo',
+			'eventos' => '\\App\\Models\\Evento'
+		],
+		'create'=> [
+			'feriados'	=>	'\\App\\Models\\Feriado',
+			'eventos'  	=>	'\\App\\Models\\Evento'
+		],
 	];
 	/**
 	 * Eloquent constants and castings
@@ -80,9 +94,9 @@ class Feriado extends Eloquent
 			'minuto'=>(int)$res[1]
 		];
 	}
-	public static function feriadosQueryCallback($month){
-		return function ($query) use ($month) {
-			return $query->thisMonth($month);
+	public static function feriadosQueryCallback($month,$year){
+		return function ($query) use ($month,$year) {
+			return $query->thisMonth($month,$year);
 		};
 	}
 	/**
@@ -119,8 +133,8 @@ class Feriado extends Eloquent
 	/**
 	 * Model Scopes
 	 */
-	public function scopeThisMonth($query,$month){
-		return $query->whereMonth('fecha_feriado',$month);
+	public function scopeThisMonth($query,$month,$year){
+		return $query->whereMonth('fecha_feriado',$month)->whereYear('fecha_feriado',$year);
 	}
 	/**
 	 * Database Seeding

@@ -49,13 +49,13 @@ const MonthDictionary = {
         acciones,
         sectionData,
         data,
+        date,
         isThisMonth
     ) => {
-        const date = new Date(data),
+        const 
             today = new Date(),
             todayCond = today.getDate() === date.getDate() && today.getMonth() === date.getMonth() && today.getFullYear() === date.getFullYear(),
             index = todayCond ? 'today' : 'not_today';
-        
         if (sectionData) 
             return FeriadoMonthByState.data[sectionData.estado](
                 CLASSBYDATE[index],

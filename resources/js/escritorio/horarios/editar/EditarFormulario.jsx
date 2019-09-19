@@ -8,7 +8,7 @@ import Calendar from 'react-calendar';
  * elements
  */
 import ButtonList from '../../../componentes/basic/ButtonList';
-import { changeToggleSide, Toggle } from '../../../componentes/input/Toggle';
+import { Toggle } from '../../../componentes/input/Toggle';
 /**
  * input elements and handlers
  */

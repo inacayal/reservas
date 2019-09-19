@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom';
  * react calendar
  */
 import Calendar from 'react-calendar';
+import {CommaList} from '../../../componentes/basic/CommaList';
 /**
  * CONSTANTS
  */
@@ -70,20 +71,7 @@ export default function Promociones (props) {
                                         <div>
                                             <div className="smaller-text">{showData[e].descripcion}</div>
                                             <div className="smaller-text inline-block side-margin">en los eventos:</div>
-                                            {
-                                                eventoArray.map(
-                                                    (el,ind) => 
-                                                        <>
-                                                            <div 
-                                                                key={ind} 
-                                                                className="subrayado inline-block smaller-text button-border inline-block side-margin bold highlight-title"
-                                                                >
-                                                                {el}
-                                                            </div>
-                                                            {ind !== eventoArray.length - 1 ? "," : ""}
-                                                        </>
-                                                )   
-                                            }
+                                            <CommaList data = {eventoArray} /> 
                                         </div>
                                     </li>
                                 )

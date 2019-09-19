@@ -15,7 +15,7 @@ export const HorariosActions = {
                 title: (
                     <div className="smaller-text text bold">
                         <i className="fas fa-pen inline-box side-margin" />
-                        Editar horario
+                        Editar
                     </div>
                 ),
                 to: '/horarios/editar/' + key
@@ -26,7 +26,7 @@ export const HorariosActions = {
                 title: (
                     <div className="smaller-text text bold text-center">
                         <i className="fas fa-trash inline-box side-margin" />
-                        Eliminar horario
+                        Eliminar
                     </div>
                 ),
                 click: actions.eliminar,

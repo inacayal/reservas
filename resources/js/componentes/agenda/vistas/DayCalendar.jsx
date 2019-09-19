@@ -11,7 +11,7 @@ import generateDay from '../procedimientos/generateDay';
  * componentes
  */
 import Button from '../../basic/Button';
-import CardList from '../../basic/CardList';
+import {CardList} from '../../basic/CardList';
 /**
  * constantes
  */

@@ -1,7 +1,7 @@
 /**
  * react basic
  */
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import ReactDOM from 'react-dom';
 /**
  * 
@@ -22,6 +22,8 @@ export function onNumberChange(e) {
  * component
  */
 function noMemoNumeric(props) {
+    const
+        [number, changeNumber] = useState(props.value);
     return (
         <div className={props.container ? props.container : ""}>
             <h6 className="highlight no-margin bold">{props.titulo}</h6>
@@ -30,8 +32,8 @@ function noMemoNumeric(props) {
                     type="number"
                     name={props.name}
                     className="full-width box-transparent"
-                    onChange={props.changeValue}
-                    value={props.value} />
+                    onChange={() => changeNumber(e.currentTarget.value)}
+                    value={number.value} />
             </div>
         </div>
     );

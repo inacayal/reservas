@@ -16,7 +16,7 @@ class PromocionesResource extends JsonResource
     private static $dataKey = 'id';
     private static $valueKey = 'nombre';
     private static $dataResource = 'App\\Http\\Resources\\HorarioEventoResource';
-    private static $formatOptions = [
+    private static $dependencyFormatOptions = [
         'listData'=>'list',
         //'keyData' => 'data'
     ];
@@ -29,7 +29,7 @@ class PromocionesResource extends JsonResource
             'nombre'=>$this->nombre,
             'descripcion'=>$this->descripcion,
             'descuento' => $this->descuento,
-            'eventos' => self::getFormattedData($eventos)
+            'eventos' => self::getFormattedData($eventos,'dependencyFormatOptions')
         ];
     }
 }

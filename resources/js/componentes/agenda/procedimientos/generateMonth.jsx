@@ -31,9 +31,9 @@ function evalFirstWeek (
             MonthDictionary[type](
                 null,
                 null,
-                evalDate.getTime(),
                 evalDate.getDate(),
-                true
+                new Date(evalDate),
+                false
             )
         );
         evalDate = new Date(evalDate);
@@ -56,9 +56,9 @@ function evalLastWeek(
             MonthDictionary[type](
                 null,
                 null,
-                evalDate.getTime(),
                 evalDate.getDate(),
-                true
+                new Date(evalDate),
+                false
             )
         );
         evalDate = new Date(evalDate);
@@ -112,9 +112,9 @@ export default function generateMonth (
                     data[dateStr] ? 'data' : 'no_data'
                 ),
                 data[dateStr],
-                datePtr.getTime(),
-                dateStr,
-                actions.outer
+                datePtr,
+                new Date(datePtr),
+                true
             )
         );
         

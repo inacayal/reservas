@@ -35,8 +35,6 @@ const WeekDictionary = {
                 acciones
             );
             
-        if (data !== 6)
-            facade.container.class+=' border-bottom';
         return facade;
     },
     reservas: (
@@ -75,15 +73,13 @@ const WeekDictionary = {
             todayCond = today.getDate() === date.getDate() && today.getMonth() === date.getMonth() && today.getFullYear() === date.getFullYear(),
             status = sectionData
                 ? sectionData.estado
-                : 'no_data',
-            facade = FeriadoWeekByState[status](
+                : 'no_data';
+        const facade = FeriadoWeekByState[status](
                 todayCond,
                 date,
                 acciones,
                 sectionData
             );
-        if (date.getDay() !== 6)
-            facade.container.class += " border-bottom";
         return facade;
     }
 };

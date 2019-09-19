@@ -19,8 +19,6 @@ class EventosResource extends JsonResource
             "id" => $this->id,
             "nombre" => $this->nombre,
             "descripcion" =>$this->descripcion,
-            "promocion" => $this->promocion,
-            "descuento" => $this->descuento,
             "estado" => $this->estado->descripcion
         ];
     }
