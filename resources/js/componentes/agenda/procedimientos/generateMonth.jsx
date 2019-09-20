@@ -107,7 +107,7 @@ export default function generateMonth (
                 GenerateActions[type](
                     data[dateStr] || null,
                     actions,
-                    datePtr.getDate(),
+                    data[dateStr] ? data[dateStr].id : datePtr.getDate(),
                     'month',
                     data[dateStr] ? 'data' : 'no_data'
                 ),

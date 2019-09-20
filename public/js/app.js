@@ -79815,7 +79815,7 @@ function generateMonth(date, data, actions, type) {
       weekCtr = 6;
     }
 
-    week.push(_diccionarios_assign_MonthDictionary__WEBPACK_IMPORTED_MODULE_4__["default"][type](_acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_3__["GenerateActions"][type](data[dateStr] || null, actions, datePtr.getDate(), 'month', data[dateStr] ? 'data' : 'no_data'), data[dateStr], datePtr, new Date(datePtr), true));
+    week.push(_diccionarios_assign_MonthDictionary__WEBPACK_IMPORTED_MODULE_4__["default"][type](_acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_3__["GenerateActions"][type](data[dateStr] || null, actions, data[dateStr] ? data[dateStr].id : datePtr.getDate(), 'month', data[dateStr] ? 'data' : 'no_data'), data[dateStr], datePtr, new Date(datePtr), true));
 
     if (weekCtr === 6) {
       weekCtr = 0;
@@ -84003,7 +84003,7 @@ var EventoFields = function EventoFields(props) {
       paddingRight: "0px"
     }
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_3__["Text"], {
-    rows: 3,
+    rows: 4,
     titulo: "Descripci\xF3n",
     name: "descripcion",
     value: props.data.data.descripcion || "",

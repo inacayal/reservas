@@ -47,7 +47,7 @@ export const EventoFields = (props) => {
                 <Text rows={3} titulo="Nombre" name="nombre" value={props.data.data.nombre || ""} classes={"border-box input-text margin-box"} />
             </div>
             <div className="col-md-4" style={{ paddingRight: "0px" }}>
-                <Text rows={3} titulo="Descripción" name="descripcion" value={props.data.data.descripcion || ""} classes={"border-box input-text margin-box"} />
+                <Text rows={4} titulo="Descripción" name="descripcion" value={props.data.data.descripcion || ""} classes={"border-box input-text margin-box"} />
             </div>
         </>
     );
