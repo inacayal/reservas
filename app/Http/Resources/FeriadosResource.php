@@ -26,11 +26,14 @@ class FeriadosResource extends JsonResource
 
     public function toArray($request)
     {
+        $d = $this->resource->getAttributes()['fecha_feriado'];
+        $dI = strtotime($d);
         return (object) [
             "id"=>$this->id,
             "nombre"=>$this->nombre,
             "estado"=>$this->estado->descripcion,
             "descripcion"=>$this->descripcion,
+            "fecha" => date('Y-m-d H:i:s',$dI),
             "apertura" => [
                 "reserva" => [
                     "hora" => $this->apertura_reserva->hora,

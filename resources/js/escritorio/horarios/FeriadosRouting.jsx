@@ -28,7 +28,7 @@ export default function FeriadosRouting({ match }) {
                 component={
                     (match) => 
                         <FeriadoFormulario
-                            showCalendar={true}
+                            editar={false}
                             {...match} />
                 } />
             <Route
@@ -36,7 +36,7 @@ export default function FeriadosRouting({ match }) {
                 component={
                     (match) => 
                         <FeriadoFormulario
-                            showCalendar={true}
+                            editar={true}
                             {...match} />
                 } />
         </>

@@ -49,7 +49,8 @@ class Evento extends Eloquent
 	 * when called as a dependency
 	 */
 	private static $dependencyFormatOptions = [
-		'keyData'=>'data'
+		'keyData'=>'data',
+		'listData'=>'list'
 	];
 	/**
 	 * hasDependencyFormatting trait constants

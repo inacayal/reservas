@@ -17,8 +17,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::prefix('reservas')->name('reservas.')->group(function (){
-    Route::get('/{id}/{month}/{year}','ReservaController@list')->name('list');
-    Route::get('/agregar/{id}/{month}/{year}','ReservaController@listDependencyData')->name('agregar');
+    Route::get('{list}/{id}/{month}/{year}','ReservaController@list')
+        ->where('list','list')    
+        ->name('list');
+
+    Route::get('/{agregar}/{id}/{month}/{year}','ReservaController@listDependencyData')
+        ->where('agregar','agregar')
+        ->name('agregar');
+        
     Route::put('/update/{id}','ReservaController@update')->name('update');
     Route::delete('/delete/{id}','ReservaController@delete')->name('delete');
     Route::post('/create','ReservaController@create')->name('create');
@@ -46,8 +52,18 @@ Route::prefix('horarios')->name('horarios.')->group(function (){
 });
 
 Route::prefix('feriados')->name('feriados.')->group(function (){
-    Route::get('/{id}/{month}/{year}','FeriadoController@list')->name('list');
-    Route::get('agregar/{id}/{month}/{year}','FeriadoController@listDependencyData')->name('list');
+    Route::get('{list}/{id}/{month}/{year}','FeriadoController@list')
+        ->where('list','list')    
+        ->name('list');
+
+    Route::get('{agregar}/{id}/{month}/{year}','FeriadoController@listDependencyData')
+        ->where('agregar','agregar')
+        ->name('agregar');
+
+    Route::get('{single}/{userId}/{id}','FeriadoController@getSingle')
+        ->where('single','single')
+        ->name('single');
+
     Route::put('/update/{id}','FeriadoController@update')->name('update');
     Route::delete('/delete/{id}','FeriadoController@delete')->name('delete');
     Route::post('/create','FeriadoController@create')->name('create');

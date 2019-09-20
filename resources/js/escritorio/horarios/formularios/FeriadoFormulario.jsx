@@ -46,24 +46,44 @@ export default class FeriadoFormulario extends Component {
     }
 
     fetchData(date) {
+
         this.setState({
             data: null,
             isLoading: true,
             loadFinished: false
         });
-        const request = GET({
-            endpoint: '/feriados/agregar/27/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
-            download: this.downloadHandler
-        });
+
+        const conf = this.props.editar 
+            ?
+                {
+                    endpoint: '/feriados/single/27/' + this.props.match.params.id,
+                    download: this.downloadHandler
+                } 
+            :
+                {
+                    endpoint: '/feriados/agregar/27/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
+                    download: this.downloadHandler
+                },
+            request = GET(conf);
 
         request
             .then(
                 response => {
-                    this.setState({ 
-                        date: date, 
-                        data: response.data || {},
-                        minutes: generateHoursFromInterval(response.data.intervalo.data.id)
-                    });
+                    const state = this.props.editar 
+                        ? 
+                            {
+                                date:new Date(response.data.data.fecha),
+                                data: response.data,
+                                minutes: generateHoursFromInterval(response.data.intervalo),
+                                side: response.data.data.estado === 'laboral'
+                            }
+                        :
+                            {
+                                date: date,
+                                data: response.data || {},
+                                minutes: generateHoursFromInterval(response.data.intervalo.data.id)
+                            }; 
+                    this.setState(state);
                 }
             )
             .catch(
@@ -78,7 +98,6 @@ export default class FeriadoFormulario extends Component {
     }
 
     changeToggleSide(e){
-        console.log("e");
         this.setState({side:e})
     }
 
@@ -86,12 +105,20 @@ export default class FeriadoFormulario extends Component {
         if (this.state.data && this.state.loadFinished)
             return (
                 <>
-                    <div className="c-title highlight-title" style={{paddingBottom:"10px"}}>Agregar Feriado</div>
+                    <div className="c-title highlight-title" style={{paddingBottom:"10px"}}>
+                        {this.props.editar ? "Editar Feriado" : "Agregar Feriado"}
+                    </div>
+                    <div className="bold">
+                        {
+                            this.props.editar ? MONTHS[this.state.date.getMonth() + 1] + " de " + this.state.date.getFullYear() : ""
+                        }
+                    </div>
                     <form className="full-width">
                         <div className="container">
-                            <div className="row">
+                            <div className="row v-padding">
                                 <div className="col-md-6">
                                     <Calendario
+                                        editar={this.props.editar}
                                         date={this.state.date}
                                         data={this.state.data}
                                         fetch={this.fetchData}/>
@@ -113,6 +140,7 @@ export default class FeriadoFormulario extends Component {
                                         <div className="row relative visible">
                                             <div className={this.state.side ? "hidden" : "top-padding full-width overlay"} />
                                             <SelectFields
+                                                data={this.props.editar ? this.state.data : null}
                                                 minutos = {this.state.minutes}/> 
                                         </div>
                                     </div>
@@ -120,7 +148,13 @@ export default class FeriadoFormulario extends Component {
                             </div>
                             <div className="row v-padding">
                                 <EventoFields
-                                    data={this.state.data.eventos.data} />
+                                    side={this.state.side}
+                                    editar = {this.props.editar}
+                                    data={
+                                        this.props.editar 
+                                            ? this.state.data 
+                                            : this.state.data.eventos
+                                    } />
                             </div>
                         </div>
                     </form>

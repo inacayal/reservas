@@ -79890,8 +79890,7 @@ var generateWeek = {
       var datePtr = new Date(date);
       datePtr.setDate(datePtr.getDate() + (i - day));
       var strDate = datePtr.getDate();
-      console.log(data[strDate]);
-      if (date.getMonth() === datePtr.getMonth()) prev.push(_diccionarios_assign_WeekDictionary__WEBPACK_IMPORTED_MODULE_4__["default"].feriados(_acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_3__["GenerateActions"].feriados(data[strDate], actions, strDate, 'week'), data[strDate], datePtr.getTime()));
+      if (date.getMonth() === datePtr.getMonth()) prev.push(_diccionarios_assign_WeekDictionary__WEBPACK_IMPORTED_MODULE_4__["default"].feriados(_acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_3__["GenerateActions"].feriados(data[strDate], actions, data[strDate] !== undefined ? data[strDate].id : strDate, 'week'), data[strDate], datePtr.getTime()));
       return prev;
     }, []);
   }
@@ -80871,27 +80870,24 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var noMemoMultipleSelect = function noMemoMultipleSelect(props) {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.checked || []),
+  var _ref = props.changeSelect ? [props.select, props.changeSelect] : Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.select),
+      _ref2 = _slicedToArray(_ref, 2),
+      select = _ref2[0],
+      changeSelect = _ref2[1],
+      _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(""),
       _useState2 = _slicedToArray(_useState, 2),
-      list = _useState2[0],
-      changeList = _useState2[1],
-      modifyItems = function modifyItems(e) {
-    e.preventDefault();
-    var selected = parseInt(e.currentTarget.getAttribute('keyvalue')),
-        modifiedList = list,
-        index = list.indexOf(selected);
-    var excerpt = [];
-
-    if (index !== -1) {
-      excerpt = modifiedList.splice(0, index);
-      modifiedList.concat(excerpt);
-    } else modifiedList.push(selected);
-
-    changeList(modifiedList);
-  },
+      hover = _useState2[0],
+      changeHover = _useState2[1],
       selectOption = function selectOption(select, value) {
     var selectMimic = Object.assign({}, select);
-    selectMimic.selected = value !== selectMimic.selected ? value : null;
+    var list = selectMimic.selected,
+        index = selectMimic.selected.indexOf(value);
+
+    if (index !== -1) {
+      list = excludeOption(list, index);
+    } else list.push(value);
+
+    selectMimic.selected = list;
     changeSelect(selectMimic);
   },
       showOptions = function showOptions(select) {
@@ -80899,10 +80895,11 @@ var noMemoMultipleSelect = function noMemoMultipleSelect(props) {
     selectMimic.show = !selectMimic.show;
     changeSelect(selectMimic);
   },
-      _ref = props.changeSelect ? [props.select, props.changeSelect] : Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.select),
-      _ref2 = _slicedToArray(_ref, 2),
-      select = _ref2[0],
-      changeSelect = _ref2[1];
+      excludeOption = function excludeOption(list, index) {
+    var excerpt = [];
+    excerpt = list.splice(0, index);
+    return excerpt.concat(list.splice(1, list.length - 1));
+  };
 
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     if (select.show) select.input.current.focus();
@@ -80914,18 +80911,38 @@ var noMemoMultipleSelect = function noMemoMultipleSelect(props) {
     } : {
       zIndex: 0
     }
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+    className: "nav-list no-padding full-width justify-text"
+  }, select.selected.map(function (e, i) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+      key: i,
+      className: "bold highlight-title inline-block side-margin small-v-margin smaller-text button-border border-box"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      onClick: function onClick(e) {
+        var selectMimic = Object.assign({}, select);
+        selectMimic.selected = excludeOption(select.selected, select.selected.indexOf(e.currentTarget.getAttribute('keyvalue')));
+        changeSelect(selectMimic);
+      },
+      className: "fas fa-times pointer",
+      style: {
+        color: "#bfbfbf",
+        paddingRight: "5px"
+      }
+    }), props.optionData[e].nombre);
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
     name: select.name,
     className: "hidden",
     disabled: select.readOnly
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-    defaultValue: select.selected
+    defaultValue: select.selected.join(',')
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
     htmlFor: select.name,
     className: "select inherit-width"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: select.show ? "full-width flex-row relative" : "full-width relative border-bottom top-padding flex-row",
-    onClick: function onClick() {
+    className: select.show ? "full-width flex-row relative" : "full-width relative border-bottom flex-row",
+    onClick: select.show ? function () {
+      return false;
+    } : function () {
       return showOptions(select);
     },
     select: select.name
@@ -80933,19 +80950,19 @@ var noMemoMultipleSelect = function noMemoMultipleSelect(props) {
     className: "select-title"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
     className: select.show ? "hidden" : ""
-  }, select.selected ? select.list[select.selected] : props.titulo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+  }, select.selected.length > 0 ? select.selected.length + " " + select.name + " seleccionados" : props.titulo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "text",
-    defaultValue: select.selected ? select.list[select.selected] : select.search,
+    defaultValue: select.search ? select.search : "",
     ref: select.input,
-    onBlur: function onBlur() {
-      return showOptions(select);
-    },
     className: select.show ? "" : "hidden",
     select: select.name
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "margin-left v-align-center"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: select.show ? "fas fa-search" : "fas fa-angle-down",
+    onClick: function onClick() {
+      return showOptions(select);
+    },
+    className: select.show ? "fas fa-times" : "fas fa-angle-down",
     style: {
       color: "#bfbfbf"
     }
@@ -80953,16 +80970,16 @@ var noMemoMultipleSelect = function noMemoMultipleSelect(props) {
     className: "absolute full-width"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
     className: select.show ? "option-list box-shadow max-height" : "hidden"
-  }, props.options.map(function (e, ind) {
+  }, Object.values(props.optionData).map(function (e, ind) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
       key: ind,
       keyvalue: e.id,
-      select: e.name,
+      select: select.name,
       onMouseDown: function onMouseDown(e) {
         return selectOption(select, e.currentTarget.getAttribute('keyvalue'));
       },
-      className: ind === select.selected ? "option selected" : "option"
-    }, select.list[ind]);
+      className: select.selected.indexOf(e.id.toString()) !== -1 ? "option selected" : "option"
+    }, e.nombre);
   })))));
 };
 
@@ -81134,7 +81151,7 @@ var noMemoSelect = function noMemoSelect(props) {
     htmlFor: select.name,
     className: "select inherit-width"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: select.show ? "full-width flex-row relative" : "full-width relative border-bottom top-padding flex-row",
+    className: select.show ? "full-width flex-row relative" : "full-width relative border-bottom flex-row",
     onClick: function onClick() {
       return showOptions(select);
     },
@@ -81171,7 +81188,7 @@ var noMemoSelect = function noMemoSelect(props) {
       onMouseDown: function onMouseDown(e) {
         return selectOption(select, e.currentTarget.getAttribute('keyvalue'));
       },
-      className: ind === select.selected ? "option selected" : "option"
+      className: ind == select.selected ? "option selected" : "option"
     }, select.list[ind]);
   })))));
 };
@@ -83853,7 +83870,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 function CalendarioMemo(props) {
-  var today = new Date(),
+  var today = props.editar ? props.date : new Date(),
       _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.date),
       _useState2 = _slicedToArray(_useState, 2),
       day = _useState2[0],
@@ -83862,7 +83879,8 @@ function CalendarioMemo(props) {
     var activeStartDate = _ref.activeStartDate,
         date = _ref.date,
         view = _ref.view;
-    var disableByDate = view === 'month' ? props.data.feriados.data[date.getDate()] : date.getMonth() < activeStartDate.getMonth() || date.getFullYear() < activeStartDate.getFullYear();
+    var disableByDate = false;
+    if (props.editar) disableByDate = today.getDate() < date.getDate() || today.getDate() > date.getDate();else disableByDate = view === 'month' ? props.data.feriados.data[date.getDate()] : date.getMonth() < activeStartDate.getMonth() || date.getFullYear() < activeStartDate.getFullYear();
     return disableByDate;
   },
       monthChange = function monthChange(date) {
@@ -83886,11 +83904,14 @@ function CalendarioMemo(props) {
     readOnly: true,
     className: "hidden"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_calendar__WEBPACK_IMPORTED_MODULE_2___default.a, {
+    showNavigation: !props.editar,
     tileClassName: "relative",
     showNeighboringMonth: false,
-    value: day,
+    value: props.editar ? today : day,
     minDate: today,
-    onClickDay: function onClickDay(date) {
+    onClickDay: props.editar ? function () {
+      return false;
+    } : function (date) {
       return changeDay(new Date(date));
     },
     onClickMonth: monthChange,
@@ -83938,7 +83959,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var SelectData = {
   eventos: {
-    name: "cierre_atencion_minuto",
+    name: "eventos",
     show: false,
     selected: [],
     search: "",
@@ -83947,39 +83968,48 @@ var SelectData = {
   }
 };
 var EventoFields = function EventoFields(props) {
+  var eventos = SelectData.eventos;
+
+  if (props.editar) {
+    eventos.selected = Object.keys(props.data.data.eventos.list) || [];
+    eventos.list = props.data.eventos.list;
+  } else eventos.list = props.data.list;
+
+  console.log(eventos);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-4",
+    className: "col-md-4 relative visible",
     style: {
       paddingLeft: "0px"
     }
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_3__["Text"], {
-    rows: 1,
-    titulo: "Nombre",
-    name: "nombre",
-    value: props.nombre || "",
-    classes: "border-box input-text margin-box"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: props.side ? "hidden" : "top-padding full-width overlay"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "bold light-danger full-width"
+  }, "Eventos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_MultipleSelect__WEBPACK_IMPORTED_MODULE_4__["MultipleSelect"], {
+    select: eventos,
+    titulo: "selecciona los eventos",
+    optionData: props.editar ? props.data.eventos.data : props.data.data
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-4"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_3__["Text"], {
     rows: 3,
-    titulo: "Descripci\xF3n",
-    name: "descripcion",
-    value: props.descripcion || "",
+    titulo: "Nombre",
+    name: "nombre",
+    value: props.data.data.nombre || "",
     classes: "border-box input-text margin-box"
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-4",
     style: {
       paddingRight: "0px"
     }
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "bold light-danger full-width"
-  }, "Eventos")));
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_3__["Text"], {
+    rows: 3,
+    titulo: "Descripci\xF3n",
+    name: "descripcion",
+    value: props.data.data.descripcion || "",
+    classes: "border-box input-text margin-box"
+  })));
 };
-/**
- <MultipleSelect
-     options={Object.values(props.data)} /> 
- * 
- */
 
 /***/ }),
 
@@ -84030,14 +84060,14 @@ function FeriadosRouting(_ref) {
     path: match.url + '/agregar',
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_formularios_FeriadoFormulario__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({
-        showCalendar: true
+        editar: false
       }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Route"], {
     path: match.url + '/editar/:id',
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_formularios_FeriadoFormulario__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({
-        showCalendar: true
+        editar: true
       }, match));
     }
   }));
@@ -84226,6 +84256,18 @@ var SelectFields = function SelectFields(props) {
   aRM.list = props.minutos;
   cAM.list = props.minutos;
   cRM.list = props.minutos;
+
+  if (props.data) {
+    aAH.selected = props.data.data.apertura.atencion.hora;
+    aAM.selected = props.data.data.apertura.atencion.minuto;
+    cAH.selected = props.data.data.cierre.atencion.hora;
+    cAM.selected = props.data.data.cierre.atencion.minuto;
+    aRH.selected = props.data.data.apertura.reserva.hora;
+    aRM.selected = props.data.data.apertura.reserva.minuto;
+    cRH.selected = props.data.data.cierre.reserva.hora;
+    cRM.selected = props.data.data.cierre.reserva.minuto;
+  }
+
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-12"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -84448,16 +84490,27 @@ function (_Component) {
         isLoading: true,
         loadFinished: false
       });
-      var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_10__["GET"])({
+      var conf = this.props.editar ? {
+        endpoint: '/feriados/single/27/' + this.props.match.params.id,
+        download: this.downloadHandler
+      } : {
         endpoint: '/feriados/agregar/27/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
         download: this.downloadHandler
-      });
+      },
+          request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_10__["GET"])(conf);
       request.then(function (response) {
-        _this2.setState({
+        var state = _this2.props.editar ? {
+          date: new Date(response.data.data.fecha),
+          data: response.data,
+          minutes: Object(_funciones_generateHoursFromInterval__WEBPACK_IMPORTED_MODULE_9__["default"])(response.data.intervalo),
+          side: response.data.data.estado === 'laboral'
+        } : {
           date: date,
           data: response.data || {},
           minutes: Object(_funciones_generateHoursFromInterval__WEBPACK_IMPORTED_MODULE_9__["default"])(response.data.intervalo.data.id)
-        });
+        };
+
+        _this2.setState(state);
       })["catch"](function (error) {
         console.log(error.message);
       });
@@ -84470,7 +84523,6 @@ function (_Component) {
   }, {
     key: "changeToggleSide",
     value: function changeToggleSide(e) {
-      console.log("e");
       this.setState({
         side: e
       });
@@ -84483,15 +84535,18 @@ function (_Component) {
         style: {
           paddingBottom: "10px"
         }
-      }, "Agregar Feriado"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+      }, this.props.editar ? "Editar Feriado" : "Agregar Feriado"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "bold"
+      }, this.props.editar ? _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_8__["MONTHS"][this.state.date.getMonth() + 1] + " de " + this.state.date.getFullYear() : ""), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         className: "full-width"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
+        className: "row v-padding"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-6"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Calendario__WEBPACK_IMPORTED_MODULE_2__["Calendario"], {
+        editar: this.props.editar,
         date: this.state.date,
         data: this.state.data,
         fetch: this.fetchData
@@ -84516,11 +84571,14 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: this.state.side ? "hidden" : "top-padding full-width overlay"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SelectFields__WEBPACK_IMPORTED_MODULE_3__["SelectFields"], {
+        data: this.props.editar ? this.state.data : null,
         minutos: this.state.minutes
       }))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row v-padding"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_EventoFields__WEBPACK_IMPORTED_MODULE_4__["EventoFields"], {
-        data: this.state.data.eventos.data
+        side: this.state.side,
+        editar: this.props.editar,
+        data: this.props.editar ? this.state.data : this.state.data.eventos
       })))));
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_7__["default"], {
         loaded: this.state.loading
@@ -85057,7 +85115,7 @@ function (_Component) {
         loadFinished: false
       });
       var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_9__["GET"])({
-        endpoint: '/feriados/27/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
+        endpoint: '/feriados/list/27/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
         download: this.downloadHandler
       });
       request.then(function (response) {
@@ -87296,7 +87354,10 @@ function CalendarioMemo(props) {
     var activeStartDate = _ref.activeStartDate,
         date = _ref.date,
         view = _ref.view;
-    var disableByDate = view === 'month' ? props.data.horarios.data[date.getDay() + 1].estado === 'no_laboral' || props.data.feriados.data[date.getDate()].estado === 'no_laboral' : date.getMonth() < activeStartDate.getMonth() || date.getFullYear() < activeStartDate.getFullYear();
+    var normal = props.data.horarios.data[date.getDay() + 1],
+        feriado = props.data.feriados.data[date.getDate()],
+        feriadoNoLaboral = feriado !== undefined ? feriado.estado === 'no_laboral' : false;
+    var disableByDate = view === 'month' ? normal.estado === 'no_laboral' || feriadoNoLaboral : date.getMonth() < activeStartDate.getMonth() || date.getFullYear() < activeStartDate.getFullYear();
     return disableByDate;
   },
       monthChange = function monthChange(date) {
@@ -87310,15 +87371,17 @@ function CalendarioMemo(props) {
       tileContent = function tileContent(_ref3) {
     var date = _ref3.date,
         view = _ref3.view;
-    var index = date.getDate();
-    return props.data.feriados.data[index] !== undefined ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    var index = date.getDate(),
+        feriado = props.data.feriados.data[index],
+        horario = props.data.horarios.data[date.getDay() + 1];
+    return feriado !== undefined ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "full-cover box-padding",
-      onMouseOver: props.data.feriados.data[date.getDate()].estado === 'no_laboral' || date.getDate() < props.minDate.getDate() ? function (e) {
+      onMouseOver: feriado.estado === 'no_laboral' || date.getDate() < props.minDate.getDate() ? function (e) {
         return false;
       } : function (e) {
         return props.changeHover(date);
       },
-      onMouseLeave: props.data.feriados.data[date.getDate()].estado === 'no_laboral' || date.getDate() < props.minDate.getDate() ? function (e) {
+      onMouseLeave: feriado.estado === 'no_laboral' || date.getDate() < props.minDate.getDate() ? function (e) {
         return false;
       } : function (e) {
         return props.changeHover(props.showDate);
@@ -87330,12 +87393,12 @@ function CalendarioMemo(props) {
       className: "line-v-middle fas fa-ellipsis-h highlight-title"
     }))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "full-cover box-padding",
-      onMouseOver: props.data.horarios.data[date.getDay() + 1].estado === 'no_laboral' || date.getDate() < props.minDate.getDate() ? function (e) {
+      onMouseOver: horario.estado === 'no_laboral' || date.getDate() < props.minDate.getDate() ? function (e) {
         return false;
       } : function (e) {
         return props.changeHover(date);
       },
-      onMouseLeave: props.data.horarios.data[date.getDay() + 1].estado === 'no_laboral' || date.getDate() < props.minDate.getDate() ? function (e) {
+      onMouseLeave: horario.estado === 'no_laboral' || date.getDate() < props.minDate.getDate() ? function (e) {
         return false;
       } : function (e) {
         return props.changeHover(props.showDate);

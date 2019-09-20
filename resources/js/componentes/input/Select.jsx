@@ -52,7 +52,7 @@ const noMemoSelect = (props) => {
                 <option defaultValue={select.selected}></option>
             </select>
             <label htmlFor={select.name} className="select inherit-width">
-                <div className={(select.show) ? "full-width flex-row relative" : "full-width relative border-bottom top-padding flex-row"} onClick={() => showOptions(select)} select={ select.name}>
+                <div className={(select.show) ? "full-width flex-row relative" : "full-width relative border-bottom flex-row"} onClick={() => showOptions(select)} select={ select.name}>
                     <div className="select-title">
                         <span className={(select.show) ? "hidden" : ""}>{(select.selected) ? select.list[select.selected] : props.titulo}</span>
                         <input type="text" defaultValue={(select.selected) ? select.list[select.selected] : select.search} ref={select.input} onBlur={() => showOptions(select) } className={(select.show) ? "" : "hidden"} select={select.name} />
@@ -63,7 +63,7 @@ const noMemoSelect = (props) => {
                     <ul className={(select.show) ? "option-list box-shadow max-height" : "hidden"} >
                         {
                             Object.keys(select.list).map(function (ind) {
-                                return <li key={ind} keyvalue={ind} select={select.name} onMouseDown={(e) => selectOption(select, e.currentTarget.getAttribute('keyvalue'))} className={(ind === select.selected) ? "option selected" : "option"}>{select.list[ind]}</li>;
+                                return <li key={ind} keyvalue={ind} select={select.name} onMouseDown={(e) => selectOption(select, e.currentTarget.getAttribute('keyvalue'))} className={(ind == select.selected) ? "option selected" : "option"}>{select.list[ind]}</li>;
                             })
                         }
                     </ul>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Http\Resources\FeriadosResource as Resource;
+use App\Http\Resources\EventosResource as EventoResource;
 use Illuminate\Http\Request;
 
 class FeriadoController extends Controller
@@ -18,11 +19,11 @@ class FeriadoController extends Controller
      * @param $id must be an integer in db
      */
     public function list (
+        $list,
         $id,
         $month,
         $year
     ){
-
         $dependency = $this->model::assignDependencyOptions (
             array('feriados' => [$month,$year]),
             'query'  
@@ -52,6 +53,7 @@ class FeriadoController extends Controller
      * @param parameters is an associative array with values passed to eager load constructor
      */
     public function listDependencyData(
+        $route,
         $id,
         $month,
         $year
@@ -79,6 +81,34 @@ class FeriadoController extends Controller
             ]),
             200
         )->header('Content-Type','application/json'); 
+    }
+
+    public function getSingle(
+        $route, 
+        $userId,
+        $id
+    ){ 
+        $user = User::with(
+                'feriados',
+                'eventos'
+            )->where('id',$userId)
+            ->first();
+        $eventos = EventoResource::collection($user->eventos);
+        return response(
+            [
+                'intervalo' => $user->intervalo_reserva,
+                'data' => new Resource($user->feriados->find($id)),
+                'eventos' => [
+                    'data' => $eventos->keyBy('id'),
+                    'list' => $eventos->mapWithKeys(
+                        function ($item){
+                            return array($item['id'] => $item['nombre']);
+                        }
+                    )
+                ]
+            ],
+            200
+        )->header('Content-Type','application/json');
     }
 
     public function formatDependencyData(

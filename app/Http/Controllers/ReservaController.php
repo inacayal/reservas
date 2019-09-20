@@ -23,6 +23,7 @@ class ReservaController extends Controller
      *        timezone considerations must be taken
      */
     public function list (
+        $route,
         $id,
         $month,
         $year
@@ -58,6 +59,7 @@ class ReservaController extends Controller
      * @param parameters is an associative array with values passed to eager load constructor
      */
     public function listDependencyData(
+        $route,
         $id,
         $month,
         $year

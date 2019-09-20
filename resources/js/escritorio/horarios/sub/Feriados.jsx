@@ -77,7 +77,7 @@ export default class Feriados extends Component {
             loadFinished: false
         });
         const request = GET({
-            endpoint: '/feriados/27/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
+            endpoint: '/feriados/list/27/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
             download: this.downloadHandler
         });
 

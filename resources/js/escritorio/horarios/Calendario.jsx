@@ -14,12 +14,17 @@ import { DAYS, MONTHS } from '../../constantes/DaysMonths';
 
 function CalendarioMemo(props) {
     const
-        today = new Date(),
+        today = props.editar ? props.date : new Date(),
         [day, changeDay] = useState(props.date),
         tileDisabled = ({ activeStartDate, date, view }) => {
-            const disableByDate = view === 'month'
-                ? props.data.feriados.data[date.getDate()]
-                : date.getMonth() < activeStartDate.getMonth() || date.getFullYear() < activeStartDate.getFullYear();
+            let disableByDate = false;
+            if (props.editar)
+                disableByDate = today.getDate() < date.getDate() || today.getDate() > date.getDate();
+            else 
+                disableByDate = view === 'month'
+                    ? props.data.feriados.data[date.getDate()]
+                    : date.getMonth() < activeStartDate.getMonth() || date.getFullYear() < activeStartDate.getFullYear();
+            
             return disableByDate;
         },
         monthChange = (date) => {
@@ -36,11 +41,12 @@ function CalendarioMemo(props) {
         <>
             <input type="date" value={day} readOnly className="hidden" />
             <Calendar
+                showNavigation={!props.editar}
                 tileClassName='relative'
                 showNeighboringMonth={false}
-                value={day}
+                value={props.editar ? today : day}
                 minDate={today}
-                onClickDay={ (date) => changeDay(new Date(date))}
+                onClickDay={props.editar ? () => false : (date) => changeDay(new Date(date))}
                 onClickMonth={monthChange}
                 tileDisabled={tileDisabled}
                 onActiveDateChange={navChange} />
