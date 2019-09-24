@@ -60,14 +60,13 @@ export default class Horarios extends Component {
     }
 
     fetchData() {
-        console.log('culo');
         this.setState({ 
             data:null,
             isLoading:true,
             loadFinished:false
         });
         const request = GET({
-            endpoint: '/horarios/27',
+            endpoint: '/horarios/list/27',
             download: this.downloadHandler
         });
         

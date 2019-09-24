@@ -9,6 +9,7 @@ namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 use App\Traits\DataFormatting;
+use App\Traits\DependencyFormatting;
 use Illuminate\Support\Collection;
 /**
  * Class Horario
@@ -28,7 +29,8 @@ use Illuminate\Support\Collection;
  */
 class Horario extends Eloquent
 {
-	use DataFormatting;
+	use DataFormatting,
+		DependencyFormatting;
 	/**
 	 * DataFormatting trait constants
 	 */

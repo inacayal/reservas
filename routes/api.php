@@ -45,7 +45,18 @@ Route::prefix('ubicaciones')->name('ubicaciones.')->group(function (){
 });
 
 Route::prefix('horarios')->name('horarios.')->group(function (){
-    Route::get('/{id}','HorarioController@list')->name('list');
+    Route::get('{list}/{id}','HorarioController@list')
+        ->where('list','list')    
+        ->name('list');
+
+    Route::get('{agregar}/{id}/','HorarioController@listDependencyData')
+        ->where('agregar','agregar')
+        ->name('agregar');
+
+    Route::get('{single}/{userId}/{id}','HorarioController@getSingle')
+        ->where('single','single')
+        ->name('single');
+
     Route::put('/update/{id}','HorarioController@update')->name('update');
     Route::delete('/delete/{id}','HorarioController@delete')->name('delete');
     Route::post('/create','HorarioController@create')->name('create');

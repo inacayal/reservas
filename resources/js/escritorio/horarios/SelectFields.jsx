@@ -101,11 +101,19 @@ export const SelectFields = (props) => {
         aAM.selected = props.data.data.apertura.atencion.minuto;
         cAH.selected = props.data.data.cierre.atencion.hora;
         cAM.selected = props.data.data.cierre.atencion.minuto;
-        
         aRH.selected = props.data.data.apertura.reserva.hora;
         aRM.selected = props.data.data.apertura.reserva.minuto;
         cRH.selected = props.data.data.cierre.reserva.hora;
         cRM.selected = props.data.data.cierre.reserva.minuto;
+    } else {
+        aAH.selected = null;
+        aAM.selected = null;
+        cAH.selected = null;
+        cAM.selected = null;
+        aRH.selected = null;
+        aRM.selected = null;
+        cRH.selected = null;
+        cRM.selected = null;
     }
 
     return (

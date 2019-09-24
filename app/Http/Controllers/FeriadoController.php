@@ -31,9 +31,7 @@ class FeriadoController extends Controller
 
         $user = User::with(
                 $dependency->data
-            )
-            ->where('id',$id)
-            ->first();
+            )->find($id);
 
         return response( 
             [ 
@@ -67,8 +65,7 @@ class FeriadoController extends Controller
         
         $user = User::with(
                 $dependency->data
-            )->where('id',$id)
-            ->first();
+            )->find($id);
         
         return response(
             $this->formatDependencyData(
@@ -91,8 +88,8 @@ class FeriadoController extends Controller
         $user = User::with(
                 'feriados',
                 'eventos'
-            )->where('id',$userId)
-            ->first();
+            )->find($userId);
+        
         $eventos = EventoResource::collection($user->eventos);
         return response(
             [

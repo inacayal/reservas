@@ -90,7 +90,6 @@ export default class Calendario extends Component {
     }
 
     verDia(e) {
-        console.log('mes');
         let day = parseInt(e.currentTarget.getAttribute('data')),
             date = this.state.date.setDate(day),
             controls = this.state.controls.map(
@@ -107,7 +106,7 @@ export default class Calendario extends Component {
     fetchData( date ){
         this.setState({data:null});
         const request = GET({
-            endpoint: 'reservas/' + 27 + '/' + parseInt(date.getMonth()+1) + '/' + date.getFullYear(),
+            endpoint: 'reservas/list/' + 27 + '/' + parseInt(date.getMonth()+1) + '/' + date.getFullYear(),
             download: this.downloadHandler
         });
         request

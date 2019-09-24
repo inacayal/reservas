@@ -30,12 +30,13 @@ export const EventoFields = (props) => {
     if (props.editar){
         eventos.selected = Object.keys(props.data.data.eventos.list)||[];
         eventos.list =  props.data.eventos.list;
-    } else
-        eventos.list = props.data.list;
-    console.log(eventos);
+    } else {
+        eventos.selected = [];
+        eventos.list = {};
+    }
     return (
         <>
-            <div className="col-md-4 relative visible" style={{ paddingLeft: "0px" }}>
+            <div className={props.class.col+" relative visible"}>
                 <div className={props.side ? "hidden" : "top-padding full-width overlay"} />
                 <div className="bold light-danger full-width">Eventos</div>
                 <MultipleSelect
@@ -43,10 +44,17 @@ export const EventoFields = (props) => {
                     titulo="selecciona los eventos"
                     optionData={props.editar ? props.data.eventos.data : props.data.data} />
             </div>
-            <div className="col-md-4" >
-                <Text rows={3} titulo="Nombre" name="nombre" value={props.data.data.nombre || ""} classes={"border-box input-text margin-box"} />
-            </div>
-            <div className="col-md-4" style={{ paddingRight: "0px" }}>
+            {
+                props.class.type==='feriado'
+                ?
+                    <div className={props.class.col} >
+                        <Text rows={3} titulo="Nombre" name="nombre" value={props.data.data.nombre || ""} classes={"border-box input-text margin-box"} />
+                    </div>
+                :
+                    ""
+            }
+            
+            <div className={props.class.col}>
                 <Text rows={4} titulo="Descripción" name="descripcion" value={props.data.data.descripcion || ""} classes={"border-box input-text margin-box"} />
             </div>
         </>

@@ -28,7 +28,7 @@ const WeekDictionary = {
     ) => {
         const state = sectionData
             ? sectionData.estado
-            : 'no_laboral',
+            : 'no_data',
             facade = HorarioByState[state](
                 data,
                 sectionData,
@@ -49,15 +49,11 @@ const WeekDictionary = {
             tcnd = tdy.getDate() === dt.getDate() && tdy.getMonth() === dt.getMonth() && tdy.getFullYear() === dt.getFullYear(),
             index = sectionData 
                 ? 'data'
-                : 'no_data',
-            elC = dt.getDay() !== 6 ?
-                "box-padding margin-box box-transparent full-width border-bottom" :
-                "box-padding margin-box box-transparent full-width";
+                : 'no_data';
 
         return ReservaWeekByState[index] (
             dt,
             tcnd,
-            elC,
             sectionData,
             acciones,
             actions

@@ -29,11 +29,11 @@ export default function HorariosRouting ({match}) {
                     (match) => <FeriadosRouting {...match} />
                 } />
             <Route
-                path={match.url+'/agregar'}
+                path={match.url+'/agregar/:day'}
                 component={
                     (match) => 
                         <HorarioFormulario
-                            showCalendar = {false}
+                            editar = {false}
                             {...match} />
                 } />
             <Route
@@ -41,7 +41,7 @@ export default function HorariosRouting ({match}) {
                 component={
                     (match) => 
                         <HorarioFormulario
-                            showCalendar = {false}
+                            editar = {true}
                             {...match} />
                 } />
         </>

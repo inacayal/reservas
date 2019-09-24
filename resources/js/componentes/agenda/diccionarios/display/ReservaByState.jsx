@@ -1,7 +1,7 @@
 /**
  * react basic
  */
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import ReactDOM from 'react-dom';
 /**
  * componentes
@@ -38,7 +38,7 @@ export const ReservaDayByState = {
                     </div>
                 </div>
             ),
-            class: "box-padding border-bottom"
+            class: "box-padding"
         },
         content: {},
         container: {
@@ -55,16 +55,16 @@ export const ReservaDayByState = {
                     <div className="inline-block half">
                         <div className="line-v-middle light-danger bold side-margin inline-block">{display}</div>
                     </div>
-                    <div className="inline-block half smaller-text text-right">
+                    <div className="inline-block half smaller-text text-right border-bottom">
                         Sin reservas
                     </div>
                 </div>
             ),
-            class: "box-padding border-bottom"
+            class: "box-padding"
         },
         content: {},
         container: {
-            class: "padding-box"
+            class: "box-padding"
         }
     })
 };
@@ -110,21 +110,19 @@ export const ReservaWeekByState = {
     no_data:(
         dt,
         tcnd,
-        elC,
         sectionData,
         acciones,
         actions
     ) => ({
         title: {
             data: (
-                <div className="container no-padding">
+                <div className="container ">
                     <div className="row">
                         <div className="col-md-8 no-padding">
-                            <span className="line-v-middle inline-block v-align-center">{DAYS[dt.getDay()] + " "}</span>
                             <span className={tcnd ? "margin-box inline-block v-align-center highlight-title c-title" : " margin-box inline-block v-align-center light-danger c-title"}>{dt.getDate() + " "}</span>
-                            <span className="line-v-middle inline-block v-align-center ">{MONTHS[dt.getMonth()]}</span>
+                            <span className="line-v-middle inline-block v-align-center bold">{DAYS[dt.getDay()] + " "}</span>
                         </div>
-                        <div className="col-md-4 no-padding text-right">
+                        <div className="col-md-4  text-right border-bottom">
                             <span className="line-v-middle smaller-text inline-block negative-margin"> No hay reservaciones a mostrar</span>
                         </div>
                     </div>
@@ -135,13 +133,12 @@ export const ReservaWeekByState = {
             data: ""
         },
         container: {
-            class: elC
+            class:"box-padding"
         }
     }),
     data: (
         dt,
         tcnd,
-        elC,
         sectionData,
         acciones,
         actions
@@ -149,24 +146,24 @@ export const ReservaWeekByState = {
         const reservations = generateCardListForReservationObject(
             sectionData.reservas,
             actions.inner
-        );
+            ),
+            [show,toggle] = useState(false);
         return {
             title: {
                 data: (
-                    <div className="container no-padding">
+                    <div className="container ">
                         <div className="row">
                             <div className="col-md-8 no-padding">
-                                <span className="line-v-middle inline-block v-align-center">{DAYS[dt.getDay()] + " "}</span>
                                 <span className={tcnd ? "margin-box inline-block v-align-center highlight-title c-title" : " margin-box inline-block v-align-center light-danger c-title"}>{dt.getDate() + " "}</span>
-                                <span className="line-v-middle inline-block v-align-center ">{MONTHS[dt.getMonth()]}</span>
+                                <span className="bold line-v-middle inline-block v-align-center">{DAYS[dt.getDay()] + " "}</span>
                                 <div className="inline-block margin-box">
                                     {acciones}
                                 </div>
                             </div>
-                            <div className="col-md-4 no-padding text-right">
+                            <div className="col-md-4 text-right border-bottom">
                                 <span className="line-v-middle smaller-text inline-block negative-margin">
                                     {
-                                        sectionData.show ?
+                                        show ?
                                             "Mostrando " + reservations.length + " reservaciones encontradas"
                                             : reservations.length + " reservaciones encontradas"
                                     }
@@ -177,7 +174,7 @@ export const ReservaWeekByState = {
                 )
             },
             content: {
-                data: (sectionData.show) ?
+                data: (show) ?
                     <CardList
                         displayList="box-padding medium-left-padding nav-list"
                         elems={reservations} />
@@ -185,7 +182,7 @@ export const ReservaWeekByState = {
                     ""
             },
             container: {
-                class: elC
+                class:"box-padding"
             }
         }
     }

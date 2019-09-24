@@ -25,7 +25,7 @@ const generateWeek = {
                     WeekDictionary.horarios(
                         GenerateActions.horarios(
                             data[i],
-                            i,
+                            data[i] ? data[i].id : i,
                             actions
                         ),
                         data[i],
@@ -47,7 +47,6 @@ const generateWeek = {
                 let datePtr = new Date(date);
                 datePtr.setDate(datePtr.getDate() + (i - dy));
                 const strDate = datePtr.getDate();
-                
                 if (date.getMonth() === datePtr.getMonth())
                     prev.push(
                         WeekDictionary.reservas(

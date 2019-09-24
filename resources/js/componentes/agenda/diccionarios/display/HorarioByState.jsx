@@ -49,9 +49,9 @@ export const HorarioByState = {
                                 <div className="light-danger bold">Horarios:</div>
                                 <div style={{ padding: "0px 0px 0px 10px" }}>
                                     <div className="bold">Reservas:</div>
-                                    <div>{"desde " + sectionData.apertura.reserva.hora + ":" + sectionData.apertura.reserva.minuto + " hasta " + sectionData.cierre.reserva.hora + ":" + sectionData.cierre.reserva.minuto}</div>
+                                    <div>{sectionData.apertura.reserva.hora + ":" + sectionData.apertura.reserva.minuto + "hs. - " + sectionData.cierre.reserva.hora + ":" + sectionData.cierre.reserva.minuto + "hs."}</div>
                                     <div className="bold">Atención:</div>
-                                    <div>{"desde "+ sectionData.apertura.atencion.hora + ":" + sectionData.apertura.atencion.minuto + " hasta " + sectionData.cierre.atencion.hora + ":" + sectionData.cierre.atencion.minuto}</div>
+                                    <div>{sectionData.apertura.atencion.hora + ":" + sectionData.apertura.atencion.minuto + "hs. - " + sectionData.cierre.atencion.hora + ":" + sectionData.cierre.atencion.minuto + "hs."}</div>
                                 </div>
                             </div>
                             <div className="col-md-8">
@@ -130,16 +130,16 @@ export const HorarioByState = {
         ({
             title: {
                 data:(
-                    <div className="full-width  box-padding">
+                    <div className="full-width  v-padding">
                         <div className="seventy sub-title inline-block ">
-                            <div className="inline-block side-margin">
-                                {DAYS[data]}
+                            <div className="inline-block side-margin bold">
+                                {DAYS[data-1]}
                             </div>
                             <div className="inline-block side-margin">
                                 {acciones}
                             </div>
                         </div>
-                        <div className="thirty text-right inline-block smaller-text">
+                        <div className="thirty text-right inline-block smaller-text border-bottom">
                             Aun no has asignado un horario de reservas
                         </div>
                     </div>
@@ -147,7 +147,14 @@ export const HorarioByState = {
             },
             content: {
                 data: (
-                    <></>
+                    <div className="full-width ">
+                        <div className="half box-padding inline-block">
+                            <div className="light-danger bold">Sin horario</div>
+                        </div>
+                        <div className="half box-padding inline-block">
+                            <span className="light-danger bold">Sin descripción</span>
+                        </div>
+                    </div>
                 )
             },
             container: {

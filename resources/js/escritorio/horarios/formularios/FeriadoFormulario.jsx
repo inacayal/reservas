@@ -54,18 +54,18 @@ export default class FeriadoFormulario extends Component {
         });
 
         const conf = this.props.editar 
-            ?
-                {
-                    endpoint: '/feriados/single/27/' + this.props.match.params.id,
-                    download: this.downloadHandler
-                } 
-            :
-                {
-                    endpoint: '/feriados/agregar/27/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
-                    download: this.downloadHandler
-                },
-            request = GET(conf);
-
+        ?
+            {
+                endpoint: '/feriados/single/27/' + this.props.match.params.id,
+                download: this.downloadHandler
+            } 
+        :
+            {
+                endpoint: '/feriados/agregar/27/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
+                download: this.downloadHandler
+            },
+        request = GET(conf);
+                
         request
             .then(
                 response => {
@@ -88,7 +88,7 @@ export default class FeriadoFormulario extends Component {
             )
             .catch(
                 error => {
-                    console.log(error.message)
+                    console.log(error.message);
                 }
             );
     }
@@ -106,11 +106,17 @@ export default class FeriadoFormulario extends Component {
             return (
                 <>
                     <div className="c-title highlight-title" style={{paddingBottom:"10px"}}>
-                        {this.props.editar ? "Editar Feriado" : "Agregar Feriado"}
+                        {
+                            this.props.editar 
+                            ? "Editar Feriado" 
+                            : "Agregar Feriado"
+                        }
                     </div>
                     <div className="bold">
                         {
-                            this.props.editar ? MONTHS[this.state.date.getMonth() + 1] + " de " + this.state.date.getFullYear() : ""
+                            this.props.editar 
+                            ? MONTHS[this.state.date.getMonth() + 1] + " de " + this.state.date.getFullYear() 
+                            : ""
                         }
                     </div>
                     <form className="full-width">
@@ -150,6 +156,7 @@ export default class FeriadoFormulario extends Component {
                                 <EventoFields
                                     side={this.state.side}
                                     editar = {this.props.editar}
+                                    class={{ type: "feriado", col: "col-md-4" }}
                                     data={
                                         this.props.editar 
                                             ? this.state.data 
