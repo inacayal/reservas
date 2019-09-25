@@ -16,11 +16,13 @@ import { DAYS, MONTHS } from '../../../../constantes/DaysMonths';
 import { CLASSBYSTATE } from '../../../../constantes/CardObject';
 
 
-export const HorarioByState = {
+export const HorarioWeekByState = {
     laboral: (
-        data,
+        renderActions,
         sectionData,
-        acciones
+        statusIndex,
+        originalActions,
+        dataIndex
     ) =>{
         const eventos = Object.values(sectionData.eventos.data);  
         return {
@@ -29,10 +31,10 @@ export const HorarioByState = {
                     <div className="full-width box-padding" >
                         <div className="seventy inline-block sub-title">
                             <div className="inline-block side-margin text-top bold">
-                                <Link to ={'/horarios/' + data} className="text bold subrayado">{DAYS[data - 1]}</Link>
+                                <Link to ={'/horarios/' + dataIndex} className="text bold subrayado">{DAYS[sectionData.diaSemana - 1]}</Link>
                             </div>
                             <div className="inline-block side-margin">
-                                {acciones}
+                                {renderActions}
                             </div>
                         </div>
                         <div className="thirty inline-block text-right smaller-text border-bottom">
@@ -83,9 +85,11 @@ export const HorarioByState = {
         };
     },
     no_laboral: (
-        data,
+        renderActions,
         sectionData,
-        acciones
+        statusIndex,
+        originalActions,
+        dataIndex
     ) => 
         ({
             title: {
@@ -93,10 +97,10 @@ export const HorarioByState = {
                     <div className="full-width box-padding">
                         <div className="seventy inline-block sub-title">
                             <div className="bold inline-block side-margin text-top">
-                                {DAYS[data-1]}
+                                {DAYS[sectionData.diaSemana-1]}
                             </div>
                             <div className="inline-block side-margin">
-                                {acciones}
+                                {renderActions}
                             </div>
                         </div>
                         <div className="thirty inline-block text-right smaller-text border-bottom ">

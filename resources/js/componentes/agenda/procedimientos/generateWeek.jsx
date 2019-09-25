@@ -11,90 +11,46 @@ import {DAYS} from '../../../constantes/DaysMonths';
  * funciones
  */
 import {GenerateActions} from '../../../acciones/GenerateActions';
-import WeekDictionary from '../diccionarios/assign/WeekDictionary';
+import {AssignWeekByStatus} from '../diccionarios/AssignByStatus';
 
-const generateWeek = {
-    horarios: (
-        data,
-        actions
-    ) => DAYS.reduce(
-            (prev, curr, ind) => {
-                const i = ind+1,  
-                    actionIndex = data[i] ? 'data' : 'no_data';
-                prev.push(
-                    WeekDictionary.horarios(
-                        GenerateActions.horarios(
-                            data[i],
-                            data[i] ? data[i].id : i,
-                            actions
-                        ),
-                        data[i],
-                        i.toString()
-                    )
-                );
-                return prev;
-            },
-        []
-    ),
-    reservas: (
-        date,
-        data,
-        actions
-    ) => {
-        let dy = date.getDay();
-        return DAYS.reduce(
-            (prev,curr,i) => {
-                let datePtr = new Date(date);
-                datePtr.setDate(datePtr.getDate() + (i - dy));
-                const strDate = datePtr.getDate();
-                if (date.getMonth() === datePtr.getMonth())
-                    prev.push(
-                        WeekDictionary.reservas(
-                            GenerateActions.reservas(
-                                data[strDate] || null,
-                                actions.outer,
-                                strDate,
-                                'week',
-                                data[strDate] ? 'data' : 'no_data'
-                            ),
-                            data[strDate],
-                            datePtr.getTime(),
-                            actions
-                        )
-                    );
-                return prev;
-            },
-            []
-        );
-    },
-    feriados: (
-        date,
-        data,
-        actions
-    ) => {
-        const day = date.getDay();
-        return DAYS.reduce(
-            (prev, curr, i) => {
-                let datePtr = new Date(date);
-                datePtr.setDate(datePtr.getDate() + (i - day));
-                const strDate = datePtr.getDate();
-                if (date.getMonth() === datePtr.getMonth())
-                    prev.push(
-                        WeekDictionary.feriados(
-                            GenerateActions.feriados(
-                                data[strDate],
-                                actions,
-                                data[strDate] !== undefined ? data[strDate].id:strDate,
-                                'week'
-                            ),
-                            data[strDate],
-                            datePtr.getTime()
-                        )
-                    );
-                return prev
-            },
-            []
+const moveIndex = (
+    i,
+    date,
+    data
+) => {
+    let rData = [];
+    if (date) {
+        let datePtr = new Date(date),
+            day = date.getDay();
+        datePtr.setDate(datePtr.getDate() + (i - day));
+        let index = datePtr.getDate();
+        rData = [data[index], (data[index]||{}).id ? data[index].id : datePtr];
+    } else 
+        rData = [ data[i + 1] || null, data[i + 1] ? data[i + 1].id : i + 1 ]; 
+    return rData;
+}
+
+const generateWeek = (
+    date,
+    data,
+    actions,
+    type
+) => DAYS.map(
+    (e,ind) => {
+        const [currentData,index] = moveIndex(ind,date,data),
+            acciones = GenerateActions[type](
+                currentData,
+                actions,
+                index,
+                'week'
+            );
+        return AssignWeekByStatus(
+            acciones,
+            currentData,
+            index,
+            actions,
+            type
         );
     }
-}
+)
 export default generateWeek;

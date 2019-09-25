@@ -17,55 +17,55 @@ import { DAYS, MONTHS } from '../../../../constantes/DaysMonths';
 import { CLASSBYSTATE } from '../../../../constantes/CardObject';
 
 export const FeriadoMonthByState = {
-    data: {
-        laboral: (
-            classes,
-            acciones,
-            date
-        ) => ({
-            title: {
-                data: (
-                    <>
-                        <div className="c-title">{date.getDate()}</div>
-                        <i className="text-top fas fa-ellipsis-h highlight-title" style={{ marginTop: "-8px" }}  />
-                    </>
-                ),
-                class: classes.title,
-            },
-            content: {
-                data: (
-                    <>{acciones}</>
-                )
-            },
-            container: {
-                class: classes.container + " black-overlay"
-            }
-        }),
-        no_laboral: (
-            classes,
-            acciones,
-            date
-        ) => ({
-            title: {
-                data: (
-                    <>
-                        <div className="c-title">{date.getDate()}</div>
-                        <i className="text-top fas fa-ellipsis-h highlight-title" style={{marginTop:"-8px"}} />
-                    </>
-                ),
-                class: classes.title
-            },
-            content: {
-                data: (
-                    <div className="flex-row">{acciones}</div>
-                )
-            },
-            container: {
-                class: classes.container+" black-overlay"
-            }
-        })
-    },
+    laboral: (
+        renderActions,
+        sectionData,
+        date,
+        isThisMonth
+    ) => ({
+        title: {
+            data: (
+                <>
+                    <div className="c-title light-danger">{date.getDate()}</div>
+                    <i className="text-top fas fa-ellipsis-h highlight-title" style={{ marginTop: "-8px" }}  />
+                </>
+            )
+        },
+        content: {
+            data: (
+                <>{renderActions}</>
+            )
+        },
+        container: {
+            class: "same-width text-center box-padding light-danger fix-heigh relative black-overlay"
+        }
+    }),
+    no_laboral: (
+        renderActions,
+        sectionData,
+        date,
+        isThisMonth
+    ) => ({
+        title: {
+            data: (
+                <>
+                    <div className="c-title light-danger">{date.getDate()}</div>
+                    <i className="text-top fas fa-ellipsis-h highlight-title" style={{marginTop:"-8px"}} />
+                </>
+            )
+        },
+        content: {
+            data: (
+                <div className="flex-row">{renderActions}</div>
+            )
+        },
+        container: {
+            class: "same-width text-center box-padding light-danger fix-heigh relative black-overlay"
+        }
+    }),
     no_data: (
+        renderActions,
+        sectionData,
         date,
         isThisMonth
     ) => {
@@ -86,13 +86,15 @@ export const FeriadoMonthByState = {
 
 export const FeriadoWeekByState = {
     laboral:(
-        todayCond,
-        date,
-        acciones,
-        sectionData
+        renderActions,
+        sectionData,
+        statusIndex,
+        originalActions,
+        dataIndex
     )=>
         {
-            const eventos = Object.values(sectionData.eventos.data);
+            const eventos = Object.values(sectionData.eventos.data),
+                date = new Date(sectionData.fecha);
             return {
             title: {
                 data: (
@@ -100,10 +102,10 @@ export const FeriadoWeekByState = {
                         <div className="row">
                             <div className="col-md-9">
                                 <Link to={'horarios/feriados/'+sectionData.id}>
-                                    <span className={todayCond ? "subrayado margin-box inline-block v-align-center highlight-title c-title" : "subrayado margin-box inline-block v-align-center light-danger c-title"}>{date.getDate() + " "}</span>
+                                    <span className="subrayado margin-box inline-block v-align-center light-danger c-title">{date.getDate() + " "}</span>
                                     <span className="text subrayado bold line-v-middle inline-block v-align-center">{DAYS[date.getDay()] + " "}</span>
-                                    {acciones}
                                 </Link>
+                                {renderActions}
                             </div>
                             <div className="col-md-3 border-bottom no-padding">
                                 <p className="smaller-text no-margin text-right">{sectionData.nombre}</p>
@@ -157,56 +159,61 @@ export const FeriadoWeekByState = {
         }
     },
     no_laboral: (
-        todayCond,
-        date,
-        acciones,
-        sectionData
+        renderActions,
+        sectionData,
+        statusIndex,
+        originalActions,
+        dataIndex
     ) => 
-        ({
-            title: {
-                data: (
-                    <div className="container no-padding">
-                        <div className="row">
-                            <div className="col-md-9">
-                                <Link to={'horarios/feriados/'} params={{id:sectionData.id}}>
-                                    <span className={todayCond ? "subrayado margin-box inline-block v-align-center highlight-title c-title" : "subrayado margin-box inline-block v-align-center light-danger c-title"}>{date.getDate() + " "}</span>
-                                    <span className="text subrayado bold line-v-middle inline-block v-align-center">{DAYS[date.getDay()] + " "}</span>
-                                    {acciones}
-                                </Link>
-                            </div>
-                            <div className="col-md-3">
-                                <p className="smaller-text no-margin text-right">{sectionData.nombre}</p>
-                            </div>
-                        </div>
-                    </div>
-                )
-            },
-            content: {
-                data: (
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-md-6 light-danger bold">
-                                Sin apertura
-                            </div>
-                            <div className="col-md-6 ">
-                                <div className="light-danger bold">Descripción:</div>
-                                <div>{sectionData.descripcion.substring(0, 30) + "..."}</div>
-                                <div className="border-top small-v-padding" />
-                                <div className="smaller-text">mostrando sólo los primeros 30 caracteres</div>
+        {
+            const date = new Date(sectionData.fecha);
+            return {
+                title: {
+                    data: (
+                        <div className="container no-padding">
+                            <div className="row">
+                                <div className="col-md-9">
+                                    <Link to={'horarios/feriados/'} params={{id:sectionData.id}}>
+                                        <span className="subrayado margin-box inline-block v-align-center light-danger c-title">{date.getDate() + " "}</span>
+                                        <span className="text subrayado bold line-v-middle inline-block v-align-center">{DAYS[date.getDay()] + " "}</span>
+                                    </Link>
+                                    {renderActions}
+                                </div>
+                                <div className="col-md-3">
+                                    <p className="smaller-text no-margin text-right">{sectionData.nombre}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )
-            },
-            container: {
-                class: "box-padding  full-width background-border"
+                    )
+                },
+                content: {
+                    data: (
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-md-6 light-danger bold">
+                                    Sin apertura
+                                </div>
+                                <div className="col-md-6 ">
+                                    <div className="light-danger bold">Descripción:</div>
+                                    <div>{sectionData.descripcion.substring(0, 30) + "..."}</div>
+                                    <div className="border-top small-v-padding" />
+                                    <div className="smaller-text">mostrando sólo los primeros 30 caracteres</div>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                },
+                container: {
+                    class: "box-padding  full-width background-border"
+                }
             }
-        }),
+        },
     no_data: (
-        todayCond,
-        date,
-        acciones,
-        sectionData
+        renderActions,
+        sectionData,
+        statusIndex,
+        originalActions,
+        dataIndex
     ) => 
         ({
             title:{
@@ -214,8 +221,8 @@ export const FeriadoWeekByState = {
                     <div className="container no-padding">
                         <div className="row">
                             <div className="col-md-8 bold">
-                                <span className={todayCond ? "margin-box inline-block v-align-center highlight-title c-title" : " margin-box inline-block v-align-center light-danger c-title"}>{date.getDate() + " "}</span>
-                                <span className="line-v-middle inline-block v-align-center bold">{DAYS[date.getDay()] + " "}</span>
+                                <span className=" margin-box inline-block v-align-center light-danger c-title">{dataIndex.getDate() + " "}</span>
+                                <span className="line-v-middle inline-block v-align-center bold">{DAYS[dataIndex.getDay()] + " "}</span>
                             </div>
                             <div className="col-md-4 border-bottom text-right no-padding">
                                 <p className="smaller-text no-margin">No has designado este día como feriado</p>

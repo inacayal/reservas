@@ -156,75 +156,34 @@ export const ReservasActions = {
     week: {
         data: (
             actions,
-            data,
-            dayData
-        ) => {
-            if (dayData.show)
-                return {
-                    buttons: [
-                        {
-                            title: (
-                                <div className="smaller-text text bold text-center">
-                                    <i className="fas fa-eye inline-box side-margin" />
-                                    Ver reservaciones
-                                </div>
-                            ),
-                            click: actions.ver,
-                            data: data
-                        },
-                        {
-                            title: (
-                                <div className="smaller-text text bold text-center">
-                                    <i className="fas fa-minus-circle  inline-box side-margin" />
-                                    Contraer
-                                </div>
-                            ),
-                            click: actions.expandir,
-                            data: data
-                        }
-                    ]
-                };
-            return {
-                buttons: [
-                    {
-                        title: (
-                            <div className="smaller-text text bold text-center">
-                                <i className="fas fa-eye inline-box side-margin" />
-                                Ver reservaciones
-                            </div>
-                        ),
-                        click: actions.ver,
-                        data: data
-                    },
-                    {
-                        title: (
-                            <div className="smaller-text text bold text-center">
-                                <i className="fas fa-plus-circle  inline-box side-margin" />
-                                Expandir
-                            </div>
-                        ),
-                        click: actions.expandir,
-                        data: data
-                    }
-                ]
-            };
-        },
+            data
+        ) => ({}),
         no_data: (
             actions,
             data
-        ) => []
+        ) => ({})
     },
     month: {
         data: (
             actions,
             data
-        ) => [{
-            click: actions.ver,
-            data: data
-        }],
+        ) => ({
+                buttons: [
+                    {
+                        title: (
+                            <div className="decorate-hover small-padding smaller-text text bold text-center">
+                                <i className="fas fa-eye inline-box side-margin" />
+                            </div>
+                        ),
+                        click: actions.ver,
+                        data: data
+                    }
+                ],
+                links:[{}]
+            }),
         no_data: (
             actions,
             data
-        ) => []
+        ) => ({})
     }
 };

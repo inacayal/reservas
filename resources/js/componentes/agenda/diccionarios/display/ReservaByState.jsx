@@ -21,33 +21,44 @@ import { CLASSBYSTATE } from '../../../../constantes/CardObject';
 export const ReservaDayByState = {
     data: (
         display,
-        reservations
-    ) => ({
-        title: {
-            data: (
-                <div className="container no-padding">
-                    <div className="row">
-                        <div className="col-md-1">
-                            <span className="side-margin light-danger bold inline-block">{display}</span>
-                        </div>
-                        <div className="col-md-11">
-                            <CardList
-                                displayList="nav-list full-width"
-                                elems={reservations} />
+        data,
+        actions,
+        dataStr
+    ) => {
+        const reservations = generateDayCardFromArray(
+            data,
+            actions,
+            dataStr
+        );
+        return {
+            title: {
+                data: (
+                    <div className="container no-padding">
+                        <div className="row">
+                            <div className="col-md-1">
+                                <span className="side-margin light-danger bold inline-block">{display}</span>
+                            </div>
+                            <div className="col-md-11">
+                                <CardList
+                                    displayList="nav-list full-width"
+                                    elems={reservations} />
+                            </div>
                         </div>
                     </div>
-                </div>
-            ),
-            class: "box-padding"
-        },
-        content: {},
-        container: {
-            class: "padding-box"
-        }
-    }),
+                ),
+                class: "box-padding"
+            },
+            content: {},
+            container: {
+                class: "padding-box"
+            }
+        };
+    },
     no_data: (
         display,
-        reservations
+        data,
+        actions,
+        dataStr
     ) => ({
         title: {
             data: (
@@ -71,56 +82,62 @@ export const ReservaDayByState = {
 
 export const ReservaMonthByState = {
     data: (
-        resDate,
-        titleClass,
-        data,
-        actions
+        renderActions,
+        sectionData,
+        date,
+        isThisMonth
     ) => ({
         title: {
-            data: resDate.getDate(),
-            class: titleClass,
+            data: (
+                <>
+                    <div className="c-title light-danger">{date.getDate()}</div>
+                    <i className="text-top fas fa-ellipsis-h highlight-title" style={{ marginTop: "-8px" }} />
+                </>
+            )
         },
-        content: {},
+        content: {
+            data: (
+                <>{renderActions}</>
+            )
+        },
         container: {
-            data: data,
-            class: "same-width text-center box-padding highlight-hover pointer fix-height blue-highlight-hover",
-            click: actions.ver
+            class: "same-width text-center box-padding light-danger fix-heigh relative black-overlay"
         }
     }),
     no_data: (
-        resDate,
-        titleClass,
-        data,
-        actions
+        renderActions,
+        sectionData,
+        date,
+        isThisMonth
     ) => ({
         title: {
-            data: resDate.getDate(),
+            data: date.getDate(),
             class: "content c-title"
         },
         content: {},
         container: {
-            class: "background-border same-width text-center box-padding fix-height",
-            data: data,
-            click: actions.ver
+            class: isThisMonth ? "same-width text-center box-padding fix-height" : "background-border same-width text-center box-padding fix-height"
         }
     })
 };
 
 export const ReservaWeekByState = {
     no_data:(
-        dt,
-        tcnd,
+        renderActions,
         sectionData,
-        acciones,
-        actions
+        statusIndex,
+        originalActions,
+        dataIndex
     ) => ({
         title: {
             data: (
                 <div className="container ">
                     <div className="row">
                         <div className="col-md-8 no-padding">
-                            <span className={tcnd ? "margin-box inline-block v-align-center highlight-title c-title" : " margin-box inline-block v-align-center light-danger c-title"}>{dt.getDate() + " "}</span>
-                            <span className="line-v-middle inline-block v-align-center bold">{DAYS[dt.getDay()] + " "}</span>
+                            <span className="margin-box inline-block v-align-center light-danger c-title">
+                                {dataIndex.getDate() + " "}
+                            </span>
+                            <span className="line-v-middle inline-block v-align-center bold">{DAYS[dataIndex.getDay()] + " "}</span>
                         </div>
                         <div className="col-md-4  text-right border-bottom">
                             <span className="line-v-middle smaller-text inline-block negative-margin"> No hay reservaciones a mostrar</span>
@@ -137,27 +154,30 @@ export const ReservaWeekByState = {
         }
     }),
     data: (
-        dt,
-        tcnd,
+        renderActions,
         sectionData,
-        acciones,
-        actions
+        statusIndex,
+        originalActions,
+        dataIndex
     ) => {
         const reservations = generateCardListForReservationObject(
             sectionData.reservas,
-            actions.inner
+            originalActions.inner
             ),
-            [show,toggle] = useState(false);
+            show = false;
+        //console.log(dataIndex);
         return {
             title: {
                 data: (
                     <div className="container ">
                         <div className="row">
                             <div className="col-md-8 no-padding">
-                                <span className={tcnd ? "margin-box inline-block v-align-center highlight-title c-title" : " margin-box inline-block v-align-center light-danger c-title"}>{dt.getDate() + " "}</span>
-                                <span className="bold line-v-middle inline-block v-align-center">{DAYS[dt.getDay()] + " "}</span>
+                                <span className=" margin-box inline-block v-align-center light-danger c-title">
+                                    {dataIndex.getDate() + " "}
+                                </span>
+                                <span className="bold line-v-middle inline-block v-align-center">{DAYS[dataIndex.getDay()] + " "}</span>
                                 <div className="inline-block margin-box">
-                                    {acciones}
+                                    {renderActions}
                                 </div>
                             </div>
                             <div className="col-md-4 text-right border-bottom">

@@ -31,10 +31,7 @@ export default class Calendario extends Component {
             controls: ALL_CONTROL
         };
         this.actions = {
-            outer: {
-                ver: this.verDia.bind(this),
-                expandir: this.expandirReservaSemanal.bind(this)
-            },
+            outer: null,
             inner: {
                 ver: this.verReserva,
                 aceptar: this.aceptarReserva,
@@ -66,15 +63,6 @@ export default class Calendario extends Component {
 
     revertirReserva() {
         console.log('revertir');
-    }
-
-    expandirReservaSemanal(e) {
-        let show = e.currentTarget.getAttribute('data'),
-            data = this.state.data,
-            reserve = data[show];
-        reserve.show = !reserve.show;
-        data[show] = reserve;
-        this.setState({ data: data, weekRender: !this.state.weekRender });
     }
 
     aceptarReserva() {

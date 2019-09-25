@@ -42,7 +42,9 @@ export default class Horarios extends Component {
         this.closeModal = closeModal.bind(this);
         this.eliminarHorario = this.eliminarHorario.bind(this);
         this.actions = {
-            eliminar: this.eliminarHorario 
+            outer:{
+                eliminar: this.eliminarHorario
+            }
         }
     }
 
@@ -116,9 +118,11 @@ export default class Horarios extends Component {
                         <CardList
                             displayList="justify no-padding full-width flex-column nav-list h-center"
                             elems={
-                                generateWeek['horarios'](
+                                generateWeek(
+                                    null,
                                     this.state.data,
-                                    this.actions
+                                    this.actions,
+                                    'horarios'
                                 )
                             } />
                     </div>

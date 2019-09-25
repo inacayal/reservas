@@ -34,11 +34,9 @@ export default class Feriados extends Component {
         };
         
         this.actions = {
-            outer:{
-                editar: () => false,
-                eliminar: ()=>false
-            },
-            inner:{}
+            outer: {
+                eliminar: this.eliminarFeriado
+            }
         };
 
         this.verFeriado = this.verFeriado.bind(this);

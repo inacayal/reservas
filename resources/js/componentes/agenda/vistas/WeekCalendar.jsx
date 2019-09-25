@@ -29,10 +29,11 @@ function WeekCalendar(props) {
             }, 
             'semana'
         ),
-        week = generateWeek[props.type](
+        week = generateWeek(
             props.date, 
             props.data, 
-            props.actions
+            props.actions,
+            props.type
         );
     return (
         <div className="container">

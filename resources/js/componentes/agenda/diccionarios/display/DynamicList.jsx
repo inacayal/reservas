@@ -39,9 +39,9 @@ const DynamicList = (
                 click={(e) => { e.preventDefault(); toggle(!show) }}
                 title={show
                     ?
-                    <i className="fas fa-minus-circle highlight-title" />
+                        <i className="fas fa-minus-circle highlight-title" />
                     :
-                    <i className="fas fa-plus-circle" />
+                        <i className="fas fa-plus-circle" />
                 } />
         </div>
     )

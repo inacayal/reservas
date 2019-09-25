@@ -20,17 +20,21 @@ export const GenerateActions = {
     reservas: (
         data,
         actions,
-        strDate,
-        type,
-        index
+        key,
+        type
     ) => {
+        let index = '';
+        if (data)
+            index = data.estado ? data.estado : 'data';
+        else 
+            index = 'no_data';
         const acciones = ReservasActions[type][index](
-            actions,
-            strDate,
-            data
-        );
+                actions,
+                key
+            );
         return (
             <Actions
+                overlay={type === 'month' ? true : false}
                 links={acciones.links}
                 buttons={acciones.buttons} />
         );
@@ -55,8 +59,9 @@ export const GenerateActions = {
     },
     horarios: (
         data,
+        actions,
         key,
-        actions
+        type
     ) => {
         const index = data ? 'data' : 'no_data',
             acciones = HorariosActions[index](

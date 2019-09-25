@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 /**
  * componentes
  */
-import DayDictionary from '../diccionarios/assign/DayDictionary';
+import {AssignDayByStatus} from '../diccionarios/AssignByStatus';
 import ButtonList from '../../basic/ButtonList';
 
 export function generateHourArray(
@@ -36,11 +36,12 @@ export function generateHourArray(
             data = dataObject[find];
 
         hourArray.push(
-            DayDictionary[type](
+            AssignDayByStatus(
                 data,
                 find,
                 mnPtr < 10 ? hrPtr + ':0' + mnPtr : hrPtr + ':' + mnPtr,
-                actions
+                actions,
+                type
             )
         );
         mnPtr+=intervalo;
@@ -66,7 +67,8 @@ export default function generateDay(
             ((data[dateStr]||{}).reservas||{}),
             type,
             actions,
-            caida
+            caida,
+            type
         ),
         ((data[dateStr] || {}).reservas || []).length 
     ];

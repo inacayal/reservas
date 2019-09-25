@@ -11,7 +11,7 @@ import {GenerateActions} from '../../../acciones/GenerateActions';
 /**
  * diccionario
  */
-import MonthDictionary from '../diccionarios/assign/MonthDictionary';
+import {AssignMonthByStatus} from '../diccionarios/AssignByStatus';
 /**
  * funciones
  */
@@ -28,11 +28,11 @@ function evalFirstWeek (
     evalDate.setDate(evalDate.getDate()-day);
     while(evalDate.getMonth()!==date.getMonth()){
         res.push(
-            MonthDictionary[type](
+            AssignMonthByStatus(
                 null,
                 null,
-                evalDate.getDate(),
                 new Date(evalDate),
+                type,
                 false
             )
         );
@@ -53,11 +53,11 @@ function evalLastWeek(
     evalDate.setDate(evalDate.getDate() + 6 - day);
     while (evalDate.getMonth() !== date.getMonth()) {
         res.push(
-            MonthDictionary[type](
+            AssignMonthByStatus(
                 null,
                 null,
-                evalDate.getDate(),
                 new Date(evalDate),
+                type,
                 false
             )
         );
@@ -79,22 +79,19 @@ export default function generateMonth (
         datePtr = new Date(date),
         month = [],
         week = [],
-        today = new Date(),
         monthEnd=null;
-
-    let dateStr = datePtr.setDate(datePtr.getDate() - datePtr.getDate() + 1);
+    datePtr.setDate(datePtr.getDate() - datePtr.getDate() + 1);
+    let dateStr = datePtr.getDate();
     
     for (let ptr = 0; ptr<monthLength; ptr++){
         let weekCtr = datePtr.getDay(),
             elem = {};
-        
         if (ptr===0){
             week = evalFirstWeek(
                 datePtr,
                 type
             );
         }
-
         if(ptr===monthLength-1){
             monthEnd = evalLastWeek(
                 datePtr,
@@ -103,17 +100,16 @@ export default function generateMonth (
             weekCtr = 6;
         }
         week.push(
-            MonthDictionary[type](
+            AssignMonthByStatus(
                 GenerateActions[type](
-                    data[dateStr] || null,
+                    data[dateStr],
                     actions,
-                    data[dateStr] ? data[dateStr].id : datePtr.getDate(),
-                    'month',
-                    data[dateStr] ? 'data' : 'no_data'
+                    data[dateStr] ? (data[dateStr]||{}).id : dateStr,
+                    'month'
                 ),
                 data[dateStr],
-                datePtr,
                 new Date(datePtr),
+                type,
                 true
             )
         );
