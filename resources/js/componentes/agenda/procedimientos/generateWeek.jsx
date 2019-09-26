@@ -11,7 +11,7 @@ import {DAYS} from '../../../constantes/DaysMonths';
  * funciones
  */
 import {GenerateActions} from '../../../acciones/GenerateActions';
-import {AssignWeekByStatus} from '../diccionarios/AssignByStatus';
+import {AssignWeekByStatus} from './AssignByStatus';
 
 const moveIndex = (
     i,
@@ -24,9 +24,9 @@ const moveIndex = (
             day = date.getDay();
         datePtr.setDate(datePtr.getDate() + (i - day));
         let index = datePtr.getDate();
-        rData = [data[index], (data[index]||{}).id ? data[index].id : datePtr];
+        rData = [data[index], (data[index]||{}).id ? data[index].id : datePtr, datePtr];
     } else 
-        rData = [ data[i + 1] || null, data[i + 1] ? data[i + 1].id : i + 1 ]; 
+        rData = [ data[i + 1] || null, data[i + 1] ? data[i + 1].id : i + 1 , null]; 
     return rData;
 }
 
@@ -35,22 +35,32 @@ const generateWeek = (
     data,
     actions,
     type
-) => DAYS.map(
-    (e,ind) => {
-        const [currentData,index] = moveIndex(ind,date,data),
-            acciones = GenerateActions[type](
-                currentData,
-                actions,
-                index,
-                'week'
-            );
-        return AssignWeekByStatus(
-            acciones,
-            currentData,
-            index,
-            actions,
-            type
-        );
-    }
+) => DAYS.reduce(
+        (prev, curr, ind) => {
+            const [currentData,index, dateIndex] = moveIndex(ind,date,data),
+                acciones = GenerateActions[type](
+                    currentData,
+                    actions,
+                    index,
+                    'week'
+                ),
+                elem = AssignWeekByStatus(
+                    acciones,
+                    currentData,
+                    index,
+                    actions,
+                    type
+                );
+
+            if (dateIndex){
+                prev = date.getMonth() === dateIndex.getMonth() 
+                    ? prev.concat([elem]) 
+                    : prev;
+            } else   
+                prev.push(elem);
+
+            return prev;
+        },
+    []
 )
 export default generateWeek;

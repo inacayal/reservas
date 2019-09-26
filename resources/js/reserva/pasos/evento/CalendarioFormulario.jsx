@@ -98,6 +98,23 @@ export default function CalendarioFormulario(props) {
         
     return (
         <>
+            <div className="row box-padding">
+                <h3 className={props.displayTitles ? "bold highlight-title align-center" : "hidden"}>datos de contacto</h3>
+            </div>
+            <div className="row v-padding">
+                <div className="col-sm-4">
+                    <Text rows={1} titulo="nombre  y apellido" name="name" value={props.nombre} classes={"border-box input-text margin-box"} />
+                </div>
+                <div className="col-sm-4">
+                    <Text rows={1} titulo="correo electrónico" name="email" value={props.correo} classes={"border-box input-text margin-box"} />
+                </div>
+                <div className="col-sm-4">
+                    <Text rows={1} titulo="teléfono" name="telefono" value={props.telefono} classes={"border-box input-text margin-box"} container="full-width" />
+                </div>
+                <div className="col-sm-6">
+                    <Text rows={3} titulo="Observaciones" name="descripcion" value={props.descripcion} classes={"border-box input-text margin-box"} container="full-width" />
+                </div>
+            </div>
             <div className="no-padding top-padding col-md-3">
                 <i className="line-v-middle fas fa-angle-left highlight-title" />
                 <div className="text-left right-padding">
@@ -209,20 +226,7 @@ export default function CalendarioFormulario(props) {
                     </div>
                 </div>
             </div>
-            <div className="row box-padding">
-                <h3 className={props.displayTitles ? "bold highlight-title align-center" : "hidden"}>datos de contacto</h3>
-            </div>
-            <div className="row">
-                <div className="col-sm-4">
-                    <Text rows={1} titulo="nombre  y apellido" name="name" value={props.nombre} classes={"border-box input-text margin-box"} />
-                </div>
-                <div className="col-sm-4">
-                    <Text rows={1} titulo="correo electrónico" name="email" value={props.correo} classes={"border-box input-text margin-box"} />
-                </div>
-                <div className="col-sm-4">
-                    <Text rows={1} titulo="teléfono" name="telefono" value={props.telefono} classes={"border-box input-text margin-box"} container="full-width" />
-                </div>
-            </div>
+            
         </>
     )
 }

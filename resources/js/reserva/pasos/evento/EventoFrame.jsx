@@ -65,7 +65,7 @@ function EventoFrame(
     useEffect(renderCallback,[]);
 
     return (
-        <div className={(props.current) ? "container" : "hidden"}>
+        <div className="container">
             <h3 className={props.displayTitles ? "bold highlight-title align-center" : "hidden"}>datos de la reserva</h3>
             <CalendarioEventos 
                 data={props.data}
@@ -74,7 +74,9 @@ function EventoFrame(
                 minDate={minDate}
                 clickCallback={clickCallback}
                 fetch = {props.fetch}/> 
-            <div className="row justify-content-end smaller-text top-padding">{'Debes reservar con al menos ' + props.data.antelacion + ' horas de antelación.'}</div>
+            <div className="row justify-content-end smaller-text top-padding">
+                {'Debes reservar con al menos ' + props.data.antelacion + ' horas de antelación.'}
+            </div>
             <div className="row">
                 <CalendarioFormulario
                     date={showDate}

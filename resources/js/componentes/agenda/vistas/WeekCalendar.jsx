@@ -13,7 +13,7 @@ import Button from '../../basic/Button';
  * funciones
  */
 import generateWeek from '../procedimientos/generateWeek';
-import calendarNavigation from '../navegacion/calendarNavigation';
+import calendarNavigation from '../calendarNavigation';
 /**
  * constantes
  */
@@ -40,10 +40,15 @@ function WeekCalendar(props) {
             <div className="row bold">
                 {"Mostrando " + MONTHS[props.date.getMonth()] + " " + props.date.getFullYear()}
             </div>
-            <div className="row h-center">
-                <CardList
-                    displayList="justify no-padding full-width flex-column nav-list h-center"
-                    elems={week} />
+            <div className="row">
+                <ul className="justify no-padding full-width flex-column nav-list h-center">
+                    {
+                        week.map(
+                            (elem,index) => 
+                                <li key={index} className={elem.class}><elem.content/></li>
+                        )   
+                    }
+                </ul>
             </div>
             <div className="row">
                 <ButtonList

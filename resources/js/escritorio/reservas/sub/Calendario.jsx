@@ -16,7 +16,7 @@ import Titulo from '../../../componentes/basic/Titulo';
 /**
  * constantes
  */
-import { ALL_CONTROL } from '../../../constantes/CalendarControls';
+import { NO_WEEK_CONTROLS } from '../../../constantes/CalendarControls';
 
 export default class Calendario extends Component {
     constructor(props){
@@ -25,10 +25,10 @@ export default class Calendario extends Component {
             date: new Date(),
             weekRender: true,
             dayRender: true,
-            show: "2",
+            show: "1",
             loading: 0,
             loadFinished: false,
-            controls: ALL_CONTROL
+            controls: NO_WEEK_CONTROLS
         };
         this.actions = {
             outer: null,
@@ -40,7 +40,6 @@ export default class Calendario extends Component {
             }
         };
         
-        this.verDia = this.verDia.bind(this);
         this.verReserva = this.verReserva.bind(this);
         this.aceptarReserva = this.aceptarReserva.bind(this);
         this.rechazarReserva = this.rechazarReserva.bind(this);
@@ -77,20 +76,6 @@ export default class Calendario extends Component {
         console.log('verReserva');
     }
 
-    verDia(e) {
-        let day = parseInt(e.currentTarget.getAttribute('data')),
-            date = this.state.date.setDate(day),
-            controls = this.state.controls.map(
-                (e, i) => {
-                    e.class = (i === 3) ?
-                        "blue-background highlight-border h-padding small-v-padding"
-                        : "box-transparent highlight-hover bordered h-padding small-v-padding transparent-border";
-                    return e;
-                }
-            );
-        this.setState({ show: "3", date: new Date(date), controls: controls });
-    }
-    
     fetchData( date ){
         this.setState({data:null});
         const request = GET({

@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { AssignWeekComponent, AssignMonthComponent, AssignDayComponent } from './AssignRenderComponent';
+import { AssignWeekComponent, AssignMonthComponent, AssignDayComponent } from '../display/AssignRenderComponent';
 
 const assignIndex = (
     data
@@ -43,7 +43,7 @@ export const AssignWeekByStatus = (
     return AssignWeekComponent[type][index](
         renderActions,
         sectionData,
-        statusIndex,
+        index,
         originalActions,
         dataIndex
     );

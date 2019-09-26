@@ -6,17 +6,17 @@ import ReactDOM from 'react-dom';
 /**
  * componentes
  */
-import {CardList} from '../../../basic/CardList';
-import ButtonList from '../../../basic/ButtonList';
+import {CardList} from '../../basic/CardList';
+import ButtonList from '../../basic/ButtonList';
 /**
  * funciones
  */
-import {GenerateActions} from '../../../../acciones/GenerateActions';
+import {GenerateActions} from '../../../acciones/GenerateActions';
 /**
  * constantes
  */
-import { DAYS, MONTHS } from '../../../../constantes/DaysMonths';
-import { CLASSBYSTATE } from '../../../../constantes/CardObject';
+import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
+import { CLASSBYSTATE } from '../../../constantes/CardObject';
 
 export const ReservaDayByState = {
     data: (
@@ -87,22 +87,14 @@ export const ReservaMonthByState = {
         date,
         isThisMonth
     ) => ({
-        title: {
-            data: (
-                <>
-                    <div className="c-title light-danger">{date.getDate()}</div>
-                    <i className="text-top fas fa-ellipsis-h highlight-title" style={{ marginTop: "-8px" }} />
-                </>
-            )
-        },
-        content: {
-            data: (
-                <>{renderActions}</>
-            )
-        },
-        container: {
-            class: "same-width text-center box-padding light-danger fix-heigh relative black-overlay"
-        }
+        content: (
+            <>
+                <div className="c-title light-danger">{date.getDate()}</div>
+                <i className="text-top fas fa-ellipsis-h highlight-title" style={{ marginTop: "-8px" }} />
+                <div>{renderActions}</div>
+            </>
+        ),
+        class: "same-width text-center box-padding light-danger relative black-overlay"
     }),
     no_data: (
         renderActions,
@@ -110,14 +102,14 @@ export const ReservaMonthByState = {
         date,
         isThisMonth
     ) => ({
-        title: {
-            data: date.getDate(),
-            class: "content c-title"
-        },
-        content: {},
-        container: {
-            class: isThisMonth ? "same-width text-center box-padding fix-height" : "background-border same-width text-center box-padding fix-height"
-        }
+        content:(
+            <div className="content c-title">
+                {date.getDate()}
+            </div>
+        ),
+        class: isThisMonth 
+            ? "same-width text-center box-padding fix-height" 
+            : "background-border same-width text-center box-padding fix-height"
     })
 };
 
@@ -129,29 +121,15 @@ export const ReservaWeekByState = {
         originalActions,
         dataIndex
     ) => ({
-        title: {
-            data: (
-                <div className="container ">
-                    <div className="row">
-                        <div className="col-md-8 no-padding">
-                            <span className="margin-box inline-block v-align-center light-danger c-title">
-                                {dataIndex.getDate() + " "}
-                            </span>
-                            <span className="line-v-middle inline-block v-align-center bold">{DAYS[dataIndex.getDay()] + " "}</span>
-                        </div>
-                        <div className="col-md-4  text-right border-bottom">
-                            <span className="line-v-middle smaller-text inline-block negative-margin"> No hay reservaciones a mostrar</span>
-                        </div>
-                    </div>
+        content:() => 
+            <>
+                <div className="v-align-center light-danger c-title">
+                    {dataIndex.getDate() + " "}
                 </div>
-            )
-        },
-        content: {
-            data: ""
-        },
-        container: {
-            class:"box-padding"
-        }
+                <div className="line-v-middle inline-block v-align-center">{DAYS[dataIndex.getDay()] + " "}</div>
+            </>,
+            class: "box-padding text-center same-width highlight-hover pointer",
+            data: dataIndex.getDate()
     }),
     data: (
         renderActions,
@@ -161,49 +139,20 @@ export const ReservaWeekByState = {
         dataIndex
     ) => {
         const reservations = generateCardListForReservationObject(
-            sectionData.reservas,
-            originalActions.inner
-            ),
-            show = false;
-        //console.log(dataIndex);
+                sectionData.reservas,
+                originalActions.inner
+            );
         return {
-            title: {
-                data: (
-                    <div className="container ">
-                        <div className="row">
-                            <div className="col-md-8 no-padding">
-                                <span className=" margin-box inline-block v-align-center light-danger c-title">
-                                    {dataIndex.getDate() + " "}
-                                </span>
-                                <span className="bold line-v-middle inline-block v-align-center">{DAYS[dataIndex.getDay()] + " "}</span>
-                                <div className="inline-block margin-box">
-                                    {renderActions}
-                                </div>
-                            </div>
-                            <div className="col-md-4 text-right border-bottom">
-                                <span className="line-v-middle smaller-text inline-block negative-margin">
-                                    {
-                                        show ?
-                                            "Mostrando " + reservations.length + " reservaciones encontradas"
-                                            : reservations.length + " reservaciones encontradas"
-                                    }
-                                </span>
-                            </div>
-                        </div>
+            content:() => (
+                <>
+                    <div className="v-align-center light-danger c-title">
+                        {dataIndex.getDate() + " "}
                     </div>
-                )
-            },
-            content: {
-                data: (show) ?
-                    <CardList
-                        displayList="box-padding medium-left-padding nav-list"
-                        elems={reservations} />
-                    :
-                    ""
-            },
-            container: {
-                class:"box-padding"
-            }
+                    <div className="line-v-middle inline-block v-align-center">{DAYS[dataIndex.getDay()] + " "}</div>
+                </>
+            ),
+            class: "box-padding same-width text-center highlight-hover pointer",
+            data:dataIndex.getDate()
         }
     }
 };
@@ -250,13 +199,7 @@ function generateCardsForReservationArray(
 ) {
     return hourReservations.map(
         (e, i) => {
-            let acciones = GenerateActions.reservas(
-                    e,
-                    actions,
-                    e.hora_reserva,
-                    'day',
-                    e.estado
-                ),
+            const 
                 classByState = CLASSBYSTATE[e.estado],
                 classByIndex = {
                     0: "box-padding no-top-padding border-bottom"
@@ -269,24 +212,18 @@ function generateCardsForReservationArray(
                     data: (
                         <div>
                             <div className="full-width">
-                                <div className="inline-block half">
-                                    <span className="side-margin">{e.nombre}</span>
-                                    <span className="side-margin">{e.apellido}</span>
+                                <div className="inline-block ninety">
+                                    <span className="side-margin bold">{e.nombre + " " + e.apellido}</span>
+                                    <span className="side-margin light-danger">
+                                        {e.telefono}
+                                    </span>
                                     <span className="side-margin">
-                                        <span className="side-margin light-danger">
-                                            tel.
-                                            </span>
-                                        <span className="side-margin">
-                                            {e.telefono}
-                                        </span>
+                                        {e.email}
                                     </span>
                                 </div>
-                                <div className="inline-block half text-right">
+                                <div className="inline-block ten text-right">
                                     <div className={classByState}>{e.estado}</div>
                                 </div>
-                            </div>
-                            <div className="full-width text-right">
-                                {acciones}
                             </div>
                         </div>
                     ),
@@ -300,4 +237,44 @@ function generateCardsForReservationArray(
             };
         }
     )
+};
+
+function generateDayCardFromArray(
+    data,
+    actions,
+    dataStr
+) {
+    let obj = {};
+    return data.map(
+        (e, i) => {
+            let acciones = GenerateActions.reservas(
+                e,
+                actions,
+                e.id,
+                'day'
+            );
+            return {
+                title: {
+                    data: (
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-md-11 no-padding">
+                                    <span className="side-margin light-title inline-block">{e.nombre + " " + e.apellido}</span>
+                                    {acciones}
+                                </div>
+                                <div className="col-md-1 no-padding smaller-text">
+                                    {e.estado}
+                                </div>
+                            </div>
+                        </div>
+                    ),
+                    class: ""
+                },
+                content: {},
+                container: {
+                    class: ""
+                }
+            };
+        }
+    );
 };

@@ -11,11 +11,11 @@ import {GenerateActions} from '../../../acciones/GenerateActions';
 /**
  * diccionario
  */
-import {AssignMonthByStatus} from '../diccionarios/AssignByStatus';
+import {AssignMonthByStatus} from './AssignByStatus';
 /**
  * funciones
  */
-import getMonthLength from '../../../funciones/getMonthLength';
+import {getMonthLength} from '../../../utils/Helper';
 
 function evalFirstWeek (
     date,

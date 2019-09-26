@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 /**
  * componentes
  */
-import {AssignDayByStatus} from '../diccionarios/AssignByStatus';
+import {AssignDayByStatus} from './AssignByStatus';
 import ButtonList from '../../basic/ButtonList';
 
 export function generateHourArray(
@@ -73,3 +73,4 @@ export default function generateDay(
         ((data[dateStr] || {}).reservas || []).length 
     ];
 }
+

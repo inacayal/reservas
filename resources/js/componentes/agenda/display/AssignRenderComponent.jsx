@@ -4,9 +4,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-import { HorarioWeekByState } from './display/HorarioByState';
-import { FeriadoWeekByState, FeriadoMonthByState } from './display/FeriadoByState';
-import { ReservaWeekByState, ReservaMonthByState, ReservaDayByState } from './display/ReservaByState';
+import { HorarioWeekByState } from './HorarioByState';
+import { FeriadoWeekByState, FeriadoMonthByState } from './FeriadoByState';
+import { ReservaWeekByState, ReservaMonthByState, ReservaDayByState } from './ReservaByState';
 
 
 export const AssignWeekComponent = {

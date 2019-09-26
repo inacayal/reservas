@@ -7,8 +7,8 @@ import ReactDOM from 'react-dom';
  * funciones
  */
 import generateMonth from '../procedimientos/generateMonth';
-import calendarNavigation from '../navegacion/calendarNavigation';
-import getMonthLength from '../../../funciones/getMonthLength';
+import calendarNavigation from '../calendarNavigation';
+import {getMonthLength} from '../../../utils/Helper';
 /**
  * constantes
  */
@@ -60,11 +60,16 @@ function MonthCalendar(props) {
                 <div className="container">
                     {
                         weeks.map(
-                            (e, i) =>
+                            (e, i) => 
                                 <div key={i} className="row">
-                                    <CardList
-                                        displayList="justify no-padding full-width flex-row nav-list h-center"
-                                        elems={e} />
+                                    <ul className="justify no-padding full-width flex-row nav-list h-center">
+                                        {
+                                            e.map(
+                                                (elem,index) => 
+                                                    <li key={index} className={elem.class}>{elem.content}</li>
+                                            )
+                                        }
+                                    </ul>
                                 </div>
                         )
                     }

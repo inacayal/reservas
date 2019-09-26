@@ -100,7 +100,13 @@ export default class Horarios extends Component {
         })
     }
     render(){
-        if ( this.state.data && this.state.loadFinished )
+        if ( this.state.data && this.state.loadFinished ){
+            const week = generateWeek(
+                null,
+                this.state.data,
+                this.actions,
+                'horarios'
+            );
             return (
                 <>
                     <Titulo
@@ -114,20 +120,17 @@ export default class Horarios extends Component {
                             content="¿estás seguro de eliminar este horario?" />
                         
                     </div>
-                    <div>
-                        <CardList
-                            displayList="justify no-padding full-width flex-column nav-list h-center"
-                            elems={
-                                generateWeek(
-                                    null,
-                                    this.state.data,
-                                    this.actions,
-                                    'horarios'
-                                )
-                            } />
-                    </div>
+                    <ul className="justify no-padding full-width flex-column nav-list h-center">
+                        {
+                            week.map(
+                                (elem, index) =>
+                                    <li key={index} className={elem.class}><elem.content /></li>
+                            )
+                        }
+                    </ul>
                 </>
             );
+        }
         return(
             <LoadBar
                 loaded={this.state.loading} />

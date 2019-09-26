@@ -1,39 +1,46 @@
-export const NO_DAY_CONTROL = [
-    {
+export const NO_DAY_CONTROL = {
+    0: {
         title: "Anual",
-        data: "0",
-        class: "box-transparent highlight-hover h-padding small-v-padding bordered transparent-border"
+        data: "0"
     },
-    {
+    1: {
         title: "Mensual",
-        data: "1",
-        class: "box-transparent highlight-hover bordered h-padding small-v-padding transparent-border"
+        data: "1"
     },
-    {
+    2: {
         title: "Semanal",
-        data: "2",
-        class: "blue-background highlight-border h-padding small-v-padding"
+        data: "2"
     }
-];
-export const ALL_CONTROL = [
-    {
+};
+export const ALL_CONTROL = {
+    0: {
         title: "Anual",
-        data: "0",
-        class: "box-transparent highlight-hover h-padding small-v-padding bordered transparent-border"
+        data: "0"
     },
-    {
+    1: {
         title: "Mensual",
-        data: "1",
-        class: "box-transparent highlight-hover bordered h-padding small-v-padding transparent-border"
+        data: "1"
     },
-    {
+    2: {
         title: "Semanal",
-        data: "2",
-        class: "blue-background highlight-border h-padding small-v-padding"
+        data: "2"
     },
-    {
+    3: {
         title: "Diario",
-        data: "3",
-        class: "box-transparent highlight-hover bordered h-padding small-v-padding transparent-border"
+        data: "3"
     }
-];
+};
+export const NO_WEEK_CONTROLS = {
+    0: {
+        title: "Anual",
+        data: "0"
+    },
+    1: {
+        title: "Mensual",
+        data: "1"
+    },
+    3: {
+        title: "Diario",
+        data: "3"
+    }
+};

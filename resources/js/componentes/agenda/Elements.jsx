@@ -14,7 +14,7 @@ import MonthCalendar from './vistas/MonthCalendar';
  * constantes
  */
 import { DAYS, MONTHS, monthRows, monthIndex } from '../../constantes/DaysMonths';
-import getMonthLength from '../../funciones/getMonthLength';
+import {getMonthLength} from '../../utils/Helper';
 
 export const Elements = {
     3 : (parent) => (
@@ -24,7 +24,9 @@ export const Elements = {
             actions = { parent.props.actions }
             horarios = { parent.props.horariosReserva }
             render = { parent.props.dayRender }
-            date = { parent.state.date } />
+            date = { parent.state.date } 
+            verDia = {parent.verDia}
+            fetch= {parent.props.fetchNewMonth}/>
     ),
     2: (parent) => (
         <WeekCalendar
@@ -42,7 +44,8 @@ export const Elements = {
             changeCurrentMonth={parent.changeMonthCalendar}
             date={parent.state.date}
             data={parent.props.data}
-            actions={parent.props.actions} />
+            actions={parent.props.actions}
+            verDia={parent.verDia} />
     ),
     0: (parent) => (
         <YearCalendar

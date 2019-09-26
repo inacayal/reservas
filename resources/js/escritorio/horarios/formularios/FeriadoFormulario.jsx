@@ -16,7 +16,7 @@ import LoadBar from '../../../componentes/control/LoadBar';
  * constants
  */
 import {DAYS,MONTHS} from '../../../constantes/DaysMonths';
-import generateHoursFromInterval from '../../../funciones/generateHoursFromInterval';
+import {generateHoursFromInterval} from '../../../utils/Helper';
 /**
  * api
  */

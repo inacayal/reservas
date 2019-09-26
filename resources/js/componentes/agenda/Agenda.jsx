@@ -12,7 +12,7 @@ import ButtonList from '../basic/ButtonList';
  * constantes
  */
 import {DAYS,MONTHS,monthRows,monthIndex} from '../../constantes/DaysMonths';
-import getMonthLength from '../../funciones/getMonthLength';
+import { evaluateDateChange, getMonthLength} from '../../utils/Helper';
 
 export default class Agenda extends Component {
     constructor(props){
@@ -27,47 +27,29 @@ export default class Agenda extends Component {
         this.changeView = this.changeView.bind(this);
         this.changeYearCalendar = this.changeYearCalendar.bind(this);
         this.handleMonthClick = this.handleMonthClick.bind(this);
+        this.verDia = this.verDia.bind(this);
     }
 
-    changeCurrentMonth(date,offset){
-        let index = monthIndex[this.state.date.getMonth()],
-            isPrev = offset <0,
-            nwDate = new Date(date),
-            change = isPrev 
-                ? {
-                    date: date.getDate() + offset + (6 - date.getDay()),
-                    monthLength: getMonthLength(date.getMonth() + 1, date.getFullYear())
-                }
-                : {
-                    date: date.getDate() + offset - date.getDay(),
-                    monthLength: 1
-                };
-        date.setDate(change.date);
-        if (this.state.date.getMonth() !== date.getMonth()){
-            date.setDate(change.monthLength);
-            monthRows[index[0]][index[1]].class = "";
-            this.props.fetchNewMonth(date);
-        }
+    verDia(e) {
+        e.preventDefault();
+        let day = parseInt(e.currentTarget.getAttribute('data')),
+            date = this.state.date.setDate(day);
+        this.state.controls[this.state.show].class = "box-transparent highlight-hover h-padding small-v-padding bordered transparent-border";
+        this.setState({ show: "3", date: new Date(date)});
     }
 
     changeView(e){
-        let show = e.currentTarget.getAttribute('data');
-        let controls = this.state.controls.map(
-            (e,i) => {
-                e.class = (i == show) ? 
-                    "blue-background highlight-border h-padding small-v-padding" :
-                    "box-transparent highlight-hover h-padding small-v-padding bordered transparent-border";
-                return e;
-            }
-        );
-        this.setState({show:show,controls:controls});
+        let show = e.currentTarget.getAttribute('data'),
+            controls = this.state.controls;
+        controls[this.state.show].class = "box-transparent highlight-hover h-padding small-v-padding bordered transparent-border";
+        this.setState({show,controls});
     }
 
     changeWeekCalendar (e) {
         e.preventDefault();
         let offset = parseInt(e.currentTarget.getAttribute('data'));
         let date = new Date(this.state.date);
-        this.changeCurrentMonth(date,offset);
+        evaluateDateChange(date,offset,this.props.fetchNewMonth,null);
         this.setState({ date: date });
     }
 
@@ -76,7 +58,7 @@ export default class Agenda extends Component {
         let offset = parseInt(e.currentTarget.getAttribute('data'));
         let date = new Date(this.state.date);
         date.setMonth(date.getMonth() + offset);
-        this.changeCurrentMonth(date,offset);
+        evaluateDateChange(date, offset, this.props.fetchNewMonth,null);
         this.setState({date:date});
     }
 
@@ -93,16 +75,8 @@ export default class Agenda extends Component {
         let newMonth = e.currentTarget.getAttribute('data'),
             date = new Date(this.state.date);
         date.setMonth(newMonth-1);
-        this.changeCurrentMonth(date,0);
-        let controls = this.state.controls.map(
-            (e,i)=> {
-                e.class = (i===2) ? 
-                    "blue-background highlight-border h-padding small-v-padding":
-                    "box-transparent highlight-hover bordered h-padding small-v-padding transparent-border";
-                return e;
-            }
-        );
-        this.setState({show:"2",date:date, controls:controls});
+        evaluateDateChange(date, 0, this.props.fetchNewMonth,null);
+        this.setState({show:"2",date:date});
     }
 
     componentDidUpdate(prevProps){
@@ -116,13 +90,15 @@ export default class Agenda extends Component {
     }
 
     render(){
+        this.state.controls[this.state.show].class = "blue-background highlight-border h-padding small-v-padding" ;
         return(
             <div className="container">
                 <div className="row justify-content-end v-padding">
                     <ButtonList
                         clickHandler={this.changeView}
                         displayList="flex-row h-center nav-list no-padding"
-                        elems={this.state.controls} />
+                        elemClass="box-transparent highlight-hover h-padding small-v-padding bordered transparent-border"
+                        elems={Object.values(this.state.controls)} />
                 </div>
                 <div className="row">
                     {Elements[this.state.show](this)}

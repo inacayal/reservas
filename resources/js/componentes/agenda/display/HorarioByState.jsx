@@ -6,14 +6,14 @@ import ReactDOM from 'react-dom';
 /**
  * componentes
  */
-import CardList from '../../../basic/CardList';
+import CardList from '../../basic/CardList';
 import DynamicList from './DynamicList';
 import {Link} from 'react-router-dom';
 /**
  * constantes
  */
-import { DAYS, MONTHS } from '../../../../constantes/DaysMonths';
-import { CLASSBYSTATE } from '../../../../constantes/CardObject';
+import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
+import { CLASSBYSTATE } from '../../../constantes/CardObject';
 
 
 export const HorarioWeekByState = {
@@ -26,12 +26,12 @@ export const HorarioWeekByState = {
     ) =>{
         const eventos = Object.values(sectionData.eventos.data);  
         return {
-            title: {
-                data: (
+            content: () =>
+                <>
                     <div className="full-width box-padding" >
                         <div className="seventy inline-block sub-title">
                             <div className="inline-block side-margin text-top bold">
-                                <Link to ={'/horarios/' + dataIndex} className="text bold subrayado">{DAYS[sectionData.diaSemana - 1]}</Link>
+                                <Link to={'/horarios/' + dataIndex} className="text bold subrayado">{DAYS[sectionData.diaSemana - 1]}</Link>
                             </div>
                             <div className="inline-block side-margin">
                                 {renderActions}
@@ -40,11 +40,7 @@ export const HorarioWeekByState = {
                         <div className="thirty inline-block text-right smaller-text border-bottom">
                             Día laboral
                         </div>
-                    </div >
-                )
-            },  
-            content: {
-                data: (
+                    </div>
                     <div className="container">
                         <div className="row box-padding">
                             <div className="col-md-4" >
@@ -67,21 +63,18 @@ export const HorarioWeekByState = {
                                 </div>
                                 <div className="v-padding ">
                                     {
-                                        eventos.length>0
-                                        ?
-                                            <DynamicList data = {eventos} max={1}/>
-                                        :
+                                        eventos.length > 0
+                                            ?
+                                            <DynamicList data={eventos} max={1} />
+                                            :
                                             "No hay eventos que mostrar."
                                     }
                                 </div>
                             </div>
                         </div>
                     </div>
-                )
-            },
-            container: {
-                class: null
-            }
+                </>,
+            class: null
         };
     },
     no_laboral: (
@@ -92,12 +85,12 @@ export const HorarioWeekByState = {
         dataIndex
     ) => 
         ({
-            title: {
-                data:(
+            content: () => 
+                <>
                     <div className="full-width box-padding">
                         <div className="seventy inline-block sub-title">
                             <div className="bold inline-block side-margin text-top">
-                                {DAYS[sectionData.diaSemana-1]}
+                                {DAYS[sectionData.diaSemana - 1]}
                             </div>
                             <div className="inline-block side-margin">
                                 {renderActions}
@@ -107,10 +100,6 @@ export const HorarioWeekByState = {
                             Día no laboral
                         </div>
                     </div>
-                )
-            },
-            content: {
-                data:(
                     <div className="full-width ">
                         <div className="half box-padding inline-block">
                             <div className="light-danger bold">Sin apertura</div>
@@ -120,11 +109,8 @@ export const HorarioWeekByState = {
                             <span>{" " + sectionData.descripcion}</span>
                         </div>
                     </div>
-                )
-            },
-            container: {
-                class: "box-padding background-border"
-            },
+                </>,
+            class: "box-padding background-border"
         }),
     no_data: (
         data,
@@ -132,12 +118,12 @@ export const HorarioWeekByState = {
         acciones
     ) =>
         ({
-            title: {
-                data:(
+            content: () => 
+                <>
                     <div className="full-width  v-padding">
                         <div className="seventy sub-title inline-block ">
                             <div className="inline-block side-margin bold">
-                                {DAYS[data-1]}
+                                {DAYS[data - 1]}
                             </div>
                             <div className="inline-block side-margin">
                                 {acciones}
@@ -145,12 +131,8 @@ export const HorarioWeekByState = {
                         </div>
                         <div className="thirty text-right inline-block smaller-text border-bottom">
                             Aun no has asignado un horario de reservas
-                        </div>
+                            </div>
                     </div>
-                )
-            },
-            content: {
-                data: (
                     <div className="full-width ">
                         <div className="half box-padding inline-block">
                             <div className="light-danger bold">Sin horario</div>
@@ -159,10 +141,7 @@ export const HorarioWeekByState = {
                             <span className="light-danger bold">Sin descripción</span>
                         </div>
                     </div>
-                )
-            },
-            container: {
-                class: "box-padding"
-            }
+                </>,
+            class: "box-padding"
         })
 };

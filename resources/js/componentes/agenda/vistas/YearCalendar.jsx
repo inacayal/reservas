@@ -11,7 +11,7 @@ import Calendar from 'react-calendar';
  * componentes
  */
 import ButtonList from '../../basic/ButtonList';
-import calendarNavigation from '../navegacion/calendarNavigation';
+import calendarNavigation from '../calendarNavigation';
 import generateYear from '../procedimientos/generateYear';
 /**
  * constantes
