@@ -13,33 +13,6 @@ import {Route} from 'react-router-dom';
 export default class EventosRouting extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            data: {
-                1:{
-                    nombre: "Cumpleaños",
-                    descuento: 50,
-                    promocion: "50% de descuento para el cumpleañero si reservas un fin de semana."
-                },
-                2:{
-                    nombre: "Negocios",
-                    descuento: 50,
-                    promocion: "50% de descuento en bebidas si reservas antes de las 21hs."
-                },
-                3:{
-                    nombre: "Amigos",
-                    descuento: 10,
-                    promocion: "10% de descuento en comidas compartidas si reservas antes de las 18hs."
-                }
-            }
-        };
-    }
-
-    componentDidMount() {
-        console.log('eventosMount');
-    }
-
-    componentWillUnmount() {
-        console.log('eventosUnmount');
     }
     
     render() {
@@ -51,7 +24,6 @@ export default class EventosRouting extends Component {
                     component={
                         (match) =>
                             <Eventos
-                                data={this.state.data}
                                 {...match} />
                     } />
                 <Route
@@ -66,7 +38,6 @@ export default class EventosRouting extends Component {
                     component={
                         (match) =>
                             <AgregarFormulario
-                                data={this.state.data}
                                 {...match} />
                     } />
             </>

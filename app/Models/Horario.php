@@ -34,8 +34,8 @@ class Horario extends Eloquent
 	/**
 	 * DataFormatting trait constants
 	 */
-	private static $dataKey = 'id_dia_semana';
-	private static $valueKey = '';
+	private static $dataKey = 'id';
+	private static $valueKey = 'id_dia_semana';
 	private static $dataResource = '\\App\\Http\\Resources\\HorarioResource';
 	/**
 	 * when called as main query

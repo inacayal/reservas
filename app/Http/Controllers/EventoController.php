@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\EventosResource as Resource;
+use Carbon\Carbon;
 use App\User;
 
 class EventoController extends Controller
 {
     protected $model = '\\App\\Models\\Evento';
     public function __construct () {
-
+        $this->middleware('length');
     }
     /**
      * get all eventos by user
@@ -19,8 +20,12 @@ class EventoController extends Controller
      */
     public function list ($id){
         
+        $today = new \DateTime();
+        $month = (int) $today->format('m');
+        $year = (int) $today->format('Y');
+
         $dependency = $this->model::assignDependencyOptions (
-            [],
+            array('feriados' => [$month,$year]),
             'query'  
         );
         
@@ -29,18 +34,14 @@ class EventoController extends Controller
             )
             ->where('id',$id)
             ->first();
-
         return response( 
-            [
-                'data' => Resource::collection(
-                    $user
-                        ->eventos
-                        ->keyBy('id')
-                )
-            ],
+            Resource::collection(
+                $user->eventos        
+            ),
             200
         )->header('Content-Type','application/json');
     }
+    
     public function create (){
         return response(['respuesta'=>'create'],200)
             ->header('Content-Type','application/json');

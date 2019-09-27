@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 /**
  * componentes
  */
-import ButtonList from '../../../componentes/basic/ButtonList';
+import {CommaList} from '../../../componentes/basic/CommaList';
 /**
  * funciones
  */
@@ -21,34 +21,45 @@ export default function generateEventosCard(
             const acciones = GenerateActions.eventos(
                 e,
                 actions
-            );
+                ),
+                promociones = Object.values(eventos[e].promociones.list);
             return {
-                title: {
-                    data: (
-                        <div className="full-width">
-                            <span className="sub-title text-super side-margin inline-block align-center">{eventos[e].nombre}</span>
-                            {acciones}
-                        </div>
-                    )
-                },
-                content: {
-                    data: (
+                content: () => (
+                    <>
                         <div className="container">
                             <div className="row">
-                                <div className="col-md-9">
-                                    <div>{eventos[e].promocion}</div>
+                                <div className="col-md-8">
+                                    <span className="sub-title text-super side-margin inline-block align-center bold">
+                                        {eventos[e].nombre}
+                                    </span>
+                                    {acciones}
                                 </div>
-                                <div className="col-md-3 big-font text-right no-padding">
-                                    <span className="big-font side-margin light-danger">{eventos[e].descuento}</span>
-                                    <span className="side-margin">%</span>
+                                <div className="col-md-4 border-bottom text-right no-margin no-padding">
+                                    {eventos[e].estado}
+                                </div>
+                            </div>
+                            <div className="row box-padding">
+                                <div className="col-md-6">
+                                    <div className="bold light-danger">Descripción</div>
+                                    <div>{eventos[e].descripcion}</div>
+                                    <div className="bold light-danger top-padding">Promociones</div>
+                                    {
+                                        (promociones.length>0)
+                                        ?
+                                            <CommaList data={promociones} /> 
+                                        :
+                                            <div>No has asignado promociones a este evento</div>
+                                    }
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="bold light-danger">Horarios</div>
+                                    <div className="bold light-danger top-padding">Feriados</div>
                                 </div>
                             </div>
                         </div>
-                    ),
-                },
-                container: {
-                    class: "box-padding border-bottom "
-                }
+                    </>
+                ),
+                class: "box-padding"
             }
         }
     );

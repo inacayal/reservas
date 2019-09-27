@@ -10,7 +10,7 @@ class UbicacionController extends Controller
 {
     protected $model = '\\App\\Models\\Ubicacion';
     public function __construct () {
-
+        $this->middleware('length');
     }
     public function list ($id){
 

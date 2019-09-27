@@ -49,7 +49,6 @@ class Evento extends Eloquent
 	 * when called as a dependency
 	 */
 	private static $dependencyFormatOptions = [
-		'keyData'=>'data',
 		'listData'=>'list'
 	];
 	/**
@@ -57,8 +56,11 @@ class Evento extends Eloquent
 	 */
 	private static $dependencies = [
 		'query' => [
-			'eventos'		=> '\\App\\Models\\Evento',
-			'eventos.estado'=> '\\App\\Models\\Query\\EstadoEvento'
+			'eventos'				=> '\\App\\Models\\Evento',
+			'eventos.estado'		=> '\\App\\Models\\Query\\EstadoEvento',
+			'eventos.horarios'		=> '\\App\\Models\\Horario',
+			'eventos.promociones'	=> '\\App\\Models\\Promocion',
+			'eventos.feriados'		=> '\\App\\Models\\Feriado'
 		]
 	];
 	/**
@@ -128,8 +130,8 @@ class Evento extends Eloquent
 		return $this->belongsToMany(
 			\App\Models\Horario::class,
 			'horario_eventos',
-			'id',
-			'id'
+			'id_evento',
+			'id_horario'
 		);
 	}
 
@@ -138,7 +140,7 @@ class Evento extends Eloquent
 			\App\Models\Feriado::class,
 			'feriado_eventos',
 			'id_evento',
-			'id'
+			'id_feriado'
 		);
 	}
 	/**

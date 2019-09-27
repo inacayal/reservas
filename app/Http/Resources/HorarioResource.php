@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
 use App\Traits\DataFormatting;
+use App\Models\Horario;
 
 class HorarioResource extends JsonResource
 {
@@ -26,6 +27,9 @@ class HorarioResource extends JsonResource
     
     public function toArray($request)
     {
+        $models = [
+            'promociones' => 'App\\Models\\Promocion'
+        ];
         return [
             "id"=>$this->id,
             "diaSemana"=>$this->id_dia_semana,
@@ -52,6 +56,19 @@ class HorarioResource extends JsonResource
             ],
             'eventos' => self::getFormattedData($this->eventos->where('id_estado',1),'dependencyFormatOptions')
         ];
+    }
+    public function formatDependencyData(
+        array $dataModels,
+        Horario $horario
+    ) {
+        $res = [];
+        foreach($dataModels as $relation=>$model){
+            $opt = $this->model===$model ? 'mainFormatOptions' : 'dependencyFormatOptions';
+            if ($model && property_exists($model,$opt)){
+                $res[$relation] = $model::getFormattedData($horario->{$relation},$opt);
+            }
+        }
+        return collect($res);
     }
 }
 

@@ -13,25 +13,6 @@ import {Route} from 'react-router-dom';
 export default class UbicacionesRouting extends Component {
     constructor(props){
         super(props);
-        this.state = {
-            data: {
-                1:{
-                    nombre: "Salón",
-                    descripcion:"Salón principal",
-                    capacidad: 32
-                },
-                2:{
-                    nombre: "Terraza",
-                    descripcion: "techada con jardín",
-                    capacidad: 10
-                },
-                3:{
-                    nombre: "Vereda",
-                    descripcion: "mesas espaciosas al aire libre",
-                    capacidad: 16
-                }
-            }
-        };
     }
 
     componentDidMount() {
@@ -52,7 +33,6 @@ export default class UbicacionesRouting extends Component {
                     component={
                         (match) => 
                             <Ubicaciones  
-                                data={this.state.data}
                                 {...match}/>
                     } />
                 <Route
@@ -67,7 +47,6 @@ export default class UbicacionesRouting extends Component {
                     component={
                         (match) => 
                             <AgregarFormulario 
-                                data={this.state.data} 
                                 {...match}/>
                     } />
             </>

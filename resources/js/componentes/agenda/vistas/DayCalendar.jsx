@@ -83,7 +83,7 @@ function DayCalendar(props) {
                 props.type,
                 props.actions.inner
             ),
-            [side,changeToggleSide] = useState(false),
+            [side,changeToggleSide] = useState(true),
             sideTitles = calendarNavigation(
                 {
                     left: -7,
@@ -91,8 +91,7 @@ function DayCalendar(props) {
                 },
                 'semana'
             );
-        return (
-            <div className="full-width">
+            return (
                 <div className="container">
                     <div className="row v-padding bold">
                         {"Mostrando " + DAYS[props.date.getDay()] + " " + props.date.getDate() + " de " + MONTHS[props.date.getMonth()]}
@@ -108,31 +107,45 @@ function DayCalendar(props) {
                             date={props.date}
                             fetch ={props.fetch}/>
                     </div>
-                    <div className="row v-padding justify-content-end bold">
-                        <Toggle
-                            leftTitle="Ver listado"
-                            rightTitle="Ver tabla"
-                            name="estado"
-                            side={side}
-                            changeSide = {changeToggleSide}/>
-                    </div>
-                </div>
-                <div className="limit-height-half v-padding">
                     {
-                        side 
-                        ? 
-                            <CardList 
-                                displayList="nav-list box-padding"
-                                elems={dayReservationHours}/>
+                        foundLength>0 
+                        ?
+                            <>
+                                <div className="row v-padding justify-content-end bold">
+                                    <div className="col-md-6">
+                                        {foundLength + " reservaciones encontradas"}
+                                    </div>
+                                    <div className="col-md-6 text-right">
+                                        <Toggle
+                                            leftTitle="Ver listado"
+                                            rightTitle="Ver tabla"
+                                            name="estado"
+                                            side={side}
+                                            changeSide={changeToggleSide} />
+                                    </div>
+                                </div>
+                                <div className="row limit-height-half v-padding">
+                                    {
+                                        side
+                                            ?
+                                            <CardList
+                                                displayList="nav-list full-width no-h-padding v-padding"
+                                                elems={dayReservationHours} />
+                                            :
+                                            "tabla"
+                                    }
+                                </div>
+                            </>
                         : 
-                            "tabla"
+                            <div className="row h-center bold box-padding">
+                                No se ha encontrado reservaciones
+                            </div>
                     }
-                </div>
             </div>
-        )
+        );
     }
     return (
-        <div className={props.show ? "full-width" : "hidden"}>
+        <div className={"full-width"}>
             <div className="bold">{"Mostrando "+DAYS[props.date.getDay()]+" "+props.date.getDate()+" de "+ MONTHS[props.date.getMonth()]}</div>
             <div>Aun no has asignado los horarios de trabajo de tu local</div>
         </div>

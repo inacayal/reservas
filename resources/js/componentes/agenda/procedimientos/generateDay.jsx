@@ -59,7 +59,9 @@ export default function generateDay(
     actions
 ){
     let reservationHours = [],
-        dateStr = date.getDate();
+        dateStr = date.getDate(),
+        reservaData = data[dateStr] || {};
+
     return [
         generateHourArray(
             horariosData[date.getDay()+1],
@@ -70,7 +72,11 @@ export default function generateDay(
             caida,
             type
         ),
-        ((data[dateStr] || {}).reservas || []).length 
+        (
+            [
+                ...Object.values(reservaData.reservas||{})
+            ] || []
+        ).length 
     ];
 }
 

@@ -32,4 +32,5 @@ class HorarioEventoResource extends JsonResource
             'promociones' => self::getFormattedData($this->promociones->where('id_estado',1),'dependencyFormatOptions')
         ];
     }
+    
 }

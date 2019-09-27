@@ -7,7 +7,7 @@ function CommaListMemo(props) {
             {
                 props.data.map(
                     (el, ind) =>
-                        <div key={ind} className="subrayado smaller-text side-margin bold highlight-title">
+                        <div key={ind} className="subrayado smaller-text side-margin bold highlight-title inline-block">
                             {el + (ind !== props.data.length - 1 ? "," : ".")}
                         </div>
                 )

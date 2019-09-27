@@ -23,35 +23,33 @@ export default function generateUbicacionesCard(
                 actions
             );
             return {
-                title:{
-                    data:(
-                        <div className="full-width ">
-                            <span className="sub-title text-super side-margin inline-block align-center">{ubicaciones[e].nombre}</span>
-                            {acciones}
-                        </div>
-                    ),
-                    class:""
-                },
-                content:{
-                    data:(
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-md-9">
-                                    <div>{ubicaciones[e].descripcion}</div>
+                content:() => (
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-3">
+                                imagen para mostrar
+                            </div>
+                            <div className="col-md-9 container">
+                                <div className="row">
+                                    <span className="bold sub-title text-super side-margin inline-block align-center">{ubicaciones[e].nombre}</span>
+                                    {acciones}
                                 </div>
-                                <div className="col-md-3 big-font text-right no-padding">
-                                    <div className="big-font">
-                                        <span className="smaller-text side-margin bold">capacidad</span>
-                                        <span className="big-font side-margin light-danger">{ubicaciones[e].capacidad} </span>
+                                <div className="row v-padding">
+                                    <div className="col-md-9">
+                                        <div className="bold light-danger">Descripción</div>
+                                        <div>{ubicaciones[e].descripcion}</div>
+                                        <div className="bold light-danger top-padding">Capacidad máxima</div>
+                                        <div>
+                                            <span className="side-margin bold inline-block">{ubicaciones[e].capacidad}</span>
+                                            <span className="side-margin inline-block">personas</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    ),
-                },
-                container:{
-                    class:"box-padding border-bottom margin-box"
-                }
+                    </div>
+                ),
+                class: "box-padding margin-box"
             }
         }
     );
