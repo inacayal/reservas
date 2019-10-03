@@ -21,9 +21,9 @@ Route::prefix('reservas')->name('reservas.')->group(function (){
         ->where('list','list')    
         ->name('list');
 
-    Route::get('/{agregar}/{id}/{month}/{year}','ReservaController@listDependencyData')
-        ->where('agregar','agregar')
-        ->name('agregar');
+    Route::get('/{add}/{id}/{month}/{year}','ReservaController@add')
+        ->where('add','add')
+        ->name('add');
         
     Route::put('/update/{id}','ReservaController@update')->name('update');
     Route::delete('/delete/{id}','ReservaController@delete')->name('delete');
@@ -31,14 +31,32 @@ Route::prefix('reservas')->name('reservas.')->group(function (){
 });
 
 Route::prefix('eventos')->name('eventos.')->group(function (){
-    Route::get('/{id}','EventoController@list')->name('list');
+    Route::get('{list}/{id}','EventoController@list')
+        ->where('list','list')
+        ->name('list');
+
+    Route::get('{add}/{id}','EventoController@add')
+        ->where('add','add')
+        ->name('add');
+
+    Route::get('{single}/{userId}/{id}','EventoController@single')
+        ->where('single','single')
+        ->name('single');
+
     Route::put('/update/{id}','EventoController@update')->name('update');
     Route::delete('/delete/{id}','EventoController@delete')->name('delete');
     Route::post('/create','EventoController@create')->name('create');
 });
 
 Route::prefix('ubicaciones')->name('ubicaciones.')->group(function (){
-    Route::get('/{id}','UbicacionController@list')->name('list');
+    Route::get('{list}/{id}','UbicacionController@list')
+        ->where('list','list')
+        ->name('list');
+        
+    Route::get('{single}/{userId}/{id}','UbicacionController@single')
+        ->where('single','single')
+        ->name('single');
+        
     Route::put('/update/{id}','UbicacionController@update')->name('update');
     Route::delete('/delete/{id}','UbicacionController@delete')->name('delete');
     Route::post('/create','UbicacionController@create')->name('create');
@@ -49,11 +67,11 @@ Route::prefix('horarios')->name('horarios.')->group(function (){
         ->where('list','list')    
         ->name('list');
 
-    Route::get('{agregar}/{id}/','HorarioController@listDependencyData')
-        ->where('agregar','agregar')
-        ->name('agregar');
+    Route::get('{add}/{id}/','HorarioController@add')
+        ->where('add','add')
+        ->name('add');
 
-    Route::get('{single}/{userId}/{id}','HorarioController@getSingle')
+    Route::get('{single}/{userId}/{id}','HorarioController@single')
         ->where('single','single')
         ->name('single');
 
@@ -67,11 +85,11 @@ Route::prefix('feriados')->name('feriados.')->group(function (){
         ->where('list','list')    
         ->name('list');
 
-    Route::get('{agregar}/{id}/{month}/{year}','FeriadoController@listDependencyData')
-        ->where('agregar','agregar')
-        ->name('agregar');
+    Route::get('{add}/{id}/{month}/{year}','FeriadoController@add')
+        ->where('add','add')
+        ->name('add');
 
-    Route::get('{single}/{userId}/{id}','FeriadoController@getSingle')
+    Route::get('{single}/{userId}/{id}','FeriadoController@single')
         ->where('single','single')
         ->name('single');
 

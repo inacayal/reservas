@@ -7,10 +7,23 @@ import ReactDOM from 'react-dom';
  * componentes
  */
 import {CommaList} from '../../../componentes/basic/CommaList';
+import {DAYS} from '../../../constantes/DaysMonths';
 /**
  * funciones
  */
 import { GenerateActions } from '../../../acciones/GenerateActions';
+
+export const assignHorarios = (hList) => {
+    const keys = Object.keys(hList),
+        res = keys.reduce(
+            (final, curr) => {
+                const el = hList[curr];
+                final[el] = DAYS[curr-1];
+                return final;
+            }, {}
+        );
+    return [res,keys.length];
+}
 
 export default function generateEventosCard(
     eventos,
@@ -22,7 +35,8 @@ export default function generateEventosCard(
                 e,
                 actions
                 ),
-                promociones = Object.values(eventos[e].promociones.list);
+                promociones = Object.values(eventos[e].promociones.list),
+                [horarios,horariosLength] = assignHorarios(eventos[e].horarios.list);
             return {
                 content: () => (
                     <>
@@ -42,18 +56,25 @@ export default function generateEventosCard(
                                 <div className="col-md-6">
                                     <div className="bold light-danger">Descripción</div>
                                     <div>{eventos[e].descripcion}</div>
-                                    <div className="bold light-danger top-padding">Promociones</div>
-                                    {
-                                        (promociones.length>0)
-                                        ?
-                                            <CommaList data={promociones} /> 
-                                        :
-                                            <div>No has asignado promociones a este evento</div>
-                                    }
+                                    
                                 </div>
                                 <div className="col-md-6">
                                     <div className="bold light-danger">Horarios</div>
-                                    <div className="bold light-danger top-padding">Feriados</div>
+                                    {
+                                        (horariosLength > 0)
+                                            ?
+                                            <CommaList data={horarios} />
+                                            :
+                                            <div>No has asignado promociones a este evento</div>
+                                    }
+                                    <div className="bold light-danger top-padding">Promociones</div>
+                                    {
+                                        (promociones.length > 0)
+                                            ?
+                                            <CommaList data={eventos[e].promociones.list} />
+                                            :
+                                            <div>No has asignado horarios a este evento</div>
+                                    }
                                 </div>
                             </div>
                         </div>

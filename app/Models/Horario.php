@@ -9,7 +9,7 @@ namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 use App\Traits\DataFormatting;
-use App\Traits\DependencyFormatting;
+use App\Traits\DependencyOptions;
 use Illuminate\Support\Collection;
 /**
  * Class Horario
@@ -29,35 +29,13 @@ use Illuminate\Support\Collection;
  */
 class Horario extends Eloquent
 {
-	use DataFormatting,
-		DependencyFormatting;
+	use DataFormatting;
 	/**
 	 * DataFormatting trait constants
 	 */
-	private static $dataKey = 'id';
-	private static $valueKey = 'id_dia_semana';
+	private static $dataKey = 'id_dia_semana';
+	private static $valueKey = 'id';
 	private static $dataResource = '\\App\\Http\\Resources\\HorarioResource';
-	/**
-	 * when called as main query
-	 */
-	private static $mainFormatOptions = [
-		'keyData'=>'data'
-	];
-	/**
-	 * when called as a dependency
-	 */
-	private static $dependencyFormatOptions = [
-		'keyData'=>'data'
-	];
-	/**
-	 * hasDependencyFormatting trait constants
-	 */
-	private static $dependencies = [
-		'query' => [
-			'eventos'=>'\\App\\Models\\Evento',
-			'eventos.estado'=>'\\App\\Models\\Query\\EstadoEvento'
-		]
-	];
 	/**
 	 * Eloquent constants and castings
 	 */
@@ -99,6 +77,17 @@ class Horario extends Eloquent
 	}
 	public function getCierreAtencionAttribute ($value){
 		return $this->splitValue($value);
+	}
+	public static function horariosQueryCallback($id){
+		return function ($query) use ($id) {
+			return $query->searchId($id);
+		};
+	}
+	/**
+	 * Model Scopes
+	 */
+	public function scopeSearchId($query,$id){
+		return $query->where('id',$id);
 	}
 	/**
 	 * Model relationship methods

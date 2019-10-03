@@ -31,13 +31,15 @@ export default class EventosRouting extends Component {
                     component={
                         (match) =>
                             <AgregarFormulario
+                                editar={false}
                                 {...match} />
                     } />
                 <Route
-                    path={this.props.match.url + '/editar :id'}
+                    path={this.props.match.url + '/editar/:id'}
                     component={
                         (match) =>
                             <AgregarFormulario
+                                editar = {true}
                                 {...match} />
                     } />
             </>

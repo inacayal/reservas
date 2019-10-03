@@ -38,15 +38,14 @@ const noMemoMultipleSelect = (props) => {
             let excerpt = [];
             excerpt = list.splice(0, index);
             return excerpt.concat(list.splice(1, list.length - 1));
-        };
-
+        },
+        options = Object.keys(props.optionData);
     useEffect(
         () => {
             if (select.show)
                 select.input.current.focus();
         }, [select.show]
     );
-
     return (
         <div 
             className="relative"
@@ -73,7 +72,7 @@ const noMemoMultipleSelect = (props) => {
                                     }}
                                     className="fas fa-times pointer"
                                     style={{ color: "#bfbfbf",paddingRight:"5px" }} />
-                                {props.optionData[e].nombre}
+                                {props.optionData[e]}
                             </li>
                     )
                 }
@@ -148,26 +147,26 @@ const noMemoMultipleSelect = (props) => {
                             : "hidden"
                         }>
                         {
-                            Object.values(props.optionData).map(
+                            options.map(
                                 (e, ind) => {
                                     return (
                                         <li 
                                             key={ind} 
-                                            keyvalue={e.id} 
+                                            keyvalue={e} 
                                             select={select.name} 
                                             onMouseDown={
-                                                (e) => 
+                                                (ev) => 
                                                     selectOption(
                                                         select, 
-                                                        e.currentTarget.getAttribute('keyvalue')
+                                                        ev.currentTarget.getAttribute('keyvalue')
                                                     )
                                             } 
                                             className={
-                                                (select.selected.indexOf(e.id.toString()) !== -1) 
+                                                (select.selected.indexOf(e.toString()) !== -1) 
                                                     ? "option selected" 
                                                     : "option"
                                             }>
-                                            {e.nombre}
+                                            {props.optionData[e]}
                                         </li>
                                     )
                                 }

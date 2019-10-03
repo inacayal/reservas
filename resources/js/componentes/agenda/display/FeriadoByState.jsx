@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
  */
 import CardList from '../../basic/CardList';
 import ButtonList from '../../basic/ButtonList';
-import DynamicList from './DynamicList';
+import {CommaList} from '../../basic/CommaList';
 /**
  * constantes
  */
@@ -73,8 +73,8 @@ export const FeriadoWeekByState = {
         dataIndex
     )=>
         {
-            const eventos = Object.values(sectionData.eventos.data),
-                date = new Date(sectionData.fecha);
+            const date = new Date(sectionData.fecha),
+                eventosLength = Object.values(sectionData.eventos.list).length;
             return {
                 content:() => 
                     <div className="container no-padding">
@@ -115,10 +115,10 @@ export const FeriadoWeekByState = {
                             <div className="col-md-4">
                                 <div className="light-danger bold">Eventos</div>
                                 {
-                                    eventos.length > 0
-                                        ?
-                                        <DynamicList data={eventos} max={1} />
-                                        :
+                                    eventosLength > 0
+                                    ?
+                                        <CommaList data={sectionData.eventos.list}/>
+                                    :
                                         "No hay eventos que mostrar."
                                 }
                             </div>

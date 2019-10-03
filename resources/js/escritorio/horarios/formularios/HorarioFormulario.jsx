@@ -70,16 +70,21 @@ export default class FeriadoFormulario extends Component {
                     const state = this.props.editar
                         ?
                         {
-                            data: response.data,
+                            data: {
+                                horarios:response.data.horarios[0],
+                                eventos:response.data.eventos
+                            },
                             minutes: generateHoursFromInterval(response.data.intervalo.id),
-                            side: response.data.data.estado === 'laboral'
+                            side: response.data.horarios[0].estado === 'laboral'
                         }
                         :
                         {
-                            data: response.data || {},
-                            minutes: generateHoursFromInterval(response.data.intervalo.data.id)
+                            data: {
+                                horarios: null,
+                                eventos: response.data.eventos
+                            },
+                            minutes: generateHoursFromInterval(response.data.intervalo)
                         };
-                    console.log(state);
                     this.setState(state);
                 }
             )
@@ -105,7 +110,7 @@ export default class FeriadoFormulario extends Component {
                     <div className="c-title highlight-title" style={{ paddingBottom: "10px" }}>
                         {
                             this.props.editar 
-                            ? "Editar horario del día " + DAYS[parseInt(this.state.data.data.diaSemana)-1] 
+                            ? "Editar horario del día " + DAYS[parseInt(this.state.data.horarios.diaSemana)-1] 
                             : "Agregar horario al día "+DAYS[parseInt(this.props.match.params.day)-1]
                         }
                     </div>
@@ -115,7 +120,7 @@ export default class FeriadoFormulario extends Component {
                                 <div className="col-lg-6 relative visible">
                                     <div className={this.state.side ? "hidden" : "top-padding full-width overlay"} />
                                     <SelectFields
-                                        data={this.props.editar ? this.state.data : null}
+                                        data={this.state.data.horarios}
                                         minutos={this.state.minutes} />
                                 </div>
                                 <div className="col-lg-6">
@@ -132,12 +137,9 @@ export default class FeriadoFormulario extends Component {
                                             <EventoFields
                                                 side={this.state.side}
                                                 editar={this.props.editar}
+                                                eventos={this.state.data.eventos}
                                                 class={{type:"horario",col:"col-md-12"}}
-                                                data={
-                                                    this.props.editar
-                                                        ? this.state.data
-                                                        : this.state.data.eventos
-                                                } />
+                                                data={this.state.data.horarios} />
                                         </div>
                                     </div>
                                 </div>

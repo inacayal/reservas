@@ -4,12 +4,34 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Http\Resources\FeriadosResource as Resource;
-use App\Http\Resources\EventosResource as EventoResource;
+use App\Traits\hasDependencies;
 use Illuminate\Http\Request;
 
 class FeriadoController extends Controller
 {
+    use hasDependencies;
+
     protected $model = '\\App\\Models\\Feriado';
+
+    protected static $dependencies = [
+        'list' => [
+            'feriados'          =>	'key',
+            'intervalo'         => false,
+            'feriados.eventos'  =>  false
+        ],
+        'add' => [
+            'feriados' => 'list',
+            'eventos'=>	'all',
+            'intervalo' => false
+        ],
+        'single' => [
+            'feriados'           => false,
+            'feriados.eventos'   => false,
+            'intervalo'          => false,
+            'eventos'            => 'list'
+        ]
+    ];
+
     public function __construct (){
         $this->middleware('length');
     }
@@ -19,93 +41,103 @@ class FeriadoController extends Controller
      * @param $id must be an integer in db
      */
     public function list (
-        $list,
+        $route,
         $id,
         $month,
         $year
     ){
-        $dependency = $this->model::assignDependencyOptions (
-            array('feriados' => [$month,$year]),
-            'query'  
+        $dependencies = self::getDependencies($route);
+        $relations = $this->getDependencyScopes(
+            array_keys($dependencies),
+            array(
+                'feriados' => (object) [
+                    'month'=>$month,
+                    'operator'=>'=',
+                    'year'=>$year,
+                    'scope'=>'thisMonth'
+                ]
+            )
         );
 
         $user = User::with(
-                $dependency->data
-            )->find($id);
+            $relations
+        )->find($id);
+        
+        $data = self::formatResults(
+            $user,
+            $dependencies
+        );
+        $extra = [
+            'intervalo' => $user->intervalo->id
+        ];
 
-        return response( 
-            [ 
-                'intervalo' => $user->intervalo,
-                'data' => Resource::collection(
-                    $user
-                        ->feriados
-                        ->keyBy('fecha_feriado')
-                    )
-            ],
-            200
-        )->header('Content-Type','application/json');
+        return response(array_merge($data,$extra),200)->header('Content-Type','application/json');
     }
     /**
      * this function assigns dependencies and it corresponding callbacks
      * @param dependencies is an associative array with Reservas dependencies to be eagerly loaded
      * @param parameters is an associative array with values passed to eager load constructor
      */
-    public function listDependencyData(
+    public function add(
         $route,
         $id,
         $month,
         $year
     ){
-        $dependency = $this->model::assignDependencyOptions (
+        $dependencies = self::getDependencies($route);
+        $relations = $this->getDependencyScopes(
+            array_keys($dependencies),
             array(
-                'feriados'=>[$month,$year]
-            ),
-            'create'  
-        );
-        
-        $user = User::with(
-                $dependency->data
-            )->find($id);
-        
-        return response(
-            $this->formatDependencyData(
-                $dependency->models,
-                $user
-            )->merge([
-                'intervalo' => [
-                    "data" => $user->intervalo
+                'feriados' => (object) [
+                    'month'=>$month,
+                    'operator'=>'=',
+                    'year'=>$year,
+                    'scope'=>'thisMonth'
                 ]
-            ]),
-            200
-        )->header('Content-Type','application/json'); 
+            )
+        );
+
+        $user = User::with(
+            $relations
+        )->find($id);
+        
+        $data = self::formatResults(
+            $user,
+            $dependencies
+        );
+
+        $extra = [
+            'intervalo' => $user->intervalo->id
+        ];
+
+        return response(array_merge($data,$extra),200)->header('Content-Type','application/json'); 
     }
 
-    public function getSingle(
+    public function single(
         $route, 
         $userId,
         $id
     ){ 
+        $dependencies = self::getDependencies($route);
+        $relations = $this->getDependencyScopes(
+            array_keys($dependencies),
+            array('feriados' => (object)['id'=>$id,'scope'=>'searchId'])
+        );
+
         $user = User::with(
-                'feriados',
-                'eventos'
-            )->find($userId);
+            $relations
+        )->find($userId);
         
-        $eventos = EventoResource::collection($user->eventos);
-        return response(
-            [
-                'intervalo' => $user->intervalo_reserva,
-                'data' => new Resource($user->feriados->find($id)),
-                'eventos' => [
-                    'data' => $eventos->keyBy('id'),
-                    'list' => $eventos->mapWithKeys(
-                        function ($item){
-                            return array($item['id'] => $item['nombre']);
-                        }
-                    )
-                ]
-            ],
-            200
-        )->header('Content-Type','application/json');
+        $data = self::formatResults(
+            $user,
+            $dependencies
+        );
+
+        $extra = [
+            'intervalo' => $user->intervalo->id
+        ];
+
+        return response(array_merge($data,$extra),200)->header('Content-Type','application/json'); 
     }
 
     public function formatDependencyData(

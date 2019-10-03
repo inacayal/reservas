@@ -4,42 +4,121 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\EventosResource as Resource;
+use App\Traits\hasDependencies;
 use Carbon\Carbon;
 use App\User;
 
 class EventoController extends Controller
 {
+    use hasDependencies;
+
     protected $model = '\\App\\Models\\Evento';
+    
     public function __construct () {
         $this->middleware('length');
     }
-    /**
-     * get all eventos by user
-     * 
-     * @param $id must be an integer in db
-     */
-    public function list ($id){
-        
-        $today = new \DateTime();
-        $month = (int) $today->format('m');
-        $year = (int) $today->format('Y');
+    
+    protected static $dependencies = [
+        'list' => [
+            'eventos'               => 'key',
+            'eventos.horarios'      => false,
+            'eventos.promociones'   => false
+        ],
+        'add' => [
+            'feriados' => 'list',
+            'promociones'=>	'list',
+            'horarios' => 'list'
+        ],
+        'single' => [
+            'eventos'               => false,
+            'eventos.feriados'      => false,
+            'eventos.horarios'      => false,
+            'eventos.promociones'   => false,
+            'feriados'              => 'list',
+            'horarios'              => 'list',
+            'promociones'              => 'list',
+        ],
+    ];
 
-        $dependency = $this->model::assignDependencyOptions (
-            array('feriados' => [$month,$year]),
-            'query'  
+    public function list (
+        $route,
+        $id
+    ){
+        $dependencies = self::getDependencies($route);
+        $relations = $this->getDependencyScopes(
+            array_keys($dependencies),
+            array()
         );
-        
+
         $user = User::with(
-                $dependency->data    
+            $relations
+        )->find($id);
+        
+        $data = self::formatResults(
+            $user,
+            $dependencies
+        );
+        return response($data,200)->header('Content-Type','application/json');
+    }
+
+    public function add (
+        $route,
+        $id
+    ){
+        $dependencies = self::getDependencies($route);
+        $relations = $this->getDependencyScopes(
+            array_keys($dependencies),
+            array(
+                'feriados' => (object) [
+                    'date' => new \DateTime(),
+                    'operator'=>'>=',
+                    'scope'=>'thisDate'
+                ]
             )
-            ->where('id',$id)
-            ->first();
-        return response( 
-            Resource::collection(
-                $user->eventos        
-            ),
-            200
-        )->header('Content-Type','application/json');
+        );
+
+        $user = User::with(
+            $relations
+        )->find($id);
+        
+        $data = self::formatResults(
+            $user,
+            $dependencies
+        );
+        return response($data,200)->header('Content-Type','application/json');
+    }
+
+    public function single (
+        $route,
+        $userId,
+        $id
+    ){
+        $dependencies = self::getDependencies($route);
+        $feriadoScope = (object) [
+            'date' => new \DateTime(),
+            'operator'=>'>=',
+            'scope'=>'thisDate'
+        ];
+        $relations = $this->getDependencyScopes(
+            array_keys($dependencies),
+            array(
+                'eventos' => (object) [
+                    'id'=>$id,
+                    'scope'=>'searchId'
+                ],
+                'eventos.feriados' => $feriadoScope,
+                'feriados' => $feriadoScope
+            )
+        );
+        $user = User::with(
+            $relations
+        )->find($userId);
+        
+        $data = self::formatResults(
+            $user,
+            $dependencies
+        );
+        return response($data,200)->header('Content-Type','application/json');
     }
     
     public function create (){

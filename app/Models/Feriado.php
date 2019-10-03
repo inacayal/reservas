@@ -10,7 +10,7 @@ namespace App\Models;
 use Reliese\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
 use App\Traits\DataFormatting;
-use App\Traits\DependencyFormatting;
+use App\Traits\DependencyOptions;
 /**
  * Class UsuarioFeriado
  * 
@@ -28,45 +28,14 @@ use App\Traits\DependencyFormatting;
  */
 class Feriado extends Eloquent
 {
-	use DataFormatting,
-		DependencyFormatting;
+	use DataFormatting;
 	/**
 	 * HasDataFormatting trait constants
 	 */
 	private static $dataKey = 'fecha_feriado';
 	private static $valueKey = 'nombre';
 	private static $dataResource = '\\App\\Http\\Resources\\FeriadosResource';
-	/**
-	 * when called as main query
-	 */
-	private static $mainFormatOptions = [
-		'keyData'=>'data',
-		'listData'=>'list'
-	];
-	/**
-	 * when called as a dependency
-	 */
-	private static $dependencyFormatOptions = [
-		'keyData'=>'data'
-	];
-	/**
-	 * hasDependencyFormatting trait constants
-	 */
-	private static $dependencies = [
-		'query' => [
-			'feriados'	=> '\\App\\Models\\Feriado',
-			'intervalo'	=> '\\App\\Models\\Query\\Intervalo',
-			'eventos' 	=> '\\App\\Models\\Evento'
-		],
-		'create'=> [
-			'feriados'				=>	'\\App\\Models\\Feriado',
-			'eventos'  				=>	'\\App\\Models\\Evento',
-			'eventos.promociones'  	=>	false,
-		],
-	];
-	/**
-	 * Eloquent constants and castings
-	 */
+
 	public $timestamps = false;
 	protected $table = 'usuario_feriados';
 	private static $dateParam = 'fecha_feriado';
@@ -96,9 +65,9 @@ class Feriado extends Eloquent
 			'minuto'=>(int)$res[1]
 		];
 	}
-	public static function feriadosQueryCallback($month,$year){
-		return function ($query) use ($month,$year) {
-			return $query->thisMonth($month,$year);
+	public static function feriadosQueryCallback($params){
+		return function ($query) use ($params) {
+			return $query->{$params->scope}($params);
 		};
 	}
 	/**
@@ -135,8 +104,14 @@ class Feriado extends Eloquent
 	/**
 	 * Model Scopes
 	 */
-	public function scopeThisMonth($query,$month,$year){
-		return $query->whereMonth('fecha_feriado',$month)->whereYear('fecha_feriado',$year);
+	public function scopeThisMonth($query,$params){
+		return $query->whereMonth('fecha_feriado',$params->operator,$params->month)->whereYear('fecha_feriado',$params->operator,$params->year);
+	}
+	public function scopeThisDate($query,$params){
+		return $query->whereDate('fecha_feriado',$params->operator,$params->date);
+	}
+	public function scopeSearchId($query,$params){
+		return $query->where('id',$params->id);
 	}
 	/**
 	 * Database Seeding

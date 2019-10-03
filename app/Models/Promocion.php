@@ -9,7 +9,7 @@ namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 use App\Traits\DataFormatting;
-use App\Traits\DependencyFormatting;
+use App\Traits\DependencyOptions;
 
 /**
  * Class DiasSemana
@@ -23,24 +23,13 @@ use App\Traits\DependencyFormatting;
  */
 class Promocion extends Eloquent
 {
-  use DataFormatting,
-    DependencyFormatting;
+  use DataFormatting;
+
   protected $table = 'usuario_promociones';
   private static $dataKey = 'id';
 	private static $valueKey = 'nombre';
   private static $dataResource = '\\App\\Http\\Resources\\PromocionesResource';
-  /**
-	 * when called as main query
-	 */
-  private static $mainFormatOptions = [
-    'keyData'=>'data'
-  ];
-  /**
-	 * when called as a dependency
-	 */
-    private static $dependencyFormatOptions = [
-    'keyData'=>'data'
-	];
+
   protected $primaryKey = 'id';
   public $timestamps = false;
   protected $fillable = [

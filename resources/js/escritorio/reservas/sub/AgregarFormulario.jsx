@@ -57,7 +57,7 @@ export default class AgregarFormulario extends Component{
         });
         
         const request = GET({
-            endpoint: 'reservas/agregar/' + 27 + '/' + parseInt(date.getMonth() + 1) + '/' + date.getFullYear(),
+            endpoint: 'reservas/add/' + 27 + '/' + parseInt(date.getMonth() + 1) + '/' + date.getFullYear(),
             download: this.downloadHandler
         });
         

@@ -61,7 +61,7 @@ export default class FeriadoFormulario extends Component {
             } 
         :
             {
-                endpoint: '/feriados/agregar/27/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
+                endpoint: '/feriados/add/27/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
                 download: this.downloadHandler
             },
         request = GET(conf);
@@ -72,16 +72,22 @@ export default class FeriadoFormulario extends Component {
                     const state = this.props.editar 
                         ? 
                             {
-                                date:new Date(response.data.data.fecha),
-                                data: response.data,
+                                date: new Date(response.data.feriados[0].fecha),
+                                data: {
+                                    feriados: response.data.feriados[0],
+                                    eventos: response.data.eventos
+                                },
                                 minutes: generateHoursFromInterval(response.data.intervalo),
-                                side: response.data.data.estado === 'laboral'
+                                side: response.data.feriados[0].estado === 'laboral'
                             }
                         :
                             {
                                 date: date,
-                                data: response.data || {},
-                                minutes: generateHoursFromInterval(response.data.intervalo.data.id)
+                                data: {
+                                    feriados: response.data.feriados.list,
+                                    eventos: response.data.eventos
+                                },
+                                minutes: generateHoursFromInterval(response.data.intervalo)
                             }; 
                     this.setState(state);
                 }
@@ -146,7 +152,8 @@ export default class FeriadoFormulario extends Component {
                                         <div className="row relative visible">
                                             <div className={this.state.side ? "hidden" : "top-padding full-width overlay"} />
                                             <SelectFields
-                                                data={this.props.editar ? this.state.data : null}
+                                                editar ={this.props.editar}
+                                                data={this.state.data.feriados}
                                                 minutos = {this.state.minutes}/> 
                                         </div>
                                     </div>
@@ -156,12 +163,9 @@ export default class FeriadoFormulario extends Component {
                                 <EventoFields
                                     side={this.state.side}
                                     editar = {this.props.editar}
+                                    eventos={this.state.data.eventos}
                                     class={{ type: "feriado", col: "col-md-4" }}
-                                    data={
-                                        this.props.editar 
-                                            ? this.state.data 
-                                            : this.state.data.eventos
-                                    } />
+                                    data={this.state.data.feriados} />
                             </div>
                         </div>
                     </form>

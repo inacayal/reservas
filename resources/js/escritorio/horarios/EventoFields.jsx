@@ -26,10 +26,9 @@ const SelectData = {
 
 export const EventoFields = (props) => {
     const eventos = SelectData.eventos;
-
     if (props.editar){
-        eventos.selected = Object.keys(props.data.data.eventos.list)||[];
-        eventos.list =  props.data.eventos.list;
+        eventos.selected = Object.keys(props.data.eventos.list)||[];
+        eventos.list =  props.eventos.list;
     } else {
         eventos.selected = [];
         eventos.list = {};
@@ -42,20 +41,20 @@ export const EventoFields = (props) => {
                 <MultipleSelect
                     select={eventos}
                     titulo="selecciona los eventos"
-                    optionData={props.editar ? props.data.eventos.data : props.data.data} />
+                    optionData={props.eventos.list} />
             </div>
             {
                 props.class.type==='feriado'
                 ?
                     <div className={props.class.col} >
-                        <Text rows={3} titulo="Nombre" name="nombre" value={props.data.data.nombre || ""} classes={"border-box input-text margin-box"} />
+                        <Text rows={3} titulo="Nombre" name="nombre" value={props.data.nombre || ""} classes={"border-box input-text margin-box"} />
                     </div>
                 :
                     ""
             }
             
             <div className={props.class.col}>
-                <Text rows={4} titulo="Descripción" name="descripcion" value={props.data.data.descripcion || ""} classes={"border-box input-text margin-box"} />
+                <Text rows={4} titulo="Descripción" name="descripcion" value={props.data.descripcion || ""} classes={"border-box input-text margin-box"} />
             </div>
         </>
     );

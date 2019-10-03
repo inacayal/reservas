@@ -3,50 +3,55 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Traits\DataFormatting;
+use App\Traits\hasDependencies;
 use App\Models\Evento;
 
 class EventosResource extends JsonResource
 {
-    use DataFormatting;
-    private $model = "App\\Models\\Evento";
+    use hasDependencies;
     /**
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
+    private static $dependencies = [
+        'reservas.list' => [
+            'estado' => false
+        ],
+        'reservas.add' => [
+            'promociones' => 'key',
+        ],
+        'horarios.list'=> [],
+        'horarios.add'=> [],
+        'horarios.single'=> [],
+        'feriados.list'=>[],
+        'feriados.add'=>[],
+        'feriados.single'=>[],
+        'eventos.list' => [
+            'horarios'      => 'list',
+            'promociones'   => 'list'
+        ],
+        'eventos.single' => [
+            'feriados'      => 'list',
+            'horarios'      => 'list',
+            'promociones'   => 'list'
+        ]
+    ];
+    public $preserveKeys = true;
     public function toArray($request)
     {
-        $models = [
-            'promociones' => 'App\\Models\\Promocion',
-            'horarios' => 'App\\Models\\Horario',
-            'feriados' => 'App\\Models\\Feriado',
-        ];
-        $data = collect([
+        $data = [
             "id" => $this->id,
             "nombre" => $this->nombre,
             "descripcion" =>$this->descripcion,
             "estado" => $this->estado->descripcion
-        ]);
-        $dependencyData = $this->formatDependencyData(
-            $models,
-            $this->resource
+        ];
+        $dependencies = self::getDependencies($request->route()->action['as']);
+        $dependencyData = self::formatResults(
+            $this->resource,
+            $dependencies
         );
-        return $data->merge($dependencyData);
-    }
-
-    public function formatDependencyData(
-        array $dataModels,
-        Evento $evento
-    ) {
-        $res = [];
-        foreach($dataModels as $relation=>$model){
-            $opt = $this->model===$model ? 'mainFormatOptions' : 'dependencyFormatOptions';
-            if ($model && property_exists($model,$opt)){
-                $res[$relation] = $model::getFormattedData($evento->{$relation},$opt);
-            }
-        }
-        return collect($res);
+        return array_merge($data,$dependencyData);
     }
 }

@@ -22,7 +22,7 @@ function CalendarioMemo(props) {
                 disableByDate = today.getDate() < date.getDate() || today.getDate() > date.getDate();
             else 
                 disableByDate = view === 'month'
-                    ? props.data.feriados.data[date.getDate()]
+                    ? props.data.feriados[date.getDate()]
                     : date.getMonth() < activeStartDate.getMonth() || date.getFullYear() < activeStartDate.getFullYear();
             
             return disableByDate;

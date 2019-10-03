@@ -35,7 +35,7 @@ function EventoFrame(
             const 
                 date = minDate.getMonth() === showDate.getMonth() && minDate.getFullYear() === showDate.getFullYear()
                     ? calculateOffset(
-                        props.data.antelacion.data,
+                        props.data.antelacion,
                         minDate,
                         currentData,
                         changeMin
@@ -51,9 +51,9 @@ function EventoFrame(
 
                 changeHorario (
                     generateAcceptedHours({
-                        a: props.data.antelacion.data,
+                        a: props.data.antelacion,
                         g: generateData,
-                        i: props.data.intervalo.data.id,
+                        i: props.data.intervalo.id,
                         f: date,
                         m: minDate
                     })

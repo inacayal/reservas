@@ -8,100 +8,102 @@ import ButtonList from '../../../componentes/basic/ButtonList';
 /**
  * handlers and elements
  */
-import { Numeric,onNumberChange } from '../../../componentes/input/Numeric';
-import { Text,onTextChange } from '../../../componentes/input/Text';
+import LoadBar from '../../../utils/LoadBar';
+/**
+ * api
+ */
+import { GET } from '../../../utils/api';
+import { FormFields } from '../FormFields';
+import { assignHorarios } from './generateEventosCard';
 export default class AgregarFormulario extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            text:{
-                descuento:0,
-                promocion: "", 
-                nombreEvento:""
-            }
+            open: false,
+            data: null,
+            loadFinished: false
         }
-        this.onNumberChange = onNumberChange.bind(this);
-        this.onTextChange = onTextChange.bind(this);
-        this.editarEvento = this.editarEvento.bind(this);
-        this.agregarEvento = this.agregarEvento.bind(this);
+        this.fetchData = this.fetchData.bind(this);
+        this.downloadHandler = this.downloadHandler.bind(this);        
     }
 
-    editarEvento(id) {
-        let evento = this.props.data[id],
-            input = this.state.text;
-
-        input.promocion = evento.promocion;
-        input.descuento = parseInt(evento.descuento);
-        input.nombreEvento = evento.nombre;
-
-        this.setState({input});
+    downloadHandler(pEvent) {
+        let
+            loading = Math.round((pEvent.loaded * 100) / pEvent.total),
+            state = loading !== 100 ?
+                { loading, loadFinished: false }
+                : { loading, loadFinished: true };
+        this.setState(state);
     }
 
-    agregarEvento() {
-        let input = this.state.text;
-        
-        input.promocion ="";
-        input.descuento = 0;
-        input.nombreEvento ="";
+    fetchData() {
+        this.setState({
+            data: null,
+            isLoading: true,
+            loadFinished: false
+        });
+        const conf = this.props.editar 
+        ? 
+            {
+                endpoint: 'eventos/single/27/' + this.props.match.params.id,
+                download: this.downloadHandler
+            } 
+        :
+            {
+                endpoint: 'eventos/add/27',
+                download: this.downloadHandler
+            };
+        const request = GET(conf);
 
-        this.setState({ input });
+        request
+            .then(
+                response => {
+                    let data = {};
+                    if (this.props.editar) {
+                        data = {
+                            selected: response.data.eventos[0],
+                            all: {
+                                feriados: response.data.feriados,
+                                horarios: response.data.horarios,
+                                promociones: response.data.promociones
+                            }
+                        };
+                        data.selected.horarios.list = assignHorarios(data.selected.horarios.list)[0];
+                        data.all.horarios.list = assignHorarios(data.all.horarios.list)[0];
+                    } else {
+                        data = response.data;
+                        data.horarios.list = assignHorarios(data.horarios.list)[0];
+                    }
+                    this.setState({
+                        data: {...data}
+                    });
+                }
+            )
+            .catch(
+                error => {
+                    console.log(error.message)
+                }
+            );
     }
 
-    componentDidUpdate(prevProps,prevState) {
-        if (this.props.show) {
-            if (this.props.editar && (this.props.editar !== prevProps.editar))
-                return this.editarEvento(this.props.editar);
-            if (this.props.agregar !== prevProps.agregar)
-                return this.agregarEvento();
-        }
+    componentDidMount() {
+        this.fetchData();
     }
-
+    
     render() {
+        if (this.state.data && this.state.loadFinished){
+            return (
+                <form className="full-width box-padding">
+                    <div className="row c-title highlight-title">
+                        {this.props.editar ? "Editando evento "+this.state.data.selected.nombre : "Agregar Evento"  }
+                    </div>
+                    <FormFields editar ={this.props.editar} {...this.state.data}/> 
+                </form>
+            );
+        }
         return (
-            <form className="full-width box-padding">
-                <div className="container">
-                    <div className="row sub-title border-bottom">
-                        {this.props.title}
-                    </div>
-                    <div className="row box-padding">
-                        <div className="col-md-6">
-                            <div className="container">
-                                <div className="row">
-                                    <Text
-                                        container="full-width"
-                                        changeValue={this.onTextChange}
-                                        titulo="Nombre de evento"
-                                        name="nombreEvento"
-                                        rows={1}
-                                        value={this.state.text.nombreEvento}
-                                        classes="border-box input-text margin-box full-width" />
-                                </div>
-                                <div className="row">
-                                    <Numeric
-                                        container="full-width"
-                                        changeValue={this.onNumberChange}
-                                        titulo="Descuento"
-                                        name="descuento"
-                                        value={this.state.text.descuento}
-                                        classes="border-box input-text margin-box full-width" />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <Text
-                                container="full-width"
-                                changeValue={this.onTextChange}
-                                titulo="Promoción del evento"
-                                name="promocion"
-                                rows={4}
-                                value={this.state.text.promocion}
-                                classes="border-box input-text margin-box full-width" />
-                        </div>
-                    </div>
-                    <div className="row justify-content-end">
-                    </div>
-                </div>
-            </form>
+            <LoadBar
+                loaded={this.state.loading} />
         );
     }
 }

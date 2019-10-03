@@ -10,7 +10,6 @@ namespace App;
 use Reliese\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
 use App\Traits\DataFormatting;
-use App\Traits\DependencyFormatting;
 /**
  * Class User
  * 
@@ -49,24 +48,12 @@ use App\Traits\DependencyFormatting;
  */
 class User extends Eloquent
 {
-	use DataFormatting,
-		DependencyFormatting;
+	use DataFormatting;
 	/**
 	 * hasDataFormatting trait constants
 	 */
 	private static $dataKey = '';
 	private static $valueKey = '';
-	private static $formatOptions = [];
-	/**
-	 * hasDependencyFormatting trait constants
-	 */
-	private static $dependencies = [
-		'query' => [
-			'provincia'=>'\\App\\Models\\Query\\Provincia',
-			'intervalo'=>'\\App\\Models\\Query\\Intervalo',
-			'franquicia'=>'\\App\\User'
-		] 
-	];
 	/**
 	 * Eloquent constants and castings
 	 */

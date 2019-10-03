@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
  * componentes
  */
 import CardList from '../../basic/CardList';
-import DynamicList from './DynamicList';
+import {CommaList} from '../../basic/CommaList';
 import {Link} from 'react-router-dom';
 /**
  * constantes
@@ -24,7 +24,9 @@ export const HorarioWeekByState = {
         originalActions,
         dataIndex
     ) =>{
-        const eventos = Object.values(sectionData.eventos.data);  
+        const eventos = sectionData.eventos.list,
+            eventoLength = Object.keys(eventos).length;  
+
         return {
             content: () =>
                 <>
@@ -43,7 +45,7 @@ export const HorarioWeekByState = {
                     </div>
                     <div className="container">
                         <div className="row box-padding">
-                            <div className="col-md-4" >
+                            <div className="col-md-5" >
                                 <div className="light-danger bold">Horarios:</div>
                                 <div style={{ padding: "0px 0px 0px 10px" }}>
                                     <div className="bold">Reservas:</div>
@@ -52,21 +54,21 @@ export const HorarioWeekByState = {
                                     <div>{sectionData.apertura.atencion.hora + ":" + sectionData.apertura.atencion.minuto + "hs. - " + sectionData.cierre.atencion.hora + ":" + sectionData.cierre.atencion.minuto + "hs."}</div>
                                 </div>
                             </div>
-                            <div className="col-md-8">
+                            <div className="col-md-7">
                                 <div className="full-width">
                                     <div className="light-danger inline-block half bold">
                                         Eventos
                                     </div>
                                     <div className="smaller-text inline-block half text-right">
-                                        {eventos.length + " encontrados"}
+                                        {eventoLength + " encontrados"}
                                     </div>
                                 </div>
                                 <div className="v-padding ">
                                     {
-                                        eventos.length > 0
-                                            ?
-                                            <DynamicList data={eventos} max={1} />
-                                            :
+                                        eventoLength > 0
+                                        ?
+                                            <CommaList data={eventos} /> 
+                                        :
                                             "No hay eventos que mostrar."
                                     }
                                 </div>

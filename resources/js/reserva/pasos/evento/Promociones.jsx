@@ -54,7 +54,7 @@ export default function Promociones (props) {
                     ?
                         dataArray.map(
                             (e,i) => {
-                                const eventoArray = Object.values(showData[e].eventos);
+                                const eventoArray = showData[e].eventos;
                                 return (
                                     <li key={i} 
                                         className="v-padding" 

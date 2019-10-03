@@ -3,29 +3,55 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\HorarioResource as Resource;
-use App\Http\Resources\EventosResource as EventoResource;
+use App\Traits\hasDependencies;
 use Illuminate\Http\Request;
 use App\User;
 
 class HorarioController extends Controller
 {
+    use hasDependencies;
+
     protected $model = '\\App\\Models\\Horario';
+    
+    protected static $dependencies = [
+        'list' => [
+            'horarios'          =>	'key',
+            'estado'            =>  false,
+            'horarios.eventos'  =>  false
+        ],
+        'add' => [
+            'eventos'           =>  'all',
+            'intervalo'         =>  false
+        ],
+        'single' => [
+            'horarios'           => false,
+            'horarios.eventos'   => false,
+            'eventos'            => 'list'
+        ]
+    ];
+
     public function __construct () {
         $this->middleware('length');
     }
 
-    public function list ($route,$id){
-        $user = User::with('horarios')
-            ->find($id);
-
-        return response( 
-            Resource::collection(
-                $user
-                    ->horarios
-                    ->keyBy('id_dia_semana')
-            ),
-            200
-        )->header('Content-Type','application/json');
+    public function list (
+        $route,
+        $id
+    ){
+        $dependencies = self::getDependencies($route);
+        $relations = $this->getDependencyScopes(
+            array_keys($dependencies),
+            array()
+        );
+        $user = User::with(
+            $relations
+        )->find($id);
+        
+        $data = self::formatResults(
+            $user,
+            $dependencies
+        );
+        return response($data,200)->header('Content-Type','application/json');
     }
 
     /**
@@ -33,47 +59,56 @@ class HorarioController extends Controller
      * @param dependencies is an associative array with Reservas dependencies to be eagerly loaded
      * @param parameters is an associative array with values passed to eager load constructor
      */
-    public function listDependencyData(
+    public function add(
         $route,
         $id
     ){
-        $dependency = $this->model::assignDependencyOptions(array('eventos'),'query');
-        $user = User::with($dependency->data)->find($id);
-        return response(
-            $this->formatDependencyData(
-                $dependency->models,
-                $user
-            )->merge([
-                'intervalo' => [
-                    "data" => $user->intervalo
-                ]
-            ]),
-            200
-        )->header('Content-Type','application/json'); 
+        $dependencies = self::getDependencies($route);
+        $relations = $this->getDependencyScopes(
+            array_keys($dependencies),
+            array()
+        );
+        $user = User::with(
+            $relations
+        )->find($id);
+        
+        $data = self::formatResults(
+            $user,
+            $dependencies
+        );
+
+        $extra = [
+            'intervalo' => $user->intervalo->id
+        ];
+
+        return response(array_merge($data,$extra),200)->header('Content-Type','application/json'); 
     }
 
-    public function getSingle(
+    public function single(
         $route, 
         $userId,
         $id
     ){ 
         $user = User::with('eventos')->find($userId);
-        $eventos = EventoResource::collection($user->eventos);
-        return response(
-            [
-                'intervalo' => $user->intervalo,
-                'data' => new Resource($user->horarios->find($id)),
-                'eventos' => [
-                    'data' => $eventos->keyBy('id'),
-                    'list' => $eventos->mapWithKeys(
-                        function ($item){
-                            return array($item['id'] => $item['nombre']);
-                        }
-                    )
-                ]
-            ],
-            200
-        )->header('Content-Type','application/json');
+        $dependencies = self::getDependencies($route);
+        $relations = $this->getDependencyScopes(
+            array_keys($dependencies),
+            array('horarios' => $id)
+        );
+        
+        $user = User::with(
+            $relations
+        )->find($userId);
+
+        $data = self::formatResults(
+            $user,
+            $dependencies
+        );
+        
+        $extra = [
+            'intervalo' => $user->intervalo->id
+        ];
+        return response(array_merge($data,$extra),200)->header('Content-Type','application/json');
     }
 
     public function formatDependencyData(

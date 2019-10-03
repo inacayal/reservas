@@ -2,15 +2,27 @@
 
 namespace App\Traits;
 use Illuminate\Support\Collection;
+use App\User;
 /**
  * managing data and dependency data format
  */
 trait DataFormatting
 {
-    
-	public static function getFormatOptions($format) {
-		return self::$$format;
-	}
+    public static $formatOptions = [
+        'group' => [
+            'groupData'=>'data'
+        ],
+		'list' => [
+			'listData'=>'list'
+		],
+		'key' => [
+			'keyData'=>'data'
+		],
+		'all' => [
+			'listData'=>'list',
+			'keyData'=>'data'
+        ]
+    ];
 
 	public static function getModelKeys(){
 		return (object) [
@@ -60,29 +72,37 @@ trait DataFormatting
 	}
 
 	public static function getFormattedData(
-		Collection $data,
-		string $opt
+		$data,
+		array $formatOptions
 	){
 		$formattedData = collect([]);
-		$formatOptions = self::getFormatOptions($opt);
 		$modelKeys = self::getModelKeys();
 		$class = self::class;
-		if (count($formatOptions)>0){
+		if (count($formatOptions)>0) {
 			foreach($formatOptions as $optKey=>$option){
-				if (property_exists($class,'dataResource')){
-					$data = call_user_func_array(
-						self::getResource().'::collection',
-						[$data]
-					);
-					$data = $data->collection;
-				}
-				$formattedData[$option] = call_user_func_array(
+				$auxData = call_user_func_array(
 					$class.'::'.$optKey,
 					[$data,$class,$modelKeys]
 				);
+				if (property_exists($class,'dataResource') && $option!=='list'){
+					$auxData = self::applyResource($auxData, self::getResource());
+					$auxData = $auxData->collection;
+				}
+				$formattedData[$option] = $auxData;
 			}
-			return $formattedData;
+		} elseif(property_exists($class,'dataResource')) 
+			$formattedData = self::applyResource($data, self::getResource());
+		return $formattedData;
+	}
+	
+	public static function applyResource ( $data, $resource ) {
+		if ($data instanceof Collection ) 
+			return call_user_func_array(
+				$resource.'::collection',
+				[$data]
+			);
+		else {
+			return (new $resource($data))->toArray(request());
 		}
-		return $data;
 	}
 }

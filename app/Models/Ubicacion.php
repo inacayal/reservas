@@ -10,7 +10,7 @@ namespace App\Models;
 use Reliese\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
 use App\Traits\DataFormatting;
-use App\Traits\DependencyFormatting;
+use App\Traits\DependencyOptions;
 
 /**
  * Class Ubicacione
@@ -30,37 +30,13 @@ use App\Traits\DependencyFormatting;
  */
 class Ubicacion extends Eloquent
 {
-	use DataFormatting,
-		DependencyFormatting;
+	use DataFormatting;
 	/**
 	 * hasDataFormatting trait constants
 	 */
 	private static $dataKey = 'id';
 	private static $valueKey = 'nombre';
 	private static $dataResource = '\\App\\Http\\Resources\\UbicacionesResource';
-	/**
-	 * when called as main query
-	 */
-	private static $mainFormatOptions = [
-		'keyData'=>'data',
-		'listData'=>'list'
-	];
-	/**
-	 * when called as a dependency
-	 */
-	private static $dependencyFormatOptions = [
-		'keyData'=>'data',
-		'listData'=>'list'
-	];
-	/**
-	 * hasDependencyFormatting trait constants
-	 */
-	private static $dependencies = [
-		'query' => [
-			'ubicaciones'=>'\\App\\Models\\Ubicacion',
-			'ubicaciones.estado'=>'\\App\\Models\\Query\\EstadoUbicacion'
-		]
-	];
 	/**
 	 * Eloquent constants and castings
 	 */
@@ -82,10 +58,16 @@ class Ubicacion extends Eloquent
 	/**
 	 * Helper methods
 	 */
-	public static function ubicacionesQueryCallback () {
-		return function ($query) {
-			return $query->active();
+	public static function ubicacionesQueryCallback ($params) {
+		return function ($query) use ($params) {
+			return $query->{$params->scope}($params);
 		};
+	}
+	/**
+	 * Model Scopes
+	 */
+	public function scopeSearchId($query,$params){
+		return $query->where('id',$params->id);
 	}
 	/**
 	 * Getter methods

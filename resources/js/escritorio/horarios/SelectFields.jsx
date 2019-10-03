@@ -96,15 +96,15 @@ export const SelectFields = (props) => {
     cAM.list = props.minutos;
     cRM.list = props.minutos;
 
-    if (props.data){
-        aAH.selected = props.data.data.apertura.atencion.hora;
-        aAM.selected = props.data.data.apertura.atencion.minuto;
-        cAH.selected = props.data.data.cierre.atencion.hora;
-        cAM.selected = props.data.data.cierre.atencion.minuto;
-        aRH.selected = props.data.data.apertura.reserva.hora;
-        aRM.selected = props.data.data.apertura.reserva.minuto;
-        cRH.selected = props.data.data.cierre.reserva.hora;
-        cRM.selected = props.data.data.cierre.reserva.minuto;
+    if (props.editar){
+        aAH.selected = props.data.apertura.atencion.hora;
+        aAM.selected = props.data.apertura.atencion.minuto;
+        cAH.selected = props.data.cierre.atencion.hora;
+        cAM.selected = props.data.cierre.atencion.minuto;
+        aRH.selected = props.data.apertura.reserva.hora;
+        aRM.selected = props.data.apertura.reserva.minuto;
+        cRH.selected = props.data.cierre.reserva.hora;
+        cRM.selected = props.data.cierre.reserva.minuto;
     } else {
         aAH.selected = null;
         aAM.selected = null;

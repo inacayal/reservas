@@ -76,14 +76,14 @@ export default class UbicacionesRouting extends Component {
         });
 
         const request = GET({
-            endpoint: 'ubicaciones/27',
+            endpoint: 'ubicaciones/list/27',
             download: this.downloadHandler
         });
 
         request
             .then(
                 response => {
-                    this.setState({ data: response.data });
+                    this.setState({ data: response.data.ubicaciones.data });
                 }
             )
             .catch(

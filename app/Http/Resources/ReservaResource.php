@@ -3,9 +3,13 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Suppport\Collection;
+use App\Traits\hasDependencies;
 
 class ReservaResource extends JsonResource
 {
+    use hasDependencies;
+
     /**
      * Transform the resource into an array.
      *
@@ -13,29 +17,37 @@ class ReservaResource extends JsonResource
      * @return array
      */
     public $preserveKeys = true;
+
+    private static $dependencies = [
+        'reservas.list' => [
+            'ubicacion' => false,
+            'evento'    => false,
+            'promocion' => false
+        ]
+    ];
+
     public function toArray($request)
     {
         $res = collect([]);
         foreach ($this->resource as $el){
-            $res->push(
-                [   
-                    "id"=> $el->id,
-                    "email"=> $el->email,
-                    "nombre"=> $el->nombre,
-                    "apellido"=> $el->apellido,
-                    "telefono"=> $el->telefono,
-                    "ubicacion"=> $el->ubicacion->nombre,
-                    "personas"=> $el->cantidad_personas,
-                    "evento"=> $el->evento->nombre_evento,
-                    "descripcion"=> $el->descripcion_evento ,
-                    "estado"=> $el->estado->descripcion,
-                    "hora_reserva"=>$el->hora_reserva
-                ]
+            $data = [   
+                "id"=> $el->id,
+                "email"=> $el->email,
+                "nombre"=> $el->nombre,
+                "apellido"=> $el->apellido,
+                "telefono"=> $el->telefono,
+                "personas"=> $el->cantidad_personas,
+                "descripcion"=> $el->descripcion_evento,
+                "hora_reserva"=>$el->hora_reserva,
+                "estado" => $el->estado->descripcion
+            ];
+            $dependencies = self::getDependencies($request->route()->action['as']);
+            $dependencyData = self::formatResults(
+                $el,
+                $dependencies
             );
+            $res->push(array_merge($data,$dependencyData));
         }
-        return [
-            'reservas' => $res->groupBy('hora_reserva'),
-            'show' => false
-        ];
+        return $res->groupBy('hora_reserva');
     }
 }

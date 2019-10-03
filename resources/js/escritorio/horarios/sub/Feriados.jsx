@@ -29,7 +29,7 @@ export default class Feriados extends Component {
         this.state= {
             data: null,
             show:"2",
-            date:new Date(),
+            date:new Date('09-30-2019'),
             controls : NO_DAY_CONTROL
         };
         
@@ -82,7 +82,11 @@ export default class Feriados extends Component {
         request
             .then(
                 response => {
-                    this.setState({ date:date, data: response.data.data||{}, intervalo:response.data.intervalo.id });
+                    this.setState({ 
+                        date:date, 
+                        data: response.data.feriados.data||{},
+                        intervalo:response.data.intervalo
+                    });
                 }
             )
             .catch(

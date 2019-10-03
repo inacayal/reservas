@@ -69,14 +69,14 @@ export default class EventosRouting extends Component {
         });
 
         const request = GET({
-            endpoint: 'eventos/27',
+            endpoint: 'eventos/list/27',
             download: this.downloadHandler
         });
 
         request
             .then(
                 response => {
-                    this.setState({ data: response.data });
+                    this.setState({ data: response.data.eventos.data });
                 }
             )
             .catch(
@@ -104,7 +104,7 @@ export default class EventosRouting extends Component {
     render() {
         if (this.state.data && this.state.loadFinished) {
             const eventos = generateEventosCard(
-                this.state.data.data,
+                this.state.data,
                 this.actions
             );
             return (

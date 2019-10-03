@@ -3,33 +3,36 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Traits\DataFormatting;
+use App\Traits\hasDependencies;
 class PromocionesResource extends JsonResource
 {
-    use DataFormatting;
+    use hasDependencies;
     /**
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    private static $dataKey = 'id';
-    private static $valueKey = 'nombre';
-    private static $dataResource = 'App\\Http\\Resources\\HorarioEventoResource';
-    private static $dependencyFormatOptions = [
-        'listData'=>'list',
-        //'keyData' => 'data'
+    private static $dependencies = [
+        'reservas.list' => [],
+        'reservas.add' => [
+            'eventos' => 'list',
+        ]
     ];
     public $preserveKeys = true;
     public function toArray($request)
     {
-        $eventos = $this->eventos->where('id_usuario',$this->id_usuario);
-        return [
+        $data = [
             'id'=>$this->id,
             'nombre'=>$this->nombre,
             'descripcion'=>$this->descripcion,
-            'descuento' => $this->descuento,
-            'eventos' => self::getFormattedData($eventos,'dependencyFormatOptions')
+            'descuento' => $this->descuento
         ];
+        $dependencies = self::getDependencies($request->route()->action['as']);
+        $dependencyData = self::formatResults(
+            $this->resource,
+            $dependencies
+        );
+        return array_merge($data,$dependencyData);
     }
 }

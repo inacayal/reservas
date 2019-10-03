@@ -75,7 +75,7 @@ export default class Horarios extends Component {
         request
             .then(
                 response => {
-                    this.setState({ data: response.data });
+                    this.setState({ data: response.data.horarios.data });
                 }
             )
             .catch(

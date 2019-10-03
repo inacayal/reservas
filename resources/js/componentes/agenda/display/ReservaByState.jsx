@@ -139,9 +139,9 @@ export const ReservaWeekByState = {
         dataIndex
     ) => {
         const reservations = generateCardListForReservationObject(
-                sectionData.reservas,
-                originalActions.inner
-            );
+            sectionData,
+            originalActions.inner
+        );
         return {
             content:() => (
                 <>

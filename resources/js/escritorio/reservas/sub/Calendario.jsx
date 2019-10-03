@@ -86,8 +86,12 @@ export default class Calendario extends Component {
             .then(
                 response => {
                     this.setState({ 
-                        data: response.data.reservas,
-                        horarios: response.data.horarios,
+                        data: response.data.reservas.data,
+                        horarios: {
+                            data:response.data.horarios.data,
+                            intervalo:response.data.intervalo.id,
+                            antelacion: response.data.antelacion
+                        },
                         date: date
                     });
                 }
@@ -117,7 +121,7 @@ export default class Calendario extends Component {
     }
 
     render(){
-        if (this.state.data&& this.state.loadFinished)
+        if (this.state.data&& this.state.loadFinished){
             return (
                 <>
                     <Titulo
@@ -138,6 +142,7 @@ export default class Calendario extends Component {
                     </div>
                 </>
             );
+        }
         return (
             <LoadBar
                 loaded = {this.state.loading}/>

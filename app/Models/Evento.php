@@ -10,7 +10,7 @@ namespace App\Models;
 use Reliese\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
 use App\Traits\DataFormatting;
-use App\Traits\DependencyFormatting;
+use App\Traits\DependencyOptions;
 
 /**
  * Class UsuarioEvento
@@ -31,38 +31,13 @@ use App\Traits\DependencyFormatting;
  */
 class Evento extends Eloquent
 {
-	use DataFormatting,
-		DependencyFormatting;
+	use DataFormatting;
 	/**
 	 * hasDataFormatting trait constants
 	 */
 	private static $dataKey = 'id';
 	private static $valueKey = 'nombre';
 	private static $dataResource = '\\App\\Http\\Resources\\EventosResource';
-	/**
-	 * when called as main query
-	 */
-	private static $mainFormatOptions = [
-		'keyData'=>'data'
-	];
-	/**
-	 * when called as a dependency
-	 */
-	private static $dependencyFormatOptions = [
-		'listData'=>'list'
-	];
-	/**
-	 * hasDependencyFormatting trait constants
-	 */
-	private static $dependencies = [
-		'query' => [
-			'eventos'				=> '\\App\\Models\\Evento',
-			'eventos.estado'		=> '\\App\\Models\\Query\\EstadoEvento',
-			'eventos.horarios'		=> '\\App\\Models\\Horario',
-			'eventos.promociones'	=> '\\App\\Models\\Promocion',
-			'eventos.feriados'		=> '\\App\\Models\\Feriado'
-		]
-	];
 	/**
 	 * Eloquent constants and castings
 	 */
@@ -82,9 +57,9 @@ class Evento extends Eloquent
 	/**
 	 * Helper methods
 	 */
-	public static function eventosQueryCallback () {
-		return function ($query) {
-			return $query->active();
+	public static function eventosQueryCallback ($params) {
+		return function ($query) use ($params){
+			return $query->{$params->scope}($params);
 		};
 	}
 	/**
@@ -148,6 +123,9 @@ class Evento extends Eloquent
 	 */
 	public function scopeActive($query){
 		return $query->where('id_estado',1);
+	}
+	public function scopeSearchId($query,$params){
+		return $query->where('id',$params->id);
 	}
 	/**
 	 * Seeding database

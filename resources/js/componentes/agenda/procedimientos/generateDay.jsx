@@ -34,7 +34,6 @@ export function generateHourArray(
             ? hrPtr + '0' + mnPtr
             : hrPtr + '' + mnPtr,
             data = dataObject[find];
-
         hourArray.push(
             AssignDayByStatus(
                 data,
@@ -61,12 +60,11 @@ export default function generateDay(
     let reservationHours = [],
         dateStr = date.getDate(),
         reservaData = data[dateStr] || {};
-
     return [
         generateHourArray(
             horariosData[date.getDay()+1],
             parseInt(intervalo),
-            ((data[dateStr]||{}).reservas||{}),
+            data[dateStr]||{},
             type,
             actions,
             caida,
@@ -74,7 +72,7 @@ export default function generateDay(
         ),
         (
             [
-                ...Object.values(reservaData.reservas||{})
+                ...Object.values(reservaData||{})
             ] || []
         ).length 
     ];

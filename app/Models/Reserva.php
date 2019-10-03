@@ -10,7 +10,7 @@ namespace App\Models;
 use Reliese\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
 use App\Traits\DataFormatting;
-use App\Traits\DependencyFormatting;
+use App\Traits\DependencyOptions;
 /**
  * Class Reserva
  * 
@@ -37,47 +37,13 @@ use App\Traits\DependencyFormatting;
  */
 class Reserva extends Eloquent
 {
-	use DataFormatting,
-		DependencyFormatting;
+	use DataFormatting;
 	/**
 	 * hasDataFormatting trait constants
 	 */
 	private static $dataKey = 'dia_reserva';
 	private static $valueKey = '';
-	/**
-	 * when called as main query
-	 */
-	private static $mainFormatOptions = [
-		'groupData'=>'data'
-	];
-	/**
-	 * when called as a dependency
-	 */
-	private static $dependencyFormatOptions = [];
-	/**
-	 * hasDependencyFormatting trait constants
-	 */
-	private static $dependencies = [
-		'create'=> [
-			'horarios'						=>	'\\App\\Models\\Horario',
-			'feriados'						=>	'\\App\\Models\\Feriado',
-			'ubicaciones'					=>	'\\App\\Models\\Ubicacion',
-			'feriados.eventos' 				=>  false,
-			'horarios.eventos'				=> 	false,
-			'horarios.eventos.promociones'	=> 	false,
-			'feriados.eventos.promociones' 	=>  false,
-			'ubicaciones.estado' 			=>  false,
-			'horarios.estado' 				=>  false,
-		],
-		'query' => [
-			'reservas'				=>	'\\App\\Models\\Reserva',
-			'horarios'				=>	'\\App\\Models\\Horario',
-			'reservas.ubicacion' 	=>  '\\App\\Models\\Ubicacion',
-			'reservas.evento' 		=>  '\\App\\Models\\Evento',
-			'reservas.estado' 		=>  false,
-			'intervalo' 			=>  false
-		]
-	];
+	private static $dataResource = '\\App\\Http\\Resources\\ReservaResource';
 	/**
 	 * Eloquent constants and castings
 	 */
@@ -108,9 +74,9 @@ class Reserva extends Eloquent
 	/**
 	 * Helper methods
 	 */
-	public static function reservasQueryCallback($month,$year){
-		return function ($query) use ($month,$year) {
-			return $query->thisMonth($month,$year);
+	public static function reservasQueryCallback($params){
+		return function ($query) use ($params) {
+			return $query->thisMonth($params);
 		};
 	}
 	/**
@@ -150,13 +116,15 @@ class Reserva extends Eloquent
 		return $this->belongsTo(\App\User::class, 'id_usuario');
 	}
 	public function promocion(){
-		return $this->hasOne(\App\Models\Promocion::class, 'id_promocion');
+		return $this->hasOne(\App\Models\Promocion::class, 'id','id_promocion');
 	}
 	/**
 	 * Model scopes
 	 */
-	public function scopeThisMonth($query,$month,$year){
-		return $query->whereMonth('dia_reserva',$month)->whereYear('dia_reserva',$year);
+	public function scopeThisMonth($query,$params){
+		return $query
+			->whereMonth('dia_reserva',$params->operator,$params->month)
+			->whereYear('dia_reserva',$params->operator,$params->year);
 	}
 	/**
 	 * Database seeding

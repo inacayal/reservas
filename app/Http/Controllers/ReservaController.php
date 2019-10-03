@@ -2,108 +2,110 @@
 
 namespace App\Http\Controllers;
 use App\User as User;
-use App\Models\Reserva as Reservas;
-
-use App\Http\Resources\ReservaResource;
-use App\Http\Resources\HorarioResource;
-
+use Illuminate\Support\Collection;
+use App\Traits\hasDependencies;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ReservaController extends Controller
 {
-    protected $model = '\\App\\Models\\Reserva';
+    use hasDependencies;
+
+    protected static $model = '\\App\\Models\\Reserva';
+    /**
+     * start trait information
+     */
+    protected static $dependencies = [
+        'list' => [
+            'reservas'              =>  'group',
+            'horarios'              =>	'key',
+            'estado'                =>  false,
+            'reservas.ubicacion'    =>  false,
+            'reservas.evento'       =>  false,
+            'reservas.evento.estado'=>  false,
+            'reservas.promocion'    =>  false,
+            'intervalo'             =>  false
+        ],
+        'add' => [
+            'horarios'				=>	'key',
+            'feriados'              =>  'key',
+            'ubicaciones' 			=>  'all',
+            'feriados.eventos'      =>  false,
+            'horarios.eventos'		=>	false,
+            'feriados.eventos.promociones' => false,
+            'horarios.eventos.promociones' => false,
+            'intervalo' 			=> false
+        ]
+    ];
+    
     public function __construct () {
         $this->middleware('length');
     }
-    /**
-     * get all reservations by user
-     * 
-     * @param date must be time from javascript divided by 1000.
-     *        timezone considerations must be taken
-     */
+
     public function list (
         $route,
         $id,
         $month,
         $year
     ){
-        $dependency = $this->model::assignDependencyOptions(
-            array('reservas' => [$month,$year]),
-            'query'  
-        );
-
-        $user = User::with(
-                $dependency->data
-            )->find($id);
-
-        return response(
-            collect([
-                'reservas' => ReservaResource::collection(
-                    $user->reservas->groupBy('dia_reserva')
-                ),
-                'horarios' => [
-                    'data' => HorarioResource::collection(
-                        $user->horarios->keyBy('id_dia_semana')
-                    ),
-                    'intervalo'=>$user->intervalo->id,
-                    'caida' => $user->caida_reserva
+        $dependencies = self::getDependencies($route);
+        $relations = $this->getDependencyScopes(
+            array_keys($dependencies),
+            array(
+                'reservas' => (object) [
+                    'month'=>$month,
+                    'operator'=>'=',
+                    'year'=>$year,
+                    'scope'=>'thisMonth'
                 ]
-            ]), 
-            200
-        )->header('Content-Type','application/json'); 
+            )
+        );
+        $user = User::with(
+            $relations
+        )->find($id);
+        
+        $data = self::formatResults(
+            $user,
+            $dependencies
+        );
+        $extra = [
+            'intervalo' => $user->intervalo,
+            'antelacion' => $user->antelacion_reserva
+        ];
+        return response(array_merge($data,$extra),200)->header('Content-Type','application/json'); 
     }
-    /**
-     * this function assigns dependencies and it corresponding callbacks
-     * @param dependencies is an associative array with Reservas dependencies to be eagerly loaded
-     * @param parameters is an associative array with values passed to eager load constructor
-     */
-    public function listDependencyData(
+    
+    public function add(
         $route,
         $id,
         $month,
         $year
     ){
-        $dependency = $this->model::assignDependencyOptions (
+        $dependencies = self::getDependencies($route);
+        $relations = $this->getDependencyScopes(
+            array_keys($dependencies),
             array(
-                'feriados'=>[$month,$year]
-            ),
-            'create'  
-        );
-        
-        $user = User::with(
-                $dependency->data
-            )->where('id',$id)
-            ->first();
-        
-            return response(
-            $this->formatDependencyData(
-                $dependency->models,
-                $user
-            )->merge([
-                'intervalo' => [
-                    "data" => $user->intervalo
-                ],
-                'antelacion' => [
-                    "data" => $user->antelacion_reserva
+                'feriados' => (object) [
+                    'month'=>$month,
+                    'operator'=>'=',
+                    'year'=>$year,
+                    'scope'=>'thisMonth'
                 ]
-            ]),
-            200
-        )->header('Content-Type','application/json'); 
-    }
-
-    public function formatDependencyData(
-        array $dataModels,
-        User $user
-    ) {
-        $res = [];
-        foreach($dataModels as $relation=>$model){
-            $opt = $this->model===$model ? 'mainFormatOptions' : 'dependencyFormatOptions';
-            if ($model && property_exists($model,$opt)){
-                $res[$relation] = $model::getFormattedData($user->{$relation},$opt);
-            }
-        }
-        return collect($res);
+            )
+        );
+        $user = User::with(
+            $relations
+        )->find($id);
+        
+        $data = self::formatResults(
+            $user,
+            $dependencies
+        );
+        $extra = [
+            'intervalo' => $user->intervalo,
+            'antelacion' => $user->antelacion_reserva
+        ];
+        return response(array_merge($data,$extra) ,200)->header('Content-Type','application/json'); 
     }
 
     public function create (){
