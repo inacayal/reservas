@@ -80510,20 +80510,22 @@ __webpack_require__.r(__webpack_exports__);
 function BreadCrumb(props) {
   var stored = '';
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "full-width"
+    className: "full-width box-padding border-bottom"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-    className: "flex-row nav-list box-padding"
+    className: "flex-row nav-list no-padding"
   }, props.items.map(function (e, i) {
     stored += e === 'escritorio' ? '/' : e + '/';
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
       key: i,
-      className: "margin-box"
+      className: "margin-box "
     }, i === props.items.length - 1 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "inline-block margin-box"
+      className: "inline-block margin-box "
     }, e) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
       to: stored
-    }, e), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "margin-box inline-block"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: "bold"
+    }, e)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "margin-box h-padding inline-block"
     }, "/")));
   })));
 }
@@ -81805,12 +81807,12 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-3"
+        className: "col-md-3 no-padding border-right"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Lateral__WEBPACK_IMPORTED_MODULE_4__["default"], {
         current: this.props.current,
         items: this.state.sidebar
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-9"
+        className: "col-md-9 no-padding"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -81818,9 +81820,9 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_BreadCrumb__WEBPACK_IMPORTED_MODULE_2__["default"], {
         items: current.split('/')
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
+        className: "row box-padding"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-12"
+        className: "col-md-12  v-padding"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(this.props.render, _extends({
         sub: this.state.sidebar[this.props.current].sub
       }, this.props))))))));

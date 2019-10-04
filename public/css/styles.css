@@ -294,6 +294,11 @@ html,body {
     padding-right:0px;
     padding-left:0px;
 }
+.box-shadow{
+    -webkit-box-shadow: 0px 4px 4px 0px var(--border);
+    -moz-box-shadow: 0px 4px 4px 0px var(--border);
+    box-shadow: 0px 4px 4px 0px var(--border);
+}
 .no-right-padding{
     padding-right:0px;
 }
@@ -428,7 +433,7 @@ label{
     padding:0px !important;
 }
 .border-right{
-    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
 }
 .border-bottom{
     border-bottom: 1px solid var(--border);

@@ -35,19 +35,19 @@ export default class MainFrame extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-md-3">
+                    <div className="col-md-3 no-padding border-right">
                         <Lateral
                             current={this.props.current}
                             items={this.state.sidebar}/>
                     </div>
-                    <div className="col-md-9">
+                    <div className="col-md-9 no-padding">
                         <div className="container">
                             <div className="row">
                                 <BreadCrumb
                                     items={current.split('/')}/>
                             </div>
-                            <div className="row">
-                                <div className="col-md-12">
+                            <div className="row box-padding">
+                                <div className="col-md-12  v-padding">
                                     <this.props.render 
                                         sub={this.state.sidebar[this.props.current].sub} 
                                         {...this.props} />
