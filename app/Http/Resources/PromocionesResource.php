@@ -17,6 +17,13 @@ class PromocionesResource extends JsonResource
         'reservas.list' => [],
         'reservas.add' => [
             'eventos' => 'list',
+        ],
+        'promociones.list'=>[
+            'eventos' => 'list'
+        ],
+        'promociones.add'=>[],
+        'promociones.single'=>[
+            'eventos'=>'list'
         ]
     ];
     public $preserveKeys = true;

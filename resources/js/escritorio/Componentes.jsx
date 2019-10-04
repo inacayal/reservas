@@ -14,6 +14,7 @@ import LocalesRouting from './locales/LocalesRouting';
 import ReservasRouting from './reservas/ReservasRouting';
 import UbicacionesRouting from './ubicaciones/UbicacionesRouting';
 import FranquiciasRouting from './franquicias/FranquiciasRouting';
+import PromocionesRouting from './promociones/PromocionesRouting';
 
 const COMPONENTES = {
     escritorio:(props) => (
@@ -30,6 +31,9 @@ const COMPONENTES = {
     ),
     eventos:(props) => (
         <EventosRouting {...props} />
+    ),
+    promociones: (props) => (
+        <PromocionesRouting {...props} />
     ),
     locales:(props) => (
         <LocalesRouting {...props} />

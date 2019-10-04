@@ -74,7 +74,7 @@ export default class FeriadoFormulario extends Component {
                                 horarios:response.data.horarios[0],
                                 eventos:response.data.eventos
                             },
-                            minutes: generateHoursFromInterval(response.data.intervalo.id),
+                            minutes: generateHoursFromInterval(response.data.intervalo),
                             side: response.data.horarios[0].estado === 'laboral'
                         }
                         :
@@ -120,6 +120,7 @@ export default class FeriadoFormulario extends Component {
                                 <div className="col-lg-6 relative visible">
                                     <div className={this.state.side ? "hidden" : "top-padding full-width overlay"} />
                                     <SelectFields
+                                        editar = {this.props.editar}
                                         data={this.state.data.horarios}
                                         minutos={this.state.minutes} />
                                 </div>

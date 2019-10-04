@@ -8,100 +8,97 @@ import ButtonList from '../../../componentes/basic/ButtonList';
 /**
  * handlers and elements
  */
-import { Numeric,onNumberChange } from '../../../componentes/input/Numeric';
-import { Text,onTextChange } from '../../../componentes/input/Text';
+import LoadBar from '../../../utils/LoadBar';
+/**
+ * api
+ */
+import { GET } from '../../../utils/api';
+import { FormFields } from '../FormFields';
 export default class AgregarFormulario extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            text:{
-                descuento:0,
-                promocion: "", 
-                nombreEvento:""
+            open: false,
+            data: null,
+            loadFinished: false
+        }
+        this.fetchData = this.fetchData.bind(this);
+        this.downloadHandler = this.downloadHandler.bind(this);
+    }
+
+    downloadHandler(pEvent) {
+        let
+            loading = Math.round((pEvent.loaded * 100) / pEvent.total),
+            state = loading !== 100 ?
+                { loading, loadFinished: false }
+                : { loading, loadFinished: true };
+        this.setState(state);
+    }
+
+    fetchData() {
+        this.setState({
+            data: null,
+            isLoading: true,
+            loadFinished: false
+        });
+        const conf = this.props.editar
+            ?
+            {
+                endpoint: 'promociones/single/27/' + this.props.match.params.id,
+                download: this.downloadHandler
             }
-        }
-        this.onNumberChange = onNumberChange.bind(this);
-        this.onTextChange = onTextChange.bind(this);
-        this.editarEvento = this.editarEvento.bind(this);
-        this.agregarEvento = this.agregarEvento.bind(this);
+            :
+            {
+                endpoint: 'promociones/add/27',
+                download: this.downloadHandler
+            };
+        const request = GET(conf);
+
+        request
+            .then(
+                response => {
+                    let data = {};
+                    if (this.props.editar) {
+                        data = {
+                            selected: response.data.promociones[0],
+                            all: {
+                                eventos: response.data.eventos
+                            }
+                        };
+                    } else {
+                        data = response.data;
+                    }
+                    this.setState({
+                        data: { ...data }
+                    });
+                }
+            )
+            .catch(
+                error => {
+                    console.log(error.message)
+                }
+            );
     }
 
-    editarEvento(id) {
-        let evento = this.props.data[id],
-            input = this.state.text;
-
-        input.promocion = evento.promocion;
-        input.descuento = parseInt(evento.descuento);
-        input.nombreEvento = evento.nombre;
-
-        this.setState({input});
-    }
-
-    agregarEvento() {
-        let input = this.state.text;
-        
-        input.promocion ="";
-        input.descuento = 0;
-        input.nombreEvento ="";
-
-        this.setState({ input });
-    }
-
-    componentDidUpdate(prevProps,prevState) {
-        if (this.props.show) {
-            if (this.props.editar && (this.props.editar !== prevProps.editar))
-                return this.editarEvento(this.props.editar);
-            if (this.props.agregar !== prevProps.agregar)
-                return this.agregarEvento();
-        }
+    componentDidMount() {
+        this.fetchData();
     }
 
     render() {
+        if (this.state.data && this.state.loadFinished) {
+            console.log(this.state.data);
+            return (
+                <form className="full-width box-padding">
+                    <div className="row c-title highlight-title">
+                        {this.props.editar ? "Editando promoción " + this.state.data.selected.nombre : "Agregar Promoción"}
+                    </div>
+                    <FormFields editar={this.props.editar} {...this.state.data} />
+                </form>
+            );
+        }
         return (
-            <form className="full-width box-padding">
-                <div className="container">
-                    <div className="row sub-title border-bottom">
-                        {this.props.title}
-                    </div>
-                    <div className="row box-padding">
-                        <div className="col-md-6">
-                            <div className="container">
-                                <div className="row">
-                                    <Text
-                                        container="full-width"
-                                        changeValue={this.onTextChange}
-                                        titulo="Nombre de evento"
-                                        name="nombreEvento"
-                                        rows={1}
-                                        value={this.state.text.nombreEvento}
-                                        classes="border-box input-text margin-box full-width" />
-                                </div>
-                                <div className="row">
-                                    <Numeric
-                                        container="full-width"
-                                        changeValue={this.onNumberChange}
-                                        titulo="Descuento"
-                                        name="descuento"
-                                        value={this.state.text.descuento}
-                                        classes="border-box input-text margin-box full-width" />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <Text
-                                container="full-width"
-                                changeValue={this.onTextChange}
-                                titulo="Promoción del evento"
-                                name="promocion"
-                                rows={4}
-                                value={this.state.text.promocion}
-                                classes="border-box input-text margin-box full-width" />
-                        </div>
-                    </div>
-                    <div className="row justify-content-end">
-                    </div>
-                </div>
-            </form>
+            <LoadBar
+                loaded={this.state.loading} />
         );
     }
 }

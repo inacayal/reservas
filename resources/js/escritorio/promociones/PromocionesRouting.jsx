@@ -7,39 +7,16 @@ import ReactDOM from 'react-dom';
  * sub elementos
  */
 import AgregarFormulario from './sub/AgregarFormulario';
-import Eventos from './sub/Eventos';
+import Promociones from './sub/Promociones';
 import { Route } from 'react-router-dom';
 
-export default class EventosRouting extends Component {
+export default class PromocionesRouting extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            data: {
-                1: {
-                    nombre: "Cumpleaños",
-                    descuento: 50,
-                    promocion: "50% de descuento para el cumpleañero si reservas un fin de semana."
-                },
-                2: {
-                    nombre: "Negocios",
-                    descuento: 50,
-                    promocion: "50% de descuento en bebidas si reservas antes de las 21hs."
-                },
-                3: {
-                    nombre: "Amigos",
-                    descuento: 10,
-                    promocion: "10% de descuento en comidas compartidas si reservas antes de las 18hs."
-                }
-            }
-        };
     }
 
     componentDidMount() {
-        console.log('eventosMount');
-    }
-
-    componentWillUnmount() {
-        console.log('eventosUnmount');
+        console.log('promocionesMount');
     }
 
     render() {
@@ -50,8 +27,7 @@ export default class EventosRouting extends Component {
                     exact
                     component={
                         (match) =>
-                            <Eventos
-                                data={this.state.data}
+                            <Promociones
                                 {...match} />
                     } />
                 <Route
@@ -59,14 +35,15 @@ export default class EventosRouting extends Component {
                     component={
                         (match) =>
                             <AgregarFormulario
+                                editar={false}
                                 {...match} />
                     } />
                 <Route
-                    path={this.props.match.url + '/editar :id'}
+                    path={this.props.match.url + '/editar/:id'}
                     component={
                         (match) =>
                             <AgregarFormulario
-                                data={this.state.data}
+                                editar={true}
                                 {...match} />
                     } />
             </>

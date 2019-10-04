@@ -42,9 +42,9 @@ class Promocion extends Eloquent
   /**
 	 * Helper methods
 	 */
-	public static function promocionesQueryCallback () {
-		return function ($query) {
-			return $query->active();
+	public static function promocionesQueryCallback ($params) {
+		return function ($query) use ($params){
+			return $query->{$params->scope}($params);
 		};
 	}
   /**
@@ -52,7 +52,13 @@ class Promocion extends Eloquent
 	 */
 	public function scopeActive($query){
 		return $query->where('id_estado',1);
-	}
+  }
+  public function scopeSearchId($query,$params){
+		return $query->where('id',$params->id);
+  }
+  /**
+   * End Scopes
+   */
   public function eventos(){
     return $this->belongsToMany(\App\Models\Evento::class, 'eventos_promociones','id_promocion','id_evento');
   }

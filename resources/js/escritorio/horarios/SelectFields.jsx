@@ -92,8 +92,8 @@ export const SelectFields = (props) => {
         cRH = SelectData.cierre_reserva_hora;
 
     aAM.list = props.minutos;
-    aRM.list = props.minutos;
     cAM.list = props.minutos;
+    aRM.list = props.minutos;
     cRM.list = props.minutos;
 
     if (props.editar){

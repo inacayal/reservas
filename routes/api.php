@@ -48,6 +48,24 @@ Route::prefix('eventos')->name('eventos.')->group(function (){
     Route::post('/create','EventoController@create')->name('create');
 });
 
+Route::prefix('promociones')->name('promociones.')->group(function (){
+    Route::get('{list}/{id}','PromocionController@list')
+        ->where('list','list')
+        ->name('list');
+
+    Route::get('{add}/{id}','PromocionController@add')
+        ->where('add','add')
+        ->name('add');
+
+    Route::get('{single}/{userId}/{id}','PromocionController@single')
+        ->where('single','single')
+        ->name('single');
+
+    Route::put('/update/{id}','PromocionController@update')->name('update');
+    Route::delete('/delete/{id}','PromocionController@delete')->name('delete');
+    Route::post('/create','PromocionController@create')->name('create');
+});
+
 Route::prefix('ubicaciones')->name('ubicaciones.')->group(function (){
     Route::get('{list}/{id}','UbicacionController@list')
         ->where('list','list')

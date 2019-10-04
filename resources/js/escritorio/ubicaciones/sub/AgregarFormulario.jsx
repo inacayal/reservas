@@ -103,13 +103,13 @@ export default class AgregarFormulario extends Component {
                                         <Numeric titulo="Máximo personas" name="maximo_personas" value={this.props.editar ? this.state.data.maximo : ""} classes={"border-box input-text margin-box"} container="full-width" />
                                         <span className="smaller-text">Máximo de personas en una reservación</span>
                                     </div>
-                                    <div className="row v-padding">
-                                        <Text rows={4} titulo="Descripcion" name="descripcion" value={this.props.editar ? this.state.data.descripcion : ""} classes={"border-box input-text margin-box"} container="full-width" />
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="row justify-content-end">
+                        <div className="row">
+                            <div className="col-md-8">
+                                <Text rows={4} titulo="Descripcion" name="descripcion" value={this.props.editar ? this.state.data.descripcion : ""} classes={"border-box input-text margin-box"} container="full-width" />
+                            </div>
                         </div>
                     </div>
                 </form>

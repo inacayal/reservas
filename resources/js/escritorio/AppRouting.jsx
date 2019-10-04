@@ -73,22 +73,30 @@ export default class AppRouting extends Component {
                                     {...props}/>
                         } />
                     <Route
+                        path='/promociones'
+                        component={
+                            (props) =>
+                                <MainFrame
+                                    render={COMPONENTES.promociones}
+                                    current={'5'}
+                                    {...props} />
+                        } />
+                    <Route
                         path='/locales'
                         component={
                             (props) => 
                                 <MainFrame
                                     render={COMPONENTES.locales} 
-                                    current={'5'}
+                                    current={'6'}
                                     {...props}/>
                         } />
-                    
                     <Route
                         path='/configuracion'
                         component={
                             (props) => 
                                 <MainFrame
                                     render={COMPONENTES.configuracion} 
-                                    current={'6'}
+                                    current={'7'}
                                     {...props}/>
                         } />
                     <Route
@@ -97,7 +105,7 @@ export default class AppRouting extends Component {
                             (props) => 
                                 <MainFrame
                                     render={COMPONENTES.franquicias} 
-                                    current={'7'}
+                                    current={'8'}
                                     {...props}/>
                         } />
                 </Switch>

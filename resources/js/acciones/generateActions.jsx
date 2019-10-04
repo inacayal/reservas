@@ -15,6 +15,7 @@ import { FeriadosActions } from './FeriadosActions';
 import { HorariosActions } from './HorariosActions';
 import { EventosActions } from './EventosActions';
 import { UbicacionesActions } from './UbicacionesActions';
+import { PromocionesActions } from './PromocionesActions';
 
 export const GenerateActions = {
     reservas: (
@@ -93,6 +94,20 @@ export const GenerateActions = {
         actions
     ) => {
         const acciones = EventosActions(
+            key,
+            actions
+        );
+        return (
+            <Actions
+                links={acciones.links}
+                buttons={acciones.buttons} />
+        );
+    },
+    promociones: (
+        key,
+        actions
+    ) => {
+        const acciones = PromocionesActions(
             key,
             actions
         );

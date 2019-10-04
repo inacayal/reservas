@@ -51,7 +51,7 @@
                     'data'=> "5",
                     'disabled'=> false,
                     'title'=> "Promociones",
-                    'route'=> '/',
+                    'route'=> '/promociones',
                     'sub'=> []
                 ],
                 [
@@ -100,7 +100,7 @@
                     ]
                 ],
                 [
-                    'data'=> "7",
+                    'data'=> "8",
                     'route'=> '/franquicias',
                     'disabled'=> false,
                     'title'=> "Franquicias",
