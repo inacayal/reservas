@@ -68,33 +68,21 @@
                     'route'=> '/configuracion',
                     'sub'=> [
                         [
-                            'title'=> 'Encargado',
-                            'route'=> '/configuracion/encargado',
-                            'data'=> "0",
-                            'class'=> "medium-left-padding box-transparent box-padding highlight-hover full-width text-left"
-                        ],
-                        [
-                            'title'=>"Ubicacion",
-                            'route'=> '/configuracion/ubicacion',
-                            'data'=>"1",
-                            'class'=> "medium-left-padding box-transparent box-padding highlight-hover full-width text-left"
-                        ],
-                        [
-                            'title'=>"Contacto del local",
-                            'route'=> '/configuracion/contacto',
-                            'data'=>"2",
+                            'title'=>"Establecimiento",
+                            'route'=> '/configuracion/establecimiento',
+                            'data'=>"0",
                             'class'=> "medium-left-padding box-transparent box-padding highlight-hover full-width text-left"
                         ],
                         [
                             'title'=>"Usuario",
                             'route'=> '/configuracion/usuario',
-                            'data'=>"3",
+                            'data'=>"1",
                             'class'=> "medium-left-padding box-transparent box-padding highlight-hover full-width text-left"
                         ],
                         [
                             'title'=> "Reservas",
                             'route'=> '/configuracion/reservas',
-                            'data'=> "4",
+                            'data'=> "2",
                             'class'=> "medium-left-padding box-transparent box-padding highlight-hover full-width text-left"
                         ]
                     ]

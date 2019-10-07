@@ -1,7 +1,7 @@
 /**
  * react basic
  */
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import ReactDOM from 'react-dom';
 /**
  * react components
@@ -9,157 +9,191 @@ import ReactDOM from 'react-dom';
 import Actions from '../../../componentes/basic/Actions';
 
 
-const configurationCards = {
-    Encargado: (data,show) => (
-        <div className="container full-width">
-            <div className="row">
-                <div className="col-md-4">
-                    <h6 className="full-width light-danger bold">
-                        Nombre
-                    </h6>
-                    <div>
-                        {data.adm_nombre}
-                    </div>
-                </div>
-                <div className="col-md-4">
-                    <h6 className="full-width light-danger bold">
-                        Teléfono de contacto
-                    </h6>
-                    <div>
-                        {data.adm_email}
-                    </div>
-                </div>
-                <div className="col-md-4">
-                    <h6 className="full-width light-danger bold">
-                        Correo de contacto
-                    </h6>
-                    <div>
-                        {data.adm_telefono}
-                    </div>
-                </div>
-            </div>
-        </div>
-    ),
-    Ubicacion: (data,show) => (
-        <div className="container full-width" >
-            <div className="row">
-                <div className="col-md-6">
-                    <h6 className="full-width light-danger bold">
-                        Provincia
-                    </h6>
-                    <div>
-                        {data.provincia}
-                    </div>
-                </div>
-                <div className="col-md-6">
-                    <h6 className="full-width light-danger bold">
-                        Dirección del local
-                    </h6>
-                    <div>
-                        {data.direccion_local}
-                    </div>
-                </div>
-            </div>
-        </div>
-    ),
-    Contacto_del_local: (data,show) => (
-        <div className="container full-width">
-            <div className="row">
-                <div className="col-md-6">
-                    <h6 className="full-width light-danger bold">
-                        Correo del local
-                    </h6>
-                    <div>
-                        {data.correo_local}
-                    </div>
-                </div>
-                <div className="col-md-6">
-                    <h6 className="full-width light-danger bold">
-                        Teléfono de contacto
-                    </h6>
-                    <div>
-                        {data.telefono_local}
-                    </div>
-                </div>
-            </div>
-        </div>
-    ),
-    Usuario: (data,show) => (
-        <div className="container full-width">
-            <div className="row">
-                <div className="col-md-6">
-                    <h6 className="full-width light-danger bold">
-                        Correo de usuario
-                    </h6>
-                    <div>
-                        {data.email_local}
-                    </div>
-                </div>
-                <div className="col-md-6">
+const configurationCards = [
+    {
+        element: (data) => (
+            <div className="container full-width">
+                <div className="row">
+                    <div className="col-md-4">
                         <h6 className="full-width light-danger bold">
-                        Contraseña de usuario
+                            Username
+                        </h6>
+                        <div>
+                            {data.username}
+                        </div>
+                    </div>
+                    <div className="col-md-4">
+                        <h6 className="full-width light-danger bold">
+                            Correo
+                        </h6>
+                        <div>
+                            {data.email}
+                        </div>
+                    </div>
+                    <div className="col-md-4">
+                        <h6 className="full-width light-danger bold">
+                            Contraseña de usuario
                     </h6>
-                    <div>
-                        *******************
+                        <div>
+                            *******************
+                    </div>
                     </div>
                 </div>
             </div>
-            <div className="row v-padding">
-                <div className="col-md-6">
-                    <h6 className="full-width light-danger bold">
-                        Razón Social
+        ),
+        route: '/configuracion/usuario',
+        title: 'Mi usuario'
+    },
+    {
+        element: (data) => (
+            <div className="container full-width ">
+                <div className="row v-padding">
+                    <div className="col-md-4">
+                        <h6 className="full-width light-danger bold">
+                            Nombre
+                        </h6>
+                        <div>
+                            {data.nombre}
+                        </div>
+                    </div>
+                    <div className="col-md-4">
+                        <h6 className="full-width light-danger bold">
+                            Correo 
+                        </h6>
+                        <div>
+                            {data.correoLocal}
+                        </div>
+                    </div>
+                    <div className="col-md-4">
+                        <h6 className="full-width light-danger bold">
+                            Teléfono 
                     </h6>
-                    <div>
-                        {data.razon_social}
+                        <div>
+                            {data.telefonoLocal}
+                        </div>
                     </div>
                 </div>
-                <div className="col-md-6">
-                    <h6 className="full-width light-danger bold">
-                        CUIT / CUIL
+                <div className="row v-padding">
+                    <div className="col-md-6">
+                        <h6 className="full-width light-danger bold">
+                            Razón Social
                     </h6>
-                    <div>
-                        {data.cuit_cuil}
+                        <div>
+                            {data.razonSocial}
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <h6 className="full-width light-danger bold">
+                            CUIT / CUIL
+                        </h6>
+                        <div>
+                            {data.cuitCuil}
+                        </div>
+                    </div>
+                </div>
+                <div className="row bold top-padding margin-box">
+                    Encargado
+                </div>  
+                <div className="row v-padding margin-box">
+                    <div className="col-md-4">
+                        <h6 className="full-width light-danger bold">
+                            Nombre
+                        </h6>
+                        <div>
+                            {data.admNombre}
+                        </div>
+                    </div>
+                    <div className="col-md-4">
+                        <h6 className="full-width light-danger bold">
+                            Teléfono
+                        </h6>
+                        <div>
+                            {data.admTelefono}
+                        </div>
+                    </div>
+                    <div className="col-md-4">
+                        <h6 className="full-width light-danger bold">
+                            Correo
+                        </h6>
+                        <div>
+                            {data.admEmail}
+                        </div>
+                    </div>
+                </div>
+                <div className="row bold top-padding margin-box">
+                    Ubicación
+                </div>
+                <div className="row v-padding margin-box">
+                    <div className="col-md-6">
+                        <h6 className="full-width light-danger bold">
+                            Provincia
+                        </h6>
+                        <div>
+                            {data.provincia}
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <h6 className="full-width light-danger bold">
+                            Dirección del local
+                        </h6>
+                        <div>
+                            {data.direccionLocal}
+                        </div>
                     </div>
                 </div>
             </div>
-                
-        </div>
-    ),
-    Reservas: (data,show) => (
-        <div className="container full-width">
-            <div className="row">
-                <div className="col-md-6">
-                    <h6 className="full-width light-danger bold">
-                        Intervalo de Reservas
+        ),
+        route: '/configuracion/establecimiento',
+        title: 'Mi establecimiento'
+    },
+    {
+        element: (data) => (
+            <div className="container full-width">
+                <div className="row">
+                    <div className="col-md-6">
+                        <h6 className="full-width light-danger bold">
+                            Intervalo de Reservas
                     </h6>
-                    <div>
-                        {data.intervalo}
+                        <div>
+                            {data.intervalo}
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <h6 className="full-width light-danger bold">
+                            Caída de la reserva
+                    </h6>
+                        <div>
+                            {data.caida+ " minutos"}
+                        </div>
                     </div>
                 </div>
-                <div className="col-md-6">
-                    <h6 className="full-width light-danger bold">
-                        Caída de la reserva
+                <div className="row v-padding">
+                    <div className="col-md-6">
+                        <h6 className="full-width light-danger bold">
+                            Antelacion de Reservas
                     </h6>
-                    <div>
-                        {data.caida}
+                        <div>
+                            {
+                                data.antelacionReserva 
+                                    ? data.antelacionReserva + " horas"
+                                    :"Sin definir"
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    )
-};
+        ),
+        route: '/configuracion/reservas',
+        title: 'Reservas'
+    }
+];
 
 export default function generateConfigurationCards (
-    action,
-    expand,
-    subElements,
-    data,
-    show
+    data
 ){
-    return subElements.map(
+    return configurationCards.map(
         (e,i) => {
-            const name = e.title.replace(/\s/gi,'_'),
-                actions = <div className="normal-text"><i className="fas fa-pen" />Editar</div>,
+            const actions = <div className="normal-text"><i className="fas fa-pen" />Editar</div>,
                 links = [
                     {
                         title: (
@@ -172,24 +206,54 @@ export default function generateConfigurationCards (
                     }
                 ];
             return {
-                title:{
-                    data:(
-                        <div className="full-width sub-title">
-                            <span className='inline-block side-margin text-top'>
-                                {e.title}
-                            </span>
-                            <Actions 
-                                links={links}/>
-                        </div>
-                    )
+                content: () => {
+                    const 
+                        [show,toggle] = useState(false),
+                        buttons = [
+                        {
+                            title: (
+                                <div className="smaller-text text bold text-center">
+                                    {
+                                        show 
+                                        ?
+                                            <>
+                                                menos <i className="fas fa-minus-circle inline-box side-margin" />
+                                            </>
+                                        :
+                                            <>
+                                                más <i className="fas fa-plus-circle inline-box side-margin" />
+                                            </>
+                                    }
+                                </div>
+                                ),
+                                click: ()=>toggle(!show)
+                            }
+                        ];
+                    return (
+                        <>
+                            <div className="full-width container">
+                                <div className="row">
+                                    <div className="col-md-4 sub-title bold inline-block text-top">
+                                        {e.title}
+                                    </div>
+                                    <div className="col-md-8 text-right">
+                                        <Actions
+                                            links={links}
+                                            buttons={buttons} />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="box-padding full-width">
+                                {
+                                    show
+                                        ? e.element(data)
+                                        : ""
+                                }
+                            </div>
+                        </>
+                    );
                 },
-                content:{
-                    data:configurationCards[name](data),
-                    class:show == i ? "v-padding" : ""
-                },
-                container:{
-                    class:i !== subElements.length-1 ? 'border-bottom margin-box box-padding' : 'box-padding margin-box'
-                }
+                class: 'v-padding margin-box'
             }
         }
     );

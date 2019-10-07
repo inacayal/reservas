@@ -27,7 +27,7 @@ function BarraNavegacion(props) {
         <div className="container border-bottom">
             <div className="row">
                 <div className="col-sm-8">
-                    <h4>
+                    <h4 className="bold">
                         Nombre de usuario
                     </h4>
                 </div>

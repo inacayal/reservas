@@ -8,7 +8,7 @@
 namespace App\Models\Query;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
-
+use App\Traits\DataFormatting;
 /**
  * Class Provincia
  * 
@@ -22,10 +22,13 @@ use Reliese\Database\Eloquent\Model as Eloquent;
 class Provincia extends Eloquent
 {
 	//use CrudMethods;
-	
+	use DataFormatting;
+
 	public $timestamps = false;
 	protected $table = 'provincias';
-	protected static $keyBy = false;
+	
+	protected static $dataKey = 'id';
+	protected static $valueKey = 'nombre';
 	protected $fillable = [
 		'nombre'
 	];

@@ -16,6 +16,25 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+Route::prefix('usuario')->name('usuario.')->group(function (){
+    Route::get('{list}/{id}/{month}/{year}','UserController@list')
+        ->where('list','list')    
+        ->name('list');
+
+    Route::get('/{add}/{id}/{month}/{year}','UserController@add')
+        ->where('add','add')
+        ->name('add');
+
+    Route::get('/{single}/{type}/{id}','UserController@single')
+        ->where('single','single')
+        ->name('single');
+
+    Route::put('/update/{id}','UserController@update')->name('update');
+    Route::delete('/delete/{id}','UserController@delete')->name('delete');
+    Route::post('/create','UserController@create')->name('create');
+});
+
 Route::prefix('reservas')->name('reservas.')->group(function (){
     Route::get('{list}/{id}/{month}/{year}','ReservaController@list')
         ->where('list','list')    

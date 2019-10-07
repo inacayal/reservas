@@ -52,8 +52,9 @@ class User extends Eloquent
 	/**
 	 * hasDataFormatting trait constants
 	 */
-	private static $dataKey = '';
+	private static $dataKey = 'id';
 	private static $valueKey = '';
+	private static $dataResource = '\\App\\Http\\Resources\\UsuarioResource';
 	/**
 	 * Eloquent constants and castings
 	 */
