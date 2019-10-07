@@ -1,7 +1,7 @@
 /**
  * react basic
  */
-import React, { Component,useState,useEffect } from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 /**
  * input elements
@@ -67,15 +67,9 @@ const SelectData = {
 };
 
 export const ConfigurarReservas = (props)  => {
-    const [intervalo, changeIntervalo] = useState(SelectData.intervalo),
-        [caida, changeCaida] = useState(SelectData.caida),
-        [antelacion, changeAntelacion] = useState(SelectData.antelacion);
-
-    useEffect (() => {
-        intervalo.selected = props.data.intervalo;
-        antelacion.selected = props.data.antelacionReserva;
-        caida.selected = props.data.caida;
-    }, []);
+    SelectData.intervalo.selected = props.data.intervalo;
+    SelectData.antelacion.selected = props.data.antelacionReserva;
+    SelectData.caida.selected = props.data.caida;
     
     return (
         <div className="container v-padding">
@@ -83,15 +77,13 @@ export const ConfigurarReservas = (props)  => {
                 <div className="col-md-6">
                     <h6 className="highlight no-margin bold">Antelación de la reserva</h6>
                     <Select
-                        changeSelect={changeAntelacion}
-                        select={antelacion}
+                        select={SelectData.antelacion}
                         titulo="selecciona la antelación de la reserva" />
                 </div>
                 <div className="col-md-6">
                     <h6 className="highlight no-margin bold">Intervalo de la reserva</h6>
                     <Select
-                        changeSelect={changeIntervalo}
-                        select={intervalo}
+                        select={SelectData.intervalo}
                         titulo="selecciona el intervalo de reservas" />
                 </div>
             </div>
@@ -99,8 +91,7 @@ export const ConfigurarReservas = (props)  => {
                 <div className="col-md-6 v-padding">
                     <h6 className="highlight no-margin bold">Caída de la reserva</h6>
                     <Select
-                        changeSelect={changeCaida}
-                        select={caida}
+                        select={SelectData.caida}
                         titulo="selecciona el tiempo de caída de la reserva" />
                 </div>
             </div>

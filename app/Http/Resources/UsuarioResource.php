@@ -50,7 +50,7 @@ class UsuarioResource extends JsonResource
                 'telefonoLocal'=> $user->telefono_local,
                 'razonSocial'=> $user->razon_social,
                 'cuitCuil'=> $user->cuit_cuil,
-                'provincia'=> $user->provincia,
+                'provincia'=> $user->provincia->id,
                 'direccionLocal'=> $user->direccion,
             ]
         ];

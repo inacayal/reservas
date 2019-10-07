@@ -82159,14 +82159,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 /**
  * react basic
  */
@@ -82235,24 +82227,9 @@ var SelectData = {
   }
 };
 var ConfigurarReservas = function ConfigurarReservas(props) {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(SelectData.intervalo),
-      _useState2 = _slicedToArray(_useState, 2),
-      intervalo = _useState2[0],
-      changeIntervalo = _useState2[1],
-      _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(SelectData.caida),
-      _useState4 = _slicedToArray(_useState3, 2),
-      caida = _useState4[0],
-      changeCaida = _useState4[1],
-      _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(SelectData.antelacion),
-      _useState6 = _slicedToArray(_useState5, 2),
-      antelacion = _useState6[0],
-      changeAntelacion = _useState6[1];
-
-  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-    intervalo.selected = props.data.intervalo;
-    antelacion.selected = props.data.antelacionReserva;
-    caida.selected = props.data.caida;
-  }, []);
+  SelectData.intervalo.selected = props.data.intervalo;
+  SelectData.antelacion.selected = props.data.antelacionReserva;
+  SelectData.caida.selected = props.data.caida;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container v-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -82262,16 +82239,14 @@ var ConfigurarReservas = function ConfigurarReservas(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
     className: "highlight no-margin bold"
   }, "Antelaci\xF3n de la reserva"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__["Select"], {
-    changeSelect: changeAntelacion,
-    select: antelacion,
+    select: SelectData.antelacion,
     titulo: "selecciona la antelaci\xF3n de la reserva"
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-6"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
     className: "highlight no-margin bold"
   }, "Intervalo de la reserva"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__["Select"], {
-    changeSelect: changeIntervalo,
-    select: intervalo,
+    select: SelectData.intervalo,
     titulo: "selecciona el intervalo de reservas"
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row"
@@ -82280,8 +82255,7 @@ var ConfigurarReservas = function ConfigurarReservas(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
     className: "highlight no-margin bold"
   }, "Ca\xEDda de la reserva"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__["Select"], {
-    changeSelect: changeCaida,
-    select: caida,
+    select: SelectData.caida,
     titulo: "selecciona el tiempo de ca\xEDda de la reserva"
   }))));
 };
@@ -82304,14 +82278,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
 /* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 /**
  * react basic
  */
@@ -82359,20 +82325,13 @@ var SelectData = {
   }
 };
 var ConfigurarUbicacion = function ConfigurarUbicacion(props) {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(SelectData.ubicacion),
-      _useState2 = _slicedToArray(_useState, 2),
-      ubicacion = _useState2[0],
-      changeUbicacion = _useState2[1];
-
-  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-    ubicacion.selected = props.data.provincia.id;
-  }, []);
+  SelectData.ubicacion.selected = props.data.provincia;
+  var ubicacion = SelectData.ubicacion;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-6"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
     className: "highlight no-margin bold"
   }, "Provincia"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], {
-    changeSelect: changeUbicacion,
     select: ubicacion,
     titulo: "selecciona la provincia"
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {

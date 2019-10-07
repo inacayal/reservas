@@ -1,7 +1,7 @@
 /**
  * react basic
  */
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 /**
  * input elements
@@ -46,16 +46,13 @@ const SelectData = {
 };
 
 export const ConfigurarUbicacion = (props)  => {
-    const [ubicacion, changeUbicacion] = useState(SelectData.ubicacion);
-    useEffect ( () => {
-        ubicacion.selected = props.data.provincia.id;
-    }, []);
+    SelectData.ubicacion.selected = props.data.provincia;
+    const ubicacion = SelectData.ubicacion;
     return (
         <>
             <div className="col-md-6">
                 <h6 className="highlight no-margin bold">Provincia</h6>
                 <Select
-                    changeSelect={changeUbicacion}
                     select={ubicacion}
                     titulo="selecciona la provincia" />
             </div>
