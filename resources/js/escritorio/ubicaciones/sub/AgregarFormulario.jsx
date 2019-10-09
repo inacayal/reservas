@@ -10,18 +10,21 @@ import Calendar from 'react-calendar';
 /**
  * componentes
  */
-import ButtonList from '../../../componentes/basic/ButtonList';
-import LoadBar from '../../../utils/LoadBar';
+import Titulo from '../../../componentes/basic/Titulo';
 /**
  * input component and handlers
  */
 import {Numeric} from '../../../componentes/input/Numeric';
 import {Text} from '../../../componentes/input/Text';
 /**
- * api
+ * API
  */
+import LoadBar from '../../../utils/LoadBar';
 import { GET } from '../../../utils/api';
-
+/**
+ * nav
+ */
+import { Navegacion } from '../Navegacion';
 export default class AgregarFormulario extends Component {
     constructor(props) {
         super(props);
@@ -79,13 +82,20 @@ export default class AgregarFormulario extends Component {
     }
 
     render() {
-        if (this.state.data && this.state.loadFinished)
+        if (this.state.data && this.state.loadFinished){
+            const nav = Navegacion.formulario(
+                this.state.data,
+                this.props.editar
+            );
             return (
                 <form className="full-width">
                     <div className="container">
-                        <div className="row c-title highlight-title bottom-padding">
-                            {this.props.editar ? "Editando ubicación "+this.state.data.nombre : "Agregar ubicación"}
-                        </div>
+                        <Titulo
+                            title={this.props.editar 
+                                ? "Editando ubicación " + this.state.data.nombre 
+                                : "Agregar ubicación"}
+                            links={nav.links}
+                            buttons={nav.buttons} />
                         <div className="row box-padding">
                             <div className="col-md-4 bold">
                                 foto de la ubicacion
@@ -114,6 +124,7 @@ export default class AgregarFormulario extends Component {
                     </div>
                 </form>
             );
+        }    
         return (
             <LoadBar
                 loaded={this.state.loading} />

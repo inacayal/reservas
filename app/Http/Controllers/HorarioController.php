@@ -93,7 +93,7 @@ class HorarioController extends Controller
         $dependencies = self::getDependencies($route);
         $relations = $this->getDependencyScopes(
             array_keys($dependencies),
-            array('horarios' => $id)
+            array('horarios' => (object)['id'=>$id,'scope'=>'searchId'])
         );
         
         $user = User::with(

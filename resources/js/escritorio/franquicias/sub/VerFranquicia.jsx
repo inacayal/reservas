@@ -4,17 +4,21 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 /**
- * sub elementos
+ * API
  */
 import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
 /**
- * basic
+ * componentes
+ */
+import Titulo from '../../../componentes/basic/Titulo';
+/**
+ * navegacion
  */
 import { Navegacion } from '../Navegacion';
-import Titulo from '../../../componentes/basic/Titulo';
-export default class VerLocal extends Component {
-    constructor(props){
+
+export default class VerFranquicia extends Component {
+    constructor(props) {
         super(props);
         this.state = {
             loadFinished: false,
@@ -23,7 +27,17 @@ export default class VerLocal extends Component {
         }
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
-        
+        this.nav = [
+            {
+                title: (
+                    <div className="smaller-text text bold">
+                        <i className="fas fa-store inline-box side-margin" />
+                        Locales
+            </div>
+                ),
+                to: '/locales'
+            }
+        ];
     }
 
     downloadHandler(pEvent) {
@@ -42,7 +56,7 @@ export default class VerLocal extends Component {
             loadFinished: false
         });
         const request = GET({
-            endpoint: '/usuario/local/'+this.props.match.params.id,
+            endpoint: '/usuario/franquicia/' + this.props.match.params.id,
             download: this.downloadHandler
         });
 
@@ -73,45 +87,23 @@ export default class VerLocal extends Component {
                 nav = Navegacion.singular(data);
             return (
                 <div className="container">
+
                     < Titulo
-                        title={"Viendo local " + this.state.data.nombre}
+                        title={"Viendo franquicia " + this.state.data.nombre}
                         links={nav.links}
-                        buttons ={nav.buttons}/>
+                        buttons={nav.buttons} />
                     <div className="container full-width v-padding">
+                        <div className="row c-title v-padding">
+                            Básico
+                        </div>
                         <div className="row justify-content-end v-padding">
                             <div className="col-md-6">
                                 <h6 className="full-width light-danger bold">
-                                    Franquicia
+                                    Administrador
                                 </h6>
                                 <div>
-                                    {data.franquicia}
+                                    {data.administrador}
                                 </div>
-                            </div>
-                        </div>
-                        <div className="row v-padding">
-                            <div className="col-md-4">
-                                <h6 className="full-width light-danger bold">
-                                    Username
-                                </h6>
-                                <div>
-                                    {data.username}
-                                </div>
-                            </div>
-                            <div className="col-md-4">
-                                <h6 className="full-width light-danger bold">
-                                    Correo
-                                </h6>
-                                <div>
-                                    {data.email}
-                                </div>
-                            </div>
-                            <div className="col-md-4">
-                                <h6 className="full-width light-danger bold">
-                                    Contraseña de usuario
-                            </h6>
-                                <div>
-                                    *******************
-                            </div>
                             </div>
                         </div>
                         <div className="row v-padding">
@@ -125,7 +117,7 @@ export default class VerLocal extends Component {
                             </div>
                             <div className="col-md-4">
                                 <h6 className="full-width light-danger bold">
-                                    Correo 
+                                    Correo
                                 </h6>
                                 <div>
                                     {data.correoLocal}
@@ -133,7 +125,7 @@ export default class VerLocal extends Component {
                             </div>
                             <div className="col-md-4">
                                 <h6 className="full-width light-danger bold">
-                                    Teléfono 
+                                    Teléfono
                             </h6>
                                 <div>
                                     {data.telefonoLocal}
@@ -159,23 +151,15 @@ export default class VerLocal extends Component {
                             </div>
                         </div>
                         <div className="row c-title v-padding">
-                            Encargado
+                            Usuario
                         </div>
-                        <div className="row v-padding margin-box">
+                        <div className="row">
                             <div className="col-md-4">
                                 <h6 className="full-width light-danger bold">
-                                    Nombre
+                                    Username
                                 </h6>
                                 <div>
-                                    {data.admNombre}
-                                </div>
-                            </div>
-                            <div className="col-md-4">
-                                <h6 className="full-width light-danger bold">
-                                    Teléfono
-                                </h6>
-                                <div>
-                                    {data.admTelefono}
+                                    {data.username}
                                 </div>
                             </div>
                             <div className="col-md-4">
@@ -183,31 +167,18 @@ export default class VerLocal extends Component {
                                     Correo
                                 </h6>
                                 <div>
-                                    {data.admEmail}
+                                    {data.email}
                                 </div>
                             </div>
-                        </div>
-                        <div className="row c-title v-padding">
-                            Ubicación
-                        </div>
-                        <div className="row v-padding margin-box">
-                            <div className="col-md-6">
+                            <div className="col-md-4">
                                 <h6 className="full-width light-danger bold">
-                                    Provincia
-                                </h6>
+                                    Contraseña de usuario
+                            </h6>
                                 <div>
-                                    {data.provincia.nombre}
-                                </div>
+                                    *******************
                             </div>
-                            <div className="col-md-6">
-                                <h6 className="full-width light-danger bold">
-                                    Dirección del local
-                                </h6>
-                                <div>
-                                    {data.direccionLocal}
-                                </div>
                             </div>
-                        </div>
+                        </div>                        
                     </div>
                 </div>
             )

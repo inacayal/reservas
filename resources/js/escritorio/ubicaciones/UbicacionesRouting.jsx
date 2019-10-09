@@ -8,7 +8,8 @@ import ReactDOM from 'react-dom';
  */
 import AgregarFormulario from './sub/AgregarFormulario';
 import Ubicaciones from './sub/Ubicaciones';
-import {Route} from 'react-router-dom';
+import VerUbicacion from './sub/VerUbicacion';
+import {Route,Switch} from 'react-router-dom';
 
 export default class UbicacionesRouting extends Component {
     constructor(props){
@@ -35,22 +36,32 @@ export default class UbicacionesRouting extends Component {
                             <Ubicaciones  
                                 {...match}/>
                     } />
-                <Route
-                    path={this.props.match.url+'/agregar'}
-                    component={
-                        (match) => 
-                            <AgregarFormulario  
-                                editar={false}
-                                {...match}/>
-                    } />
-                <Route
-                    path={this.props.match.url + '/editar/:id'}
-                    component={
-                        (match) => 
-                            <AgregarFormulario 
-                                editar={true}
-                                {...match}/>
-                    } />
+                <Switch>
+                    <Route
+                        path={this.props.match.url + '/editar/:id'}
+                        exact
+                        component={
+                            (match) =>
+                                <AgregarFormulario
+                                    editar={true}
+                                    {...match} />
+                        } />
+                    <Route
+                        path={this.props.match.url + '/agregar'}
+                        component={
+                            (match) =>
+                                <AgregarFormulario
+                                    editar={false}
+                                    {...match} />
+                        } />
+                    <Route
+                        path={this.props.match.url + '/:id'}
+                        component={
+                            (match) =>
+                                <VerUbicacion
+                                    {...match} />
+                        } />
+                </Switch>
             </>
         );
     }

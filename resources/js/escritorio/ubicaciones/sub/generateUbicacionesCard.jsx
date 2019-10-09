@@ -3,6 +3,7 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import {Link} from 'react-router-dom';
 /**
  * componentes
  */
@@ -31,7 +32,9 @@ export default function generateUbicacionesCard(
                             </div>
                             <div className="col-md-9 container">
                                 <div className="row">
-                                    <span className="bold sub-title text-super side-margin inline-block align-center">{ubicaciones[e].nombre}</span>
+                                    <Link to={"ubicaciones/"+e}>
+                                        <span className="bold sub-title side-margin text">{ubicaciones[e].nombre}</span>
+                                    </Link>    
                                     {acciones}
                                 </div>
                                 <div className="row v-padding">

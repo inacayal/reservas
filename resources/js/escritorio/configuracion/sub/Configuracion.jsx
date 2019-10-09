@@ -12,12 +12,15 @@ import Titulo from '../../../componentes/basic/Titulo';
  * funciones
  */
 import generateConfigurationCards from './generateConfigurationCards';
-import LoadBar from '../../../componentes/control/LoadBar';
 /**
- * api
+ * API
  */
+import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
-
+/**
+ * navegacion
+ */
+import { Navegacion } from '../Navegacion';
 export default class Configuracion extends Component {
     constructor(props) {
         super(props);
@@ -26,7 +29,6 @@ export default class Configuracion extends Component {
             loading: null,
             loadFinished: false
         };
-
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
     }
@@ -48,7 +50,7 @@ export default class Configuracion extends Component {
         });
 
         const request = GET({
-            endpoint: 'usuario/single/a/27',
+            endpoint: 'usuario/local/27',
             download: this.downloadHandler
         });
 
@@ -76,13 +78,14 @@ export default class Configuracion extends Component {
     render() {
         if (this.state.data && this.state.loadFinished) {
             const configuracion = generateConfigurationCards(
-                this.state.data
-            );
+                    this.state.data
+                ),
+                nav = Navegacion.listado();
             return (
                 <div className="full-width">
                     <Titulo
                         title="Configuración"
-                        navigation={[]} />
+                        links={nav.links} />
                     <ul className="full-width nav-list no-padding">
                         {
                             configuracion.map(

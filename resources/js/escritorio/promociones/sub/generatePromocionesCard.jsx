@@ -3,6 +3,7 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import {Link} from 'react-router-dom';
 /**
  * componentes
  */
@@ -32,7 +33,9 @@ export default function generatePromocionesCard(
                             <div className="row">
                                 <div className="col-md-8">
                                     <span className="sub-title text-super side-margin inline-block align-center bold">
-                                        {promociones[e].nombre}
+                                        <Link to={"/promociones/"+e}>
+                                            <span className="text bold">{promociones[e].nombre}</span>
+                                        </Link>
                                     </span>
                                     {acciones}
                                 </div>

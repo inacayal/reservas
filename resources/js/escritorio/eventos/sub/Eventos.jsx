@@ -13,12 +13,15 @@ import { closeModal, ConfirmarModal } from '../../../componentes/modal/Modal';
  * funciones
  */
 import generateEventosCard from './generateEventosCard';
-import LoadBar from '../../../componentes/control/LoadBar';
 /**
  * api
  */
+import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
-
+/**
+ * navegacion
+ */
+import { Navegacion } from '../Navegacion';
 export default class Eventos extends Component {
     constructor(props) {
         super(props);
@@ -36,17 +39,6 @@ export default class Eventos extends Component {
             editar: this.editarEvento,
             eliminar: this.eliminarEvento
         };
-        this.nav = [
-            {
-                title: (
-                    <div className="smaller-text text bold">
-                        <i className="fas fa-plus-circle inline-box side-margin" />
-                        Agregar nuevo
-                    </div>
-                ),
-                to: '/eventos/agregar'
-            }
-        ];
         
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
@@ -104,14 +96,15 @@ export default class Eventos extends Component {
     render() {
         if (this.state.data && this.state.loadFinished) {
             const eventos = generateEventosCard(
-                this.state.data,
-                this.actions
-            );
+                    this.state.data,
+                    this.actions
+                ),
+                nav = Navegacion.listado(this.state.data);
             return (
                 <>
                     <Titulo
                         title="Eventos"
-                        links={this.nav} />
+                        links={nav.links} />
                     <div className="container">
                         <ConfirmarModal
                             open={this.state.open}

@@ -3,13 +3,17 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {ConfigurarReservas} from './ConfigurarReservas';
+import {FormularioReservas} from '../FormularioReservas';
 /**
- * api
+ * API
  */
 import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
-
+import Titulo from '../../../componentes/basic/Titulo';
+/**
+ * navegacion
+ */
+import { Navegacion } from '../Navegacion';
 export default class Reservas extends Component {
     constructor(props){
         super(props);
@@ -39,7 +43,7 @@ export default class Reservas extends Component {
         });
 
         const request = GET({
-            endpoint: 'usuario/single/r/27',
+            endpoint: 'usuario/local/27',
             download: this.downloadHandler
         });
 
@@ -64,15 +68,18 @@ export default class Reservas extends Component {
     componentWillUnmount() {
         console.log('configuracionReservasUnmount');
     }
-    
+        
     render(){
         if (this.state.data && this.state.loadFinished){
+            const nav = Navegacion.reservas();
             return (
                 <>
-                    <div className="c-title highlight-title v-padding">
-                        Configurar Reservas
+                    < Titulo
+                        title="Configurar Reservas"
+                        links={nav.links} />
+                    <div className="container">
+                        <FormularioReservas data ={this.state.data} />
                     </div>
-                    <ConfigurarReservas data ={this.state.data} />
                 </>
             );
         }

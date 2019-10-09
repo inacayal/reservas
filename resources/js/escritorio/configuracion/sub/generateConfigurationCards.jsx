@@ -129,7 +129,7 @@ const configurationCards = [
                             Provincia
                         </h6>
                         <div>
-                            {data.provincia}
+                            {(data.provincia||{}).nombre||"Sin definir"}
                         </div>
                     </div>
                     <div className="col-md-6">
@@ -155,7 +155,7 @@ const configurationCards = [
                             Intervalo de Reservas
                     </h6>
                         <div>
-                            {data.intervalo}
+                            {data.intervalo.description}
                         </div>
                     </div>
                     <div className="col-md-6">
@@ -171,7 +171,7 @@ const configurationCards = [
                     <div className="col-md-6">
                         <h6 className="full-width light-danger bold">
                             Antelacion de Reservas
-                    </h6>
+                        </h6>
                         <div>
                             {
                                 data.antelacionReserva 

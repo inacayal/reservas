@@ -78,16 +78,16 @@ class Horario extends Eloquent
 	public function getCierreAtencionAttribute ($value){
 		return $this->splitValue($value);
 	}
-	public static function horariosQueryCallback($id){
-		return function ($query) use ($id) {
-			return $query->searchId($id);
+	public static function horariosQueryCallback($params){
+		return function ($query) use ($params) {
+			return $query->{$params->scope}($params);
 		};
 	}
 	/**
 	 * Model Scopes
 	 */
-	public function scopeSearchId($query,$id){
-		return $query->where('id',$id);
+	public function scopeSearchId($query,$params){
+		return $query->where('id',$params->id);
 	}
 	/**
 	 * Model relationship methods

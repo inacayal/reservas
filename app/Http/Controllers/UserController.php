@@ -18,9 +18,22 @@ class UserController extends Controller
     
     protected static $dependencies = [
         'list' => [],
-        'add' => [],
-        'single' => [
+        'add' => [
+            'usuarios' => 'list'
+        ],
+        'local' => [
             'provincia' => false,
+            'intervalo' => false
+        ],
+        'locales'=>[
+            'locales' => 'key',
+            'intervalo' => false
+        ],
+        'franquicia' => [
+            'locales' => false
+        ],
+        'franquicias'=>[
+            'usuarios' => 'key',
             'intervalo' => false
         ]
     ];
@@ -29,9 +42,8 @@ class UserController extends Controller
         $this->middleware('length');
     }
 
-    public function single (
+    public function singleLocal (
         $route,
-        $type,
         $id
     ){
         $dependencies = self::getDependencies($route);
@@ -43,10 +55,107 @@ class UserController extends Controller
             $relations
         )->find($id);
 
-        $user->type = $type;
         return response([
             'data'=>new Resource($user)
         ],200)->header('Content-Type','application/json'); 
+    }
+
+    public function singleFranquicia (
+        $route,
+        $id
+    ){
+        $dependencies = self::getDependencies($route);
+        $relations = $this->getDependencyScopes(
+            array_keys($dependencies),
+            array()
+        );
+        $user = User::with(
+            $relations
+        )->find($id);
+
+        return response([
+            'data'=>new Resource($user)
+        ],200)->header('Content-Type','application/json'); 
+    }
+
+    public function locales (
+        $route,
+        $id
+    ){
+        $dependencies = self::getDependencies($route);
+        $relations = $this->getDependencyScopes(
+            array_keys($dependencies),
+            array()
+        );
+        $user = User::with(
+            $relations
+        )->find($id);
+        
+        $data = self::formatResults(
+            $user,
+            $dependencies
+        );
+        
+        return response($data,200)->header('Content-Type','application/json'); 
+    }
+
+    public function franquicias (
+        $route,
+        $id
+    ){
+        $dependencies = self::getDependencies($route);
+        $relations = $this->getDependencyScopes(
+            array_keys($dependencies),
+            array(
+                'usuarios' => (object)[
+                    'scope' => 'searchFranquicias'
+                ]
+            )
+        );
+        $user = User::with(
+            $relations
+        )->find($id);
+
+        $data = self::formatResults(
+            $user,
+            $dependencies
+        );
+        
+        return response($data,200)->header('Content-Type','application/json'); 
+    }
+
+    public function add (
+        $route,
+        $id,
+        $role
+    ){
+        $dependencies = self::getDependencies($route);
+        $scope = $role != 1 
+        ? 
+            (object)[
+                'id' => $id,
+                'scope'=>'searchId' 
+            ]
+        : 
+            (object)[
+                'scope' => 'searchFranquicias'
+            ];
+        $relations = $this->getDependencyScopes(
+            array_keys($dependencies),
+            array(
+                'usuarios' => $scope
+            )
+        );
+        $user = User::with(
+            $relations
+        )->find($id);
+
+        $data = self::formatResults(
+            $user,
+            $dependencies
+        );
+        
+        return response($data,200)->header('Content-Type','application/json'); 
     }
 
     public function create (){

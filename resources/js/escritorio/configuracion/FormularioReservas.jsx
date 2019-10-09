@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 /**
  * input elements
  */
-import { Select } from '../../../componentes/input/Select';
+import { Select } from '../../componentes/input/Select';
 
 const SelectData = {
     intervalo: {
@@ -66,14 +66,15 @@ const SelectData = {
     }
 };
 
-export const ConfigurarReservas = (props)  => {
-    SelectData.intervalo.selected = props.data.intervalo;
-    SelectData.antelacion.selected = props.data.antelacionReserva;
-    SelectData.caida.selected = props.data.caida;
+export const FormularioReservas = (props)  => {
+    
+    SelectData.intervalo.selected = props.data.intervalo.id||"";
+    SelectData.antelacion.selected = props.data.antelacionReserva||"";
+    SelectData.caida.selected = props.data.caida||"";
     
     return (
-        <div className="container v-padding">
-            <div className="row">
+        <>
+            <div className="row v-padding">
                 <div className="col-md-6">
                     <h6 className="highlight no-margin bold">Antelación de la reserva</h6>
                     <Select
@@ -95,6 +96,6 @@ export const ConfigurarReservas = (props)  => {
                         titulo="selecciona el tiempo de caída de la reserva" />
                 </div>
             </div>
-        </div>
+        </>
     )
 }

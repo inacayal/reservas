@@ -110,6 +110,7 @@ html,body {
 .ReactTable{
     border: solid 1px transparent !important;
     overflow:auto;
+    width:100%;
 }
 .ReactTable .rt-thead.-header{
     box-shadow:none !important;

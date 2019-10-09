@@ -8,7 +8,8 @@ import ReactDOM from 'react-dom';
  */
 import AgregarFormulario from './sub/AgregarFormulario';
 import Eventos from './sub/Eventos';
-import {Route} from 'react-router-dom';
+import VerEvento from './sub/VerEvento';
+import {Route, Switch} from 'react-router-dom';
 
 export default class EventosRouting extends Component {
     constructor(props) {
@@ -26,22 +27,32 @@ export default class EventosRouting extends Component {
                             <Eventos
                                 {...match} />
                     } />
-                <Route
-                    path={this.props.match.url + '/agregar'}
-                    component={
-                        (match) =>
-                            <AgregarFormulario
-                                editar={false}
-                                {...match} />
-                    } />
-                <Route
-                    path={this.props.match.url + '/editar/:id'}
-                    component={
-                        (match) =>
-                            <AgregarFormulario
-                                editar = {true}
-                                {...match} />
-                    } />
+                <Switch>
+                    <Route
+                        path={this.props.match.url + '/editar/:id'}
+                        exact
+                        component={
+                            (match) =>
+                                <AgregarFormulario
+                                    editar={true}
+                                    {...match} />
+                        } />
+                    <Route
+                        path={this.props.match.url + '/agregar'}
+                        component={
+                            (match) =>
+                                <AgregarFormulario
+                                    editar={false}
+                                    {...match} />
+                        } />
+                    <Route
+                        path={this.props.match.url + '/:id'}
+                        component={
+                            (match) =>
+                                <VerEvento
+                                    {...match} />
+                        } />
+                </Switch>
             </>
         );
     }

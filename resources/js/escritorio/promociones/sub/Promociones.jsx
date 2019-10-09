@@ -18,7 +18,10 @@ import LoadBar from '../../../componentes/control/LoadBar';
  * api
  */
 import { GET } from '../../../utils/api';
-
+/**
+ * nav
+ */
+import { Navegacion } from '../Navegacion';
 export default class Promociones extends Component {
     constructor(props) {
         super(props);
@@ -36,18 +39,6 @@ export default class Promociones extends Component {
             editar: this.editarPromocion,
             eliminar: this.eliminarPromocion
         };
-        this.nav = [
-            {
-                title: (
-                    <div className="smaller-text text bold">
-                        <i className="fas fa-plus-circle inline-box side-margin" />
-                        Agregar nueva
-                    </div>
-                ),
-                to: '/promociones/agregar'
-            }
-        ];
-
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
         this.eliminarPromocion = this.eliminarPromocion.bind(this);
@@ -106,14 +97,15 @@ export default class Promociones extends Component {
     render() {
         if (this.state.data && this.state.loadFinished) {
             const promociones = generatePromocionesCard(
-                this.state.data,
-                this.actions
-            );
+                    this.state.data,
+                    this.actions
+                ),
+                nav = Navegacion.listado(this.state.data);
             return (
                 <>
                     <Titulo
                         title="Promociones"
-                        links={this.nav} />
+                        links={nav.links} />
                     <div className="container">
                         <ConfirmarModal
                             open={this.state.open}

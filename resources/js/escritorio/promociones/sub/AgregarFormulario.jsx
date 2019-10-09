@@ -4,16 +4,20 @@ import Calendar from 'react-calendar';
 /**
  * elements
  */
-import ButtonList from '../../../componentes/basic/ButtonList';
+import  Titulo from '../../../componentes/basic/Titulo';
 /**
  * handlers and elements
  */
-import LoadBar from '../../../utils/LoadBar';
+import { FormFields } from '../FormFields';
 /**
  * api
  */
+import LoadBar from '../../../utils/LoadBar';
 import { GET } from '../../../utils/api';
-import { FormFields } from '../FormFields';
+/**
+ * nav
+ */
+import {Navegacion} from '../Navegacion';
 export default class AgregarFormulario extends Component {
     constructor(props) {
         super(props);
@@ -86,12 +90,18 @@ export default class AgregarFormulario extends Component {
 
     render() {
         if (this.state.data && this.state.loadFinished) {
-            console.log(this.state.data);
+            const nav = Navegacion.formulario(
+                this.state.data.selected,
+                this.props.editar
+            );
             return (
                 <form className="full-width box-padding">
-                    <div className="row c-title highlight-title">
-                        {this.props.editar ? "Editando promoción " + this.state.data.selected.nombre : "Agregar Promoción"}
-                    </div>
+                    <Titulo
+                        title={this.props.editar 
+                            ? "Editando promoción " + this.state.data.selected.nombre 
+                            : "Agregar Promoción"}
+                        links={nav.links} 
+                        buttons={nav.buttons}/>
                     <FormFields editar={this.props.editar} {...this.state.data} />
                 </form>
             );

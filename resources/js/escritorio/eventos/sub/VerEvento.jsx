@@ -4,29 +4,27 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 /**
- * input elements
+ * sub elementos
  */
 import LoadBar from '../../../componentes/control/LoadBar';
-import Titulo from '../../../componentes/basic/Titulo';
-/**
- * API
- */
 import { GET } from '../../../utils/api';
-import { FormularioUsuario } from '../FormularioUsuario';
 /**
- * navegacion
+ * basic
  */
 import { Navegacion } from '../Navegacion';
-export default class Establecimiento extends Component {
-    constructor(props) {
+import Titulo from '../../../componentes/basic/Titulo';
+
+export default class VerEvento extends Component {
+    constructor(props){
         super(props);
         this.state = {
-            loading: null,
+            loadFinished: false,
             data: null,
-            loadFinished: false
-        };
+            open: false
+        }
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
+        
     }
 
     downloadHandler(pEvent) {
@@ -44,16 +42,15 @@ export default class Establecimiento extends Component {
             isLoading: true,
             loadFinished: false
         });
-
         const request = GET({
-            endpoint: 'usuario/local/27',
+            endpoint: '/eventos/single/27/'+this.props.match.params.id,
             download: this.downloadHandler
         });
 
         request
             .then(
                 response => {
-                    this.setState({ data: response.data.data });
+                    this.setState({ data: response.data.eventos[0] });
                 }
             )
             .catch(
@@ -67,19 +64,25 @@ export default class Establecimiento extends Component {
         this.fetchData();
     }
 
+    componentWillUnmount() {
+        console.log('localesUnmount');
+    }
+
     render() {
         if (this.state.data && this.state.loadFinished) {
-            const nav = Navegacion.usuario();
+            const data = this.state.data,
+                nav = Navegacion.singular(data);
             return (
-                <div className="container full-width ">
+                <div className="container">
                     < Titulo
-                        title="Configurar Usuario"
-                        links={nav.links} />
-                    <div className="container">
-                        <FormularioUsuario data={this.state.data} />
+                        title={"Viendo Evento " + this.state.data.nombre}
+                        links={nav.links}
+                        buttons ={nav.buttons}/>
+                    <div className="container full-width v-padding">
+                        singular
                     </div>
                 </div>
-            );
+            )
         }
         return (
             <LoadBar
@@ -87,3 +90,4 @@ export default class Establecimiento extends Component {
         );
     }
 }
+

@@ -15,7 +15,7 @@ export default function Titulo (props){
             <span className={props.class? props.class : "text-super side-margin"}>{props.title}</span>
             <Actions 
                 links={props.links}
-                actions={props.actions}/>
+                buttons={props.buttons}/>
         </div>
     );
 }

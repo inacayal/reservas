@@ -53,7 +53,7 @@ class User extends Eloquent
 	 * hasDataFormatting trait constants
 	 */
 	private static $dataKey = 'id';
-	private static $valueKey = '';
+	private static $valueKey = 'nombre';
 	private static $dataResource = '\\App\\Http\\Resources\\UsuarioResource';
 	/**
 	 * Eloquent constants and castings
@@ -94,6 +94,24 @@ class User extends Eloquent
 		'month',
 		''
 	];
+
+	/**
+	 * scopes
+	 */
+	public static function usuariosQueryCallback($params){
+		return function ($query) use ($params) {
+			return $query->{$params->scope}($params);
+		};
+	}
+	public function scopeSearchFranquicias($query,$params){
+		return $query->where('id_rol',2);
+	}
+	public function scopeSearchId($query,$params){
+		return $query->where('id',$params->id);
+	}
+	/**
+	 * end scopes
+	 */
 	/**
 	 * Model relationship methods
 	 */
@@ -125,9 +143,15 @@ class User extends Eloquent
 		return $this->belongsTo(\App\Models\Query\EstadoUsuario::class, 'id_estado');
 	}
 	public function franquicia(){
-		return $this->belongsTo(\App\User::class, 'id_franquicia');
+		return $this->belongsTo(\App\User::class, 'id_franquicia','id');
 	}
 	public function locales(){
-		return $this->hasMany(\App\User::class, 'id_franquicia');
+		return $this->hasMany(\App\User::class, 'id_franquicia','id');
+	}
+	public function administrador(){
+		return $this->belongsTo(\App\User::class, 'id_administrador', 'id');
+	}
+	public function usuarios(){
+		return $this->hasMany(\App\User::class, 'id_administrador', 'id');
 	}
 }

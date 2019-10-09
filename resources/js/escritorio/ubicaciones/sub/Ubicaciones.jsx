@@ -10,7 +10,6 @@ import Titulo from '../../../componentes/basic/Titulo';
 import {CardList} from '../../../componentes/basic/CardList';
 import ButtonList from '../../../componentes/basic/ButtonList';
 import { ConfirmarModal, closeModal } from '../../../componentes/modal/Modal';
-import LoadBar from '../../../componentes/control/LoadBar';
 /**
  * funciones
  */
@@ -18,7 +17,12 @@ import generateUbicacionesCard from './generateUbicacionesCard';
 /**
  * api
  */
+import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
+/**
+ * nav
+ */
+import { Navegacion } from '../Navegacion';
 export default class UbicacionesRouting extends Component {
     constructor(props) {
         super(props);
@@ -38,17 +42,6 @@ export default class UbicacionesRouting extends Component {
             editar: this.editarUbicacion,
             eliminar: this.eliminarUbicacion
         };
-        this.nav = [
-            {
-                title: (
-                    <div className="smaller-text text bold">
-                        <i className="fas fa-plus-circle inline-box side-margin" />
-                        Agregar nueva
-                    </div>
-                ),
-                to: '/ubicaciones/agregar'
-            }
-        ];
     }
 
     eliminarUbicacion(e) {
@@ -100,14 +93,15 @@ export default class UbicacionesRouting extends Component {
     render() {
         if (this.state.data && this.state.loadFinished) {
             const ubicaciones = generateUbicacionesCard(
-                this.state.data,
-                this.actions
-            );
+                    this.state.data,
+                    this.actions
+                ),
+                nav = Navegacion.listado(this.state.data);
             return (
                 <>
                     <Titulo
                         title="Ubicaciones"
-                        links={this.nav} />
+                        links={nav.links} />
                     <div className="container">
                         <ConfirmarModal
                             open={this.state.open}

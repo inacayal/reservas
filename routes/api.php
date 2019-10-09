@@ -18,17 +18,26 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::prefix('usuario')->name('usuario.')->group(function (){
-    Route::get('{list}/{id}/{month}/{year}','UserController@list')
-        ->where('list','list')    
-        ->name('list');
+    Route::get('{locales}/{id}','UserController@locales')
+        ->where('locales','locales')
+        ->name('locales');
 
-    Route::get('/{add}/{id}/{month}/{year}','UserController@add')
+    Route::get('{franquicias}/{id}','UserController@franquicias')
+        ->where('franquicias','franquicias')
+        ->name('franquicias');
+
+    Route::get('/{add}/{id}/{role}','UserController@add')
         ->where('add','add')
         ->name('add');
 
-    Route::get('/{single}/{type}/{id}','UserController@single')
-        ->where('single','single')
-        ->name('single');
+    Route::get('/{local}/{id}','UserController@singleLocal')
+        ->where('local','local')
+        ->name('local');
+
+    Route::get('/{franquicia}/{id}','UserController@singleFranquicia')
+        ->where('franquicia','franquicia')
+        ->name('franquicia');
+
 
     Route::put('/update/{id}','UserController@update')->name('update');
     Route::delete('/delete/{id}','UserController@delete')->name('delete');

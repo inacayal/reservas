@@ -10,15 +10,17 @@ use App\User;
 trait hasDependencies
 {
     public static $relationMapping = [
-        'reservas'  => 'App\\Models\\Reserva',
-        'horarios'  => 'App\\Models\\Horario',
-        'feriados'  => 'App\\Models\\Feriado',
-        'ubicaciones' => 'App\\Models\\Ubicacion',
-        'ubicacion' => 'App\\Models\\Ubicacion',
-        'eventos'   => 'App\\Models\\Evento',
-        'evento'   => 'App\\Models\\Evento',
-        'promociones' => 'App\\Models\\Promocion',
-        'promocion' => 'App\\Models\\Promocion',
+        'reservas'      => 'App\\Models\\Reserva',
+        'horarios'      => 'App\\Models\\Horario',
+        'feriados'      => 'App\\Models\\Feriado',
+        'ubicaciones'   => 'App\\Models\\Ubicacion',
+        'ubicacion'     => 'App\\Models\\Ubicacion',
+        'eventos'       => 'App\\Models\\Evento',
+        'evento'        => 'App\\Models\\Evento',
+        'promociones'   => 'App\\Models\\Promocion',
+        'promocion'     => 'App\\Models\\Promocion',
+        'usuarios'      => 'App\\User',
+        'locales'       => 'App\\User'
     ];
 
     public static function getFormatOptions (string $opt, string $model){

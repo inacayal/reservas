@@ -3,6 +3,7 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import {Link} from 'react-router-dom';
 /**
  * componentes
  */
@@ -43,9 +44,11 @@ export default function generateEventosCard(
                         <div className="container">
                             <div className="row">
                                 <div className="col-md-8">
-                                    <span className="sub-title text-super side-margin inline-block align-center bold">
-                                        {eventos[e].nombre}
-                                    </span>
+                                    <Link to={'eventos/'+e}>
+                                        <span className="text sub-title bold">
+                                            {eventos[e].nombre}
+                                        </span>
+                                    </Link>
                                     {acciones}
                                 </div>
                                 <div className="col-md-4 border-bottom text-right no-margin no-padding">

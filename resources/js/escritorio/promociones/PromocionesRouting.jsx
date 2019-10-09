@@ -8,7 +8,8 @@ import ReactDOM from 'react-dom';
  */
 import AgregarFormulario from './sub/AgregarFormulario';
 import Promociones from './sub/Promociones';
-import { Route } from 'react-router-dom';
+import VerPromocion from './sub/VerPromocion';
+import { Route, Switch } from 'react-router-dom';
 
 export default class PromocionesRouting extends Component {
     constructor(props) {
@@ -30,22 +31,32 @@ export default class PromocionesRouting extends Component {
                             <Promociones
                                 {...match} />
                     } />
-                <Route
-                    path={this.props.match.url + '/agregar'}
-                    component={
-                        (match) =>
-                            <AgregarFormulario
-                                editar={false}
-                                {...match} />
-                    } />
-                <Route
-                    path={this.props.match.url + '/editar/:id'}
-                    component={
-                        (match) =>
-                            <AgregarFormulario
-                                editar={true}
-                                {...match} />
-                    } />
+                <Switch>
+                    <Route
+                        path={this.props.match.url + '/editar/:id'}
+                        exact
+                        component={
+                            (match) =>
+                                <AgregarFormulario
+                                    editar={true}
+                                    {...match} />
+                        } />
+                    <Route
+                        path={this.props.match.url + '/agregar'}
+                        component={
+                            (match) =>
+                                <AgregarFormulario
+                                    editar={false}
+                                    {...match} />
+                        } />
+                    <Route
+                        path={this.props.match.url + '/:id'}
+                        component={
+                            (match) =>
+                                <VerPromocion
+                                    {...match} />
+                        } />
+                </Switch>
             </>
         );
     }

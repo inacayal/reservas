@@ -6,8 +6,8 @@ import ReactDOM from 'react-dom';
 /**
  * input elements
  */
-import { Text } from '../../../componentes/input/Text';
-import { Select } from '../../../componentes/input/Select';
+import { Text } from '../../componentes/input/Text';
+import { Select } from '../../componentes/input/Select';
 
 const SelectData = {
     ubicacion: {
@@ -45,11 +45,11 @@ const SelectData = {
     }
 };
 
-export const ConfigurarUbicacion = (props)  => {
-    SelectData.ubicacion.selected = props.data.provincia;
+export const FormularioUbicacion = (props)  => {
+    SelectData.ubicacion.selected = (props.data.provincia||{}).id||"";
     const ubicacion = SelectData.ubicacion;
     return (
-        <>
+        <div className="row v-padding">
             <div className="col-md-6">
                 <h6 className="highlight no-margin bold">Provincia</h6>
                 <Select
@@ -65,6 +65,6 @@ export const ConfigurarUbicacion = (props)  => {
                     classes={"border-box input-text margin-box"}
                     container="full-width" />
             </div>
-        </>
+        </div>
     )
 }
