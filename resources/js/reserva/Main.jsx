@@ -1,9 +1,23 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+/**
+ * pasos de la reserva
+ */
 import Local from './pasos/Local.jsx';
-import Evento from "./pasos/Evento.jsx";
+import EventoFrame from "./pasos/evento/EventoFrame.jsx";
 import Exito from "./pasos/Exito.jsx";
+/**
+ * control
+ */
 import Paginado from '../componentes/control/Paginado.jsx';
+/**
+ * handlers input
+ */
+import { showOptions, selectOption } from '../componentes/input/Select'
+import { onTextChange } from '../componentes/input/Text'
 
 //holds reservation state
 export default class Main extends Component {
@@ -11,78 +25,13 @@ export default class Main extends Component {
         super();
         this.state = {
             fecha: new Date(),
-            navPanel: 0,
-            select:{
-                local:{
-                    name:"local",
-                    show:false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {
-                        1: "Local 1",
-                        2: "Local 2",
-                        3: "Local 3"
-                    }
-                },
-                ubicacion:{
-                    name:"ubicacion",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {
-                        1: "Terraza",
-                        2: "Salón",
-                        3: "Vereda"
-                    }
-                },
-                evento: {
-                    name: "evento",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {
-                        1: "Cumpleaños",
-                        2: "Cita",
-                        3: "Amigos",
-                        4: "Boda"
-                    }
-                },
-                hora: {
-                    name: "hora",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {
-                        1: "Hora 1",
-                        2: "Hora 2",
-                        3: "Hora 3",
-                        4: "Hora 4"
-                    }
-                },
-                personas: {
-                    name: "personas",
-                    show: false,
-                    selected: null,
-                    search: "",
-                    input: React.createRef(),
-                    list: {
-                        1: "Persona 1",
-                        2: "Persona 2",
-                        3: "Persona 3",
-                        4: "Persona 4"
-                    }
-                }
-            }
+            navPanel: 0
         };
         this.onCalendarChange = this.onCalendarChange.bind(this);
         this.clickNavigation = this.clickNavigation.bind(this);
         /** start Select */
-        this.selectOption = this.selectOption.bind(this);
-        this.showOptions = this.showOptions.bind(this);
+        this.selectOption = selectOption.bind(this);
+        this.showOptions = showOptions.bind(this);
         this.panels = {
             0:"Local",
             1:"Evento",
@@ -94,25 +43,6 @@ export default class Main extends Component {
             fecha:date
         });
     }
-    /** start select functions */
-    showOptions(e){
-        let name = e.currentTarget.getAttribute('select');
-        let select = this.state.select;
-        let trigger = select[name];
-        trigger.show = !trigger.show;
-        select[name] = trigger;
-        this.setState({select});
-    }
-    selectOption(e){
-        let value = e.target.getAttribute('keyvalue');
-        let name = e.target.getAttribute('select');
-        let select = this.state.select;
-        let trigger = select[name];
-        trigger.selected = (value !== select[name].selected) ? value : null;
-        select[name] = trigger;
-        this.setState({select});
-    }
-    /** end select functions */
 
     getPanelTitle (panelId) {
         return this.panels[panelId];
@@ -136,7 +66,7 @@ export default class Main extends Component {
                         {...selectHandlers} 
                         select={this.state.select.local} 
                         current={this.state.navPanel === 0}/>
-                    <Evento 
+                    <EventoFrame 
                         {...selectHandlers} 
                         displayTitles={true}
                         eventos={this.state.select.evento} 
@@ -145,7 +75,10 @@ export default class Main extends Component {
                         ubicacion={this.state.select.ubicacion} 
                         current={this.state.navPanel === 1} 
                         fecha={this.state.fecha} 
-                        onCalendarChange={this.onCalendarChange}/>
+                        tileDisabled={() => false}
+                        dayChange = {this.onCalendarChange}
+                        monthChange = {() => false}
+                        navChange = {() => false}/>
                     <Exito 
                         current={this.state.navPanel === 2}/>
                 </div>

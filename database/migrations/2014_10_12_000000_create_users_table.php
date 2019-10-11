@@ -21,18 +21,19 @@ class CreateUsersTable extends Migration
             $table->string('email',100)->unique();
             $table->string('password');
             $table->rememberToken();
-            $table->integer('id_franquicia')->unsigned();
+            $table->integer('id_franquicia')->unsigned()->nullable();
+            $table->integer('id_provincia')->unsigned();
             $table->integer('id_rol')->unsigned()->index();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('intervalo_reserva',20);
+            $table->integer('intervalo_reserva')->unsigned();
             $table->string('correo_adm',100)->nullable();
             $table->string('telefono_adm',20)->nullable();
             $table->string('nombre_adm',100)->nullable();
             $table->string('caida_reserva',15)->nullable();
             $table->string('cuit_cuil',11)->nullable();
             $table->string('direccion',150)->nullable();
-            $table->string('telefono',20)->nullable();
+            $table->string('telefono_local',20)->nullable();
             $table->integer('id_estado')->unsigned();
             
             $table->foreign('id_franquicia','usuario_franquicia_id')
@@ -40,8 +41,23 @@ class CreateUsersTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             
+            $table->foreign('id_provincia','usuario_provincia_id')
+                ->references('id')->on('provincias')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
             $table->foreign('id_estado','usuario_estado_id')
                 ->references('id')->on('estado_usuario')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->foreign('id_rol','usuario_roles_id')
+                ->references('id')->on('roles')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            
+            $table->foreign('intervalo_reserva','usuario_intervalos_id')
+                ->references('id')->on('intervalos')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });
@@ -56,8 +72,11 @@ class CreateUsersTable extends Migration
     {
         
         Schema::table("users",function(Blueprint $table){
+            $table->dropForeign('usuario_roles_id');
+            $table->dropForeign('usuario_provincia_id');
             $table->dropForeign('usuario_franquicia_id');
             $table->dropForeign('usuario_estado_id');
+            $table->dropForeign('usuario_intervalos_id');
         });
         Schema::dropIfExists('users');
     }

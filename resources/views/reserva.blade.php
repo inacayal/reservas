@@ -7,10 +7,15 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Laravel</title>
         <!-- Styles -->
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/react-table@latest/react-table.css"
+            />
         <link href="{{ asset('css/styles.css') }}" rel="stylesheet" type="text/css"/>
         <link href="{{ asset('fontawesome-free-5.9.0-web/css/all.css') }}" rel="stylesheet"/>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        
     </head>
     <body>
         <div class="flex flex-column v-center position-ref full-height">

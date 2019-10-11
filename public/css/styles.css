@@ -25,6 +25,7 @@
   --highlight-blue:#006edc;
   --no-highlight:#e6e6e6;
   --text-color:#000000;
+  --light-border: #f2f2f2;
 }
 html,body {
     background-color: #fff;
@@ -34,12 +35,34 @@ html,body {
     height: 100vh;
     margin: 0;
 }
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+.clearfix:after {
+    content: " ";
+    display: block;
+    clear: both;
+}
 .button-border{
     border-radius:15px;
+}
+.border-bottom-b{
+    border-bottom:solid 1px var(--highlight-blue);
 }
 .border-box-no-padding{
     padding:2px 4px;
     border:solid 1px var(--border) !important;
+}
+.light-bg{
+    background-color:var(--light-border);
+}
+.i-box{
+    padding: 10px !important;
 }
 .aprobado{
     color:var(--success);
@@ -49,6 +72,9 @@ html,body {
 }
 .light-title{
     font-size:20px;
+}
+.text-top{
+    vertical-align:top;
 }
 .rechazado{
     color:var(--danger);
@@ -60,6 +86,45 @@ html,body {
 .v-padding{
     padding-top:10px;
     padding-bottom:10px;
+}
+.overlay{
+    opacity: 0.5;
+    background-color: white;
+    z-index: 1;
+    position:absolute;
+    height:100%;
+}
+.tile-overlay{
+    position:absolute;
+    top: 0px;
+    left: 0px;
+}
+.box-shadow{
+    -webkit-box-shadow: 0px 2px 3px 0px#e6e6e6;
+    -moz-box-shadow: 0px 2px 3px 0px#e6e6e6;
+    box-shadow: 0px 2px 3px 0px#e6e6e6;
+}
+.top-padding{
+    padding-top:10px;
+}
+.ReactTable{
+    border: solid 1px transparent !important;
+    overflow:auto;
+    width:100%;
+}
+.ReactTable .rt-thead.-header{
+    box-shadow:none !important;
+    border-bottom:solid 1px var(--border);
+}
+.-pagination{
+    box-shadow:none !important;
+    border-top:solid 1px var(--border) !important;
+}
+.-btn:disabled{
+    background-color: transparent !important;
+}
+.text-super{
+    vertical-align: super;
 }
 .full-height {
     height: 100vh;
@@ -81,6 +146,10 @@ html,body {
     max-height:60vh;
     overflow-y: auto;
 }
+.max-height{
+    max-height:200px;
+    overflow:auto;
+}
 .highlight-hover:hover{
     background-color:var(--no-highlight);
 }
@@ -90,14 +159,67 @@ html,body {
 .extra-left-padding{
     padding-left:80px;
 }
+.extra-m-left-padding {
+    padding-left: 40px;
+}
+.left-padding{
+    padding-left: 10px;
+    padding-right: 0px;
+}
+.subrayado:hover{
+    text-decoration:underline;
+    text-decoration-color:var(--highlight-blue);
+    cursor:pointer;
+}
+.overlay-gradient{
+    position:absolute;
+    top:0px;
+    left:0px;
+    background-color:transparent;
+    color:transparent;
+    vertical-align: top;
+    border-bottom-right-radius:7px;
+    border-bottom-left-radius:7px;
+}
+.transparent-font {
+    color:transparent;
+}
+.transparent-font:hover {
+    color: var(--highlight-blue);
+}
+.move-bottom{
+    margin-top:20vh;
+}
+.small-v-margin{
+    margin-top:3px;
+    margin-bottom:3px;
+}
+.black-overlay:hover{
+    background-color:rgba(0, 0, 0, 0.2);
+    cursor:pointer;
+}
+.gradient-background:hover{
+    color:var(--highlight-blue);
+    background-image: -moz-radial-gradient(50% 50%, circle cover, rgba(0, 0, 0, 0.2), transparent 30px);
+    background-image: -webkit-radial-gradient(50% 50%, circle cover, rgba(0, 0, 0, 0.2), transparent 30px);
+    background-image: -o-radial-gradient(50% 50%, circle cover, rgba(0, 0, 0, 0.2), transparent 30px);
+    background-image: -ms-radial-gradient(50% 50%, circle cover, rgba(0, 0, 0, 0.2), transparent 30px);
+    background-image: radial-gradient(50% 50%, circle cover, rgba(0, 0, 0, 0.2), transparent 30px)
+}
 .medium-left-padding {
     padding-left: 20px;
 }
 .relative{
     position:relative;
 }
+.visible {
+    overflow:visible !important;
+}
 .text-left{
     text-align:left;
+}
+.justify-text{
+    text-align:justify;
 }
 .text-right{
     text-align:right;
@@ -122,6 +244,12 @@ html,body {
     background-color: transparent;
     border-color:transparent;
 }
+.x-big-font{
+    font-size:72px;
+}
+.padding-left{
+    padding-left:10px;
+}
 .c-title{
     font-size:24px;
     font-weight: bold;
@@ -131,6 +259,11 @@ html,body {
 }
 .nav-reserva:disabled {
     color:rgba(227, 52, 47, 0.4);
+}
+.react-calendar__tile:disabled{
+    background-color:transparent !important;
+    opacity:0.3;
+    color:black !important;
 }
 .nav-sidebar:disabled{
     background-color:var(--border);
@@ -162,6 +295,14 @@ html,body {
     padding-right:0px;
     padding-left:0px;
 }
+.box-shadow{
+    -webkit-box-shadow: 0px 4px 4px 0px var(--border);
+    -moz-box-shadow: 0px 4px 4px 0px var(--border);
+    box-shadow: 0px 4px 4px 0px var(--border);
+}
+.no-right-padding{
+    padding-right:0px;
+}
 .big-font{
     font-size:48px;
 }
@@ -174,6 +315,9 @@ html,body {
 .same-width{
     display:block;
     width:17.33%;
+}
+.block{
+    display:block;
 }
 .flex-column{
     display:flex;
@@ -240,6 +384,13 @@ label{
     margin-top:auto;
     margin-bottom:auto;
 }
+.stick-bottom{
+    margin-bottom:5px;
+}
+.bottom-padding{
+    padding-bottom:15px;
+}
+
 .h-align-center{
     margin-left:auto;
     margin-right:auto;
@@ -259,12 +410,18 @@ label{
     color: var(--highlight-blue);
     font-weight: bold;
 }
+.mini-margin{
+    margin:2px;
+}
 .highlight-image {
     background-color: transparent !important;
 }
 .image:hover{
     background-color:var(--no-highlight);
     cursor:pointer;
+}
+.normal-text{
+    font-size:15px;
 }
 .contained{
     max-width:50%;
@@ -277,10 +434,13 @@ label{
     padding:0px !important;
 }
 .border-right{
-    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
 }
 .border-bottom{
     border-bottom: 1px solid var(--border);
+}
+.border-font{
+    color:var(--border);
 }
 .option-list {
     list-style: none;
@@ -289,6 +449,9 @@ label{
     border-top:0px;
     margin-top:-1px;
     background-color:white;
+}
+.no-border{
+    border-color:transparent;
 }
 .pull-up{
     margin-top:-3px;
@@ -354,7 +517,16 @@ li.option {
 }
 /*
 hover options
-*/
+*/ 
+.fade.in {
+    background-color:rgba(0,0,0,0.4);
+    opacity: 1;
+}
+
+.modal {
+    display: block;
+    opacity: 1;
+}
 li.option:hover {
     cursor: pointer;
     background-color: var(--no-highlight);
@@ -362,6 +534,13 @@ li.option:hover {
 .select-title {
     text-align: left;
     width: 100%;
+}
+.full-cover{
+    width: 100% ;
+    height:100%;
+    position:absolute;
+    top:0px;
+    left:0px;
 }
 /* End select */
 /* Start text input */
@@ -401,6 +580,9 @@ button:focus {
     flex-direction:row;
     overflow:auto;
 }
+.h-overflow-auto{
+    overflow:auto;
+}
 .circle{
     border-radius:50%;
     height:15px;
@@ -409,6 +591,14 @@ button:focus {
     background-color:var(--highlight-blue);
     display:inline;
     vertical-align: super;
+}
+.small-padding{
+    padding:4px;
+}
+.decorate-hover:hover{
+    color:white;
+    text-decoration: underline;
+    text-decoration-color:var(--highlight-blue);
 }
 .line-v-middle{
     vertical-align: middle;
@@ -441,7 +631,7 @@ button:focus {
     color:var(--light-danger) !important;
 }
 .react-calendar{
-    border:solid 1px var(--border) !important;
+    border:solid 1px transparent !important;
     width:100% !important;
     font-family:inherit !important;
 }
@@ -470,6 +660,12 @@ button:focus {
 }
 .twenty{
     width: 20%;
+}
+.ten {
+    width: 10%;
+}
+.ninety {
+    width: 90%;
 }
 .eighty{
     width: 80%;

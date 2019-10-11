@@ -25,6 +25,10 @@
         "sass-loader": "^7.1.0"
     },
     "dependencies": {
-        "react-calendar": "^2.19.0"
+        "react-bootstrap-modal": "^4.2.0",
+        "react-calendar": "^2.19.0",
+        "react-router-dom": "^5.0.1",
+        "react-table": "^6.10.0",
+        "react-table-hoc-fixed-columns": "^2.1.1"
     }
 }

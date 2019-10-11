@@ -1,6 +1,12 @@
+/**
+ * react basic
+ */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import ButtonList from '../complex/allUse/ButtonList';
+/**
+ * componentes
+ */
+import ButtonList from '../basic/ButtonList';
 
 function BarraNavegacion(props) {
     let items = [
@@ -21,7 +27,7 @@ function BarraNavegacion(props) {
         <div className="container border-bottom">
             <div className="row">
                 <div className="col-sm-8">
-                    <h4>
+                    <h4 className="bold">
                         Nombre de usuario
                     </h4>
                 </div>

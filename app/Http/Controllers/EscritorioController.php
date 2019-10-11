@@ -23,7 +23,8 @@ class EscritorioController extends Controller
      */
     public function index()
     {
-        return view('escritorio');
+        $param = json_encode(['pam'=>'param1']);
+        return view('escritorio',compact('param'));
     }
     /**
      * Mostrar formulario de reservas
