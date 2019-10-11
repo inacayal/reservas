@@ -52,7 +52,11 @@ Route::prefix('reservas')->name('reservas.')->group(function (){
     Route::get('/{add}/{id}/{month}/{year}','ReservaController@add')
         ->where('add','add')
         ->name('add');
-        
+
+    Route::get('{single}/{userId}/{id}','ReservaController@single')
+        ->where('single','single')
+        ->name('single');    
+    
     Route::put('/update/{id}','ReservaController@update')->name('update');
     Route::delete('/delete/{id}','ReservaController@delete')->name('delete');
     Route::post('/create','ReservaController@create')->name('create');

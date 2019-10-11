@@ -22,52 +22,54 @@ import {DAYS,MONTHS} from '../../../constantes/DaysMonths';
 import {getMonthLength} from '../../../utils/Helper';
 import { evaluateDateChange } from '../../../utils/Helper';
 
-const WeekDisplay = (
-    props
-) => {
-    const 
-        [nDate,changeDate] = useState(new Date(props.date)),
-        week = generateWeek(
-            nDate,
-            props.data,
-            props.actions,
-            props.type
-        ),
-        changeIndex = (e) => {
-            e.preventDefault(); 
-            evaluateDateChange(
-                new Date(nDate), 
-                parseInt(e.currentTarget.getAttribute('data')), 
-                props.fetch,
-                changeDate
-            );
-        },
-        classes = "no-padding full-width flex-row nav-list";   
+const WeekDisplay = React.memo(
+    (
+        props
+    ) => {
+        const
+            [nDate, changeDate] = useState(new Date(props.date)),
+            week = generateWeek(
+                nDate,
+                props.data,
+                props.actions,
+                props.type
+            ),
+            changeIndex = (e) => {
+                e.preventDefault();
+                evaluateDateChange(
+                    new Date(nDate),
+                    parseInt(e.currentTarget.getAttribute('data')),
+                    props.fetch,
+                    changeDate
+                );
+            },
+            classes = "no-padding full-width flex-row nav-list";
 
-    return (
-        <>
-            <ul className={nDate.getDate()<7 ? classes + " h-end" : classes}>
-                {
-                    week.map(
-                        (elem, index) =>
-                            <li
-                                key={index}
-                                className={elem.data == props.date.getDate() ? elem.class + " selected" : elem.class}
-                                data={elem.data}
-                                onClick={props.verDia}>
-                                <elem.content />
-                            </li>
-                    )
-                }
-            </ul>
-            <ButtonList
-                clickHandler={changeIndex}
-                elemClass="box-transparent"
-                displayList="flex-row margin-box no-padding nav-list full-width"
-                elems={props.sideTitles} />
-        </>
-    );
-}
+        return (
+            <>
+                <ul className={nDate.getDate() < 7 ? classes + " h-end" : classes}>
+                    {
+                        week.map(
+                            (elem, index) =>
+                                <li
+                                    key={index}
+                                    className={elem.data == props.date.getDate() ? elem.class + " selected" : elem.class}
+                                    data={elem.data}
+                                    onClick={props.verDia}>
+                                    <elem.content />
+                                </li>
+                        )
+                    }
+                </ul>
+                <ButtonList
+                    clickHandler={changeIndex}
+                    elemClass="box-transparent"
+                    displayList="flex-row margin-box no-padding nav-list full-width"
+                    elems={props.sideTitles} />
+            </>
+        );
+    }
+);
 
 function DayCalendar(props) {
     if (props.horarios){
@@ -91,6 +93,7 @@ function DayCalendar(props) {
                 },
                 'semana'
             );
+            console.log('renderall')
             return (
                 <div className="container">
                     <div className="row v-padding bold">

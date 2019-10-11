@@ -48,7 +48,14 @@ export const FeriadosActions = {
             links: [
                 {
                     title: (
-                        <div className="smaller-text decorate-hover  text small-padding">
+                        <div className="smaller-text decorate-hover text small-v-padding">
+                            <i className="fas fa-eye side-margin" />
+                        </div>
+                    ),
+                    to: '/horarios/feriados/' + key
+                },{
+                    title: (
+                        <div className="smaller-text decorate-hover text small-v-padding">
                             <i className="fas fa-pen inline-box side-margin" />
                         </div>
                     ),
@@ -64,15 +71,6 @@ export const FeriadosActions = {
                     ),
                     click: actions.eliminar,
                     data: key,
-                },
-                {
-                    title: (
-                        <div className="smaller-text decorate-hover ">
-                            <i className="fas fa-eye side-margin" />
-                        </div>
-                    ),
-                    click: actions.ver,
-                    data: key
                 }
             ]
         }),

@@ -11,13 +11,12 @@ import Calendario from './sub/Calendario';
 /**
  * componentes
  */
-import Titulo from '../../componentes/basic/Titulo';
-
+import VerReserva from'./sub/VerReserva';
 /**
  * constantes
  */
 import {ALL_CONTROL} from '../../constantes/CalendarControls';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 export default class ReservasRouting extends Component {
     constructor(props) {
@@ -36,13 +35,22 @@ export default class ReservasRouting extends Component {
                         (match) =>
                             <Calendario />
                     } />
-                <Route
-                    path={this.props.match.url + '/agregar'}
-                    component={
-                        (match) =>
-                            <AgregarFormulario
-                                {...match} />
-                    } />
+                <Switch>
+                    <Route
+                        path={this.props.match.url + '/agregar'}
+                        component={
+                            (match) =>
+                                <AgregarFormulario
+                                    {...match} />
+                        } />
+                    <Route
+                        path={this.props.match.url + '/:id'}
+                        component={
+                            (match) =>
+                                <VerReserva
+                                    {...match} />
+                        } />
+                </Switch>
             </>
         );
     }

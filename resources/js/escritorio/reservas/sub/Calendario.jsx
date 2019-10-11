@@ -17,12 +17,12 @@ import Titulo from '../../../componentes/basic/Titulo';
  * constantes
  */
 import { NO_WEEK_CONTROLS } from '../../../constantes/CalendarControls';
-
+import { Navegacion } from '../Navegacion';
 export default class Calendario extends Component {
     constructor(props){
         super(props);
         this.state = {
-            date: new Date(),
+            date: new Date('09-30-2019'),
             weekRender: true,
             dayRender: true,
             show: "1",
@@ -46,18 +46,6 @@ export default class Calendario extends Component {
         this.revertirReserva = this.revertirReserva.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
         this.fetchData = this.fetchData.bind(this);
-
-        this.nav = [
-            {
-                title: (
-                    <div className="smaller-text text bold">
-                        <i className="fas fa-plus-circle inline-box side-margin" />
-                        Agregar nueva
-                    </div>
-                ),
-                to: 'reservas/agregar'
-            }
-        ];
     }
 
     revertirReserva() {
@@ -122,11 +110,12 @@ export default class Calendario extends Component {
 
     render(){
         if (this.state.data&& this.state.loadFinished){
+            const nav = Navegacion.listado();
             return (
                 <>
                     <Titulo
                         title={"Reservaciones"}
-                        links={this.nav} />
+                        links={nav.links} />
                     <div className="container">
                         <Calendar
                             show={this.state.show}

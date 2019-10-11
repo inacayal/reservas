@@ -11,6 +11,7 @@ import ButtonList from '../../../componentes/basic/ButtonList';
 import {CardList} from '../../../componentes/basic/CardList';
 import Titulo from '../../../componentes/basic/Titulo';
 import LoadBar from '../../../componentes/control/LoadBar';
+import { HorarioNavegacion as Navegacion } from '../HorarioNavegacion';
 /**
  * api
  */
@@ -102,16 +103,17 @@ export default class Horarios extends Component {
     render(){
         if ( this.state.data && this.state.loadFinished ){
             const week = generateWeek(
-                null,
-                this.state.data,
-                this.actions,
-                'horarios'
-            );
+                    null,
+                    this.state.data,
+                    this.actions,
+                    'horarios'
+                ),
+                nav = Navegacion.listado(this.state.data);
             return (
                 <>
                     <Titulo
                         title="Horarios"
-                        links={this.nav} />
+                        links={nav.links} />
                     <div className="container">
                         <ConfirmarModal
                             open={this.state.open}

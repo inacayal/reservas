@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Suppport\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use App\Traits\hasDependencies;
 
 class ReservaResource extends JsonResource
@@ -23,24 +23,36 @@ class ReservaResource extends JsonResource
             'ubicacion' => false,
             'evento'    => false,
             'promocion' => false
+        ],
+        'reservas.single' => [
+            'ubicacion' => false,
+            'evento'    => false,
+            'promocion' => false,
+            'estado'    => false
         ]
     ];
 
-    public function toArray($request)
-    {
+    public function singleReserva($el) {
+        return [   
+            "id"=> $el->id,
+            "email"=> $el->email,
+            "nombre"=> $el->nombre,
+            "apellido"=> $el->apellido,
+            "telefono"=> $el->telefono,
+            "ubicacion"=>$el->ubicacion,
+            "evento"=>$el->evento,
+            "promocion"=>$el->promocion,
+            "personas"=> $el->cantidad_personas,
+            "descripcion"=> $el->descripcion_evento,
+            "hora_reserva"=>$el->hora_reserva,
+            "estado" => $el->estado->descripcion
+        ];
+    }
+
+    public function formatCollection(Collection $data,$request){
         $res = collect([]);
         foreach ($this->resource as $el){
-            $data = [   
-                "id"=> $el->id,
-                "email"=> $el->email,
-                "nombre"=> $el->nombre,
-                "apellido"=> $el->apellido,
-                "telefono"=> $el->telefono,
-                "personas"=> $el->cantidad_personas,
-                "descripcion"=> $el->descripcion_evento,
-                "hora_reserva"=>$el->hora_reserva,
-                "estado" => $el->estado->descripcion
-            ];
+            $data = $this->singleReserva($el);
             $dependencies = self::getDependencies($request->route()->action['as']);
             $dependencyData = self::formatResults(
                 $el,
@@ -49,5 +61,13 @@ class ReservaResource extends JsonResource
             $res->push(array_merge($data,$dependencyData));
         }
         return $res->groupBy('hora_reserva');
+    }
+    
+    public function toArray($request)
+    {
+        if ($this->resource instanceof Collection){
+            return $this->formatCollection($this->resource,$request);
+        } else 
+            return $this->singleReserva($this->resource); 
     }
 }

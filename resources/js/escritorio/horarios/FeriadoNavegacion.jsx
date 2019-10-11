@@ -4,8 +4,55 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-export const Navegacion = {
-    listado: () => ({
+export const FeriadoNavegacion = {
+    formulario: (data, editar) => {
+        return editar ? {
+            links: [
+                {
+                    title: (
+                        <div className="smaller-text text bold">
+                            <i className="fas fa-store-alt inline-box side-margin" />
+                            Feriados
+                        </div>
+                    ),
+                    to: '/horarios/feriados'
+                }, {
+                    title: (
+                        <div className="smaller-text text bold">
+                            <i className="fas fa-eye" />
+                            Ver
+                        </div>
+                    ),
+                    to: '/horarios/feriados/' + data.feriados.id
+                }
+            ],
+            buttons: [
+                {
+                    title: (
+                        <div className="smaller-text text bold">
+                            <i className="fas fa-trash inline-box side-margin" />
+                            Eliminar
+                        </div>
+                    ),
+                    click: () => false
+                },
+            ]
+        } : {
+                links: [
+                    {
+                        title: (
+                            <div className="smaller-text text bold">
+                                <i className="fas fa-calendar-day inline-box side-margin" />
+                                Feriados
+                            </div>
+                        ),
+                        to: '/horarios/feriados'
+                    }
+                ],
+                buttons: null
+            };
+    },
+    listado: (data) => ({
         links: [
             {
                 title: (
@@ -15,46 +62,49 @@ export const Navegacion = {
                     </div>
                 ),
                 to: '/'
-            }
-        ]
-    }),
-    reservas: () => ({
-        links: [
+            },
             {
                 title: (
                     <div className="smaller-text text bold">
-                        <i className="fas fa-cog inline-box side-margin" />
-                        Configuración
-                </div>
-                ),
-                to: '/configuracion'
-            }
-        ]
-    }),
-    usuario: (data) => ({
-        links: [
-            {
-                title: (
-                    <div className="smaller-text text bold">
-                        <i className="fas fa-cog inline-box side-margin" />
-                        Configuración
-                </div>
-                ),
-                to: '/configuracion'
-            }
-        ]
-    }),
-    establecimiento: () => ({
-        links: [
-            {
-                title: (
-                    <div className="smaller-text text bold">
-                        <i className="fas fa-cog inline-box side-margin" />
-                        Configuración
+                        <i className="fas fa-plus-circle inline-box side-margin" />
+                        Agregar nuevo
                     </div>
                 ),
-                to: '/configuracion'
+                to: '/horarios/feriados/agregar'
             }
+        ]
+    }),
+    singular: (data) => ({
+        links: [
+            {
+                title: (
+                    <div className="smaller-text text bold">
+                        <i className="fas fa-calendar-day inline-box side-margin" />
+                        Feriados
+                    </div>
+                ),
+                to: '/horarios/feriados'
+            },
+            {
+                title: (
+                    <div className="smaller-text text bold">
+                        <i className="fas fa-pen inline-box side-margin" />
+                        Editar
+                    </div>
+                ),
+                to: '/horarios/feriados/editar/' + data.id
+            }
+        ],
+        buttons: [
+            {
+                title: (
+                    <div className="smaller-text text bold">
+                        <i className="fas fa-trash inline-box side-margin" />
+                        Eliminar
+                    </div>
+                ),
+                click: () => false
+            },
         ]
     })
 

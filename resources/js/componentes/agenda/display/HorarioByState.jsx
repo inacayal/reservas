@@ -92,7 +92,7 @@ export const HorarioWeekByState = {
                     <div className="full-width box-padding">
                         <div className="seventy inline-block sub-title">
                             <div className="bold inline-block side-margin text-top">
-                                {DAYS[sectionData.diaSemana - 1]}
+                                <Link to={'/horarios/' + dataIndex} className="text bold subrayado">{DAYS[sectionData.diaSemana - 1]}</Link>
                             </div>
                             <div className="inline-block side-margin">
                                 {renderActions}
@@ -115,20 +115,22 @@ export const HorarioWeekByState = {
             class: "box-padding background-border"
         }),
     no_data: (
-        data,
+        renderActions,
         sectionData,
-        acciones
+        statusIndex,
+        originalActions,
+        dataIndex
     ) =>
         ({
-            content: () => 
+            content: () =>
                 <>
                     <div className="full-width  v-padding">
                         <div className="seventy sub-title inline-block ">
                             <div className="inline-block side-margin bold">
-                                {DAYS[data - 1]}
+                                {DAYS[dataIndex - 1]}
                             </div>
                             <div className="inline-block side-margin">
-                                {acciones}
+                                {renderActions}
                             </div>
                         </div>
                         <div className="thirty text-right inline-block smaller-text border-bottom">
@@ -144,6 +146,6 @@ export const HorarioWeekByState = {
                         </div>
                     </div>
                 </>,
-            class: "box-padding"
+            class: "box-padding background-border"
         })
 };

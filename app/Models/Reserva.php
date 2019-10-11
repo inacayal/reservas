@@ -76,8 +76,20 @@ class Reserva extends Eloquent
 	 */
 	public static function reservasQueryCallback($params){
 		return function ($query) use ($params) {
-			return $query->thisMonth($params);
+			return $query->{$params->scope}($params);
 		};
+	}
+	
+	/**
+	 * Model scopes
+	 */
+	public function scopeThisMonth($query,$params){
+		return $query
+			->whereMonth('dia_reserva',$params->operator,$params->month)
+			->whereYear('dia_reserva',$params->operator,$params->year);
+	}
+	public function scopeSearchId($query,$params){
+		return $query->where('id',$params->id);
 	}
 	/**
 	 * Getter methods
@@ -117,14 +129,6 @@ class Reserva extends Eloquent
 	}
 	public function promocion(){
 		return $this->hasOne(\App\Models\Promocion::class, 'id','id_promocion');
-	}
-	/**
-	 * Model scopes
-	 */
-	public function scopeThisMonth($query,$params){
-		return $query
-			->whereMonth('dia_reserva',$params->operator,$params->month)
-			->whereYear('dia_reserva',$params->operator,$params->year);
 	}
 	/**
 	 * Database seeding

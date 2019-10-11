@@ -80,7 +80,7 @@ export const FeriadoWeekByState = {
                     <div className="container no-padding">
                         <div className="row">
                             <div className="col-md-9">
-                                <Link to={'horarios/feriados/' + sectionData.id}>
+                                <Link to={'/horarios/feriados/' + sectionData.id}>
                                     <span className="subrayado margin-box inline-block v-align-center light-danger c-title">{date.getDate() + " "}</span>
                                     <span className="text subrayado bold line-v-middle inline-block v-align-center">{DAYS[date.getDay()] + " "}</span>
                                 </Link>
@@ -141,7 +141,7 @@ export const FeriadoWeekByState = {
                     <div className="container no-padding">
                         <div className="row">
                             <div className="col-md-9">
-                                <Link to={'horarios/feriados/'} params={{ id: sectionData.id }}>
+                                <Link to={'/horarios/feriados/'+sectionData.id} >
                                     <span className="subrayado margin-box inline-block v-align-center light-danger c-title">{date.getDate() + " "}</span>
                                     <span className="text subrayado bold line-v-middle inline-block v-align-center">{DAYS[date.getDay()] + " "}</span>
                                 </Link>

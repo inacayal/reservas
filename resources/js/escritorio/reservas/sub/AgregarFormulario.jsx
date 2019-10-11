@@ -10,6 +10,7 @@ import EventoFrame from '../../../reserva/pasos/evento/EventoFrame';
 import { GET } from '../../../utils/api';
 import Titulo from '../../../componentes/basic/Titulo';
 import LoadBar from '../../../componentes/control/LoadBar';
+import { Navegacion } from '../Navegacion';
 
 export default class AgregarFormulario extends Component{
     constructor(props){
@@ -90,11 +91,13 @@ export default class AgregarFormulario extends Component{
 
     render(){
         if (this.state.data && this.state.loadFinished){
+            const nav = Navegacion.formulario(this.state.data);
             return (
                 <>
                     <Titulo
                         title='Agregar Reservación'
-                        links={this.nav} />
+                        links={nav.links}
+                        buttons={nav.buttons} />
                     <form className="text-right">
                         <div className="container">
                             <div className="row">

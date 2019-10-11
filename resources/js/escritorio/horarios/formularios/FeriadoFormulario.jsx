@@ -10,6 +10,7 @@ import { EventoFields } from '../EventoFields';
  * elements
  */
 import ButtonList from '../../../componentes/basic/ButtonList';
+import Titulo from '../../../componentes/basic/Titulo';
 import { Toggle } from '../../../componentes/input/Toggle';
 import LoadBar from '../../../componentes/control/LoadBar';
 /**
@@ -21,6 +22,7 @@ import {generateHoursFromInterval} from '../../../utils/Helper';
  * api
  */
 import { GET } from '../../../utils/api';
+import { FeriadoNavegacion as Navegacion } from '../FeriadoNavegacion';
 export default class FeriadoFormulario extends Component {
     constructor(props){
         super(props);
@@ -108,16 +110,21 @@ export default class FeriadoFormulario extends Component {
     }
 
     render(){
-        if (this.state.data && this.state.loadFinished)
+        if (this.state.data && this.state.loadFinished){
+            const nav = Navegacion.formulario(
+                this.state.data,
+                this.props.editar
+            );
             return (
                 <>
-                    <div className="c-title highlight-title" style={{paddingBottom:"10px"}}>
-                        {
-                            this.props.editar 
-                            ? "Editar Feriado" 
-                            : "Agregar Feriado"
+                    <Titulo
+                        title={
+                            this.props.editar
+                                ? "Editar Feriado"
+                                : "Agregar Feriado"
                         }
-                    </div>
+                        links={nav.links}
+                        buttons={nav.buttons} />
                     <div className="bold">
                         {
                             this.props.editar 
@@ -171,6 +178,7 @@ export default class FeriadoFormulario extends Component {
                     </form>
                 </>
             );
+        }
         return (
             <LoadBar
                 loaded={this.state.loading} />

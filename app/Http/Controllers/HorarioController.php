@@ -89,7 +89,6 @@ class HorarioController extends Controller
         $userId,
         $id
     ){ 
-        $user = User::with('eventos')->find($userId);
         $dependencies = self::getDependencies($route);
         $relations = $this->getDependencyScopes(
             array_keys($dependencies),

@@ -2,6 +2,7 @@
  * react basic
  */
 import React, { Component, useState } from 'react';
+import {Link} from 'react-router-dom';
 import ReactDOM from 'react-dom';
 /**
  * componentes
@@ -259,7 +260,9 @@ function generateDayCardFromArray(
                         <div className="container">
                             <div className="row">
                                 <div className="col-md-11 no-padding">
-                                    <span className="side-margin light-title inline-block">{e.nombre + " " + e.apellido}</span>
+                                    <Link to={'reservas/'+e.id}>
+                                        <span className="side-margin sub-title text bold subrayado inline-block">{e.nombre + " " + e.apellido}</span>
+                                    </Link>
                                     {acciones}
                                 </div>
                                 <div className="col-md-1 no-padding smaller-text">

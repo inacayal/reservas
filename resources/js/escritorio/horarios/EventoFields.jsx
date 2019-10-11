@@ -47,14 +47,14 @@ export const EventoFields = (props) => {
                 props.class.type==='feriado'
                 ?
                     <div className={props.class.col} >
-                        <Text rows={3} titulo="Nombre" name="nombre" value={props.data.nombre || ""} classes={"border-box input-text margin-box"} />
+                        <Text rows={3} titulo="Nombre" name="nombre" value={(props.data || {}).nombre || ""} classes={"border-box input-text margin-box"} />
                     </div>
                 :
                     ""
             }
             
             <div className={props.class.col}>
-                <Text rows={4} titulo="Descripción" name="descripcion" value={props.data.descripcion || ""} classes={"border-box input-text margin-box"} />
+                <Text rows={4} titulo="Descripción" name="descripcion" value={(props.data||{}).descripcion || ""} classes={"border-box input-text margin-box"} />
             </div>
         </>
     );

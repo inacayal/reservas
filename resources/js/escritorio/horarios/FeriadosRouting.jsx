@@ -8,10 +8,11 @@ import ReactDOM from 'react-dom';
  */
 import Feriados from './sub/Feriados';
 import FeriadoFormulario from './formularios/FeriadoFormulario';
+import VerFeriado from './sub/VerFeriado';
 /**
  * react router
  */
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 export default function FeriadosRouting({ match }) {
     return (
@@ -23,22 +24,31 @@ export default function FeriadosRouting({ match }) {
                     (match) => 
                         <Feriados {...match} />
                 } />
-            <Route
-                path={match.url + '/agregar'}
-                component={
-                    (match) => 
-                        <FeriadoFormulario
-                            editar={false}
-                            {...match} />
-                } />
-            <Route
-                path={match.url + '/editar/:id'}
-                component={
-                    (match) => 
-                        <FeriadoFormulario
-                            editar={true}
-                            {...match} />
-                } />
+            <Switch>
+                <Route
+                    path={match.url + '/agregar'}
+                    component={
+                        (match) =>
+                            <FeriadoFormulario
+                                editar={false}
+                                {...match} />
+                    } />
+                <Route
+                    path={match.url + '/editar/:id'}
+                    component={
+                        (match) =>
+                            <FeriadoFormulario
+                                editar={true}
+                                {...match} />
+                    } />
+                <Route
+                    path={match.url + '/:id'}
+                    component={
+                        (match) =>
+                            <VerFeriado
+                                {...match} />
+                    } />
+            </Switch>
         </>
     );
 }

@@ -23,13 +23,17 @@ import LoadBar from '../../../componentes/control/LoadBar';
  * api
  */
 import { GET } from '../../../utils/api';
+/**
+ * navigation
+ */
+import { FeriadoNavegacion as Navegacion } from '../FeriadoNavegacion';
 export default class Feriados extends Component {
     constructor(props){
         super(props);
         this.state= {
             data: null,
             show:"2",
-            date:new Date('09-30-2019'),
+            date:new Date(),
             controls : NO_DAY_CONTROL
         };
         
@@ -44,18 +48,6 @@ export default class Feriados extends Component {
         this.closeModal = closeModal.bind(this);
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
-
-        this.nav = [
-            {
-                title: (
-                    <div className="smaller-text text bold">
-                        <i className="fas fa-plus-circle inline-box side-margin" />
-                        Agregar nuevo
-                    </div>
-                ),
-                to: '/horarios/feriados/agregar'
-            }
-        ];
     }
 
 
@@ -118,12 +110,13 @@ export default class Feriados extends Component {
     }
 
     render(){
-        if (this.state.data && this.state.loadFinished)
+        if (this.state.data && this.state.loadFinished){
+            const nav = Navegacion.listado();
             return (
                 <>
                     <Titulo
                         title="Feriados"
-                        links={this.nav} />
+                        links={nav.links} />
                     <div className="container">
                         <ConfirmarModal
                             open={this.state.open}
@@ -141,6 +134,7 @@ export default class Feriados extends Component {
                     </div>
                 </>
             );
+        }
         return (
             <LoadBar
                 loaded={this.state.loading} />

@@ -4,11 +4,13 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Calendario } from '../Calendario';
-import { SelectFields } from '../SelectFields';
-import { EventoFields } from '../EventoFields';
+import Titulo from '../../../componentes/basic/Titulo';
+import {HorarioNavegacion as Navegacion} from '../HorarioNavegacion'
 /**
  * elements
  */
+import { SelectFields } from '../SelectFields';
+import { EventoFields } from '../EventoFields';
 import ButtonList from '../../../componentes/basic/ButtonList';
 import { Toggle } from '../../../componentes/input/Toggle';
 import LoadBar from '../../../componentes/control/LoadBar';
@@ -60,7 +62,7 @@ export default class FeriadoFormulario extends Component {
             }
             :
             {
-                endpoint: '/horarios/agregar/27/',
+                endpoint: '/horarios/add/27',
                 download: this.downloadHandler
             },
             request = GET(conf);
@@ -105,14 +107,21 @@ export default class FeriadoFormulario extends Component {
 
     render() {
         if (this.state.data && this.state.loadFinished){
+            const nav = Navegacion.formulario(
+                this.state.data,
+                this.props.editar
+            );
             return (
                 <>
                     <div className="c-title highlight-title" style={{ paddingBottom: "10px" }}>
-                        {
-                            this.props.editar 
-                            ? "Editar horario del día " + DAYS[parseInt(this.state.data.horarios.diaSemana)-1] 
-                            : "Agregar horario al día "+DAYS[parseInt(this.props.match.params.day)-1]
-                        }
+                        <Titulo
+                            title={
+                                this.props.editar
+                                    ? "Editar horario del día " + DAYS[parseInt(this.state.data.horarios.diaSemana) - 1]
+                                    : "Agregar horario al día " + DAYS[parseInt(this.props.match.params.day) - 1]
+                            }
+                            links={nav.links}
+                            buttons={nav.buttons} />
                     </div>
                     <form className="full-width">
                         <div className="container">

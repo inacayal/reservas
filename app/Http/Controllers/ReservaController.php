@@ -35,6 +35,13 @@ class ReservaController extends Controller
             'feriados.eventos.promociones' => false,
             'horarios.eventos.promociones' => false,
             'intervalo' 			=> false
+        ],
+        'single' => [
+            'reservas'           => false,
+            'reservas.ubicacion' => false,
+            'reservas.evento'    => false,
+            'reservas.promocion' => false,
+            'reservas.estado'    => false
         ]
     ];
     
@@ -106,6 +113,29 @@ class ReservaController extends Controller
             'antelacion' => $user->antelacion_reserva
         ];
         return response(array_merge($data,$extra) ,200)->header('Content-Type','application/json'); 
+    }
+
+    public function single(
+        $route, 
+        $userId,
+        $id
+    ){ 
+        $dependencies = self::getDependencies($route);
+        $relations = $this->getDependencyScopes(
+            array_keys($dependencies),
+            array('reservas' => (object)['id'=>$id,'scope'=>'searchId'])
+        );
+        
+        $user = User::with(
+            $relations
+        )->find($userId);
+
+        $data = self::formatResults(
+            $user,
+            $dependencies
+        );
+
+        return response($data,200)->header('Content-Type','application/json');
     }
 
     public function create (){
