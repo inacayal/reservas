@@ -93,7 +93,6 @@ function DayCalendar(props) {
                 },
                 'semana'
             );
-            console.log('renderall')
             return (
                 <div className="container">
                     <div className="row v-padding bold">

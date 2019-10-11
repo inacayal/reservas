@@ -78746,7 +78746,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var FeriadoMonthByState = {
-  laboral: function laboral(renderActions, sectionData, date, isThisMonth) {
+  laboral: function laboral(renderActions, sectionData, date, isSelectedDate, isThisMonth) {
     return {
       content: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "c-title light-danger"
@@ -78759,7 +78759,7 @@ var FeriadoMonthByState = {
       "class": "same-width text-center box-padding light-danger relative black-overlay"
     };
   },
-  no_laboral: function no_laboral(renderActions, sectionData, date, isThisMonth) {
+  no_laboral: function no_laboral(renderActions, sectionData, date, isSelectedDate, isThisMonth) {
     return {
       content: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "c-title light-danger"
@@ -78774,7 +78774,7 @@ var FeriadoMonthByState = {
       "class": "same-width text-center box-padding light-danger fix-heigh relative black-overlay"
     };
   },
-  no_data: function no_data(renderActions, sectionData, date, isThisMonth) {
+  no_data: function no_data(renderActions, sectionData, date, isSelectedDate, isThisMonth) {
     return {
       content: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "content c-title"
@@ -79151,7 +79151,7 @@ var ReservaDayByState = {
   }
 };
 var ReservaMonthByState = {
-  data: function data(renderActions, sectionData, date, isThisMonth) {
+  data: function data(renderActions, sectionData, date, isSelectedDate, isThisMonth) {
     return {
       content: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "c-title light-danger"
@@ -79161,15 +79161,15 @@ var ReservaMonthByState = {
           marginTop: "-8px"
         }
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, renderActions)),
-      "class": "same-width text-center box-padding light-danger relative black-overlay"
+      "class": isSelectedDate ? "same-width text-center box-padding light-danger relative black-overlay selected" : "same-width text-center box-padding light-danger relative black-overlay"
     };
   },
-  no_data: function no_data(renderActions, sectionData, date, isThisMonth) {
+  no_data: function no_data(renderActions, sectionData, date, isSelectedDate, isThisMonth) {
     return {
       content: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "content c-title"
       }, date.getDate()),
-      "class": isThisMonth ? "same-width text-center box-padding fix-height" : "background-border same-width text-center box-padding fix-height"
+      "class": isThisMonth ? isSelectedDate ? "same-width text-center box-padding fix-height selected" : "same-width text-center box-padding fix-height" : "background-border same-width text-center box-padding fix-height"
     };
   }
 };
@@ -79188,7 +79188,6 @@ var ReservaWeekByState = {
     };
   },
   data: function data(renderActions, sectionData, statusIndex, originalActions, dataIndex) {
-    var reservations = generateCardListForReservationObject(sectionData, originalActions.inner);
     return {
       content: function content() {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -79202,75 +79201,6 @@ var ReservaWeekByState = {
     };
   }
 };
-
-function generateCardListForReservationObject(resObject, actions) {
-  return Object.keys(resObject).map(function (e, i) {
-    var hora = new Date(parseInt(e)),
-        reservaciones = generateCardsForReservationArray(resObject[e], actions);
-    var _ref = [e.substr(0, e.length / 2), e.substr(e.length / 2, e.length - 1)],
-        hr = _ref[0],
-        mn = _ref[1];
-    return {
-      title: {
-        data: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "full-width container"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-1 no-padding"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "side-margin bold light-danger"
-        }, hr + ':' + mn)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-11 no-padding"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_CardList__WEBPACK_IMPORTED_MODULE_3__["CardList"], {
-          displayList: "nav-list",
-          elems: reservaciones
-        })))),
-        "class": ""
-      },
-      content: {},
-      container: {
-        "class": "box-padding"
-      }
-    };
-  });
-}
-
-function generateCardsForReservationArray(hourReservations, actions) {
-  return hourReservations.map(function (e, i) {
-    var classByState = _constantes_CardObject__WEBPACK_IMPORTED_MODULE_7__["CLASSBYSTATE"][e.estado],
-        classByIndex = {
-      0: "box-padding no-top-padding border-bottom"
-    };
-    classByIndex[hourReservations.length - 1] = hourReservations.length - 1 === 0 ? "box-padding no-top-padding" : "box-padding";
-    return {
-      title: {
-        data: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "full-width"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "inline-block ninety"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "side-margin bold"
-        }, e.nombre + " " + e.apellido), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "side-margin light-danger"
-        }, e.telefono), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "side-margin"
-        }, e.email)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "inline-block ten text-right"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: classByState
-        }, e.estado)))),
-        "class": ""
-      },
-      content: {},
-      container: {
-        "class": classByIndex[i] ? classByIndex[i] : "box-padding border-bottom"
-      }
-    };
-  });
-}
-
-;
 
 function generateDayCardFromArray(data, actions, dataStr) {
   var obj = {};
@@ -79343,9 +79273,10 @@ var AssignWeekByStatus = function AssignWeekByStatus(renderActions, sectionData,
   var index = assignIndex(sectionData);
   return _display_AssignRenderComponent__WEBPACK_IMPORTED_MODULE_2__["AssignWeekComponent"][type][index](renderActions, sectionData, index, originalActions, dataIndex);
 };
-var AssignMonthByStatus = function AssignMonthByStatus(renderActions, sectionData, date, type, isThisMonth) {
-  var index = assignIndex(sectionData);
-  return _display_AssignRenderComponent__WEBPACK_IMPORTED_MODULE_2__["AssignMonthComponent"][type][index](renderActions, sectionData, date, isThisMonth);
+var AssignMonthByStatus = function AssignMonthByStatus(renderActions, sectionData, date, currentDate, type, isThisMonth) {
+  var index = assignIndex(sectionData),
+      isSelectedDate = isThisMonth ? currentDate.getDate() === date.getDate() && currentDate.getMonth() === date.getMonth() && currentDate.getFullYear() === date.getFullYear() : false;
+  return _display_AssignRenderComponent__WEBPACK_IMPORTED_MODULE_2__["AssignMonthComponent"][type][index](renderActions, sectionData, date, isSelectedDate, isThisMonth);
 };
 
 /***/ }),
@@ -79466,7 +79397,7 @@ function evalFirstWeek(date, type) {
   evalDate.setDate(evalDate.getDate() - day);
 
   while (evalDate.getMonth() !== date.getMonth()) {
-    res.push(Object(_AssignByStatus__WEBPACK_IMPORTED_MODULE_4__["AssignMonthByStatus"])(null, null, new Date(evalDate), type, false));
+    res.push(Object(_AssignByStatus__WEBPACK_IMPORTED_MODULE_4__["AssignMonthByStatus"])(null, null, new Date(evalDate), {}, type, false));
     evalDate = new Date(evalDate);
     evalDate.setDate(evalDate.getDate() + 1);
   }
@@ -79482,7 +79413,7 @@ function evalLastWeek(date, type) {
   evalDate.setDate(evalDate.getDate() + 6 - day);
 
   while (evalDate.getMonth() !== date.getMonth()) {
-    res.push(Object(_AssignByStatus__WEBPACK_IMPORTED_MODULE_4__["AssignMonthByStatus"])(null, null, new Date(evalDate), type, false));
+    res.push(Object(_AssignByStatus__WEBPACK_IMPORTED_MODULE_4__["AssignMonthByStatus"])(null, null, new Date(evalDate), {}, type, false));
     evalDate = new Date(evalDate);
     evalDate.setDate(evalDate.getDate() - 1);
   }
@@ -79512,7 +79443,7 @@ function generateMonth(date, data, actions, type) {
       weekCtr = 6;
     }
 
-    week.push(Object(_AssignByStatus__WEBPACK_IMPORTED_MODULE_4__["AssignMonthByStatus"])(_acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_3__["GenerateActions"][type](data[dateStr], actions, data[dateStr] ? (data[dateStr] || {}).id : dateStr, 'month'), data[dateStr], new Date(datePtr), type, true));
+    week.push(Object(_AssignByStatus__WEBPACK_IMPORTED_MODULE_4__["AssignMonthByStatus"])(_acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_3__["GenerateActions"][type](data[dateStr], actions, data[dateStr] ? (data[dateStr] || {}).id : dateStr, 'month'), data[dateStr], new Date(datePtr), date, type, true));
 
     if (weekCtr === 6) {
       weekCtr = 0;
@@ -79763,7 +79694,6 @@ function DayCalendar(props) {
       right: 7
     }, 'semana');
 
-    console.log('renderall');
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "container"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -82285,7 +82215,7 @@ __webpack_require__.r(__webpack_exports__);
 var FormularioUsuario = function FormularioUsuario(props) {
   var data = props.data;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "rop-padding row c-title"
+    className: "top-padding row sub-title bold"
   }, "Usuario"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row v-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -85049,8 +84979,6 @@ function (_Component) {
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "container full-width v-padding"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row c-title v-padding"
-        }, "B\xE1sico"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row justify-content-end v-padding"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "col-md-6"
@@ -85081,7 +85009,7 @@ function (_Component) {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
           className: "full-width light-danger bold"
         }, "CUIT / CUIL"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.cuitCuil))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row c-title v-padding"
+          className: "row sub-title bold v-padding"
         }, "Usuario"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -85361,6 +85289,13 @@ var FeriadoNavegacion = {
           className: "fas fa-tachometer-alt inline-box side-margin"
         }), "Escritorio"),
         to: '/'
+      }, {
+        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "smaller-text text bold"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-calendar-week inline-box side-margin"
+        }), "Horarios"),
+        to: '/horarios'
       }, {
         title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "smaller-text text bold"
@@ -87975,7 +87910,7 @@ function (_Component) {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
           className: "full-width light-danger bold"
         }, "CUIT / CUIL"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.cuitCuil))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row c-title v-padding"
+          className: "row sub-title bold v-padding"
         }, "Encargado"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row v-padding margin-box"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -87991,7 +87926,7 @@ function (_Component) {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
           className: "full-width light-danger bold"
         }, "Correo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.admEmail))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row c-title v-padding"
+          className: "row sub-title bold v-padding"
         }, "Ubicaci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row v-padding margin-box"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {

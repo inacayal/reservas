@@ -23,7 +23,6 @@ export default class VerLocal extends Component {
         }
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
-        
     }
 
     downloadHandler(pEvent) {
@@ -158,7 +157,7 @@ export default class VerLocal extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="row c-title v-padding">
+                        <div className="row sub-title bold v-padding">
                             Encargado
                         </div>
                         <div className="row v-padding margin-box">
@@ -187,7 +186,7 @@ export default class VerLocal extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="row c-title v-padding">
+                        <div className="row sub-title bold v-padding">
                             Ubicación
                         </div>
                         <div className="row v-padding margin-box">

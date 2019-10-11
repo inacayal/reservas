@@ -87,15 +87,11 @@ export default class VerFranquicia extends Component {
                 nav = Navegacion.singular(data);
             return (
                 <div className="container">
-
                     < Titulo
                         title={"Viendo franquicia " + this.state.data.nombre}
                         links={nav.links}
                         buttons={nav.buttons} />
                     <div className="container full-width v-padding">
-                        <div className="row c-title v-padding">
-                            Básico
-                        </div>
                         <div className="row justify-content-end v-padding">
                             <div className="col-md-6">
                                 <h6 className="full-width light-danger bold">
@@ -150,7 +146,7 @@ export default class VerFranquicia extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="row c-title v-padding">
+                        <div className="row sub-title bold v-padding">
                             Usuario
                         </div>
                         <div className="row">

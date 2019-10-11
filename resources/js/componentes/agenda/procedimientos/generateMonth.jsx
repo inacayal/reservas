@@ -32,6 +32,7 @@ function evalFirstWeek (
                 null,
                 null,
                 new Date(evalDate),
+                {},
                 type,
                 false
             )
@@ -57,6 +58,7 @@ function evalLastWeek(
                 null,
                 null,
                 new Date(evalDate),
+                {},
                 type,
                 false
             )
@@ -109,6 +111,7 @@ export default function generateMonth (
                 ),
                 data[dateStr],
                 new Date(datePtr),
+                date,
                 type,
                 true
             )

@@ -66,6 +66,15 @@ export const FeriadoNavegacion = {
             {
                 title: (
                     <div className="smaller-text text bold">
+                        <i className="fas fa-calendar-week inline-box side-margin" />
+                        Horarios
+                            </div>
+                ),
+                to: '/horarios'
+            },
+            {
+                title: (
+                    <div className="smaller-text text bold">
                         <i className="fas fa-plus-circle inline-box side-margin" />
                         Agregar nuevo
                     </div>

@@ -21,6 +21,7 @@ export const FeriadoMonthByState = {
         renderActions,
         sectionData,
         date,
+        isSelectedDate,
         isThisMonth
     ) => ({
         content: 
@@ -36,6 +37,7 @@ export const FeriadoMonthByState = {
         renderActions,
         sectionData,
         date,
+        isSelectedDate,
         isThisMonth
     ) => ({
         content: (
@@ -51,6 +53,7 @@ export const FeriadoMonthByState = {
         renderActions,
         sectionData,
         date,
+        isSelectedDate,
         isThisMonth
     ) => ({
         content:(

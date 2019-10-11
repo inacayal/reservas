@@ -53,14 +53,22 @@ export const AssignMonthByStatus = (
     renderActions,
     sectionData,
     date,
+    currentDate,
     type,
     isThisMonth
 ) => {
-    const index = assignIndex(sectionData);
+    const index = assignIndex(sectionData),
+        isSelectedDate = isThisMonth 
+            ?
+                currentDate.getDate() === date.getDate() && currentDate.getMonth() === date.getMonth() && currentDate.getFullYear() === date.getFullYear()
+            :
+                false;
+
     return AssignMonthComponent[type][index](
         renderActions,
         sectionData,
         date,
+        isSelectedDate,
         isThisMonth
     );
 }

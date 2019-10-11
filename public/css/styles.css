@@ -596,7 +596,7 @@ button:focus {
     padding:4px;
 }
 .decorate-hover:hover{
-    color:var(--highlight-blue);
+    color:white;
     text-decoration: underline;
     text-decoration-color:var(--highlight-blue);
 }
