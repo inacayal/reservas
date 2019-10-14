@@ -17,7 +17,7 @@ export default class MainFrame extends Component {
         this.state = {
             sidebar: sidebar,
             loading: 0,
-            loaded: 0
+            loadFinished: false
         };
     }
 
@@ -32,6 +32,7 @@ export default class MainFrame extends Component {
 
     render() {
         const current = window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, '');
+        console.log(this.props.match);
         return (
             <div className="container">
                 <div className="row">
@@ -48,9 +49,17 @@ export default class MainFrame extends Component {
                             </div>
                             <div className="row box-padding">
                                 <div className="col-md-12  v-padding">
-                                    <this.props.render 
-                                        sub={this.state.sidebar[this.props.current].sub} 
-                                        {...this.props} />
+                                    {
+                                        (this.state.loadFinished)
+                                        ?
+                                            <this.props.render 
+                                                downloadHandler={this.downloadHandler}
+                                                sub={this.state.sidebar[this.props.current].sub} 
+                                                {...this.props} />
+                                        :
+                                            <LoadBar
+                                                loaded={this.state.loading} />
+                                    }
                                 </div>
                             </div>
                         </div>

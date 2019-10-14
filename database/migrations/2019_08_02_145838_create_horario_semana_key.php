@@ -13,7 +13,7 @@ class CreateHorarioSemanaKey extends Migration
      */
     public function up()
     {
-        Schema::table('horarios_semana', function (Blueprint $table) {
+        Schema::table('usuario_horario', function (Blueprint $table) {
             $table->integer('id_estado')->unsigned()->default(1);
             $table->foreign('id_estado','estado_apertura_id_estado')
                 ->references('id')->on('estado_apertura')

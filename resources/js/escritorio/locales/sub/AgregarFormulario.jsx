@@ -27,21 +27,9 @@ export default class AgregarFormulario extends Component{
     constructor(props){
         super(props);
         this.state = {
-            data:null,
-            loadFinished:false,
-            loading:null
+            data:null
         };
         this.fetchData = this.fetchData.bind(this);
-        this.downloadHandler = this.downloadHandler.bind(this);
-    }
-
-    downloadHandler(pEvent) {
-        let
-            loading = Math.round((pEvent.loaded * 100) / pEvent.total),
-            state = loading !== 100 ?
-                { loading, loadFinished: false }
-                : { loading, loadFinished: true };
-        this.setState(state);
     }
 
     fetchData() {
@@ -49,12 +37,12 @@ export default class AgregarFormulario extends Component{
         ?  
             {
                 endpoint: '/usuario/local/'+this.props.match.params.id,
-                download: this.downloadHandler
+                download: this.props.downloadHandler
             }
         :
             {
                 endpoint: '/usuario/add/4/1',
-                download: this.downloadHandler
+                download: this.props.downloadHandler
             },
             request = GET(conf);
         request
@@ -84,32 +72,26 @@ export default class AgregarFormulario extends Component{
     }
 
     render(){
-        if (this.state.data && this.state.loadFinished){
-            const nav = Navegacion.formulario(
-                this.state.data,
-                this.props.editar
-            );
-            return (
-                <form className="full-width box-padding">
-                    < Titulo
-                        title={
-                            this.props.editar
-                                ?
-                                    "Editando local " + this.state.data.nombre
-                                : "Agregar Local"
-                        }
-                        links={nav.links}
-                        buttons ={nav.buttons} />
-                    <div className="container">
-                        <FormularioEstablecimiento data={this.state.data}/>
-                        <FormularioUsuario data={this.state.data}/>
-                    </div>
-                </form>
-            )
-        }
-        return (
-            <LoadBar
-                loaded={this.state.loading} />
+        const nav = Navegacion.formulario(
+            this.state.data,
+            this.props.editar
         );
+        return (
+            <form className="full-width box-padding">
+                < Titulo
+                    title={
+                        this.props.editar
+                            ?
+                                "Editando local " + this.state.data.nombre
+                            : "Agregar Local"
+                    }
+                    links={nav.links}
+                    buttons ={nav.buttons} />
+                <div className="container">
+                    <FormularioEstablecimiento data={this.state.data}/>
+                    <FormularioUsuario data={this.state.data}/>
+                </div>
+            </form>
+        )
     }
 }

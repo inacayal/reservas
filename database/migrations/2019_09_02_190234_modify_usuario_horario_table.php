@@ -13,10 +13,10 @@ class ModifyUsuarioHorarioTable extends Migration
      */
     public function up()
     {
-        Schema::table('horarios_semana', function (Blueprint $table) {
-            $table->integer('id_eventos')->unsigned()->default(81);
+        Schema::table('usuario_horario', function (Blueprint $table) {
+            //$table->integer('id_eventos')->unsigned()->default(81);
             $table->foreign('id_eventos','horario_semana_id_eventos_horario_eventos_id')
-                ->references('id')->on('horario_eventos')
+                ->references('id')->on('usuario_horario')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 

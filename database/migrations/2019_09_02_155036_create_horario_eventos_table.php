@@ -27,7 +27,7 @@ class CreateHorarioEventosTable extends Migration
             $table->time('fin_evento');
 
             $table->foreign('id_horario','horario_eventos_id_horario')
-                ->references('id')->on('horarios_semana')
+                ->references('id')->on('usuario_horario')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 

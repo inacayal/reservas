@@ -33,6 +33,7 @@ export default class LocalesRouting extends Component {
                     component={
                         (match) =>
                             <Locales
+                                downloadHandler={this.props.downloadHandler}
                                 {...match} />
                     } />
                     <Switch>
@@ -42,6 +43,7 @@ export default class LocalesRouting extends Component {
                             component={
                                 (match) =>
                                     <AgregarFormulario
+                                        downloadHandler={this.props.downloadHandler}
                                         editar={true}
                                         {...match} />
                             } />
@@ -50,11 +52,13 @@ export default class LocalesRouting extends Component {
                             component={
                                 (match) =>
                                     <AgregarFormulario
+                                        downloadHandler={this.props.downloadHandler}
                                         editar={false}
                                         {...match} />
                             } />
                         <Route
                             path={this.props.match.url + '/:id'}
+                            downloadHandler={this.props.downloadHandler}
                             component={
                                 (match) =>
                                     <VerLocal

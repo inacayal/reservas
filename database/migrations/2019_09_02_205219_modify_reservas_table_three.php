@@ -14,7 +14,7 @@ class ModifyReservasTableThree extends Migration
     public function up()
     {
         Schema::table('reservas', function (Blueprint $table) {
-            $table->integer('id_evento')->unsigned()->default(1);
+            $table->integer('id_evento')->unsigned()->default(1)->change();
             $table->foreign('id_evento','reservas_id_evento_horario_evento_id')
                 ->references('id')->on('horario_eventos')
                 ->onDelete('cascade')
