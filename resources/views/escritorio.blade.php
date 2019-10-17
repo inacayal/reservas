@@ -29,7 +29,7 @@
                             'title'=> 'Feriados',
                             'route'=> '/horarios/feriados',
                             'data'=> "0",
-                            'class'=> "medium-left-padding box-transparent box-padding highlight-hover full-width text-left"
+                            'class'=> "medium-left-padding box-transparent box-padding bold-hover full-width text-left"
                         ]
                     ]
                 ],
@@ -71,19 +71,19 @@
                             'title'=>"Establecimiento",
                             'route'=> '/configuracion/establecimiento',
                             'data'=>"0",
-                            'class'=> "medium-left-padding box-transparent box-padding highlight-hover full-width text-left"
+                            'class'=> "medium-left-padding box-transparent box-padding bold-hover full-width text-left"
                         ],
                         [
                             'title'=>"Usuario",
                             'route'=> '/configuracion/usuario',
                             'data'=>"1",
-                            'class'=> "medium-left-padding box-transparent box-padding highlight-hover full-width text-left"
+                            'class'=> "medium-left-padding box-transparent box-padding bold-hover full-width text-left"
                         ],
                         [
                             'title'=> "Reservas",
                             'route'=> '/configuracion/reservas',
                             'data'=> "2",
-                            'class'=> "medium-left-padding box-transparent box-padding highlight-hover full-width text-left"
+                            'class'=> "medium-left-padding box-transparent box-padding bold-hover full-width text-left"
                         ]
                     ]
                 ],
