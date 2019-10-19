@@ -35,6 +35,10 @@ html,body {
     height: 100vh;
     margin: 0;
 }
+.bold-hover:hover{
+    font-weight: bolder !important;
+    cursor:pointer;
+}
 .clearfix:after {
     content: ".";
     display: block;
@@ -152,6 +156,10 @@ html,body {
 }
 .highlight-hover:hover{
     background-color:var(--no-highlight);
+}
+.highlight-blue:hover{
+    background-color:var(--highlight-blue);
+    color:white;
 }
 .background-border{
     background-color:var(--border);
