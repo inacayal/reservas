@@ -3,25 +3,37 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+/**
+ * form sub elements
+ */
+import Escritorio from './sub/Escritorio';
+import {Route} from 'react-router-dom';
 
 export default class EscritorioRouting extends Component {
-    constructor(props){ 
+    constructor(props) {
         super(props);
     }
 
-    componentDidMount() {
-        console.log('escritorioMount');
+    componentDidMount(){
+        console.log('configuracionMount');
     }
 
-    componentWillUnmount() {
-        console.log('escritorioUnmount');
+    componentWillUnmount(){
+        console.log('configuracionUnmount');
     }
 
-    render () {
+    render() {
         return (
-            <div className="container">
-                Escritorio
-            </div>
+            <>
+                <Route
+                    path={this.props.match.url}
+                    exact
+                    component={
+                        (match) =>
+                            <Escritorio
+                                {...match} />
+                    } />
+            </>
         );
     }
 }

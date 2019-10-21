@@ -1,3 +1,4 @@
+
 /**
  * react basic
  */
@@ -31,7 +32,9 @@ export default class Locales extends Component {
     constructor(props) {
         super(props);
         this.state={
-            data:null
+            loadFinished:false,
+            data:null,
+            open: false
         }
         this.columns = [
             {
@@ -71,15 +74,27 @@ export default class Locales extends Component {
             }
         ];
         this.fetchData = this.fetchData.bind(this);
+        this.downloadHandler = this.downloadHandler.bind(this);
+    }
+    
+    downloadHandler(pEvent) {
+        let
+            loading = Math.round((pEvent.loaded * 100) / pEvent.total),
+            state = loading !== 100 ?
+                { loading, loadFinished: false }
+                : { loading, loadFinished: true };
+        this.setState(state);
     }
 
     fetchData() {
         this.setState({
-            data: null
+            data: null,
+            isLoading: true,
+            loadFinished: false
         });
         const request = GET({
             endpoint: '/usuario/locales/5',
-            download: this.props.downloadHandler
+            download: this.downloadHandler
         });
 
         request
@@ -127,45 +142,51 @@ export default class Locales extends Component {
     }
 
     render() {
-        const 
-            columns = this.columns,
-            data = Object.keys(this.state.data).map(
-                e => ({
-                    ...this.state.data[e],
-                    acciones: <Actions links={this.links(e)} buttons={[]}/>
-                })
-            ),
-            ReactTableFixedColumns = withFixedColumns(ReactTable),
-            nav = Navegacion.listado(data);
-        return (
-            <>
-                < Titulo
-                    title="Locales"
-                    links={nav.links} />
-                <div className="container">
-                    <div className="row full-width no-margin">
-                        <ReactTableFixedColumns
-                            data={data}
-                            columns={columns}
-                            minRows={0}
-                            previousText={
-                                <div>
-                                    <i className="line-v-middle highlight middle-font fas fa-angle-left" />
-                                    <span className="text ">Anterior</span>
-                                </div>
-                            }
-                            nextText={
-                                <div>
-                                    <span className="text ">Siguiente</span>
-                                    <i className="line-v-middle highlight middle-font fas fa-angle-right" />
-                                </div>
-                            }
-                            pageText='Página'
-                            ofText='de'
-                            rowsText='filas'/>
+        if (this.state.data && this.state.loadFinished){
+            const 
+                columns = this.columns,
+                data = Object.keys(this.state.data).map(
+                    e => ({
+                        ...this.state.data[e],
+                        acciones: <Actions links={this.links(e)} buttons={[]}/>
+                    })
+                ),
+                ReactTableFixedColumns = withFixedColumns(ReactTable),
+                nav = Navegacion.listado(data);
+            return (
+                <>
+                    < Titulo
+                        title="Locales"
+                        links={nav.links} />
+                    <div className="container">
+                        <div className="row full-width no-margin">
+                            <ReactTableFixedColumns
+                                data={data}
+                                columns={columns}
+                                minRows={0}
+                                previousText={
+                                    <div>
+                                        <i className="line-v-middle highlight middle-font fas fa-angle-left" />
+                                        <span className="text ">Anterior</span>
+                                    </div>
+                                }
+                                nextText={
+                                    <div>
+                                        <span className="text ">Siguiente</span>
+                                        <i className="line-v-middle highlight middle-font fas fa-angle-right" />
+                                    </div>
+                                }
+                                pageText='Página'
+                                ofText='de'
+                                rowsText='filas'/>
+                        </div>
                     </div>
-                </div>
-            </>
-        )
+                </>
+            )
+        }
+        return (
+            <LoadBar
+                loaded={this.state.loading} />
+        );
     }
 }

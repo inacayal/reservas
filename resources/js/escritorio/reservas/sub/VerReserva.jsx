@@ -8,6 +8,8 @@ import ReactDOM from 'react-dom';
  */
 import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
+import {Calendario} from '../../horarios/Calendario';
+import {MONTHS} from '../../../constantes/DaysMonths';
 /**
  * basic
  */
@@ -95,15 +97,27 @@ export default class VerReserva extends Component {
         if (this.state.data && this.state.loadFinished) {
             const data = this.state.data,
                 nav = Navegacion.singular(data),
-                actions = ReservasActions.day[data.estado](this.actions,data.estado);
-            console.log(actions);
+                actions = ReservasActions.day[data.estado](this.actions,data.estado),
+                date = new Date(data.fechaReserva+" 00:00");
+            
             return (
                 <div className="container">
                     < Titulo
                         title={"Viendo Reserva"}
                         links={nav.links}
                         buttons ={actions.buttons}/>
-                    <div> singular </div>
+                    <div className="row"> 
+                        <div className="col-md-7">
+                            <div className="bold">{"Viendo "+MONTHS[date.getMonth()] + " de " + date.getFullYear()}</div>
+                            <Calendario
+                                editar={true}
+                                date={date}
+                                data={data}/>
+                        </div>
+                        <div className="col-md-5">
+                            
+                        </div>
+                    </div>
                 </div>
             )
         }

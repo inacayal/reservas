@@ -43,6 +43,7 @@ class ReservaResource extends JsonResource
             "evento"=>$el->evento,
             "promocion"=>$el->promocion,
             "personas"=> $el->cantidad_personas,
+            "fechaReserva"=> $el->getAttributes()['dia_reserva'],
             "descripcion"=> $el->descripcion_evento,
             "hora_reserva"=>$el->hora_reserva,
             "estado" => $el->estado->descripcion
