@@ -18,6 +18,9 @@ class PromocionesResource extends JsonResource
         'reservas.add' => [
             'eventos' => 'list',
         ],
+        'reservas.single'=>[
+            'estado'=>false
+        ],
         'promociones.list'=>[
             'eventos' => 'list'
         ],

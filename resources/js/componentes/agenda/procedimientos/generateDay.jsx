@@ -34,6 +34,7 @@ export function generateHourArray(
             ? hrPtr + '0' + mnPtr
             : hrPtr + '' + mnPtr,
             data = dataObject[find];
+            
         hourArray.push(
             AssignDayByStatus(
                 data,

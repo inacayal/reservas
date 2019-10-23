@@ -50,15 +50,20 @@ class ReservaResource extends JsonResource
         ];
     }
 
+    public function formatData($el,$request){
+        $dependencies = self::getDependencies($request->route()->action['as']);
+        $dependencyData = self::formatResults(
+            $el,
+            $dependencies
+        );
+        return $dependencyData;
+    }
+
     public function formatCollection(Collection $data,$request){
         $res = collect([]);
         foreach ($this->resource as $el){
             $data = $this->singleReserva($el);
-            $dependencies = self::getDependencies($request->route()->action['as']);
-            $dependencyData = self::formatResults(
-                $el,
-                $dependencies
-            );
+            $dependencyData = $this->formatData($el,$request);
             $res->push(array_merge($data,$dependencyData));
         }
         return $res->groupBy('hora_reserva');
@@ -68,7 +73,11 @@ class ReservaResource extends JsonResource
     {
         if ($this->resource instanceof Collection){
             return $this->formatCollection($this->resource,$request);
-        } else 
-            return $this->singleReserva($this->resource); 
+        } else {
+            $el = $this->resource;
+            $data = $this->singleReserva($el);
+            $dependencyData = $this->formatData($el,$request);
+            return array_merge($data,$dependencyData);
+        }
     }
 }
