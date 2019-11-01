@@ -39,6 +39,12 @@ html,body {
     font-weight: bolder !important;
     cursor:pointer;
 }
+.no-border{
+    border:0px;
+}
+.no-background{
+    background-color: transparent;
+}
 .clearfix:after {
     content: ".";
     display: block;
@@ -525,7 +531,7 @@ li.option {
 }
 /*
 hover options
-*/ 
+*/
 .fade.in {
     background-color:rgba(0,0,0,0.4);
     opacity: 1;
@@ -581,7 +587,7 @@ button:focus {
 /* End text input */
 /* End input classes*/
 .hidden{
-    display:none; 
+    display:none;
 }
 .flex-row{
     display:flex;
@@ -607,6 +613,14 @@ button:focus {
     color:white;
     text-decoration: underline;
     text-decoration-color:var(--highlight-blue);
+}
+.decorate-blue-hover:hover{
+    color:var(--highlight-blue);
+    text-decoration: underline;
+    text-decoration-color:var(--highlight-blue);
+}
+.blue-hover:hover{
+  color:var(--highlight-blue);
 }
 .line-v-middle{
     vertical-align: middle;

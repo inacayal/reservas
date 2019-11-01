@@ -5,6 +5,7 @@ import Calendar from 'react-calendar';
  * elements
  */
 import Titulo from '../../../componentes/basic/Titulo';
+import Actions from '../../../componentes/basic/Actions';
 /**
  * handlers and elements
  */
@@ -15,11 +16,11 @@ import LoadBar from '../../../utils/LoadBar';
 import { GET } from '../../../utils/api';
 import { FormFields } from '../FormFields';
 import { assignHorarios } from './generateEventosCard';
+import {ConfirmarModal} from '../../../componentes/modal/Modal';
 /**
  * navegacion
  */
-import { Navegacion } from '../Navegacion';
-export default class AgregarFormulario extends Component {
+class Formulario extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,7 +29,23 @@ export default class AgregarFormulario extends Component {
             loadFinished: false
         }
         this.fetchData = this.fetchData.bind(this);
-        this.downloadHandler = this.downloadHandler.bind(this);        
+        this.downloadHandler = this.downloadHandler.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+        this.enviarFormulario = this.enviarFormulario.bind(this);
+        this.cancelarFormulario = this.cancelarFormulario.bind(this);
+
+        this.props.actions.buttons.guardar.click = this.enviarFormulario;
+        this.props.actions.buttons.cancelar.click = this.cancelarFormulario;
+    }
+
+    enviarFormulario(e){
+        e.preventDefault();
+        console.log('guardar');
+    }
+
+    cancelarFormulario(e){
+        e.preventDefault();
+        console.log('guardar');
     }
 
     downloadHandler(pEvent) {
@@ -46,12 +63,12 @@ export default class AgregarFormulario extends Component {
             isLoading: true,
             loadFinished: false
         });
-        const conf = this.props.editar 
-        ? 
+        const conf = this.props.editar
+        ?
             {
                 endpoint: 'eventos/single/27/' + this.props.match.params.id,
                 download: this.downloadHandler
-            } 
+            }
         :
             {
                 endpoint: 'eventos/add/27',
@@ -64,6 +81,7 @@ export default class AgregarFormulario extends Component {
                 response => {
                     let data = {};
                     if (this.props.editar) {
+                        this.props.nav.buttons[0].click = this.toggleModal;
                         data = {
                             selected: response.data.eventos[0],
                             all: {
@@ -93,22 +111,36 @@ export default class AgregarFormulario extends Component {
     componentDidMount() {
         this.fetchData();
     }
-    
+
+    toggleModal(e) {
+        e.preventDefault();
+        this.setState({
+            open: !this.state.open
+        });
+    }
     render() {
+        console.log('culo')
         if (this.state.data && this.state.loadFinished){
             const data = this.props.editar ? this.state.data.selected : this.state.data;
-            const nav = Navegacion.formulario(
-                data,
-                this.props.editar
-            )
             return (
-                <form className="full-width box-padding">
-                    < Titulo
-                        title={this.props.editar ? "Editando evento " + this.state.data.selected.nombre : "Agregar Evento"}
-                        links={nav.links}
-                        buttons={nav.buttons} />
-                    <FormFields editar ={this.props.editar} {...this.state.data}/> 
-                </form>
+                <>
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.toggleModal}
+                        title="Eliminar Evento"
+                        content="¿estás seguro de eliminar este evento?" />
+                    <form className="full-width">
+                        < Titulo
+                        title={this.props.editar ? this.state.data.selected.nombre : "Agregar Evento"}
+                        links={this.props.nav.links}
+                        buttons={this.props.nav.buttons} />
+                        <FormFields editar ={this.props.editar} {...this.state.data}/>
+                        <div className="text-right">
+                            <Actions
+                                buttons={Object.values(this.props.actions.buttons)}/>
+                        </div>
+                    </form>
+                </>
             );
         }
         return (
@@ -117,3 +149,5 @@ export default class AgregarFormulario extends Component {
         );
     }
 }
+
+export default React.memo(Formulario);

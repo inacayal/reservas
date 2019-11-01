@@ -12,14 +12,14 @@ import { GET } from '../../../utils/api';
 /**
  * basic
  */
-import { Navegacion } from '../Navegacion';
 import Titulo from '../../../componentes/basic/Titulo';
 import { assignHorarios } from './generateEventosCard';
+import {ConfirmarModal} from '../../../componentes/modal/Modal';
 
 export const generateLinks =  (list,endpoint) => {
     return Object.keys(list).map(
-        (e,i) => 
-            <li 
+        (e,i) =>
+            <li
                 key={i}
                 className="bold highlight-title inline-block side-margin small-v-margin smaller-text button-border border-box">
                 <Link to={endpoint+'/'+e}>
@@ -30,8 +30,8 @@ export const generateLinks =  (list,endpoint) => {
 };
 const generateList = (list,endpoint) => {
     return Object.keys(list).map(
-        (e,i) => 
-            <li 
+        (e,i) =>
+            <li
                 key={i}
                 className="small-v-margin smaller-text">
                 <Link to={endpoint+'/'+e}>
@@ -52,6 +52,7 @@ export default class VerEvento extends Component {
         }
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
     }
 
     downloadHandler(pEvent) {
@@ -87,6 +88,13 @@ export default class VerEvento extends Component {
             );
     }
 
+    toggleModal(e) {
+        e.preventDefault();
+        this.setState({
+            open: !this.state.open
+        })
+    }
+
     componentDidMount() {
         this.fetchData();
     }
@@ -98,16 +106,21 @@ export default class VerEvento extends Component {
     render() {
         if (this.state.data && this.state.loadFinished) {
             const data = this.state.data,
-                nav = Navegacion.singular(data),
                 promociones = generateList(data.promociones.data,'/promociones'),
                 horario = generateLinks(assignHorarios(data.horarios.list)[0],'/horarios'),
                 feriados = generateLinks(data.feriados.list,'/feriados');
+            this.props.nav.buttons[0].click = this.toggleModal;
             return (
                 <div className="container">
-                    < Titulo
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.toggleModal}
+                        title="Eliminar Evento"
+                        content="¿estás seguro de eliminar este evento?" />
+                    <Titulo
                         title={data.nombre}
-                        links={nav.links}
-                        buttons ={nav.buttons}/>
+                        links={this.props.nav.links}
+                        buttons ={this.props.nav.buttons}/>
                     <div className="container full-width">
                         <div className="row">
                             <div className="col-md-9 container no-margin">
@@ -155,7 +168,7 @@ export default class VerEvento extends Component {
                                                     {feriados}
                                                 </ul>
                                             :
-                                                <div>No hay feriados asociados</div>    
+                                                <div>No hay feriados asociados</div>
                                         }
                                     </div>
                                 </div>
@@ -171,4 +184,3 @@ export default class VerEvento extends Component {
         );
     }
 }
-

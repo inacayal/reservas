@@ -21,10 +21,7 @@ import { closeModal, ConfirmarModal } from '../../../componentes/modal/Modal';
  */
 import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
-/**
- * navegacion
- */
-import { Navegacion } from '../Navegacion';
+
 
 export default class Franquicias extends Component {
     constructor(props) {
@@ -149,15 +146,14 @@ export default class Franquicias extends Component {
                         acciones: <Actions links={this.links(e)} buttons={[]} />
                     })
                 ),
-                ReactTableFixedColumns = withFixedColumns(ReactTable),
-                nav = Navegacion.listado(this.state.data);
+                ReactTableFixedColumns = withFixedColumns(ReactTable);
             return (
                 <>
                     < Titulo
                         title="Franquicias"
-                        links={nav.links} />
-                    <div className="container">
-                        <div className="row full-width no-margin">
+                        links={this.props.nav.links} />
+                    <div className="container no-padding">
+                        <div className="row">
                             <ReactTableFixedColumns
                                 data={data}
                                 columns={columns}

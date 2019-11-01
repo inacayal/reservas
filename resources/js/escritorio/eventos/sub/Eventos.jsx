@@ -21,25 +21,16 @@ import { GET } from '../../../utils/api';
 /**
  * navegacion
  */
-import { Navegacion } from '../Navegacion';
 export default class Eventos extends Component {
     constructor(props) {
         super(props);
         this.state = {
             data:null,
+            open:false,
             isLoading:false,
             loadFinished:false
         };
-
-        this.eliminarEvento = this.eliminarEvento.bind(this);
-        this.closeModal = closeModal.bind(this);
-
-        this.actions = {
-            agregar: this.agregarEvento,
-            editar: this.editarEvento,
-            eliminar: this.eliminarEvento
-        };
-        
+        this.toggleModal = this.toggleModal.bind(this);
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
     }
@@ -82,10 +73,10 @@ export default class Eventos extends Component {
         this.fetchData();
     }
 
-    eliminarEvento(e) {
+    toggleModal(e) {
         e.preventDefault();
         this.setState({
-            open: true
+            open: !this.state.open
         })
     }
 
@@ -97,20 +88,23 @@ export default class Eventos extends Component {
         if (this.state.data && this.state.loadFinished) {
             const eventos = generateEventosCard(
                     this.state.data,
-                    this.actions
-                ),
-                nav = Navegacion.listado(this.state.data);
+                    {
+                        agregar: this.agregarEvento,
+                        editar: this.editarEvento,
+                        eliminar: this.toggleModal
+                    }
+                );
             return (
                 <>
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.toggleModal}
+                        title="Eliminar Evento"
+                        content="¿estás seguro de eliminar este evento?" />
                     <Titulo
                         title="Eventos"
-                        links={nav.links} />
+                        links={this.props.nav.links} />
                     <div className="container">
-                        <ConfirmarModal
-                            open={this.state.open}
-                            closeModal={this.closeModal}
-                            title="Eliminar Evento"
-                            content="¿estás seguro de eliminar este evento?" />
                         <div className="row limit-height-half">
                             <div className="bold top-padding">
                                 {"Mostrando " + eventos.length + " eventos encontrados"}

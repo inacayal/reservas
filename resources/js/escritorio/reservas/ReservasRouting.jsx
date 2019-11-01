@@ -21,11 +21,11 @@ import { Route, Switch } from 'react-router-dom';
 export default class ReservasRouting extends Component {
     constructor(props) {
         super(props);
-        this.state = {  
+        this.state = {
         };
     }
 
-    render() { 
+    render() {
         return (
             <>
                 <Route
@@ -33,7 +33,7 @@ export default class ReservasRouting extends Component {
                     exact
                     component={
                         (match) =>
-                            <Calendario />
+                            <Calendario {...match}/>
                     } />
                 <Switch>
                     <Route

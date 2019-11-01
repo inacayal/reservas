@@ -46,9 +46,9 @@ export default class MainFrame extends Component {
                                 <BreadCrumb
                                     items={current.split('/')}/>
                             </div>
-                            <div className="row box-padding">
+                            <div className="row medium-left-padding">
                                 <div className="col-md-12  v-padding">
-                                    <this.props.render 
+                                    <this.props.render
                                         {...this.props} />
                                 </div>
                             </div>

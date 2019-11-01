@@ -33,8 +33,8 @@ export default function generateEventosCard(
     return Object.keys(eventos).map(
         e => {
             const acciones = GenerateActions.eventos(
-                e,
-                actions
+                    e,
+                    actions
                 ),
                 promociones = Object.values(eventos[e].promociones.list),
                 [horarios,horariosLength] = assignHorarios(eventos[e].horarios.list);
@@ -44,7 +44,7 @@ export default function generateEventosCard(
                         <div className="container">
                             <div className="row">
                                 <div className="col-md-8">
-                                    <Link to={'eventos/'+e}>
+                                    <Link to={'/eventos/'+e}>
                                         <span className="text sub-title bold">
                                             {eventos[e].nombre}
                                         </span>
@@ -59,24 +59,24 @@ export default function generateEventosCard(
                                 <div className="col-md-6">
                                     <div className="bold light-danger">Descripción</div>
                                     <div>{eventos[e].descripcion}</div>
-                                    
+
                                 </div>
                                 <div className="col-md-6">
                                     <div className="bold light-danger">Horarios</div>
                                     {
                                         (horariosLength > 0)
                                             ?
-                                            <CommaList data={horarios} />
+                                                <CommaList data={horarios} />
                                             :
-                                            <div>No has asignado promociones a este evento</div>
+                                                <div>No has asignado promociones a este evento</div>
                                     }
                                     <div className="bold light-danger top-padding">Promociones</div>
                                     {
                                         (promociones.length > 0)
                                             ?
-                                            <CommaList data={eventos[e].promociones.list} />
+                                                <CommaList data={eventos[e].promociones.list} />
                                             :
-                                            <div>No has asignado horarios a este evento</div>
+                                                <div>No has asignado horarios a este evento</div>
                                     }
                                 </div>
                             </div>

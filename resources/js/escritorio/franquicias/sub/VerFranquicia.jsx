@@ -12,10 +12,7 @@ import { GET } from '../../../utils/api';
  * componentes
  */
 import Titulo from '../../../componentes/basic/Titulo';
-/**
- * navegacion
- */
-import { Navegacion } from '../Navegacion';
+
 
 export default class VerFranquicia extends Component {
     constructor(props) {
@@ -83,14 +80,13 @@ export default class VerFranquicia extends Component {
 
     render() {
         if (this.state.data && this.state.loadFinished) {
-            const data = this.state.data,
-                nav = Navegacion.singular(data);
+            const data = this.state.data;
             return (
                 <div className="container">
                     < Titulo
-                        title={"Viendo franquicia " + this.state.data.nombre}
-                        links={nav.links}
-                        buttons={nav.buttons} />
+                        title={this.state.data.nombre}
+                        links={this.props.nav.links}
+                        buttons={this.props.nav.buttons} />
                     <div className="container full-width v-padding">
                         <div className="row justify-content-end v-padding">
                             <div className="col-md-6">
@@ -174,7 +170,7 @@ export default class VerFranquicia extends Component {
                                     *******************
                             </div>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                 </div>
             )
@@ -185,4 +181,3 @@ export default class VerFranquicia extends Component {
         );
     }
 }
-

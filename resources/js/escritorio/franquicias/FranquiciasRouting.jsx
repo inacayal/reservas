@@ -6,63 +6,54 @@ import ReactDOM from 'react-dom';
 /**
  * sub elementos
  */
-import AgregarFormulario from './sub/AgregarFormulario';
+import Formulario from './sub/Formulario';
 import Franquicias from './sub/Franquicias';
 import VerFranquicia from './sub/VerFranquicia';
 import { Route, Switch } from 'react-router-dom';
+import {Navegacion} from '../../acciones/ActionsByView';
 
-export default class FranquiciasRouting extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    componentDidMount() {
-        console.log('localesMount');
-    }
-
-    componentWillUnmount() {
-        console.log('localesUnmount');
-    }
-
-    render() {
-        return (
-            <>
+export default function FranquiciasRouting (props) {
+    return (
+        <>
+            <Route
+                path={props.match.url}
+                exact
+                component={
+                    (match) =>
+                        <Franquicias
+                            nav ={Navegacion.listado('/franquicias')}
+                            {...match} />
+                } />
+            <Switch>
                 <Route
-                    path={this.props.match.url}
+                    path={props.match.url + '/editar/:id'}
                     exact
                     component={
                         (match) =>
-                            <Franquicias
+                            <Formulario
+                                nav ={Navegacion.formulario(()=>false,match.match.params.id,'/franquicias')}
+                                editar={true}
                                 {...match} />
                     } />
-                <Switch>
-                    <Route
-                        path={this.props.match.url + '/editar/:id'}
-                        exact
-                        component={
-                            (match) =>
-                                <AgregarFormulario
-                                    editar={true}
-                                    {...match} />
-                        } />
-                    <Route
-                        path={this.props.match.url + '/agregar'}
-                        component={
-                            (match) =>
-                                <AgregarFormulario
-                                    editar={false}
-                                    {...match} />
-                        } />
-                    <Route
-                        path={this.props.match.url + '/:id'}
-                        component={
-                            (match) =>
-                                <VerFranquicia
-                                    {...match} />
-                        } />
-                </Switch>
+                <Route
+                    path={props.match.url + '/agregar'}
+                    component={
+                        (match) =>
+                            <Formulario
+                                nav ={Navegacion.agregar('/franquicias')}
+                                editar={false}
+                                {...match} />
+                    } />
+                <Route
+                    path={props.match.url + '/:id'}
+                    component={
+                        (match) =>
+                            <VerFranquicia
+                                nav ={Navegacion.singular(()=>false,match.match.params.id,'/franquicias')}
+                                {...match} />
+                    } />
+            </Switch>
 
-            </>
-        );
-    }
+        </>
+    );
 }

@@ -14,13 +14,13 @@ import {Link} from 'react-router-dom';
 
 export default function Actions(props) {
     const [showOptions,changeHover] = useState(false),
-        format = props.overlay 
-        ? 
+        format = props.overlay
+        ?
             {
                 overHandler: (e) => changeHover(true),
                 leaveHandler: (e) => changeHover(false),
                 container: "overlay-gradient full-cover",
-                list: showOptions ? "justify-content-center nav-list full-cover box-transparent transparent-font c-title flex-row no-padding" : "hidden", 
+                list: showOptions ? "nav-list text-super flex-row no-padding " : "hidden",
                 element: {
                     link: "align-center stick-bottom decorate-hover",
                     button: "no-padding no-margin box-transparent",
@@ -28,8 +28,8 @@ export default function Actions(props) {
                         button:"align-center stick-bottom decorate-hover"
                     }
                 }
-            } 
-        : 
+            }
+        :
             {
                 overHandler: (e) => false,
                 leaveHandler: (e) => false,
@@ -51,11 +51,11 @@ export default function Actions(props) {
                 props.links
                     ?
                         props.links.map(
-                            (e,ind) => 
-                                <li 
+                            (e,ind) =>
+                                <li
                                     key={ind}
                                     className= {format.element.link}>
-                                    <Link 
+                                    <Link
                                         to={e.to}>
                                         {e.title}
                                     </Link>
@@ -71,14 +71,14 @@ export default function Actions(props) {
                     props.buttons.length > 0
                     ?
                         props.buttons.map(
-                            (e,i) => 
-                                <li 
+                            (e,i) =>
+                                <li
                                     key={i}
-                                    className={format.element.container ? format.element.container.button : ""}>
+                                    className={format.element.container ? format.element.container.button : "highlight-hover button-border border-box side-margin"}>
                                     <Button
                                         data={e.data}
-                                        class={format.element.button}
-                                        click={e.click}  
+                                        class={"block no-border no-background no-padding"}
+                                        click={e.click}
                                         title={e.title} />
                                 </li>
                         )

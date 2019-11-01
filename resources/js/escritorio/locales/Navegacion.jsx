@@ -6,8 +6,8 @@ import ReactDOM from 'react-dom';
 
 export const Navegacion = {
     formulario:(data,editar) => {
-        return editar 
-        ? 
+        return editar
+        ?
             {
                 links: [
                     {
@@ -15,7 +15,7 @@ export const Navegacion = {
                             <div className="smaller-text text bold">
                                 <i className="fas fa-store inline-box side-margin" />
                                 Locales
-                    </div>
+                            </div>
                         ),
                         to: '/locales'
                     },{
@@ -54,7 +54,7 @@ export const Navegacion = {
                     }
                 ],
                 buttons: null
-            };   
+            };
     },
     listado: (data) => ({
         links:[
@@ -111,5 +111,5 @@ export const Navegacion = {
             },
         ]
     })
-    
+
 }

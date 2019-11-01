@@ -14,7 +14,7 @@ export const Navegacion = {
                         <div className="smaller-text text bold">
                             <i className="fas fa-percentage inline-box side-margin" />
                             Promociones
-                    </div>
+                        </div>
                     ),
                     to: '/promociones'
                 }, {
@@ -45,7 +45,7 @@ export const Navegacion = {
                             <div className="smaller-text text bold">
                                 <i className="fas fa-percentage inline-box side-margin" />
                                 Promociones
-                    </div>
+                            </div>
                         ),
                         to: '/promociones'
                     }

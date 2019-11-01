@@ -22,12 +22,9 @@ import { GET } from '../../../utils/api';
  */
 import { FormularioEstablecimiento } from '../../configuracion/FormularioEstablecimiento';
 import { FormularioUsuario } from '../../configuracion/FormularioUsuario';
-/**
- * navegacion
- */
-import { Navegacion } from '../Navegacion';
 
-export default class AgregarFormulario extends Component {
+
+export default class Formulario extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -79,27 +76,28 @@ export default class AgregarFormulario extends Component {
 
     render() {
         if (this.state.data && this.state.loadFinished) {
-            const nav = Navegacion.formulario(
-                this.state.data,
-                this.props.editar
-            );
             return (
-                <form className="full-width box-padding">
-                    <div className="c-title highlight-title">
+                <>
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.closeModal}
+                        title="Desactivar Franquicia"
+                        content="¿estás seguro de desactivar esta franquicia?" />
+                    <form className="full-width box-padding">
                         < Titulo
                             title={
                                 this.props.editar
-                                    ? "Editando franquicia " + this.state.data.nombre
-                                    : "Agregar franquicia"
+                                ? this.state.data.nombre
+                                : "Agregar franquicia"
                             }
-                            links={nav.links}
-                            buttons={nav.buttons} />
-                    </div>
-                    <div className="container">
-                        <FormularioEstablecimiento data={this.state.data} isFranquicia />
-                        <FormularioUsuario data={this.state.data} />
-                    </div>
-                </form>
+                            links={this.props.nav.links}
+                            buttons={this.props.nav.buttons} />
+                        <div className="container">
+                            <FormularioEstablecimiento data={this.state.data} isFranquicia />
+                            <FormularioUsuario data={this.state.data} />
+                        </div>
+                    </form>
+                </>
             )
         }
         return (

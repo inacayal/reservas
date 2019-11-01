@@ -22,7 +22,7 @@ export default class Calendario extends Component {
     constructor(props){
         super(props);
         this.state = {
-            date: new Date('09-30-2019'),
+            date: new Date(),
             weekRender: true,
             dayRender: true,
             show: "1",
@@ -39,7 +39,7 @@ export default class Calendario extends Component {
                 revertir: this.revertirReserva
             }
         };
-        
+
         this.verReserva = this.verReserva.bind(this);
         this.aceptarReserva = this.aceptarReserva.bind(this);
         this.rechazarReserva = this.rechazarReserva.bind(this);
@@ -73,7 +73,7 @@ export default class Calendario extends Component {
         request
             .then(
                 response => {
-                    this.setState({ 
+                    this.setState({
                         data: response.data.reservas.data,
                         horarios: {
                             data:response.data.horarios.data,
@@ -109,7 +109,7 @@ export default class Calendario extends Component {
     }
 
     render(){
-        if (this.state.data&& this.state.loadFinished){
+        if (this.state.data && this.state.loadFinished){
             const nav = Navegacion.listado();
             return (
                 <>
@@ -135,6 +135,6 @@ export default class Calendario extends Component {
         return (
             <LoadBar
                 loaded = {this.state.loading}/>
-        ); 
+        );
     }
 }
