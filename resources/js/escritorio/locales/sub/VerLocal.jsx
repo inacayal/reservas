@@ -21,6 +21,15 @@ export default class VerLocal extends Component {
             open: false
         }
         this.fetchData = this.fetchData.bind(this);
+        this.downloadHandler = this.downloadHandler.bind(this);
+    }
+    downloadHandler(pEvent) {
+        let
+            loading = Math.round((pEvent.loaded * 100) / pEvent.total),
+            state = loading !== 100 ?
+                { loading, loadFinished: false }
+                : { loading, loadFinished: true };
+        this.setState(state);
     }
 
     fetchData() {
@@ -29,7 +38,7 @@ export default class VerLocal extends Component {
         });
         const request = GET({
             endpoint: '/usuario/local/'+this.props.match.params.id,
-            download: this.props.downloadHandler
+            download: this.downloadHandler
         });
 
         request

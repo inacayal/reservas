@@ -123,7 +123,7 @@ export default class VerReserva extends Component {
             return (
                 <div className="container">
                     < Titulo
-                        title={"Viendo Reserva"}
+                        title={"Reserva de "+data.nombre+ " " + data.apellido}
                         links={nav.links}
                         buttons ={actions.buttons}/>
                     <div className="row"> 
@@ -146,10 +146,10 @@ export default class VerReserva extends Component {
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className=" bold light-danger">
-                                        Nombre y apellido
+                                        DNI
                                     </div>
                                     <div>
-                                        {data.nombre + " " + data.apellido}
+                                        {data.dni||"sin DNI"}
                                     </div>
                                 </div>
                             </div>
@@ -213,7 +213,7 @@ export default class VerReserva extends Component {
                     </div>
                     <div className="row v-padding">
                         <div className="col-md-3 bold light-danger">
-                            Observaciones
+                            Observaciones:
                         </div>
                         <div className="col-md-9">
                             {data.descripcion}

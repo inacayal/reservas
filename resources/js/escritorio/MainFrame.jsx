@@ -49,7 +49,6 @@ export default class MainFrame extends Component {
                             <div className="row box-padding">
                                 <div className="col-md-12  v-padding">
                                     <this.props.render 
-                                        downloadHandler={this.downloadHandler}
                                         {...this.props} />
                                 </div>
                             </div>

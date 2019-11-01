@@ -74,14 +74,41 @@ export default class VerUbicacion extends Component {
         if (this.state.data && this.state.loadFinished) {
             const data = this.state.data,
                 nav = Navegacion.singular(data);
+            console.log(data)
             return (
                 <div className="container">
                     < Titulo
-                        title={"Viendo ubicación " + this.state.data.nombre}
+                        title={this.state.data.nombre}
                         links={nav.links}
                         buttons ={nav.buttons}/>
-                    <div className="container full-width v-padding">
-                        singular
+                    <div className="row full-width">
+                        <div className="col-md-4 bold">
+                            imagen de ubicacion
+                        </div>
+                        <div className="col-md-8 container">
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="bold highlight">
+                                        Descripcion:
+                                    </div>
+                                    <div>{data.descripcion}</div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <div className="bold highlight">
+                                        Máximo por mesa
+                                    </div>
+                                    <div>{data.maximo+" personas"}</div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="bold highlight">
+                                        Capacidad máxima
+                                    </div>
+                                    <div>{data.capacidad+" personas"}</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )

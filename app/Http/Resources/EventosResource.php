@@ -27,10 +27,14 @@ class EventosResource extends JsonResource
         ],
         'horarios.list'=> [],
         'horarios.add'=> [],
-        'horarios.single'=> [],
+        'horarios.single'=> [
+            'promociones' => 'list'
+        ],
         'feriados.list'=>[],
         'feriados.add'=>[],
-        'feriados.single'=>[],
+        'feriados.single'=>[
+            'promociones'=>'list'
+        ],
         'eventos.list' => [
             'horarios'      => 'list',
             'promociones'   => 'list'
@@ -38,8 +42,13 @@ class EventosResource extends JsonResource
         'eventos.single' => [
             'feriados'      => 'list',
             'horarios'      => 'list',
-            'promociones'   => 'list'
-        ]
+            'promociones'   => 'all'
+        ],
+        'promociones.single' => [
+            'estado' =>false,
+            'horarios'=>'list'
+        ],
+
     ];
     public $preserveKeys = true;
     public function toArray($request)

@@ -16,7 +16,7 @@ import { Navegacion } from '../Navegacion';
 import Titulo from '../../../componentes/basic/Titulo';
 import { assignHorarios } from './generateEventosCard';
 
-const generateLinks =  (list,endpoint) => {
+export const generateLinks =  (list,endpoint) => {
     return Object.keys(list).map(
         (e,i) => 
             <li 
@@ -27,7 +27,21 @@ const generateLinks =  (list,endpoint) => {
                 </Link>
             </li>
     )
-}
+};
+const generateList = (list,endpoint) => {
+    return Object.keys(list).map(
+        (e,i) => 
+            <li 
+                key={i}
+                className="small-v-margin smaller-text">
+                <Link to={endpoint+'/'+e}>
+                    {list[e].nombre}
+                </Link>
+                <div>{list[e].descripcion}</div>
+                <div className="bold text-right">{list[e].descuento ? list[e].descuento+"% de descuento" : "sin descuento"}</div>
+            </li>
+    )
+};
 export default class VerEvento extends Component {
     constructor(props){
         super(props);
@@ -68,7 +82,7 @@ export default class VerEvento extends Component {
             )
             .catch(
                 error => {
-                    console.log(error.message)
+                    console.log(error)
                 }
             );
     }
@@ -85,59 +99,66 @@ export default class VerEvento extends Component {
         if (this.state.data && this.state.loadFinished) {
             const data = this.state.data,
                 nav = Navegacion.singular(data),
-                promociones = generateLinks(data.promociones.list,'/promociones'),
+                promociones = generateList(data.promociones.data,'/promociones'),
                 horario = generateLinks(assignHorarios(data.horarios.list)[0],'/horarios'),
                 feriados = generateLinks(data.feriados.list,'/feriados');
             return (
                 <div className="container">
                     < Titulo
-                        title={"Viendo Evento " + data.nombre}
+                        title={data.nombre}
                         links={nav.links}
                         buttons ={nav.buttons}/>
-                    <div className="container full-width v-padding">
-                        <div className="row v-padding">
-                            <div className="row v-padding" style={{paddingLeft:"28px"}}>
-                                <span className="light-danger bold side-margin">Descripción: </span>
-                                <span className="side-margin">{data.descripcion}</span>
+                    <div className="container full-width">
+                        <div className="row">
+                            <div className="col-md-9 container no-margin">
+                                <div className="row">
+                                    <div className="col-md-3 light-danger bold">Descripción: </div>
+                                    <div className="col-md-9">{data.descripcion}</div>
+                                </div>
                             </div>
                         </div>
                         <div className="row v-padding">
-                            <div className="col-md-4">
-                                <h6 className="highlight no-margin bold">Promociones</h6>
+                            <div className="col-md-7">
+                            <h6 className="highlight no-margin bold">Promociones</h6>
                                 {
                                     promociones.length>0
                                     ?
-                                        <ul className="nav-list no-padding">
+                                        <ul className="nav-list h-padding">
                                             {promociones}
                                         </ul>
                                     :
                                         "No hay promociones asociadas"
                                 }
                             </div>
-                            <div className="col-md-4">
-                                <h6 className="highlight no-margin bold">Horarios</h6>
-                                {
-                                    horario.length>0
-                                    ?
-                                        <ul className="nav-list no-padding">
-                                            {horario}
-                                        </ul>
-                                    :
-                                        "No hay horarios asociados"
-                                }
-                            </div>
-                            <div className="col-md-4">
-                                <h6 className="highlight no-margin bold">Feriados</h6>
-                                {
-                                    feriados.length>0
-                                    ?
-                                        <ul className="nav-list no-padding">
-                                            {feriados}
-                                        </ul>
-                                    :
-                                        "No hay feriados asociados"
-                                }
-                                
+                            <div className="col-md-5 container">
+                                <div className="row h-padding">
+                                    <h6 className="highlight no-margin bold v-padding">Horarios</h6>
+                                    <div>
+                                        {
+                                            horario.length>0
+                                            ?
+                                                <ul className="nav-list no-padding">
+                                                    {horario}
+                                                </ul>
+                                            :
+                                                "No hay horarios asociados"
+                                        }
+                                    </div>
+                                </div>
+                                <div className="row v-padding">
+                                    <div className="col-md-12 v-padding">
+                                        <h6 className="highlight bold">Feriados</h6>
+                                        {
+                                            feriados.length>0
+                                            ?
+                                                <ul className="nav-list no-padding">
+                                                    {feriados}
+                                                </ul>
+                                            :
+                                                <div>No hay feriados asociados</div>    
+                                        }
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

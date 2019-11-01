@@ -27,9 +27,20 @@ export default class AgregarFormulario extends Component{
     constructor(props){
         super(props);
         this.state = {
-            data:null
+            data:null,
+            loadFinished : false
         };
         this.fetchData = this.fetchData.bind(this);
+        this.downloadHandler = this.downloadHandler.bind(this);
+    }
+
+    downloadHandler(pEvent) {
+        let
+            loading = Math.round((pEvent.loaded * 100) / pEvent.total),
+            state = loading !== 100 ?
+                { loading, loadFinished: false }
+                : { loading, loadFinished: true };
+        this.setState(state);
     }
 
     fetchData() {
@@ -37,7 +48,7 @@ export default class AgregarFormulario extends Component{
         ?  
             {
                 endpoint: '/usuario/local/'+this.props.match.params.id,
-                download: this.props.downloadHandler
+                download: this.downloadHandler
             }
         :
             {
@@ -61,10 +72,6 @@ export default class AgregarFormulario extends Component{
                     console.log(error.message)
                 }
             );
-        this.setState({
-            data:null,
-            loadFinished:true
-        })
     }
 
     componentDidMount(){
@@ -72,26 +79,32 @@ export default class AgregarFormulario extends Component{
     }
 
     render(){
-        const nav = Navegacion.formulario(
-            this.state.data,
-            this.props.editar
-        );
+        if (this.state.data && this.state.loadFinished) {
+            const nav = Navegacion.formulario(
+                this.state.data,
+                this.props.editar
+            );
+            return (
+                <form className="full-width box-padding">
+                    < Titulo
+                        title={
+                            this.props.editar
+                                ?
+                                    this.state.data.nombre
+                                : "Agregar Local"
+                        }
+                        links={nav.links}
+                        buttons ={nav.buttons} />
+                    <div className="container">
+                        <FormularioEstablecimiento data={this.state.data}/>
+                        <FormularioUsuario data={this.state.data}/>
+                    </div>
+                </form>
+            )
+        }
         return (
-            <form className="full-width box-padding">
-                < Titulo
-                    title={
-                        this.props.editar
-                            ?
-                                "Editando local " + this.state.data.nombre
-                            : "Agregar Local"
-                    }
-                    links={nav.links}
-                    buttons ={nav.buttons} />
-                <div className="container">
-                    <FormularioEstablecimiento data={this.state.data}/>
-                    <FormularioUsuario data={this.state.data}/>
-                </div>
-            </form>
+            <LoadBar
+                loaded={this.state.loading} />
         )
     }
 }

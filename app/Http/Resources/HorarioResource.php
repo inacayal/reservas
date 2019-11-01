@@ -27,7 +27,8 @@ class HorarioResource extends JsonResource
         'horarios.add' => [],
         'horarios.single' => [
             'eventos' => 'all'
-        ]
+        ],
+        'promociones.single' => []
     ];
     public $preserveKeys = true;
     public function toArray($request)
