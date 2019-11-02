@@ -55,7 +55,7 @@ export const FormFields = (props) => {
         horarios.list = props.horarios.list;
         feriados.selected = [];
         feriados.list = props.feriados.list;
-    }   
+    }
 
     return (
         <div className="container no-padding">

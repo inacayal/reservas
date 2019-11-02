@@ -25,7 +25,7 @@ export const EventosActions = (
                 title: (
                     <div className="smaller-text text bold text-center">
                         <i className="fas fa-trash inline-box side-margin" />
-                        Guardar
+                        Eliminar
                     </div>
                 ),
                 click: actions.eliminar,

@@ -15,7 +15,7 @@ class UserController extends Controller
     use hasDependencies;
 
     protected $model = '\\App\\User';
-    
+
     protected static $dependencies = [
         'list' => [],
         'add' => [
@@ -30,7 +30,7 @@ class UserController extends Controller
             'intervalo' => false
         ],
         'franquicia' => [
-            'locales' => false
+            'locales' => 'false'
         ],
         'franquicias'=>[
             'usuarios' => 'key',
@@ -57,7 +57,7 @@ class UserController extends Controller
 
         return response([
             'data'=>new Resource($user)
-        ],200)->header('Content-Type','application/json'); 
+        ],200)->header('Content-Type','application/json');
     }
 
     public function singleFranquicia (
@@ -75,7 +75,7 @@ class UserController extends Controller
 
         return response([
             'data'=>new Resource($user)
-        ],200)->header('Content-Type','application/json'); 
+        ],200)->header('Content-Type','application/json');
     }
 
     public function locales (
@@ -90,13 +90,13 @@ class UserController extends Controller
         $user = User::with(
             $relations
         )->find($id);
-        
+
         $data = self::formatResults(
             $user,
             $dependencies
         );
-        
-        return response($data,200)->header('Content-Type','application/json'); 
+
+        return response($data,200)->header('Content-Type','application/json');
     }
 
     public function franquicias (
@@ -120,8 +120,8 @@ class UserController extends Controller
             $user,
             $dependencies
         );
-        
-        return response($data,200)->header('Content-Type','application/json'); 
+
+        return response($data,200)->header('Content-Type','application/json');
     }
 
     public function add (
@@ -130,13 +130,13 @@ class UserController extends Controller
         $role
     ){
         $dependencies = self::getDependencies($route);
-        $scope = $role != 1 
-        ? 
+        $scope = $role != 1
+        ?
             (object)[
                 'id' => $id,
-                'scope'=>'searchId' 
+                'scope'=>'searchId'
             ]
-        : 
+        :
             (object)[
                 'scope' => 'searchFranquicias'
             ];
@@ -154,8 +154,8 @@ class UserController extends Controller
             $user,
             $dependencies
         );
-        
-        return response($data,200)->header('Content-Type','application/json'); 
+
+        return response($data,200)->header('Content-Type','application/json');
     }
 
     public function create (){

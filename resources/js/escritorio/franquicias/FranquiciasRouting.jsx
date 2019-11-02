@@ -10,9 +10,10 @@ import Formulario from './sub/Formulario';
 import Franquicias from './sub/Franquicias';
 import VerFranquicia from './sub/VerFranquicia';
 import { Route, Switch } from 'react-router-dom';
-import {Navegacion} from '../../acciones/ActionsByView';
+import {Navegacion, FormActions} from '../../acciones/ActionsByView';
 
 export default function FranquiciasRouting (props) {
+    console.log(FormActions);
     return (
         <>
             <Route
@@ -32,6 +33,7 @@ export default function FranquiciasRouting (props) {
                         (match) =>
                             <Formulario
                                 nav ={Navegacion.formulario(()=>false,match.match.params.id,'/franquicias')}
+                                formActions={FormActions(match.match.params.id)}
                                 editar={true}
                                 {...match} />
                     } />
@@ -41,6 +43,7 @@ export default function FranquiciasRouting (props) {
                         (match) =>
                             <Formulario
                                 nav ={Navegacion.agregar('/franquicias')}
+                                formActions={FormActions('')}
                                 editar={false}
                                 {...match} />
                     } />

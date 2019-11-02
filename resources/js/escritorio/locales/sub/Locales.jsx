@@ -5,13 +5,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 /**
- * react table
- */
-import ReactTable from 'react-table';
-import "react-table/react-table.css";
-import withFixedColumns from "react-table-hoc-fixed-columns";
-import "react-table-hoc-fixed-columns/lib/styles.css";
-/**
  * componentes
  */
 import Titulo from '../../../componentes/basic/Titulo';
@@ -27,6 +20,7 @@ import { GET } from '../../../utils/api';
  * nav
  */
 import { Navegacion } from '../Navegacion';
+import LocalesTable from './LocalesTable';
 
 export default class Locales extends Component {
     constructor(props) {
@@ -36,47 +30,10 @@ export default class Locales extends Component {
             data:null,
             open: false
         }
-        this.columns = [
-            {
-                Header: "Franquicia",
-                accessor: "franquicia",
-                headerClassName: 'bold highlight-title',
-                fixed: "left"
-            },
-            {
-                Header: "Nombre",
-                accessor: "nombre",
-                headerClassName: 'bold highlight-title',
-                fixed: "left"
-            },
-            {
-                Header: "Teléfono",
-                accessor: "telefonoLocal",
-                headerClassName: 'bold highlight-title'
-            },
-            {
-                Header: "Correo",
-                accessor: "correoLocal",
-                headerClassName: 'bold highlight-title'
-            },
-            {
-                Header: "Administrador",
-                accessor: "admNombre",
-                headerClassName: 'bold highlight-title'
-            },
-            {
-                Header: "Acciones",
-                accessor: "acciones",
-                className: "text-right visible",
-                minWidth:120,
-                headerClassName: 'bold highlight-title',
-                fixed: "right"
-            }
-        ];
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
     }
-    
+
     downloadHandler(pEvent) {
         let
             loading = Math.round((pEvent.loaded * 100) / pEvent.total),
@@ -143,42 +100,23 @@ export default class Locales extends Component {
 
     render() {
         if (this.state.data && this.state.loadFinished){
-            const 
+            const
                 columns = this.columns,
-                data = Object.keys(this.state.data).map(
+                data = Object.values(this.state.data).map(
                     e => ({
-                        ...this.state.data[e],
+                        ...e,
                         acciones: <Actions links={this.links(e)} buttons={[]}/>
                     })
                 ),
-                ReactTableFixedColumns = withFixedColumns(ReactTable),
                 nav = Navegacion.listado(data);
             return (
                 <>
                     < Titulo
                         title="Locales"
                         links={nav.links} />
-                    <div className="container">
-                        <div className="row full-width no-margin">
-                            <ReactTableFixedColumns
-                                data={data}
-                                columns={columns}
-                                minRows={0}
-                                previousText={
-                                    <div>
-                                        <i className="line-v-middle highlight middle-font fas fa-angle-left" />
-                                        <span className="text ">Anterior</span>
-                                    </div>
-                                }
-                                nextText={
-                                    <div>
-                                        <span className="text ">Siguiente</span>
-                                        <i className="line-v-middle highlight middle-font fas fa-angle-right" />
-                                    </div>
-                                }
-                                pageText='Página'
-                                ofText='de'
-                                rowsText='filas'/>
+                    <div className="container no-padding">
+                        <div className="row">
+                            <LocalesTable data={data}/>
                         </div>
                     </div>
                 </>

@@ -12,6 +12,7 @@ import { showOptions, selectOption, Select } from '../../../componentes/input/Se
  * basic component
  */
 import Titulo from '../../../componentes/basic/Titulo';
+import Actions from '../../../componentes/basic/Actions';
 /**
  * API
  */
@@ -22,7 +23,7 @@ import { GET } from '../../../utils/api';
  */
 import { FormularioEstablecimiento } from '../../configuracion/FormularioEstablecimiento';
 import { FormularioUsuario } from '../../configuracion/FormularioUsuario';
-
+import {ConfirmarModal} from '../../../componentes/modal/Modal';
 
 export default class Formulario extends Component {
     constructor(props) {
@@ -30,10 +31,37 @@ export default class Formulario extends Component {
         this.state = {
             data: null,
             loadFinished: false,
-            loading: null
+            loading: null,
+            open:false
         };
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
+        this.enviarFormulario = this.enviarFormulario.bind(this);
+        this.cancelarFormulario = this.cancelarFormulario.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+
+        if (this.props.editar)
+            this.props.nav.buttons[0].click = this.toggleModal;    
+        this.props.formActions.buttons.cancelar.click = this.cancelarFormulario;
+        this.props.formActions.buttons.guardar.click = this.guardarFormulario;
+    }
+
+    enviarFormulario(e){
+        e.preventDefault();
+        console.log('guardar');
+    }
+
+    cancelarFormulario(e){
+        e.preventDefault();
+        console.log('guardar');
+    }
+
+    toggleModal(e) {
+        console.log("culo")
+        e.preventDefault();
+        this.setState({
+            open: !this.state.open
+        });
     }
 
     downloadHandler(pEvent) {
@@ -80,7 +108,7 @@ export default class Formulario extends Component {
                 <>
                     <ConfirmarModal
                         open={this.state.open}
-                        closeModal={this.closeModal}
+                        closeModal={this.toggleModal}
                         title="Desactivar Franquicia"
                         content="¿estás seguro de desactivar esta franquicia?" />
                     <form className="full-width box-padding">
@@ -95,7 +123,12 @@ export default class Formulario extends Component {
                         <div className="container">
                             <FormularioEstablecimiento data={this.state.data} isFranquicia />
                             <FormularioUsuario data={this.state.data} />
+                            <div className="row justify-content-end v-padding">
+                                <Actions
+                                    buttons={Object.values(this.props.formActions.buttons)}/>
+                            </div>
                         </div>
+
                     </form>
                 </>
             )

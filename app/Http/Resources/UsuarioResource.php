@@ -19,7 +19,7 @@ class UsuarioResource extends JsonResource
         'usuario.local'=>[],
         'usuario.locales'=>[],
         'usuario.franquicia'=>[
-            'locales' => 'list'
+            'locales' => 'key'
         ],
         'usuario.franquicias'=>[],
     ];
@@ -47,7 +47,7 @@ class UsuarioResource extends JsonResource
             'intervalo'=> $user->intervalo,
             'caida'=> $user->caida_reserva,
             'antelacionReserva'=> $user->antelacion_reserva
-        ]; 
+        ];
         $dependencies = self::getDependencies($request->route()->action['as']);
         $dependencyData = self::formatResults(
             $this->resource,

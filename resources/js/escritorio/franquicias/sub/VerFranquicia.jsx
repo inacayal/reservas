@@ -8,10 +8,13 @@ import ReactDOM from 'react-dom';
  */
 import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
+import Actions from '../../../componentes/basic/Actions';
 /**
  * componentes
  */
 import Titulo from '../../../componentes/basic/Titulo';
+import {ConfirmarModal} from '../../../componentes/modal/Modal';
+import LocalesTable from '../../locales/sub/LocalesTable';
 
 
 export default class VerFranquicia extends Component {
@@ -24,17 +27,27 @@ export default class VerFranquicia extends Component {
         }
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
-        this.nav = [
-            {
-                title: (
-                    <div className="smaller-text text bold">
-                        <i className="fas fa-store inline-box side-margin" />
-                        Locales
-            </div>
-                ),
-                to: '/locales'
-            }
-        ];
+        this.cancelarFormulario = this.cancelarFormulario.bind(this);
+        this.enviarFormulario = this.enviarFormulario.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+        this.props.nav.buttons[0].click = this.toggleModal;
+    }
+    enviarFormulario(e){
+        e.preventDefault();
+        console.log('guardar');
+    }
+
+    cancelarFormulario(e){
+        e.preventDefault();
+        console.log('guardar');
+    }
+
+    toggleModal(e) {
+        console.log("culo")
+        e.preventDefault();
+        this.setState({
+            open: !this.state.open
+        });
     }
 
     downloadHandler(pEvent) {
@@ -78,11 +91,46 @@ export default class VerFranquicia extends Component {
         console.log('localesUnmount');
     }
 
+    links(key) {
+        return [
+            {
+                title: (
+                    <div className="smaller-text text bold">
+                        <i className="fas fa-eye" />
+                        Ver
+                    </div>
+                ),
+                to: '/locales/' + key
+            },
+            {
+                title: (
+                    <div className="smaller-text text bold">
+                        <i className="fas fa-pen" />
+                        Editar
+                    </div>
+                ),
+                to: '/locales/editar/' + key
+            }
+        ];
+    }
+
     render() {
+        console.log(this.state.data);
         if (this.state.data && this.state.loadFinished) {
-            const data = this.state.data;
+            const data = this.state.data,
+                localesData = Object.values(this.state.data.locales.data).map(
+                    e => ({
+                        ...e,
+                        acciones: <Actions links={this.links(e.id)} buttons={[]}/>
+                    })
+                );
             return (
                 <div className="container">
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.toggleModal}
+                        title="Desactivar Franquicia"
+                        content="¿estás seguro de desactivar esta franquicia?" />
                     < Titulo
                         title={this.state.data.nombre}
                         links={this.props.nav.links}
@@ -170,6 +218,12 @@ export default class VerFranquicia extends Component {
                                     *******************
                             </div>
                             </div>
+                        </div>
+                        <div className="row sub-title bold v-padding">
+                            Locales
+                        </div>
+                        <div className="row">
+                            <LocalesTable data={localesData}/>
                         </div>
                     </div>
                 </div>
