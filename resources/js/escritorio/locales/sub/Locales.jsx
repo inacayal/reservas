@@ -19,8 +19,8 @@ import { GET } from '../../../utils/api';
 /**
  * nav
  */
-import { Navegacion } from '../Navegacion';
-import LocalesTable from './LocalesTable';
+import { Navegacion } from '../../../acciones/ActionsByView';
+import LocalesTable from '../../../componentes/tables/LocalesTable';
 
 export default class Locales extends Component {
     constructor(props) {
@@ -105,15 +105,14 @@ export default class Locales extends Component {
                 data = Object.values(this.state.data).map(
                     e => ({
                         ...e,
-                        acciones: <Actions links={this.links(e)} buttons={[]}/>
+                        acciones: <Actions links={this.links(e.id)} buttons={[]}/>
                     })
-                ),
-                nav = Navegacion.listado(data);
+                );
             return (
                 <>
                     < Titulo
                         title="Locales"
-                        links={nav.links} />
+                        links={this.props.nav.links} />
                     <div className="container no-padding">
                         <div className="row">
                             <LocalesTable data={data}/>

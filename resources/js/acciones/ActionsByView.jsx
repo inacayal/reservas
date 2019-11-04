@@ -121,10 +121,11 @@ export const FormActions = (
         guardar:{
             title: (
                 <div className="smaller-text text bold">
-                    <i className="fas fa-trash inline-box side-margin" />
+                    <i className="fas fa-check-circle inline-box side-margin" />
                     Guardar
                 </div>
             ),
+            data:key,
             click: () => false
         },
     }

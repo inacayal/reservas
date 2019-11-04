@@ -6,10 +6,11 @@ import ReactDOM from 'react-dom';
 /**
  * sub elementos
  */
-import AgregarFormulario from './sub/AgregarFormulario';
+import Formulario from './sub/Formulario';
 import Locales from './sub/Locales';
 import VerLocal from './sub/VerLocal';
 import {Route, Switch} from 'react-router-dom';
+import {Navegacion,FormActions} from '../../acciones/ActionsByView';
 
 export default function LocalesRouting (props) {
     return (
@@ -20,6 +21,7 @@ export default function LocalesRouting (props) {
                 component={
                     (match) =>
                         <Locales
+                            nav={Navegacion.listado('locales')}
                             load={props.load}
                             {...match} />
                 } />
@@ -29,15 +31,19 @@ export default function LocalesRouting (props) {
                         exact
                         component={
                             (match) =>
-                                <AgregarFormulario
+                                <Formulario
+                                    nav={Navegacion.formulario(()=>false,match.match.params.id,'/locales')}
                                     editar={true}
+                                    formActions={FormActions()}
                                     {...match} />
                         } />
                     <Route
                         path={props.match.url + '/agregar'}
                         component={
                             (match) =>
-                                <AgregarFormulario
+                                <Formulario
+                                    nav={Navegacion.agregar('/locales')}
+                                    formActions={FormActions()}
                                     editar={false}
                                     {...match} />
                         } />
@@ -46,10 +52,11 @@ export default function LocalesRouting (props) {
                         component={
                             (match) =>
                                 <VerLocal
+                                    nav={Navegacion.singular(()=>false,match.match.params.id,'/locales')}
                                     {...match} />
-                        } />                        
+                        } />
                 </Switch>
         </>
     );
-    
+
 }

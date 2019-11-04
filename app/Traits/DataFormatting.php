@@ -50,7 +50,7 @@ trait DataFormatting
 			$model::listCallback($keys)
 		);
 	}
-	
+
 	public static function groupData(
 		Collection $data,
 		$model,
@@ -90,13 +90,13 @@ trait DataFormatting
 				}
 				$formattedData[$option] = $auxData;
 			}
-		} elseif(property_exists($class,'dataResource')) 
+		} elseif(property_exists($class,'dataResource'))
 			$formattedData = self::applyResource($data, self::getResource());
 		return $formattedData;
 	}
-	
+
 	public static function applyResource ( $data, $resource ) {
-		if ($data instanceof Collection ) 
+		if ($data instanceof Collection )
 			return call_user_func_array(
 				$resource.'::collection',
 				[$data]

@@ -46,7 +46,7 @@ Route::prefix('usuario')->name('usuario.')->group(function (){
 
 Route::prefix('reservas')->name('reservas.')->group(function (){
     Route::get('{list}/{id}/{month}/{year}','ReservaController@list')
-        ->where('list','list')    
+        ->where('list','list')
         ->name('list');
 
     Route::get('/{add}/{id}/{month}/{year}','ReservaController@add')
@@ -55,8 +55,8 @@ Route::prefix('reservas')->name('reservas.')->group(function (){
 
     Route::get('{single}/{userId}/{id}','ReservaController@single')
         ->where('single','single')
-        ->name('single');    
-    
+        ->name('single');
+
     Route::put('/update/{id}','ReservaController@update')->name('update');
     Route::delete('/delete/{id}','ReservaController@delete')->name('delete');
     Route::post('/create','ReservaController@create')->name('create');
@@ -102,11 +102,11 @@ Route::prefix('ubicaciones')->name('ubicaciones.')->group(function (){
     Route::get('{list}/{id}','UbicacionController@list')
         ->where('list','list')
         ->name('list');
-        
+
     Route::get('{single}/{userId}/{id}','UbicacionController@single')
         ->where('single','single')
         ->name('single');
-        
+
     Route::put('/update/{id}','UbicacionController@update')->name('update');
     Route::delete('/delete/{id}','UbicacionController@delete')->name('delete');
     Route::post('/create','UbicacionController@create')->name('create');
@@ -114,7 +114,7 @@ Route::prefix('ubicaciones')->name('ubicaciones.')->group(function (){
 
 Route::prefix('horarios')->name('horarios.')->group(function (){
     Route::get('{list}/{id}','HorarioController@list')
-        ->where('list','list')    
+        ->where('list','list')
         ->name('list');
 
     Route::get('{add}/{id}/','HorarioController@add')
@@ -132,7 +132,7 @@ Route::prefix('horarios')->name('horarios.')->group(function (){
 
 Route::prefix('feriados')->name('feriados.')->group(function (){
     Route::get('{list}/{id}/{month}/{year}','FeriadoController@list')
-        ->where('list','list')    
+        ->where('list','list')
         ->name('list');
 
     Route::get('{add}/{id}/{month}/{year}','FeriadoController@add')
@@ -146,9 +146,4 @@ Route::prefix('feriados')->name('feriados.')->group(function (){
     Route::put('/update/{id}','FeriadoController@update')->name('update');
     Route::delete('/delete/{id}','FeriadoController@delete')->name('delete');
     Route::post('/create','FeriadoController@create')->name('create');
-});
-
-Route::prefix('configuracion')->name('configuracion.')->group(function (){
-    Route::get('/{id}','ConfiguracionController@list')->name('list');
-    Route::put('/update/{id}','ConfiguracionController@update')->name('update');
 });

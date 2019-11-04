@@ -13,7 +13,6 @@ import { Route, Switch } from 'react-router-dom';
 import {Navegacion, FormActions} from '../../acciones/ActionsByView';
 
 export default function FranquiciasRouting (props) {
-    console.log(FormActions);
     return (
         <>
             <Route

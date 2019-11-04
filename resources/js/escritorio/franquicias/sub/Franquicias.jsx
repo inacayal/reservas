@@ -21,6 +21,7 @@ import { closeModal, ConfirmarModal } from '../../../componentes/modal/Modal';
  */
 import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
+import FranquiciasTable from '../../../componentes/tables/FranquiciasTable'
 
 
 export default class Franquicias extends Component {
@@ -30,44 +31,7 @@ export default class Franquicias extends Component {
             loadFinished: false,
             data: null,
             open: false
-        }
-        this.columns = [
-            {
-                Header: "Administrador",
-                accessor: "administrador",
-                headerClassName: 'bold highlight-title',
-                fixed: "left"
-            },
-            {
-                Header: "Nombre",
-                accessor: "nombre",
-                headerClassName: 'bold highlight-title',
-                fixed: "left"
-            },
-            {
-                Header: "Teléfono",
-                accessor: "admTelefono",
-                headerClassName: 'bold highlight-title'
-            },
-            {
-                Header: "Correo",
-                accessor: "admEmail",
-                headerClassName: 'bold highlight-title'
-            },
-            {
-                Header: "Razón Social",
-                accessor: "razonSocial",
-                headerClassName: 'bold highlight-title'
-            },
-            {
-                Header: "Acciones",
-                accessor: "acciones",
-                className: "text-right visible",
-                minWidth: 120,
-                headerClassName: 'bold highlight-title',
-                fixed: "right"
-            }
-        ];
+        };
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
     }
@@ -132,6 +96,15 @@ export default class Franquicias extends Component {
                     </div>
                 ),
                 to: '/franquicias/editar/' + key
+            },
+            ,
+            {
+                title:(
+                    <div className="smaller-text text bold">
+                        <i className="fas fa-plus-circle inline-box side-margin" /> Agregar Local
+                    </div>
+                ),
+                to:"/locales/agregar"
             }
         ];
     }
@@ -145,34 +118,15 @@ export default class Franquicias extends Component {
                         ...this.state.data[e],
                         acciones: <Actions links={this.links(e)} buttons={[]} />
                     })
-                ),
-                ReactTableFixedColumns = withFixedColumns(ReactTable);
+                );
             return (
                 <>
-                    < Titulo
+                    <Titulo
                         title="Franquicias"
                         links={this.props.nav.links} />
                     <div className="container no-padding">
                         <div className="row">
-                            <ReactTableFixedColumns
-                                data={data}
-                                columns={columns}
-                                minRows={0}
-                                previousText={
-                                    <div>
-                                        <i className="line-v-middle highlight middle-font fas fa-angle-left" />
-                                        <span className="text ">Anterior</span>
-                                    </div>
-                                }
-                                nextText={
-                                    <div>
-                                        <span className="text ">Siguiente</span>
-                                        <i className="line-v-middle highlight middle-font fas fa-angle-right" />
-                                    </div>
-                                }
-                                pageText='Página'
-                                ofText='de'
-                                rowsText='filas' />
+                            <FranquiciasTable data={data}/>
                         </div>
                     </div>
                 </>

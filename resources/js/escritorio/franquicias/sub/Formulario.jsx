@@ -34,30 +34,34 @@ export default class Formulario extends Component {
             loading: null,
             open:false
         };
+
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
+
         this.enviarFormulario = this.enviarFormulario.bind(this);
         this.cancelarFormulario = this.cancelarFormulario.bind(this);
+
         this.toggleModal = this.toggleModal.bind(this);
 
         if (this.props.editar)
-            this.props.nav.buttons[0].click = this.toggleModal;    
-        this.props.formActions.buttons.cancelar.click = this.cancelarFormulario;
-        this.props.formActions.buttons.guardar.click = this.guardarFormulario;
+            this.props.nav.buttons[0].click = this.toggleModal;
+
+        this.actions = this.props.formActions.buttons;
+        this.actions.cancelar.click = this.cancelarFormulario;
+        this.actions.guardar.click = this.enviarFormulario;
     }
 
     enviarFormulario(e){
-        e.preventDefault();
         console.log('guardar');
+        e.preventDefault();
     }
 
     cancelarFormulario(e){
+        console.log('cancelar');
         e.preventDefault();
-        console.log('guardar');
     }
 
     toggleModal(e) {
-        console.log("culo")
         e.preventDefault();
         this.setState({
             open: !this.state.open
@@ -125,7 +129,7 @@ export default class Formulario extends Component {
                             <FormularioUsuario data={this.state.data} />
                             <div className="row justify-content-end v-padding">
                                 <Actions
-                                    buttons={Object.values(this.props.formActions.buttons)}/>
+                                    buttons={Object.values(this.actions)}/>
                             </div>
                         </div>
 

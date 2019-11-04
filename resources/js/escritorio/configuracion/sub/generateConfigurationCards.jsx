@@ -7,43 +7,9 @@ import ReactDOM from 'react-dom';
  * react components
  */
 import Actions from '../../../componentes/basic/Actions';
-
+import {ExpandableComponent} from '../../../componentes/basic/ExpandableComponent';
 
 const configurationCards = [
-    {
-        element: (data) => (
-            <div className="container full-width">
-                <div className="row">
-                    <div className="col-md-4">
-                        <h6 className="full-width light-danger bold">
-                            Username
-                        </h6>
-                        <div>
-                            {data.username}
-                        </div>
-                    </div>
-                    <div className="col-md-4">
-                        <h6 className="full-width light-danger bold">
-                            Correo
-                        </h6>
-                        <div>
-                            {data.email}
-                        </div>
-                    </div>
-                    <div className="col-md-4">
-                        <h6 className="full-width light-danger bold">
-                            Contraseña de usuario
-                    </h6>
-                        <div>
-                            *******************
-                    </div>
-                    </div>
-                </div>
-            </div>
-        ),
-        route: '/configuracion/usuario',
-        title: 'Mi usuario'
-    },
     {
         element: (data) => (
             <div className="container full-width ">
@@ -58,7 +24,7 @@ const configurationCards = [
                     </div>
                     <div className="col-md-4">
                         <h6 className="full-width light-danger bold">
-                            Correo 
+                            Correo
                         </h6>
                         <div>
                             {data.correoLocal}
@@ -66,7 +32,7 @@ const configurationCards = [
                     </div>
                     <div className="col-md-4">
                         <h6 className="full-width light-danger bold">
-                            Teléfono 
+                            Teléfono
                     </h6>
                         <div>
                             {data.telefonoLocal}
@@ -93,7 +59,7 @@ const configurationCards = [
                 </div>
                 <div className="row bold top-padding margin-box">
                     Encargado
-                </div>  
+                </div>
                 <div className="row v-padding margin-box">
                     <div className="col-md-4">
                         <h6 className="full-width light-danger bold">
@@ -150,6 +116,40 @@ const configurationCards = [
         element: (data) => (
             <div className="container full-width">
                 <div className="row">
+                    <div className="col-md-4">
+                        <h6 className="full-width light-danger bold">
+                            Username
+                        </h6>
+                        <div>
+                            {data.username}
+                        </div>
+                    </div>
+                    <div className="col-md-4">
+                        <h6 className="full-width light-danger bold">
+                            Correo
+                        </h6>
+                        <div>
+                            {data.email}
+                        </div>
+                    </div>
+                    <div className="col-md-4">
+                        <h6 className="full-width light-danger bold">
+                            Contraseña de usuario
+                    </h6>
+                        <div>
+                            *******************
+                    </div>
+                    </div>
+                </div>
+            </div>
+        ),
+        route: '/configuracion/usuario',
+        title: 'Mi usuario'
+    },
+    {
+        element: (data) => (
+            <div className="container full-width">
+                <div className="row">
                     <div className="col-md-6">
                         <h6 className="full-width light-danger bold">
                             Intervalo de Reservas
@@ -174,7 +174,7 @@ const configurationCards = [
                         </h6>
                         <div>
                             {
-                                data.antelacionReserva 
+                                data.antelacionReserva
                                     ? data.antelacionReserva + " horas"
                                     :"Sin definir"
                             }
@@ -207,49 +207,13 @@ export default function generateConfigurationCards (
                 ];
             return {
                 content: () => {
-                    const 
-                        [show,toggle] = useState(false),
-                        buttons = [
-                        {
-                            title: (
-                                <div className="smaller-text text bold text-center">
-                                    {
-                                        show 
-                                        ?
-                                            <>
-                                                menos <i className="fas fa-minus-circle inline-box side-margin" />
-                                            </>
-                                        :
-                                            <>
-                                                más <i className="fas fa-plus-circle inline-box side-margin" />
-                                            </>
-                                    }
-                                </div>
-                                ),
-                                click: ()=>toggle(!show)
-                            }
-                        ];
                     return (
                         <>
-                            <div className="full-width container">
-                                <div className="row">
-                                    <div className="col-md-4 sub-title bold inline-block text-top">
-                                        {e.title}
-                                    </div>
-                                    <div className="col-md-8 text-right">
-                                        <Actions
-                                            links={links}
-                                            buttons={buttons} />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="box-padding full-width">
-                                {
-                                    show
-                                        ? e.element(data)
-                                        : ""
-                                }
-                            </div>
+                            <ExpandableComponent
+                                title = {e.title}
+                                show={i===0}
+                                links = {links}
+                                component = {e.element(data)}/>
                         </>
                     );
                 },

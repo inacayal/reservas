@@ -30,7 +30,7 @@ export const FormularioFranquicia = (props) => {
                 title: (
                     <div className="smaller-text text bold">
                         <i className="fas fa-plus-circle inline-box side-margin" />
-                        Agregar nueva
+                        Agregar
                     </div>
                 ),
                 to: '/franquicias/agregar'
@@ -38,19 +38,23 @@ export const FormularioFranquicia = (props) => {
         ];
 
     return (
-        <div className="row v-padding justify-content-end">
-            <div className="col-md-6 text-right">
+        <>
+            <div className="row top-padding">
                 <h6 className="highlight no-margin bold">Franquicia</h6>
-                <Select
-                    select={franquicia}
-                    titulo="selecciona la franquicia" />
-                <div> 
-                    <span className="smaller-text">
-                        si no existe
-                    </span>
-                    <Actions links={agregar}/>
+            </div>
+            <div className="row top-padding">
+                <div className="col-md-12">
+                    <Select
+                        select={franquicia}
+                        titulo="selecciona la franquicia" />
                 </div>
             </div>
-        </div>
+            <div className="row v-padding justify-content-end">
+                <span className="smaller-text">
+                    si no existe
+                </span>
+                <Actions links={agregar}/>
+            </div>
+        </>
     )
 }

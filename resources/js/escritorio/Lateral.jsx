@@ -91,7 +91,7 @@ const SubElements = (props) => {
         eClass="absolute float-right full-width nav-list no-padding "
 
     return (
-        <ul className={eClass} style={{backgroundColor:'#003b78'}}>
+        <ul className={eClass} style={{backgroundColor:'rgba(0,59,120,0.95)'}}>
             {
                 sub.map(
                     (sub, ind) => (

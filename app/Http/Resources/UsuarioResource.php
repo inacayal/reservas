@@ -16,43 +16,48 @@ class UsuarioResource extends JsonResource
      */
     private static $dependencies = [
         'usuario.add'=>[],
-        'usuario.local'=>[],
+        'usuario.local'=>[
+            'franquicia'=>false
+        ],
         'usuario.locales'=>[],
         'usuario.franquicia'=>[
             'locales' => 'key'
         ],
-        'usuario.franquicias'=>[],
+        'usuario.franquicias'=>[]
     ];
+
     public $preserveKeys = true;
 
     public function toArray($request)
     {
         $user = $this->resource;
-        $data = [
-            'id'=>$user->id,
-            'administrador'=>$user->administrador->nombre,
-            'franquicia' => $user->franquicia ? $user->franquicia->nombre : "",
-            'nombre' => $user->nombre,
-            'admEmail'=> $user->correo_adm,
-            'admNombre'=> $user->nombre_adm,
-            'admTelefono'=> $user->telefono_adm,
-            'correoLocal'=> $user->correo_local,
-            'telefonoLocal'=> $user->telefono_local,
-            'razonSocial'=> $user->razon_social,
-            'cuitCuil'=> $user->cuit_cuil,
-            'provincia'=> $user->provincia,
-            'direccionLocal'=> $user->direccion,
-            'username' => $user->username,
-            'email'=> $user->email,
-            'intervalo'=> $user->intervalo,
-            'caida'=> $user->caida_reserva,
-            'antelacionReserva'=> $user->antelacion_reserva
-        ];
         $dependencies = self::getDependencies($request->route()->action['as']);
-        $dependencyData = self::formatResults(
-            $this->resource,
-            $dependencies
-        );
-        return array_merge($data,$dependencyData);
+        if($user){
+            $data = [
+                'id'=>$user->id,
+                'administrador'=>$user->administrador->nombre,
+                'franquicia'=> isset($dependencies['franquicia']) || is_null($user->franquicia) ? null : $user->franquicia->nombre,
+                'nombre' => $user->nombre,
+                'admEmail'=> $user->correo_adm,
+                'admNombre'=> $user->nombre_adm,
+                'admTelefono'=> $user->telefono_adm,
+                'correoLocal'=> $user->correo_local,
+                'telefonoLocal'=> $user->telefono_local,
+                'razonSocial'=> $user->razon_social,
+                'cuitCuil'=> $user->cuit_cuil,
+                'provincia'=> $user->provincia,
+                'direccionLocal'=> $user->direccion,
+                'username' => $user->username,
+                'email'=> $user->email,
+                'intervalo'=> $user->intervalo,
+                'caida'=> $user->caida_reserva,
+                'antelacionReserva'=> $user->antelacion_reserva
+            ];
+            $dependencyData = self::formatResults(
+                $user,
+                $dependencies
+            );
+            return array_merge($data,$dependencyData);
+        }
     }
 }

@@ -20,7 +20,9 @@ trait hasDependencies
         'promociones'   => 'App\\Models\\Promocion',
         'promocion'     => 'App\\Models\\Promocion',
         'usuarios'      => 'App\\User',
-        'locales'       => 'App\\User'
+        'locales'       => 'App\\User',
+        'franquicia'    => 'App\\User',
+        'administrador' => 'App\\User'
     ];
 
     public static function getFormatOptions (string $opt, string $model){
@@ -30,7 +32,7 @@ trait hasDependencies
     public static function getRelationMapping (string $name){
         return (isset(self::$relationMapping[$name])) ? self::$relationMapping[$name] : null;
     }
-    
+
     public function getDependencies ($route) {
         return self::$dependencies[$route];
     }
@@ -70,7 +72,7 @@ trait hasDependencies
                     $options[$dep]
                 );
             }
-            else 
+            else
                 array_push($result,$dep);
         }
         return $result;

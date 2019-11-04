@@ -12,7 +12,7 @@ use Illuminate\Support\Collection;
 use App\Traits\DataFormatting;
 /**
  * Class User
- * 
+ *
  * @property int $id
  * @property string $nombre
  * @property string $razon_social
@@ -33,7 +33,7 @@ use App\Traits\DataFormatting;
  * @property string $direccion
  * @property string $telefono_local
  * @property int $id_estado
- * 
+ *
  * @property \App\Models\EstadoUsuario $estado_usuario
  * @property \App\Models\User $user
  * @property \App\Models\Provincia $provincia
@@ -105,6 +105,9 @@ class User extends Eloquent
 	}
 	public function scopeSearchFranquicias($query,$params){
 		return $query->where('id_rol',2);
+	}
+	public function scopeSearchLocales($query,$params){
+		return $query->where('id_rol',3);
 	}
 	public function scopeSearchId($query,$params){
 		return $query->where('id',$params->id);

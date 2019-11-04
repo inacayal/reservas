@@ -23,18 +23,24 @@ class UserController extends Controller
         ],
         'local' => [
             'provincia' => false,
-            'intervalo' => false
+            'intervalo' => false,
+            'locales.franquicia' => false,
+            'locales.administrador'=>false
         ],
         'locales'=>[
             'locales' => 'key',
-            'intervalo' => false
+            'intervalo' => false,
+            'locales.franquicia' => false,
+            'locales.administrador'=>false
         ],
         'franquicia' => [
-            'locales' => 'false'
+            'franquicia.locales' => false,
+            'franquicia.administrador'=>false
         ],
         'franquicias'=>[
             'usuarios' => 'key',
-            'intervalo' => false
+            'intervalo' => false,
+            'franquicia.administrador'=>false
         ]
     ];
 
@@ -49,12 +55,15 @@ class UserController extends Controller
         $dependencies = self::getDependencies($route);
         $relations = $this->getDependencyScopes(
             array_keys($dependencies),
-            array()
+            array(
+                'usuarios' => (object)[
+                    'scope' => 'searchLocales'
+                ]
+            )
         );
         $user = User::with(
             $relations
         )->find($id);
-
         return response([
             'data'=>new Resource($user)
         ],200)->header('Content-Type','application/json');
@@ -67,8 +76,13 @@ class UserController extends Controller
         $dependencies = self::getDependencies($route);
         $relations = $this->getDependencyScopes(
             array_keys($dependencies),
-            array()
+            array(
+                'usuarios' => (object)[
+                    'scope' => 'searchFranquicias'
+                ]
+            )
         );
+
         $user = User::with(
             $relations
         )->find($id);
