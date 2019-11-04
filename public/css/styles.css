@@ -53,6 +53,13 @@ html,body {
     line-height: 0;
     height: 0;
 }
+.rt-td, .rt-th{
+    border-color:transparent !important;
+
+}
+.rt-thead{
+    z-index:1 !important;
+}
 .clearfix:after {
     content: " ";
     display: block;
@@ -121,6 +128,12 @@ html,body {
     border: solid 1px transparent !important;
     overflow:auto;
     width:100%;
+}
+.border-transparent{
+    border: solid 2px transparent;
+}
+.border-blue{
+    border: solid 2px var(--highlight-blue);
 }
 .ReactTable .rt-thead.-header{
     box-shadow:none !important;
@@ -249,6 +262,12 @@ html,body {
     position:absolute;
     z-index:1;
 }
+.float-right{
+    top:0px;
+    left:100%;
+    z-index:3;
+}
+
 .nav-reserva, .nav-sidebar{
     background-color:transparent;
     padding:10px;

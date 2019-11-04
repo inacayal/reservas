@@ -89085,7 +89085,7 @@ function Lateral(props) {
     className: "nav-list no-padding"
   }, props.items.map(function (e, i) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-      className: "full-width",
+      className: "full-width relative",
       key: i,
       onMouseOver: function onMouseOver() {
         return hoverToggle(i);
@@ -89098,12 +89098,21 @@ function Lateral(props) {
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
       title: e.title,
       data: i,
-      className: props.current == i ? "selected no-border bold full-width text-left box-padding bold" : "box-transparent full-width text-left box-padding highlight-blue bold-hover"
-    }, e.title)), e.sub.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SubElements, _extends({
-      show: props.current == i || hover === i,
+      className: props.current == i ? "selected bold full-width text-left bold no-border no-padding" : "box-transparent full-width text-left box-padding highlight-hover bold-hover"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: props.current == i ? "border-blue box-padding" : ""
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: "half inline-block"
+    }, e.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: "inline-block text-right half"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: hover === i && props.current != i ? "line-v-middle middle-font highlight fas fa-angle-right" : "hidden"
+    }))), e.sub.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SubElements, _extends({
+      isCurrent: props.current == i,
+      isHover: hover === i,
       index: i,
       sub: e.sub
-    }, props)) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null));
+    }, props)) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null))));
   })));
 }
 
@@ -89117,15 +89126,23 @@ var SubElements = function SubElements(props) {
       hover = _useState4[0],
       hoverToggle = _useState4[1];
 
+  var eClass = "";
+
+  if (props.isCurrent) {
+    eClass = "nav-list no-padding";
+  } else if (!props.isHover) {
+    eClass = "hidden";
+  } else eClass = "absolute float-right full-width nav-list no-padding ";
+
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-    className: props.show ? "nav-list no-padding" : "hidden",
+    className: eClass,
     style: {
       backgroundColor: '#003b78'
     }
   }, sub.map(function (sub, ind) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
       key: ind,
-      className: sub["class"],
+      className: sub["class"] + " border-transparent",
       onMouseOver: function onMouseOver() {
         return hoverToggle(ind);
       },
@@ -95433,31 +95450,31 @@ function LocalesTable(props) {
   var columns = [{
     Header: "Franquicia",
     accessor: "franquicia",
-    headerClassName: 'bold highlight-title',
+    headerClassName: 'bold highlight-title text-left',
     fixed: "left"
   }, {
     Header: "Nombre",
     accessor: "nombre",
-    headerClassName: 'bold highlight-title',
+    headerClassName: 'bold highlight-title text-left',
     fixed: "left"
   }, {
     Header: "Teléfono",
     accessor: "telefonoLocal",
-    headerClassName: 'bold highlight-title'
+    headerClassName: 'bold highlight-title text-left'
   }, {
     Header: "Correo",
     accessor: "correoLocal",
-    headerClassName: 'bold highlight-title'
+    headerClassName: 'bold highlight-title text-left'
   }, {
     Header: "Administrador",
     accessor: "admNombre",
-    headerClassName: 'bold highlight-title'
+    headerClassName: 'bold highlight-title text-left'
   }, {
     Header: "Acciones",
     accessor: "acciones",
     className: "text-right visible",
     minWidth: 120,
-    headerClassName: 'bold highlight-title',
+    headerClassName: 'bold highlight-title text-left',
     fixed: "right"
   }],
       ReactTableFixedColumns = react_table_hoc_fixed_columns__WEBPACK_IMPORTED_MODULE_4___default()(react_table__WEBPACK_IMPORTED_MODULE_2__["default"]);
