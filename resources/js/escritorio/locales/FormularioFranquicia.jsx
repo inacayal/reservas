@@ -23,7 +23,12 @@ const SelectData = {
 
 export const FormularioFranquicia = (props) => {
     SelectData.franquicia.selected = (props.data.franquicia || {}).id || "";
-    SelectData.franquicia.list = props.data;
+    if (props.agregarLocal)
+        SelectData.franquicia.list = props.data
+    else{
+        SelectData.franquicia.list[SelectData.franquicia.selected]=props.data.franquicia.nombre;
+    }
+
     const franquicia = SelectData.franquicia,
         agregar = [
             {
@@ -43,18 +48,26 @@ export const FormularioFranquicia = (props) => {
                 <h6 className="highlight no-margin bold">Franquicia</h6>
             </div>
             <div className="row top-padding">
-                <div className="col-md-12">
+            <div className="col-md-12 text-left relative visible h-padding">
+                <div
+                    className={props.agregarLocal ? "hidden" : "top-padding full-width overlay"} />
                     <Select
                         select={franquicia}
                         titulo="selecciona la franquicia" />
                 </div>
             </div>
-            <div className="row v-padding justify-content-end">
-                <span className="smaller-text">
-                    si no existe
-                </span>
-                <Actions links={agregar}/>
-            </div>
+            {
+                props.agregarLocal
+                ?
+                    <div className="row v-padding justify-content-end">
+                        <span className="smaller-text">
+                            si no existe
+                        </span>
+                        <Actions links={agregar}/>
+                    </div>
+                :
+                    ""
+            }
         </>
     )
 }

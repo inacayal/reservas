@@ -64,6 +64,7 @@ class UserController extends Controller
         $user = User::with(
             $relations
         )->find($id);
+
         return response([
             'data'=>new Resource($user)
         ],200)->header('Content-Type','application/json');

@@ -95049,7 +95049,9 @@ var SelectData = {
 };
 var FormularioFranquicia = function FormularioFranquicia(props) {
   SelectData.franquicia.selected = (props.data.franquicia || {}).id || "";
-  SelectData.franquicia.list = props.data;
+  if (props.agregarLocal) SelectData.franquicia.list = props.data;else {
+    SelectData.franquicia.list[SelectData.franquicia.selected] = props.data.franquicia.nombre;
+  }
   var franquicia = SelectData.franquicia,
       agregar = [{
     title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -95066,17 +95068,19 @@ var FormularioFranquicia = function FormularioFranquicia(props) {
   }, "Franquicia")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row top-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-12"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], {
+    className: "col-md-12 text-left relative visible h-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: props.agregarLocal ? "hidden" : "top-padding full-width overlay"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], {
     select: franquicia,
     titulo: "selecciona la franquicia"
-  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }))), props.agregarLocal ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row v-padding justify-content-end"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
     className: "smaller-text"
   }, "si no existe"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_4__["default"], {
     links: agregar
-  })));
+  })) : "");
 };
 
 /***/ }),
@@ -95334,9 +95338,12 @@ function (_Component) {
           buttons: this.props.nav.buttons
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "container"
-        }, this.props.editar ? "" : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FormularioFranquicia__WEBPACK_IMPORTED_MODULE_6__["FormularioFranquicia"], {
-          data: this.state.data
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_4__["FormularioEstablecimiento"], {
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FormularioFranquicia__WEBPACK_IMPORTED_MODULE_6__["FormularioFranquicia"], {
+          data: this.state.data,
+          agregarLocal: !this.props.editar
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row sub-title bold top-padding"
+        }, "Informaci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_4__["FormularioEstablecimiento"], {
           data: this.state.data
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_FormularioUsuario__WEBPACK_IMPORTED_MODULE_5__["FormularioUsuario"], {
           data: this.state.data

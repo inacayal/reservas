@@ -124,13 +124,10 @@ export default class Formulario extends Component{
                         links={this.props.nav.links}
                         buttons ={this.props.nav.buttons} />
                     <div className="container">
-                        {
-                            this.props.editar
-                            ?
-                                ""
-                            :
-                                <FormularioFranquicia data={this.state.data}/>
-                        }
+                        <FormularioFranquicia data={this.state.data} agregarLocal={!this.props.editar}/>
+                        <div className="row sub-title bold top-padding">
+                            Información
+                        </div>
                         <FormularioEstablecimiento data={this.state.data}/>
                         <FormularioUsuario data={this.state.data}/>
                         <div className="row justify-content-end v-padding">

@@ -22,6 +22,7 @@ trait hasDependencies
         'usuarios'      => 'App\\User',
         'locales'       => 'App\\User',
         'franquicia'    => 'App\\User',
+        'franquicias'    => 'App\\User',
         'administrador' => 'App\\User'
     ];
 
