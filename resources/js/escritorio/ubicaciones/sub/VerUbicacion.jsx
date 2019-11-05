@@ -12,10 +12,7 @@ import { GET } from '../../../utils/api';
  * basic
  */
 import Titulo from '../../../componentes/basic/Titulo';
-/**
- * nav
- */
-import { Navegacion } from '../Navegacion';
+
 export default class VerUbicacion extends Component {
     constructor(props){
         super(props);
@@ -26,7 +23,7 @@ export default class VerUbicacion extends Component {
         }
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
-        
+
     }
 
     downloadHandler(pEvent) {
@@ -72,45 +69,50 @@ export default class VerUbicacion extends Component {
 
     render() {
         if (this.state.data && this.state.loadFinished) {
-            const data = this.state.data,
-                nav = Navegacion.singular(data);
-            console.log(data)
+            const data = this.state.data;
             return (
-                <div className="container">
-                    < Titulo
-                        title={this.state.data.nombre}
-                        links={nav.links}
-                        buttons ={nav.buttons}/>
-                    <div className="row full-width">
-                        <div className="col-md-4 bold">
-                            imagen de ubicacion
-                        </div>
-                        <div className="col-md-8 container">
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="bold highlight">
-                                        Descripcion:
-                                    </div>
-                                    <div>{data.descripcion}</div>
-                                </div>
+                <>
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.toggleModal}
+                        title="Desactivar Local"
+                        content="¿estás seguro de desactivar este local?" />
+                    <div className="container">
+                        < Titulo
+                            title={this.state.data.nombre}
+                            links={nav.links}
+                            buttons ={nav.buttons}/>
+                        <div className="row full-width">
+                            <div className="col-md-4 bold">
+                                imagen de ubicacion
                             </div>
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <div className="bold highlight">
-                                        Máximo por mesa
+                            <div className="col-md-8 container">
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <div className="bold highlight">
+                                            Descripcion:
+                                        </div>
+                                        <div>{data.descripcion}</div>
                                     </div>
-                                    <div>{data.maximo+" personas"}</div>
                                 </div>
-                                <div className="col-md-6">
-                                    <div className="bold highlight">
-                                        Capacidad máxima
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="bold highlight">
+                                            Máximo por mesa
+                                        </div>
+                                        <div>{data.maximo+" personas"}</div>
                                     </div>
-                                    <div>{data.capacidad+" personas"}</div>
+                                    <div className="col-md-6">
+                                        <div className="bold highlight">
+                                            Capacidad máxima
+                                        </div>
+                                        <div>{data.capacidad+" personas"}</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </>
             )
         }
         return (
@@ -119,4 +121,3 @@ export default class VerUbicacion extends Component {
         );
     }
 }
-

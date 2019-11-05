@@ -16,6 +16,7 @@ import Titulo from '../../../componentes/basic/Titulo';
 import FranquiciasTable from '../../../componentes/tables/FranquiciasTable';
 import Actions from '../../../componentes/basic/Actions';
 import {ExpandableComponent} from '../../../componentes/basic/ExpandableComponent';
+import {ConfirmarModal} from '../../../componentes/modal/Modal';
 
 export default class VerLocal extends Component {
     constructor(props){
@@ -26,8 +27,16 @@ export default class VerLocal extends Component {
         }
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+        this.props.nav.buttons[0].click = this.toggleModal;
     }
 
+    toggleModal(e) {
+        e.preventDefault();
+        this.setState({
+            open: !this.state.open
+        });
+    }
     downloadHandler(pEvent) {
         let
             loading = Math.round((pEvent.loaded * 100) / pEvent.total),
@@ -97,6 +106,11 @@ export default class VerLocal extends Component {
             data.franquicia.acciones= <Actions links ={this.links(data.franquicia.id)}/>;
             return (
                 <>
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.toggleModal}
+                        title="Desactivar Local"
+                        content="¿estás seguro de desactivar este local?" />
                     <div className="container no-padding">
                         < Titulo
                             title={this.state.data.nombre}

@@ -23,6 +23,7 @@ import { FormularioFranquicia } from '../FormularioFranquicia';
 import Actions from '../../../componentes/basic/Actions';
 import Titulo from '../../../componentes/basic/Titulo';
 import { Navegacion } from '../../../acciones/ActionsByView';
+import {ConfirmarModal} from '../../../componentes/modal/Modal';
 
 export default class Formulario extends Component{
     constructor(props){
@@ -113,29 +114,36 @@ export default class Formulario extends Component{
     render(){
         if (this.state.data && this.state.loadFinished) {
             return (
-                <form className="full-width box-padding">
-                    < Titulo
-                        title={
-                            this.props.editar
-                                ?
-                                    this.state.data.nombre
-                                : "Agregar Local"
-                        }
-                        links={this.props.nav.links}
-                        buttons ={this.props.nav.buttons} />
-                    <div className="container">
-                        <FormularioFranquicia data={this.state.data} agregarLocal={!this.props.editar}/>
-                        <div className="row sub-title bold top-padding">
-                            Información
+                <>
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.toggleModal}
+                        title="Desactivar Local"
+                        content="¿estás seguro de desactivar este local?" />
+                    <form className="full-width box-padding">
+                        < Titulo
+                            title={
+                                this.props.editar
+                                    ?
+                                        this.state.data.nombre
+                                    : "Agregar Local"
+                            }
+                            links={this.props.nav.links}
+                            buttons ={this.props.nav.buttons} />
+                        <div className="container">
+                            <FormularioFranquicia data={this.state.data} agregarLocal={!this.props.editar}/>
+                            <div className="row sub-title bold top-padding">
+                                Información
+                            </div>
+                            <FormularioEstablecimiento data={this.state.data}/>
+                            <FormularioUsuario data={this.state.data}/>
+                            <div className="row justify-content-end v-padding">
+                                <Actions
+                                    buttons={Object.values(this.actions)}/>
+                            </div>
                         </div>
-                        <FormularioEstablecimiento data={this.state.data}/>
-                        <FormularioUsuario data={this.state.data}/>
-                        <div className="row justify-content-end v-padding">
-                            <Actions
-                                buttons={Object.values(this.actions)}/>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </>
             )
         }
         return (

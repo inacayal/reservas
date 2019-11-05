@@ -21,11 +21,8 @@ import {Text} from '../../../componentes/input/Text';
  */
 import LoadBar from '../../../utils/LoadBar';
 import { GET } from '../../../utils/api';
-/**
- * nav
- */
-import { Navegacion } from '../Navegacion';
-export default class AgregarFormulario extends Component {
+
+export default class Formulario extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -57,7 +54,7 @@ export default class AgregarFormulario extends Component {
                 endpoint: 'ubicaciones/single/27/'+this.props.match.params.id,
                 download: this.downloadHandler
             });
-    
+
             request
                 .then(
                     response => {
@@ -69,7 +66,7 @@ export default class AgregarFormulario extends Component {
                         console.log(error.message)
                     }
                 );
-        }else 
+        }else
             this.setState({
                 data: true,
                 isLoading: false,
@@ -83,16 +80,12 @@ export default class AgregarFormulario extends Component {
 
     render() {
         if (this.state.data && this.state.loadFinished){
-            const nav = Navegacion.formulario(
-                this.state.data,
-                this.props.editar
-            );
             return (
                 <form className="full-width">
                     <div className="container">
                         <Titulo
-                            title={this.props.editar 
-                                ? "Editando ubicación " + this.state.data.nombre 
+                            title={this.props.editar
+                                ? "Editando ubicación " + this.state.data.nombre
                                 : "Agregar ubicación"}
                             links={nav.links}
                             buttons={nav.buttons} />
@@ -124,7 +117,7 @@ export default class AgregarFormulario extends Component {
                     </div>
                 </form>
             );
-        }    
+        }
         return (
             <LoadBar
                 loaded={this.state.loading} />

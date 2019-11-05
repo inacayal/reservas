@@ -19,10 +19,7 @@ import generateUbicacionesCard from './generateUbicacionesCard';
  */
 import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
-/**
- * nav
- */
-import { Navegacion } from '../Navegacion';
+
 export default class UbicacionesRouting extends Component {
     constructor(props) {
         super(props);

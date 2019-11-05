@@ -504,6 +504,9 @@ label{
 .bordered{
     border:solid 1px var(--border);
 }
+.fat-border{
+    border:solid 2px var(--border);
+}
 .transparent-border{
     border-color:transparent;
 }
@@ -526,14 +529,9 @@ label{
     color: var(--light-danger);
     text-align:left;
 }
-.selected{
+.selected{k
     cursor: pointer;
-    background-color: var(--highlight-blue);
-    color: white !important;
-}
-.selected:hover{
-    color:white !important;
-    background-color: var(--highlight-blue) !important;
+    background-color: var(--border);
 }
 /*
     hover main

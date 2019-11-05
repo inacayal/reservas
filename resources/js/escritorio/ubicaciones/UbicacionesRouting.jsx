@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 /**
  * sub elementos
  */
-import AgregarFormulario from './sub/AgregarFormulario';
+import Formulario from './sub/Formulario';
 import Ubicaciones from './sub/Ubicaciones';
 import VerUbicacion from './sub/VerUbicacion';
 import {Route,Switch} from 'react-router-dom';
@@ -32,8 +32,8 @@ export default class UbicacionesRouting extends Component {
                     path={this.props.match.url}
                     exact
                     component={
-                        (match) => 
-                            <Ubicaciones  
+                        (match) =>
+                            <Ubicaciones
                                 {...match}/>
                     } />
                 <Switch>
@@ -42,7 +42,7 @@ export default class UbicacionesRouting extends Component {
                         exact
                         component={
                             (match) =>
-                                <AgregarFormulario
+                                <Formulario
                                     editar={true}
                                     {...match} />
                         } />
@@ -50,7 +50,7 @@ export default class UbicacionesRouting extends Component {
                         path={this.props.match.url + '/agregar'}
                         component={
                             (match) =>
-                                <AgregarFormulario
+                                <Formulario
                                     editar={false}
                                     {...match} />
                         } />

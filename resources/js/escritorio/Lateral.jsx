@@ -43,7 +43,7 @@ function Lateral(props) {
                                                     :
                                                         "box-transparent full-width text-left box-padding highlight-hover bold-hover"
                                             }>
-                                            <div className={props.current == i ? "border-blue box-padding" : ""}>
+                                            <div className={props.current == i ? "fat-border box-padding" : ""}>
                                                 <span className="half inline-block">
                                                     {e.title}
                                                 </span>
