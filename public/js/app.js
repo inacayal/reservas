@@ -89595,23 +89595,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _sub_Reservas__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sub/Reservas */ "./resources/js/escritorio/configuracion/sub/Reservas.jsx");
 /* harmony import */ var _sub_Configuracion__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sub/Configuracion */ "./resources/js/escritorio/configuracion/sub/Configuracion.jsx");
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+/* harmony import */ var _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../acciones/ActionsByView */ "./resources/js/acciones/ActionsByView.jsx");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 /**
  * react basic
@@ -89628,59 +89613,40 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var ConfiguracionRouting =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(ConfiguracionRouting, _Component);
-
-  function ConfiguracionRouting(props) {
-    _classCallCheck(this, ConfiguracionRouting);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ConfiguracionRouting).call(this, props));
-  }
-
-  _createClass(ConfiguracionRouting, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      console.log('configuracionMount');
+function ConfiguracionRouting(props) {
+  var nav = _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_7__["Navegacion"].agregar('/configuracion');
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Route"], {
+    path: props.match.url,
+    exact: true,
+    component: function component(match) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Configuracion__WEBPACK_IMPORTED_MODULE_5__["default"], match);
     }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      console.log('configuracionUnmount');
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Route"], {
+    path: props.match.url + '/usuario',
+    component: function component(match) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Usuario__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({
+        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_7__["FormActions"])(),
+        nav: nav
+      }, match));
     }
-  }, {
-    key: "render",
-    value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Route"], {
-        path: this.props.match.url,
-        exact: true,
-        component: function component(match) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Configuracion__WEBPACK_IMPORTED_MODULE_5__["default"], match);
-        }
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Route"], {
-        path: this.props.match.url + '/usuario',
-        component: function component(match) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Usuario__WEBPACK_IMPORTED_MODULE_3__["default"], match);
-        }
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Route"], {
-        path: this.props.match.url + '/establecimiento',
-        component: function component(match) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Establecimiento__WEBPACK_IMPORTED_MODULE_2__["default"], match);
-        }
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Route"], {
-        path: this.props.match.url + '/reservas',
-        component: function component(match) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Reservas__WEBPACK_IMPORTED_MODULE_4__["default"], match);
-        }
-      }));
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Route"], {
+    path: props.match.url + '/establecimiento',
+    component: function component(match) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Establecimiento__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
+        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_7__["FormActions"])(),
+        nav: nav
+      }, match));
     }
-  }]);
-
-  return ConfiguracionRouting;
-}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
-
-
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Route"], {
+    path: props.match.url + '/reservas',
+    component: function component(match) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Reservas__WEBPACK_IMPORTED_MODULE_4__["default"], _extends({
+        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_7__["FormActions"])(),
+        nav: nav
+      }, match));
+    }
+  }));
+}
 
 /***/ }),
 
@@ -90071,50 +90037,6 @@ var FormularioUsuario = function FormularioUsuario(props) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/configuracion/Navegacion.jsx":
-/*!**************************************************************!*\
-  !*** ./resources/js/escritorio/configuracion/Navegacion.jsx ***!
-  \**************************************************************/
-/*! exports provided: Navegacion */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Navegacion", function() { return Navegacion; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/**
- * react basic
- */
-
-
-var Navegacion = {
-  listado: function listado() {
-    return {
-      links: []
-    };
-  },
-  reservas: function reservas() {
-    return {
-      links: []
-    };
-  },
-  usuario: function usuario(data) {
-    return {
-      links: []
-    };
-  },
-  establecimiento: function establecimiento() {
-    return {
-      links: []
-    };
-  }
-};
-
-/***/ }),
-
 /***/ "./resources/js/escritorio/configuracion/sub/Configuracion.jsx":
 /*!*********************************************************************!*\
   !*** ./resources/js/escritorio/configuracion/sub/Configuracion.jsx ***!
@@ -90134,7 +90056,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _generateConfigurationCards__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./generateConfigurationCards */ "./resources/js/escritorio/configuracion/sub/generateConfigurationCards.jsx");
 /* harmony import */ var _componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/control/LoadBar */ "./resources/js/componentes/control/LoadBar.jsx");
 /* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
-/* harmony import */ var _Navegacion__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Navegacion */ "./resources/js/escritorio/configuracion/Navegacion.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -90173,11 +90094,6 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * API
  */
 
-
-
-/**
- * navegacion
- */
 
 
 
@@ -90251,13 +90167,11 @@ function (_Component) {
     key: "render",
     value: function render() {
       if (this.state.data && this.state.loadFinished) {
-        var configuracion = Object(_generateConfigurationCards__WEBPACK_IMPORTED_MODULE_4__["default"])(this.state.data),
-            nav = _Navegacion__WEBPACK_IMPORTED_MODULE_7__["Navegacion"].listado();
+        var configuracion = Object(_generateConfigurationCards__WEBPACK_IMPORTED_MODULE_4__["default"])(this.state.data);
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "full-width"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
-          title: "Configuraci\xF3n",
-          links: nav.links
+          title: "Configuraci\xF3n"
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
           className: "full-width nav-list no-padding"
         }, configuracion.map(function (elem, index) {
@@ -90299,7 +90213,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/control/LoadBar */ "./resources/js/componentes/control/LoadBar.jsx");
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
 /* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
-/* harmony import */ var _Navegacion__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Navegacion */ "./resources/js/escritorio/configuracion/Navegacion.jsx");
+/* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -90331,10 +90245,6 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-/**
- * navegacion
- */
-
 
 
 var Reservas =
@@ -90355,6 +90265,9 @@ function (_Component) {
     };
     _this.fetchData = _this.fetchData.bind(_assertThisInitialized(_this));
     _this.downloadHandler = _this.downloadHandler.bind(_assertThisInitialized(_this));
+    _this.actions = _this.props.formActions.buttons;
+    _this.actions.cancelar.click = _this.cancelarFormulario;
+    _this.actions.guardar.click = _this.enviarFormulario;
     return _this;
   }
 
@@ -90370,6 +90283,26 @@ function (_Component) {
         loadFinished: true
       };
       this.setState(state);
+    }
+  }, {
+    key: "enviarFormulario",
+    value: function enviarFormulario(e) {
+      e.preventDefault();
+      console.log('guardar');
+    }
+  }, {
+    key: "cancelarFormulario",
+    value: function cancelarFormulario(e) {
+      e.preventDefault();
+      console.log('cancelar');
+    }
+  }, {
+    key: "toggleModal",
+    value: function toggleModal(e) {
+      e.preventDefault();
+      this.setState({
+        open: !this.state.open
+      });
     }
   }, {
     key: "fetchData",
@@ -90407,15 +90340,18 @@ function (_Component) {
     key: "render",
     value: function render() {
       if (this.state.data && this.state.loadFinished) {
-        var nav = _Navegacion__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].establecimiento();
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__["default"], {
           title: "Configurar Establecimiento",
-          links: nav.links
+          links: this.props.nav.links
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "container"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_2__["FormularioEstablecimiento"], {
           data: this.state.data
-        })));
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row v-padding justify-content-end"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_6__["default"], {
+          buttons: Object.values(this.actions)
+        }))));
       }
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -90449,7 +90385,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/control/LoadBar */ "./resources/js/componentes/control/LoadBar.jsx");
 /* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _Navegacion__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Navegacion */ "./resources/js/escritorio/configuracion/Navegacion.jsx");
+/* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -90481,10 +90417,6 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-/**
- * navegacion
- */
-
 
 
 var Reservas =
@@ -90505,10 +90437,33 @@ function (_Component) {
     };
     _this.fetchData = _this.fetchData.bind(_assertThisInitialized(_this));
     _this.downloadHandler = _this.downloadHandler.bind(_assertThisInitialized(_this));
+    _this.actions = _this.props.formActions.buttons;
+    _this.actions.cancelar.click = _this.cancelarFormulario;
+    _this.actions.guardar.click = _this.enviarFormulario;
     return _this;
   }
 
   _createClass(Reservas, [{
+    key: "enviarFormulario",
+    value: function enviarFormulario(e) {
+      e.preventDefault();
+      console.log('guardar');
+    }
+  }, {
+    key: "cancelarFormulario",
+    value: function cancelarFormulario(e) {
+      e.preventDefault();
+      console.log('cancelar');
+    }
+  }, {
+    key: "toggleModal",
+    value: function toggleModal(e) {
+      e.preventDefault();
+      this.setState({
+        open: !this.state.open
+      });
+    }
+  }, {
     key: "downloadHandler",
     value: function downloadHandler(pEvent) {
       var loading = Math.round(pEvent.loaded * 100 / pEvent.total),
@@ -90557,15 +90512,18 @@ function (_Component) {
     key: "render",
     value: function render() {
       if (this.state.data && this.state.loadFinished) {
-        var nav = _Navegacion__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].reservas();
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_5__["default"], {
           title: "Configurar Reservas",
-          links: nav.links
+          links: this.props.nav.links
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "container"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FormularioReservas__WEBPACK_IMPORTED_MODULE_2__["FormularioReservas"], {
           data: this.state.data
-        })));
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row v-pading justify-content-end"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_6__["default"], {
+          buttons: Object.values(this.actions)
+        }))));
       }
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -90599,7 +90557,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
 /* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
 /* harmony import */ var _FormularioUsuario__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../FormularioUsuario */ "./resources/js/escritorio/configuracion/FormularioUsuario.jsx");
-/* harmony import */ var _Navegacion__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Navegacion */ "./resources/js/escritorio/configuracion/Navegacion.jsx");
+/* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -90635,10 +90593,6 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-/**
- * navegacion
- */
-
 
 
 var Establecimiento =
@@ -90659,10 +90613,33 @@ function (_Component) {
     };
     _this.fetchData = _this.fetchData.bind(_assertThisInitialized(_this));
     _this.downloadHandler = _this.downloadHandler.bind(_assertThisInitialized(_this));
+    _this.actions = _this.props.formActions.buttons;
+    _this.actions.cancelar.click = _this.cancelarFormulario;
+    _this.actions.guardar.click = _this.enviarFormulario;
     return _this;
   }
 
   _createClass(Establecimiento, [{
+    key: "enviarFormulario",
+    value: function enviarFormulario(e) {
+      e.preventDefault();
+      console.log('guardar');
+    }
+  }, {
+    key: "cancelarFormulario",
+    value: function cancelarFormulario(e) {
+      e.preventDefault();
+      console.log('cancelar');
+    }
+  }, {
+    key: "toggleModal",
+    value: function toggleModal(e) {
+      e.preventDefault();
+      this.setState({
+        open: !this.state.open
+      });
+    }
+  }, {
     key: "downloadHandler",
     value: function downloadHandler(pEvent) {
       var loading = Math.round(pEvent.loaded * 100 / pEvent.total),
@@ -90706,17 +90683,20 @@ function (_Component) {
     key: "render",
     value: function render() {
       if (this.state.data && this.state.loadFinished) {
-        var nav = _Navegacion__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].usuario();
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "container full-width "
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
           title: "Configurar Usuario",
-          links: nav.links
+          links: this.props.nav.links
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "container"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FormularioUsuario__WEBPACK_IMPORTED_MODULE_5__["FormularioUsuario"], {
           data: this.state.data
-        })));
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row v-padding justify-content-end"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_6__["default"], {
+          buttons: Object.values(this.actions)
+        }))));
       }
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_2__["default"], {

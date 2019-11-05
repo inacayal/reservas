@@ -10,10 +10,8 @@ import { FormularioEstablecimiento } from '../FormularioEstablecimiento';
 import LoadBar from '../../../componentes/control/LoadBar';
 import Titulo from '../../../componentes/basic/Titulo';
 import { GET } from '../../../utils/api';
-/**
- * navegacion
- */
-import { Navegacion } from '../Navegacion';
+import Actions from '../../../componentes/basic/Actions';
+
 export default class Reservas extends Component {
     constructor(props) {
         super(props);
@@ -24,6 +22,10 @@ export default class Reservas extends Component {
         };
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
+
+        this.actions = this.props.formActions.buttons;
+        this.actions.cancelar.click = this.cancelarFormulario;
+        this.actions.guardar.click = this.enviarFormulario;
     }
 
     downloadHandler(pEvent) {
@@ -33,6 +35,23 @@ export default class Reservas extends Component {
                 { loading, loadFinished: false }
                 : { loading, loadFinished: true };
         this.setState(state);
+    }
+
+    enviarFormulario(e){
+        e.preventDefault();
+        console.log('guardar');
+    }
+
+    cancelarFormulario(e){
+        e.preventDefault();
+        console.log('cancelar');
+    }
+
+    toggleModal(e) {
+        e.preventDefault();
+        this.setState({
+            open: !this.state.open
+        });
     }
 
     fetchData() {
@@ -71,14 +90,16 @@ export default class Reservas extends Component {
 
     render() {
         if (this.state.data && this.state.loadFinished) {
-            const nav = Navegacion.establecimiento()
             return (
                 <>
                     <Titulo
                         title="Configurar Establecimiento"
-                        links={nav.links} />
+                        links={this.props.nav.links} />
                     <div className="container">
                         <FormularioEstablecimiento data={this.state.data} />
+                        <div className="row v-padding justify-content-end">
+                            <Actions buttons={Object.values(this.actions)}/>
+                        </div>
                     </div>
                 </>
             );

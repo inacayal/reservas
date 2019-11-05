@@ -10,20 +10,39 @@ import {FormularioReservas} from '../FormularioReservas';
 import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
 import Titulo from '../../../componentes/basic/Titulo';
-/**
- * navegacion
- */
-import { Navegacion } from '../Navegacion';
+import Actions from '../../../componentes/basic/Actions';
+
 export default class Reservas extends Component {
     constructor(props){
         super(props);
         this.state = {
             data:null,
             loading:null,
-            loadFinished:false 
+            loadFinished:false
         };
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
+        this.actions = this.props.formActions.buttons;
+
+        this.actions.cancelar.click = this.cancelarFormulario;
+        this.actions.guardar.click = this.enviarFormulario;
+    }
+
+    enviarFormulario(e){
+        e.preventDefault();
+        console.log('guardar');
+    }
+
+    cancelarFormulario(e){
+        e.preventDefault();
+        console.log('cancelar');
+    }
+
+    toggleModal(e) {
+        e.preventDefault();
+        this.setState({
+            open: !this.state.open
+        });
     }
 
     downloadHandler(pEvent) {
@@ -64,21 +83,23 @@ export default class Reservas extends Component {
         this.fetchData();
     }
 
-        
+
     componentWillUnmount() {
         console.log('configuracionReservasUnmount');
     }
-        
+
     render(){
         if (this.state.data && this.state.loadFinished){
-            const nav = Navegacion.reservas();
             return (
                 <>
                     < Titulo
                         title="Configurar Reservas"
-                        links={nav.links} />
+                        links={this.props.nav.links} />
                     <div className="container">
                         <FormularioReservas data ={this.state.data} />
+                        <div className="row v-pading justify-content-end">
+                            <Actions buttons={Object.values(this.actions)}/>
+                        </div>
                     </div>
                 </>
             );
@@ -86,6 +107,6 @@ export default class Reservas extends Component {
         return (
             <LoadBar
                 loaded={this.state.loading} />
-        );  
+        );
     }
 }

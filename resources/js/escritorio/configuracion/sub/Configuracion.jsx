@@ -17,10 +17,7 @@ import generateConfigurationCards from './generateConfigurationCards';
  */
 import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
-/**
- * navegacion
- */
-import { Navegacion } from '../Navegacion';
+
 export default class Configuracion extends Component {
     constructor(props) {
         super(props);
@@ -79,13 +76,11 @@ export default class Configuracion extends Component {
         if (this.state.data && this.state.loadFinished) {
             const configuracion = generateConfigurationCards(
                     this.state.data
-                ),
-                nav = Navegacion.listado();
+                );
             return (
                 <div className="full-width">
                     <Titulo
-                        title="Configuración"
-                        links={nav.links} />
+                        title="Configuración"/>
                     <ul className="full-width nav-list no-padding">
                         {
                             configuracion.map(
