@@ -15,7 +15,7 @@ import Actions from '../../../componentes/basic/Actions';
 import Titulo from '../../../componentes/basic/Titulo';
 import {ConfirmarModal} from '../../../componentes/modal/Modal';
 import LocalesTable from '../../../componentes/tables/LocalesTable';
-import {ExpandableComponent} from '../../../componentes/basic/ExpandableComponent';
+import {ExpandableComponent} from '../../../hocs/ExpandableComponent';
 
 export default class VerFranquicia extends Component {
     constructor(props) {

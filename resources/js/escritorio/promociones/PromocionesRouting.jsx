@@ -6,58 +6,57 @@ import ReactDOM from 'react-dom';
 /**
  * sub elementos
  */
-import AgregarFormulario from './sub/AgregarFormulario';
+import Formulario from './sub/Formulario';
 import Promociones from './sub/Promociones';
 import VerPromocion from './sub/VerPromocion';
 import { Route, Switch } from 'react-router-dom';
 
-export default class PromocionesRouting extends Component {
-    constructor(props) {
-        super(props);
-    }
+import {Navegacion,FormActions} from '../../acciones/ActionsByView';
 
-    componentDidMount() {
-        console.log('promocionesMount');
-    }
-
-    render() {
-        return (
-            <>
+export default function PromocionesRouting (props) {
+    return (
+        <>
+            <Route
+                path={props.match.url}
+                exact
+                component={
+                    (match) =>
+                        <Promociones
+                            nav={Navegacion.listado('/promociones')}
+                            {...match} />
+                } />
+            <Switch>
                 <Route
-                    path={this.props.match.url}
+                    path={props.match.url + '/editar/:id'}
                     exact
                     component={
                         (match) =>
-                            <Promociones
+                            <Formulario
+                                editar={true}
+                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/promociones')}
+                                formActions={FormActions()}
                                 {...match} />
                     } />
-                <Switch>
-                    <Route
-                        path={this.props.match.url + '/editar/:id'}
-                        exact
-                        component={
-                            (match) =>
-                                <AgregarFormulario
-                                    editar={true}
-                                    {...match} />
-                        } />
-                    <Route
-                        path={this.props.match.url + '/agregar'}
-                        component={
-                            (match) =>
-                                <AgregarFormulario
-                                    editar={false}
-                                    {...match} />
-                        } />
-                    <Route
-                        path={this.props.match.url + '/:id'}
-                        component={
-                            (match) =>
-                                <VerPromocion
-                                    {...match} />
-                        } />
-                </Switch>
-            </>
-        );
-    }
+                <Route
+                    path={props.match.url + '/agregar'}
+                    component={
+                        (match) =>
+                            <Formulario
+                                editar={false}
+                                nav={Navegacion.agregar('/promociones')}
+                                formActions={FormActions()}
+                                {...match} />
+                    } />
+                <Route
+                    path={props.match.url + '/:id'}
+                    component={
+                        (match) =>
+                            <VerPromocion
+                                editar={false}
+                                nav={Navegacion.singular(()=>false,match.match.params.id,'/promociones')}
+                                {...match} />
+                    } />
+            </Switch>
+        </>
+    );
 }

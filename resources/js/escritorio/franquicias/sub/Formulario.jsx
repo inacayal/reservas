@@ -115,7 +115,7 @@ export default class Formulario extends Component {
                         closeModal={this.toggleModal}
                         title="Desactivar Franquicia"
                         content="¿estás seguro de desactivar esta franquicia?" />
-                    <form className="full-width box-padding">
+                    <form className="full-width">
                         < Titulo
                             title={
                                 this.props.editar

@@ -26,10 +26,11 @@ export default function generatePromocionesCard(
                 actions
                 ),
                 eventos = Object.values(promociones[e].eventos.list);
+            console.log(promociones[e])
             return {
                 content: () => (
                     <>
-                        <div className="container">
+                        <div className="container no-padding">
                             <div className="row">
                                 <div className="col-md-8">
                                     <span className="sub-title text-super side-margin inline-block align-center bold">
@@ -43,27 +44,38 @@ export default function generatePromocionesCard(
                                     {promociones[e].estado}
                                 </div>
                             </div>
-                            <div className="row box-padding">
+                            <div className="row h-padding">
                                 <div className="col-md-6">
                                     <div className="bold light-danger">Descripción</div>
                                     <div>{promociones[e].descripcion}</div>
-
                                 </div>
                                 <div className="col-md-6">
                                     <div className="bold light-danger top-padding">Eventos</div>
-                                    {
-                                        (eventos.length > 0)
+                                    <div>
+                                        {
+                                            (eventos.length > 0)
+                                                ?
+                                                <CommaList data={promociones[e].eventos.list} />
+                                                :
+                                                <div>No has asignado horarios a este evento</div>
+                                        }
+                                    </div>
+                                    <div>
+                                        <span className="bold light-danger top-padding">Descuento</span>
+                                        {
+                                            promociones[e].descuento
                                             ?
-                                            <CommaList data={promociones[e].eventos.list} />
+                                                <span className="side-margin">{promociones[e].descuento}<span className="bold side-margin">%</span></span>
                                             :
-                                            <div>No has asignado horarios a este evento</div>
-                                    }
+                                                <span className="bold"> Sin descuento asignado </span>
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </>
                 ),
-                class: "box-padding"
+                class: "v-padding"
             }
         }
     );

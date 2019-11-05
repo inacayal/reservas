@@ -14,11 +14,10 @@ import { FormFields } from '../FormFields';
  */
 import LoadBar from '../../../utils/LoadBar';
 import { GET } from '../../../utils/api';
-/**
- * nav
- */
-import {Navegacion} from '../Navegacion';
-export default class AgregarFormulario extends Component {
+import Actions from '../../../componentes/basic/Actions';
+import { ConfirmarModal } from '../../../componentes/modal/Modal';
+
+export default class Formulario extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,6 +27,35 @@ export default class AgregarFormulario extends Component {
         }
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
+        this.enviarFormulario = this.enviarFormulario.bind(this);
+        this.cancelarFormulario = this.cancelarFormulario.bind(this);
+
+        this.toggleModal = this.toggleModal.bind(this);
+
+        if (this.props.editar)
+            this.props.nav.buttons[0].click = this.toggleModal;
+
+        this.actions = this.props.formActions.buttons;
+
+        this.actions.cancelar.click = this.cancelarFormulario;
+        this.actions.guardar.click = this.enviarFormulario;
+    }
+
+    enviarFormulario(e){
+        e.preventDefault();
+        console.log('guardar');
+    }
+
+    cancelarFormulario(e){
+        e.preventDefault();
+        console.log('cancelar');
+    }
+
+    toggleModal(e) {
+        e.preventDefault();
+        this.setState({
+            open: !this.state.open
+        });
     }
 
     downloadHandler(pEvent) {
@@ -90,20 +118,28 @@ export default class AgregarFormulario extends Component {
 
     render() {
         if (this.state.data && this.state.loadFinished) {
-            const nav = Navegacion.formulario(
-                this.state.data.selected,
-                this.props.editar
-            );
             return (
-                <form className="full-width box-padding">
-                    <Titulo
-                        title={this.props.editar 
-                            ? "Editando promoción " + this.state.data.selected.nombre 
-                            : "Agregar Promoción"}
-                        links={nav.links} 
-                        buttons={nav.buttons}/>
-                    <FormFields editar={this.props.editar} {...this.state.data} />
-                </form>
+                <>
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.toggleModal}
+                        title="Eliminar Promocion"
+                        content="¿estás seguro de eliminar esta promo?" />
+                    <form className="full-width box-padding">
+                        <Titulo
+                            title={this.props.editar
+                                ? this.state.data.selected.nombre
+                                : "Agregar Promoción"}
+                            links={this.props.nav.links}
+                            buttons={this.props.nav.buttons}/>
+                        <FormFields editar={this.props.editar} {...this.state.data} />
+                        <div className="container">
+                            <div className="row justify-content-end v-padding">
+                                <Actions buttons={Object.values(this.actions)}/>
+                            </div>
+                        </div>
+                    </form>
+                </>
             );
         }
         return (

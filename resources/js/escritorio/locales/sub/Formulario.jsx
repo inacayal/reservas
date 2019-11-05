@@ -120,7 +120,7 @@ export default class Formulario extends Component{
                         closeModal={this.toggleModal}
                         title="Desactivar Local"
                         content="¿estás seguro de desactivar este local?" />
-                    <form className="full-width box-padding">
+                    <form className="full-width">
                         < Titulo
                             title={
                                 this.props.editar

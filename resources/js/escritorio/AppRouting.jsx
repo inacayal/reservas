@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 /**
  * navigation
  */
-import MainFrame from './MainFrame';
+import MainFrame from '../hocs/MainFrame';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navegacion from './Navegacion';
 /**
@@ -33,7 +33,7 @@ export default function AppRouting (props) {
                     path='/'
                     exact
                     component={
-                        (props) => 
+                        (props) =>
                             <MainFrame
                                 render={(props) => (
                                     <EscritorioRouting {...props} />
@@ -41,25 +41,25 @@ export default function AppRouting (props) {
                                 current={'0'}
                                 {...props}/>
                     }/>
-                <Route 
-                    path='/reservas' 
+                <Route
+                    path='/reservas'
                     component={
-                        (props) => 
+                        (props) =>
                             <MainFrame
                                 render={(props)=>(
                                     <ReservasRouting {...props} />
-                                )} 
+                                )}
                                 current={'1'}
                                 {...props}/>
                     } />
                 <Route
                     path='/horarios'
                     component={
-                        (props) => 
+                        (props) =>
                             <MainFrame
                                 render={(props) => (
                                     <HorariosRouting {...props} />
-                                )} 
+                                )}
                                 current={'2'}
                                 {...props}/>
                         }
@@ -67,23 +67,23 @@ export default function AppRouting (props) {
                 <Route
                     path='/ubicaciones'
                     component={
-                        (props) => 
+                        (props) =>
                             <MainFrame
                                 render={(props) => (
                                     <UbicacionesRouting {...props} />
-                                )} 
+                                )}
                                 current={'3'}
                                 {...props}/>
                     } />
                 <Route
                     path='/eventos'
                     component={
-                        (props) => 
+                        (props) =>
                             <MainFrame
                                 render={(props) => (
                                     <EventosRouting {...props} />
                                 )}
-                                current={'4'} 
+                                current={'4'}
                                 {...props}/>
                     } />
                 <Route
@@ -100,33 +100,33 @@ export default function AppRouting (props) {
                 <Route
                     path='/locales'
                     component={
-                        (props) => 
+                        (props) =>
                             <MainFrame
                                 render={(props) => (
                                     <LocalesRouting {...props} />
-                                )} 
+                                )}
                                 current={'6'}
                                 {...props}/>
                     } />
                 <Route
                     path='/configuracion'
                     component={
-                        (props) => 
+                        (props) =>
                             <MainFrame
                                 render={(props) => (
                                     <ConfiguracionRouting {...props} />
-                                )} 
+                                )}
                                 current={'7'}
                                 {...props}/>
                     } />
                 <Route
                     path='/franquicias'
                     component={
-                        (props) => 
+                        (props) =>
                             <MainFrame
                                 render={(props) => (
                                     <FranquiciasRouting {...props} />
-                                )} 
+                                )}
                                 current={'8'}
                                 {...props}/>
                     } />

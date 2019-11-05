@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom';
  */
 import Titulo from '../../../componentes/basic/Titulo';
 import { CardList } from '../../../componentes/basic/CardList';
-import { closeModal, ConfirmarModal } from '../../../componentes/modal/Modal';
+import { ConfirmarModal } from '../../../componentes/modal/Modal';
 /**
  * funciones
  */
@@ -18,10 +18,6 @@ import LoadBar from '../../../componentes/control/LoadBar';
  * api
  */
 import { GET } from '../../../utils/api';
-/**
- * nav
- */
-import { Navegacion } from '../Navegacion';
 export default class Promociones extends Component {
     constructor(props) {
         super(props);
@@ -30,18 +26,21 @@ export default class Promociones extends Component {
             isLoading: false,
             loadFinished: false
         };
-
-        this.eliminarPromocion = this.eliminarPromocion.bind(this);
-        this.closeModal = closeModal.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
 
         this.actions = {
-            agregar: this.agregarPromocion,
-            editar: this.editarPromocion,
-            eliminar: this.eliminarPromocion
+            eliminar: this.toggleModal
         };
+
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
-        this.eliminarPromocion = this.eliminarPromocion.bind(this);
+    }
+
+    toggleModal(e) {
+        e.preventDefault();
+        this.setState({
+            open: !this.state.open
+        });
     }
 
     downloadHandler(pEvent) {
@@ -83,12 +82,6 @@ export default class Promociones extends Component {
         this.fetchData();
     }
 
-    eliminarPromocion(e) {
-        e.preventDefault();
-        this.setState({
-            open: true
-        })
-    }
 
     componentWillUnmount() {
         console.log('eventosUnmount');
@@ -97,26 +90,25 @@ export default class Promociones extends Component {
     render() {
         if (this.state.data && this.state.loadFinished) {
             const promociones = generatePromocionesCard(
-                    this.state.data,
-                    this.actions
-                ),
-                nav = Navegacion.listado(this.state.data);
+                this.state.data,
+                this.actions
+            );
             return (
                 <>
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.toggleModal}
+                        title="Eliminar Promocion"
+                        content="¿estás seguro de eliminar esta promo?" />
                     <Titulo
                         title="Promociones"
-                        links={nav.links} />
+                        links={this.props.nav.links} />
                     <div className="container">
-                        <ConfirmarModal
-                            open={this.state.open}
-                            closeModal={this.closeModal}
-                            title="Eliminar Evento"
-                            content="¿estás seguro de eliminar este evento?" />
                         <div className="row limit-height-half">
                             <div className="bold top-padding">
                                 {"Mostrando " + promociones.length + " promociones encontradas"}
                             </div>
-                            <ul className="full-width nav-list no-padding">
+                            <ul className="nav-list no-padding">
                                 {
                                     promociones.map(
                                         (elem, index) =>

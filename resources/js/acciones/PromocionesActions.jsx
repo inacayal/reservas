@@ -13,7 +13,7 @@ export const PromocionesActions = (
             title: (
                 <div className="smaller-text text bold">
                     <i className="fas fa-pen inline-box side-margin" />
-                    Editar promoción
+                    Editar
                 </div>
             ),
             to: '/promociones/editar/' + key
@@ -24,7 +24,7 @@ export const PromocionesActions = (
             title: (
                 <div className="smaller-text text bold text-center">
                     <i className="fas fa-trash inline-box side-margin" />
-                    Eliminar promoción
+                    Eliminar
                 </div>
             ),
             click: actions.eliminar,

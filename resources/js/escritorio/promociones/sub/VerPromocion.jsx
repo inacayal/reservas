@@ -8,37 +8,26 @@ import ReactDOM from 'react-dom';
  */
 import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
-/**
- * basic
- */
-import { Navegacion } from '../Navegacion';
 import Titulo from '../../../componentes/basic/Titulo';
 import {Link} from 'react-router-dom';
 import { assignHorarios } from '../../eventos/sub/generateEventosCard';
 import {generateLinks} from '../../eventos/sub/VerEvento';
+import { ConfirmarModal } from '../../../componentes/modal/Modal';
+import EventosTable from '../../../componentes/tables/EventosTable'
 
 const generateList = (list,endpoint) => {
     const eventos = Object.values(list).map(
         (e,i) => {
             const horarios = assignHorarios(e.horarios.list)[0];
-            return (
-                <li 
-                    key={i}
-                    className="small-v-margin smaller-text">
-                    <Link to={endpoint+'/'+e.id}>
+            return {
+                ...e,
+                nombre:(
+                    <Link to={"/eventos/"+e.id}>
                         {e.nombre}
                     </Link>
-                    <div>{e.descripcion}</div>
-                    <div>
-                        <span className="side-margin bold">Horarios:</span>
-                        <span className="side-margin">
-                            <ul className="nav-list side-margin inline-block no-padding">
-                                {generateLinks(horarios,'/horarios')}
-                            </ul>
-                        </span>
-                    </div>
-                </li>
-            )
+                ),
+                horarios:generateLinks(horarios,'/horarios')
+            };
         }
     );
     return eventos;
@@ -53,7 +42,10 @@ export default class VerLocal extends Component {
             open: false
         }
         this.fetchData = this.fetchData.bind(this);
-        this.downloadHandler = this.downloadHandler.bind(this); 
+        this.downloadHandler = this.downloadHandler.bind(this);
+
+        this.toggleModal = this.toggleModal.bind(this);
+        this.props.nav.buttons[0].click = this.toggleModal;
     }
 
     downloadHandler(pEvent) {
@@ -65,6 +57,12 @@ export default class VerLocal extends Component {
         this.setState(state);
     }
 
+    toggleModal(e) {
+        e.preventDefault();
+        this.setState({
+            open: !this.state.open
+        });
+    }
     fetchData() {
         this.setState({
             data: null,
@@ -99,38 +97,40 @@ export default class VerLocal extends Component {
 
     render() {
         if (this.state.data && this.state.loadFinished) {
-            const data = this.state.data,
-                nav = Navegacion.singular(data),
-                eventos = generateList(data.eventos.data,'/eventos');
+            const eventos = generateList(this.state.data.eventos.data,'/eventos'),
+                data = {...this.state.data,eventos};
             return (
-                <div className="container">
-                    < Titulo
-                        title={data.nombre}
-                        links={nav.links}
-                        buttons ={nav.buttons}/>
-                    <div className="container full-width">
-                        <div className="row v-padding">
-                            <div className="col-md-7">
-                                <h6 className="highlight no-margin bold">Eventos</h6>
-                                {
-                                    eventos.length>0
-                                    ?
-                                        <ul className="nav-list h-padding">
-                                            {eventos}
-                                        </ul>
-                                    :
-                                        "No hay eventos asociados"
-                                }
+                <>
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.toggleModal}
+                        title="Eliminar Promocion"
+                        content="¿estás seguro de eliminar esta promo?" />
+                    <div className="container">
+                        < Titulo
+                            title={data.nombre}
+                            links={this.props.nav.links}
+                            buttons ={this.props.nav.buttons}/>
+                        <div className="container full-width no-padding">
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <div className="light-danger bold">Descripción: </div>
+                                    <div>{data.descripcion}</div>
+                                </div>
+                                <div className="col-md-6">
+                                    <h6 className="highlight no-margin bold top-padding">Descuento:</h6>
+                                    <div>{data.descuento ? <>{data.descuento}<span className="bold side-margin">%</span></> : "Sin descuento"}</div>
+                                </div>
                             </div>
-                            <div className="col-md-5">
-                                <div className="light-danger bold">Descripción: </div>
-                                <div className="h-padding">{data.descripcion}</div>
-                                <h6 className="highlight no-margin bold top-padding">Descuento:</h6>
-                                <div className="h-padding">{data.descuento+"%"}</div>
+                            <div className="row sub-title top-padding bold">
+                                Eventos
+                            </div>
+                            <div className="row">
+                                <EventosTable data={data.eventos}/>
                             </div>
                         </div>
                     </div>
-                </div>
+                </>
             )
         }
         return (
@@ -139,4 +139,3 @@ export default class VerLocal extends Component {
         );
     }
 }
-

@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
  * react components
  */
 import Actions from '../../../componentes/basic/Actions';
-import {ExpandableComponent} from '../../../componentes/basic/ExpandableComponent';
+import {ExpandableComponent} from '../../../hocs/ExpandableComponent';
 
 const configurationCards = [
     {

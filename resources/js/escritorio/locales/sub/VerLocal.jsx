@@ -15,7 +15,7 @@ import { Navegacion } from '../../../acciones/ActionsByView';
 import Titulo from '../../../componentes/basic/Titulo';
 import FranquiciasTable from '../../../componentes/tables/FranquiciasTable';
 import Actions from '../../../componentes/basic/Actions';
-import {ExpandableComponent} from '../../../componentes/basic/ExpandableComponent';
+import {ExpandableComponent} from '../../../hocs/ExpandableComponent';
 import {ConfirmarModal} from '../../../componentes/modal/Modal';
 
 export default class VerLocal extends Component {

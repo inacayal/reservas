@@ -22,7 +22,6 @@ export default function LocalesRouting (props) {
                     (match) =>
                         <Locales
                             nav={Navegacion.listado('locales')}
-                            load={props.load}
                             {...match} />
                 } />
                 <Switch>
@@ -33,8 +32,8 @@ export default function LocalesRouting (props) {
                             (match) =>
                                 <Formulario
                                     nav={Navegacion.formulario(()=>false,match.match.params.id,'/locales')}
-                                    editar={true}
                                     formActions={FormActions()}
+                                    editar={true}
                                     {...match} />
                         } />
                     <Route

@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 /**
  * react router
  */
-import Actions from './Actions';
+import Actions from '../componentes/basic/Actions';
 
 export const ExpandableComponent = (props) => {
     const [more,toggle] = useState(props.show),
