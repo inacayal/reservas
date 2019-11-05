@@ -11,7 +11,7 @@ import { GET } from '../../../utils/api';
 import Titulo from '../../../componentes/basic/Titulo';
 import {Link} from 'react-router-dom';
 import { assignHorarios } from '../../eventos/sub/generateEventosCard';
-import {generateLinks} from '../../eventos/sub/VerEvento';
+import {CommaList} from '../../../componentes/basic/CommaList';
 import { ConfirmarModal } from '../../../componentes/modal/Modal';
 import EventosTable from '../../../componentes/tables/EventosTable'
 
@@ -26,7 +26,7 @@ const generateList = (list,endpoint) => {
                         {e.nombre}
                     </Link>
                 ),
-                horarios:generateLinks(horarios,'/horarios')
+                horarios:<CommaList list={horarios} endpoint="/horarios"/>
             };
         }
     );

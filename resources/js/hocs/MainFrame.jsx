@@ -27,7 +27,7 @@ export default function MainFrame (props) {
                                 items={current.split('/')}/>
                         </div>
                         <div className="row medium-left-padding">
-                            <div className="col-md-12  v-padding">
+                            <div className="col-md-12 container v-padding">
                                 <props.render
                                     {...props} />
                             </div>

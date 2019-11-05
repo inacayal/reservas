@@ -15,33 +15,9 @@ import { GET } from '../../../utils/api';
 import Titulo from '../../../componentes/basic/Titulo';
 import { assignHorarios } from './generateEventosCard';
 import {ConfirmarModal} from '../../../componentes/modal/Modal';
+import {CommaList} from '../../../componentes/basic/CommaList';
+import PromocionesTable from '../../../componentes/tables/PromocionesTable';
 
-export const generateLinks =  (list,endpoint) => {
-    return Object.keys(list).map(
-        (e,i) =>
-            <li
-                key={i}
-                className="bold highlight-title inline-block side-margin small-v-margin smaller-text button-border border-box">
-                <Link to={endpoint+'/'+e}>
-                    {list[e]}
-                </Link>
-            </li>
-    )
-};
-const generateList = (list,endpoint) => {
-    return Object.keys(list).map(
-        (e,i) =>
-            <li
-                key={i}
-                className="small-v-margin smaller-text">
-                <Link to={endpoint+'/'+e}>
-                    {list[e].nombre}
-                </Link>
-                <div>{list[e].descripcion}</div>
-                <div className="bold text-right">{list[e].descuento ? list[e].descuento+"% de descuento" : "sin descuento"}</div>
-            </li>
-    )
-};
 export default class VerEvento extends Component {
     constructor(props){
         super(props);
@@ -53,6 +29,7 @@ export default class VerEvento extends Component {
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
+        this.props.nav.buttons[0].click = this.toggleModal;
     }
 
     downloadHandler(pEvent) {
@@ -106,12 +83,11 @@ export default class VerEvento extends Component {
     render() {
         if (this.state.data && this.state.loadFinished) {
             const data = this.state.data,
-                promociones = generateList(data.promociones.data,'/promociones'),
-                horario = generateLinks(assignHorarios(data.horarios.list)[0],'/horarios'),
-                feriados = generateLinks(data.feriados.list,'/feriados');
-            this.props.nav.buttons[0].click = this.toggleModal;
+                promociones = Object.values(data.promociones.data),
+                horarios = Object.values(data.horarios.list),
+                feriados = Object.values(data.feriados.list);
             return (
-                <div className="container">
+                <>
                     <ConfirmarModal
                         open={this.state.open}
                         closeModal={this.toggleModal}
@@ -121,61 +97,47 @@ export default class VerEvento extends Component {
                         title={data.nombre}
                         links={this.props.nav.links}
                         buttons ={this.props.nav.buttons}/>
-                    <div className="container full-width">
-                        <div className="row">
-                            <div className="col-md-9 container no-margin">
-                                <div className="row">
-                                    <div className="col-md-3 light-danger bold">Descripción: </div>
-                                    <div className="col-md-9">{data.descripcion}</div>
-                                </div>
-                            </div>
+                    <div className="row">
+                        <div className="col-md-3 light-danger bold">Descripción: </div>
+                        <div className="col-md-9">{data.descripcion}</div>
+                    </div>
+                    <div className="row v-padding">
+                        <div className="col-md-6">
+                            <h6 className="highlight no-margin bold v-padding">Horarios</h6>
+                            {
+                                horarios.length>0
+                                ?
+                                    <ul className="nav-list no-padding">
+                                        <CommaList list={assignHorarios(data.horarios.list)[0]} endpoint='/horarios'/>
+                                    </ul>
+                                :
+                                    "No hay horarios asociados"
+                            }
                         </div>
-                        <div className="row v-padding">
-                            <div className="col-md-7">
-                            <h6 className="highlight no-margin bold">Promociones</h6>
-                                {
-                                    promociones.length>0
-                                    ?
-                                        <ul className="nav-list h-padding">
-                                            {promociones}
-                                        </ul>
-                                    :
-                                        "No hay promociones asociadas"
-                                }
-                            </div>
-                            <div className="col-md-5 container">
-                                <div className="row h-padding">
-                                    <h6 className="highlight no-margin bold v-padding">Horarios</h6>
-                                    <div>
-                                        {
-                                            horario.length>0
-                                            ?
-                                                <ul className="nav-list no-padding">
-                                                    {horario}
-                                                </ul>
-                                            :
-                                                "No hay horarios asociados"
-                                        }
-                                    </div>
-                                </div>
-                                <div className="row v-padding">
-                                    <div className="col-md-12 v-padding">
-                                        <h6 className="highlight bold">Feriados</h6>
-                                        {
-                                            feriados.length>0
-                                            ?
-                                                <ul className="nav-list no-padding">
-                                                    {feriados}
-                                                </ul>
-                                            :
-                                                <div>No hay feriados asociados</div>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="col-md-6">
+                            <h6 className="highlight bold">Feriados</h6>
+                            {
+                                feriados.length>0
+                                ?
+                                    <ul className="nav-list no-padding">
+                                        <CommaList list={data.feriados.list} endpoint='/feriados'/>
+                                    </ul>
+                                :
+                                    <div className="bold">No hay feriados asociados</div>
+                            }
                         </div>
                     </div>
-                </div>
+                    <div className="row v-padding">
+                        <div className="sub-title bold">Promociones</div>
+                        {
+                            promociones.length>0
+                            ?
+                                <PromocionesTable data={promociones}/>
+                            :
+                                <div className="bold h-padding">No hay promociones asociadas</div>
+                        }
+                    </div>
+                </>
             )
         }
         return (

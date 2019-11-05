@@ -26,7 +26,6 @@ export default function generatePromocionesCard(
                 actions
                 ),
                 eventos = Object.values(promociones[e].eventos.list);
-            console.log(promociones[e])
             return {
                 content: () => (
                     <>
@@ -55,9 +54,9 @@ export default function generatePromocionesCard(
                                         {
                                             (eventos.length > 0)
                                                 ?
-                                                <CommaList data={promociones[e].eventos.list} />
+                                                    <CommaList list={promociones[e].eventos.list} endpoint="/eventos"/>
                                                 :
-                                                <div>No has asignado horarios a este evento</div>
+                                                    <div>No has asignado horarios a este evento</div>
                                         }
                                     </div>
                                     <div>

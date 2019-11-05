@@ -41,49 +41,47 @@ export default function generateEventosCard(
             return {
                 content: () => (
                     <>
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-md-8">
-                                    <Link to={'/eventos/'+e}>
-                                        <span className="text sub-title bold">
-                                            {eventos[e].nombre}
-                                        </span>
-                                    </Link>
-                                    {acciones}
-                                </div>
-                                <div className="col-md-4 border-bottom text-right no-margin no-padding">
-                                    {eventos[e].estado}
-                                </div>
+                        <div className="row">
+                            <div className="col-md-8 no-padding">
+                                <Link to={'/eventos/'+e}>
+                                    <span className="text sub-title bold">
+                                        {eventos[e].nombre}
+                                    </span>
+                                </Link>
+                                {acciones}
                             </div>
-                            <div className="row box-padding">
-                                <div className="col-md-6">
-                                    <div className="bold light-danger">Descripción</div>
-                                    <div>{eventos[e].descripcion}</div>
+                            <div className="col-md-4 border-bottom text-right no-margin no-padding">
+                                {eventos[e].estado}
+                            </div>
+                        </div>
+                        <div className="row v-padding">
+                            <div className="col-md-6 no-padding">
+                                <div className="bold light-danger">Descripción</div>
+                                <div>{eventos[e].descripcion}</div>
 
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="bold light-danger">Horarios</div>
-                                    {
-                                        (horariosLength > 0)
-                                            ?
-                                                <CommaList data={horarios} />
-                                            :
-                                                <div>No has asignado promociones a este evento</div>
-                                    }
-                                    <div className="bold light-danger top-padding">Promociones</div>
-                                    {
-                                        (promociones.length > 0)
-                                            ?
-                                                <CommaList data={eventos[e].promociones.list} />
-                                            :
-                                                <div>No has asignado horarios a este evento</div>
-                                    }
-                                </div>
+                            </div>
+                            <div className="col-md-6 no-padding">
+                                <div className="bold light-danger">Horarios</div>
+                                {
+                                    (horariosLength > 0)
+                                        ?
+                                            <CommaList list={horarios} endpoint='/horarios' />
+                                        :
+                                            <div>No has asignado horarios a este evento</div>
+                                }
+                                <div className="bold light-danger top-padding">Promociones</div>
+                                {
+                                    (promociones.length > 0)
+                                        ?
+                                            <CommaList list={eventos[e].promociones.list} endpoint="/promociones"/>
+                                        :
+                                            <div>No has asignado promociones a este evento</div>
+                                }
                             </div>
                         </div>
                     </>
                 ),
-                class: "box-padding"
+                class: "v-padding container"
             }
         }
     );

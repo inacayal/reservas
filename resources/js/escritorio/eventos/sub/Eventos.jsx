@@ -105,11 +105,11 @@ export default class Eventos extends Component {
                         title="Eventos"
                         links={this.props.nav.links} />
                     <div className="container">
+                        <div className="bold top-padding row">
+                            {"Mostrando " + eventos.length + " eventos encontrados"}
+                        </div>
                         <div className="row limit-height-half">
-                            <div className="bold top-padding">
-                                {"Mostrando " + eventos.length + " eventos encontrados"}
-                            </div>
-                            <ul className="full-width nav-list no-padding">
+                            <ul className="nav-list no-padding">
                                 {
                                     eventos.map(
                                         (elem, index) =>

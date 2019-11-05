@@ -18,12 +18,12 @@ import Titulo from '../../../componentes/basic/Titulo';
  * constantes
  */
 import {DAYS} from '../../../constantes/DaysMonths';
-import {generateLinks} from '../../eventos/sub/VerEvento';
+import {CommaList} from '../../../componentes/basic/CommaList';
 const generateList = (list,endpoint) => {
     const eventos = Object.values(list).map(
         (e,i) => {
             return (
-                <li 
+                <li
                     key={i}
                     className="small-v-margin smaller-text">
                     <Link to={endpoint+'/'+e.id}>
@@ -34,7 +34,7 @@ const generateList = (list,endpoint) => {
                         <span className="side-margin bold">promociones:</span>
                         <span className="side-margin">
                             <ul className="nav-list side-margin inline-block no-padding">
-                                {generateLinks(e.promociones.list,'/promociones')}
+                                <CommaList endpoint={e.promociones.list} list={'/promociones'}/>
                             </ul>
                         </span>
                     </div>
@@ -119,16 +119,16 @@ export default class VerHorario extends Component {
                                     <span className="bold side-margin">Apertura:</span>
                                     <span className="side-margin">
                                         {
-                                            data.apertura.atencion.hora + ":" + 
+                                            data.apertura.atencion.hora + ":" +
                                             data.apertura.atencion.minuto +"hs"
                                         }
                                     </span>
                                 </div>
                                 <div className="row medium-left-padding">
-                                    <span className="bold side-margin">Cierre:</span> 
+                                    <span className="bold side-margin">Cierre:</span>
                                     <span className="side-margin">
                                         {
-                                            data.cierre.atencion.hora + ":" + 
+                                            data.cierre.atencion.hora + ":" +
                                             data.cierre.atencion.minuto +"hs"
                                         }
                                     </span>
@@ -138,23 +138,23 @@ export default class VerHorario extends Component {
                                     <span className="bold side-margin">Apertura:</span>
                                     <span className="side-margin">
                                         {
-                                            data.apertura.reserva.hora + ":" + 
+                                            data.apertura.reserva.hora + ":" +
                                             data.apertura.reserva.minuto +"hs"
                                         }
                                     </span>
                                 </div>
                                 <div className="row medium-left-padding">
-                                    <span className="bold side-margin">Cierre:</span> 
+                                    <span className="bold side-margin">Cierre:</span>
                                     <span className="side-margin">
                                         {
-                                            data.cierre.reserva.hora + ":" + 
+                                            data.cierre.reserva.hora + ":" +
                                             data.cierre.reserva.minuto +"hs"
                                         }
                                     </span>
                                 </div>
                             </div>
                             <div className="col-md-6 container">
-                                
+
                                 <h6 className="highlight no-margin bold">Eventos</h6>
                                 {
                                     eventos.length>0
@@ -177,4 +177,3 @@ export default class VerHorario extends Component {
         );
     }
 }
-
