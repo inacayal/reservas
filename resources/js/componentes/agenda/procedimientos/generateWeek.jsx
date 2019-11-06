@@ -25,8 +25,8 @@ const moveIndex = (
         datePtr.setDate(datePtr.getDate() + (i - day));
         let index = datePtr.getDate();
         rData = [data[index], (data[index]||{}).id ? data[index].id : datePtr, datePtr];
-    } else 
-        rData = [ data[i + 1] || null, data[i + 1] ? data[i + 1].id : i + 1 , null]; 
+    } else
+        rData = [ data[i + 1] || null, data[i + 1] ? data[i + 1].id : i + 1 , null];
     return rData;
 }
 
@@ -53,10 +53,10 @@ const generateWeek = (
                 );
 
             if (dateIndex){
-                prev = date.getMonth() === dateIndex.getMonth() 
-                    ? prev.concat([elem]) 
+                prev = date.getMonth() === dateIndex.getMonth()
+                    ? prev.concat([elem])
                     : prev;
-            } else   
+            } else
                 prev.push(elem);
 
             return prev;

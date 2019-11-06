@@ -27,7 +27,7 @@ export const GenerateActions = {
         let index = '';
         if (data)
             index = data.estado ? data.estado : 'data';
-        else 
+        else
             index = 'no_data';
         const acciones = ReservasActions[type][index](
                 actions,
@@ -70,7 +70,7 @@ export const GenerateActions = {
                 actions
             );
         return (
-            <Actions 
+            <Actions
                 links={acciones.links}
                 buttons={acciones.buttons}/>
         );

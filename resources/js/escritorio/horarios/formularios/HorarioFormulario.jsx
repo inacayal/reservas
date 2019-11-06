@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Calendario } from '../Calendario';
 import Titulo from '../../../componentes/basic/Titulo';
-import {HorarioNavegacion as Navegacion} from '../HorarioNavegacion'
 /**
  * elements
  */
@@ -14,6 +13,8 @@ import { EventoFields } from '../EventoFields';
 import ButtonList from '../../../componentes/basic/ButtonList';
 import { Toggle } from '../../../componentes/input/Toggle';
 import LoadBar from '../../../componentes/control/LoadBar';
+import {ConfirmarModal} from '../../../componentes/modal/Modal';
+import Actions from '../../../componentes/basic/Actions';
 /**
  * constants
  */
@@ -35,8 +36,34 @@ export default class FeriadoFormulario extends Component {
         this.downloadHandler = this.downloadHandler.bind(this);
         this.fetchData = this.fetchData.bind(this);
         this.changeToggleSide = this.changeToggleSide.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+
+        this.enviarFormulario = this.enviarFormulario.bind(this);
+        this.cancelarFormulario = this.cancelarFormulario.bind(this);
+
+        if(this.props.editar)
+            this.props.nav.buttons[0].click = this.toggleModal;
+
+        this.props.formActions.buttons.guardar.click = this.enviarFormulario;
+        this.props.formActions.buttons.cancelar.click = this.cancelarFormulario;
     }
 
+    toggleModal(e) {
+        e.preventDefault();
+        this.setState({
+            open: !this.state.open
+        });
+    }
+
+    enviarFormulario(e){
+        e.preventDefault();
+        console.log('guardar');
+    }
+
+    cancelarFormulario(e){
+        e.preventDefault();
+        console.log('guardar');
+    }
     downloadHandler(pEvent) {
         let
             loading = Math.round((pEvent.loaded * 100) / pEvent.total),
@@ -107,21 +134,22 @@ export default class FeriadoFormulario extends Component {
 
     render() {
         if (this.state.data && this.state.loadFinished){
-            const nav = Navegacion.formulario(
-                this.state.data,
-                this.props.editar
-            );
             return (
                 <>
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.toggleModal}
+                        title="Eliminar Horario"
+                        content="¿estás seguro de eliminar este horario?" />
                     <div className="c-title highlight-title" style={{ paddingBottom: "10px" }}>
                         <Titulo
                             title={
                                 this.props.editar
-                                    ? "Editar horario del día " + DAYS[parseInt(this.state.data.horarios.diaSemana) - 1]
-                                    : "Agregar horario al día " + DAYS[parseInt(this.props.match.params.day) - 1]
+                                    ? "Editar horario del " + DAYS[parseInt(this.state.data.horarios.diaSemana) - 1]
+                                    : "Agregar horario al " + DAYS[parseInt(this.props.match.params.day) - 1]
                             }
-                            links={nav.links}
-                            buttons={nav.buttons} />
+                            links={this.props.nav.links}
+                            buttons={this.props.nav.buttons} />
                     </div>
                     <form className="full-width">
                         <div className="container">
@@ -150,6 +178,10 @@ export default class FeriadoFormulario extends Component {
                                                 eventos={this.state.data.eventos}
                                                 class={{type:"horario",col:"col-md-12"}}
                                                 data={this.state.data.horarios} />
+                                        </div>
+                                        <div className="row">
+                                            <Actions
+                                                buttons={Object.values(this.props.formActions.buttons)}/>
                                         </div>
                                     </div>
                                 </div>

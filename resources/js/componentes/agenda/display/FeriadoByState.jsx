@@ -24,7 +24,7 @@ export const FeriadoMonthByState = {
         isSelectedDate,
         isThisMonth
     ) => ({
-        content: 
+        content:
             <>
                 <div className="c-title light-danger">{date.getDate()}</div>
                 <i className="text-top fas fa-ellipsis-h highlight-title" style={{ marginTop: "-8px" }} />
@@ -79,7 +79,7 @@ export const FeriadoWeekByState = {
             const date = new Date(sectionData.fecha),
                 eventosLength = Object.values(sectionData.eventos.list).length;
             return {
-                content:() => 
+                content:() =>
                     <div className="container no-padding">
                         <div className="row">
                             <div className="col-md-9">
@@ -120,7 +120,7 @@ export const FeriadoWeekByState = {
                                 {
                                     eventosLength > 0
                                     ?
-                                        <CommaList data={sectionData.eventos.list}/>
+                                        <CommaList list={sectionData.eventos.list} endpoint="/eventos"/>
                                     :
                                         "No hay eventos que mostrar."
                                 }
@@ -136,11 +136,11 @@ export const FeriadoWeekByState = {
         statusIndex,
         originalActions,
         dataIndex
-    ) => 
+    ) =>
         {
             const date = new Date(sectionData.fecha);
             return {
-                content: () => 
+                content: () =>
                     <div className="container no-padding">
                         <div className="row">
                             <div className="col-md-9">
@@ -175,7 +175,7 @@ export const FeriadoWeekByState = {
         statusIndex,
         originalActions,
         dataIndex
-    ) => 
+    ) =>
         ({
             content: () =>
                 <div className="container no-padding">

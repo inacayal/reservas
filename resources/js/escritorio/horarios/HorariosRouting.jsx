@@ -14,45 +14,51 @@ import VerHorario from './sub/VerHorario';
  * react router
  */
 import { Route, Switch } from 'react-router-dom';
+import {Navegacion,FormActions} from '../../acciones/ActionsByView';
 
 export default function HorariosRouting (props) {
-    const match = props.match;
-    //useEffect(() => props.changeNav(['2']),[]);
     return (
         <>
-            <Route 
-                path={match.url}
+            <Route
+                path={props.match.url}
                 exact
                 component = {
-                    (match) => <Horarios current={['2']} {...match}/>
+                    (match) =>
+                        <Horarios
+                            {...match}/>
                 } />
             <Switch>
                 <Route
-                    path={match.url + '/feriados'}
+                    path={props.match.url + '/feriados'}
                     component={
-                        (match) => <FeriadosRouting current={['2','0']} {...match} />
+                        (match) => <FeriadosRouting {...match} />
                     } />
                 <Route
-                    path={match.url + '/agregar/:day'}
+                    path={props.match.url + '/agregar/:day'}
                     component={
                         (match) =>
                             <HorarioFormulario
+                                nav={Navegacion.agregar('/horarios')}
                                 editar={false}
                                 {...match} />
                     } />
                 <Route
-                    path={match.url + '/editar/:id'}
+                    path={props.match.url + '/editar/:id'}
                     component={
                         (match) =>
                             <HorarioFormulario
+                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/horarios')}
+                                formActions={FormActions()}
                                 editar={true}
                                 {...match} />
                     } />
                 <Route
-                    path={match.url + '/:id'}
+                    path={props.match.url + '/:id'}
                     component={
                         (match) =>
                             <VerHorario
+                                nav={Navegacion.singular(()=>false,match.match.params.id,'/horarios')}
+                                formActions={FormActions()}
                                 {...match} />
                     } />
             </Switch>

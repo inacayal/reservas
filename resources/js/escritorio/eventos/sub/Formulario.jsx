@@ -31,6 +31,7 @@ class Formulario extends Component {
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
+
         this.enviarFormulario = this.enviarFormulario.bind(this);
         this.cancelarFormulario = this.cancelarFormulario.bind(this);
 

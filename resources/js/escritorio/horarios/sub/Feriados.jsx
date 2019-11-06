@@ -12,7 +12,7 @@ import Titulo from '../../../componentes/basic/Titulo';
 /**
  * function
  */
-import {closeModal,ConfirmarModal} from '../../../componentes/modal/Modal';
+import {ConfirmarModal} from '../../../componentes/modal/Modal';
 /**
  * constants
  */
@@ -23,10 +23,7 @@ import LoadBar from '../../../componentes/control/LoadBar';
  * api
  */
 import { GET } from '../../../utils/api';
-/**
- * navigation
- */
-import { FeriadoNavegacion as Navegacion } from '../FeriadoNavegacion';
+
 export default class Feriados extends Component {
     constructor(props){
         super(props);
@@ -36,7 +33,7 @@ export default class Feriados extends Component {
             date:new Date(),
             controls : NO_DAY_CONTROL
         };
-        
+
         this.actions = {
             outer: {
                 eliminar: this.eliminarFeriado
@@ -44,12 +41,18 @@ export default class Feriados extends Component {
         };
 
         this.verFeriado = this.verFeriado.bind(this);
-        this.eliminarFeriado = this.eliminarFeriado.bind(this);
-        this.closeModal = closeModal.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
     }
 
+    toggleModal(e) {
+        e.preventDefault();
+        this.setState({
+            open: !this.state.open
+        });
+    }
 
     downloadHandler(pEvent) {
         let
@@ -74,8 +77,8 @@ export default class Feriados extends Component {
         request
             .then(
                 response => {
-                    this.setState({ 
-                        date:date, 
+                    this.setState({
+                        date:date,
                         data: response.data.feriados.data||{},
                         intervalo:response.data.intervalo
                     });
@@ -97,13 +100,6 @@ export default class Feriados extends Component {
         let dateString = parseInt(e.currentTarget.getAttribute('data'));
         this.setState({show:"2",date:new Date(dateString)});
     }
-    
-    eliminarFeriado(e) {
-        e.preventDefault();
-        this.setState({
-            open: true
-        });
-    }
 
     componentWillUnmount() {
         console.log('feriadosUnmount');
@@ -111,23 +107,22 @@ export default class Feriados extends Component {
 
     render(){
         if (this.state.data && this.state.loadFinished){
-            const nav = Navegacion.listado();
             return (
                 <>
                     <Titulo
                         title="Feriados"
-                        links={nav.links} />
+                        links={this.props.nav.links} />
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.toggleModal}
+                        title="Eliminar Feriado"
+                        content="¿estás seguro de eliminar este feriado?" />
                     <div className="container">
-                        <ConfirmarModal
-                            open={this.state.open}
-                            closeModal={this.closeModal}
-                            title="Eliminar Feriado"
-                            content="¿estás seguro de eliminar este feriado?" />        
                         <Agenda
                             show={this.state.show}
-                            date={this.state.date} 
+                            date={this.state.date}
                             type="feriados"
-                            actions={this.actions}
+                            actions={{eliminar:this.toggleModal}}
                             controls={this.state.controls}
                             fetchNewMonth={this.fetchData}
                             data={this.state.data}/>

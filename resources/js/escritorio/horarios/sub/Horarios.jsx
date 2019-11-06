@@ -11,7 +11,6 @@ import ButtonList from '../../../componentes/basic/ButtonList';
 import {CardList} from '../../../componentes/basic/CardList';
 import Titulo from '../../../componentes/basic/Titulo';
 import LoadBar from '../../../componentes/control/LoadBar';
-import { HorarioNavegacion as Navegacion } from '../HorarioNavegacion';
 /**
  * api
  */
@@ -36,21 +35,17 @@ export default class Horarios extends Component {
             loading: 0,
             loadFinished: false
         };
-        
+
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
-
-        this.closeModal = closeModal.bind(this);
-        this.eliminarHorario = this.eliminarHorario.bind(this);
-        this.actions = {
-            outer:{
-                eliminar: this.eliminarHorario
-            }
-        }
+        this.toggleModal = this.toggleModal.bind(this);
     }
 
-    closeModal(e) {
-        this.setState({ open: false });
+    toggleModal(e) {
+        e.preventDefault();
+        this.setState({
+            open: !this.state.open
+        });
     }
 
     downloadHandler(pEvent) {
@@ -63,7 +58,7 @@ export default class Horarios extends Component {
     }
 
     fetchData() {
-        this.setState({ 
+        this.setState({
             data:null,
             isLoading:true,
             loadFinished:false
@@ -72,7 +67,7 @@ export default class Horarios extends Component {
             endpoint: '/horarios/list/27',
             download: this.downloadHandler
         });
-        
+
         request
             .then(
                 response => {
@@ -105,23 +100,18 @@ export default class Horarios extends Component {
             const week = generateWeek(
                     null,
                     this.state.data,
-                    this.actions,
+                    {eliminar: this.toggleModal},
                     'horarios'
-                ),
-                nav = Navegacion.listado(this.state.data);
+                );
             return (
                 <>
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.toggleModal}
+                        title="Eliminar Horario"
+                        content="¿estás seguro de eliminar este horario?" />
                     <Titulo
-                        title="Horarios"
-                        links={nav.links} />
-                    <div className="container">
-                        <ConfirmarModal
-                            open={this.state.open}
-                            closeModal={this.closeModal}
-                            title="Eliminar Horario"
-                            content="¿estás seguro de eliminar este horario?" />
-                        
-                    </div>
+                        title="Horarios"/>
                     <ul className="justify no-padding full-width flex-column nav-list h-center">
                         {
                             week.map(

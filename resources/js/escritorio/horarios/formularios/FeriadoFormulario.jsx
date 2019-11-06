@@ -13,6 +13,8 @@ import ButtonList from '../../../componentes/basic/ButtonList';
 import Titulo from '../../../componentes/basic/Titulo';
 import { Toggle } from '../../../componentes/input/Toggle';
 import LoadBar from '../../../componentes/control/LoadBar';
+import {ConfirmarModal} from '../../../componentes/modal/Modal';
+import Actions from '../../../componentes/basic/Actions';
 /**
  * constants
  */
@@ -22,7 +24,7 @@ import {generateHoursFromInterval} from '../../../utils/Helper';
  * api
  */
 import { GET } from '../../../utils/api';
-import { FeriadoNavegacion as Navegacion } from '../FeriadoNavegacion';
+
 export default class FeriadoFormulario extends Component {
     constructor(props){
         super(props);
@@ -36,6 +38,33 @@ export default class FeriadoFormulario extends Component {
         this.downloadHandler = this.downloadHandler.bind(this);
         this.fetchData = this.fetchData.bind(this);
         this.changeToggleSide = this.changeToggleSide.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+
+        this.enviarFormulario = this.enviarFormulario.bind(this);
+        this.cancelarFormulario = this.cancelarFormulario.bind(this);
+
+        if (this.props.editar)
+            this.props.nav.buttons[0].click = this.toggleModal;
+
+        this.props.formActions.buttons.guardar.click = this.enviarFormulario;
+        this.props.formActions.buttons.cancelar.click = this.cancelarFormulario;
+    }
+
+    toggleModal(e) {
+        e.preventDefault();
+        this.setState({
+            open: !this.state.open
+        });
+    }
+
+    enviarFormulario(e){
+        e.preventDefault();
+        console.log('guardar');
+    }
+
+    cancelarFormulario(e){
+        e.preventDefault();
+        console.log('guardar');
     }
 
     downloadHandler(pEvent) {
@@ -55,24 +84,24 @@ export default class FeriadoFormulario extends Component {
             loadFinished: false
         });
 
-        const conf = this.props.editar 
+        const conf = this.props.editar
         ?
             {
                 endpoint: '/feriados/single/27/' + this.props.match.params.id,
                 download: this.downloadHandler
-            } 
+            }
         :
             {
                 endpoint: '/feriados/add/27/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
                 download: this.downloadHandler
             },
         request = GET(conf);
-                
+
         request
             .then(
                 response => {
-                    const state = this.props.editar 
-                        ? 
+                    const state = this.props.editar
+                        ?
                             {
                                 date: new Date(response.data.feriados[0].fecha),
                                 data: {
@@ -90,7 +119,7 @@ export default class FeriadoFormulario extends Component {
                                     eventos: response.data.eventos
                                 },
                                 minutes: generateHoursFromInterval(response.data.intervalo)
-                            }; 
+                            };
                     this.setState(state);
                 }
             )
@@ -101,7 +130,7 @@ export default class FeriadoFormulario extends Component {
             );
     }
 
-    componentDidMount() { 
+    componentDidMount() {
         this.fetchData(this.state.date);
     }
 
@@ -111,24 +140,25 @@ export default class FeriadoFormulario extends Component {
 
     render(){
         if (this.state.data && this.state.loadFinished){
-            const nav = Navegacion.formulario(
-                this.state.data,
-                this.props.editar
-            );
             return (
                 <>
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.toggleModal}
+                        title="Eliminar Feriado"
+                        content="¿estás seguro de eliminar este feriado?" />
                     <Titulo
                         title={
                             this.props.editar
-                                ? "Editar Feriado"
+                                ? this.state.data.nombre
                                 : "Agregar Feriado"
                         }
-                        links={nav.links}
-                        buttons={nav.buttons} />
+                        links={this.props.nav.links}
+                        buttons={this.props.nav.buttons} />
                     <div className="bold">
                         {
-                            this.props.editar 
-                            ? MONTHS[this.state.date.getMonth() + 1] + " de " + this.state.date.getFullYear() 
+                            this.props.editar
+                            ? MONTHS[this.state.date.getMonth() + 1] + " de " + this.state.date.getFullYear()
                             : ""
                         }
                     </div>
@@ -161,7 +191,7 @@ export default class FeriadoFormulario extends Component {
                                             <SelectFields
                                                 editar ={this.props.editar}
                                                 data={this.state.data.feriados}
-                                                minutos = {this.state.minutes}/> 
+                                                minutos = {this.state.minutes}/>
                                         </div>
                                     </div>
                                 </div>
@@ -173,6 +203,9 @@ export default class FeriadoFormulario extends Component {
                                     eventos={this.state.data.eventos}
                                     class={{ type: "feriado", col: "col-md-4" }}
                                     data={this.state.data.feriados} />
+                            </div>
+                            <div className="row justify-content-end">
+                                <Actions buttons={Object.values(this.props.formActions.buttons)}/>
                             </div>
                         </div>
                     </form>

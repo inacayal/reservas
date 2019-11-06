@@ -20,7 +20,7 @@ export const FeriadosActions = {
                     title: (
                         <div className="smaller-text text bold">
                             <i className="fas fa-pen inline-box side-margin" />
-                            Editar feriado
+                            Editar
                         </div>
                     ),
                     to: '/horarios/feriados/editar/' + key
@@ -31,7 +31,7 @@ export const FeriadosActions = {
                     title: (
                         <div className="smaller-text text bold text-center">
                             <i className="fas fa-trash inline-box side-margin" />
-                            Eliminar feriado
+                            Eliminar
                         </div>
                     ),
                     click: actions.eliminar,
