@@ -39,6 +39,10 @@ html,body {
     font-weight: bolder !important;
     cursor:pointer;
 }
+.dark-background{
+    background-color: rgba(0,59,120,0.95);
+    color:white;
+}
 .no-border{
     border:0px;
 }
@@ -300,6 +304,9 @@ html,body {
 }
 .nav-sidebar:disabled{
     background-color:var(--border);
+}
+.border-font{
+    color:var(--border);
 }
 .week-row{
     width:14.3%;

@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom';
  */
 import MainFrame from '../hocs/MainFrame';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Navegacion from './Navegacion';
+import BarraNavegacion from '../componentes/control/BarraNavegacion';
 /**
  * paneles
  */
@@ -24,10 +24,8 @@ import PromocionesRouting from './promociones/PromocionesRouting';
 //holds reservation state
 export default function AppRouting (props) {
     return (
-        <div className="full-width container">
-            <div className="row">
-                <Navegacion />
-            </div>
+        <div className="container-fluid no-margin">
+            <BarraNavegacion />
             <Switch>
                 <Route
                     path='/'

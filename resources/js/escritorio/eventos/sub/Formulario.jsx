@@ -34,8 +34,8 @@ class Formulario extends Component {
         this.enviarFormulario = this.enviarFormulario.bind(this);
         this.cancelarFormulario = this.cancelarFormulario.bind(this);
 
-        this.props.actions.buttons.guardar.click = this.enviarFormulario;
-        this.props.actions.buttons.cancelar.click = this.cancelarFormulario;
+        this.props.formActions.buttons.guardar.click = this.enviarFormulario;
+        this.props.formActions.buttons.cancelar.click = this.cancelarFormulario;
     }
 
     enviarFormulario(e){
@@ -119,7 +119,6 @@ class Formulario extends Component {
         });
     }
     render() {
-        console.log('culo')
         if (this.state.data && this.state.loadFinished){
             const data = this.props.editar ? this.state.data.selected : this.state.data;
             return (

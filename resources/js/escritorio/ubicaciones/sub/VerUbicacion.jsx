@@ -12,6 +12,7 @@ import { GET } from '../../../utils/api';
  * basic
  */
 import Titulo from '../../../componentes/basic/Titulo';
+import {ConfirmarModal} from '../../../componentes/modal/Modal';
 
 export default class VerUbicacion extends Component {
     constructor(props){
@@ -23,7 +24,15 @@ export default class VerUbicacion extends Component {
         }
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+        this.props.nav.buttons[0].click = this.toggleModal;
+    }
 
+    toggleModal(e) {
+        e.preventDefault();
+        this.setState({
+            open: !this.state.open
+        });
     }
 
     downloadHandler(pEvent) {
@@ -75,13 +84,13 @@ export default class VerUbicacion extends Component {
                     <ConfirmarModal
                         open={this.state.open}
                         closeModal={this.toggleModal}
-                        title="Desactivar Local"
-                        content="¿estás seguro de desactivar este local?" />
-                    <div className="container">
+                        title="Eliminar Ubicación"
+                        content="¿estás seguro de eliminar este ubicación?" />
+                    <div className="container no-padding">
                         < Titulo
                             title={this.state.data.nombre}
-                            links={nav.links}
-                            buttons ={nav.buttons}/>
+                            links={this.props.nav.links}
+                            buttons ={this.props.nav.buttons}/>
                         <div className="row full-width">
                             <div className="col-md-4 bold">
                                 imagen de ubicacion
@@ -95,7 +104,7 @@ export default class VerUbicacion extends Component {
                                         <div>{data.descripcion}</div>
                                     </div>
                                 </div>
-                                <div className="row">
+                                <div className="row v-padding">
                                     <div className="col-md-6">
                                         <div className="bold highlight">
                                             Máximo por mesa

@@ -92,19 +92,19 @@ export default class UbicacionesRouting extends Component {
             const ubicaciones = generateUbicacionesCard(
                     this.state.data,
                     this.actions
-                ),
-                nav = Navegacion.listado(this.state.data);
+                );
+
             return (
                 <>
                     <Titulo
                         title="Ubicaciones"
-                        links={nav.links} />
-                    <div className="container">
-                        <ConfirmarModal
-                            open={this.state.open}
-                            closeModal={this.closeModal}
-                            title="Eliminar Ubicación"
-                            content="¿estás seguro de eliminar este ubicación?" />
+                        links={this.props.nav.links} />
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.closeModal}
+                        title="Eliminar Ubicación"
+                        content="¿estás seguro de eliminar este ubicación?" />
+                    <div className="container-fluid">
                         <div className="row">
                             <div className="bold top-padding">
                                 {"Mostrando " + ubicaciones.length + " ubicaciones encontradas"}

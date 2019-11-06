@@ -2,7 +2,7 @@
 @section('content')
 <script type = "text/javascript">
     const sessionParameters = {!!$param!!};
-    const sidebar = {!! 
+    const sidebar = {!!
         json_encode (
             [//get on user login, assign according to permissions
                 [
@@ -98,12 +98,7 @@
         )
     !!};
 </script>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div id="escritorio-container" style="width:100%">
-            </div>
-        </div>
+    <div id="escritorio-container" class="full-width">
     </div>
 </div>
 @endsection

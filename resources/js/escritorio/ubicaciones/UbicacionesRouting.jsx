@@ -10,59 +10,51 @@ import Formulario from './sub/Formulario';
 import Ubicaciones from './sub/Ubicaciones';
 import VerUbicacion from './sub/VerUbicacion';
 import {Route,Switch} from 'react-router-dom';
+import {Navegacion,FormActions} from '../../acciones/ActionsByView';
 
-export default class UbicacionesRouting extends Component {
-    constructor(props){
-        super(props);
-    }
-
-    componentDidMount() {
-        //fetch data from api call
-        console.log('ubicacionesMount');
-    }
-
-    componentWillUnmount() {
-        console.log('ubicacionesUnmount');
-    }
-
-    render(){
-        return (
-            <>
+export default function UbicacionesRouting (props) {
+    return (
+        <>
+            <Route
+                path={props.match.url}
+                exact
+                component={
+                    (match) =>
+                        <Ubicaciones
+                            nav={Navegacion.listado('/ubicaciones')}
+                            {...match}/>
+                } />
+            <Switch>
                 <Route
-                    path={this.props.match.url}
+                    path={props.match.url + '/editar/:id'}
                     exact
                     component={
                         (match) =>
-                            <Ubicaciones
-                                {...match}/>
+                            <Formulario
+                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/ubicaciones')}
+                                formActions = {FormActions()}
+                                editar={true}
+                                {...match} />
                     } />
-                <Switch>
-                    <Route
-                        path={this.props.match.url + '/editar/:id'}
-                        exact
-                        component={
-                            (match) =>
-                                <Formulario
-                                    editar={true}
-                                    {...match} />
-                        } />
-                    <Route
-                        path={this.props.match.url + '/agregar'}
-                        component={
-                            (match) =>
-                                <Formulario
-                                    editar={false}
-                                    {...match} />
-                        } />
-                    <Route
-                        path={this.props.match.url + '/:id'}
-                        component={
-                            (match) =>
-                                <VerUbicacion
-                                    {...match} />
-                        } />
-                </Switch>
-            </>
-        );
-    }
+                <Route
+                    path={props.match.url + '/agregar'}
+                    component={
+                        (match) =>
+                            <Formulario
+                                nav={Navegacion.agregar('/ubicaciones')}
+                                formActions = {FormActions()}
+                                editar={false}
+                                {...match} />
+                    } />
+                <Route
+                    path={props.match.url + '/:id'}
+                    component={
+                        (match) =>
+                            <VerUbicacion
+                                nav={Navegacion.singular(()=>false,match.match.params.id,'/ubicaciones')}
+                                {...match} />
+                    } />
+            </Switch>
+        </>
+    );
 }

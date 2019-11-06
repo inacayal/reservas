@@ -38,30 +38,42 @@ function Lateral(props) {
                                             title={e.title}
                                             data={i}
                                             className={
-                                                props.current == i ?
+                                                props.current == i
+                                                ?
                                                     "selected bold full-width text-left bold no-border no-padding"
-                                                    :
-                                                        "box-transparent full-width text-left box-padding highlight-hover bold-hover"
+                                                :
+                                                    "box-transparent full-width text-left box-padding highlight-hover bold-hover"
                                             }>
                                             <div className={props.current == i ? "fat-border box-padding" : ""}>
                                                 <span className="half inline-block">
                                                     {e.title}
                                                 </span>
                                                 <span className="inline-block text-right half">
-                                                    <i className={hover===i && props.current!= i ? "line-v-middle middle-font highlight fas fa-angle-right" : "hidden"}/>
+                                                    <i className={
+                                                        props.current == i||hover === i
+                                                        ?
+
+                                                            "line-v-middle middle-font highlight fas fa-angle-right"
+                                                        :
+                                                            e.sub.length>0
+                                                            ?
+                                                                "line-v-middle middle-font border-font fas fa-angle-right"
+                                                            :
+                                                                "hidden"
+                                                        }/>
                                                 </span>
                                             </div>
                                             {
                                                 (e.sub.length>0)
                                                 ?
-                                                <SubElements
-                                                    isCurrent={props.current == i}
-                                                    isHover={hover===i}
-                                                    index ={i}
-                                                    sub={e.sub}
-                                                    {...props}/>
+                                                    <SubElements
+                                                        isCurrent={props.current == i}
+                                                        isHover={hover===i}
+                                                        index ={i}
+                                                        sub={e.sub}
+                                                        {...props}/>
                                                 :
-                                                <div></div>
+                                                    <div></div>
                                             }
                                         </button>
                                     </Link>
@@ -84,23 +96,23 @@ const SubElements = (props) => {
     let eClass = "";
 
     if (props.isCurrent) {
-        eClass = "nav-list no-padding";
+        eClass = "nav-list no-padding dark-background";
     } else if (!props.isHover){
         eClass="hidden"
     } else
-        eClass="absolute float-right full-width nav-list no-padding "
+        eClass="absolute float-right full-width nav-list no-padding dark-background"
 
     return (
-        <ul className={eClass} style={{backgroundColor:'rgba(0,59,120,0.95)'}}>
+        <ul className={eClass}>
             {
                 sub.map(
                     (sub, ind) => (
                         <li
                             key={ind}
-                            className={sub.class+" border-transparent"}
+                            className={sub.class+" border-transparent bold-hover text"}
                             onMouseOver ={()=>hoverToggle(ind)}
                             onMouseLeave ={()=>hoverToggle()}>
-                            <Link to={sub.route} className='bold-hover'>
+                            <Link to={sub.route}>
                                 <span className="inline-block half">
                                     <span style={{color:'white'}}>{sub.title}</span>
                                 </span>

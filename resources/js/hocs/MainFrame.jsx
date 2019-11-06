@@ -13,25 +13,21 @@ import Lateral from '../escritorio/Lateral';
 export default function MainFrame (props) {
     const current = window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, '');
     return (
-        <div className="container">
-            <div className="row">
-                <div className="col-md-3 no-padding border-right">
-                    <Lateral
-                        current={props.current}
-                        items={sidebar}/>
+        <div className="row">
+            <div className="col-md-2 no-padding border-right">
+                <Lateral
+                    current={props.current}
+                    items={sidebar}/>
+            </div>
+            <div className="col-md-10 container-fluid">
+                <div className="row">
+                    <BreadCrumb
+                        items={current.split('/')}/>
                 </div>
-                <div className="col-md-9 no-padding">
-                    <div className="container">
-                        <div className="row">
-                            <BreadCrumb
-                                items={current.split('/')}/>
-                        </div>
-                        <div className="row medium-left-padding">
-                            <div className="col-md-12 container v-padding">
-                                <props.render
-                                    {...props} />
-                            </div>
-                        </div>
+                <div className="row medium-left-padding">
+                    <div className="col-md-12 container-fluid v-padding">
+                        <props.render
+                            {...props} />
                     </div>
                 </div>
             </div>

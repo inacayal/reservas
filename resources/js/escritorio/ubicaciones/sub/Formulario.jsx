@@ -11,6 +11,7 @@ import Calendar from 'react-calendar';
  * componentes
  */
 import Titulo from '../../../componentes/basic/Titulo';
+import Actions from '../../../componentes/basic/Actions';
 /**
  * input component and handlers
  */
@@ -21,6 +22,7 @@ import {Text} from '../../../componentes/input/Text';
  */
 import LoadBar from '../../../utils/LoadBar';
 import { GET } from '../../../utils/api';
+import {ConfirmarModal} from '../../../componentes/modal/Modal';
 
 export default class Formulario extends Component {
     constructor(props) {
@@ -32,6 +34,32 @@ export default class Formulario extends Component {
         }
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+        this.enviarFormulario = this.enviarFormulario.bind(this);
+        this.cancelarFormulario = this.cancelarFormulario.bind(this);
+
+        if (this.props.editar)
+            this.props.nav.buttons[0].click = this.toggleModal;
+
+        this.props.formActions.buttons.guardar.click = this.enviarFormulario;
+        this.props.formActions.buttons.cancelar.click = this.cancelarFormulario;
+    }
+
+    enviarFormulario(e){
+        e.preventDefault();
+        console.log('guardar');
+    }
+
+    cancelarFormulario(e){
+        e.preventDefault();
+        console.log('guardar');
+    }
+
+    toggleModal(e) {
+        e.preventDefault();
+        this.setState({
+            open: !this.state.open
+        });
     }
 
     downloadHandler(pEvent) {
@@ -81,41 +109,52 @@ export default class Formulario extends Component {
     render() {
         if (this.state.data && this.state.loadFinished){
             return (
-                <form className="full-width">
-                    <div className="container">
-                        <Titulo
-                            title={this.props.editar
-                                ? "Editando ubicación " + this.state.data.nombre
-                                : "Agregar ubicación"}
-                            links={nav.links}
-                            buttons={nav.buttons} />
-                        <div className="row box-padding">
-                            <div className="col-md-4 bold">
-                                foto de la ubicacion
-                            </div>
-                            <div className="col-md-8">
-                                <div className="container">
-                                    <div className="row">
-                                        <Text rows={1} titulo="Nombre de la ubicación" name="nombre" value={this.props.editar ? this.state.data.nombre : ""} classes={"border-box input-text margin-box"} container="full-width" />
-                                    </div>
-                                    <div className="row v-padding">
-                                        <Numeric titulo="Capacidad máxima" name="capacidad_maxima" value={this.props.editar ? this.state.data.capacidad : ""} classes={"border-box input-text margin-box"} container="full-width" />
-                                        <span className="smaller-text">Máximo de personas en la ubicación</span>
-                                    </div>
-                                    <div className="row v-padding">
-                                        <Numeric titulo="Máximo personas" name="maximo_personas" value={this.props.editar ? this.state.data.maximo : ""} classes={"border-box input-text margin-box"} container="full-width" />
-                                        <span className="smaller-text">Máximo de personas en una reservación</span>
+                <>
+                    <ConfirmarModal
+                        open={this.state.open}
+                        closeModal={this.toggleModal}
+                        title="Eliminar Ubicación"
+                        content="¿estás seguro de eliminar este ubicación?" />
+                    <form className="full-width">
+                        <div className="container">
+                            <Titulo
+                                title={this.props.editar
+                                    ? this.state.data.nombre
+                                    : "Agregar ubicación"}
+                                links={this.props.nav.links}
+                                buttons={this.props.nav.buttons} />
+                            <div className="row">
+                                <div className="col-md-4 bold no-padding">
+                                    foto de la ubicacion
+                                </div>
+                                <div className="col-md-8">
+                                    <div className="container">
+                                        <div className="row">
+                                            <Text rows={1} titulo="Nombre de la ubicación" name="nombre" value={this.props.editar ? this.state.data.nombre : ""} classes={"border-box input-text margin-box"} container="full-width" />
+                                        </div>
+                                        <div className="row v-padding">
+                                            <Text rows={4} titulo="Descripcion" name="descripcion" value={this.props.editar ? this.state.data.descripcion : ""} classes={"border-box input-text margin-box"} container="full-width" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-8">
-                                <Text rows={4} titulo="Descripcion" name="descripcion" value={this.props.editar ? this.state.data.descripcion : ""} classes={"border-box input-text margin-box"} container="full-width" />
+                            <div className="row v-padding">
+                                <div className="col-md-6 no-padding">
+                                    <Numeric titulo="Capacidad máxima" name="capacidad_maxima" value={this.props.editar ? this.state.data.capacidad : ""} classes={"border-box input-text margin-box"} container="full-width" />
+                                    <span className="smaller-text">Máximo de personas en la ubicación</span>
+                                </div>
+                                <div className="col-md-6">
+                                    <Numeric titulo="Máximo personas" name="maximo_personas" value={this.props.editar ? this.state.data.maximo : ""} classes={"border-box input-text margin-box"} container="full-width" />
+                                    <span className="smaller-text">Máximo de personas en una reservación</span>
+                                </div>
+                            </div>
+                            <div className="row justify-content-end">
+                                <Actions
+                                    buttons={Object.values(this.props.formActions.buttons)}/>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </>
             );
         }
         return (

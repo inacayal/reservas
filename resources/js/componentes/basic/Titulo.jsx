@@ -11,7 +11,7 @@ import Actions from './Actions';
 
 export default function Titulo (props){
     return (
-        <div className="container no-padding">
+        <div className="container-fluid">
             <div className="row">
                 <div className="col-md-6 c-title no-padding">
                     {props.title}

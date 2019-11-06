@@ -24,20 +24,18 @@ function BarraNavegacion(props) {
         }
     ];
     return (
-        <div className="container border-bottom">
-            <div className="row">
-                <div className="col-sm-8">
-                    <h4 className="bold">
-                        Nombre de usuario
-                    </h4>
-                </div>
-                <div className="col-sm-4 no-padding">
-                    <ButtonList
-                        clickHandler={props.func}
-                        displayList="flex-row h-end nav-list"
-                        elemClass="light-danger nav-reserva pointer"
-                        elems={items} />
-                </div>
+        <div className="row border-bottom dark-background add-padding">
+            <div className="col-sm-8">
+                <h4 className="bold">
+                    Nombre de usuario
+                </h4>
+            </div>
+            <div className="col-sm-4 no-padding">
+                <ButtonList
+                    clickHandler={props.func}
+                    displayList="flex-row h-end nav-list"
+                    elemClass="light-danger nav-reserva pointer"
+                    elems={items} />
             </div>
         </div>
     );

@@ -13,9 +13,7 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     </head>
     <body>
-        <div>
-            @yield('content')
-        </div>
+        @yield('content')
     </body>
     <script src="{{asset('js/app.js')}}"></script>
 </html>

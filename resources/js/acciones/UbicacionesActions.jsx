@@ -13,7 +13,7 @@ export const UbicacionesActions = (
             title: (
                 <div className="smaller-text text bold">
                     <i className="fas fa-pen inline-box side-margin" />
-                    Editar ubicación
+                    Editar
                 </div>
             ),
             to: '/ubicaciones/editar/' + key
@@ -24,7 +24,7 @@ export const UbicacionesActions = (
             title: (
                 <div className="smaller-text text bold text-center">
                     <i className="fas fa-trash inline-box side-margin" />
-                    Eliminar ubicación
+                    Eliminar
                 </div>
             ),
             click: actions.eliminar,

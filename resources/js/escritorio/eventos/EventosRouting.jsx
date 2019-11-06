@@ -14,7 +14,6 @@ import {Navegacion,FormActions} from '../../acciones/ActionsByView'
 
 
 export default function EventosRouting (props) {
-
     return (
         <>
             <Route
@@ -34,7 +33,7 @@ export default function EventosRouting (props) {
                         (match) =>
                             <Formulario
                                 nav ={Navegacion.formulario(()=>false,match.match.params.id,'/eventos')}
-                                actions={FormActions(match.match.params.id)}
+                                formActions={FormActions(match.match.params.id)}
                                 editar={true}
                                 {...match} />
                     } />
@@ -45,7 +44,7 @@ export default function EventosRouting (props) {
                             <Formulario
                                 nav ={Navegacion.agregar('/eventos')}
                                 editar={false}
-                                actions={FormActions(null)}
+                                formActions={FormActions(null)}
                                 {...match} />
                     } />
                 <Route
