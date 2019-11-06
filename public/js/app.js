@@ -97319,11 +97319,20 @@ function UbicacionesRouting(props) {
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: props.match.url + '/:id',
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerUbicacion__WEBPACK_IMPORTED_MODULE_5__["default"], _extends({
-        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].singular(function () {
-          return false;
-        }, match.match.params.id, '/ubicaciones')
-      }, match));
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        component: function component(props) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerUbicacion__WEBPACK_IMPORTED_MODULE_5__["VerUbicacion"], _extends({
+            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].singular(function () {
+              return false;
+            }, match.match.params.id, '/ubicaciones')
+          }, props));
+        },
+        fetchHandler: Object(_sub_VerUbicacion__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])('/ubicaciones/single/27/' + match.match.params.id),
+        modal: modal({
+          message: "¿estás seguro de eliminar este ubicación?",
+          title: "Eliminar Ubicación"
+        })
+      });
     }
   })));
 }
@@ -97639,12 +97648,13 @@ var Ubicaciones = function Ubicaciones(props) {
 /*!******************************************************************!*\
   !*** ./resources/js/escritorio/ubicaciones/sub/VerUbicacion.jsx ***!
   \******************************************************************/
-/*! exports provided: default */
+/*! exports provided: singleHandler, VerUbicacion */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return VerUbicacion; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "singleHandler", function() { return singleHandler; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VerUbicacion", function() { return VerUbicacion; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -97663,9 +97673,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -97688,79 +97698,44 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+var singleHandler = function singleHandler(endpoint) {
+  return function () {
+    var _this = this;
 
+    this.setState({
+      data: null,
+      isLoading: true,
+      loadFinished: false
+    });
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
+      endpoint: endpoint,
+      download: this.downloadHandler
+    });
+    request.then(function (response) {
+      _this.setState({
+        data: response.data.ubicaciones[0]
+      });
+    })["catch"](function (error) {
+      console.log(error.message);
+    });
+  };
+};
 var VerUbicacion =
 /*#__PURE__*/
 function (_Component) {
   _inherits(VerUbicacion, _Component);
 
   function VerUbicacion(props) {
-    var _this;
+    var _this2;
 
     _classCallCheck(this, VerUbicacion);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(VerUbicacion).call(this, props));
-    _this.state = {
-      loadFinished: false,
-      data: null,
-      open: false
-    };
-    _this.fetchData = _this.fetchData.bind(_assertThisInitialized(_this));
-    _this.downloadHandler = _this.downloadHandler.bind(_assertThisInitialized(_this));
-    _this.toggleModal = _this.toggleModal.bind(_assertThisInitialized(_this));
-    _this.props.nav.buttons[0].click = _this.toggleModal;
-    return _this;
+    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(VerUbicacion).call(this, props));
+    _this2.props.nav.buttons[0].click = _this2.props.toggleModal;
+    return _this2;
   }
 
   _createClass(VerUbicacion, [{
-    key: "toggleModal",
-    value: function toggleModal(e) {
-      e.preventDefault();
-      this.setState({
-        open: !this.state.open
-      });
-    }
-  }, {
-    key: "downloadHandler",
-    value: function downloadHandler(pEvent) {
-      var loading = Math.round(pEvent.loaded * 100 / pEvent.total),
-          state = loading !== 100 ? {
-        loading: loading,
-        loadFinished: false
-      } : {
-        loading: loading,
-        loadFinished: true
-      };
-      this.setState(state);
-    }
-  }, {
-    key: "fetchData",
-    value: function fetchData() {
-      var _this2 = this;
-
-      this.setState({
-        data: null,
-        isLoading: true,
-        loadFinished: false
-      });
-      var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
-        endpoint: '/ubicaciones/single/27/' + this.props.match.params.id,
-        download: this.downloadHandler
-      });
-      request.then(function (response) {
-        _this2.setState({
-          data: response.data.ubicaciones[0]
-        });
-      })["catch"](function (error) {
-        console.log(error.message);
-      });
-    }
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      this.fetchData();
-    }
-  }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       console.log('localesUnmount');
@@ -97768,54 +97743,41 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      if (this.state.data && this.state.loadFinished) {
-        var data = this.state.data;
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_5__["ConfirmarModal"], {
-          open: this.state.open,
-          closeModal: this.toggleModal,
-          title: "Eliminar Ubicaci\xF3n",
-          content: "\xBFest\xE1s seguro de eliminar este ubicaci\xF3n?"
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "container no-padding"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__["default"], {
-          title: this.state.data.nombre,
-          links: this.props.nav.links,
-          buttons: this.props.nav.buttons
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row full-width"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-4 bold"
-        }, "imagen de ubicacion"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-8 container"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-12"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "bold highlight"
-        }, "Descripcion:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.descripcion))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row v-padding"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-6"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "bold highlight"
-        }, "M\xE1ximo por mesa"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.maximo + " personas")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-6"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "bold highlight"
-        }, "Capacidad m\xE1xima"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.capacidad + " personas")))))));
-      }
-
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        loaded: this.state.loading
-      });
+      var data = this.props.data;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container no-padding"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        title: data.nombre,
+        links: this.props.nav.links,
+        buttons: this.props.nav.buttons
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row full-width"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-4 bold"
+      }, "imagen de ubicacion"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-8 container"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-12"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "bold highlight"
+      }, "Descripcion:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.descripcion))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row v-padding"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "bold highlight"
+      }, "M\xE1ximo por mesa"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.maximo + " personas")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "bold highlight"
+      }, "Capacidad m\xE1xima"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.capacidad + " personas"))))));
     }
   }]);
 
   return VerUbicacion;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
-
-
 
 /***/ }),
 
