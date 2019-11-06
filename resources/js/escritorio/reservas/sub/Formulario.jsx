@@ -10,9 +10,9 @@ import EventoFrame from '../../../reserva/pasos/evento/EventoFrame';
 import { GET } from '../../../utils/api';
 import Titulo from '../../../componentes/basic/Titulo';
 import LoadBar from '../../../componentes/control/LoadBar';
-import { Navegacion } from '../Navegacion';
+import Actions from '../../../componentes/basic/Actions';
 
-export default class AgregarFormulario extends Component{
+export default class Formulario extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -20,26 +20,26 @@ export default class AgregarFormulario extends Component{
             loading:0,
             loadFinished:false
         };
-        
+
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
-        
-        this.nav = [
-            {
-                title: (
-                    <div className="smaller-text text bold">
-                        <i className="fas fa-arrow-left inline-box side-margin" />
-                        Volver a reservaciones
-                    </div>
-                ),
-                to: '/reservas'
-            }
-        ];
+
+        this.enviarFormulario = this.enviarFormulario.bind(this);
+        this.cancelarFormulario = this.cancelarFormulario.bind(this);
+        this.props.formActions.buttons.cancelar.click = this.cancelarFormulario;
+        this.props.formActions.buttons.guardar.click = this.enviarFormulario;
     }
 
-    guardarNuevaReserva() {
+    enviarFormulario(e){
+        e.preventDefault();
         console.log('guardar');
     }
+
+    cancelarFormulario(e){
+        e.preventDefault();
+        console.log('cancelar');
+    }
+
 
     downloadHandler(pEvent) {
         let
@@ -51,17 +51,17 @@ export default class AgregarFormulario extends Component{
     }
 
     fetchData(date) {
-        this.setState({ 
+        this.setState({
             data:null,
             isLoading:true,
             loadFinished:false
         });
-        
+
         const request = GET({
             endpoint: 'reservas/add/' + 27 + '/' + parseInt(date.getMonth() + 1) + '/' + date.getFullYear(),
             download: this.downloadHandler
         });
-        
+
         request
             .then(
                 response => {
@@ -91,14 +91,12 @@ export default class AgregarFormulario extends Component{
 
     render(){
         if (this.state.data && this.state.loadFinished){
-            const nav = Navegacion.formulario(this.state.data);
             return (
                 <>
                     <Titulo
                         title='Agregar Reservación'
-                        links={nav.links}
-                        buttons={nav.buttons} />
-                    <form className="text-right">
+                        links={this.props.nav.links} />
+                    <form className="full-width">
                         <div className="container">
                             <div className="row">
                                 <EventoFrame
@@ -106,16 +104,20 @@ export default class AgregarFormulario extends Component{
                                     current={true}
                                     fecha={this.state.date}
                                     fetch = {this.fetchData}
-                                    data={this.state.data}/>
+                                    data={this.state.data}
+                                    formActions={this.props.formActions}/>
+                            </div>
+                            <div className="row justify-content-end">
+                                <Actions buttons={Object.values(this.props.formActions.buttons)}/>
                             </div>
                         </div>
                     </form>
                 </>
             );
         }
-        return ( 
+        return (
             <LoadBar
-                loaded={this.state.loading} />
+                loaded={this.state.loading} /> 
         );
     }
 }

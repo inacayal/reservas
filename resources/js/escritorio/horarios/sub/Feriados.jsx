@@ -34,15 +34,8 @@ export default class Feriados extends Component {
             controls : NO_DAY_CONTROL
         };
 
-        this.actions = {
-            outer: {
-                eliminar: this.eliminarFeriado
-            }
-        };
-
         this.verFeriado = this.verFeriado.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
-
         this.fetchData = this.fetchData.bind(this);
         this.downloadHandler = this.downloadHandler.bind(this);
     }

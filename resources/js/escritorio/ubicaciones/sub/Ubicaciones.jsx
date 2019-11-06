@@ -20,45 +20,10 @@ import generateUbicacionesCard from './generateUbicacionesCard';
 import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
 
-export default class UbicacionesRouting extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            open: false,
-            data:null,
-            loadFinished:false
-        };
-        this.eliminarUbicacion = this.eliminarUbicacion.bind(this),
-        this.closeModal = closeModal.bind(this);
-
-        this.fetchData = this.fetchData.bind(this);
-        this.downloadHandler = this.downloadHandler.bind(this);
-
-        this.actions = {
-            agregar: this.agregarUbicacion,
-            editar: this.editarUbicacion,
-            eliminar: this.eliminarUbicacion
-        };
-    }
-
-    eliminarUbicacion(e) {
-        e.preventDefault();
-        this.setState({
-            open: true
-        })
-    }
-
-
-    downloadHandler(pEvent) {
-        let
-            loading = Math.round((pEvent.loaded * 100) / pEvent.total),
-            state = loading !== 100 ?
-                { loading, loadFinished: false }
-                : { loading, loadFinished: true };
-        this.setState(state);
-    }
-
-    fetchData() {
+export const handler = (
+    endpoint
+) => {
+    return function () {
         this.setState({
             data: null,
             isLoading: true,
@@ -66,7 +31,7 @@ export default class UbicacionesRouting extends Component {
         });
 
         const request = GET({
-            endpoint: 'ubicaciones/list/27',
+            endpoint: endpoint,
             download: this.downloadHandler
         });
 
@@ -82,49 +47,33 @@ export default class UbicacionesRouting extends Component {
                 }
             );
     }
+}
 
-    componentDidMount() {
-        this.fetchData();
-    }
-
-    render() {
-        if (this.state.data && this.state.loadFinished) {
-            const ubicaciones = generateUbicacionesCard(
-                    this.state.data,
-                    this.actions
-                );
-
-            return (
-                <>
-                    <Titulo
-                        title="Ubicaciones"
-                        links={this.props.nav.links} />
-                    <ConfirmarModal
-                        open={this.state.open}
-                        closeModal={this.closeModal}
-                        title="Eliminar Ubicación"
-                        content="¿estás seguro de eliminar este ubicación?" />
-                    <div className="container-fluid">
-                        <div className="row">
-                            <div className="bold top-padding">
-                                {"Mostrando " + ubicaciones.length + " ubicaciones encontradas"}
-                            </div>
-                            <ul className="full-width nav-list no-padding limit-height-half">
-                                {
-                                    ubicaciones.map(
-                                        (elem, index) =>
-                                            <li key={index} className={elem.class}><elem.content /></li>
-                                    )
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                </>
-            );
-        }
-        return(
-            <LoadBar
-                loaded={this.state.loading} />
+export const Ubicaciones = (props) => {
+    const ubicaciones = generateUbicacionesCard(
+            props.data,
+            {eliminar:props.toggleModal}
         );
-    }
+    return (
+        <>
+            <Titulo
+                title="Ubicaciones"
+                links={props.nav.links} />
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="bold top-padding">
+                        {"Mostrando " + ubicaciones.length + " ubicaciones encontradas"}
+                    </div>
+                    <ul className="full-width nav-list no-padding limit-height-half">
+                        {
+                            ubicaciones.map(
+                                (elem, index) =>
+                                    <li key={index} className={elem.class}><elem.content /></li>
+                            )
+                        }
+                    </ul>
+                </div>
+            </div>
+        </>
+    );
 }

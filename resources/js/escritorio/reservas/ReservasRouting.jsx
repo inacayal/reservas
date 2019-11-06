@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 /**
  * sub elements
  */
-import AgregarFormulario from './sub/AgregarFormulario';
+import Formulario from './sub/Formulario';
 import Calendario from './sub/Calendario';
 /**
  * componentes
@@ -17,41 +17,40 @@ import VerReserva from'./sub/VerReserva';
  */
 import {ALL_CONTROL} from '../../constantes/CalendarControls';
 import { Route, Switch } from 'react-router-dom';
+import {FormActions, Navegacion} from '../../acciones/ActionsByView';
 
-export default class ReservasRouting extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-        };
-    }
-
-    render() {
-        return (
-            <>
+export default function ReservasRouting (props) {
+    return (
+        <>
+            <Route
+                path={props.match.url}
+                exact
+                component={
+                    (match) =>
+                        <Calendario
+                            nav={Navegacion.listado('/reservas')}
+                            {...match}/>
+                } />
+            <Switch>
                 <Route
-                    path={this.props.match.url}
-                    exact
+                    path={props.match.url + '/agregar'}
                     component={
                         (match) =>
-                            <Calendario {...match}/>
+                            <Formulario
+                                nav={Navegacion.agregar('/reservas')}
+                                formActions = {FormActions()}
+                                {...match} />
                     } />
-                <Switch>
-                    <Route
-                        path={this.props.match.url + '/agregar'}
-                        component={
-                            (match) =>
-                                <AgregarFormulario
-                                    {...match} />
-                        } />
-                    <Route
-                        path={this.props.match.url + '/:id'}
-                        component={
-                            (match) =>
-                                <VerReserva
-                                    {...match} />
-                        } />
-                </Switch>
-            </>
-        );
-    }
+                <Route
+                    path={props.match.url + '/:id'}
+                    component={
+                        (match) =>
+                            <VerReserva
+                                nav={Navegacion.agregar('/reservas')}
+                                formActions = {FormActions()}
+                                {...match} />
+                    } />
+            </Switch>
+        </>
+    );
 }

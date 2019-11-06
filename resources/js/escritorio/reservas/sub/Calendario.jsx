@@ -17,7 +17,7 @@ import Titulo from '../../../componentes/basic/Titulo';
  * constantes
  */
 import { NO_WEEK_CONTROLS } from '../../../constantes/CalendarControls';
-import { Navegacion } from '../Navegacion';
+
 export default class Calendario extends Component {
     constructor(props){
         super(props);
@@ -110,25 +110,22 @@ export default class Calendario extends Component {
 
     render(){
         if (this.state.data && this.state.loadFinished){
-            const nav = Navegacion.listado();
             return (
                 <>
                     <Titulo
                         title={"Reservaciones"}
-                        links={nav.links} />
-                    <div className="container">
-                        <Calendar
-                            show={this.state.show}
-                            horariosReserva={this.state.horarios}
-                            date={this.state.date}
-                            weekRender={this.state.weekRender}
-                            dayRender={this.state.dayRender}
-                            actions={this.actions}
-                            controls={this.state.controls}
-                            data={this.state.data}
-                            type="reservas"
-                            fetchNewMonth={this.fetchData}/>
-                    </div>
+                        links={this.props.nav.links} />
+                    <Calendar
+                        show={this.state.show}
+                        horariosReserva={this.state.horarios}
+                        date={this.state.date}
+                        weekRender={this.state.weekRender}
+                        dayRender={this.state.dayRender}
+                        actions={this.actions}
+                        controls={this.state.controls}
+                        data={this.state.data}
+                        type="reservas"
+                        fetchNewMonth={this.fetchData}/>
                 </>
             );
         }

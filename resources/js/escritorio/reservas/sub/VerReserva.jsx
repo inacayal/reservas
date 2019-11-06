@@ -14,7 +14,6 @@ import {MONTHS} from '../../../constantes/DaysMonths';
 /**
  * basic
  */
-import { Navegacion } from '../Navegacion';
 import Titulo from '../../../componentes/basic/Titulo';
 import {ReservasActions} from '../../../acciones/ReservasActions';
 
@@ -97,7 +96,6 @@ export default class VerReserva extends Component {
     render() {
         if (this.state.data && this.state.loadFinished) {
             const data = this.state.data,
-                nav = Navegacion.singular(data),
                 actions = ReservasActions.day[data.estado](this.actions,data.estado),
                 date = new Date(data.fechaReserva+" 00:00"),
                 ElemByState = {
@@ -124,9 +122,9 @@ export default class VerReserva extends Component {
                 <div className="container">
                     < Titulo
                         title={"Reserva de "+data.nombre+ " " + data.apellido}
-                        links={nav.links}
+                        links={this.props.nav.links}
                         buttons ={actions.buttons}/>
-                    <div className="row"> 
+                    <div className="row">
                         <div className="col-md-7">
                             <div className="bold">{MONTHS[date.getMonth()] + " de " + date.getFullYear()}</div>
                             <Calendario
@@ -228,4 +226,3 @@ export default class VerReserva extends Component {
         );
     }
 }
-

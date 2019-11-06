@@ -82,7 +82,7 @@ export default class Agenda extends Component {
     componentDidUpdate(prevProps){
         if (
             (
-                prevProps.date !== this.props.date 
+                prevProps.date !== this.props.date
                 || prevProps.show !== this.props.show
             ) && this.props.type==='reservas'
         )
@@ -92,7 +92,7 @@ export default class Agenda extends Component {
     render(){
         this.state.controls[this.state.show].class = "blue-background highlight-border h-padding small-v-padding" ;
         return(
-            <div className="container">
+            <>
                 <div className="row justify-content-end v-padding">
                     <ButtonList
                         clickHandler={this.changeView}
@@ -103,7 +103,7 @@ export default class Agenda extends Component {
                 <div className="row">
                     {Elements[this.state.show](this)}
                 </div>
-            </div>
+            </>
         );
     }
 }

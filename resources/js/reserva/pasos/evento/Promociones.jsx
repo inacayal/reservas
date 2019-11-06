@@ -14,7 +14,7 @@ import {CommaList} from '../../../componentes/basic/CommaList';
 import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
 
 export default function Promociones (props) {
-    const 
+    const
         data = props.data,
         list = props.list,
         showData = Object.keys(props.data).reduce(
@@ -42,7 +42,7 @@ export default function Promociones (props) {
             {}
         ),
         dataArray = Object.keys(showData);
-    
+
     return (
         <div className="row border-box" style={{padding:"10px 0px 0px 10px"}}>
             <div className="bold highlight full-width ">
@@ -56,8 +56,8 @@ export default function Promociones (props) {
                             (e,i) => {
                                 const eventoArray = showData[e].eventos;
                                 return (
-                                    <li key={i} 
-                                        className="v-padding" 
+                                    <li key={i}
+                                        className="v-padding"
                                         keyvalue={e}
                                         style={{ paddingRight: "10px" }}>
                                         <div className="smaller-text">
@@ -71,7 +71,7 @@ export default function Promociones (props) {
                                         <div>
                                             <div className="smaller-text">{showData[e].descripcion}</div>
                                             <div className="smaller-text inline-block side-margin">en los eventos:</div>
-                                            <CommaList data = {eventoArray} /> 
+                                            <CommaList list = {eventoArray} endpoint='' /> 
                                         </div>
                                     </li>
                                 )

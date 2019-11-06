@@ -3,14 +3,33 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import {Route,Switch} from 'react-router-dom';
 /**
  * sub elementos
  */
-import Formulario from './sub/Formulario';
-import Ubicaciones from './sub/Ubicaciones';
+import {
+    Formulario,
+    editFormHandler,
+    addFormHandler
+} from './sub/Formulario';
+import {handler as listHandler,Ubicaciones} from './sub/Ubicaciones';
 import VerUbicacion from './sub/VerUbicacion';
-import {Route,Switch} from 'react-router-dom';
-import {Navegacion,FormActions} from '../../acciones/ActionsByView';
+import {
+    Navegacion,
+    FormActions
+} from '../../acciones/ActionsByView';
+import RequestHandler from '../../hocs/RequestHandler';
+import {ConfirmarModal} from '../../componentes/modal/Modal';
+
+const modal = ({message,title}) =>
+    function () {
+        return <ConfirmarModal
+            open={this.state.open}
+            closeModal={this.toggleModal}
+            title={title}
+            content={message} />
+    };
+
 
 export default function UbicacionesRouting (props) {
     return (
@@ -20,9 +39,19 @@ export default function UbicacionesRouting (props) {
                 exact
                 component={
                     (match) =>
-                        <Ubicaciones
-                            nav={Navegacion.listado('/ubicaciones')}
-                            {...match}/>
+                        <RequestHandler
+                            component ={
+                                (match) =>
+                                    <Ubicaciones
+                                        nav={Navegacion.listado('/ubicaciones')} {...match}/>
+                            }
+                            fetchHandler={listHandler('ubicaciones/list/27')}
+                            modal = {
+                                modal({
+                                    message:"¿estás seguro de eliminar este ubicación?",
+                                    title:"Eliminar Ubicación"
+                                })
+                            }/>
                 } />
             <Switch>
                 <Route
@@ -30,21 +59,52 @@ export default function UbicacionesRouting (props) {
                     exact
                     component={
                         (match) =>
-                            <Formulario
-                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/ubicaciones')}
-                                formActions = {FormActions()}
-                                editar={true}
-                                {...match} />
+                            <RequestHandler
+                                component ={
+                                    (props) =>{
+                                        return (
+                                            <Formulario
+                                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/ubicaciones')}
+                                                formActions = {FormActions()}
+                                                editar={true}
+                                                {...props} />
+                                        )
+                                    }
+
+                                }
+                                fetchHandler={editFormHandler('ubicaciones/single/27/'+match.match.params.id)}
+                                modal = {
+                                    modal({
+                                        message:"¿estás seguro de eliminar este ubicación?",
+                                        title:"Eliminar Ubicación"
+                                    })
+                                }/>
                     } />
                 <Route
                     path={props.match.url + '/agregar'}
                     component={
                         (match) =>
-                            <Formulario
-                                nav={Navegacion.agregar('/ubicaciones')}
-                                formActions = {FormActions()}
-                                editar={false}
-                                {...match} />
+                            <RequestHandler
+                                component ={
+                                    (props) =>{
+                                        return (
+                                            <Formulario
+                                                nav={Navegacion.agregar('/ubicaciones')}
+                                                formActions = {FormActions()}
+                                                editar={false}
+                                                {...props} />
+                                        )
+                                    }
+
+                                }
+                                fetchHandler={addFormHandler('ubicaciones/single/27/'+match.match.params.id)}
+                                modal = {
+                                    modal({
+                                        message:"¿estás seguro de eliminar este ubicación?",
+                                        title:"Eliminar Ubicación"
+                                    })
+                                }/>
+
                     } />
                 <Route
                     path={props.match.url + '/:id'}

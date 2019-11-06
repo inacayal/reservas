@@ -28,11 +28,11 @@ function EventoFrame(
         [showDate, changeDate] = useState(props.fecha),
         [minDate, changeMin] = useState(new Date()),
         [horario, changeHorario] = useState({}),
-        currentData = props.data.feriados.data[showDate.getDate()] ? props.data.feriados.data[showDate.getDate()] : props.data.horarios.data[showDate.getDay()+1], 
+        currentData = props.data.feriados.data[showDate.getDate()] ? props.data.feriados.data[showDate.getDate()] : props.data.horarios.data[showDate.getDay()+1],
         dateString = DAYS[showDate.getDay()] + " " + showDate.getDate() + " de " + MONTHS[showDate.getMonth()] + " " + showDate.getFullYear(),
         ubicaciones = props.data.ubicaciones,
         renderCallback = () => {
-            const 
+            const
                 date = minDate.getMonth() === showDate.getMonth() && minDate.getFullYear() === showDate.getFullYear()
                     ? calculateOffset(
                         props.data.antelacion,
@@ -61,19 +61,19 @@ function EventoFrame(
                 changeDate(date);
             }
         };
-    
+
     useEffect(renderCallback,[]);
 
     return (
         <div className="container">
             <h3 className={props.displayTitles ? "bold highlight-title align-center" : "hidden"}>datos de la reserva</h3>
-            <CalendarioEventos 
+            <CalendarioEventos
                 data={props.data}
                 current = {currentData}
                 showDate={showDate}
                 minDate={minDate}
                 clickCallback={clickCallback}
-                fetch = {props.fetch}/> 
+                fetch = {props.fetch}/>
             <div className="row justify-content-end smaller-text top-padding">
                 {'Debes reservar con al menos ' + props.data.antelacion + ' horas de antelación.'}
             </div>
@@ -84,7 +84,7 @@ function EventoFrame(
                     ubicaciones={ubicaciones}
                     horario={horario} />
             </div>
-        </div>  
+        </div>
     );
-}   
+}
 export default EventoFrame;
