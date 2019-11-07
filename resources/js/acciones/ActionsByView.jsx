@@ -63,7 +63,8 @@ export const Navegacion = {
                         Eliminar
                     </div>
                 ),
-                click: () => false
+                click: () => false,
+                data:1
             },
         ]
     }),

@@ -99,8 +99,8 @@ function BreadCrumb(props) {
     let stored = '',
       display = null;
     return (
-        <div className="full-width h-padding border-bottom background-border">
-            <ul className="flex-row nav-list no-padding">
+        <>
+            <ul className="flex-row nav-list white-background full-width h-padding">
                 {
                     props.items.map(
                         (e,i) => {
@@ -134,7 +134,7 @@ function BreadCrumb(props) {
                     )
                 }
             </ul>
-        </div>
+        </>
     );
 }
 export default BreadCrumb;

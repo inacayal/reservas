@@ -14,18 +14,17 @@ export default function MainFrame (props) {
     const current = window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, '');
     return (
         <div className="row">
-            <div className="col-md-2 no-padding border-right">
+            <div className="col-md-3 no-padding dark-border-right">
                 <Lateral
                     current={props.current}
                     items={sidebar}/>
             </div>
-            <div className="col-md-10 container-fluid">
-                <div className="row">
-                    <BreadCrumb
-                        items={current.split('/')}/>
+            <div className="col-md-9 container-fluid background-border" style={{height:"85vh"}}>
+                <div className="row extra-box-padding">
+                    <BreadCrumb items={current.split('/')}/>
                 </div>
-                <div className="row medium-left-padding">
-                    <div className="col-md-12 container-fluid v-padding">
+                <div className="row extra-h-padding" style={{height:'90%'}}>
+                    <div className="col-md-12 container-fluid white-background h-overflow-auto"  style={{height:'100%'}}>
                         <props.render
                             {...props} />
                     </div>

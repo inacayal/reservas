@@ -61,10 +61,10 @@ export const Ubicaciones = (props) => {
                 links={props.nav.links} />
             <div className="container-fluid">
                 <div className="row">
-                    <div className="bold top-padding">
+                    <div className="bold">
                         {"Mostrando " + ubicaciones.length + " ubicaciones encontradas"}
                     </div>
-                    <ul className="full-width nav-list no-padding limit-height-half">
+                    <ul className="full-width nav-list no-padding">
                         {
                             ubicaciones.map(
                                 (elem, index) =>

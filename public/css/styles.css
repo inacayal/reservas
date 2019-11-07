@@ -26,6 +26,7 @@
   --no-highlight:#e6e6e6;
   --text-color:#000000;
   --light-border: #f2f2f2;
+  --dark:rgba(0,59,120,0.95);
 }
 html,body {
     background-color: #fff;
@@ -35,12 +36,27 @@ html,body {
     height: 100vh;
     margin: 0;
 }
+.white-background{
+    background-color: white;
+}
 .bold-hover:hover{
     font-weight: bolder !important;
     cursor:pointer;
 }
+.top-margin{
+    margin-top:15px;
+}
+.extra-h-padding{
+    padding:0px 15px;
+}
+.extra-box-padding{
+    padding:15px;
+}
+.extra-v-box-padding{
+    padding: 15px 0px;
+}
 .dark-background{
-    background-color: rgba(0,59,120,0.95);
+    background-color: var(--dark);
     color:white;
 }
 .no-border{
@@ -472,6 +488,12 @@ label{
 }
 .no-padding{
     padding:0px !important;
+}
+.dark-border-right{
+    border-right: 2px solid var(--dark);
+}
+.dark-border-bottom{
+    border-right: 2px solid var(--dark);
 }
 .border-right{
     border-right: 1px solid var(--border);

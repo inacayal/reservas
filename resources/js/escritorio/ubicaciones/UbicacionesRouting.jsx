@@ -1,7 +1,7 @@
 /**
  * react basic
  */
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import ReactDOM from 'react-dom';
 import {Route,Switch} from 'react-router-dom';
 /**
@@ -27,37 +27,28 @@ import {
 import RequestHandler from '../../hocs/RequestHandler';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 
-const modal = ({message,title}) =>
-    function () {
-        return <ConfirmarModal
-            open={this.state.open}
-            closeModal={this.toggleModal}
-            title={title}
-            content={message} />
-    };
-
-
 export default function UbicacionesRouting (props) {
+    const modal = (
+        <ConfirmarModal
+            title={"Eliminar Ubicación"}
+            content={"¿estás seguro de eliminar este ubicación?"} />
+    );
     return (
         <>
+
             <Route
                 path={props.match.url}
                 exact
                 component={
                     (match) =>
                         <RequestHandler
-                            component ={
+                            component={
                                 (match) =>
                                     <Ubicaciones
                                         nav={Navegacion.listado('/ubicaciones')} {...match}/>
                             }
-                            fetchHandler={listHandler('ubicaciones/list/27')}
-                            modal = {
-                                modal({
-                                    message:"¿estás seguro de eliminar este ubicación?",
-                                    title:"Eliminar Ubicación"
-                                })
-                            }/>
+                            modal={modal}
+                            fetchHandler={listHandler('ubicaciones/list/27')}/>
                 } />
             <Switch>
                 <Route
@@ -76,15 +67,9 @@ export default function UbicacionesRouting (props) {
                                                 {...props} />
                                         )
                                     }
-
                                 }
-                                fetchHandler={editFormHandler('ubicaciones/single/27/'+match.match.params.id)}
-                                modal = {
-                                    modal({
-                                        message:"¿estás seguro de eliminar este ubicación?",
-                                        title:"Eliminar Ubicación"
-                                    })
-                                }/>
+                                modal={modal}
+                                fetchHandler={editFormHandler('ubicaciones/single/27/'+match.match.params.id)}/>
                     } />
                 <Route
                     path={props.match.url + '/agregar'}
@@ -101,15 +86,9 @@ export default function UbicacionesRouting (props) {
                                                 {...props} />
                                         )
                                     }
-
                                 }
-                                fetchHandler={addFormHandler('ubicaciones/single/27/'+match.match.params.id)}
-                                modal = {
-                                    modal({
-                                        message:"¿estás seguro de eliminar este ubicación?",
-                                        title:"Eliminar Ubicación"
-                                    })
-                                }/>
+                                modal={modal}
+                                fetchHandler={addFormHandler('ubicaciones/single/27/'+match.match.params.id)}/>
 
                     } />
                 <Route
@@ -125,15 +104,9 @@ export default function UbicacionesRouting (props) {
                                             {...props} />
                                     )
                                 }
-
                             }
-                            fetchHandler={singleHandler('/ubicaciones/single/27/'+match.match.params.id)}
-                            modal = {
-                                modal({
-                                    message:"¿estás seguro de eliminar este ubicación?",
-                                    title:"Eliminar Ubicación"
-                                })
-                            }/>
+                            modal={modal}
+                            fetchHandler={singleHandler('/ubicaciones/single/27/'+match.match.params.id)}/>
                     } />
             </Switch>
         </>

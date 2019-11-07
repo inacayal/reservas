@@ -9,6 +9,7 @@ import ReactDOM from 'react-dom';
 import MainFrame from '../hocs/MainFrame';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import BarraNavegacion from '../componentes/control/BarraNavegacion';
+import Profile from '../componentes/control/Profile'
 /**
  * paneles
  */
@@ -24,111 +25,120 @@ import PromocionesRouting from './promociones/PromocionesRouting';
 //holds reservation state
 export default function AppRouting (props) {
     return (
-        <div className="container-fluid no-margin">
-            <BarraNavegacion />
-            <Switch>
-                <Route
-                    path='/'
-                    exact
-                    component={
-                        (props) =>
-                            <MainFrame
-                                render={(props) => (
-                                    <EscritorioRouting {...props} />
-                                )}
-                                current={'0'}
-                                {...props}/>
-                    }/>
-                <Route
-                    path='/reservas'
-                    component={
-                        (props) =>
-                            <MainFrame
-                                render={(props)=>(
-                                    <ReservasRouting {...props} />
-                                )}
-                                current={'1'}
-                                {...props}/>
-                    } />
-                <Route
-                    path='/horarios'
-                    component={
-                        (props) =>
-                            <MainFrame
-                                render={(props) => (
-                                    <HorariosRouting {...props} />
-                                )}
-                                current={'2'}
-                                {...props}/>
-                        }
-                    />
-                <Route
-                    path='/ubicaciones'
-                    component={
-                        (props) =>
-                            <MainFrame
-                                render={(props) => (
-                                    <UbicacionesRouting {...props} />
-                                )}
-                                current={'3'}
-                                {...props}/>
-                    } />
-                <Route
-                    path='/eventos'
-                    component={
-                        (props) =>
-                            <MainFrame
-                                render={(props) => (
-                                    <EventosRouting {...props} />
-                                )}
-                                current={'4'}
-                                {...props}/>
-                    } />
-                <Route
-                    path='/promociones'
-                    component={
-                        (props) =>
-                            <MainFrame
-                                render={(props) => (
-                                    <PromocionesRouting {...props} />
-                                )}
-                                current={'5'}
-                                {...props} />
-                    } />
-                <Route
-                    path='/locales'
-                    component={
-                        (props) =>
-                            <MainFrame
-                                render={(props) => (
-                                    <LocalesRouting {...props} />
-                                )}
-                                current={'6'}
-                                {...props}/>
-                    } />
-                <Route
-                    path='/configuracion'
-                    component={
-                        (props) =>
-                            <MainFrame
-                                render={(props) => (
-                                    <ConfiguracionRouting {...props} />
-                                )}
-                                current={'7'}
-                                {...props}/>
-                    } />
-                <Route
-                    path='/franquicias'
-                    component={
-                        (props) =>
-                            <MainFrame
-                                render={(props) => (
-                                    <FranquiciasRouting {...props} />
-                                )}
-                                current={'8'}
-                                {...props}/>
-                    } />
-            </Switch>
+        <div className="container-fluid no-margin" style={{overflow:"hidden"}}>
+            <div className="row mh-30 dark-border-bottom dark-background" style={{height:'15vh'}}>
+                <BarraNavegacion />
+            </div>
+            <div className="row mh-70" style={{height:'85vh'}}>
+                <div className="col-md-10">
+                    <Switch>
+                        <Route
+                            path='/'
+                            exact
+                            component={
+                                (props) =>
+                                    <MainFrame
+                                        render={(props) => (
+                                            <EscritorioRouting {...props} />
+                                        )}
+                                        current={'0'}
+                                        {...props}/>
+                            }/>
+                        <Route
+                            path='/reservas'
+                            component={
+                                (props) =>
+                                    <MainFrame
+                                        render={(props)=>(
+                                            <ReservasRouting {...props} />
+                                        )}
+                                        current={'1'}
+                                        {...props}/>
+                            } />
+                        <Route
+                            path='/horarios'
+                            component={
+                                (props) =>
+                                    <MainFrame
+                                        render={(props) => (
+                                            <HorariosRouting {...props} />
+                                        )}
+                                        current={'2'}
+                                        {...props}/>
+                                }
+                            />
+                        <Route
+                            path='/ubicaciones'
+                            component={
+                                (props) =>
+                                    <MainFrame
+                                        render={(props) => (
+                                            <UbicacionesRouting {...props} />
+                                        )}
+                                        current={'3'}
+                                        {...props}/>
+                            } />
+                        <Route
+                            path='/eventos'
+                            component={
+                                (props) =>
+                                    <MainFrame
+                                        render={(props) => (
+                                            <EventosRouting {...props} />
+                                        )}
+                                        current={'4'}
+                                        {...props}/>
+                            } />
+                        <Route
+                            path='/promociones'
+                            component={
+                                (props) =>
+                                    <MainFrame
+                                        render={(props) => (
+                                            <PromocionesRouting {...props} />
+                                        )}
+                                        current={'5'}
+                                        {...props} />
+                            } />
+                        <Route
+                            path='/locales'
+                            component={
+                                (props) =>
+                                    <MainFrame
+                                        render={(props) => (
+                                            <LocalesRouting {...props} />
+                                        )}
+                                        current={'6'}
+                                        {...props}/>
+                            } />
+                        <Route
+                            path='/configuracion'
+                            component={
+                                (props) =>
+                                    <MainFrame
+                                        render={(props) => (
+                                            <ConfiguracionRouting {...props} />
+                                        )}
+                                        current={'7'}
+                                        {...props}/>
+                            } />
+                        <Route
+                            path='/franquicias'
+                            component={
+                                (props) =>
+                                    <MainFrame
+                                        render={(props) => (
+                                            <FranquiciasRouting {...props} />
+                                        )}
+                                        current={'8'}
+                                        {...props}/>
+                            } />
+                    </Switch>
+                </div>
+                <div className="col-md-2 hidden-s background-border">
+                    <Profile />
+                </div>
+            </div>
         </div>
     )
 }

@@ -11,20 +11,14 @@ import ButtonList from '../basic/ButtonList';
 function BarraNavegacion(props) {
     let items = [
         {
-            title:(
-                <i className="fas fa-bell"/>
-            ),
-            class: "btn highlight-title reduce-padding margin-box"
-        },
-        {
             title: (
-                <i className="fas fa-power-off" />
+                <i className="fas fa-bars" />
             ),
-            class:"btn light-danger margin-box reduce-padding"
+            class:"btn c-title light-danger margin-box reduce-padding"
         }
     ];
     return (
-        <div className="row border-bottom dark-background add-padding">
+        <>
             <div className="col-sm-8">
                 <h4 className="bold">
                     Nombre de usuario
@@ -37,7 +31,7 @@ function BarraNavegacion(props) {
                     elemClass="light-danger nav-reserva pointer"
                     elems={items} />
             </div>
-        </div>
+        </>
     );
 }
 export default React.memo(BarraNavegacion);

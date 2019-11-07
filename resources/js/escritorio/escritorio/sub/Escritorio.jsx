@@ -69,10 +69,9 @@ export default class Escritorio extends Component {
     }
 
     render() {
-        console.log(this.state.data);
         if (this.state.data && this.state.loadFinished) {
             return (
-                <div className="full-width">
+                <>
                     <Titulo
                         title={"Bienvenido, "+this.state.data.username} />
                     <div className="container">
@@ -89,7 +88,7 @@ export default class Escritorio extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
+                </>
             );
         }
         return (

@@ -19,16 +19,13 @@ export default class RequestHandler extends Component {
             open:false
         };
         this.downloadHandler = this.downloadHandler.bind(this);
-        this.modal = this.props.modal.bind(this);
         this.fetchHandler = this.props.fetchHandler.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
     }
 
-    toggleModal(e) {
+    toggleModal (e){
         e.preventDefault();
-        this.setState({
-            open: !this.state.open
-        })
+        this.setState({open:!this.state.open});
     }
 
     downloadHandler(pEvent) {
@@ -45,16 +42,27 @@ export default class RequestHandler extends Component {
     }
 
     render(){
-        if (this.state.data && this.state.loadFinished){
+        const Modal = () => {
+            const ModalCopy = this.props.modal,
+                props = ModalCopy.props;
+            return (
+                <ModalCopy
+                    {...props}
+                    open={this.state.open}
+                    closeModal={this.toggleModal}/>
+            )
+        };
+        if (this.state.data && this.state.loadFinished)
             return (
                 <>
-                    <this.modal />
-                    <this.props.component
-                        data={this.state.data}
-                        toggleModal={this.toggleModal}/>
+                    
+                    <div className="v-padding">
+                        <this.props.component
+                            data={this.state.data}
+                            toggleModal={this.toggleModal}/>
+                    </div>
                 </>
             );
-        }
         else
             return (<LoadBar loaded={this.state.loading}/>);
     }

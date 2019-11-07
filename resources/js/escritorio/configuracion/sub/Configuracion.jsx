@@ -78,7 +78,7 @@ export default class Configuracion extends Component {
                     this.state.data
                 );
             return (
-                <div className="full-width">
+                <>
                     <Titulo
                         title="Configuración"/>
                     <ul className="full-width nav-list no-padding">
@@ -89,7 +89,7 @@ export default class Configuracion extends Component {
                             )
                         }
                     </ul>
-                </div>
+                </>
             );
         }
         return (

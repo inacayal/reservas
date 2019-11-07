@@ -99,22 +99,20 @@ export class Formulario extends Component {
                             links={this.props.nav.links}
                             buttons={this.props.nav.buttons} />
                         <div className="row">
-                            <div className="col-md-4 bold no-padding">
+                            <div className="col-md-4 bold">
                                 foto de la ubicacion
                             </div>
-                            <div className="col-md-8">
-                                <div className="container">
-                                    <div className="row">
-                                        <Text rows={1} titulo="Nombre de la ubicación" name="nombre" value={this.props.editar ? data.nombre : ""} classes={"border-box input-text margin-box"} container="full-width" />
-                                    </div>
-                                    <div className="row v-padding">
-                                        <Text rows={4} titulo="Descripcion" name="descripcion" value={this.props.editar ? data.descripcion : ""} classes={"border-box input-text margin-box"} container="full-width" />
-                                    </div>
+                            <div className="col-md-8 container">
+                                <div className="row">
+                                    <Text rows={1} titulo="Nombre de la ubicación" name="nombre" value={this.props.editar ? data.nombre : ""} classes={"border-box input-text margin-box"} container="full-width" />
+                                </div>
+                                <div className="row v-padding">
+                                    <Text rows={4} titulo="Descripcion" name="descripcion" value={this.props.editar ? data.descripcion : ""} classes={"border-box input-text margin-box"} container="full-width" />
                                 </div>
                             </div>
                         </div>
                         <div className="row v-padding">
-                            <div className="col-md-6 no-padding">
+                            <div className="col-md-6">
                                 <Numeric titulo="Capacidad máxima" name="capacidad_maxima" value={this.props.editar ? data.capacidad : ""} classes={"border-box input-text margin-box"} container="full-width" />
                                 <span className="smaller-text">Máximo de personas en la ubicación</span>
                             </div>
@@ -123,7 +121,7 @@ export class Formulario extends Component {
                                 <span className="smaller-text">Máximo de personas en una reservación</span>
                             </div>
                         </div>
-                        <div className="row justify-content-end">
+                        <div className="row justify-content-end h-padding">
                             <Actions
                                 buttons={Object.values(this.props.formActions.buttons)}/>
                         </div>
