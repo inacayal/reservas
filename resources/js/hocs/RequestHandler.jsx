@@ -42,20 +42,12 @@ export default class RequestHandler extends Component {
     }
 
     render(){
-        const Modal = () => {
-            const ModalCopy = this.props.modal,
-                props = ModalCopy.props;
-            return (
-                <ModalCopy
-                    {...props}
-                    open={this.state.open}
-                    closeModal={this.toggleModal}/>
-            )
-        };
         if (this.state.data && this.state.loadFinished)
             return (
                 <>
-                    
+                    <this.props.modal
+                        open={this.state.open}
+                        closeModal={this.toggleModal}/>
                     <div className="v-padding">
                         <this.props.component
                             data={this.state.data}

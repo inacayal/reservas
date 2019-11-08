@@ -14,7 +14,7 @@ export default function MainFrame (props) {
     const current = window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, '');
     return (
         <div className="row">
-            <div className="col-md-3 no-padding dark-border-right">
+            <div className="col-md-3 no-padding">
                 <Lateral
                     current={props.current}
                     items={sidebar}/>

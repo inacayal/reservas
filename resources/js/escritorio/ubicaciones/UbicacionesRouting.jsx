@@ -12,30 +12,34 @@ import {
     editFormHandler,
     addFormHandler
 } from './sub/Formulario';
+
 import {
     handler as listHandler,
     Ubicaciones
 } from './sub/Ubicaciones';
+
 import {
     singleHandler,
     VerUbicacion
 } from './sub/VerUbicacion';
+
 import {
     Navegacion,
     FormActions
 } from '../../acciones/ActionsByView';
+
 import RequestHandler from '../../hocs/RequestHandler';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 
 export default function UbicacionesRouting (props) {
-    const modal = (
+    const modal = (props) => (
         <ConfirmarModal
+            {...props}
             title={"Eliminar Ubicación"}
             content={"¿estás seguro de eliminar este ubicación?"} />
     );
     return (
         <>
-
             <Route
                 path={props.match.url}
                 exact
@@ -97,13 +101,11 @@ export default function UbicacionesRouting (props) {
                         (match) =>
                         <RequestHandler
                             component ={
-                                (props) =>{
-                                    return (
-                                        <VerUbicacion
-                                            nav={Navegacion.singular(()=>false,match.match.params.id,'/ubicaciones')}
-                                            {...props} />
-                                    )
-                                }
+                                (props) => (
+                                    <VerUbicacion
+                                        nav={Navegacion.singular(()=>false,match.match.params.id,'/ubicaciones')}
+                                        {...props} />
+                                )
                             }
                             modal={modal}
                             fetchHandler={singleHandler('/ubicaciones/single/27/'+match.match.params.id)}/>
