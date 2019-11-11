@@ -25,8 +25,9 @@ import {
 import {Route, Switch} from 'react-router-dom';
 import {Navegacion,FormActions} from '../../acciones/ActionsByView'
 import {ConfirmarModal} from '../../componentes/modal/Modal';
+import RequestHandler from '../../hocs/RequestHandler';
 
-export function EventosRouting (props) {
+export default function EventosRouting (props) {
     const modal = (props) => (
         <ConfirmarModal
             {...props}
@@ -48,7 +49,7 @@ export function EventosRouting (props) {
                                         {...props} />
                             }
                             modal={modal}
-                            fetchHandler={listHandler('eventos/add/27')}/>
+                            fetchHandler={listHandler('/eventos/list/27')}/>
                 } />
             <Switch>
                 <Route
@@ -67,7 +68,7 @@ export function EventosRouting (props) {
                                     )
                                 }
                                 modal={modal}
-                                fetchHandler={editFormHandler('eventos/single/27/' + this.props.match.params.id)}/>
+                                fetchHandler={editFormHandler('eventos/single/27/' + match.match.params.id)}/>
                     } />
                 <Route
                     path={props.match.url + '/agregar'}
@@ -77,14 +78,14 @@ export function EventosRouting (props) {
                                 component ={
                                     (props) =>(
                                         <Formulario
-                                            nav={Navegacion.agregar('/promociones')}
+                                            nav={Navegacion.agregar('/eventos')}
                                             formActions = {FormActions()}
                                             editar={false}
                                             {...props} />
                                     )
                                 }
                                 modal={modal}
-                                fetchHandler={addFormHandler('promociones/add/27')}/>
+                                fetchHandler={addFormHandler('/eventos/add/27')}/>
                     } />
                 <Route
                     path={props.match.url + '/:id'}
@@ -94,12 +95,12 @@ export function EventosRouting (props) {
                                 component ={
                                     (props) => (
                                         <VerEvento
-                                            nav={Navegacion.singular(()=>false,match.match.params.id,'/promociones')}
+                                            nav={Navegacion.singular(()=>false,match.match.params.id,'/eventos')}
                                             {...props} />
                                     )
                                 }
                                 modal={modal}
-                                fetchHandler={singleHandler('/eventos/single/27/'+this.props.match.params.id)}/>
+                                fetchHandler={singleHandler('/eventos/single/27/'+match.match.params.id)}/>
                         } />
             </Switch>
         </>

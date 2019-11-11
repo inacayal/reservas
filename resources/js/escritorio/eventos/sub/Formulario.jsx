@@ -7,19 +7,11 @@ import Calendar from 'react-calendar';
 import Titulo from '../../../componentes/basic/Titulo';
 import Actions from '../../../componentes/basic/Actions';
 /**
- * handlers and elements
- */
-import LoadBar from '../../../utils/LoadBar';
-/**
  * API
  */
-import { GET } from '../../../utils/api';
 import { FormFields } from '../FormFields';
 import { assignHorarios } from './generateEventosCard';
-import {ConfirmarModal} from '../../../componentes/modal/Modal';
-/**
- * navegacion
- */
+import {GET} from '../../../utils/api';
 
 export const editFormHandler = (endpoint) => {
     return function () {
@@ -28,6 +20,7 @@ export const editFormHandler = (endpoint) => {
             isLoading: true,
             loadFinished: false
         });
+
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -37,7 +30,6 @@ export const editFormHandler = (endpoint) => {
             .then(
                 response => {
                     let data = {};
-                    this.props.nav.buttons[0].click = this.toggleModal;
                     data = {
                         selected: response.data.eventos[0],
                         all: {
@@ -92,21 +84,13 @@ export const addFormHandler = (endpoint) => {
     }
 }
 
-class Formulario extends Component {
+export class Formulario extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            open: false,
-            data: null,
-            loadFinished: false
-        }
-        this.fetchData = this.fetchData.bind(this);
-        this.downloadHandler = this.downloadHandler.bind(this);
-        this.toggleModal = this.toggleModal.bind(this);
-
+        if (this.props.editar)
+            this.props.nav.buttons[0].click = this.props.toggleModal;
         this.enviarFormulario = this.enviarFormulario.bind(this);
         this.cancelarFormulario = this.cancelarFormulario.bind(this);
-
         this.props.formActions.buttons.guardar.click = this.enviarFormulario;
         this.props.formActions.buttons.cancelar.click = this.cancelarFormulario;
     }
@@ -121,57 +105,23 @@ class Formulario extends Component {
         console.log('guardar');
     }
 
-    downloadHandler(pEvent) {
-        let
-            loading = Math.round((pEvent.loaded * 100) / pEvent.total),
-            state = loading !== 100 ?
-                { loading, loadFinished: false }
-                : { loading, loadFinished: true };
-        this.setState(state);
-    }
-
-    fetchData() {
-    }
-
     componentDidMount() {
-        this.fetchData();
     }
 
-    toggleModal(e) {
-        e.preventDefault();
-        this.setState({
-            open: !this.state.open
-        });
-    }
     render() {
-        if (this.state.data && this.state.loadFinished){
-            const data = this.props.editar ? this.state.data.selected : this.state.data;
-            return (
-                <>
-                    <ConfirmarModal
-                        open={this.state.open}
-                        closeModal={this.toggleModal}
-                        title="Eliminar Evento"
-                        content="¿estás seguro de eliminar este evento?" />
-                    <form className="full-width">
-                        < Titulo
-                        title={this.props.editar ? this.state.data.selected.nombre : "Agregar Evento"}
-                        links={this.props.nav.links}
-                        buttons={this.props.nav.buttons} />
-                        <FormFields editar ={this.props.editar} {...this.state.data}/>
-                        <div className="text-right">
-                            <Actions
-                                buttons={Object.values(this.props.actions.buttons)}/>
-                        </div>
-                    </form>
-                </>
-            );
-        }
+        const data = this.props.data;
         return (
-            <LoadBar
-                loaded={this.state.loading} />
+            <form className="full-width">
+                < Titulo
+                    title={this.props.editar ? data.selected.nombre : "Agregar Evento"}
+                    links={this.props.nav.links}
+                    buttons={this.props.nav.buttons} />
+                <FormFields editar ={this.props.editar} {...data}/>
+                <div className="text-right">
+                    <Actions
+                        buttons={Object.values(this.props.formActions.buttons)}/>
+                </div>
+            </form>
         );
     }
 }
-
-export default React.memo(Formulario);

@@ -7,7 +7,6 @@ import {Link} from 'react-router-dom';
 /**
  * sub elementos
  */
-import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
 /**
  * basic
@@ -17,7 +16,7 @@ import { assignHorarios } from './generateEventosCard';
 import {CommaList} from '../../../componentes/basic/CommaList';
 import PromocionesTable from '../../../componentes/tables/PromocionesTable';
 
-export const singleHandler  (endpoint) => {
+export const singleHandler = (endpoint) => {
     return function () {
         this.setState({
             data: null,
@@ -43,19 +42,13 @@ export const singleHandler  (endpoint) => {
     }
 }
 
-export default class VerEvento extends Component {
+export class VerEvento extends Component {
     constructor(props){
         super(props);
-        this.state = {
-            loadFinished: false,
-            data: null,
-            open: false
-        }
-        this.props.nav.buttons[0].click = this.toggleModal;
+        this.props.nav.buttons[0].click = this.props.toggleModal;
     }
 
     componentDidMount() {
-        this.fetchData();
     }
 
     componentWillUnmount() {
@@ -63,17 +56,12 @@ export default class VerEvento extends Component {
     }
 
     render() {
-        const data = this.state.data,
+        const data = this.props.data,
             promociones = Object.values(data.promociones.data),
             horarios = Object.values(data.horarios.list),
             feriados = Object.values(data.feriados.list);
         return (
             <>
-                <ConfirmarModal
-                    open={this.state.open}
-                    closeModal={this.toggleModal}
-                    title="Eliminar Evento"
-                    content="¿estás seguro de eliminar este evento?" />
                 <Titulo
                     title={data.nombre}
                     links={this.props.nav.links}
@@ -109,14 +97,16 @@ export default class VerEvento extends Component {
                     </div>
                 </div>
                 <div className="row v-padding">
-                    <div className="sub-title bold">Promociones</div>
-                    {
-                        promociones.length>0
-                        ?
+                    <div className="col-md-12">
+                        <div className="sub-title bold">Promociones</div>
+                        {
+                            promociones.length>0
+                            ?
                             <PromocionesTable data={promociones}/>
-                        :
+                            :
                             <div className="bold h-padding">No hay promociones asociadas</div>
-                    }
+                        }
+                    </div>
                 </div>
             </>
         )    }
