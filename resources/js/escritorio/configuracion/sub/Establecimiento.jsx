@@ -7,54 +7,12 @@ import { FormularioEstablecimiento } from '../FormularioEstablecimiento';
 /**
  * api
  */
-import LoadBar from '../../../componentes/control/LoadBar';
 import Titulo from '../../../componentes/basic/Titulo';
 import { GET } from '../../../utils/api';
 import Actions from '../../../componentes/basic/Actions';
 
-export default class Reservas extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: null,
-            loading: null,
-            loadFinished: false
-        };
-        this.fetchData = this.fetchData.bind(this);
-        this.downloadHandler = this.downloadHandler.bind(this);
-
-        this.actions = this.props.formActions.buttons;
-        this.actions.cancelar.click = this.cancelarFormulario;
-        this.actions.guardar.click = this.enviarFormulario;
-    }
-
-    downloadHandler(pEvent) {
-        let
-            loading = Math.round((pEvent.loaded * 100) / pEvent.total),
-            state = loading !== 100 ?
-                { loading, loadFinished: false }
-                : { loading, loadFinished: true };
-        this.setState(state);
-    }
-
-    enviarFormulario(e){
-        e.preventDefault();
-        console.log('guardar');
-    }
-
-    cancelarFormulario(e){
-        e.preventDefault();
-        console.log('cancelar');
-    }
-
-    toggleModal(e) {
-        e.preventDefault();
-        this.setState({
-            open: !this.state.open
-        });
-    }
-
-    fetchData() {
+export const establecimientoHandler = (endpoint) => {
+    return function () {
         this.setState({
             data: null,
             isLoading: true,
@@ -62,7 +20,7 @@ export default class Reservas extends Component {
         });
 
         const request = GET({
-            endpoint: 'usuario/local/27',
+            endpoint: endpoint,
             download: this.downloadHandler
         });
 
@@ -78,9 +36,28 @@ export default class Reservas extends Component {
                 }
             );
     }
+}
+
+export class Establecimiento extends Component {
+    constructor(props) {
+        super(props);
+
+        this.actions = this.props.formActions.buttons;
+        this.actions.cancelar.click = this.cancelarFormulario;
+        this.actions.guardar.click = this.enviarFormulario;
+    }
+
+    enviarFormulario(e){
+        e.preventDefault();
+        console.log('guardar');
+    }
+
+    cancelarFormulario(e){
+        e.preventDefault();
+        console.log('cancelar');
+    }
 
     componentDidMount() {
-        this.fetchData();
     }
 
 
@@ -89,24 +66,19 @@ export default class Reservas extends Component {
     }
 
     render() {
-        if (this.state.data && this.state.loadFinished) {
-            return (
-                <>
-                    <Titulo
-                        title="Configurar Establecimiento"
-                        links={this.props.nav.links} />
-                    <div className="container">
-                        <FormularioEstablecimiento data={this.state.data} />
-                        <div className="row v-padding justify-content-end">
-                            <Actions buttons={Object.values(this.actions)}/>
-                        </div>
-                    </div>
-                </>
-            );
-        }
+        console.log(this.props)
         return (
-            <LoadBar
-                loaded={this.state.loading} />
+            <>
+                <Titulo
+                    title="Configurar Establecimiento"
+                    links={this.props.nav.links} />
+                <div className="container">
+                    <FormularioEstablecimiento data={this.props.data} />
+                    <div className="row v-padding justify-content-end">
+                        <Actions buttons={Object.values(this.actions)}/>
+                    </div>
+                </div>
+            </>
         );
     }
 }

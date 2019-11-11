@@ -6,7 +6,6 @@ import ReactDOM from 'react-dom';
 /**
  * sub elementos
  */
-import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
 /**
  * basic
@@ -14,44 +13,16 @@ import { GET } from '../../../utils/api';
 import { Navegacion } from '../../../acciones/ActionsByView';
 import Titulo from '../../../componentes/basic/Titulo';
 import FranquiciasTable from '../../../componentes/tables/FranquiciasTable';
-import Actions from '../../../componentes/basic/Actions';
 import {ExpandableComponent} from '../../../hocs/ExpandableComponent';
-import {ConfirmarModal} from '../../../componentes/modal/Modal';
+import Actions from '../../../componentes/basic/Actions';
 
-export default class VerLocal extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            data: null,
-            open: false
-        }
-        this.fetchData = this.fetchData.bind(this);
-        this.downloadHandler = this.downloadHandler.bind(this);
-        this.toggleModal = this.toggleModal.bind(this);
-        this.props.nav.buttons[0].click = this.toggleModal;
-    }
-
-    toggleModal(e) {
-        e.preventDefault();
-        this.setState({
-            open: !this.state.open
-        });
-    }
-    downloadHandler(pEvent) {
-        let
-            loading = Math.round((pEvent.loaded * 100) / pEvent.total),
-            state = loading !== 100 ?
-                { loading, loadFinished: false }
-                : { loading, loadFinished: true };
-        this.setState(state);
-    }
-
-    fetchData() {
+export const singleHandler = (endpoint) => {
+    return function () {
         this.setState({
             data: null
         });
         const request = GET({
-            endpoint: '/usuario/local/'+this.props.match.params.id,
+            endpoint: endpoint,
             download: this.downloadHandler
         });
 
@@ -68,13 +39,19 @@ export default class VerLocal extends Component {
                 }
             );
     }
+}
+
+
+export class VerLocal extends Component {
+    constructor(props){
+        super(props);
+        this.props.nav.buttons[0].click = this.props.toggleModal;
+    }
 
     componentDidMount() {
-        this.fetchData();
     }
 
     componentWillUnmount() {
-        console.log('localesUnmount');
     }
 
     links(key){
@@ -101,24 +78,17 @@ export default class VerLocal extends Component {
     }
 
     render() {
-        if (this.state.data && this.state.loadFinished) {
-            const data = this.state.data;
-            data.franquicia.acciones= <Actions links ={this.links(data.franquicia.id)}/>;
-            return (
-                <>
-                    <ConfirmarModal
-                        open={this.state.open}
-                        closeModal={this.toggleModal}
-                        title="Desactivar Local"
-                        content="¿estás seguro de desactivar este local?" />
-                    <div className="container no-padding">
-                        < Titulo
-                            title={this.state.data.nombre}
-                            links={this.props.nav.links}
-                            buttons ={this.props.nav.buttons}/>
-                        <div className="v-padding row">
-                            <FranquiciasTable data={[data.franquicia]} withPagination={false}/>
-                        </div>
+        const data = this.props.data;
+        data.franquicia.acciones= <Actions links ={this.links(data.franquicia.id)}/>;
+        return (
+            <>
+                < Titulo
+                    title={data.nombre}
+                    links={this.props.nav.links}
+                    buttons ={this.props.nav.buttons}/>
+                <div className="container">
+                    <div className="v-padding row">
+                        <FranquiciasTable data={[data.franquicia]} withPagination={false}/>
                     </div>
                     <ExpandableComponent
                         title = {'Información'}
@@ -252,12 +222,8 @@ export default class VerLocal extends Component {
                                 </div>
                             </div>
                         }/>
-                </>
-            )
-        }
-        return (
-            <LoadBar
-                loaded={this.state.loading} />
-        );
+                </div>
+            </>
+        )
     }
 }

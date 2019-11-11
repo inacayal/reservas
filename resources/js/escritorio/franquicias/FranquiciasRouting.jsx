@@ -1,18 +1,43 @@
 /**
  * react basic
  */
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import ReactDOM from 'react-dom';
+import {Route,Switch} from 'react-router-dom';
 /**
  * sub elementos
  */
-import Formulario from './sub/Formulario';
-import Franquicias from './sub/Franquicias';
-import VerFranquicia from './sub/VerFranquicia';
-import { Route, Switch } from 'react-router-dom';
-import {Navegacion, FormActions} from '../../acciones/ActionsByView';
+import {
+    Formulario,
+    editFormHandler,
+    addFormHandler
+} from './sub/Formulario';
+
+import {
+    listHandler,
+    Franquicias
+} from './sub/Franquicias';
+
+import {
+    singleHandler,
+    VerFranquicia
+} from './sub/VerFranquicia';
+
+import {
+    Navegacion,
+    FormActions
+} from '../../acciones/ActionsByView';
+
+import RequestHandler from '../../hocs/RequestHandler';
+import {ConfirmarModal} from '../../componentes/modal/Modal';
 
 export default function FranquiciasRouting (props) {
+    const modal = (props) => (
+        <ConfirmarModal
+            {...props}
+            title={"Eliminar Franquicia"}
+            content={"¿estás seguro de eliminar este franquicia?"} />
+    );
     return (
         <>
             <Route
@@ -20,9 +45,14 @@ export default function FranquiciasRouting (props) {
                 exact
                 component={
                     (match) =>
-                        <Franquicias
-                            nav ={Navegacion.listado('/franquicias')}
-                            {...match} />
+                        <RequestHandler
+                            component={
+                                (props) =>
+                                    <Franquicias
+                                        nav={Navegacion.listado('/franquicias')} {...props}/>
+                            }
+                            modal={modal}
+                            fetchHandler={listHandler('/usuario/franquicias/4')}/>
                 } />
             <Switch>
                 <Route
@@ -30,32 +60,57 @@ export default function FranquiciasRouting (props) {
                     exact
                     component={
                         (match) =>
-                            <Formulario
-                                nav ={Navegacion.formulario(()=>false,match.match.params.id,'/franquicias')}
-                                formActions={FormActions(match.match.params.id)}
-                                editar={true}
-                                {...match} />
+                            <RequestHandler
+                                component ={
+                                    (props) =>{
+                                        return (
+                                            <Formulario
+                                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/franquicias')}
+                                                formActions = {FormActions()}
+                                                editar={true}
+                                                {...props} />
+                                        )
+                                    }
+                                }
+                                modal={modal}
+                                fetchHandler={editFormHandler('/usuario/franquicia/' + match.match.params.id)}/>
                     } />
                 <Route
                     path={props.match.url + '/agregar'}
                     component={
                         (match) =>
-                            <Formulario
-                                nav ={Navegacion.agregar('/franquicias')}
-                                formActions={FormActions('')}
-                                editar={false}
-                                {...match} />
+                            <RequestHandler
+                                component ={
+                                    (props) =>{
+                                        return (
+                                            <Formulario
+                                                nav={Navegacion.agregar('/franquicias')}
+                                                formActions = {FormActions()}
+                                                editar={false}
+                                                {...props} />
+                                        )
+                                    }
+                                }
+                                modal={modal}
+                                fetchHandler={addFormHandler()}/>
+
                     } />
                 <Route
                     path={props.match.url + '/:id'}
                     component={
                         (match) =>
-                            <VerFranquicia
-                                nav ={Navegacion.singular(()=>false,match.match.params.id,'/franquicias')}
-                                {...match} />
+                        <RequestHandler
+                            component ={
+                                (props) => (
+                                    <VerFranquicia
+                                        nav={Navegacion.singular(()=>false,match.match.params.id,'/franquicias')}
+                                        {...props} />
+                                )
+                            }
+                            modal={modal}
+                            fetchHandler={singleHandler('/usuario/franquicia/' + match.match.params.id)}/>
                     } />
             </Switch>
-
         </>
     );
 }

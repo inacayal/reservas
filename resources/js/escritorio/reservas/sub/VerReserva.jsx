@@ -17,24 +17,41 @@ import {MONTHS} from '../../../constantes/DaysMonths';
 import Titulo from '../../../componentes/basic/Titulo';
 import {ReservasActions} from '../../../acciones/ReservasActions';
 
-export default class VerReserva extends Component {
+export const singleHandler = (endpoint) => {
+    return function () {
+        this.setState({
+            data: null,
+            isLoading: true,
+            loadFinished: false
+        });
+
+        const request = GET({
+            endpoint: endpoint,
+            download: this.downloadHandler
+        });
+
+        request
+            .then(
+                response => {
+                    this.setState({ data: response.data.reservas[0] });
+                }
+            )
+            .catch(
+                error => {
+                    console.log(error.message)
+                }
+            );
+    }
+}
+
+export class VerReserva extends Component {
     constructor(props){
         super(props);
-        this.state = {
-            loadFinished: false,
-            data: null,
-            open: false
-        }
-        this.fetchData = this.fetchData.bind(this);
-        this.downloadHandler = this.downloadHandler.bind(this);
-        this.aceptarReserva = this.aceptarReserva.bind(this);
-        this.rechazarReserva = this.rechazarReserva.bind(this);
-        this.revertirReserva = this.revertirReserva.bind(this);
 
         this.actions = {
-            aceptar: this.aceptarReserva,
-            rechazar: this.rechazarReserva,
-            revertir: this.revertirReserva
+            aceptar: this.aceptarReserva.bind(this),
+            rechazar: this.rechazarReserva.bind(this),
+            revertir: this.revertirReserva.bind(this)
         };
 
     }
@@ -51,42 +68,7 @@ export default class VerReserva extends Component {
         console.log('rechazarReserva');
     }
 
-    downloadHandler(pEvent) {
-        let
-            loading = Math.round((pEvent.loaded * 100) / pEvent.total),
-            state = loading !== 100 ?
-                { loading, loadFinished: false }
-                : { loading, loadFinished: true };
-        this.setState(state);
-    }
-
-    fetchData() {
-        this.setState({
-            data: null,
-            isLoading: true,
-            loadFinished: false
-        });
-
-        const request = GET({
-            endpoint: '/reservas/single/27/'+this.props.match.params.id,
-            download: this.downloadHandler
-        });
-
-        request
-            .then(
-                response => {
-                    this.setState({ data: response.data.reservas[0] });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
-    }
-
     componentDidMount() {
-        this.fetchData();
     }
 
     componentWillUnmount() {
@@ -94,36 +76,36 @@ export default class VerReserva extends Component {
     }
 
     render() {
-        if (this.state.data && this.state.loadFinished) {
-            const data = this.state.data,
-                actions = ReservasActions.day[data.estado](this.actions,data.estado),
-                date = new Date(data.fechaReserva+" 00:00"),
-                ElemByState = {
-                    Aprobada: ()=>(
-                        <div className="bold">
-                            <i className="fas fa-check-circle inline-box side-margin"/>
-                            Aprobada
-                        </div>
-                    ),
-                    Rechazada: ()=>(
-                        <div className="bold">
-                            <i className="fas fa-times-circle inline-box side-margin"/>
-                            Rechazada
-                        </div>
-                    ),
-                    Pendiente: ()=>(
-                        <div className="bold">
-                            <i className="fas fa-history inline-box side-margin"/>
-                            Pendiente
-                        </div>
-                    )
-                };
-            return (
-                <div className="container">
-                    < Titulo
-                        title={"Reserva de "+data.nombre+ " " + data.apellido}
-                        links={this.props.nav.links}
-                        buttons ={actions.buttons}/>
+        const data = this.props.data,
+            actions = ReservasActions.day[data.estado](this.actions,data.estado),
+            date = new Date(data.fechaReserva+" 00:00"),
+            ElemByState = {
+                Aprobada: ()=>(
+                    <div className="bold">
+                        <i className="fas fa-check-circle inline-box side-margin"/>
+                        Aprobada
+                    </div>
+                ),
+                Rechazada: ()=>(
+                    <div className="bold">
+                        <i className="fas fa-times-circle inline-box side-margin"/>
+                        Rechazada
+                    </div>
+                ),
+                Pendiente: ()=>(
+                    <div className="bold">
+                        <i className="fas fa-history inline-box side-margin"/>
+                        Pendiente
+                    </div>
+                )
+            };
+        return (
+            <>
+                <Titulo
+                    title={"Reserva de "+data.nombre+ " " + data.apellido}
+                    links={this.props.nav.links}
+                    buttons ={actions.buttons}/>
+                <div className="container v-padding">
                     <div className="row">
                         <div className="col-md-7">
                             <div className="bold">{MONTHS[date.getMonth()] + " de " + date.getFullYear()}</div>
@@ -218,11 +200,7 @@ export default class VerReserva extends Component {
                         </div>
                     </div>
                 </div>
-            )
-        }
-        return (
-            <LoadBar
-                loaded={this.state.loading} />
-        );
+            </>
+        )
     }
 }

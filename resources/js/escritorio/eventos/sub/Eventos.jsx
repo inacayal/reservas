@@ -69,7 +69,7 @@ export class Eventos extends Component {
                     <div className="bold top-padding row">
                         {"Mostrando " + eventos.length + " eventos encontrados"}
                     </div>
-                    <div className="row limit-height-half">
+                    <div className="row">
                         <ul className="nav-list no-padding">
                             {
                                 eventos.map(

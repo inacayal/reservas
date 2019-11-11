@@ -18,28 +18,8 @@ import generateConfigurationCards from './generateConfigurationCards';
 import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
 
-export default class Configuracion extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            show: null,
-            loading: null,
-            loadFinished: false
-        };
-        this.fetchData = this.fetchData.bind(this);
-        this.downloadHandler = this.downloadHandler.bind(this);
-    }
-
-    downloadHandler(pEvent) {
-        let
-            loading = Math.round((pEvent.loaded * 100) / pEvent.total),
-            state = loading !== 100 ?
-                { loading, loadFinished: false }
-                : { loading, loadFinished: true };
-        this.setState(state);
-    }
-
-    fetchData() {
+export const configuracionHandler = (endpoint) => {
+    return function () {
         this.setState({
             data: null,
             isLoading: true,
@@ -47,7 +27,7 @@ export default class Configuracion extends Component {
         });
 
         const request = GET({
-            endpoint: 'usuario/local/27',
+            endpoint: endpoint,
             download: this.downloadHandler
         });
 
@@ -63,9 +43,14 @@ export default class Configuracion extends Component {
                 }
             );
     }
+}
+
+export class Configuracion extends Component {
+    constructor(props) {
+        super(props);
+    }
 
     componentDidMount() {
-        this.fetchData();
     }
 
     componentWillUnmount() {
@@ -73,28 +58,22 @@ export default class Configuracion extends Component {
     }
 
     render() {
-        if (this.state.data && this.state.loadFinished) {
-            const configuracion = generateConfigurationCards(
-                    this.state.data
-                );
-            return (
-                <>
-                    <Titulo
-                        title="Configuración"/>
-                    <ul className="full-width nav-list no-padding">
-                        {
-                            configuracion.map(
-                                (elem, index) =>
-                                    <li key={index} className={elem.class}><elem.content /></li>
-                            )
-                        }
-                    </ul>
-                </>
-            );
-        }
+        const configuracion = generateConfigurationCards(
+            this.props.data
+        );
         return (
-            <LoadBar
-                loaded={this.state.loading} />
+            <>
+                <Titulo
+                    title="Configuración"/>
+                <ul className="full-width nav-list no-padding">
+                    {
+                        configuracion.map(
+                            (elem, index) =>
+                                <li key={index} className={elem.class}><elem.content /></li>
+                        )
+                    }
+                </ul>
+            </>
         );
     }
 }
