@@ -61,14 +61,14 @@ export default function PromocionesRouting (props) {
                                 component ={
                                     (props) => (
                                         <Formulario
-                                        editar={true}
-                                        nav={Navegacion.formulario(()=>false,match.match.params.id,'/promociones')}
-                                        formActions={FormActions()}
-                                        {...props} />
+                                            editar={true}
+                                            nav={Navegacion.formulario(()=>false,match.match.params.id,'/promociones')}
+                                            formActions={FormActions()}
+                                            {...props} />
                                     )
                                 }
                                 modal={modal}
-                                fetchHandler={editFormHandler('promociones/single/27/' + this.props.match.params.id)}/>
+                                fetchHandler={editFormHandler('promociones/single/27/' + match.match.params.id)}/>
                     } />
                 <Route
                     path={props.match.url + '/agregar'}

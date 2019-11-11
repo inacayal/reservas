@@ -47,9 +47,9 @@ export default function UbicacionesRouting (props) {
                     (match) =>
                         <RequestHandler
                             component={
-                                (match) =>
+                                (props) =>
                                     <Ubicaciones
-                                        nav={Navegacion.listado('/ubicaciones')} {...match}/>
+                                        nav={Navegacion.listado('/ubicaciones')} {...props}/>
                             }
                             modal={modal}
                             fetchHandler={listHandler('ubicaciones/list/27')}/>

@@ -21,6 +21,34 @@ import { GET } from '../../../utils/api';
 /**
  * navegacion
  */
+
+export const listHandler = (endpoint) => {
+    return function () {
+        this.setState({
+            data: null,
+            isLoading: true,
+            loadFinished: false
+        });
+
+        const request = GET({
+            endpoint: 'eventos/list/27',
+            download: this.downloadHandler
+        });
+
+        request
+            .then(
+                response => {
+                    this.setState({ data: response.data.eventos.data });
+                }
+            )
+            .catch(
+                error => {
+                    console.log(error.message)
+                }
+            );
+    }
+}
+
 export default class Eventos extends Component {
     constructor(props) {
         super(props);
@@ -45,28 +73,7 @@ export default class Eventos extends Component {
     }
 
     fetchData() {
-        this.setState({
-            data: null,
-            isLoading: true,
-            loadFinished: false
-        });
 
-        const request = GET({
-            endpoint: 'eventos/list/27',
-            download: this.downloadHandler
-        });
-
-        request
-            .then(
-                response => {
-                    this.setState({ data: response.data.eventos.data });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
     }
 
     componentDidMount() {

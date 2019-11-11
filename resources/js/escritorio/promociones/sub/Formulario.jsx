@@ -5,6 +5,7 @@ import Calendar from 'react-calendar';
  * elements
  */
 import  Titulo from '../../../componentes/basic/Titulo';
+import Actions from '../../../componentes/basic/Actions';
 /**
  * handlers and elements
  */
@@ -80,8 +81,8 @@ export class Formulario extends Component {
         super(props);
         if (this.props.editar)
             this.props.nav.buttons[0].click = this.toggleModal;
-        this.actions.cancelar.click = this.cancelarFormulario;
-        this.actions.guardar.click = this.enviarFormulario;
+        this.props.formActions.buttons.cancelar.click = this.cancelarFormulario;
+        this.props.formActions.buttons.guardar.click = this.enviarFormulario;
     }
 
     enviarFormulario(e){
@@ -96,20 +97,22 @@ export class Formulario extends Component {
 
     render() {
         return (
-            <form className="full-width box-padding">
+            <>
                 <Titulo
-                    title={this.props.editar
-                        ? this.props.data.selected.nombre
-                        : "Agregar Promoción"}
+                title={this.props.editar
+                    ? this.props.data.selected.nombre
+                    : "Agregar Promoción"}
                     links={this.props.nav.links}
                     buttons={this.props.nav.buttons}/>
-                <FormFields editar={this.props.editar} {...this.props.data} />
-                <div className="container">
-                    <div className="row justify-content-end v-padding">
-                        <Actions buttons={Object.values(this.actions)}/>
+                <form className="full-width box-padding">
+                    <FormFields editar={this.props.editar} {...this.props.data} />
+                    <div className="container">
+                        <div className="row justify-content-end v-padding">
+                            <Actions buttons={Object.values(this.props.formActions)}/>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </>
         );
     }
 }

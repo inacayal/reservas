@@ -20,6 +20,78 @@ import {ConfirmarModal} from '../../../componentes/modal/Modal';
 /**
  * navegacion
  */
+
+export const editFormHandler = (endpoint) => {
+    return function () {
+        this.setState({
+            data: null,
+            isLoading: true,
+            loadFinished: false
+        });
+        const request = GET({
+            endpoint: endpoint,
+            download: this.downloadHandler
+        });
+
+        request
+            .then(
+                response => {
+                    let data = {};
+                    this.props.nav.buttons[0].click = this.toggleModal;
+                    data = {
+                        selected: response.data.eventos[0],
+                        all: {
+                            feriados: response.data.feriados,
+                            horarios: response.data.horarios,
+                            promociones: response.data.promociones
+                        }
+                    };
+                    data.selected.horarios.list = assignHorarios(data.selected.horarios.list)[0];
+                    data.all.horarios.list = assignHorarios(data.all.horarios.list)[0];
+                    this.setState({
+                        data: {...data}
+                    });
+                }
+            )
+            .catch(
+                error => {
+                    console.log(error.message)
+                }
+            );
+    }
+}
+
+export const addFormHandler = (endpoint) => {
+    return function () {
+            this.setState({
+                data: null,
+                isLoading: true,
+                loadFinished: false
+            });
+            const request = GET({
+                endpoint: endpoint,
+                download: this.downloadHandler
+            });
+
+            request
+                .then(
+                    response => {
+                        let data = {};
+                        data = response.data;
+                        data.horarios.list = assignHorarios(data.horarios.list)[0];
+                        this.setState({
+                            data: {...data}
+                        });
+                    }
+                )
+                .catch(
+                    error => {
+                        console.log(error.message)
+                    }
+                );
+    }
+}
+
 class Formulario extends Component {
     constructor(props) {
         super(props);
@@ -59,54 +131,6 @@ class Formulario extends Component {
     }
 
     fetchData() {
-        this.setState({
-            data: null,
-            isLoading: true,
-            loadFinished: false
-        });
-        const conf = this.props.editar
-        ?
-            {
-                endpoint: 'eventos/single/27/' + this.props.match.params.id,
-                download: this.downloadHandler
-            }
-        :
-            {
-                endpoint: 'eventos/add/27',
-                download: this.downloadHandler
-            };
-        const request = GET(conf);
-
-        request
-            .then(
-                response => {
-                    let data = {};
-                    if (this.props.editar) {
-                        this.props.nav.buttons[0].click = this.toggleModal;
-                        data = {
-                            selected: response.data.eventos[0],
-                            all: {
-                                feriados: response.data.feriados,
-                                horarios: response.data.horarios,
-                                promociones: response.data.promociones
-                            }
-                        };
-                        data.selected.horarios.list = assignHorarios(data.selected.horarios.list)[0];
-                        data.all.horarios.list = assignHorarios(data.all.horarios.list)[0];
-                    } else {
-                        data = response.data;
-                        data.horarios.list = assignHorarios(data.horarios.list)[0];
-                    }
-                    this.setState({
-                        data: {...data}
-                    });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
     }
 
     componentDidMount() {
