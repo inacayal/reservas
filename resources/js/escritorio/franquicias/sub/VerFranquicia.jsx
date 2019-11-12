@@ -16,7 +16,7 @@ import LocalesTable from '../../../componentes/tables/LocalesTable';
 import {ExpandableComponent} from '../../../hocs/ExpandableComponent';
 
 export const singleHandler = (endpoint) => {
-    return function () {
+    return function (params) {
         this.setState({
             data: null,
             isLoading: true,

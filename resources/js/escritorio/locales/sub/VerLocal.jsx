@@ -17,7 +17,7 @@ import {ExpandableComponent} from '../../../hocs/ExpandableComponent';
 import Actions from '../../../componentes/basic/Actions';
 
 export const singleHandler = (endpoint) => {
-    return function () {
+    return function (params) {
         this.setState({
             data: null
         });

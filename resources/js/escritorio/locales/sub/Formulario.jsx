@@ -21,7 +21,7 @@ import Titulo from '../../../componentes/basic/Titulo';
 import { Navegacion } from '../../../acciones/ActionsByView';
 
 export const editFormHandler = (endpoint) => {
-    return function () {
+    return function (params) {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -42,7 +42,7 @@ export const editFormHandler = (endpoint) => {
 }
 
 export const addFormHandler = (endpoint) => {
-    return function () {
+    return function (params) {
         const request = GET({
             endpoint: endpoint,
             download: this.props.downloadHandler

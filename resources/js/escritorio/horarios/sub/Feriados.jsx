@@ -24,56 +24,28 @@ import LoadBar from '../../../componentes/control/LoadBar';
  */
 import { GET } from '../../../utils/api';
 
-export default class Feriados extends Component {
-    constructor(props){
-        super(props);
-        this.state= {
-            data: null,
-            show:"2",
-            date:new Date(),
-            controls : NO_DAY_CONTROL
-        };
-
-        this.verFeriado = this.verFeriado.bind(this);
-        this.toggleModal = this.toggleModal.bind(this);
-        this.fetchData = this.fetchData.bind(this);
-        this.downloadHandler = this.downloadHandler.bind(this);
-    }
-
-    toggleModal(e) {
-        e.preventDefault();
-        this.setState({
-            open: !this.state.open
-        });
-    }
-
-    downloadHandler(pEvent) {
-        let
-            loading = Math.round((pEvent.loaded * 100) / pEvent.total),
-            state = loading !== 100 ?
-                { loading, loadFinished: false }
-                : { loading, loadFinished: true };
-        this.setState(state);
-    }
-
-    fetchData(date) {
+export const listHandler = (endpoint) => {
+    return function (params){
         this.setState({
             data: null,
             isLoading: true,
             loadFinished: false
         });
-        const request = GET({
-            endpoint: '/feriados/list/27/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
-            download: this.downloadHandler
-        });
-
+        const date = params.date||new Date(),
+            request = GET({
+                endpoint: endpoint + (date.getMonth() + 1) + '/' + date.getFullYear(),
+                download: this.downloadHandler
+            });
         request
             .then(
                 response => {
                     this.setState({
-                        date:date,
-                        data: response.data.feriados.data||{},
-                        intervalo:response.data.intervalo
+                        data:{
+                            date:date,
+                            data: response.data.feriados.data||{},
+                            intervalo: response.data.intervalo,
+                            show: params.show||"2"
+                        }
                     });
                 }
             )
@@ -83,9 +55,18 @@ export default class Feriados extends Component {
                 }
             );
     }
+}
+
+export class Feriados extends Component {
+    constructor(props){
+        super(props);
+        this.state= {
+            show:"2",
+            controls : NO_DAY_CONTROL
+        };
+    }
 
     componentDidMount() {
-        this.fetchData(this.state.date);
     }
 
     verFeriado(e) {
@@ -99,33 +80,23 @@ export default class Feriados extends Component {
     }
 
     render(){
-        if (this.state.data && this.state.loadFinished){
-            return (
-                <>
-                    <Titulo
-                        title="Feriados"
-                        links={this.props.nav.links} />
-                    <ConfirmarModal
-                        open={this.state.open}
-                        closeModal={this.toggleModal}
-                        title="Eliminar Feriado"
-                        content="¿estás seguro de eliminar este feriado?" />
-                    <div className="container">
-                        <Agenda
-                            show={this.state.show}
-                            date={this.state.date}
-                            type="feriados"
-                            actions={{eliminar:this.toggleModal}}
-                            controls={this.state.controls}
-                            fetchNewMonth={this.fetchData}
-                            data={this.state.data}/>
-                    </div>
-                </>
-            );
-        }
+        const data = this.props.data;
         return (
-            <LoadBar
-                loaded={this.state.loading} />
+            <>
+                <Titulo
+                    title="Feriados"
+                    links={this.props.nav.links} />
+                <div className="container">
+                    <Agenda
+                        show={data.show}
+                        date={data.date}
+                        type="feriados"
+                        actions={{eliminar:this.toggleModal}}
+                        controls={this.state.controls}
+                        fetchNewMonth={this.props.fetch}
+                        data={data.data}/>
+                </div>
+            </>
         );
     }
 }

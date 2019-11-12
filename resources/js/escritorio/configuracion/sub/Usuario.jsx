@@ -16,7 +16,7 @@ import { FormularioUsuario } from '../FormularioUsuario';
 import Actions from '../../../componentes/basic/Actions';
 
 export const usuarioHandler = (endpoint) => {
-    return function (){
+    return function (params){
         this.setState({
             data: null,
             isLoading: true,

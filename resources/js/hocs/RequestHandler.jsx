@@ -38,7 +38,7 @@ export default class RequestHandler extends Component {
     }
 
     componentDidMount() {
-        this.fetchHandler();
+        this.fetchHandler({});
     }
 
     render(){
@@ -50,7 +50,7 @@ export default class RequestHandler extends Component {
                         closeModal={this.toggleModal}/>
                     <div className="v-padding">
                         <this.props.component
-                            fetch={this.props.fetchHandler}
+                            fetch={this.fetchHandler}
                             data={this.state.data}
                             toggleModal={this.toggleModal}/>
                     </div>

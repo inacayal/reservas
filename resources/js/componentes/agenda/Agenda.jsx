@@ -12,7 +12,8 @@ import ButtonList from '../basic/ButtonList';
  * constantes
  */
 import {DAYS,MONTHS,monthRows,monthIndex} from '../../constantes/DaysMonths';
-import { evaluateDateChange, getMonthLength} from '../../utils/Helper';
+import { getMonthLength} from '../../utils/Helper';
+import {evaluateDateChange} from '../../utils/Helper';
 
 export default class Agenda extends Component {
     constructor(props){
@@ -26,7 +27,6 @@ export default class Agenda extends Component {
         this.changeMonthCalendar = this.changeMonthCalendar.bind(this);
         this.changeView = this.changeView.bind(this);
         this.changeYearCalendar = this.changeYearCalendar.bind(this);
-        this.handleMonthClick = this.handleMonthClick.bind(this);
         this.verDia = this.verDia.bind(this);
     }
 
@@ -38,6 +38,7 @@ export default class Agenda extends Component {
         this.setState({ show: "3", date: new Date(date)});
     }
 
+
     changeView(e){
         let show = e.currentTarget.getAttribute('data'),
             controls = this.state.controls;
@@ -47,19 +48,45 @@ export default class Agenda extends Component {
 
     changeWeekCalendar (e) {
         e.preventDefault();
-        let offset = parseInt(e.currentTarget.getAttribute('data'));
-        let date = new Date(this.state.date);
-        evaluateDateChange(date,offset,this.props.fetchNewMonth,null);
-        this.setState({ date: date });
+        const offset = parseInt(e.currentTarget.getAttribute('data')),
+            date = new Date(this.state.date),
+            change = offset < 0
+            ?
+                {
+                    o: new Date(this.state.date),
+                    n: new Date(date.setDate(date.getDate() + offset + (6 - date.getDay()))),
+                    m: getMonthLength(date.getMonth() + 1, date.getFullYear())
+                }
+            :
+                {
+                    o: new Date(this.state.date),
+                    n: new Date(date.setDate(date.getDate() + offset - date.getDay())),
+                    m: 1
+                };
+
+        evaluateDateChange(
+            change,
+            this.props.fetchNewMonth,
+            this.setState.bind(this),
+            "2"
+        );
     }
 
     changeMonthCalendar (e) {
         e.preventDefault();
-        let offset = parseInt(e.currentTarget.getAttribute('data'));
-        let date = new Date(this.state.date);
-        date.setMonth(date.getMonth() + offset);
-        evaluateDateChange(date, offset, this.props.fetchNewMonth,null);
-        this.setState({date:date});
+        const offset = parseInt(e.currentTarget.getAttribute('data')),
+            date = new Date(this.state.date),
+            change = {
+                o: new Date(date),
+                n: new Date(date.setMonth(date.getMonth() + offset)),
+                m: 1
+            };
+        evaluateDateChange(
+            change,
+            this.props.fetchNewMonth,
+            this.setState.bind(this),
+            "1"
+        );
     }
 
     changeYearCalendar (e) {
@@ -68,15 +95,6 @@ export default class Agenda extends Component {
         let date = new Date(this.state.date);
         date.setFullYear(parseInt(date.getFullYear())+offset);
         this.setState({date:date});
-    }
-
-    handleMonthClick (e) {
-        e.preventDefault();
-        let newMonth = e.currentTarget.getAttribute('data'),
-            date = new Date(this.state.date);
-        date.setMonth(newMonth-1);
-        evaluateDateChange(date, 0, this.props.fetchNewMonth,null);
-        this.setState({show:"2",date:date});
     }
 
     componentDidUpdate(prevProps){

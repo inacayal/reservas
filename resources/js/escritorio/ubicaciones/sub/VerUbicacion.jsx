@@ -15,7 +15,7 @@ import Titulo from '../../../componentes/basic/Titulo';
 import {ConfirmarModal} from '../../../componentes/modal/Modal';
 
 export const singleHandler  = (endpoint) => {
-    return function () {
+    return function (params) {
         this.setState({
             data: null,
             isLoading: true,

@@ -33,36 +33,38 @@ function Lateral(props) {
                                     key={i}
                                     onMouseOver ={()=>hoverToggle(i)}
                                     onMouseLeave ={()=>hoverToggle()}>
-                                    <Link to={e.route}>
-                                        <button
-                                            title={e.title}
-                                            data={i}
-                                            className={
-                                                props.current == i
-                                                ?
-                                                    "selected bold full-width text-left bold no-border no-padding"
-                                                :
-                                                    "box-transparent full-width text-left box-padding highlight-hover bold-hover"
-                                            }>
-                                            <div className={props.current == i ? "fat-border box-padding" : ""}>
-                                                <span className="half inline-block">
-                                                    {e.title}
-                                                </span>
-                                                <span className="inline-block text-right half">
-                                                    <i className={
-                                                        props.current == i||hover === i
-                                                        ?
 
-                                                            "line-v-middle middle-font highlight fas fa-angle-right"
-                                                        :
-                                                            e.sub.length>0
+                                    <button
+                                        title={e.title}
+                                        data={i}
+                                        className={
+                                            props.current == i
+                                            ?
+                                                "selected bold full-width text-left bold no-border no-padding"
+                                            :
+                                                "box-transparent full-width text-left box-padding highlight-hover bold-hover"
+                                        }>
+                                            <Link to={e.route}>
+                                                <div className={props.current == i ? "fat-border box-padding" : ""}>
+                                                    <span className="half inline-block">
+                                                        {e.title}
+                                                    </span>
+                                                    <span className="inline-block text-right half">
+                                                        <i className={
+                                                            props.current == i||hover === i
                                                             ?
-                                                                "line-v-middle middle-font border-font fas fa-angle-right"
+
+                                                                "line-v-middle middle-font highlight fas fa-angle-right"
                                                             :
-                                                                "hidden"
-                                                        }/>
-                                                </span>
-                                            </div>
+                                                                e.sub.length>0
+                                                                ?
+                                                                    "line-v-middle middle-font border-font fas fa-angle-right"
+                                                                :
+                                                                    "hidden"
+                                                            }/>
+                                                    </span>
+                                                </div>
+                                            </Link>
                                             {
                                                 (e.sub.length>0)
                                                 ?
@@ -75,8 +77,7 @@ function Lateral(props) {
                                                 :
                                                     <div></div>
                                             }
-                                        </button>
-                                    </Link>
+                                    </button>
                                 </li>
                             )
                         }

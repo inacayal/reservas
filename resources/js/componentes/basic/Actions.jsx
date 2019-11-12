@@ -44,8 +44,7 @@ export default function Actions(props) {
         <div
             onMouseOver={format.overHandler}
             onMouseLeave={format.leaveHandler}
-            className={format.container}
-            >
+            className={format.container}>
             <ul className={format.list}>
             {
                 props.links
@@ -55,8 +54,7 @@ export default function Actions(props) {
                                 <li
                                     key={ind}
                                     className= {format.element.link}>
-                                    <Link
-                                        to={e.to}>
+                                    <Link to={e.to}>
                                         {e.title}
                                     </Link>
                                 </li>

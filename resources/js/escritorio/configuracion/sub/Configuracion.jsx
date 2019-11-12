@@ -19,7 +19,7 @@ import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
 
 export const configuracionHandler = (endpoint) => {
-    return function () {
+    return function (params) {
         this.setState({
             data: null,
             isLoading: true,

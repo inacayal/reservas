@@ -26,7 +26,7 @@ export const HorarioWeekByState = {
     ) =>{
         const eventos = sectionData.eventos.list,
             eventoLength = Object.keys(eventos).length;
-        
+
         return {
             content: () =>
                 <>
@@ -67,7 +67,7 @@ export const HorarioWeekByState = {
                                     {
                                         eventoLength > 0
                                         ?
-                                            <CommaList list={eventos} endpoint='/eventos' />
+                                            <ul className="no-padding nav-list"><CommaList list={eventos} endpoint='/eventos' /></ul>
                                         :
                                             "No hay eventos que mostrar."
                                     }

@@ -20,18 +20,18 @@ function CalendarioMemo(props) {
             let disableByDate = false;
             if (props.editar)
                 disableByDate = today.getDate() < date.getDate() || today.getDate() > date.getDate();
-            else 
+            else
                 disableByDate = view === 'month'
                     ? props.data.feriados[date.getDate()]
                     : date.getMonth() < activeStartDate.getMonth() || date.getFullYear() < activeStartDate.getFullYear();
-            
+
             return disableByDate;
         },
         monthChange = (date) => {
-            props.fetch(date);
+            props.fetch({date:date});
         },
         navChange = ({ activeStartDate, view }) => {
-            props.fetch(activeStartDate);
+            props.fetch({date:activeStartDate});
         },
         noOp = () => false;
 

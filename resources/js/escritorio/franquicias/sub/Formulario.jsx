@@ -19,7 +19,7 @@ import { FormularioEstablecimiento } from '../../configuracion/FormularioEstable
 import { FormularioUsuario } from '../../configuracion/FormularioUsuario';
 
 export const editFormHandler = (endpoint) => {
-    return function () {
+    return function (params) {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -39,7 +39,7 @@ export const editFormHandler = (endpoint) => {
 }
 
 export const addFormHandler = () => {
-    return function () {
+    return function (params) {
         this.setState({data:{},loadFinished:true})
     }
 }

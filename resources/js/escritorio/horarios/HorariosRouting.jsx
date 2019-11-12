@@ -7,61 +7,114 @@ import ReactDOM from 'react-dom';
  * sub elements
  */
 import FeriadosRouting from './FeriadosRouting';
-import HorarioFormulario from './formularios/HorarioFormulario';
-import Horarios from './sub/Horarios';
-import VerHorario from './sub/VerHorario';
+
+import {
+    editFormHandler,
+    addFormHandler,
+    HorarioFormulario
+} from './formularios/HorarioFormulario';
+
+import {
+    listHandler,
+    Horarios
+} from './sub/Horarios';
+
+import {
+    singleHandler,
+    VerHorario
+} from './sub/VerHorario';
 /**
  * react router
  */
 import { Route, Switch } from 'react-router-dom';
 import {Navegacion,FormActions} from '../../acciones/ActionsByView';
+import RequestHandler from '../../hocs/RequestHandler';
+import {ConfirmarModal} from '../../componentes/modal/Modal';
 
 export default function HorariosRouting (props) {
+    const modal = (props) => (
+        <ConfirmarModal
+            {...props}
+            title={"Eliminar Horario"}
+            content={"¿estás seguro de eliminar este horario?"} />
+    );
     return (
         <>
             <Route
                 path={props.match.url}
                 exact
-                component = {
+                component={
                     (match) =>
-                        <Horarios
-                            {...match}/>
+                        <RequestHandler
+                            component={
+                                (props) =>
+                                    <Horarios
+                                        {...props}/>
+                            }
+                            modal={modal}
+                            fetchHandler={listHandler('/horarios/list/27')}/>
+                } />
+            <Route
+                path={props.match.url + '/feriados'}
+                component={
+                    (match) => <FeriadosRouting {...match} />
                 } />
             <Switch>
                 <Route
-                    path={props.match.url + '/feriados'}
-                    component={
-                        (match) => <FeriadosRouting {...match} />
-                    } />
-                <Route
                     path={props.match.url + '/agregar/:day'}
                     component={
-                        (match) =>
-                            <HorarioFormulario
-                                nav={Navegacion.agregar('/horarios')}
-                                editar={false}
-                                {...match} />
-                    } />
+                        (match) => (
+                            <RequestHandler
+                                component ={
+                                    (props) =>(
+                                        <HorarioFormulario
+                                            nav={Navegacion.agregar('/horarios')}
+                                            editar={false}
+                                            formActions={FormActions()}
+                                            {...props} />
+                                    )
+                                }
+                                modal={modal}
+                                fetchHandler={addFormHandler('/horarios/add/27')}/>
+                        )
+                    }/>
                 <Route
                     path={props.match.url + '/editar/:id'}
                     component={
-                        (match) =>
-                            <HorarioFormulario
-                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/horarios')}
-                                formActions={FormActions()}
-                                editar={true}
-                                {...match} />
-                    } />
+                        (match) => (
+                            <RequestHandler
+                                component ={
+                                    (props) =>{
+                                        return (
+                                            <HorarioFormulario
+                                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/horarios')}
+                                                formActions={FormActions()}
+                                                editar={true}
+                                                {...props} />
+                                        )
+                                    }
+                                }
+                                modal={modal}
+                                fetchHandler={editFormHandler('/horarios/single/27/' + match.match.params.id)}/>
+                        )
+                    }/>
                 <Route
                     path={props.match.url + '/:id'}
                     component={
                         (match) =>
-                            <VerHorario
-                                nav={Navegacion.singular(()=>false,match.match.params.id,'/horarios')}
-                                formActions={FormActions()}
-                                {...match} />
+                            <RequestHandler
+                                component ={
+                                    (props) => (
+                                        <VerHorario
+                                            nav={Navegacion.singular(()=>false,match.match.params.id,'/horarios')}
+                                            formActions={FormActions()}
+                                            {...props} />
+                                    )
+                                }
+                                modal={modal}
+                                fetchHandler={singleHandler('/horarios/single/27/' + match.match.params.id)}/>
                     } />
             </Switch>
         </>
-    );
+    )
 }

@@ -1,27 +1,21 @@
 import { DAYS, MONTHS, monthRows, monthIndex } from '../constantes/DaysMonths';
 
-export const evaluateDateChange = (date, offset, fetch, changeCallback) => {
-    let index = monthIndex[date.getMonth()],
-        isPrev = offset < 0,
-        nwDate = new Date(date),
-        change = isPrev
-            ? {
-                date: date.getDate() + offset + (6 - date.getDay()),
-                monthLength: getMonthLength(date.getMonth() + 1, date.getFullYear())
-            }
-            : {
-                date: date.getDate() + offset - date.getDay(),
-                monthLength: 1
-            };
-    date.setDate(change.date);
-    if (date.getMonth() !== nwDate.getMonth()) {
-        date.setDate(change.monthLength);
+export const evaluateDateChange = (
+    changeObject,
+    fetchCallback,
+    changeDate,
+    view
+) => {
+    const oDate = changeObject.o,
+        nDate = changeObject.n,
+        index = monthIndex[oDate.getMonth()];
+    if (oDate.getMonth() !== nDate.getMonth()) {
+        nDate.setDate(changeObject.m);
         monthRows[index[0]][index[1]].class = "";
-        return fetch(date);
-    } else if (changeCallback)
-        return changeCallback(new Date(date));
+        return fetchCallback({date:new Date(nDate),show:view});
+    } else
+        return changeDate({date:new Date(nDate),show:view});
 };
-
 export const generateHoursFromInterval = (interval) => {
     let res = {};
     res["00"] = "00";

@@ -80,16 +80,16 @@ export const FeriadoWeekByState = {
                 eventosLength = Object.values(sectionData.eventos.list).length;
             return {
                 content:() =>
-                    <div className="container no-padding">
+                    <div className="container">
                         <div className="row">
-                            <div className="col-md-9">
+                            <div className="col-md-9 no-padding">
                                 <Link to={'/horarios/feriados/' + sectionData.id}>
                                     <span className="subrayado margin-box inline-block v-align-center light-danger c-title">{date.getDate() + " "}</span>
                                     <span className="text subrayado bold line-v-middle inline-block v-align-center">{DAYS[date.getDay()] + " "}</span>
                                 </Link>
                                 {renderActions}
                             </div>
-                            <div className="col-md-3 border-bottom no-padding">
+                            <div className="col-md-3 border-bottom ">
                                 <p className="smaller-text no-margin text-right">{sectionData.nombre}</p>
                             </div>
                         </div>
@@ -141,9 +141,9 @@ export const FeriadoWeekByState = {
             const date = new Date(sectionData.fecha);
             return {
                 content: () =>
-                    <div className="container no-padding">
+                    <div className="container">
                         <div className="row">
-                            <div className="col-md-9">
+                            <div className="col-md-9 no-padding">
                                 <Link to={'/horarios/feriados/'+sectionData.id} >
                                     <span className="subrayado margin-box inline-block v-align-center light-danger c-title">{date.getDate() + " "}</span>
                                     <span className="text subrayado bold line-v-middle inline-block v-align-center">{DAYS[date.getDay()] + " "}</span>
@@ -178,13 +178,13 @@ export const FeriadoWeekByState = {
     ) =>
         ({
             content: () =>
-                <div className="container no-padding">
+                <div className="container">
                     <div className="row">
-                        <div className="col-md-8 bold">
+                        <div className="col-md-8 no-padding bold">
                             <span className=" margin-box inline-block v-align-center light-danger c-title">{dataIndex.getDate() + " "}</span>
                             <span className="line-v-middle inline-block v-align-center bold">{DAYS[dataIndex.getDay()] + " "}</span>
                         </div>
-                        <div className="col-md-4 border-bottom text-right no-padding">
+                        <div className="col-md-4 border-bottom text-right">
                             <p className="smaller-text no-margin">No has designado este día como feriado</p>
                         </div>
                     </div>

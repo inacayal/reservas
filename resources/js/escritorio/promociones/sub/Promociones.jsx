@@ -17,7 +17,7 @@ import generatePromocionesCard from './generatePromocionesCard';
 import { GET } from '../../../utils/api';
 
 export const listHandler = (endpoint) => {
-    return function () {
+    return function (params) {
         this.setState({
             data: null,
             isLoading: true,

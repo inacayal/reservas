@@ -28,7 +28,7 @@ class FeriadoController extends Controller
             'feriados'           => false,
             'feriados.eventos'   => false,
             'intervalo'          => false,
-            'eventos'            => 'list'
+            'eventos'            => 'all'
         ]
     ];
 
@@ -37,7 +37,7 @@ class FeriadoController extends Controller
     }
     /**
      * get all eventos by user
-     * 
+     *
      * @param $id must be an integer in db
      */
     public function list (
@@ -62,7 +62,7 @@ class FeriadoController extends Controller
         $user = User::with(
             $relations
         )->find($id);
-        
+
         $data = self::formatResults(
             $user,
             $dependencies
@@ -100,7 +100,7 @@ class FeriadoController extends Controller
         $user = User::with(
             $relations
         )->find($id);
-        
+
         $data = self::formatResults(
             $user,
             $dependencies
@@ -110,14 +110,14 @@ class FeriadoController extends Controller
             'intervalo' => $user->intervalo->id
         ];
 
-        return response(array_merge($data,$extra),200)->header('Content-Type','application/json'); 
+        return response(array_merge($data,$extra),200)->header('Content-Type','application/json');
     }
 
     public function single(
-        $route, 
+        $route,
         $userId,
         $id
-    ){ 
+    ){
         $dependencies = self::getDependencies($route);
         $relations = $this->getDependencyScopes(
             array_keys($dependencies),
@@ -127,7 +127,7 @@ class FeriadoController extends Controller
         $user = User::with(
             $relations
         )->find($userId);
-        
+
         $data = self::formatResults(
             $user,
             $dependencies
@@ -137,7 +137,7 @@ class FeriadoController extends Controller
             'intervalo' => $user->intervalo->id
         ];
 
-        return response(array_merge($data,$extra),200)->header('Content-Type','application/json'); 
+        return response(array_merge($data,$extra),200)->header('Content-Type','application/json');
     }
 
     public function formatDependencyData(
@@ -153,7 +153,7 @@ class FeriadoController extends Controller
         }
         return collect($res);
     }
-    
+
     public function create (){
         return response(['respuesta'=>'create'],200)
             ->header('Content-Type','application/json');

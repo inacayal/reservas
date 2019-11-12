@@ -19,8 +19,8 @@ import Titulo from '../../../componentes/basic/Titulo';
 import { NO_WEEK_CONTROLS } from '../../../constantes/CalendarControls';
 
 export const listHandler = (endpoint) => {
-    return function () {
-        const date = this.state.date ? this.state.date : new Date(),
+    return function (params) {
+        const date = params.date||new Date(),
             request = GET({
                 endpoint: endpoint + parseInt(date.getMonth()+1) + '/' + date.getFullYear(),
                 download: this.downloadHandler
@@ -37,7 +37,8 @@ export const listHandler = (endpoint) => {
                                 intervalo:response.data.intervalo.id,
                                 antelacion: response.data.antelacion
                             },
-                            date:date
+                            date:date,
+                            show:params.show||"1"
                         }
                     });
                 }
@@ -55,11 +56,14 @@ export class Calendario extends Component {
         super(props);
         this.state = {
             date: new Date(),
-            weekRender: true,
-            dayRender: true,
-            show: "1",
             controls: NO_WEEK_CONTROLS
         };
+
+        this.verReserva = this.verReserva.bind(this);
+        this.aceptarReserva = this.aceptarReserva.bind(this);
+        this.rechazarReserva = this.rechazarReserva.bind(this);
+        this.revertirReserva = this.revertirReserva.bind(this);
+
         this.actions = {
             outer: null,
             inner: {
@@ -69,11 +73,6 @@ export class Calendario extends Component {
                 revertir: this.revertirReserva
             }
         };
-
-        this.verReserva = this.verReserva.bind(this);
-        this.aceptarReserva = this.aceptarReserva.bind(this);
-        this.rechazarReserva = this.rechazarReserva.bind(this);
-        this.revertirReserva = this.revertirReserva.bind(this);
     }
 
     revertirReserva() {
@@ -105,11 +104,11 @@ export class Calendario extends Component {
                     links={this.props.nav.links} />
                 <div className="container">
                     <Calendar
-                        show={this.state.show}
+                        show={data.show}
                         horariosReserva={data.horarios}
                         date={data.date}
-                        weekRender={this.state.weekRender}
-                        dayRender={this.state.dayRender}
+                        weekRender={true}
+                        dayRender={true}
                         actions={this.actions}
                         controls={this.state.controls}
                         data={data.data}

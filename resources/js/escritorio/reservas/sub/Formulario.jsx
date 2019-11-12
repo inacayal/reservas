@@ -13,7 +13,7 @@ import LoadBar from '../../../componentes/control/LoadBar';
 import Actions from '../../../componentes/basic/Actions';
 
 export const formHandler = (endpoint) => {
-    return function () {
+    return function (params) {
         const date = this.state.date ? this.state.date : new Date(),
             request = GET({
                 endpoint: endpoint + parseInt(date.getMonth() + 1) + '/' + date.getFullYear(),

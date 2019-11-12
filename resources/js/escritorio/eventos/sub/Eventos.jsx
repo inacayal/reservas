@@ -14,7 +14,7 @@ import generateEventosCard from './generateEventosCard';
 import {GET} from '../../../utils/api';
 
 export const listHandler = (endpoint) => {
-    return function () {
+    return function (params) {
         this.setState({
             data: null,
             isLoading: true,
@@ -55,11 +55,11 @@ export class Eventos extends Component {
 
     render() {
         const eventos = generateEventosCard(
-                this.props.data,
-                {
-                    eliminar: this.props.toggleModal
-                }
-            );
+            this.props.data,
+            {
+                eliminar: this.props.toggleModal
+            }
+        );
         return (
             <>
                 <Titulo

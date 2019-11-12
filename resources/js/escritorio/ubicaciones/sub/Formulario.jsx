@@ -25,7 +25,7 @@ import { GET } from '../../../utils/api';
 import {ConfirmarModal} from '../../../componentes/modal/Modal';
 
 export const editFormHandler = (endpoint) => {
-    return function () {
+    return function (params) {
         this.setState({
             data: null,
             isLoading: true,
@@ -50,7 +50,7 @@ export const editFormHandler = (endpoint) => {
 }
 
 export const addFormHandler = (endpoint) => {
-    return function () {
+    return function (params) {
         this.setState({
             data: true,
             isLoading: false,

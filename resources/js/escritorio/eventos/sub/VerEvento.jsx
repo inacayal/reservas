@@ -17,7 +17,7 @@ import {CommaList} from '../../../componentes/basic/CommaList';
 import PromocionesTable from '../../../componentes/tables/PromocionesTable';
 
 export const singleHandler = (endpoint) => {
-    return function () {
+    return function (params) {
         this.setState({
             data: null,
             isLoading: true,

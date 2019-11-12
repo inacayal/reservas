@@ -20,7 +20,7 @@ import { Navegacion } from '../../../acciones/ActionsByView';
 import LocalesTable from '../../../componentes/tables/LocalesTable';
 
 export const listHandler = (endpoint) => {
-    return function () {
+    return function (params) {
         this.setState({
             data: null,
             isLoading: true,
