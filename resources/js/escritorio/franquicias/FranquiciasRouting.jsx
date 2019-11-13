@@ -52,11 +52,11 @@ export default function FranquiciasRouting (props) {
                                         nav={Navegacion.listado('/franquicias')} {...props}/>
                             }
                             modal={modal}
-                            fetchHandler={listHandler('/usuario/franquicias/4')}/>
+                            fetchHandler={listHandler(`/usuario/franquicias/${user.id}`)}/>
                 } />
             <Switch>
                 <Route
-                    path={props.match.url + '/editar/:id'}
+                    path={`${props.match.url}/editar/:id`}
                     exact
                     component={
                         (match) =>
@@ -73,10 +73,10 @@ export default function FranquiciasRouting (props) {
                                     }
                                 }
                                 modal={modal}
-                                fetchHandler={editFormHandler('/usuario/franquicia/' + match.match.params.id)}/>
+                                fetchHandler={editFormHandler(`/usuario/franquicia/${match.match.params.id}`)}/>
                     } />
                 <Route
-                    path={props.match.url + '/agregar'}
+                    path={`${props.match.url}/agregar`}
                     component={
                         (match) =>
                             <RequestHandler
@@ -96,7 +96,7 @@ export default function FranquiciasRouting (props) {
 
                     } />
                 <Route
-                    path={props.match.url + '/:id'}
+                    path={`${props.match.url}/:id`}
                     component={
                         (match) =>
                         <RequestHandler
@@ -108,7 +108,7 @@ export default function FranquiciasRouting (props) {
                                 )
                             }
                             modal={modal}
-                            fetchHandler={singleHandler('/usuario/franquicia/' + match.match.params.id)}/>
+                            fetchHandler={singleHandler(`/usuario/franquicia/${match.match.params.id}`)}/>
                     } />
             </Switch>
         </>

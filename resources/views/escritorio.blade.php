@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <script type = "text/javascript">
-    const sessionParameters = {!!$param!!};
+    const user = {!!$user!!}.data;
     const sidebar = {!!
         json_encode (
             [//get on user login, assign according to permissions

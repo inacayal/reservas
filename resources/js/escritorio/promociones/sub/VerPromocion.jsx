@@ -34,27 +34,24 @@ const generateList = (list,endpoint) => {
 
 export const singleHandler = (endpoint) => {
     return function (params) {
-        this.setState({
-            data: null,
-            isLoading: true,
-            loadFinished: false
-        });
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
         });
-
         request
-        .then(
-            response => {
-                this.setState({ data: response.data.promociones[0] });
-            }
-        )
-        .catch(
-            error => {
-                console.log(error.message)
-            }
-        );
+            .then(
+                response => {
+                    this.setState({
+                        data: response.data.promociones[0],
+                        loadFinished: true
+                    });
+                }
+            )
+            .catch(
+                error => {
+                    console.log(error.message)
+                }
+            );
     }
 }
 
@@ -65,7 +62,6 @@ export class VerPromocion extends Component {
     }
 
     componentDidMount() {
-        this.fetchData();
     }
 
     componentWillUnmount() {
@@ -76,12 +72,12 @@ export class VerPromocion extends Component {
         const eventos = generateList(this.props.data.eventos.data,'/eventos'),
             data = {...this.props.data,eventos};
         return (
-            <div className="container">
+            <>
                 < Titulo
                     title={data.nombre}
                     links={this.props.nav.links}
                     buttons ={this.props.nav.buttons}/>
-                <div className="container full-width no-padding">
+                <div className="container full-width ">
                     <div className="row">
                         <div className="col-md-6">
                             <div className="light-danger bold">Descripción: </div>
@@ -99,7 +95,7 @@ export class VerPromocion extends Component {
                         <EventosTable data={data.eventos}/>
                     </div>
                 </div>
-            </div>
+            </>
         )
     }
 }

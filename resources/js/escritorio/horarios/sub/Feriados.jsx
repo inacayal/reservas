@@ -26,11 +26,6 @@ import { GET } from '../../../utils/api';
 
 export const listHandler = (endpoint) => {
     return function (params){
-        this.setState({
-            data: null,
-            isLoading: true,
-            loadFinished: false
-        });
         const date = params.date||new Date(),
             request = GET({
                 endpoint: endpoint + (date.getMonth() + 1) + '/' + date.getFullYear(),
@@ -45,7 +40,8 @@ export const listHandler = (endpoint) => {
                             data: response.data.feriados.data||{},
                             intervalo: response.data.intervalo,
                             show: params.show||"2"
-                        }
+                        },
+                        loadFinished:true
                     });
                 }
             )

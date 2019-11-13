@@ -12,7 +12,7 @@ import {ExpandableComponent} from '../../../hocs/ExpandableComponent';
 const configurationCards = [
     {
         element: (data) => (
-            <div className="container full-width ">
+            <div className="container-fluid">
                 <div className="row v-padding">
                     <div className="col-md-4">
                         <h6 className="full-width light-danger bold">
@@ -217,7 +217,7 @@ export default function generateConfigurationCards (
                         </>
                     );
                 },
-                class: 'v-padding margin-box'
+                class: 'h-padding'
             }
         }
     );

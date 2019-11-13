@@ -52,16 +52,16 @@ export default function HorariosRouting (props) {
                                         {...props}/>
                             }
                             modal={modal}
-                            fetchHandler={listHandler('/horarios/list/27')}/>
+                            fetchHandler={listHandler(`/horarios/list/${user.id}`)}/>
                 } />
             <Route
-                path={props.match.url + '/feriados'}
+                path={`${props.match.url}/feriados`}
                 component={
                     (match) => <FeriadosRouting {...match} />
                 } />
             <Switch>
                 <Route
-                    path={props.match.url + '/agregar/:day'}
+                    path={`${props.match.url}/agregar/:day`}
                     component={
                         (match) => (
                             <RequestHandler
@@ -75,11 +75,11 @@ export default function HorariosRouting (props) {
                                     )
                                 }
                                 modal={modal}
-                                fetchHandler={addFormHandler('/horarios/add/27')}/>
+                                fetchHandler={addFormHandler(`/horarios/add/${user.id}`)}/>
                         )
                     }/>
                 <Route
-                    path={props.match.url + '/editar/:id'}
+                    path={`${props.match.url}/editar/:id`}
                     component={
                         (match) => (
                             <RequestHandler
@@ -95,11 +95,11 @@ export default function HorariosRouting (props) {
                                     }
                                 }
                                 modal={modal}
-                                fetchHandler={editFormHandler('/horarios/single/27/' + match.match.params.id)}/>
+                                fetchHandler={editFormHandler(`/horarios/single/${user.id}/${match.match.params.id}`)}/>
                         )
                     }/>
                 <Route
-                    path={props.match.url + '/:id'}
+                    path={`${props.match.url}/:id`}
                     component={
                         (match) =>
                             <RequestHandler
@@ -112,7 +112,7 @@ export default function HorariosRouting (props) {
                                     )
                                 }
                                 modal={modal}
-                                fetchHandler={singleHandler('/horarios/single/27/' + match.match.params.id)}/>
+                                fetchHandler={singleHandler(`/horarios/single/${user.id}/${match.match.params.id}`)}/>
                     } />
             </Switch>
         </>

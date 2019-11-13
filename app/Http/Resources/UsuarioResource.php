@@ -23,7 +23,10 @@ class UsuarioResource extends JsonResource
         'usuario.franquicia'=>[
             'locales' => 'key'
         ],
-        'usuario.franquicias'=>[]
+        'usuario.franquicias'=>[],
+        'escritorio' => [
+            'franquicia'=>false
+        ]
     ];
 
     public $preserveKeys = true;

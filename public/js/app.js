@@ -86405,7 +86405,7 @@ var HorarioWeekByState = {
     return {
       content: function content() {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "full-width box-padding"
+          className: "full-width"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "seventy inline-block sub-title"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -86420,21 +86420,23 @@ var HorarioWeekByState = {
         }, "D\xEDa laboral")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "container"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row box-padding"
+          className: "row h-padding"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-5"
+          className: "col-md-6 container"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "light-danger bold"
+          className: "row bold light-danger"
         }, "Horarios:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          style: {
-            padding: "0px 0px 0px 10px"
-          }
+          className: "row"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-6"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "bold"
-        }, "Reservas:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, sectionData.apertura.reserva.hora + ":" + sectionData.apertura.reserva.minuto + "hs. - " + sectionData.cierre.reserva.hora + ":" + sectionData.cierre.reserva.minuto + "hs."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, "Reservas:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, sectionData.apertura.reserva.hora + ":" + sectionData.apertura.reserva.minuto + "hs. - " + sectionData.cierre.reserva.hora + ":" + sectionData.cierre.reserva.minuto + "hs.")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-6"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "bold"
-        }, "Atenci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, sectionData.apertura.atencion.hora + ":" + sectionData.apertura.atencion.minuto + "hs. - " + sectionData.cierre.atencion.hora + ":" + sectionData.cierre.atencion.minuto + "hs."))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-7"
+        }, "Atenci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, sectionData.apertura.atencion.hora + ":" + sectionData.apertura.atencion.minuto + "hs. - " + sectionData.cierre.atencion.hora + ":" + sectionData.cierre.atencion.minuto + "hs.")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-6"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "full-width"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -87812,15 +87814,15 @@ function BarraNavegacion(props) {
     "class": "btn c-title light-danger margin-box reduce-padding"
   }];
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-sm-8"
+    className: "col-sm-8 relative"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", {
-    className: "bold"
-  }, "Nombre de usuario")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-sm-4 no-padding"
+    className: "bold align-bottom"
+  }, user.nombre)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-4 no-padding relative"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
     clickHandler: props.func,
-    displayList: "flex-row h-end nav-list",
-    elemClass: "light-danger nav-reserva pointer",
+    displayList: "full-width no-padding text-right nav-list align-bottom",
+    elemClass: "light-danger nav-reserva pointer inline-block",
     elems: items
   })));
 }
@@ -89300,7 +89302,6 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 
- //holds reservation state
 
 function AppRouting(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -89323,93 +89324,93 @@ function AppRouting(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/",
     exact: true,
-    component: function component(props) {
+    component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
         render: function render(props) {
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_escritorio_EscritorioRouting__WEBPACK_IMPORTED_MODULE_7__["default"], props);
         },
         current: '0'
-      }, props));
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/reservas",
-    component: function component(props) {
+    component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
         render: function render(props) {
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_reservas_ReservasRouting__WEBPACK_IMPORTED_MODULE_11__["default"], props);
         },
         current: '1'
-      }, props));
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/horarios",
-    component: function component(props) {
+    component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
         render: function render(props) {
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_horarios_HorariosRouting__WEBPACK_IMPORTED_MODULE_9__["default"], props);
         },
         current: '2'
-      }, props));
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/ubicaciones",
-    component: function component(props) {
+    component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
         render: function render(props) {
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ubicaciones_UbicacionesRouting__WEBPACK_IMPORTED_MODULE_12__["default"], props);
         },
         current: '3'
-      }, props));
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/eventos",
-    component: function component(props) {
+    component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
         render: function render(props) {
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_eventos_EventosRouting__WEBPACK_IMPORTED_MODULE_8__["default"], props);
         },
         current: '4'
-      }, props));
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/promociones",
-    component: function component(props) {
+    component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
         render: function render(props) {
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_promociones_PromocionesRouting__WEBPACK_IMPORTED_MODULE_14__["default"], props);
         },
         current: '5'
-      }, props));
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/locales",
-    component: function component(props) {
+    component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
         render: function render(props) {
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_locales_LocalesRouting__WEBPACK_IMPORTED_MODULE_10__["default"], props);
         },
         current: '6'
-      }, props));
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/configuracion",
-    component: function component(props) {
+    component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
         render: function render(props) {
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_ConfiguracionRouting__WEBPACK_IMPORTED_MODULE_6__["default"], props);
         },
         current: '7'
-      }, props));
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/franquicias",
-    component: function component(props) {
+    component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
         render: function render(props) {
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_franquicias_FranquiciasRouting__WEBPACK_IMPORTED_MODULE_13__["default"], props);
         },
         current: '8'
-      }, props));
+      }, match));
     }
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-2 hidden-s background-border"
@@ -89615,11 +89616,11 @@ function ConfiguracionRouting(props) {
           return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_sub_Configuracion__WEBPACK_IMPORTED_MODULE_6__["Configuracion"], props);
         },
         modal: modal,
-        fetchHandler: Object(_sub_Configuracion__WEBPACK_IMPORTED_MODULE_6__["configuracionHandler"])('usuario/local/27')
+        fetchHandler: Object(_sub_Configuracion__WEBPACK_IMPORTED_MODULE_6__["configuracionHandler"])("usuario/local/".concat(user.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_0__["Route"], {
-    path: props.match.url + '/usuario',
+    path: "".concat(props.match.url, "/usuario"),
     exact: true,
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
@@ -89630,11 +89631,11 @@ function ConfiguracionRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_Usuario__WEBPACK_IMPORTED_MODULE_4__["usuarioHandler"])('usuario/local/27')
+        fetchHandler: Object(_sub_Usuario__WEBPACK_IMPORTED_MODULE_4__["usuarioHandler"])("usuario/local/".concat(user.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_0__["Route"], {
-    path: props.match.url + '/establecimiento',
+    path: "".concat(props.match.url, "/establecimiento"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
         component: function component(props) {
@@ -89644,11 +89645,11 @@ function ConfiguracionRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_Establecimiento__WEBPACK_IMPORTED_MODULE_3__["establecimientoHandler"])('usuario/local/27')
+        fetchHandler: Object(_sub_Establecimiento__WEBPACK_IMPORTED_MODULE_3__["establecimientoHandler"])("usuario/local/".concat(user.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_0__["Route"], {
-    path: props.match.url + '/reservas',
+    path: "".concat(props.match.url, "/reservas"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
         component: function component(props) {
@@ -89658,7 +89659,7 @@ function ConfiguracionRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_Reservas__WEBPACK_IMPORTED_MODULE_5__["reservaHandler"])('usuario/local/27')
+        fetchHandler: Object(_sub_Reservas__WEBPACK_IMPORTED_MODULE_5__["reservaHandler"])("usuario/local/".concat(user.id))
       });
     }
   }));
@@ -90161,7 +90162,7 @@ function (_Component) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
         title: "Configuraci\xF3n"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-        className: "full-width nav-list no-padding"
+        className: "full-width nav-list h-padding"
       }, configuracion.map(function (elem, index) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
           key: index,
@@ -90606,7 +90607,7 @@ __webpack_require__.r(__webpack_exports__);
 var configurationCards = [{
   element: function element(data) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "container full-width "
+      className: "container-fluid"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "row v-padding"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -90734,7 +90735,7 @@ function generateConfigurationCards(data) {
           component: e.element(data)
         }));
       },
-      "class": 'v-padding margin-box'
+      "class": 'h-padding'
     };
   });
 }
@@ -91038,11 +91039,11 @@ function EventosRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_Eventos__WEBPACK_IMPORTED_MODULE_3__["listHandler"])('/eventos/list/27')
+        fetchHandler: Object(_sub_Eventos__WEBPACK_IMPORTED_MODULE_3__["listHandler"])("/eventos/list/".concat(user.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Route"], {
-    path: props.match.url + '/editar/:id',
+    path: "".concat(props.match.url, "/editar/:id"),
     exact: true,
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
@@ -91056,11 +91057,11 @@ function EventosRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_2__["editFormHandler"])('eventos/single/27/' + match.match.params.id)
+        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_2__["editFormHandler"])("eventos/single/".concat(user.id, "/").concat(match.match.params.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Route"], {
-    path: props.match.url + '/agregar',
+    path: "".concat(props.match.url, "/agregar"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
         component: function component(props) {
@@ -91075,7 +91076,7 @@ function EventosRouting(props) {
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Route"], {
-    path: props.match.url + '/:id',
+    path: "".concat(props.match.url, "/:id"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
         component: function component(props) {
@@ -91086,7 +91087,7 @@ function EventosRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_VerEvento__WEBPACK_IMPORTED_MODULE_4__["singleHandler"])('/eventos/single/27/' + match.match.params.id)
+        fetchHandler: Object(_sub_VerEvento__WEBPACK_IMPORTED_MODULE_4__["singleHandler"])("/eventos/single/".concat(user.id, "/").concat(match.match.params.id))
       });
     }
   })));
@@ -91773,19 +91774,15 @@ function generateEventosCard(eventos, actions) {
           className: "col-md-6 no-padding"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "bold light-danger"
-        }, "Horarios"), horariosLength > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-          className: "no-padding nav-list"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_3__["CommaList"], {
+        }, "Horarios"), horariosLength > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_3__["CommaList"], {
           list: horarios,
           endpoint: "/horarios"
-        })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No has asignado horarios a este evento"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No has asignado horarios a este evento"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "bold light-danger top-padding"
-        }, "Promociones"), promociones.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-          className: "no-padding nav-list"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_3__["CommaList"], {
+        }, "Promociones"), promociones.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_3__["CommaList"], {
           list: eventos[e].promociones.list,
           endpoint: "/promociones"
-        })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No has asignado promociones a este evento"))));
+        }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No has asignado promociones a este evento"))));
       },
       "class": "v-padding container"
     };
@@ -91852,11 +91849,11 @@ function FranquiciasRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_Franquicias__WEBPACK_IMPORTED_MODULE_4__["listHandler"])('/usuario/franquicias/4')
+        fetchHandler: Object(_sub_Franquicias__WEBPACK_IMPORTED_MODULE_4__["listHandler"])("/usuario/franquicias/".concat(user.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    path: props.match.url + '/editar/:id',
+    path: "".concat(props.match.url, "/editar/:id"),
     exact: true,
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
@@ -91870,11 +91867,11 @@ function FranquiciasRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["editFormHandler"])('/usuario/franquicia/' + match.match.params.id)
+        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["editFormHandler"])("/usuario/franquicia/".concat(match.match.params.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    path: props.match.url + '/agregar',
+    path: "".concat(props.match.url, "/agregar"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
         component: function component(props) {
@@ -91889,7 +91886,7 @@ function FranquiciasRouting(props) {
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    path: props.match.url + '/:id',
+    path: "".concat(props.match.url, "/:id"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
         component: function component(props) {
@@ -91900,7 +91897,7 @@ function FranquiciasRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_VerFranquicia__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])('/usuario/franquicia/' + match.match.params.id)
+        fetchHandler: Object(_sub_VerFranquicia__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])("/usuario/franquicia/".concat(match.match.params.id))
       });
     }
   })));
@@ -92696,11 +92693,11 @@ function UbicacionesRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_Feriados__WEBPACK_IMPORTED_MODULE_4__["listHandler"])('/feriados/list/27/')
+        fetchHandler: Object(_sub_Feriados__WEBPACK_IMPORTED_MODULE_4__["listHandler"])("/feriados/list/".concat(user.id, "/"))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    path: props.match.url + '/editar/:id',
+    path: "".concat(props.match.url, "/editar/:id"),
     exact: true,
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
@@ -92714,11 +92711,11 @@ function UbicacionesRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_formularios_FeriadoFormulario__WEBPACK_IMPORTED_MODULE_3__["editFormHandler"])('/feriados/single/27/' + match.match.params.id)
+        fetchHandler: Object(_formularios_FeriadoFormulario__WEBPACK_IMPORTED_MODULE_3__["editFormHandler"])("/feriados/single/".concat(user.id, "/").concat(match.match.params.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    path: props.match.url + '/agregar',
+    path: "".concat(props.match.url, "/agregar"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
         component: function component(props) {
@@ -92729,11 +92726,11 @@ function UbicacionesRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_formularios_FeriadoFormulario__WEBPACK_IMPORTED_MODULE_3__["addFormHandler"])('/feriados/add/27/')
+        fetchHandler: Object(_formularios_FeriadoFormulario__WEBPACK_IMPORTED_MODULE_3__["addFormHandler"])("/feriados/add/".concat(user.id, "/"))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    path: props.match.url + '/:id',
+    path: "".concat(props.match.url, "/:id"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
         component: function component(props) {
@@ -92744,7 +92741,7 @@ function UbicacionesRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_VerFeriado__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])('/feriados/single/27/' + match.match.params.id)
+        fetchHandler: Object(_sub_VerFeriado__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])("/feriados/single/".concat(user.id, "/").concat(match.match.params.id))
       });
     }
   })));
@@ -92814,16 +92811,16 @@ function HorariosRouting(props) {
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Horarios__WEBPACK_IMPORTED_MODULE_4__["Horarios"], props);
         },
         modal: modal,
-        fetchHandler: Object(_sub_Horarios__WEBPACK_IMPORTED_MODULE_4__["listHandler"])('/horarios/list/27')
+        fetchHandler: Object(_sub_Horarios__WEBPACK_IMPORTED_MODULE_4__["listHandler"])("/horarios/list/".concat(user.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Route"], {
-    path: props.match.url + '/feriados',
+    path: "".concat(props.match.url, "/feriados"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FeriadosRouting__WEBPACK_IMPORTED_MODULE_2__["default"], match);
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Route"], {
-    path: props.match.url + '/agregar/:day',
+    path: "".concat(props.match.url, "/agregar/:day"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
         component: function component(props) {
@@ -92834,11 +92831,11 @@ function HorariosRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_formularios_HorarioFormulario__WEBPACK_IMPORTED_MODULE_3__["addFormHandler"])('/horarios/add/27')
+        fetchHandler: Object(_formularios_HorarioFormulario__WEBPACK_IMPORTED_MODULE_3__["addFormHandler"])("/horarios/add/".concat(user.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Route"], {
-    path: props.match.url + '/editar/:id',
+    path: "".concat(props.match.url, "/editar/:id"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
         component: function component(props) {
@@ -92851,11 +92848,11 @@ function HorariosRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_formularios_HorarioFormulario__WEBPACK_IMPORTED_MODULE_3__["editFormHandler"])('/horarios/single/27/' + match.match.params.id)
+        fetchHandler: Object(_formularios_HorarioFormulario__WEBPACK_IMPORTED_MODULE_3__["editFormHandler"])("/horarios/single/".concat(user.id, "/").concat(match.match.params.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Route"], {
-    path: props.match.url + '/:id',
+    path: "".concat(props.match.url, "/:id"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
         component: function component(props) {
@@ -92867,7 +92864,7 @@ function HorariosRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_VerHorario__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])('/horarios/single/27/' + match.match.params.id)
+        fetchHandler: Object(_sub_VerHorario__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])("/horarios/single/".concat(user.id, "/").concat(match.match.params.id))
       });
     }
   })));
@@ -93194,18 +93191,11 @@ var editFormHandler = function editFormHandler(endpoint) {
   return function (params) {
     var _this = this;
 
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_13__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
     request.then(function (response) {
-      console.log(new Date(response.data.feriados[0].fecha));
-
       _this.setState({
         data: {
           date: new Date(response.data.feriados[0].fecha),
@@ -93213,7 +93203,8 @@ var editFormHandler = function editFormHandler(endpoint) {
           eventos: response.data.eventos,
           minutes: Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_12__["generateHoursFromInterval"])(response.data.intervalo),
           side: response.data.feriados[0].estado === 'laboral'
-        }
+        },
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -93225,12 +93216,6 @@ var addFormHandler = function addFormHandler(endpoint) {
     var _this2 = this;
 
     var date = params.date ? params.date : new Date();
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
-    console.log(params.date);
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_13__["GET"])({
       endpoint: endpoint + (date.getMonth() + 1) + '/' + date.getFullYear(),
       download: this.downloadHandler
@@ -93242,7 +93227,8 @@ var addFormHandler = function addFormHandler(endpoint) {
           feriados: response.data.feriados.list,
           eventos: response.data.eventos,
           minutes: Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_12__["generateHoursFromInterval"])(response.data.intervalo)
-        }
+        },
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -93445,11 +93431,6 @@ var editFormHandler = function editFormHandler(endpoint) {
   return function (params) {
     var _this = this;
 
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_13__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
@@ -93461,7 +93442,8 @@ var editFormHandler = function editFormHandler(endpoint) {
           eventos: response.data.eventos,
           minutes: Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_12__["generateHoursFromInterval"])(response.data.intervalo),
           side: response.data.horarios[0].estado === 'laboral'
-        }
+        },
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -93472,11 +93454,6 @@ var addFormHandler = function addFormHandler(endpoint) {
   return function (params) {
     var _this2 = this;
 
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_13__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
@@ -93487,7 +93464,8 @@ var addFormHandler = function addFormHandler(endpoint) {
           horarios: null,
           eventos: response.data.eventos,
           minutes: Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_12__["generateHoursFromInterval"])(response.data.intervalo)
-        }
+        },
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -93671,11 +93649,6 @@ var listHandler = function listHandler(endpoint) {
   return function (params) {
     var _this = this;
 
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
     var date = params.date || new Date(),
         request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_9__["GET"])({
       endpoint: endpoint + (date.getMonth() + 1) + '/' + date.getFullYear(),
@@ -93688,7 +93661,8 @@ var listHandler = function listHandler(endpoint) {
           data: response.data.feriados.data || {},
           intervalo: response.data.intervalo,
           show: params.show || "2"
-        }
+        },
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -93831,18 +93805,14 @@ var listHandler = function listHandler(endpoint) {
   return function (params) {
     var _this = this;
 
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_5__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
     request.then(function (response) {
       _this.setState({
-        data: response.data.horarios.data
+        data: response.data.horarios.data,
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -93966,11 +93936,6 @@ var singleHandler = function singleHandler(endpoint) {
   return function (params) {
     var _this = this;
 
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_4__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
@@ -93983,7 +93948,8 @@ var singleHandler = function singleHandler(endpoint) {
           data: response.data.feriados[0],
           eventos: response.data.eventos,
           intervalo: response.data.intervalo
-        }
+        },
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -94175,18 +94141,14 @@ var singleHandler = function singleHandler(endpoint) {
   return function (params) {
     var _this = this;
 
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_7__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
     request.then(function (response) {
       _this.setState({
-        data: response.data.horarios[0]
+        data: response.data.horarios[0],
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -94433,11 +94395,11 @@ function LocalesRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_Locales__WEBPACK_IMPORTED_MODULE_5__["listHandler"])('/usuario/locales/5')
+        fetchHandler: Object(_sub_Locales__WEBPACK_IMPORTED_MODULE_5__["listHandler"])("/usuario/locales/".concat(user.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    path: props.match.url + '/editar/:id',
+    path: "".concat(props.match.url, "/editar/:id"),
     exact: true,
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
@@ -94451,11 +94413,11 @@ function LocalesRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["editFormHandler"])('/usuario/local/' + match.match.params.id)
+        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["editFormHandler"])("/usuario/local/".concat(match.match.params.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    path: props.match.url + '/agregar',
+    path: "".concat(props.match.url, "/agregar"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
         component: function component(props) {
@@ -94466,11 +94428,11 @@ function LocalesRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["addFormHandler"])('/usuario/add/4/1')
+        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["addFormHandler"])("/usuario/add/".concat(user.id, "/1"))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    path: props.match.url + '/:id',
+    path: "".concat(props.match.url, "/:id"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
         component: function component(props) {
@@ -94481,7 +94443,7 @@ function LocalesRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_VerLocal__WEBPACK_IMPORTED_MODULE_6__["singleHandler"])('/usuario/local/' + match.match.params.id)
+        fetchHandler: Object(_sub_VerLocal__WEBPACK_IMPORTED_MODULE_6__["singleHandler"])("/usuario/local/".concat(match.match.params.id))
       });
     }
   })));
@@ -94566,7 +94528,8 @@ var editFormHandler = function editFormHandler(endpoint) {
       var data = response.data.data;
 
       _this.setState({
-        data: data
+        data: data,
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -94731,18 +94694,14 @@ var listHandler = function listHandler(endpoint) {
   return function (params) {
     var _this = this;
 
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
     request.then(function (response) {
       _this.setState({
-        data: response.data.locales.data
+        data: response.data.locales.data,
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -94880,16 +94839,14 @@ var singleHandler = function singleHandler(endpoint) {
   return function (params) {
     var _this = this;
 
-    this.setState({
-      data: null
-    });
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_2__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
     request.then(function (response) {
       _this.setState({
-        data: response.data.data
+        data: response.data.data,
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -95172,8 +95129,6 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 function PromocionesRouting(props) {
-  var _this = this;
-
   var modal = function modal(props) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_6__["ConfirmarModal"], _extends({}, props, {
       title: "Eliminar Promoción",
@@ -95192,11 +95147,11 @@ function PromocionesRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_Promociones__WEBPACK_IMPORTED_MODULE_3__["listHandler"])('promociones/list/27')
+        fetchHandler: Object(_sub_Promociones__WEBPACK_IMPORTED_MODULE_3__["listHandler"])("promociones/list/".concat(user.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Route"], {
-    path: props.match.url + '/editar/:id',
+    path: "".concat(props.match.url, "/editar/:id"),
     exact: true,
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_5__["default"], {
@@ -95210,11 +95165,11 @@ function PromocionesRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_2__["editFormHandler"])('promociones/single/27/' + match.match.params.id)
+        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_2__["editFormHandler"])("promociones/single/27/".concat(match.match.params.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Route"], {
-    path: props.match.url + '/agregar',
+    path: "".concat(props.match.url, "/agregar"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_5__["default"], {
         component: function component(props) {
@@ -95225,11 +95180,11 @@ function PromocionesRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_2__["addFormHandler"])('promociones/add/27')
+        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_2__["addFormHandler"])("promociones/add/".concat(user.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Route"], {
-    path: props.match.url + '/:id',
+    path: "".concat(props.match.url, "/:id"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_5__["default"], {
         component: function component(props) {
@@ -95240,7 +95195,7 @@ function PromocionesRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_VerPromocion__WEBPACK_IMPORTED_MODULE_4__["singleHandler"])('/promociones/single/27/' + _this.props.match.params.id)
+        fetchHandler: Object(_sub_VerPromocion__WEBPACK_IMPORTED_MODULE_4__["singleHandler"])("/promociones/single/".concat(user.id, "/").concat(match.match.params.id))
       });
     }
   })));
@@ -95321,8 +95276,7 @@ var editFormHandler = function editFormHandler(endpoint) {
 
     this.setState({
       data: null,
-      isLoading: true,
-      loadFinished: false
+      isLoading: true
     });
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_6__["GET"])({
       endpoint: endpoint,
@@ -95335,7 +95289,8 @@ var editFormHandler = function editFormHandler(endpoint) {
           all: {
             eventos: response.data.eventos
           }
-        }
+        },
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -95346,18 +95301,14 @@ var addFormHandler = function addFormHandler(endpoint) {
   return function (params) {
     var _this2 = this;
 
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_6__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
     request.then(function (response) {
       _this2.setState({
-        data: _objectSpread({}, response.data)
+        data: _objectSpread({}, response.data),
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -95479,18 +95430,14 @@ var listHandler = function listHandler(endpoint) {
   return function (params) {
     var _this = this;
 
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_4__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
     request.then(function (response) {
       _this.setState({
-        data: response.data.promociones.data
+        data: response.data.promociones.data,
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -95531,8 +95478,10 @@ function (_Component) {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "bold top-padding"
-      }, "Mostrando " + promociones.length + " promociones encontradas"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-        className: "nav-list no-padding"
+      }, "Mostrando " + promociones.length + " promociones encontradas")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+        className: "nav-list no-padding full-width"
       }, promociones.map(function (elem, index) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
           key: index,
@@ -95628,18 +95577,14 @@ var singleHandler = function singleHandler(endpoint) {
   return function (params) {
     var _this = this;
 
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_2__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
     request.then(function (response) {
       _this.setState({
-        data: response.data.promociones[0]
+        data: response.data.promociones[0],
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -95663,9 +95608,7 @@ function (_Component) {
 
   _createClass(VerPromocion, [{
     key: "componentDidMount",
-    value: function componentDidMount() {
-      this.fetchData();
-    }
+    value: function componentDidMount() {}
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
@@ -95679,14 +95622,12 @@ function (_Component) {
         eventos: eventos
       });
 
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
         title: data.nombre,
         links: this.props.nav.links,
         buttons: this.props.nav.buttons
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container full-width no-padding"
+        className: "container full-width "
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -95779,12 +95720,10 @@ function generatePromocionesCard(promociones, actions) {
           className: "col-md-6"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "bold light-danger top-padding"
-        }, "Eventos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, eventos.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-          className: "no-padding nav-list"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_4__["CommaList"], {
+        }, "Eventos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, eventos.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_4__["CommaList"], {
           list: promociones[e].eventos.list,
           endpoint: "/eventos"
-        })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No has asignado horarios a este evento")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No has asignado horarios a este evento")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "bold light-danger top-padding"
         }, "Descuento"), promociones[e].descuento ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "side-margin"
@@ -95855,7 +95794,7 @@ function ReservasRouting(props) {
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    path: props.match.url + '/agregar',
+    path: "".concat(props.match.url, "/agregar"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
         component: function component(props) {
@@ -95866,11 +95805,11 @@ function ReservasRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["formHandler"])('reservas/add/' + 27 + '/')
+        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["formHandler"])("reservas/add/".concat(user.id, "/"))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    path: props.match.url + '/:id',
+    path: "".concat(props.match.url, "/:id"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
         component: function component(props) {
@@ -95881,7 +95820,7 @@ function ReservasRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_VerReserva__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])('/reservas/single/27/' + match.match.params.id)
+        fetchHandler: Object(_sub_VerReserva__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])("/reservas/single/".concat(user.id, "/").concat(match.match.params.id))
       });
     }
   })));
@@ -95958,9 +95897,6 @@ var listHandler = function listHandler(endpoint) {
       endpoint: endpoint + parseInt(date.getMonth() + 1) + '/' + date.getFullYear(),
       download: this.downloadHandler
     });
-    this.setState({
-      data: null
-    });
     request.then(function (response) {
       _this.setState({
         data: {
@@ -95971,7 +95907,8 @@ var listHandler = function listHandler(endpoint) {
             antelacion: response.data.antelacion
           },
           date: date,
-          show: params.show || "1"
+          show: params.show || "1",
+          loadFinished: true
         }
       });
     })["catch"](function (error) {
@@ -96125,11 +96062,6 @@ var formHandler = function formHandler(endpoint) {
       endpoint: endpoint + parseInt(date.getMonth() + 1) + '/' + date.getFullYear(),
       download: this.downloadHandler
     });
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
     request.then(function (response) {
       var data = response.data;
 
@@ -96138,7 +96070,6 @@ var formHandler = function formHandler(endpoint) {
           data: data,
           date: date
         },
-        isLoading: false,
         loadFinished: true
       });
     })["catch"](function (error) {
@@ -96281,18 +96212,14 @@ var singleHandler = function singleHandler(endpoint) {
   return function (params) {
     var _this = this;
 
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_4__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
     request.then(function (response) {
       _this.setState({
-        data: response.data.reservas[0]
+        data: response.data.reservas[0],
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -96512,6 +96439,7 @@ function UbicacionesRouting(props) {
     }));
   };
 
+  console.log(props.match.url);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: props.match.url,
     exact: true,
@@ -96523,11 +96451,11 @@ function UbicacionesRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_Ubicaciones__WEBPACK_IMPORTED_MODULE_4__["handler"])('ubicaciones/list/27')
+        fetchHandler: Object(_sub_Ubicaciones__WEBPACK_IMPORTED_MODULE_4__["handler"])("ubicaciones/list/".concat(user.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    path: props.match.url + '/editar/:id',
+    path: "".concat(props.match.url, "/editar/:id"),
     exact: true,
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
@@ -96541,11 +96469,11 @@ function UbicacionesRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["editFormHandler"])('ubicaciones/single/27/' + match.match.params.id)
+        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["editFormHandler"])("ubicaciones/single/".concat(user.id, "/").concat(match.match.params.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    path: props.match.url + '/agregar',
+    path: "".concat(props.match.url, "/agregar"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
         component: function component(props) {
@@ -96556,11 +96484,11 @@ function UbicacionesRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["addFormHandler"])('ubicaciones/single/27/' + match.match.params.id)
+        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["addFormHandler"])("ubicaciones/single/".concat(user.id, "/").concat(match.match.params.id))
       });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    path: props.match.url + '/:id',
+    path: "".concat(props.match.url, "/:id"),
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
         component: function component(props) {
@@ -96571,7 +96499,7 @@ function UbicacionesRouting(props) {
           }, props));
         },
         modal: modal,
-        fetchHandler: Object(_sub_VerUbicacion__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])('/ubicaciones/single/27/' + match.match.params.id)
+        fetchHandler: Object(_sub_VerUbicacion__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])("/ubicaciones/single/".concat(user.id, "/").concat(match.match.params.id))
       });
     }
   })));
@@ -96655,18 +96583,14 @@ var editFormHandler = function editFormHandler(endpoint) {
   return function (params) {
     var _this = this;
 
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_8__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
     request.then(function (response) {
       _this.setState({
-        data: response.data.ubicaciones[0]
+        data: response.data.ubicaciones[0],
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -96677,7 +96601,7 @@ var addFormHandler = function addFormHandler(endpoint) {
   return function (params) {
     this.setState({
       data: true,
-      isLoading: false,
+      loading: 100,
       loadFinished: true
     });
   };
@@ -96722,15 +96646,15 @@ function (_Component) {
         closeModal: this.props.toggleModal,
         title: "Eliminar Ubicaci\xF3n",
         content: "\xBFest\xE1s seguro de eliminar este ubicaci\xF3n?"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        title: this.props.editar ? data.nombre : "Agregar ubicación",
+        links: this.props.nav.links,
+        buttons: this.props.nav.buttons
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         className: "full-width"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        title: this.props.editar ? data.nombre : "Agregar ubicación",
-        links: this.props.nav.links,
-        buttons: this.props.nav.buttons
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-4 bold"
@@ -96839,18 +96763,14 @@ var handler = function handler(endpoint) {
   return function (params) {
     var _this = this;
 
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_8__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
     request.then(function (response) {
       _this.setState({
-        data: response.data.ubicaciones.data
+        data: response.data.ubicaciones.data,
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -96940,18 +96860,14 @@ var singleHandler = function singleHandler(endpoint) {
   return function (params) {
     var _this = this;
 
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
     request.then(function (response) {
       _this.setState({
-        data: response.data.ubicaciones[0]
+        data: response.data.ubicaciones[0],
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -97189,11 +97105,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_control_BreadCrumb__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../componentes/control/BreadCrumb */ "./resources/js/componentes/control/BreadCrumb.jsx");
-/* harmony import */ var _escritorio_Lateral__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../escritorio/Lateral */ "./resources/js/escritorio/Lateral.jsx");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _componentes_control_BreadCrumb__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../componentes/control/BreadCrumb */ "./resources/js/componentes/control/BreadCrumb.jsx");
+/* harmony import */ var _escritorio_Lateral__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../escritorio/Lateral */ "./resources/js/escritorio/Lateral.jsx");
 /**
  * react basic
  */
+
 
 
 /**
@@ -97201,7 +97119,6 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
- //holds reservation state
 
 function MainFrame(props) {
   var current = window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, '');
@@ -97209,7 +97126,7 @@ function MainFrame(props) {
     className: "row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-2 no-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_escritorio_Lateral__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_escritorio_Lateral__WEBPACK_IMPORTED_MODULE_4__["default"], {
     current: props.current,
     items: sidebar
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -97219,15 +97136,15 @@ function MainFrame(props) {
     }
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row extra-box-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_BreadCrumb__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_BreadCrumb__WEBPACK_IMPORTED_MODULE_3__["default"], {
     items: current.split('/')
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row extra-h-padding",
     style: {
-      height: '90%'
+      height: '87.5%'
     }
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-12 container-fluid white-background h-overflow-auto",
+    className: "col-md-12 container-fluid white-background no-padding",
     style: {
       height: '100%'
     }
@@ -97298,7 +97215,8 @@ function (_Component) {
       open: false
     };
     _this.downloadHandler = _this.downloadHandler.bind(_assertThisInitialized(_this));
-    _this.fetchHandler = _this.props.fetchHandler.bind(_assertThisInitialized(_this));
+    _this.fetchHandler = _this.fetchHandler.bind(_assertThisInitialized(_this));
+    _this.fetchData = _this.props.fetchHandler.bind(_assertThisInitialized(_this));
     _this.toggleModal = _this.toggleModal.bind(_assertThisInitialized(_this));
     return _this;
   }
@@ -97325,25 +97243,45 @@ function (_Component) {
       this.setState(state);
     }
   }, {
+    key: "fetchHandler",
+    value: function fetchHandler(params) {
+      this.setState({
+        loadFinished: false,
+        loading: 0
+      });
+      this.fetchData(params);
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       this.fetchHandler({});
     }
   }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.setState({
+        oldData: this.state.data
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      if (this.state.data && this.state.loadFinished) return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(this.props.modal, {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_LoadBar__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        loaded: this.state.loading
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(this.props.modal, {
         open: this.state.open,
         closeModal: this.toggleModal
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "v-padding"
+      }), this.state.data && this.state.loadFinished ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        style: {
+          padding: "10px 16px",
+          height: "99%"
+        },
+        className: "main-container h-overflow-auto"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(this.props.component, {
         fetch: this.fetchHandler,
         data: this.state.data,
         toggleModal: this.toggleModal
-      })));else return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_LoadBar__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        loaded: this.state.loading
-      });
+      })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null));
     }
   }]);
 
@@ -98494,7 +98432,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function LoadBar(progress) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null);
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    style: {
+      width: "".concat(progress.loaded, "%"),
+      backgroundColor: "var(--highlight-blue)",
+      height: "4px"
+    }
+  });
 }
 
 /***/ }),

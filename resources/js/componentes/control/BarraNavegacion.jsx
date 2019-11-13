@@ -19,16 +19,16 @@ function BarraNavegacion(props) {
     ];
     return (
         <>
-            <div className="col-sm-8">
-                <h4 className="bold">
-                    Nombre de usuario
+            <div className="col-sm-8 relative">
+                <h4 className="bold align-bottom">
+                    {user.nombre}
                 </h4>
             </div>
-            <div className="col-sm-4 no-padding">
+            <div className="col-sm-4 no-padding relative">
                 <ButtonList
                     clickHandler={props.func}
-                    displayList="flex-row h-end nav-list"
-                    elemClass="light-danger nav-reserva pointer"
+                    displayList="full-width no-padding text-right nav-list align-bottom"
+                    elemClass="light-danger nav-reserva pointer inline-block"
                     elems={items} />
             </div>
         </>

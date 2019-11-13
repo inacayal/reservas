@@ -22,11 +22,6 @@ import EventosTable from '../../../componentes/tables/EventosTable';
 
 export const singleHandler = (endpoint) => {
     return function (params){
-        this.setState({
-            data: null,
-            isLoading: true,
-            loadFinished: false
-        });
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -41,7 +36,8 @@ export const singleHandler = (endpoint) => {
                             data:response.data.feriados[0],
                             eventos:response.data.eventos,
                             intervalo:response.data.intervalo
-                        }
+                        },
+                        loadFinished:true
                     });
                 }
             )

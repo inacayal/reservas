@@ -27,21 +27,13 @@ import { GET } from '../../../utils/api';
 
 export const editFormHandler = (endpoint) => {
     return function (params){
-        this.setState({
-            data: null,
-            isLoading: true,
-            loadFinished: false
-        });
-
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
         });
-
         request
             .then(
                 response => {
-                    console.log(new Date(response.data.feriados[0].fecha))
                     this.setState({
                         data: {
                             date: new Date(response.data.feriados[0].fecha),
@@ -50,6 +42,7 @@ export const editFormHandler = (endpoint) => {
                             minutes: generateHoursFromInterval(response.data.intervalo),
                             side: response.data.feriados[0].estado === 'laboral'
                         },
+                        loadFinished: true
                     });
                 }
             )
@@ -64,17 +57,10 @@ export const editFormHandler = (endpoint) => {
 export const addFormHandler = (endpoint) => {
     return function (params){
         const date = params.date ? params.date : new Date();
-        this.setState({
-            data: null,
-            isLoading: true,
-            loadFinished: false
-        });
-        console.log(params.date)
         const request = GET({
             endpoint: endpoint + (date.getMonth() + 1) + '/' + date.getFullYear(),
             download: this.downloadHandler
         });
-
         request
             .then(
                 response => {
@@ -83,8 +69,9 @@ export const addFormHandler = (endpoint) => {
                             date: date,
                             feriados: response.data.feriados.list,
                             eventos: response.data.eventos,
-                            minutes: generateHoursFromInterval(response.data.intervalo)
-                        }
+                            minutes: generateHoursFromInterval(response.data.intervalo),
+                        },
+                        loadFinished: true
                     });
                 }
             )

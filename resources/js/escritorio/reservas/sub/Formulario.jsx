@@ -19,12 +19,6 @@ export const formHandler = (endpoint) => {
                 endpoint: endpoint + parseInt(date.getMonth() + 1) + '/' + date.getFullYear(),
                 download: this.downloadHandler
             });
-
-        this.setState({
-            data:null,
-            isLoading:true,
-            loadFinished:false
-        });
         request
             .then(
                 response => {
@@ -34,7 +28,6 @@ export const formHandler = (endpoint) => {
                             data:data,
                             date:date
                         },
-                        isLoading:false,
                         loadFinished:true
                     });
                 }

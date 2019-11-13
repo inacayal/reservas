@@ -30,7 +30,7 @@ export const HorarioWeekByState = {
         return {
             content: () =>
                 <>
-                    <div className="full-width box-padding" >
+                    <div className="full-width" >
                         <div className="seventy inline-block sub-title">
                             <div className="inline-block side-margin text-top bold">
                                 <Link to={'/horarios/' + dataIndex} className="text bold subrayado">{DAYS[sectionData.diaSemana - 1]}</Link>
@@ -44,17 +44,23 @@ export const HorarioWeekByState = {
                         </div>
                     </div>
                     <div className="container">
-                        <div className="row box-padding">
-                            <div className="col-md-5" >
-                                <div className="light-danger bold">Horarios:</div>
-                                <div style={{ padding: "0px 0px 0px 10px" }}>
-                                    <div className="bold">Reservas:</div>
-                                    <div>{sectionData.apertura.reserva.hora + ":" + sectionData.apertura.reserva.minuto + "hs. - " + sectionData.cierre.reserva.hora + ":" + sectionData.cierre.reserva.minuto + "hs."}</div>
-                                    <div className="bold">Atención:</div>
-                                    <div>{sectionData.apertura.atencion.hora + ":" + sectionData.apertura.atencion.minuto + "hs. - " + sectionData.cierre.atencion.hora + ":" + sectionData.cierre.atencion.minuto + "hs."}</div>
+                        <div className="row h-padding">
+                            <div className="col-md-6 container">
+                                <div className="row bold light-danger">
+                                    Horarios:
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="bold">Reservas:</div>
+                                        <div>{sectionData.apertura.reserva.hora + ":" + sectionData.apertura.reserva.minuto + "hs. - " + sectionData.cierre.reserva.hora + ":" + sectionData.cierre.reserva.minuto + "hs."}</div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="bold">Atención:</div>
+                                        <div>{sectionData.apertura.atencion.hora + ":" + sectionData.apertura.atencion.minuto + "hs. - " + sectionData.cierre.atencion.hora + ":" + sectionData.cierre.atencion.minuto + "hs."}</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="col-md-7">
+                            <div className="col-md-6">
                                 <div className="full-width">
                                     <div className="light-danger inline-block half bold">
                                         Eventos

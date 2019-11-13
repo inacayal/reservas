@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Http\Resources\UsuarioResource;
 
 class EscritorioController extends Controller
 {
@@ -23,8 +25,8 @@ class EscritorioController extends Controller
      */
     public function index()
     {
-        $param = json_encode(['pam'=>'param1']);
-        return view('escritorio',compact('param'));
+        $user = json_encode(['data'=>new UsuarioResource(User::where('id',27)->first())]);
+        return view('escritorio',compact('user'));
     }
     /**
      * Mostrar formulario de reservas

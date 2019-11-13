@@ -30,7 +30,10 @@ export const editFormHandler = (endpoint) => {
             .then(
                 response => {
                     const data = response.data.data
-                    this.setState({data});
+                    this.setState({
+                        data:data,
+                        loadFinished:true
+                    });
                 }
             )
             .catch(
@@ -51,7 +54,10 @@ export const addFormHandler = (endpoint) => {
             .then(
                 response => {
                     const data = response.data.usuarios.list;
-                    this.setState({ data,loadFinished:true });
+                    this.setState({
+                        data:data,
+                        loadFinished:true
+                    });
                 }
             )
             .catch(

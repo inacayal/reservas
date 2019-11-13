@@ -20,7 +20,6 @@ export const editFormHandler = (endpoint) => {
         this.setState({
             data: null,
             isLoading: true,
-            loadFinished: false
         });
 
         const request = GET({
@@ -37,7 +36,8 @@ export const editFormHandler = (endpoint) => {
                         all: {
                             eventos: response.data.eventos
                         }
-                    }
+                    },
+                    loadFinished: true
                 });
             }
         )
@@ -51,11 +51,6 @@ export const editFormHandler = (endpoint) => {
 
 export const addFormHandler = (endpoint) => {
     return function (params) {
-        this.setState({
-            data: null,
-            isLoading: true,
-            loadFinished: false
-        });
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -64,7 +59,8 @@ export const addFormHandler = (endpoint) => {
         .then(
             response => {
                 this.setState({
-                    data: { ...response.data }
+                    data: { ...response.data },
+                    loadFinished: true
                 });
             }
         )

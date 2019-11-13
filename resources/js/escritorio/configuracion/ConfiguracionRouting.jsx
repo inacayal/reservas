@@ -52,10 +52,10 @@ import RequestHandler from '../../hocs/RequestHandler';
                                     <Configuracion {...props} />
                             }
                             modal={modal}
-                            fetchHandler={configuracionHandler('usuario/local/27')}/>
+                            fetchHandler={configuracionHandler(`usuario/local/${user.id}`)}/>
                 } />
             <Route
-                path={props.match.url + '/usuario'}
+                path={`${props.match.url}/usuario`}
                 exact
                 component={
                     (match) =>
@@ -69,10 +69,10 @@ import RequestHandler from '../../hocs/RequestHandler';
                                 )
                             }
                             modal={modal}
-                            fetchHandler={usuarioHandler('usuario/local/27')}/>
+                            fetchHandler={usuarioHandler(`usuario/local/${user.id}`)}/>
                 } />
             <Route
-                path={props.match.url + '/establecimiento'}
+                path={`${props.match.url}/establecimiento`}
                 component={
                     (match) =>
                         <RequestHandler
@@ -85,10 +85,10 @@ import RequestHandler from '../../hocs/RequestHandler';
                                 )
                             }
                             modal={modal}
-                            fetchHandler={establecimientoHandler('usuario/local/27')}/>
+                            fetchHandler={establecimientoHandler(`usuario/local/${user.id}`)}/>
                 } />
             <Route
-                path={props.match.url + '/reservas'}
+                path={`${props.match.url}/reservas`}
                 component={
                     (match) =>
                         <RequestHandler
@@ -101,7 +101,7 @@ import RequestHandler from '../../hocs/RequestHandler';
                                 )
                             }
                             modal={modal}
-                            fetchHandler={reservaHandler('usuario/local/27')}/>
+                            fetchHandler={reservaHandler(`usuario/local/${user.id}`)}/>
                     } />
         </>
     );

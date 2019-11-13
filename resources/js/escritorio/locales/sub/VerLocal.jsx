@@ -18,9 +18,6 @@ import Actions from '../../../componentes/basic/Actions';
 
 export const singleHandler = (endpoint) => {
     return function (params) {
-        this.setState({
-            data: null
-        });
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -29,7 +26,10 @@ export const singleHandler = (endpoint) => {
         request
             .then(
                 response => {
-                    this.setState({ data: response.data.data });
+                    this.setState({
+                        data: response.data.data,
+                        loadFinished:true
+                    });
 
                 }
             )

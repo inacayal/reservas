@@ -9,5 +9,11 @@ import ReactDOM from 'react-dom';
 import {progress} from './api';
 
 export default function LoadBar (progress){
-    return <div></div>;
+    return <div style={
+        {
+            width:`${progress.loaded}%`,
+            backgroundColor:"var(--highlight-blue)",
+            height:"4px",
+        }
+    }></div>;
 }

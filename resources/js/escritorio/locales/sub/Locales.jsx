@@ -21,11 +21,6 @@ import LocalesTable from '../../../componentes/tables/LocalesTable';
 
 export const listHandler = (endpoint) => {
     return function (params) {
-        this.setState({
-            data: null,
-            isLoading: true,
-            loadFinished: false
-        });
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -34,7 +29,10 @@ export const listHandler = (endpoint) => {
         request
             .then(
                 response => {
-                    this.setState({ data: response.data.locales.data });
+                    this.setState({
+                        data: response.data.locales.data,
+                        loadFinished: true
+                    });
                 }
             )
             .catch(

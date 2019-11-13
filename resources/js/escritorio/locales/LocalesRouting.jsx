@@ -52,11 +52,11 @@ export default function LocalesRouting (props) {
                                         {...props} />
                             }
                             modal={modal}
-                            fetchHandler={listHandler('/usuario/locales/5')}/>
+                            fetchHandler={listHandler(`/usuario/locales/${user.id}`)}/>
                 } />
             <Switch>
                 <Route
-                    path={props.match.url + '/editar/:id'}
+                    path={`${props.match.url}/editar/:id`}
                     exact
                     component={
                         (match) =>
@@ -71,10 +71,10 @@ export default function LocalesRouting (props) {
                                     )
                                 }
                                 modal={modal}
-                                fetchHandler={editFormHandler('/usuario/local/'+match.match.params.id)}/>
+                                fetchHandler={editFormHandler(`/usuario/local/${match.match.params.id}`)}/>
                     } />
                 <Route
-                    path={props.match.url + '/agregar'}
+                    path={`${props.match.url}/agregar`}
                     component={
                         (match) =>
                             <RequestHandler
@@ -88,10 +88,10 @@ export default function LocalesRouting (props) {
                                     )
                                 }
                                 modal={modal}
-                                fetchHandler={addFormHandler('/usuario/add/4/1')}/>
+                                fetchHandler={addFormHandler(`/usuario/add/${user.id}/1`)}/>
                     } />
                 <Route
-                    path={props.match.url + '/:id'}
+                    path={`${props.match.url}/:id`}
                     component={
                         (match) =>
                             <RequestHandler
@@ -103,7 +103,7 @@ export default function LocalesRouting (props) {
                                     )
                                 }
                                 modal={modal}
-                                fetchHandler={singleHandler('/usuario/local/'+match.match.params.id)}/>
+                                fetchHandler={singleHandler(`/usuario/local/${match.match.params.id}`)}/>
                         } />
             </Switch>
         </>

@@ -1,7 +1,7 @@
 /**
  * react basic
  */
-import React, { Component } from 'react';
+import React, { Component, createContext } from 'react';
 import ReactDOM from 'react-dom';
 /**
  * navigation
@@ -22,7 +22,7 @@ import ReservasRouting from './reservas/ReservasRouting';
 import UbicacionesRouting from './ubicaciones/UbicacionesRouting';
 import FranquiciasRouting from './franquicias/FranquiciasRouting';
 import PromocionesRouting from './promociones/PromocionesRouting';
-//holds reservation state
+
 export default function AppRouting (props) {
     return (
         <div className="container-fluid no-margin" style={{overflow:"hidden"}}>
@@ -36,102 +36,102 @@ export default function AppRouting (props) {
                             path='/'
                             exact
                             component={
-                                (props) =>
+                                (match) =>
                                     <MainFrame
                                         render={(props) => (
                                             <EscritorioRouting {...props} />
                                         )}
                                         current={'0'}
-                                        {...props}/>
+                                        {...match}/>
                             }/>
                         <Route
                             path='/reservas'
                             component={
-                                (props) =>
+                                (match) =>
                                     <MainFrame
                                         render={(props)=>(
                                             <ReservasRouting {...props} />
                                         )}
                                         current={'1'}
-                                        {...props}/>
+                                        {...match}/>
                             } />
                         <Route
                             path='/horarios'
                             component={
-                                (props) =>
+                                (match) =>
                                     <MainFrame
                                         render={(props) => (
                                             <HorariosRouting {...props} />
                                         )}
                                         current={'2'}
-                                        {...props}/>
+                                        {...match}/>
                                 }
                             />
                         <Route
                             path='/ubicaciones'
                             component={
-                                (props) =>
+                                (match) =>
                                     <MainFrame
                                         render={(props) => (
                                             <UbicacionesRouting {...props} />
                                         )}
                                         current={'3'}
-                                        {...props}/>
+                                        {...match}/>
                             } />
                         <Route
                             path='/eventos'
                             component={
-                                (props) =>
+                                (match) =>
                                     <MainFrame
                                         render={(props) => (
                                             <EventosRouting {...props} />
                                         )}
                                         current={'4'}
-                                        {...props}/>
+                                        {...match}/>
                             } />
                         <Route
                             path='/promociones'
                             component={
-                                (props) =>
+                                (match) =>
                                     <MainFrame
                                         render={(props) => (
                                             <PromocionesRouting {...props} />
                                         )}
                                         current={'5'}
-                                        {...props} />
+                                        {...match} />
                             } />
                         <Route
                             path='/locales'
                             component={
-                                (props) =>
+                                (match) =>
                                     <MainFrame
                                         render={(props) => (
                                             <LocalesRouting {...props} />
                                         )}
                                         current={'6'}
-                                        {...props}/>
+                                        {...match}/>
                             } />
                         <Route
                             path='/configuracion'
                             component={
-                                (props) =>
+                                (match) =>
                                     <MainFrame
                                         render={(props) => (
                                             <ConfiguracionRouting {...props} />
                                         )}
                                         current={'7'}
-                                        {...props}/>
+                                        {...match}/>
                             } />
                         <Route
                             path='/franquicias'
                             component={
-                                (props) =>
+                                (match) =>
                                     <MainFrame
                                         render={(props) => (
                                             <FranquiciasRouting {...props} />
                                         )}
                                         current={'8'}
-                                        {...props}/>
+                                        {...match}/>
                             } />
                     </Switch>
                 </div>

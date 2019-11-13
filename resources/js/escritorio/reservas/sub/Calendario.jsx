@@ -25,7 +25,6 @@ export const listHandler = (endpoint) => {
                 endpoint: endpoint + parseInt(date.getMonth()+1) + '/' + date.getFullYear(),
                 download: this.downloadHandler
             });
-        this.setState({data:null});
         request
             .then(
                 response => {
@@ -38,7 +37,8 @@ export const listHandler = (endpoint) => {
                                 antelacion: response.data.antelacion
                             },
                             date:date,
-                            show:params.show||"1"
+                            show:params.show||"1",
+                            loadFinished:true
                         }
                     });
                 }

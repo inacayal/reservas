@@ -27,12 +27,6 @@ import { GET } from '../../../utils/api';
 
 export const editFormHandler = (endpoint) => {
     return function (params) {
-        this.setState({
-            data: null,
-            isLoading: true,
-            loadFinished: false
-        });
-
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -46,7 +40,8 @@ export const editFormHandler = (endpoint) => {
                             eventos:response.data.eventos,
                             minutes: generateHoursFromInterval(response.data.intervalo),
                             side: response.data.horarios[0].estado === 'laboral'
-                        }
+                        },
+                        loadFinished: true
                     });
                 }
             )
@@ -60,12 +55,6 @@ export const editFormHandler = (endpoint) => {
 
 export const addFormHandler = (endpoint) => {
     return function (params) {
-        this.setState({
-            data: null,
-            isLoading: true,
-            loadFinished: false
-        });
-
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -78,7 +67,8 @@ export const addFormHandler = (endpoint) => {
                             horarios: null,
                             eventos: response.data.eventos,
                             minutes: generateHoursFromInterval(response.data.intervalo)
-                        }
+                        },
+                        loadFinished: true
                     });
                 }
             )

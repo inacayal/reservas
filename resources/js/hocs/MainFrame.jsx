@@ -3,13 +3,13 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter} from 'react-router-dom';
 /**
  * navigation
  */
 import BreadCrumb from '../componentes/control/BreadCrumb';
 import Lateral from '../escritorio/Lateral';
 
-//holds reservation state
 export default function MainFrame (props) {
     const current = window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, '');
     return (
@@ -23,10 +23,9 @@ export default function MainFrame (props) {
                 <div className="row extra-box-padding">
                     <BreadCrumb items={current.split('/')}/>
                 </div>
-                <div className="row extra-h-padding" style={{height:'90%'}}>
-                    <div className="col-md-12 container-fluid white-background h-overflow-auto"  style={{height:'100%'}}>
-                        <props.render
-                            {...props} />
+                <div className="row extra-h-padding" style={{height:'87.5%'}}>
+                    <div className="col-md-12 container-fluid white-background no-padding" style={{height:'100%'}}>
+                        <props.render {...props} />
                     </div>
                 </div>
             </div>

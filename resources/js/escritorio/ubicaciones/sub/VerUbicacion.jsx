@@ -16,11 +16,6 @@ import {ConfirmarModal} from '../../../componentes/modal/Modal';
 
 export const singleHandler  = (endpoint) => {
     return function (params) {
-        this.setState({
-            data: null,
-            isLoading: true,
-            loadFinished: false
-        });
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -29,7 +24,10 @@ export const singleHandler  = (endpoint) => {
         request
             .then(
                 response => {
-                    this.setState({ data: response.data.ubicaciones[0] });
+                    this.setState({
+                        data: response.data.ubicaciones[0],
+                        loadFinished:true 
+                    });
                 }
             )
             .catch(

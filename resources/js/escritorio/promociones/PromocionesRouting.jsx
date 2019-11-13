@@ -49,11 +49,11 @@ export default function PromocionesRouting (props) {
                                         {...props} />
                             }
                             modal={modal}
-                            fetchHandler={listHandler('promociones/list/27')}/>
+                            fetchHandler={listHandler(`promociones/list/${user.id}`)}/>
                 } />
             <Switch>
                 <Route
-                    path={props.match.url + '/editar/:id'}
+                    path={`${props.match.url}/editar/:id`}
                     exact
                     component={
                         (match) =>
@@ -68,10 +68,10 @@ export default function PromocionesRouting (props) {
                                     )
                                 }
                                 modal={modal}
-                                fetchHandler={editFormHandler('promociones/single/27/' + match.match.params.id)}/>
+                                fetchHandler={editFormHandler(`promociones/single/27/${match.match.params.id}`)}/>
                     } />
                 <Route
-                    path={props.match.url + '/agregar'}
+                    path={`${props.match.url}/agregar`}
                     component={
                         (match) =>
                             <RequestHandler
@@ -85,10 +85,10 @@ export default function PromocionesRouting (props) {
                                     )
                                 }
                                 modal={modal}
-                                fetchHandler={addFormHandler('promociones/add/27')}/>
+                                fetchHandler={addFormHandler(`promociones/add/${user.id}`)}/>
                     } />
                 <Route
-                    path={props.match.url + '/:id'}
+                    path={`${props.match.url}/:id`}
                     component={
                         (match) =>
                             <RequestHandler
@@ -100,7 +100,7 @@ export default function PromocionesRouting (props) {
                                     )
                                 }
                                 modal={modal}
-                                fetchHandler={singleHandler('/promociones/single/27/'+this.props.match.params.id)}/>
+                                fetchHandler={singleHandler(`/promociones/single/${user.id}/${match.match.params.id}`)}/>
                         } />
             </Switch>
         </>

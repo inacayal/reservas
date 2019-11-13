@@ -26,11 +26,6 @@ import {ConfirmarModal} from '../../../componentes/modal/Modal';
 
 export const editFormHandler = (endpoint) => {
     return function (params) {
-        this.setState({
-            data: null,
-            isLoading: true,
-            loadFinished: false
-        });
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -38,7 +33,10 @@ export const editFormHandler = (endpoint) => {
         request
             .then(
                 response => {
-                    this.setState({ data: response.data.ubicaciones[0] });
+                    this.setState({
+                        data: response.data.ubicaciones[0],
+                        loadFinished: true
+                    });
                 }
             )
             .catch(
@@ -53,9 +51,9 @@ export const addFormHandler = (endpoint) => {
     return function (params) {
         this.setState({
             data: true,
-            isLoading: false,
+            loading: 100,
             loadFinished: true
-        })
+        });
     }
 }
 
@@ -90,14 +88,14 @@ export class Formulario extends Component {
                     closeModal={this.props.toggleModal}
                     title="Eliminar Ubicación"
                     content="¿estás seguro de eliminar este ubicación?" />
+                <Titulo
+                    title={this.props.editar
+                    ? data.nombre
+                    : "Agregar ubicación"}
+                    links={this.props.nav.links}
+                    buttons={this.props.nav.buttons} />
                 <form className="full-width">
                     <div className="container">
-                        <Titulo
-                            title={this.props.editar
-                                ? data.nombre
-                                : "Agregar ubicación"}
-                            links={this.props.nav.links}
-                            buttons={this.props.nav.buttons} />
                         <div className="row">
                             <div className="col-md-4 bold">
                                 foto de la ubicacion

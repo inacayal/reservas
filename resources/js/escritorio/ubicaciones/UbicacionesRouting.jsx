@@ -38,6 +38,7 @@ export default function UbicacionesRouting (props) {
             title={"Eliminar Ubicación"}
             content={"¿estás seguro de eliminar este ubicación?"} />
     );
+    console.log(props.match.url)
     return (
         <>
             <Route
@@ -52,11 +53,11 @@ export default function UbicacionesRouting (props) {
                                         nav={Navegacion.listado('/ubicaciones')} {...props}/>
                             }
                             modal={modal}
-                            fetchHandler={listHandler('ubicaciones/list/27')}/>
+                            fetchHandler={listHandler(`ubicaciones/list/${user.id}`)}/>
                 } />
             <Switch>
                 <Route
-                    path={props.match.url + '/editar/:id'}
+                    path={`${props.match.url}/editar/:id`}
                     exact
                     component={
                         (match) =>
@@ -73,10 +74,10 @@ export default function UbicacionesRouting (props) {
                                     }
                                 }
                                 modal={modal}
-                                fetchHandler={editFormHandler('ubicaciones/single/27/'+match.match.params.id)}/>
+                                fetchHandler={editFormHandler(`ubicaciones/single/${user.id}/${match.match.params.id}`)}/>
                     } />
                 <Route
-                    path={props.match.url + '/agregar'}
+                    path={`${props.match.url}/agregar`}
                     component={
                         (match) =>
                             <RequestHandler
@@ -92,11 +93,11 @@ export default function UbicacionesRouting (props) {
                                     }
                                 }
                                 modal={modal}
-                                fetchHandler={addFormHandler('ubicaciones/single/27/'+match.match.params.id)}/>
+                                fetchHandler={addFormHandler(`ubicaciones/single/${user.id}/${match.match.params.id}`)}/>
 
                     } />
                 <Route
-                    path={props.match.url + '/:id'}
+                    path={`${props.match.url}/:id`}
                     component={
                         (match) =>
                         <RequestHandler
@@ -108,7 +109,7 @@ export default function UbicacionesRouting (props) {
                                 )
                             }
                             modal={modal}
-                            fetchHandler={singleHandler('/ubicaciones/single/27/'+match.match.params.id)}/>
+                            fetchHandler={singleHandler(`/ubicaciones/single/${user.id}/${match.match.params.id}`)}/>
                     } />
             </Switch>
         </>

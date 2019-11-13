@@ -48,7 +48,7 @@ export default function ReservasRouting (props) {
                 } />
             <Switch>
                 <Route
-                    path={props.match.url + '/agregar'}
+                    path={`${props.match.url}/agregar`}
                     component={
                         (match) =>
                             <RequestHandler
@@ -64,11 +64,11 @@ export default function ReservasRouting (props) {
                                     }
                                 }
                                 modal={modal}
-                                fetchHandler={formHandler('reservas/add/' + 27 + '/')}/>
+                                fetchHandler={formHandler(`reservas/add/${user.id}/`)}/>
 
                     } />
                 <Route
-                    path={props.match.url + '/:id'}
+                    path={`${props.match.url}/:id`}
                     component={
                         (match) =>
                         <RequestHandler
@@ -80,7 +80,7 @@ export default function ReservasRouting (props) {
                                 )
                             }
                             modal={modal}
-                            fetchHandler={singleHandler('/reservas/single/27/'+match.match.params.id)}/>
+                            fetchHandler={singleHandler(`/reservas/single/${user.id}/${match.match.params.id}`)}/>
                     } />
             </Switch>
         </>

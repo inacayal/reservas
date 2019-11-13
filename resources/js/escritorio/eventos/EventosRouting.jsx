@@ -49,11 +49,11 @@ export default function EventosRouting (props) {
                                         {...props} />
                             }
                             modal={modal}
-                            fetchHandler={listHandler('/eventos/list/27')}/>
+                            fetchHandler={listHandler(`/eventos/list/${user.id}`)}/>
                 } />
             <Switch>
                 <Route
-                    path={props.match.url + '/editar/:id'}
+                    path={`${props.match.url}/editar/:id`}
                     exact
                     component={
                         (match) =>
@@ -68,10 +68,10 @@ export default function EventosRouting (props) {
                                     )
                                 }
                                 modal={modal}
-                                fetchHandler={editFormHandler('eventos/single/27/' + match.match.params.id)}/>
+                                fetchHandler={editFormHandler(`eventos/single/${user.id}/${match.match.params.id}`)}/>
                     } />
                 <Route
-                    path={props.match.url + '/agregar'}
+                    path={`${props.match.url}/agregar`}
                     component={
                         (match) =>
                             <RequestHandler
@@ -88,7 +88,7 @@ export default function EventosRouting (props) {
                                 fetchHandler={addFormHandler('/eventos/add/27')}/>
                     } />
                 <Route
-                    path={props.match.url + '/:id'}
+                    path={`${props.match.url}/:id`}
                     component={
                         (match) =>
                             <RequestHandler
@@ -100,7 +100,7 @@ export default function EventosRouting (props) {
                                     )
                                 }
                                 modal={modal}
-                                fetchHandler={singleHandler('/eventos/single/27/'+match.match.params.id)}/>
+                                fetchHandler={singleHandler(`/eventos/single/${user.id}/${match.match.params.id}`)}/>
                         } />
             </Switch>
         </>

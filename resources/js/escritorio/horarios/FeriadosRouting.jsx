@@ -35,7 +35,6 @@ export default function UbicacionesRouting (props) {
             title={"Eliminar Feriado"}
             content={"¿estás seguro de eliminar este feriado?"} />
     );
-
     return (
         <>
             <Route
@@ -51,11 +50,11 @@ export default function UbicacionesRouting (props) {
                                         {...props} />
                             }
                             modal={modal}
-                            fetchHandler={listHandler('/feriados/list/27/')}/>
+                            fetchHandler={listHandler(`/feriados/list/${user.id}/`)}/>
                 } />
             <Switch>
                 <Route
-                    path={props.match.url + '/editar/:id'}
+                    path={`${props.match.url}/editar/:id`}
                     exact
                     component={
                         (match) =>
@@ -72,10 +71,10 @@ export default function UbicacionesRouting (props) {
                                     }
                                 }
                                 modal={modal}
-                                fetchHandler={editFormHandler('/feriados/single/27/' + match.match.params.id)}/>
+                                fetchHandler={editFormHandler(`/feriados/single/${user.id}/${match.match.params.id}`)}/>
                     } />
                 <Route
-                    path={props.match.url + '/agregar'}
+                    path={`${props.match.url}/agregar`}
                     component={
                         (match) =>
                             <RequestHandler
@@ -91,11 +90,11 @@ export default function UbicacionesRouting (props) {
                                     }
                                 }
                                 modal={modal}
-                                fetchHandler={addFormHandler('/feriados/add/27/')}/>
+                                fetchHandler={addFormHandler(`/feriados/add/${user.id}/`)}/>
 
                     } />
                 <Route
-                    path={props.match.url + '/:id'}
+                    path={`${props.match.url}/:id`}
                     component={
                         (match) =>
                         <RequestHandler
@@ -107,7 +106,7 @@ export default function UbicacionesRouting (props) {
                                 )
                             }
                             modal={modal}
-                            fetchHandler={singleHandler('/feriados/single/27/' + match.match.params.id)}/>
+                            fetchHandler={singleHandler(`/feriados/single/${user.id}/${match.match.params.id}`)}/>
                     } />
             </Switch>
         </>

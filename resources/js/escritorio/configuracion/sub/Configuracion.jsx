@@ -65,7 +65,7 @@ export class Configuracion extends Component {
             <>
                 <Titulo
                     title="Configuración"/>
-                <ul className="full-width nav-list no-padding">
+                <ul className="full-width nav-list h-padding">
                     {
                         configuracion.map(
                             (elem, index) =>

@@ -65,7 +65,7 @@ export default function generateEventosCard(
                                 {
                                     (horariosLength > 0)
                                         ?
-                                            <ul className="no-padding nav-list"><CommaList list={horarios} endpoint='/horarios' /></ul>
+                                            <CommaList list={horarios} endpoint='/horarios' />
                                         :
                                             <div>No has asignado horarios a este evento</div>
                                 }
@@ -73,7 +73,7 @@ export default function generateEventosCard(
                                 {
                                     (promociones.length > 0)
                                         ?
-                                            <ul className="no-padding nav-list"><CommaList list={eventos[e].promociones.list} endpoint="/promociones"/></ul>
+                                            <CommaList list={eventos[e].promociones.list} endpoint="/promociones"/>
                                         :
                                             <div>No has asignado promociones a este evento</div>
                                 }
