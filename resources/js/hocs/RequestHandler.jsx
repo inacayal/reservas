@@ -51,7 +51,7 @@ export default class RequestHandler extends Component {
     }
 
     componentWillUnmount(){
-        this.setState({oldData:this.state.data})
+        
     }
 
     render() {

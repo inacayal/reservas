@@ -20,7 +20,7 @@ import generateUbicacionesCard from './generateUbicacionesCard';
 import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
 
-export const handler = (
+export const listHandler = (
     endpoint
 ) => {
     return function (params) {
@@ -45,7 +45,7 @@ export const handler = (
     }
 }
 
-export const Ubicaciones = (props) => {
+export function Ubicaciones (props) {
     const ubicaciones = generateUbicacionesCard(
             props.data,
             {eliminar:props.toggleModal}

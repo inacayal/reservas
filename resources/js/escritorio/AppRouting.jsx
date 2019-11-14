@@ -18,8 +18,17 @@ import EscritorioRouting from './escritorio/EscritorioRouting';
 import EventosRouting from './eventos/EventosRouting';
 import HorariosRouting from './horarios/HorariosRouting';
 import LocalesRouting from './locales/LocalesRouting';
-import ReservasRouting from './reservas/ReservasRouting';
-import UbicacionesRouting from './ubicaciones/UbicacionesRouting';
+
+import {
+    handlers as reservasHandlers,
+    ReservasRouting
+} from './reservas/ReservasRouting';
+
+import {
+    handlers as ubicacionesHandlers,
+    UbicacionesRouting
+} from './ubicaciones/UbicacionesRouting';
+
 import FranquiciasRouting from './franquicias/FranquiciasRouting';
 import PromocionesRouting from './promociones/PromocionesRouting';
 
@@ -37,101 +46,74 @@ export default function AppRouting (props) {
                             exact
                             component={
                                 (match) =>
-                                    <MainFrame
-                                        render={(props) => (
-                                            <EscritorioRouting {...props} />
-                                        )}
-                                        current={'0'}
-                                        {...match}/>
+                                    <MainFrame current = {'0'} >
+                                        <EscritorioRouting {...match} />
+                                    </MainFrame>
                             }/>
                         <Route
                             path='/reservas'
                             component={
                                 (match) =>
-                                    <MainFrame
-                                        render={(props)=>(
-                                            <ReservasRouting {...props} />
-                                        )}
-                                        current={'1'}
-                                        {...match}/>
+                                    <MainFrame current={'1'} handlers={reservasHandlers}>
+                                        <ReservasRouting {...match} />
+                                    </MainFrame>
                             } />
                         <Route
                             path='/horarios'
                             component={
                                 (match) =>
-                                    <MainFrame
-                                        render={(props) => (
-                                            <HorariosRouting {...props} />
-                                        )}
-                                        current={'2'}
-                                        {...match}/>
+                                    <MainFrame current={'2'}>
+                                        <HorariosRouting {...match} />
+                                    </MainFrame>
                                 }
                             />
                         <Route
                             path='/ubicaciones'
                             component={
                                 (match) =>
-                                    <MainFrame
-                                        render={(props) => (
-                                            <UbicacionesRouting {...props} />
-                                        )}
-                                        current={'3'}
-                                        {...match}/>
+                                    <MainFrame current = {'3'} handlers={ubicacionesHandlers}>
+                                        <UbicacionesRouting {...match} />
+                                    </MainFrame>
                             } />
                         <Route
                             path='/eventos'
                             component={
                                 (match) =>
-                                    <MainFrame
-                                        render={(props) => (
-                                            <EventosRouting {...props} />
-                                        )}
-                                        current={'4'}
-                                        {...match}/>
+                                    <MainFrame current={'4'}>
+                                        <EventosRouting {...match} />
+                                    </MainFrame>
                             } />
                         <Route
                             path='/promociones'
                             component={
                                 (match) =>
-                                    <MainFrame
-                                        render={(props) => (
-                                            <PromocionesRouting {...props} />
-                                        )}
-                                        current={'5'}
-                                        {...match} />
+                                    <MainFrame current={'5'}>
+                                        <PromocionesRouting {...match} />
+                                    </MainFrame>
                             } />
                         <Route
                             path='/locales'
                             component={
                                 (match) =>
-                                    <MainFrame
-                                        render={(props) => (
-                                            <LocalesRouting {...props} />
-                                        )}
-                                        current={'6'}
-                                        {...match}/>
+                                    <MainFrame current={'6'}>
+                                        <LocalesRouting {...match} />
+                                    </MainFrame>
                             } />
                         <Route
                             path='/configuracion'
                             component={
                                 (match) =>
-                                    <MainFrame
-                                        render={(props) => (
-                                            <ConfiguracionRouting {...props} />
-                                        )}
-                                        current={'7'}
-                                        {...match}/>
+                                    <MainFrame current={'7'}>
+                                        <ConfiguracionRouting {...match} />
+                                    </MainFrame>
                             } />
                         <Route
                             path='/franquicias'
                             component={
                                 (match) =>
-                                    <MainFrame
-                                        render={(props) => (
-                                            <FranquiciasRouting {...props} />
-                                        )}
-                                        current={'8'}
-                                        {...match}/>
+                                    <MainFrame current={'8'}>
+                                        <FranquiciasRouting {...match}/>
+                                    </MainFrame>
                             } />
                     </Switch>
                 </div>

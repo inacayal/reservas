@@ -26,10 +26,53 @@ import {
 
 import RequestHandler from '../../hocs/RequestHandler';
 
-export default function ReservasRouting (props) {
-    const modal = (props) => (
-        <></>
-    );
+
+export const handlers = [
+    {
+        endpoint:'/reservas',
+        match:/\/reservas$/,
+        handler:(params) =>
+            listHandler(`reservas/list/${user.id}/`),
+        component:
+            (props) =>
+                <Calendario
+                    data={props.data}
+                    nav={Navegacion.listado('/reservas')}/>
+    },
+    {
+        endpoint:'/reservas/agregar',
+        match:/\/reservas\/(agregar)$/,
+        handler:(params) =>
+            formHandler(`reservas/add/${user.id}/`),
+        component:
+            (props) =>
+                <Formulario
+                    editar={false}
+                    data={props.data}
+                    formActions = {FormActions()}
+                    nav={Navegacion.agregar('/reservas')}/>
+    },
+    {
+        endpoint:'/reservas/:id',
+        match: /\/reservas\/(\d+)$/,
+        handler: (params) =>
+            singleHandler(`/reservas/single/${user.id}/${params.id}`),
+        component:
+            (props) =>
+                <VerReserva
+                    data={props.data}
+                    nav={Navegacion.singular(()=>false,props.match.params.id,'/reservas')}/>
+
+    }
+];
+
+export function ReservasRouting (props) {
+    if (!props.loaded){
+        return (
+            <props.oldComponent.component
+                {...props}/>
+        )
+    }
     return (
         <>
             <Route
@@ -37,50 +80,28 @@ export default function ReservasRouting (props) {
                 exact
                 component={
                     (match) =>
-                        <RequestHandler
-                            component={
-                                (props) =>
-                                    <Calendario
-                                        nav={Navegacion.listado('/reservas')} {...props}/>
-                            }
-                            modal={modal}
-                            fetchHandler={listHandler('reservas/list/'+27 +'/')}/>
+                        <Calendario
+                            data={props.data}
+                            nav={Navegacion.listado('/reservas')} {...match}/>
                 } />
             <Switch>
                 <Route
                     path={`${props.match.url}/agregar`}
                     component={
                         (match) =>
-                            <RequestHandler
-                                component ={
-                                    (props) =>{
-                                        return (
-                                            <Formulario
-                                                nav={Navegacion.agregar('/reservas')}
-                                                formActions = {FormActions()}
-                                                editar={false}
-                                                {...props} />
-                                        )
-                                    }
-                                }
-                                modal={modal}
-                                fetchHandler={formHandler(`reservas/add/${user.id}/`)}/>
-
+                            <Formulario
+                                editar={false}
+                                data={props.data}
+                                formActions = {FormActions()}
+                                nav={Navegacion.agregar('/reservas')} {...match}/>
                     } />
                 <Route
                     path={`${props.match.url}/:id`}
                     component={
                         (match) =>
-                        <RequestHandler
-                            component ={
-                                (props) => (
-                                    <VerReserva
-                                        nav={Navegacion.singular(()=>false,match.match.params.id,'/reservas')}
-                                        {...props} />
-                                )
-                            }
-                            modal={modal}
-                            fetchHandler={singleHandler(`/reservas/single/${user.id}/${match.match.params.id}`)}/>
+                            <VerReserva
+                                data={props.data}
+                                nav={Navegacion.singular(()=>false,match.match.params.id,'/reservas')} {...match}/>
                     } />
             </Switch>
         </>

@@ -23,13 +23,12 @@ export const singleHandler = (endpoint) => {
             endpoint: endpoint,
             download: this.downloadHandler
         });
-
         request
             .then(
                 response => {
                     this.setState({
                         data: response.data.reservas[0],
-                        loadFinished:true 
+                        loadFinished:true
                     });
                 }
             )

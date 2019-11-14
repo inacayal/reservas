@@ -1,9 +1,17 @@
 /**
  * react basic
  */
-import React, { Component, useState } from 'react';
+import
+    React,
+    {
+        Component,
+        useState
+    } from 'react';
 import ReactDOM from 'react-dom';
-import {Route,Switch} from 'react-router-dom';
+import {
+    Route,
+    Switch
+} from 'react-router-dom';
 /**
  * sub elementos
  */
@@ -14,7 +22,7 @@ import {
 } from './sub/Formulario';
 
 import {
-    handler as listHandler,
+    listHandler,
     Ubicaciones
 } from './sub/Ubicaciones';
 
@@ -31,29 +39,95 @@ import {
 import RequestHandler from '../../hocs/RequestHandler';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 
-export default function UbicacionesRouting (props) {
-    const modal = (props) => (
-        <ConfirmarModal
-            {...props}
-            title={"Eliminar Ubicación"}
-            content={"¿estás seguro de eliminar este ubicación?"} />
-    );
-    console.log(props.match.url)
+export const handlers = [
+    {
+        endpoint:'/ubicaciones',
+        match:/\/ubicaciones$/,
+        handler:(params) =>
+            listHandler(`ubicaciones/list/${user.id}`),
+        component:
+            (props) =>
+                <Ubicaciones
+                    data={props.data}
+                    toggleModal={props.openModal}
+                    nav={Navegacion.listado('/ubicaciones')}/>
+    },
+    {
+        endpoint:'/ubicaciones/agregar',
+        match:/\/ubicaciones\/(agregar)$/,
+        handler:(params) =>
+            addFormHandler(`ubicaciones/single/${user.id}/${params.id}`),
+        component:
+            (props) =>
+                <Formulario
+                    editar={false}
+                    data={props.data}
+                    toggleModal={props.openModal}
+                    formActions = {FormActions()}
+                    nav={Navegacion.agregar('/ubicaciones')}/>
+    },
+    {
+        endpoint:'/ubicaciones/editar/:id',
+        match:/\/ubicaciones\/(editar\/\d+)$/,
+        handler:(params) =>
+            editFormHandler(`ubicaciones/single/${user.id}/${params.id}`),
+        component:
+        (props) =>
+            <Formulario
+                editar={true}
+                data={props.data}
+                toggleModal={props.openModal}
+                formActions = {FormActions()}
+                nav={Navegacion.formulario(()=>false,props.match.params.id,'/ubicaciones')} />
+    },
+    {
+        endpoint:'/ubicaciones/:id',
+        match: /\/ubicaciones\/(\d+)$/,
+        handler: (params) =>
+            singleHandler(`/ubicaciones/single/${user.id}/${params.id}`),
+        component:
+            (props) =>
+                <VerUbicacion
+                    data={props.data}
+                    toggleModal={props.openModal}
+                    nav={Navegacion.singular(()=>false,props.match.params.id,'/ubicaciones')}/>
+
+    }
+];
+
+export function UbicacionesRouting (props) {
+    const [open,toggle] = useState(false),
+        openModal = (e) => {
+            e.preventDefault();
+            toggle(true);
+        },
+        closeModal = (e) => {
+            e.preventDefault();
+            toggle(false);
+        };
+    if (!props.loaded){
+        return (
+            <props.oldComponent.component
+                {...props}
+                openModal={openModal}/>
+        )
+    }
     return (
         <>
+            <ConfirmarModal
+                open={open}
+                closeModal={closeModal}
+                title={"Eliminar Ubicación"}
+                content={"¿estás seguro de eliminar este ubicación?"} />
             <Route
                 path={props.match.url}
                 exact
                 component={
                     (match) =>
-                        <RequestHandler
-                            component={
-                                (props) =>
-                                    <Ubicaciones
-                                        nav={Navegacion.listado('/ubicaciones')} {...props}/>
-                            }
-                            modal={modal}
-                            fetchHandler={listHandler(`ubicaciones/list/${user.id}`)}/>
+                        <Ubicaciones
+                            data={props.data}
+                            toggleModal={openModal}
+                            nav={Navegacion.listado('/ubicaciones')} {...match}/>
                 } />
             <Switch>
                 <Route
@@ -61,55 +135,35 @@ export default function UbicacionesRouting (props) {
                     exact
                     component={
                         (match) =>
-                            <RequestHandler
-                                component ={
-                                    (props) =>{
-                                        return (
-                                            <Formulario
-                                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/ubicaciones')}
-                                                formActions = {FormActions()}
-                                                editar={true}
-                                                {...props} />
-                                        )
-                                    }
-                                }
-                                modal={modal}
-                                fetchHandler={editFormHandler(`ubicaciones/single/${user.id}/${match.match.params.id}`)}/>
+                            <Formulario
+                                editar={true}
+                                data={props.data}
+                                toggleModal={openModal}
+                                formActions = {FormActions()}
+                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/ubicaciones')}
+                                {...match} />
                     } />
                 <Route
                     path={`${props.match.url}/agregar`}
                     component={
                         (match) =>
-                            <RequestHandler
-                                component ={
-                                    (props) =>{
-                                        return (
-                                            <Formulario
-                                                nav={Navegacion.agregar('/ubicaciones')}
-                                                formActions = {FormActions()}
-                                                editar={false}
-                                                {...props} />
-                                        )
-                                    }
-                                }
-                                modal={modal}
-                                fetchHandler={addFormHandler(`ubicaciones/single/${user.id}/${match.match.params.id}`)}/>
-
+                            <Formulario
+                                editar={false}
+                                data={props.data}
+                                toggleModal={openModal}
+                                formActions = {FormActions()}
+                                nav={Navegacion.agregar('/ubicaciones')}
+                                {...match} />
                     } />
                 <Route
                     path={`${props.match.url}/:id`}
                     component={
                         (match) =>
-                        <RequestHandler
-                            component ={
-                                (props) => (
-                                    <VerUbicacion
-                                        nav={Navegacion.singular(()=>false,match.match.params.id,'/ubicaciones')}
-                                        {...props} />
-                                )
-                            }
-                            modal={modal}
-                            fetchHandler={singleHandler(`/ubicaciones/single/${user.id}/${match.match.params.id}`)}/>
+                            <VerUbicacion
+                                data={props.data}
+                                toggleModal={openModal}
+                                nav={Navegacion.singular(()=>false,match.match.params.id,'/ubicaciones')}
+                                {...match} />
                     } />
             </Switch>
         </>

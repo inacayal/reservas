@@ -52,7 +52,7 @@ export const addFormHandler = (endpoint) => {
         this.setState({
             data: true,
             loading: 100,
-            loadFinished: true
+            loadFinished:true
         });
     }
 }
@@ -83,11 +83,6 @@ export class Formulario extends Component {
         const data = this.props.data;
         return (
             <>
-                <ConfirmarModal
-                    open={this.props.open}
-                    closeModal={this.props.toggleModal}
-                    title="Eliminar Ubicación"
-                    content="¿estás seguro de eliminar este ubicación?" />
                 <Titulo
                     title={this.props.editar
                     ? data.nombre

@@ -89275,8 +89275,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ubicaciones_UbicacionesRouting__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./ubicaciones/UbicacionesRouting */ "./resources/js/escritorio/ubicaciones/UbicacionesRouting.jsx");
 /* harmony import */ var _franquicias_FranquiciasRouting__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./franquicias/FranquiciasRouting */ "./resources/js/escritorio/franquicias/FranquiciasRouting.jsx");
 /* harmony import */ var _promociones_PromocionesRouting__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./promociones/PromocionesRouting */ "./resources/js/escritorio/promociones/PromocionesRouting.jsx");
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
 /**
  * react basic
  */
@@ -89325,92 +89323,67 @@ function AppRouting(props) {
     path: "/",
     exact: true,
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
-        render: function render(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_escritorio_EscritorioRouting__WEBPACK_IMPORTED_MODULE_7__["default"], props);
-        },
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
         current: '0'
-      }, match));
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_escritorio_EscritorioRouting__WEBPACK_IMPORTED_MODULE_7__["default"], match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/reservas",
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
-        render: function render(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_reservas_ReservasRouting__WEBPACK_IMPORTED_MODULE_11__["default"], props);
-        },
-        current: '1'
-      }, match));
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        current: '1',
+        handlers: _reservas_ReservasRouting__WEBPACK_IMPORTED_MODULE_11__["handlers"]
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_reservas_ReservasRouting__WEBPACK_IMPORTED_MODULE_11__["ReservasRouting"], match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/horarios",
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
-        render: function render(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_horarios_HorariosRouting__WEBPACK_IMPORTED_MODULE_9__["default"], props);
-        },
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
         current: '2'
-      }, match));
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_horarios_HorariosRouting__WEBPACK_IMPORTED_MODULE_9__["default"], match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/ubicaciones",
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
-        render: function render(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ubicaciones_UbicacionesRouting__WEBPACK_IMPORTED_MODULE_12__["default"], props);
-        },
-        current: '3'
-      }, match));
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        current: '3',
+        handlers: _ubicaciones_UbicacionesRouting__WEBPACK_IMPORTED_MODULE_12__["handlers"]
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ubicaciones_UbicacionesRouting__WEBPACK_IMPORTED_MODULE_12__["UbicacionesRouting"], match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/eventos",
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
-        render: function render(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_eventos_EventosRouting__WEBPACK_IMPORTED_MODULE_8__["default"], props);
-        },
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
         current: '4'
-      }, match));
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_eventos_EventosRouting__WEBPACK_IMPORTED_MODULE_8__["default"], match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/promociones",
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
-        render: function render(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_promociones_PromocionesRouting__WEBPACK_IMPORTED_MODULE_14__["default"], props);
-        },
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
         current: '5'
-      }, match));
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_promociones_PromocionesRouting__WEBPACK_IMPORTED_MODULE_14__["default"], match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/locales",
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
-        render: function render(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_locales_LocalesRouting__WEBPACK_IMPORTED_MODULE_10__["default"], props);
-        },
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
         current: '6'
-      }, match));
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_locales_LocalesRouting__WEBPACK_IMPORTED_MODULE_10__["default"], match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/configuracion",
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
-        render: function render(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_ConfiguracionRouting__WEBPACK_IMPORTED_MODULE_6__["default"], props);
-        },
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
         current: '7'
-      }, match));
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_ConfiguracionRouting__WEBPACK_IMPORTED_MODULE_6__["default"], match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/franquicias",
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
-        render: function render(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_franquicias_FranquiciasRouting__WEBPACK_IMPORTED_MODULE_13__["default"], props);
-        },
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
         current: '8'
-      }, match));
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_franquicias_FranquiciasRouting__WEBPACK_IMPORTED_MODULE_13__["default"], match));
     }
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-2 hidden-s background-border"
@@ -95744,12 +95717,13 @@ function generatePromocionesCard(promociones, actions) {
 /*!**************************************************************!*\
   !*** ./resources/js/escritorio/reservas/ReservasRouting.jsx ***!
   \**************************************************************/
-/*! exports provided: default */
+/*! exports provided: handlers, ReservasRouting */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ReservasRouting; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handlers", function() { return handlers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ReservasRouting", function() { return ReservasRouting; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -95774,54 +95748,80 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 
+var handlers = [{
+  endpoint: '/reservas',
+  match: /\/reservas$/,
+  handler: function handler(params) {
+    return Object(_sub_Calendario__WEBPACK_IMPORTED_MODULE_4__["listHandler"])("reservas/list/".concat(user.id, "/"));
+  },
+  component: function component(props) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Calendario__WEBPACK_IMPORTED_MODULE_4__["Calendario"], {
+      data: props.data,
+      nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].listado('/reservas')
+    });
+  }
+}, {
+  endpoint: '/reservas/agregar',
+  match: /\/reservas\/(agregar)$/,
+  handler: function handler(params) {
+    return Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["formHandler"])("reservas/add/".concat(user.id, "/"));
+  },
+  component: function component(props) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], {
+      editar: false,
+      data: props.data,
+      formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
+      nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].agregar('/reservas')
+    });
+  }
+}, {
+  endpoint: '/reservas/:id',
+  match: /\/reservas\/(\d+)$/,
+  handler: function handler(params) {
+    return Object(_sub_VerReserva__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])("/reservas/single/".concat(user.id, "/").concat(params.id));
+  },
+  component: function component(props) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerReserva__WEBPACK_IMPORTED_MODULE_5__["VerReserva"], {
+      data: props.data,
+      nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].singular(function () {
+        return false;
+      }, props.match.params.id, '/reservas')
+    });
+  }
+}];
 function ReservasRouting(props) {
-  var modal = function modal(props) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null);
-  };
+  if (!props.loaded) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(props.oldComponent.component, props);
+  }
 
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: props.match.url,
     exact: true,
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Calendario__WEBPACK_IMPORTED_MODULE_4__["Calendario"], _extends({
-            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].listado('/reservas')
-          }, props));
-        },
-        modal: modal,
-        fetchHandler: Object(_sub_Calendario__WEBPACK_IMPORTED_MODULE_4__["listHandler"])('reservas/list/' + 27 + '/')
-      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Calendario__WEBPACK_IMPORTED_MODULE_4__["Calendario"], _extends({
+        data: props.data,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].listado('/reservas')
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "".concat(props.match.url, "/agregar"),
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], _extends({
-            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].agregar('/reservas'),
-            formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
-            editar: false
-          }, props));
-        },
-        modal: modal,
-        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["formHandler"])("reservas/add/".concat(user.id, "/"))
-      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], _extends({
+        editar: false,
+        data: props.data,
+        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].agregar('/reservas')
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "".concat(props.match.url, "/:id"),
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerReserva__WEBPACK_IMPORTED_MODULE_5__["VerReserva"], _extends({
-            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].singular(function () {
-              return false;
-            }, match.match.params.id, '/reservas')
-          }, props));
-        },
-        modal: modal,
-        fetchHandler: Object(_sub_VerReserva__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])("/reservas/single/".concat(user.id, "/").concat(match.match.params.id))
-      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerReserva__WEBPACK_IMPORTED_MODULE_5__["VerReserva"], _extends({
+        data: props.data,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].singular(function () {
+          return false;
+        }, match.match.params.id, '/reservas')
+      }, match));
     }
   })));
 }
@@ -95907,9 +95907,9 @@ var listHandler = function listHandler(endpoint) {
             antelacion: response.data.antelacion
           },
           date: date,
-          show: params.show || "1",
-          loadFinished: true
-        }
+          show: params.show || "1"
+        },
+        loadFinished: true
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -96396,12 +96396,13 @@ function (_Component) {
 /*!********************************************************************!*\
   !*** ./resources/js/escritorio/ubicaciones/UbicacionesRouting.jsx ***!
   \********************************************************************/
-/*! exports provided: default */
+/*! exports provided: handlers, UbicacionesRouting */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return UbicacionesRouting; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handlers", function() { return handlers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UbicacionesRouting", function() { return UbicacionesRouting; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -96414,6 +96415,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../hocs/RequestHandler */ "./resources/js/hocs/RequestHandler.jsx");
 /* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 /**
  * react basic
@@ -96431,76 +96440,137 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 
+var handlers = [{
+  endpoint: '/ubicaciones',
+  match: /\/ubicaciones$/,
+  handler: function handler(params) {
+    return Object(_sub_Ubicaciones__WEBPACK_IMPORTED_MODULE_4__["listHandler"])("ubicaciones/list/".concat(user.id));
+  },
+  component: function component(props) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Ubicaciones__WEBPACK_IMPORTED_MODULE_4__["Ubicaciones"], {
+      data: props.data,
+      toggleModal: props.openModal,
+      nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].listado('/ubicaciones')
+    });
+  }
+}, {
+  endpoint: '/ubicaciones/agregar',
+  match: /\/ubicaciones\/(agregar)$/,
+  handler: function handler(params) {
+    return Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["addFormHandler"])("ubicaciones/single/".concat(user.id, "/").concat(params.id));
+  },
+  component: function component(props) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], {
+      editar: false,
+      data: props.data,
+      toggleModal: props.openModal,
+      formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
+      nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].agregar('/ubicaciones')
+    });
+  }
+}, {
+  endpoint: '/ubicaciones/editar/:id',
+  match: /\/ubicaciones\/(editar\/\d+)$/,
+  handler: function handler(params) {
+    return Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["editFormHandler"])("ubicaciones/single/".concat(user.id, "/").concat(params.id));
+  },
+  component: function component(props) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], {
+      editar: true,
+      data: props.data,
+      toggleModal: props.openModal,
+      formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
+      nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].formulario(function () {
+        return false;
+      }, props.match.params.id, '/ubicaciones')
+    });
+  }
+}, {
+  endpoint: '/ubicaciones/:id',
+  match: /\/ubicaciones\/(\d+)$/,
+  handler: function handler(params) {
+    return Object(_sub_VerUbicacion__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])("/ubicaciones/single/".concat(user.id, "/").concat(params.id));
+  },
+  component: function component(props) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerUbicacion__WEBPACK_IMPORTED_MODULE_5__["VerUbicacion"], {
+      data: props.data,
+      toggleModal: props.openModal,
+      nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].singular(function () {
+        return false;
+      }, props.match.params.id, '/ubicaciones')
+    });
+  }
+}];
 function UbicacionesRouting(props) {
-  var modal = function modal(props) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_8__["ConfirmarModal"], _extends({}, props, {
-      title: "Eliminar Ubicación",
-      content: "¿estás seguro de eliminar este ubicación?"
-    }));
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      open = _useState2[0],
+      toggle = _useState2[1],
+      openModal = function openModal(e) {
+    e.preventDefault();
+    toggle(true);
+  },
+      closeModal = function closeModal(e) {
+    e.preventDefault();
+    toggle(false);
   };
 
-  console.log(props.match.url);
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+  if (!props.loaded) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(props.oldComponent.component, _extends({}, props, {
+      openModal: openModal
+    }));
+  }
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_8__["ConfirmarModal"], {
+    open: open,
+    closeModal: closeModal,
+    title: "Eliminar Ubicación",
+    content: "¿estás seguro de eliminar este ubicación?"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: props.match.url,
     exact: true,
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Ubicaciones__WEBPACK_IMPORTED_MODULE_4__["Ubicaciones"], _extends({
-            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].listado('/ubicaciones')
-          }, props));
-        },
-        modal: modal,
-        fetchHandler: Object(_sub_Ubicaciones__WEBPACK_IMPORTED_MODULE_4__["handler"])("ubicaciones/list/".concat(user.id))
-      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Ubicaciones__WEBPACK_IMPORTED_MODULE_4__["Ubicaciones"], _extends({
+        data: props.data,
+        toggleModal: openModal,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].listado('/ubicaciones')
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "".concat(props.match.url, "/editar/:id"),
     exact: true,
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], _extends({
-            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].formulario(function () {
-              return false;
-            }, match.match.params.id, '/ubicaciones'),
-            formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
-            editar: true
-          }, props));
-        },
-        modal: modal,
-        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["editFormHandler"])("ubicaciones/single/".concat(user.id, "/").concat(match.match.params.id))
-      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], _extends({
+        editar: true,
+        data: props.data,
+        toggleModal: openModal,
+        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].formulario(function () {
+          return false;
+        }, match.match.params.id, '/ubicaciones')
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "".concat(props.match.url, "/agregar"),
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], _extends({
-            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].agregar('/ubicaciones'),
-            formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
-            editar: false
-          }, props));
-        },
-        modal: modal,
-        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["addFormHandler"])("ubicaciones/single/".concat(user.id, "/").concat(match.match.params.id))
-      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], _extends({
+        editar: false,
+        data: props.data,
+        toggleModal: openModal,
+        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].agregar('/ubicaciones')
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "".concat(props.match.url, "/:id"),
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerUbicacion__WEBPACK_IMPORTED_MODULE_5__["VerUbicacion"], _extends({
-            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].singular(function () {
-              return false;
-            }, match.match.params.id, '/ubicaciones')
-          }, props));
-        },
-        modal: modal,
-        fetchHandler: Object(_sub_VerUbicacion__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])("/ubicaciones/single/".concat(user.id, "/").concat(match.match.params.id))
-      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerUbicacion__WEBPACK_IMPORTED_MODULE_5__["VerUbicacion"], _extends({
+        data: props.data,
+        toggleModal: openModal,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].singular(function () {
+          return false;
+        }, match.match.params.id, '/ubicaciones')
+      }, match));
     }
   })));
 }
@@ -96641,12 +96711,7 @@ function (_Component) {
     key: "render",
     value: function render() {
       var data = this.props.data;
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_9__["ConfirmarModal"], {
-        open: this.props.open,
-        closeModal: this.props.toggleModal,
-        title: "Eliminar Ubicaci\xF3n",
-        content: "\xBFest\xE1s seguro de eliminar este ubicaci\xF3n?"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
         title: this.props.editar ? data.nombre : "Agregar ubicación",
         links: this.props.nav.links,
         buttons: this.props.nav.buttons
@@ -96717,12 +96782,12 @@ function (_Component) {
 /*!*****************************************************************!*\
   !*** ./resources/js/escritorio/ubicaciones/sub/Ubicaciones.jsx ***!
   \*****************************************************************/
-/*! exports provided: handler, Ubicaciones */
+/*! exports provided: listHandler, Ubicaciones */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handler", function() { return handler; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "listHandler", function() { return listHandler; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Ubicaciones", function() { return Ubicaciones; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -96759,7 +96824,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var handler = function handler(endpoint) {
+var listHandler = function listHandler(endpoint) {
   return function (params) {
     var _this = this;
 
@@ -96777,7 +96842,7 @@ var handler = function handler(endpoint) {
     });
   };
 };
-var Ubicaciones = function Ubicaciones(props) {
+function Ubicaciones(props) {
   var ubicaciones = Object(_generateUbicacionesCard__WEBPACK_IMPORTED_MODULE_6__["default"])(props.data, {
     eliminar: props.toggleModal
   });
@@ -96798,7 +96863,7 @@ var Ubicaciones = function Ubicaciones(props) {
       className: elem["class"]
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(elem.content, null));
   })))));
-};
+}
 
 /***/ }),
 
@@ -96821,24 +96886,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
 /* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
 /**
  * react basic
  */
@@ -96874,64 +96921,39 @@ var singleHandler = function singleHandler(endpoint) {
     });
   };
 };
-var VerUbicacion =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(VerUbicacion, _Component);
-
-  function VerUbicacion(props) {
-    var _this2;
-
-    _classCallCheck(this, VerUbicacion);
-
-    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(VerUbicacion).call(this, props));
-    _this2.props.nav.buttons[0].click = _this2.props.toggleModal;
-    return _this2;
-  }
-
-  _createClass(VerUbicacion, [{
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      console.log('localesUnmount');
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var data = this.props.data;
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container no-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        title: data.nombre,
-        links: this.props.nav.links,
-        buttons: this.props.nav.buttons
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row full-width"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-4 bold"
-      }, "imagen de ubicacion"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-8 container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-12"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "bold highlight"
-      }, "Descripcion:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.descripcion))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row v-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "bold highlight"
-      }, "M\xE1ximo por mesa"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.maximo + " personas")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "bold highlight"
-      }, "Capacidad m\xE1xima"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.capacidad + " personas"))))));
-    }
-  }]);
-
-  return VerUbicacion;
-}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+function VerUbicacion(props) {
+  props.nav.buttons[0].click = props.toggleModal;
+  var data = props.data;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container no-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    title: data.nombre,
+    links: props.nav.links,
+    buttons: props.nav.buttons
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row full-width"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-4 bold"
+  }, "imagen de ubicacion"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-8 container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-12"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "bold highlight"
+  }, "Descripcion:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.descripcion))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "bold highlight"
+  }, "M\xE1ximo por mesa"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.maximo + " personas")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "bold highlight"
+  }, "Capacidad m\xE1xima"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.capacidad + " personas"))))));
+}
 
 /***/ }),
 
@@ -97108,6 +97130,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _componentes_control_BreadCrumb__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../componentes/control/BreadCrumb */ "./resources/js/componentes/control/BreadCrumb.jsx");
 /* harmony import */ var _escritorio_Lateral__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../escritorio/Lateral */ "./resources/js/escritorio/Lateral.jsx");
+/* harmony import */ var _RouterTransition__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./RouterTransition */ "./resources/js/hocs/RouterTransition.jsx");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 /**
  * react basic
  */
@@ -97120,8 +97157,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+var searchHandler = function searchHandler(handlerArray, path) {
+  return handlerArray.filter(function (c, i) {
+    if (path.match(c.match)) return c;
+  });
+};
+
 function MainFrame(props) {
-  var current = window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, '');
+  var current = window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, ''),
+      location = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useLocation"])(),
+      _searchHandler = searchHandler(props.handlers, location.pathname),
+      _searchHandler2 = _slicedToArray(_searchHandler, 1),
+      routeData = _searchHandler2[0];
+
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -97148,7 +97198,10 @@ function MainFrame(props) {
     style: {
       height: '100%'
     }
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(props.render, props)))));
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_RouterTransition__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    dataConfig: routeData,
+    routeConfig: _objectSpread({}, Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useRouteMatch"])(routeData.endpoint))
+  }, props.children)))));
 }
 
 /***/ }),
@@ -97258,11 +97311,7 @@ function (_Component) {
     }
   }, {
     key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      this.setState({
-        oldData: this.state.data
-      });
-    }
+    value: function componentWillUnmount() {}
   }, {
     key: "render",
     value: function render() {
@@ -97286,6 +97335,151 @@ function (_Component) {
   }]);
 
   return RequestHandler;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+
+
+/***/ }),
+
+/***/ "./resources/js/hocs/RouterTransition.jsx":
+/*!************************************************!*\
+  !*** ./resources/js/hocs/RouterTransition.jsx ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return RouterTransition; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utils_LoadBar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/LoadBar */ "./resources/js/utils/LoadBar.jsx");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * react basic
+ */
+
+
+/**
+ * navigation
+ */
+
+ //holds reservation state
+
+var RouterTransition =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(RouterTransition, _Component);
+
+  function RouterTransition(props) {
+    var _this;
+
+    _classCallCheck(this, RouterTransition);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(RouterTransition).call(this, props));
+    _this.state = {
+      data: null,
+      loadFinished: false,
+      loading: 0
+    };
+    _this.fetchData = _this.props.dataConfig.handler(_this.props.routeConfig.params).bind(_assertThisInitialized(_this));
+    _this.downloadHandler = _this.downloadHandler.bind(_assertThisInitialized(_this));
+    _this.fetchHandler = _this.fetchHandler.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(RouterTransition, [{
+    key: "downloadHandler",
+    value: function downloadHandler(pEvent) {
+      var loading = Math.round(pEvent.loaded * 100 / pEvent.total),
+          state = loading !== 100 ? {
+        loading: loading,
+        loadFinished: false
+      } : {
+        loading: loading
+      };
+      this.setState(state);
+    }
+  }, {
+    key: "fetchHandler",
+    value: function fetchHandler(params) {
+      this.fetchData(params);
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.fetchHandler({});
+    }
+  }, {
+    key: "shouldComponentUpdate",
+    value: function shouldComponentUpdate(np, ns) {
+      return this.props.dataConfig.endpoint !== np.dataConfig.endpoint || this.state.data !== ns.data;
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {}
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(pp, ps, s) {
+      if (pp.dataConfig.endpoint !== this.props.dataConfig.endpoint) {
+        this.fetchData = this.props.dataConfig.handler(this.props.routeConfig.params).bind(this);
+        this.fetchData({});
+      } else this.setState({
+        loadFinished: false,
+        loading: 0,
+        oldData: this.state.data,
+        oldComponent: this.props.dataConfig
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var router = react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(this.props.children, {
+        data: this.state.loadFinished ? this.state.data : this.state.oldData,
+        oldData: this.state.oldData,
+        oldComponent: this.state.oldComponent,
+        loaded: this.state.loadFinished
+      });
+      console.log(this.state.loadFinished);
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_LoadBar__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        loaded: this.state.loading
+      }), this.state.data ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        style: {
+          padding: "10px 16px",
+          height: "99%"
+        },
+        className: "main-container h-overflow-auto"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "visible relative"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: this.state.loadFinished ? "hidden" : "top-padding full-width overlay",
+        style: {
+          marginLeft: "-15px"
+        }
+      }), router)) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null));
+    }
+  }]);
+
+  return RouterTransition;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
 

@@ -3,15 +3,27 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter} from 'react-router-dom';
+import {
+    useRouteMatch,
+    useLocation
+} from 'react-router-dom';
 /**
  * navigation
  */
 import BreadCrumb from '../componentes/control/BreadCrumb';
 import Lateral from '../escritorio/Lateral';
+import RouterTransition from './RouterTransition';
+
+const searchHandler = (handlerArray,path) =>
+    handlerArray.filter((c,i) => {
+        if (path.match(c.match))
+            return c;
+    });
 
 export default function MainFrame (props) {
-    const current = window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, '');
+    const current = window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, ''),
+        location = useLocation(),
+        [routeData] = searchHandler(props.handlers,location.pathname);
     return (
         <div className="row">
             <div className="col-md-2 no-padding">
@@ -25,7 +37,11 @@ export default function MainFrame (props) {
                 </div>
                 <div className="row extra-h-padding" style={{height:'87.5%'}}>
                     <div className="col-md-12 container-fluid white-background no-padding" style={{height:'100%'}}>
-                        <props.render {...props} />
+                        <RouterTransition
+                            dataConfig = {routeData}
+                            routeConfig={{...useRouteMatch(routeData.endpoint)}}>
+                            {props.children}
+                        </RouterTransition>
                     </div>
                 </div>
             </div>

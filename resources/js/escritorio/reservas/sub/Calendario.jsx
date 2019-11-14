@@ -38,8 +38,8 @@ export const listHandler = (endpoint) => {
                             },
                             date:date,
                             show:params.show||"1",
-                            loadFinished:true
-                        }
+                        },
+                        loadFinished:true
                     });
                 }
             )
