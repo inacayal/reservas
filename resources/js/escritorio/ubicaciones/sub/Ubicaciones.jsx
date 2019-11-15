@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 /**
  * componentes
  */
+ import {Redirect} from 'react-router-dom';
 import Titulo from '../../../componentes/basic/Titulo';
 import {CardList} from '../../../componentes/basic/CardList';
 import ButtonList from '../../../componentes/basic/ButtonList';
@@ -21,7 +22,7 @@ import LoadBar from '../../../componentes/control/LoadBar';
 import { GET } from '../../../utils/api';
 
 export const listHandler = (
-    endpoint
+    endpoint,location
 ) => {
     return function (params) {
         const request = GET({
@@ -33,7 +34,8 @@ export const listHandler = (
                 response => {
                     this.setState({
                         data: response.data.ubicaciones.data,
-                        loadFinished:true
+                        loadFinished:true,
+                        redirect:<Redirect to={location}/>
                     });
                 }
             )

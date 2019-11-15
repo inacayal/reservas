@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 /**
  * navigation
  */
-import LoadBar from '../utils/LoadBar';
+import {LoadBar} from '../utils/LoadBar';
 
 //holds reservation state
 export default class RequestHandler extends Component {
@@ -51,7 +51,7 @@ export default class RequestHandler extends Component {
     }
 
     componentWillUnmount(){
-        
+
     }
 
     render() {

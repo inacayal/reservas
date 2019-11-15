@@ -3,95 +3,109 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import {Redirect} from 'react-router-dom';
 /**
  * navigation
  */
-import LoadBar from '../utils/LoadBar';
+import {
+    downloadHandler,
+    LoadBar
+} from '../utils/LoadBar';
 
 //holds reservation state
-export default class RouterTransition extends Component {
+import {searchHandler} from './MainFrame';
+
+function assignHandler(handlerArray,location,params){
+    let handler = searchHandler(handlerArray,location);
+    handler = handler.callback(params);
+    return handler.bind(this);
+}
+
+function awaitLoading(location,params){
+    const fetchData = this.assignHandler(this.props.handlerArray,location,params);
+    this.setState(
+        {
+            loading:0,
+            loadFinished:false,
+            fetchData:fetchData,
+            preventRedirect:false
+        },() => {
+            this.fetchHandler(params);
+        }
+    );
+}
+
+export const WaitsLoading = React.createContext({});
+
+export class RouterTransition extends Component {
     constructor(props){
         super(props);
+        this.assignHandler = assignHandler.bind(this);
+
         this.state = {
             data:null,
             loadFinished:false,
-            loading:0
+            loading:0,
+            preventRedirect:true,
+            fetchData:this.assignHandler(this.props.handlerArray,this.props.location,this.props.route.params)
         };
-        this.fetchData = this.props.dataConfig.handler(this.props.routeConfig.params).bind(this);
-        this.downloadHandler = this.downloadHandler.bind(this);
+
+        this.downloadHandler = downloadHandler.bind(this);
+        this.awaitLoading = awaitLoading.bind(this);
         this.fetchHandler = this.fetchHandler.bind(this);
     }
 
-    downloadHandler(pEvent) {
-        let
-            loading = Math.round((pEvent.loaded * 100) / pEvent.total),
-            state = loading !== 100 ?
-                { loading, loadFinished: false }
-                : { loading };
-        this.setState(state);
-    }
 
     fetchHandler(params){
-        this.fetchData(params);
+        this.state.fetchData(params);
+    }
+
+    shouldComponentUpdate(np,ns){
+        return np.location !== this.props.location || ns.loadFinished || this.state.loadFinished;
+    }
+
+    componentDidUpdate(pp){
+        if (pp.location !== this.props.location && this.state.loadFinished)
+            this.setState({
+                redirect:React.cloneElement(this.props.children,{data:this.state.data})
+            })
     }
 
     componentDidMount() {
         this.fetchHandler({});
     }
 
-    shouldComponentUpdate(np,ns){
-        return this.props.dataConfig.endpoint !== np.dataConfig.endpoint || this.state.data !== ns.data;
-    }
-
     componentWillUnmount(){
 
     }
 
-    componentDidUpdate(pp,ps,s){
-        if (pp.dataConfig.endpoint !== this.props.dataConfig.endpoint){
-            this.fetchData = this.props.dataConfig.handler(this.props.routeConfig.params).bind(this);
-            this.fetchData({});
-        } else
-            this.setState({
-                loadFinished:false,
-                loading:0,
-                oldData:this.state.data,
-                oldComponent:this.props.dataConfig
-            });
-    }
-
     render() {
-        const router = React.cloneElement(
-            this.props.children,
-            {
-                data:
-                    this.state.loadFinished
-                    ?
-                        this.state.data
-                    :
-                        this.state.oldData,
-                oldData:this.state.oldData,
-                oldComponent:this.state.oldComponent,
-                loaded:this.state.loadFinished
-            });
-        console.log(this.state.loadFinished)
         return (
-            <>
-                <LoadBar loaded={this.state.loading}/>
-                {
-                    (this.state.data)
-                    ?
-                        <div style={{padding:"10px 16px", height:"99%"}}
-                            className="main-container h-overflow-auto">
-                            <div className="visible relative">
-                                <div className={this.state.loadFinished ? "hidden" : "top-padding full-width overlay"} style={{marginLeft:"-15px"}}/>
-                                {router}
-                            </div>
+            (this.state.data)
+            ?
+                <WaitsLoading.Provider value={this.awaitLoading}>
+                    <LoadBar loaded={this.state.loading}/>
+                    <div style={{padding:"10px 16px", height:"99%"}}
+                        className="main-container h-overflow-auto">
+                        <div className="visible relative">
+                            <div className={this.state.loadFinished ? "hidden" : "top-padding full-width overlay"} style={{marginLeft:"-15px"}}/>
+                            {
+                                this.state.loadFinished && !this.state.preventRedirect
+                                ?
+                                    this.state.redirect
+                                :
+                                    React.cloneElement(
+                                        this.props.children,
+                                        {
+                                            data:this.state.data
+                                        }
+                                    )
+                            }
                         </div>
-                    :
-                        <></>
-                }
-            </>
+                    </div>
+                </WaitsLoading.Provider>
+            :
+                <></>
         );
     }
 }

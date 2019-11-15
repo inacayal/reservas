@@ -16,7 +16,8 @@ export const PromocionesActions = (
                     Editar
                 </div>
             ),
-            to: '/promociones/editar/' + key
+            to: '/promociones/editar/' + key,
+            params:{id:key}
         }
     ],
     buttons: [

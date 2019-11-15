@@ -43,54 +43,26 @@ export const handlers = [
     {
         endpoint:'/ubicaciones',
         match:/\/ubicaciones$/,
-        handler:(params) =>
-            listHandler(`ubicaciones/list/${user.id}`),
-        component:
-            (props) =>
-                <Ubicaciones
-                    data={props.data}
-                    toggleModal={props.openModal}
-                    nav={Navegacion.listado('/ubicaciones')}/>
+        callback:(params) =>
+            listHandler(`ubicaciones/list/${user.id}`,`/ubicaciones`)
     },
     {
         endpoint:'/ubicaciones/agregar',
         match:/\/ubicaciones\/(agregar)$/,
-        handler:(params) =>
-            addFormHandler(`ubicaciones/single/${user.id}/${params.id}`),
-        component:
-            (props) =>
-                <Formulario
-                    editar={false}
-                    data={props.data}
-                    toggleModal={props.openModal}
-                    formActions = {FormActions()}
-                    nav={Navegacion.agregar('/ubicaciones')}/>
+        callback:(params) =>
+            addFormHandler(`ubicaciones/single/${user.id}/${params.id}`,`/ubicaciones/agregar`)
     },
     {
         endpoint:'/ubicaciones/editar/:id',
         match:/\/ubicaciones\/(editar\/\d+)$/,
-        handler:(params) =>
-            editFormHandler(`ubicaciones/single/${user.id}/${params.id}`),
-        component:
-        (props) =>
-            <Formulario
-                editar={true}
-                data={props.data}
-                toggleModal={props.openModal}
-                formActions = {FormActions()}
-                nav={Navegacion.formulario(()=>false,props.match.params.id,'/ubicaciones')} />
+        callback:(params) =>
+            editFormHandler(`ubicaciones/single/${user.id}/${params.id}`,`ubicaciones/editar/${params.id}`)
     },
     {
         endpoint:'/ubicaciones/:id',
         match: /\/ubicaciones\/(\d+)$/,
-        handler: (params) =>
-            singleHandler(`/ubicaciones/single/${user.id}/${params.id}`),
-        component:
-            (props) =>
-                <VerUbicacion
-                    data={props.data}
-                    toggleModal={props.openModal}
-                    nav={Navegacion.singular(()=>false,props.match.params.id,'/ubicaciones')}/>
+        callback: (params) =>
+            singleHandler(`/ubicaciones/single/${user.id}/${params.id}`,`ubicaciones/${params.id}`)
 
     }
 ];
@@ -105,13 +77,6 @@ export function UbicacionesRouting (props) {
             e.preventDefault();
             toggle(false);
         };
-    if (!props.loaded){
-        return (
-            <props.oldComponent.component
-                {...props}
-                openModal={openModal}/>
-        )
-    }
     return (
         <>
             <ConfirmarModal
@@ -122,27 +87,32 @@ export function UbicacionesRouting (props) {
             <Route
                 path={props.match.url}
                 exact
-                component={
-                    (match) =>
+                render={
+                    (match) =>(
                         <Ubicaciones
                             data={props.data}
                             toggleModal={openModal}
                             nav={Navegacion.listado('/ubicaciones')} {...match}/>
-                } />
+                    )
+                }/>
             <Switch>
                 <Route
                     path={`${props.match.url}/editar/:id`}
                     exact
-                    component={
-                        (match) =>
-                            <Formulario
+                    render={
+                        (match) =>{
+                            return (
+                                <Formulario
                                 editar={true}
                                 data={props.data}
                                 toggleModal={openModal}
                                 formActions = {FormActions()}
                                 nav={Navegacion.formulario(()=>false,match.match.params.id,'/ubicaciones')}
                                 {...match} />
-                    } />
+
+                            )
+                        }
+                } />
                 <Route
                     path={`${props.match.url}/agregar`}
                     component={

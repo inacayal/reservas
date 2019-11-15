@@ -69,9 +69,11 @@ export default function AppRouting (props) {
                             />
                         <Route
                             path='/ubicaciones'
-                            component={
+                            render={
                                 (match) =>
-                                    <MainFrame current = {'3'} handlers={ubicacionesHandlers}>
+                                    <MainFrame
+                                        current = {'3'}
+                                        handlers={ubicacionesHandlers}>
                                         <UbicacionesRouting {...match} />
                                     </MainFrame>
                             } />

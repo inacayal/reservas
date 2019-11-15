@@ -1,7 +1,7 @@
 /**
  * react basic
  */
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import {Link} from 'react-router-dom';
 /**
@@ -12,17 +12,24 @@ import ButtonList from '../../../componentes/basic/ButtonList';
  * funciones
  */
 import { GenerateActions } from '../../../acciones/GenerateActions';
+import {WaitsLoading} from '../../../hocs/RouterTransition';
+import {waitCallback} from '../../../componentes/basic/Actions';
 
 export default function generateUbicacionesCard(
     ubicaciones,
     actions
 ){
+    const context = useContext(WaitsLoading);
     return Object.keys(ubicaciones).map(
         e => {
             const acciones = GenerateActions.ubicaciones(
-                e,
-                actions
-            );
+                    e,
+                    actions
+                ),
+                linkParam = {
+                    to:`/ubicaciones/${e}`,
+                    params:{id:e}
+                };
             return {
                 content:() => (
                     <div className="container">
@@ -32,9 +39,11 @@ export default function generateUbicacionesCard(
                             </div>
                             <div className="col-md-9 container">
                                 <div className="row">
-                                    <Link to={"ubicaciones/"+e}>
+                                    <Link
+                                        to={linkParam}
+                                        onClick={(ev) => waitCallback(ev,linkParam,context)}>
                                         <span className="bold sub-title side-margin text">{ubicaciones[e].nombre}</span>
-                                    </Link>    
+                                    </Link>
                                     {acciones}
                                 </div>
                                 <div className="row v-padding">

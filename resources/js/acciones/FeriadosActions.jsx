@@ -23,7 +23,8 @@ export const FeriadosActions = {
                             Editar
                         </div>
                     ),
-                    to: '/horarios/feriados/editar/' + key
+                    to: '/horarios/feriados/editar/' + key,
+                    params:{id:key}
                 }
             ],
             buttons: [
@@ -52,14 +53,16 @@ export const FeriadosActions = {
                             <i className="fas fa-eye side-margin" />
                         </div>
                     ),
-                    to: '/horarios/feriados/' + key
+                    to: '/horarios/feriados/' + key,
+                    params:{id:key}
                 },{
                     title: (
                         <div className="smaller-text decorate-hover text small-v-padding">
                             <i className="fas fa-pen inline-box side-margin" />
                         </div>
                     ),
-                    to: '/horarios/feriados/editar/' + key
+                    to: '/horarios/feriados/editar/' + key,
+                    params:{id:key}
                 }
             ],
             buttons: [
@@ -70,7 +73,7 @@ export const FeriadosActions = {
                         </div>
                     ),
                     click: actions.eliminar,
-                    data: key,
+                    data: key
                 }
             ]
         }),

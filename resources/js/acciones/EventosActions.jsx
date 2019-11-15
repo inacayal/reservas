@@ -17,7 +17,8 @@ export const EventosActions = (
                         Editar
                     </div>
                 ),
-                to: '/eventos/editar/' + key
+                to: '/eventos/editar/' + key,
+                params:{id:key}
             }
         ],
         buttons: [

@@ -18,7 +18,8 @@ export const HorariosActions = {
                         Editar
                     </div>
                 ),
-                to: '/horarios/editar/' + key
+                to: '/horarios/editar/' + key,
+                params:{id:key}
             }
         ],
         buttons: [
@@ -30,7 +31,8 @@ export const HorariosActions = {
                     </div>
                 ),
                 click: actions.eliminar,
-                data: key
+                data: key,
+                params:{id:key}
             }
         ]
     }),
@@ -45,7 +47,8 @@ export const HorariosActions = {
                         Agregar horario
                     </div>
                 ),
-                to: '/horarios/agregar/' + key
+                to: '/horarios/agregar/' + key,
+                params:{day:key}
             }
         ],
         buttons: []

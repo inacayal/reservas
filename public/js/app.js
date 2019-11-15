@@ -85155,7 +85155,8 @@ var Navegacion = {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-bars inline-box side-margin"
         }), "Listado"),
-        to: root
+        to: root,
+        params: {}
       }]
     };
   },
@@ -85167,7 +85168,8 @@ var Navegacion = {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-plus-circle inline-box side-margin"
         }), "Agregar"),
-        to: root + '/agregar'
+        to: root + '/agregar',
+        params: {}
       }]
     };
   },
@@ -85179,14 +85181,18 @@ var Navegacion = {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-bars inline-box side-margin"
         }), "Listado"),
-        to: root
+        to: root,
+        params: {}
       }, {
         title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "smaller-text text bold"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-eye"
         }), "Ver"),
-        to: root + '/' + key
+        to: root + '/' + key,
+        params: {
+          id: key
+        }
       }],
       buttons: [{
         title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -85209,14 +85215,18 @@ var Navegacion = {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-bars inline-box side-margin"
         }), "Listado"),
-        to: root
+        to: root,
+        params: {}
       }, {
         title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "smaller-text text bold"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-pen"
         }), "Editar"),
-        to: root + '/editar/' + key
+        to: root + '/editar/' + key,
+        params: {
+          id: key
+        }
       }],
       buttons: [{
         title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -85288,7 +85298,10 @@ var EventosActions = function EventosActions(key, actions) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fas fa-pen inline-box side-margin"
       }), "Editar"),
-      to: '/eventos/editar/' + key
+      to: '/eventos/editar/' + key,
+      params: {
+        id: key
+      }
     }],
     buttons: [{
       title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -85337,7 +85350,10 @@ var FeriadosActions = {
           }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
             className: "fas fa-pen inline-box side-margin"
           }), "Editar"),
-          to: '/horarios/feriados/editar/' + key
+          to: '/horarios/feriados/editar/' + key,
+          params: {
+            id: key
+          }
         }],
         buttons: [{
           title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -85360,14 +85376,20 @@ var FeriadosActions = {
           }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
             className: "fas fa-eye side-margin"
           })),
-          to: '/horarios/feriados/' + key
+          to: '/horarios/feriados/' + key,
+          params: {
+            id: key
+          }
         }, {
           title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
             className: "smaller-text decorate-hover text small-v-padding"
           }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
             className: "fas fa-pen inline-box side-margin"
           })),
-          to: '/horarios/feriados/editar/' + key
+          to: '/horarios/feriados/editar/' + key,
+          params: {
+            id: key
+          }
         }],
         buttons: [{
           title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -85510,7 +85532,10 @@ var HorariosActions = {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-pen inline-box side-margin"
         }), "Editar"),
-        to: '/horarios/editar/' + key
+        to: '/horarios/editar/' + key,
+        params: {
+          id: key
+        }
       }],
       buttons: [{
         title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -85519,7 +85544,10 @@ var HorariosActions = {
           className: "fas fa-trash inline-box side-margin"
         }), "Eliminar"),
         click: actions.eliminar,
-        data: key
+        data: key,
+        params: {
+          id: key
+        }
       }]
     };
   },
@@ -85531,7 +85559,10 @@ var HorariosActions = {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-plus-circle inline-box side-margin"
         }), "Agregar horario"),
-        to: '/horarios/agregar/' + key
+        to: '/horarios/agregar/' + key,
+        params: {
+          day: key
+        }
       }],
       buttons: []
     };
@@ -85567,7 +85598,10 @@ var PromocionesActions = function PromocionesActions(key, actions) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fas fa-pen inline-box side-margin"
       }), "Editar"),
-      to: '/promociones/editar/' + key
+      to: '/promociones/editar/' + key,
+      params: {
+        id: key
+      }
     }],
     buttons: [{
       title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -85713,7 +85747,10 @@ var UbicacionesActions = function UbicacionesActions(key, actions) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fas fa-pen inline-box side-margin"
       }), "Editar"),
-      to: '/ubicaciones/editar/' + key
+      to: '/ubicaciones/editar/' + key,
+      params: {
+        id: key
+      }
     }],
     buttons: [{
       title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -87455,29 +87492,25 @@ function YearCalendar(props) {
 /*!****************************************************!*\
   !*** ./resources/js/componentes/basic/Actions.jsx ***!
   \****************************************************/
-/*! exports provided: default */
+/*! exports provided: waitCallback, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "waitCallback", function() { return waitCallback; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Actions; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Button */ "./resources/js/componentes/basic/Button.jsx");
+/* harmony import */ var _hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../hocs/RouterTransition */ "./resources/js/hocs/RouterTransition.jsx");
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
+/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Button */ "./resources/js/componentes/basic/Button.jsx");
 /**
  * react basic
  */
+
+
 
 
 /**
@@ -87490,17 +87523,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
  */
 
 
+var waitCallback = function waitCallback(ev, e, context) {
+  ev.preventDefault();
+  context(e.to, e.params);
+};
 function Actions(props) {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      showOptions = _useState2[0],
-      changeHover = _useState2[1],
+  var _this = this;
+
+  var context = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_2__["WaitsLoading"]),
       format = props.overlay ? {
     overHandler: function overHandler(e) {
-      return changeHover(true);
+      return _this.changeHover(true);
     },
     leaveHandler: function leaveHandler(e) {
-      return changeHover(false);
+      return _this.changeHover(false);
     },
     container: "overlay-gradient full-cover",
     list: showOptions ? "nav-list text-super flex-row no-padding " : "hidden",
@@ -87525,7 +87561,6 @@ function Actions(props) {
       button: "box-transparent highlight-hover full-width text-right button-border border-box"
     }
   };
-
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     onMouseOver: format.overHandler,
     onMouseLeave: format.leaveHandler,
@@ -87537,13 +87572,16 @@ function Actions(props) {
       key: ind,
       className: format.element.link
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Link"], {
-      to: e.to
+      to: e.to,
+      onClick: function onClick(ev) {
+        return waitCallback(ev, e, context);
+      }
     }, e.title));
   }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null), props.buttons ? props.buttons.length > 0 ? props.buttons.map(function (e, i) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
       key: i,
       className: format.element.container ? format.element.container.button : "highlight-hover button-border border-box side-margin"
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Button__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Button__WEBPACK_IMPORTED_MODULE_4__["default"], {
       data: e.data,
       "class": "block no-border no-background no-padding",
       click: e.click,
@@ -89344,7 +89382,7 @@ function AppRouting(props) {
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/ubicaciones",
-    component: function component(match) {
+    render: function render(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
         current: '3',
         handlers: _ubicaciones_UbicacionesRouting__WEBPACK_IMPORTED_MODULE_12__["handlers"]
@@ -96443,62 +96481,26 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 var handlers = [{
   endpoint: '/ubicaciones',
   match: /\/ubicaciones$/,
-  handler: function handler(params) {
-    return Object(_sub_Ubicaciones__WEBPACK_IMPORTED_MODULE_4__["listHandler"])("ubicaciones/list/".concat(user.id));
-  },
-  component: function component(props) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Ubicaciones__WEBPACK_IMPORTED_MODULE_4__["Ubicaciones"], {
-      data: props.data,
-      toggleModal: props.openModal,
-      nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].listado('/ubicaciones')
-    });
+  callback: function callback(params) {
+    return Object(_sub_Ubicaciones__WEBPACK_IMPORTED_MODULE_4__["listHandler"])("ubicaciones/list/".concat(user.id), "/ubicaciones");
   }
 }, {
   endpoint: '/ubicaciones/agregar',
   match: /\/ubicaciones\/(agregar)$/,
-  handler: function handler(params) {
-    return Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["addFormHandler"])("ubicaciones/single/".concat(user.id, "/").concat(params.id));
-  },
-  component: function component(props) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], {
-      editar: false,
-      data: props.data,
-      toggleModal: props.openModal,
-      formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
-      nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].agregar('/ubicaciones')
-    });
+  callback: function callback(params) {
+    return Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["addFormHandler"])("ubicaciones/single/".concat(user.id, "/").concat(params.id), "/ubicaciones/agregar");
   }
 }, {
   endpoint: '/ubicaciones/editar/:id',
   match: /\/ubicaciones\/(editar\/\d+)$/,
-  handler: function handler(params) {
-    return Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["editFormHandler"])("ubicaciones/single/".concat(user.id, "/").concat(params.id));
-  },
-  component: function component(props) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], {
-      editar: true,
-      data: props.data,
-      toggleModal: props.openModal,
-      formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
-      nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].formulario(function () {
-        return false;
-      }, props.match.params.id, '/ubicaciones')
-    });
+  callback: function callback(params) {
+    return Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["editFormHandler"])("ubicaciones/single/".concat(user.id, "/").concat(params.id), "ubicaciones/editar/".concat(params.id));
   }
 }, {
   endpoint: '/ubicaciones/:id',
   match: /\/ubicaciones\/(\d+)$/,
-  handler: function handler(params) {
-    return Object(_sub_VerUbicacion__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])("/ubicaciones/single/".concat(user.id, "/").concat(params.id));
-  },
-  component: function component(props) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerUbicacion__WEBPACK_IMPORTED_MODULE_5__["VerUbicacion"], {
-      data: props.data,
-      toggleModal: props.openModal,
-      nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].singular(function () {
-        return false;
-      }, props.match.params.id, '/ubicaciones')
-    });
+  callback: function callback(params) {
+    return Object(_sub_VerUbicacion__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])("/ubicaciones/single/".concat(user.id, "/").concat(params.id), "ubicaciones/".concat(params.id));
   }
 }];
 function UbicacionesRouting(props) {
@@ -96515,12 +96517,6 @@ function UbicacionesRouting(props) {
     toggle(false);
   };
 
-  if (!props.loaded) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(props.oldComponent.component, _extends({}, props, {
-      openModal: openModal
-    }));
-  }
-
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_8__["ConfirmarModal"], {
     open: open,
     closeModal: closeModal,
@@ -96529,7 +96525,7 @@ function UbicacionesRouting(props) {
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: props.match.url,
     exact: true,
-    component: function component(match) {
+    render: function render(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Ubicaciones__WEBPACK_IMPORTED_MODULE_4__["Ubicaciones"], _extends({
         data: props.data,
         toggleModal: openModal,
@@ -96539,7 +96535,7 @@ function UbicacionesRouting(props) {
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "".concat(props.match.url, "/editar/:id"),
     exact: true,
-    component: function component(match) {
+    render: function render(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], _extends({
         editar: true,
         data: props.data,
@@ -96597,11 +96593,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_calendar__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
 /* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
-/* harmony import */ var _componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/input/Numeric */ "./resources/js/componentes/input/Numeric.jsx");
-/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
-/* harmony import */ var _utils_LoadBar__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../utils/LoadBar */ "./resources/js/utils/LoadBar.jsx");
-/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
-/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/input/Numeric */ "./resources/js/componentes/input/Numeric.jsx");
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var _utils_LoadBar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../utils/LoadBar */ "./resources/js/utils/LoadBar.jsx");
+/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
+/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -96636,6 +96633,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 /**
  * input component and handlers
  */
@@ -96649,30 +96647,36 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var editFormHandler = function editFormHandler(endpoint) {
+var editFormHandler = function editFormHandler(endpoint, location) {
   return function (params) {
     var _this = this;
 
-    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_8__["GET"])({
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_9__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
     request.then(function (response) {
       _this.setState({
         data: response.data.ubicaciones[0],
-        loadFinished: true
+        loadFinished: true,
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Redirect"], {
+          to: location
+        })
       });
     })["catch"](function (error) {
       console.log(error.message);
     });
   };
 };
-var addFormHandler = function addFormHandler(endpoint) {
+var addFormHandler = function addFormHandler(endpoint, location) {
   return function (params) {
     this.setState({
       data: true,
       loading: 100,
-      loadFinished: true
+      loadFinished: true,
+      redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Redirect"], {
+        to: location
+      })
     });
   };
 };
@@ -96727,7 +96731,7 @@ function (_Component) {
         className: "col-md-8 container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_6__["Text"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_7__["Text"], {
         rows: 1,
         titulo: "Nombre de la ubicaci\xF3n",
         name: "nombre",
@@ -96736,7 +96740,7 @@ function (_Component) {
         container: "full-width"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row v-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_6__["Text"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_7__["Text"], {
         rows: 4,
         titulo: "Descripcion",
         name: "descripcion",
@@ -96747,7 +96751,7 @@ function (_Component) {
         className: "row v-padding"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_5__["Numeric"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_6__["Numeric"], {
         titulo: "Capacidad m\xE1xima",
         name: "capacidad_maxima",
         value: this.props.editar ? data.capacidad : "",
@@ -96757,7 +96761,7 @@ function (_Component) {
         className: "smaller-text"
       }, "M\xE1ximo de personas en la ubicaci\xF3n")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_5__["Numeric"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_6__["Numeric"], {
         titulo: "M\xE1ximo personas",
         name: "maximo_personas",
         value: this.props.editar ? data.maximo : "",
@@ -96793,13 +96797,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _componentes_basic_CardList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/CardList */ "./resources/js/componentes/basic/CardList.jsx");
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
-/* harmony import */ var _generateUbicacionesCard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./generateUbicacionesCard */ "./resources/js/escritorio/ubicaciones/sub/generateUbicacionesCard.jsx");
-/* harmony import */ var _componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/control/LoadBar */ "./resources/js/componentes/control/LoadBar.jsx");
-/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _componentes_basic_CardList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/CardList */ "./resources/js/componentes/basic/CardList.jsx");
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
+/* harmony import */ var _generateUbicacionesCard__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./generateUbicacionesCard */ "./resources/js/escritorio/ubicaciones/sub/generateUbicacionesCard.jsx");
+/* harmony import */ var _componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../componentes/control/LoadBar */ "./resources/js/componentes/control/LoadBar.jsx");
+/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
 /**
  * react basic
  */
@@ -96808,6 +96813,7 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * componentes
  */
+
 
 
 
@@ -96824,18 +96830,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var listHandler = function listHandler(endpoint) {
+var listHandler = function listHandler(endpoint, location) {
   return function (params) {
     var _this = this;
 
-    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_8__["GET"])({
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_9__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
     request.then(function (response) {
       _this.setState({
         data: response.data.ubicaciones.data,
-        loadFinished: true
+        loadFinished: true,
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+          to: location
+        })
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -96843,10 +96852,10 @@ var listHandler = function listHandler(endpoint) {
   };
 };
 function Ubicaciones(props) {
-  var ubicaciones = Object(_generateUbicacionesCard__WEBPACK_IMPORTED_MODULE_6__["default"])(props.data, {
+  var ubicaciones = Object(_generateUbicacionesCard__WEBPACK_IMPORTED_MODULE_7__["default"])(props.data, {
     eliminar: props.toggleModal
   });
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
     title: "Ubicaciones",
     links: props.nav.links
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -96882,13 +96891,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/control/LoadBar */ "./resources/js/componentes/control/LoadBar.jsx");
-/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/control/LoadBar */ "./resources/js/componentes/control/LoadBar.jsx");
+/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
 /**
  * react basic
  */
+
 
 
 /**
@@ -96903,18 +96914,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var singleHandler = function singleHandler(endpoint) {
+var singleHandler = function singleHandler(endpoint, location) {
   return function (params) {
     var _this = this;
 
-    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_4__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
     request.then(function (response) {
       _this.setState({
         data: response.data.ubicaciones[0],
-        loadFinished: true
+        loadFinished: true,
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+          to: location
+        })
       });
     })["catch"](function (error) {
       console.log(error.message);
@@ -96926,7 +96940,7 @@ function VerUbicacion(props) {
   var data = props.data;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container no-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_5__["default"], {
     title: data.nombre,
     links: props.nav.links,
     buttons: props.nav.buttons
@@ -96974,6 +96988,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
 /* harmony import */ var _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../acciones/GenerateActions */ "./resources/js/acciones/GenerateActions.jsx");
+/* harmony import */ var _hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../hocs/RouterTransition */ "./resources/js/hocs/RouterTransition.jsx");
+/* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
 /**
  * react basic
  */
@@ -96990,9 +97006,18 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
+
+
 function generateUbicacionesCard(ubicaciones, actions) {
+  var context = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_5__["WaitsLoading"]);
   return Object.keys(ubicaciones).map(function (e) {
-    var acciones = _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_4__["GenerateActions"].ubicaciones(e, actions);
+    var acciones = _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_4__["GenerateActions"].ubicaciones(e, actions),
+        linkParam = {
+      to: "/ubicaciones/".concat(e),
+      params: {
+        id: e
+      }
+    };
     return {
       content: function content() {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -97006,7 +97031,10 @@ function generateUbicacionesCard(ubicaciones, actions) {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
-          to: "ubicaciones/" + e
+          to: linkParam,
+          onClick: function onClick(ev) {
+            return Object(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_6__["waitCallback"])(ev, linkParam, context);
+          }
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "bold sub-title side-margin text"
         }, ubicaciones[e].nombre)), acciones), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -97117,11 +97145,12 @@ var ExpandableComponent = function ExpandableComponent(props) {
 /*!*****************************************!*\
   !*** ./resources/js/hocs/MainFrame.jsx ***!
   \*****************************************/
-/*! exports provided: default */
+/*! exports provided: searchHandler, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "searchHandler", function() { return searchHandler; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return MainFrame; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -97131,20 +97160,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _componentes_control_BreadCrumb__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../componentes/control/BreadCrumb */ "./resources/js/componentes/control/BreadCrumb.jsx");
 /* harmony import */ var _escritorio_Lateral__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../escritorio/Lateral */ "./resources/js/escritorio/Lateral.jsx");
 /* harmony import */ var _RouterTransition__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./RouterTransition */ "./resources/js/hocs/RouterTransition.jsx");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 /**
  * react basic
  */
@@ -97158,20 +97173,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-
 var searchHandler = function searchHandler(handlerArray, path) {
-  return handlerArray.filter(function (c, i) {
+  var handler = handlerArray.filter(function (c, i) {
     if (path.match(c.match)) return c;
   });
+  return handler[0];
+};
+
+var searchRoute = function searchRoute(handler) {
+  return Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useRouteMatch"])(handler.endpoint);
 };
 
 function MainFrame(props) {
   var current = window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, ''),
       location = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useLocation"])(),
-      _searchHandler = searchHandler(props.handlers, location.pathname),
-      _searchHandler2 = _slicedToArray(_searchHandler, 1),
-      routeData = _searchHandler2[0];
-
+      handler = searchHandler(props.handlers, location.pathname),
+      route = searchRoute(handler);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -97198,9 +97215,10 @@ function MainFrame(props) {
     style: {
       height: '100%'
     }
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_RouterTransition__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    dataConfig: routeData,
-    routeConfig: _objectSpread({}, Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useRouteMatch"])(routeData.endpoint))
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_RouterTransition__WEBPACK_IMPORTED_MODULE_5__["RouterTransition"], {
+    route: route,
+    location: location.pathname,
+    handlerArray: props.handlers
   }, props.children)))));
 }
 
@@ -97315,7 +97333,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_LoadBar__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_LoadBar__WEBPACK_IMPORTED_MODULE_2__["LoadBar"], {
         loaded: this.state.loading
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(this.props.modal, {
         open: this.state.open,
@@ -97345,17 +97363,20 @@ function (_Component) {
 /*!************************************************!*\
   !*** ./resources/js/hocs/RouterTransition.jsx ***!
   \************************************************/
-/*! exports provided: default */
+/*! exports provided: WaitsLoading, RouterTransition */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return RouterTransition; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WaitsLoading", function() { return WaitsLoading; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RouterTransition", function() { return RouterTransition; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _utils_LoadBar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/LoadBar */ "./resources/js/utils/LoadBar.jsx");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _utils_LoadBar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/LoadBar */ "./resources/js/utils/LoadBar.jsx");
+/* harmony import */ var _MainFrame__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./MainFrame */ "./resources/js/hocs/MainFrame.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -97379,50 +97400,79 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  */
 
 
+
 /**
  * navigation
  */
 
  //holds reservation state
 
+
+
+function assignHandler(handlerArray, location, params) {
+  var handler = Object(_MainFrame__WEBPACK_IMPORTED_MODULE_4__["searchHandler"])(handlerArray, location);
+  handler = handler.callback(params);
+  return handler.bind(this);
+}
+
+function awaitLoading(location, params) {
+  var _this = this;
+
+  var fetchData = this.assignHandler(this.props.handlerArray, location, params);
+  this.setState({
+    loading: 0,
+    loadFinished: false,
+    fetchData: fetchData,
+    preventRedirect: false
+  }, function () {
+    _this.fetchHandler(params);
+  });
+}
+
+var WaitsLoading = react__WEBPACK_IMPORTED_MODULE_0___default.a.createContext({});
 var RouterTransition =
 /*#__PURE__*/
 function (_Component) {
   _inherits(RouterTransition, _Component);
 
   function RouterTransition(props) {
-    var _this;
+    var _this2;
 
     _classCallCheck(this, RouterTransition);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(RouterTransition).call(this, props));
-    _this.state = {
+    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(RouterTransition).call(this, props));
+    _this2.assignHandler = assignHandler.bind(_assertThisInitialized(_this2));
+    _this2.state = {
       data: null,
       loadFinished: false,
-      loading: 0
+      loading: 0,
+      preventRedirect: true,
+      fetchData: _this2.assignHandler(_this2.props.handlerArray, _this2.props.location, _this2.props.route.params)
     };
-    _this.fetchData = _this.props.dataConfig.handler(_this.props.routeConfig.params).bind(_assertThisInitialized(_this));
-    _this.downloadHandler = _this.downloadHandler.bind(_assertThisInitialized(_this));
-    _this.fetchHandler = _this.fetchHandler.bind(_assertThisInitialized(_this));
-    return _this;
+    _this2.downloadHandler = _utils_LoadBar__WEBPACK_IMPORTED_MODULE_3__["downloadHandler"].bind(_assertThisInitialized(_this2));
+    _this2.awaitLoading = awaitLoading.bind(_assertThisInitialized(_this2));
+    _this2.fetchHandler = _this2.fetchHandler.bind(_assertThisInitialized(_this2));
+    return _this2;
   }
 
   _createClass(RouterTransition, [{
-    key: "downloadHandler",
-    value: function downloadHandler(pEvent) {
-      var loading = Math.round(pEvent.loaded * 100 / pEvent.total),
-          state = loading !== 100 ? {
-        loading: loading,
-        loadFinished: false
-      } : {
-        loading: loading
-      };
-      this.setState(state);
-    }
-  }, {
     key: "fetchHandler",
     value: function fetchHandler(params) {
-      this.fetchData(params);
+      this.state.fetchData(params);
+    }
+  }, {
+    key: "shouldComponentUpdate",
+    value: function shouldComponentUpdate(np, ns) {
+      return np.location !== this.props.location || ns.loadFinished || this.state.loadFinished;
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(pp) {
+      if (pp.location !== this.props.location && this.state.loadFinished) this.setState({
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(this.props.children, {
+          data: this.state.data
+        })
+      });
     }
   }, {
     key: "componentDidMount",
@@ -97430,39 +97480,16 @@ function (_Component) {
       this.fetchHandler({});
     }
   }, {
-    key: "shouldComponentUpdate",
-    value: function shouldComponentUpdate(np, ns) {
-      return this.props.dataConfig.endpoint !== np.dataConfig.endpoint || this.state.data !== ns.data;
-    }
-  }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {}
   }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(pp, ps, s) {
-      if (pp.dataConfig.endpoint !== this.props.dataConfig.endpoint) {
-        this.fetchData = this.props.dataConfig.handler(this.props.routeConfig.params).bind(this);
-        this.fetchData({});
-      } else this.setState({
-        loadFinished: false,
-        loading: 0,
-        oldData: this.state.data,
-        oldComponent: this.props.dataConfig
-      });
-    }
-  }, {
     key: "render",
     value: function render() {
-      var router = react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(this.props.children, {
-        data: this.state.loadFinished ? this.state.data : this.state.oldData,
-        oldData: this.state.oldData,
-        oldComponent: this.state.oldComponent,
-        loaded: this.state.loadFinished
-      });
-      console.log(this.state.loadFinished);
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_LoadBar__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      return this.state.data ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(WaitsLoading.Provider, {
+        value: this.awaitLoading
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_LoadBar__WEBPACK_IMPORTED_MODULE_3__["LoadBar"], {
         loaded: this.state.loading
-      }), this.state.data ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
           padding: "10px 16px",
           height: "99%"
@@ -97475,14 +97502,14 @@ function (_Component) {
         style: {
           marginLeft: "-15px"
         }
-      }), router)) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null));
+      }), this.state.loadFinished && !this.state.preventRedirect ? this.state.redirect : react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(this.props.children, {
+        data: this.state.data
+      })))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null);
     }
   }]);
 
   return RouterTransition;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
-
-
 
 /***/ }),
 
@@ -98604,12 +98631,13 @@ var getMonthLength = function getMonthLength(month, year) {
 /*!****************************************!*\
   !*** ./resources/js/utils/LoadBar.jsx ***!
   \****************************************/
-/*! exports provided: default */
+/*! exports provided: downloadHandler, LoadBar */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return LoadBar; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "downloadHandler", function() { return downloadHandler; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoadBar", function() { return LoadBar; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -98625,6 +98653,16 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
+function downloadHandler(pEvent) {
+  var loading = Math.round(pEvent.loaded * 100 / pEvent.total),
+      state = loading !== 100 ? {
+    loading: loading,
+    loadFinished: false
+  } : {
+    loading: loading
+  };
+  this.setState(state);
+}
 function LoadBar(progress) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     style: {

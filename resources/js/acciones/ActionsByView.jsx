@@ -14,7 +14,8 @@ export const Navegacion = {
                         Listado
                     </div>
                 ),
-                to: root
+                to: root,
+                params:{}
             }
         ]
     }),
@@ -27,7 +28,8 @@ export const Navegacion = {
                         Agregar
                     </div>
                 ),
-                to: root+'/agregar'
+                to: root+'/agregar',
+                params:{}
             }
         ]
     }),
@@ -44,7 +46,8 @@ export const Navegacion = {
                         Listado
                     </div>
                 ),
-                to: root
+                to: root,
+                params:{}
             }, {
                 title: (
                     <div className="smaller-text text bold">
@@ -52,7 +55,8 @@ export const Navegacion = {
                         Ver
                     </div>
                 ),
-                to: root+'/' + key
+                to: root+'/' + key,
+                params:{id:key}
             }
         ],
         buttons: [
@@ -81,7 +85,8 @@ export const Navegacion = {
                         Listado
                     </div>
                 ),
-                to: root
+                to: root,
+                params:{}
             }, {
                 title: (
                     <div className="smaller-text text bold">
@@ -89,7 +94,8 @@ export const Navegacion = {
                         Editar
                     </div>
                 ),
-                to: root+'/editar/' + key
+                to: root+'/editar/' + key,
+                params:{id:key}
             }
         ],
         buttons: [

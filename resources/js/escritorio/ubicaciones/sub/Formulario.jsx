@@ -12,6 +12,7 @@ import Calendar from 'react-calendar';
  */
 import Titulo from '../../../componentes/basic/Titulo';
 import Actions from '../../../componentes/basic/Actions';
+import {Redirect} from 'react-router-dom';
 /**
  * input component and handlers
  */
@@ -24,7 +25,7 @@ import LoadBar from '../../../utils/LoadBar';
 import { GET } from '../../../utils/api';
 import {ConfirmarModal} from '../../../componentes/modal/Modal';
 
-export const editFormHandler = (endpoint) => {
+export const editFormHandler = (endpoint,location) => {
     return function (params) {
         const request = GET({
             endpoint: endpoint,
@@ -35,7 +36,8 @@ export const editFormHandler = (endpoint) => {
                 response => {
                     this.setState({
                         data: response.data.ubicaciones[0],
-                        loadFinished: true
+                        loadFinished: true,
+                        redirect:<Redirect to={location}/>
                     });
                 }
             )
@@ -47,12 +49,13 @@ export const editFormHandler = (endpoint) => {
     }
 }
 
-export const addFormHandler = (endpoint) => {
+export const addFormHandler = (endpoint,location) => {
     return function (params) {
         this.setState({
             data: true,
             loading: 100,
-            loadFinished:true
+            loadFinished:true,
+            redirect:<Redirect to={location}/>
         });
     }
 }
