@@ -3,6 +3,7 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import {Redirect} from 'react-router-dom';
 /**
  * API
  */
@@ -32,7 +33,8 @@ export const editFormHandler = (endpoint) => {
                     const data = response.data.data
                     this.setState({
                         data:data,
-                        loadFinished:true
+                        loadFinished:true,
+                        redirect:<Redirect to={location}/>
                     });
                 }
             )
@@ -56,7 +58,8 @@ export const addFormHandler = (endpoint) => {
                     const data = response.data.usuarios.list;
                     this.setState({
                         data:data,
-                        loadFinished:true
+                        loadFinished:true,
+                        redirect:<Redirect to={location}/>
                     });
                 }
             )

@@ -1,55 +1,45 @@
 /**
  * react basic
  */
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import ReactDOM from 'react-dom';
 /**
  * sub elementos
  */
-import {
-    editFormHandler,
-    addFormHandler,
-    Formulario
-} from './sub/Formulario';
-
-import {
-    listHandler,
-    Promociones
-} from './sub/Promociones';
-
-import {
-    singleHandler,
-    VerPromocion
-} from './sub/VerPromocion';
-
-import RequestHandler from '../../hocs/RequestHandler';
+import {Formulario} from './sub/Formulario';
+import {Promociones} from './sub/Promociones';
+import {VerPromocion} from './sub/VerPromocion';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
+
 import { Route, Switch } from 'react-router-dom';
 import {Navegacion,FormActions} from '../../acciones/ActionsByView';
 
-export default function PromocionesRouting (props) {
-    const modal = (props) => (
-        <ConfirmarModal
-            {...props}
-            title={"Eliminar Promoción"}
-            content={"¿estás seguro de eliminar este promoción?"} />
-    );
+export function PromocionesRouting (props) {
+    const [open,toggle] = useState(false),
+        openModal = (e) => {
+            e.preventDefault();
+            toggle(true);
+        },
+        closeModal = (e) => {
+            e.preventDefault();
+            toggle(false);
+        };
     return (
         <>
+            <ConfirmarModal
+                open={open}
+                closeModal={closeModal}
+                title={"Eliminar Promoción"}
+                content={"¿estás seguro de eliminar este promoción?"} />
             <Route
                 path={props.match.url}
                 exact
                 component={
                     (match) =>
-                        <RequestHandler
-                            component={
-                                (props) =>
-                                    <Promociones
-                                        nav={Navegacion.listado('/promociones')}
-                                        {...props} />
-                            }
-                            modal={modal}
-                            fetchHandler={listHandler(`promociones/list/${user.id}`)}/>
+                        <Promociones
+                            data={props.data}
+                            toggleModal={openModal}
+                            nav={Navegacion.listado('/promociones')} {...match} />
                 } />
             <Switch>
                 <Route
@@ -57,50 +47,32 @@ export default function PromocionesRouting (props) {
                     exact
                     component={
                         (match) =>
-                            <RequestHandler
-                                component ={
-                                    (props) => (
-                                        <Formulario
-                                            editar={true}
-                                            nav={Navegacion.formulario(()=>false,match.match.params.id,'/promociones')}
-                                            formActions={FormActions()}
-                                            {...props} />
-                                    )
-                                }
-                                modal={modal}
-                                fetchHandler={editFormHandler(`promociones/single/27/${match.match.params.id}`)}/>
-                    } />
+                            <Formulario
+                                data={props.data}
+                                editar={true}
+                                toggleModal={openModal}
+                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/promociones')}
+                                formActions={FormActions()} {...match} />
+                    }/>
                 <Route
                     path={`${props.match.url}/agregar`}
                     component={
                         (match) =>
-                            <RequestHandler
-                                component ={
-                                    (props) =>(
-                                        <Formulario
-                                            nav={Navegacion.agregar('/promociones')}
-                                            formActions = {FormActions()}
-                                            editar={false}
-                                            {...props} />
-                                    )
-                                }
-                                modal={modal}
-                                fetchHandler={addFormHandler(`promociones/add/${user.id}`)}/>
+                            <Formulario
+                                data={props.data}
+                                editar={false}
+                                toggleModal={openModal}
+                                formActions = {FormActions()}
+                                nav={Navegacion.agregar('/promociones')} {...match} />
                     } />
                 <Route
                     path={`${props.match.url}/:id`}
                     component={
                         (match) =>
-                            <RequestHandler
-                                component ={
-                                    (props) => (
-                                        <VerPromocion
-                                            nav={Navegacion.singular(()=>false,match.match.params.id,'/promociones')}
-                                            {...props} />
-                                    )
-                                }
-                                modal={modal}
-                                fetchHandler={singleHandler(`/promociones/single/${user.id}/${match.match.params.id}`)}/>
+                            <VerPromocion
+                                data={props.data}
+                                toggleModal={openModal}
+                                nav={Navegacion.singular(()=>false,match.match.params.id,'/promociones')} {...match} />
                         } />
             </Switch>
         </>

@@ -4,6 +4,7 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import {Redirect} from 'react-router-dom';
 /**
  * componentes
  */
@@ -31,7 +32,8 @@ export const listHandler = (endpoint) => {
                 response => {
                     this.setState({
                         data: response.data.locales.data,
-                        loadFinished: true
+                        loadFinished: true,
+                        redirect:<Redirect to={location}/>
                     });
                 }
             )
@@ -43,60 +45,45 @@ export const listHandler = (endpoint) => {
     }
 }
 
-
-export class Locales extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    componentDidMount() {
-    }
-
-    componentWillUnmount() {
-        console.log('localesUnmount');
-    }
-
-    links(key) {
-        return [
-            {
-                title: (
-                    <div className="smaller-text text bold">
-                        <i className="fas fa-eye" />
-                        Ver
-                    </div>
-                ),
-                to: '/locales/' + key
-            },
-            {
-                title: (
-                    <div className="smaller-text text bold">
-                        <i className="fas fa-pen" />
-                        Editar
-                    </div>
-                ),
-                to: '/locales/editar/' + key
-            }
-        ];
-    }
-
-    render() {
-        const data = Object.values(this.props.data).map(
-                e => ({
-                    ...e,
-                    acciones: <Actions links={this.links(e.id)} buttons={[]}/>
-                })
-            );
-        return (
-            <>
-                <Titulo
-                    title="Locales"
-                    links={this.props.nav.links} />
-                <div className="container">
-                    <div className="row">
-                        <LocalesTable data={data}/>
-                    </div>
+const links = (key) =>
+    [
+        {
+            title: (
+                <div className="smaller-text text bold">
+                    <i className="fas fa-eye" />
+                    Ver
                 </div>
-            </>
-        )
-    }
+            ),
+            to: '/locales/' + key
+        },
+        {
+            title: (
+                <div className="smaller-text text bold">
+                    <i className="fas fa-pen" />
+                    Editar
+                </div>
+            ),
+            to: '/locales/editar/' + key
+        }
+    ];
+
+export function Locales (props) {
+    const data = Object.values(props.data).map(
+            e => ({
+                ...e,
+                acciones: <Actions links={links(e.id)} buttons={[]}/>
+            })
+        );
+    return (
+        <>
+            <Titulo
+                title="Locales"
+                links={props.nav.links} />
+            <div className="container">
+                <div className="row">
+                    <LocalesTable data={data}/>
+                </div>
+            </div>
+        </>
+    )
 }

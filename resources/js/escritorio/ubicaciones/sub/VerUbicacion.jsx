@@ -3,41 +3,10 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {Redirect} from 'react-router-dom';
-/**
- * sub elementos
- */
-import LoadBar from '../../../componentes/control/LoadBar';
-import { GET } from '../../../utils/api';
 /**
  * basic
  */
 import Titulo from '../../../componentes/basic/Titulo';
-import {ConfirmarModal} from '../../../componentes/modal/Modal';
-
-export const singleHandler  = (endpoint,location) => {
-    return function (params) {
-        const request = GET({
-            endpoint: endpoint,
-            download: this.downloadHandler
-        });
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: response.data.ubicaciones[0],
-                        loadFinished:true,
-                        redirect:<Redirect to={location}/>
-                    });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
-    }
-}
 
 export function VerUbicacion (props) {
     props.nav.buttons[0].click = props.toggleModal;

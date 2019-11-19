@@ -1,71 +1,18 @@
 /**
  * react basic
  */
-import
-    React,
-    {
-        Component,
-        useState
-    } from 'react';
+import React, {Component,useState} from 'react';
 import ReactDOM from 'react-dom';
-import {
-    Route,
-    Switch
-} from 'react-router-dom';
+import {Route,Switch} from 'react-router-dom';
 /**
  * sub elementos
  */
-import {
-    Formulario,
-    editFormHandler,
-    addFormHandler
-} from './sub/Formulario';
+import {Formulario} from './sub/Formulario';
+import {Ubicaciones} from './sub/Ubicaciones';
+import {VerUbicacion} from './sub/VerUbicacion';
+import {Navegacion,FormActions} from '../../acciones/ActionsByView';
 
-import {
-    listHandler,
-    Ubicaciones
-} from './sub/Ubicaciones';
-
-import {
-    singleHandler,
-    VerUbicacion
-} from './sub/VerUbicacion';
-
-import {
-    Navegacion,
-    FormActions
-} from '../../acciones/ActionsByView';
-
-import RequestHandler from '../../hocs/RequestHandler';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
-
-export const handlers = [
-    {
-        endpoint:'/ubicaciones',
-        match:/\/ubicaciones$/,
-        callback:(params) =>
-            listHandler(`ubicaciones/list/${user.id}`,`/ubicaciones`)
-    },
-    {
-        endpoint:'/ubicaciones/agregar',
-        match:/\/ubicaciones\/(agregar)$/,
-        callback:(params) =>
-            addFormHandler(`ubicaciones/single/${user.id}/${params.id}`,`/ubicaciones/agregar`)
-    },
-    {
-        endpoint:'/ubicaciones/editar/:id',
-        match:/\/ubicaciones\/(editar\/\d+)$/,
-        callback:(params) =>
-            editFormHandler(`ubicaciones/single/${user.id}/${params.id}`,`ubicaciones/editar/${params.id}`)
-    },
-    {
-        endpoint:'/ubicaciones/:id',
-        match: /\/ubicaciones\/(\d+)$/,
-        callback: (params) =>
-            singleHandler(`/ubicaciones/single/${user.id}/${params.id}`,`ubicaciones/${params.id}`)
-
-    }
-];
 
 export function UbicacionesRouting (props) {
     const [open,toggle] = useState(false),
@@ -103,12 +50,12 @@ export function UbicacionesRouting (props) {
                         (match) =>{
                             return (
                                 <Formulario
-                                editar={true}
-                                data={props.data}
-                                toggleModal={openModal}
-                                formActions = {FormActions()}
-                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/ubicaciones')}
-                                {...match} />
+                                    editar={true}
+                                    data={props.data}
+                                    toggleModal={openModal}
+                                    formActions = {FormActions()}
+                                    nav={Navegacion.formulario(()=>false,match.match.params.id,'/ubicaciones')}
+                                    {...match} />
 
                             )
                         }

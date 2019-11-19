@@ -1,7 +1,7 @@
 /**
  * react basic
  */
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import ReactDOM from 'react-dom';
 /**
  * sub elementos
@@ -30,29 +30,62 @@ import {
 import RequestHandler from '../../hocs/RequestHandler';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 
+
+export const handlers = [
+    {
+        endpoint:'/locales',
+        match:/\/locales$/,
+        callback:(params) =>
+            listHandler(`/usuario/locales/${user.id}`)
+    },
+    {
+        endpoint:'/locales/agregar',
+        match:/\/locales\/(agregar)$/,
+        callback:(params) =>
+            addFormHandler(`/usuario/add/${user.id}/1`)
+    },
+    {
+        endpoint:'/locales/editar/:id',
+        match:/\/locales\/(editar\/\d+)$/,
+        callback:(params) =>
+            editFormHandler(`/usuario/local/${match.match.params.id}`)
+    },
+    {
+        endpoint:'/locales/:id',
+        match: /\/locales\/(\d+)$/,
+        callback: (params) =>
+            singleHandler(`/usuario/local/${match.match.params.id}`)
+
+    }
+];
+
+
 export default function LocalesRouting (props) {
-    const modal = (props) => (
-        <ConfirmarModal
-            {...props}
-            title={"Eliminar Local"}
-            content={"¿estás seguro de eliminar este local?"} />
-    );
+    const [open,toggle] = useState(false),
+        openModal = (e) => {
+            e.preventDefault();
+            toggle(true);
+        },
+        closeModal = (e) => {
+            e.preventDefault();
+            toggle(false);
+        };
     return (
         <>
+            <ConfirmarModal
+                open={open}
+                closeModal={closeModal}
+                title={"Eliminar Local"}
+                content={"¿estás seguro de eliminar este local?"} />
             <Route
                 path={props.match.url}
                 exact
-                component={
+                render={
                     (match) =>
-                        <RequestHandler
-                            component={
-                                (props) =>
-                                    <Locales
-                                        nav={Navegacion.listado('/locales')}
-                                        {...props} />
-                            }
-                            modal={modal}
-                            fetchHandler={listHandler(`/usuario/locales/${user.id}`)}/>
+                        <Locales
+                            data={props.data}
+                            toggleModal={openModal}
+                            nav={Navegacion.listado('/locales')} {...match} />
                 } />
             <Switch>
                 <Route
@@ -60,51 +93,33 @@ export default function LocalesRouting (props) {
                     exact
                     component={
                         (match) =>
-                            <RequestHandler
-                                component ={
-                                    (props) => (
-                                        <Formulario
-                                            editar={true}
-                                            nav={Navegacion.formulario(()=>false,match.match.params.id,'/locales')}
-                                            formActions={FormActions()}
-                                            {...props} />
-                                    )
-                                }
-                                modal={modal}
-                                fetchHandler={editFormHandler(`/usuario/local/${match.match.params.id}`)}/>
+                            <Formulario
+                                editar={true}
+                                data={props.data}
+                                toggleModal={openModal}
+                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/locales')}
+                                formActions={FormActions()} {...match} />
                     } />
                 <Route
                     path={`${props.match.url}/agregar`}
                     component={
                         (match) =>
-                            <RequestHandler
-                                component ={
-                                    (props) =>(
-                                        <Formulario
-                                            nav={Navegacion.agregar('/locales')}
-                                            formActions = {FormActions()}
-                                            editar={false}
-                                            {...props} />
-                                    )
-                                }
-                                modal={modal}
-                                fetchHandler={addFormHandler(`/usuario/add/${user.id}/1`)}/>
+                            <Formulario
+                                editar={false}
+                                data={props.data}
+                                toggleModal={openModal}
+                                nav={Navegacion.agregar('/locales')}
+                                formActions = {FormActions()} {...match} />
                     } />
                 <Route
                     path={`${props.match.url}/:id`}
                     component={
                         (match) =>
-                            <RequestHandler
-                                component ={
-                                    (props) => (
-                                        <VerLocal
-                                            nav={Navegacion.singular(()=>false,match.match.params.id,'/locales')}
-                                            {...props} />
-                                    )
-                                }
-                                modal={modal}
-                                fetchHandler={singleHandler(`/usuario/local/${match.match.params.id}`)}/>
-                        } />
+                            <VerLocal
+                                data={props.data}
+                                toggleModal={openModal}
+                                nav={Navegacion.singular(()=>false,match.match.params.id,'/locales')} {...match} />
+                    }/>
             </Switch>
         </>
     );

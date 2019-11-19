@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {Link} from 'react-router-dom';
+import {Link,Redirect} from 'react-router-dom';
 /**
  * sub elementos
  */
@@ -16,29 +16,6 @@ import {MONTHS} from '../../../constantes/DaysMonths';
  */
 import Titulo from '../../../componentes/basic/Titulo';
 import {ReservasActions} from '../../../acciones/ReservasActions';
-
-export const singleHandler = (endpoint) => {
-    return function (params) {
-        const request = GET({
-            endpoint: endpoint,
-            download: this.downloadHandler
-        });
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: response.data.reservas[0],
-                        loadFinished:true
-                    });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
-    }
-}
 
 export class VerReserva extends Component {
     constructor(props){

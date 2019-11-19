@@ -3,10 +3,6 @@
  */
 import React, { Component,useState } from 'react';
 import ReactDOM from 'react-dom';
-/**
- * API
- */
-import { GET } from '../../../utils/api';
 import Actions from '../../../componentes/basic/Actions';
 /**
  * componentes
@@ -14,32 +10,6 @@ import Actions from '../../../componentes/basic/Actions';
 import Titulo from '../../../componentes/basic/Titulo';
 import LocalesTable from '../../../componentes/tables/LocalesTable';
 import {ExpandableComponent} from '../../../hocs/ExpandableComponent';
-
-export const singleHandler = (endpoint) => {
-    return function (params) {
-        this.setState({
-            data: null,
-            isLoading: true,
-            loadFinished: false
-        });
-        const request = GET({
-            endpoint: endpoint,
-            download: this.downloadHandler
-        });
-
-        request
-            .then(
-                response => {
-                    this.setState({ data: response.data.data });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
-    }
-}
 
 export class VerFranquicia extends Component {
     constructor(props) {

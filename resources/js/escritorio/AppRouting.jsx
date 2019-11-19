@@ -1,7 +1,7 @@
 /**
  * react basic
  */
-import React, { Component, createContext } from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 /**
  * navigation
@@ -10,27 +10,28 @@ import MainFrame from '../hocs/MainFrame';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import BarraNavegacion from '../componentes/control/BarraNavegacion';
 import Profile from '../componentes/control/Profile'
-/**
- * paneles
- */
+
+import {PromocionesRouting} from './promociones/PromocionesRouting';
+import {handlers as promocionesHandlers} from '../handlers/promocionesHandlers';
+
+import {ReservasRouting} from './reservas/ReservasRouting';
+import {handlers as reservasHandlers} from '../handlers/reservasHandlers';
+
+import {handlers as ubicacionesHandlers} from '../handlers/ubicacionesHandlers';
+import {UbicacionesRouting} from './ubicaciones/UbicacionesRouting';
+
+import {handlers as franquiciasHandlers} from '../handlers/franquiciasHandlers';
+import {FranquiciasRouting} from './franquicias/FranquiciasRouting';
+
 import ConfiguracionRouting from './configuracion/ConfiguracionRouting';
 import EscritorioRouting from './escritorio/EscritorioRouting';
 import EventosRouting from './eventos/EventosRouting';
 import HorariosRouting from './horarios/HorariosRouting';
 import LocalesRouting from './locales/LocalesRouting';
 
-import {
-    handlers as reservasHandlers,
-    ReservasRouting
-} from './reservas/ReservasRouting';
 
-import {
-    handlers as ubicacionesHandlers,
-    UbicacionesRouting
-} from './ubicaciones/UbicacionesRouting';
 
-import FranquiciasRouting from './franquicias/FranquiciasRouting';
-import PromocionesRouting from './promociones/PromocionesRouting';
+
 
 export default function AppRouting (props) {
     return (
@@ -89,7 +90,9 @@ export default function AppRouting (props) {
                             path='/promociones'
                             component={
                                 (match) =>
-                                    <MainFrame current={'5'}>
+                                    <MainFrame
+                                        current={'5'}
+                                        handlers={promocionesHandlers}>
                                         <PromocionesRouting {...match} />
                                     </MainFrame>
                             } />
@@ -111,12 +114,14 @@ export default function AppRouting (props) {
                             } />
                         <Route
                             path='/franquicias'
-                            component={
+                            render={
                                 (match) =>
-                                    <MainFrame current={'8'}>
+                                    <MainFrame
+                                        current={'8'}
+                                        handlers={franquiciasHandlers}>
                                         <FranquiciasRouting {...match}/>
                                     </MainFrame>
-                            } />
+                                }/>
                     </Switch>
                 </div>
                 <div className="col-md-2 hidden-s background-border">

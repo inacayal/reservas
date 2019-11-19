@@ -80,6 +80,7 @@ export class RouterTransition extends Component {
     }
 
     render() {
+        console.log(this.state.data)
         return (
             (this.state.data)
             ?

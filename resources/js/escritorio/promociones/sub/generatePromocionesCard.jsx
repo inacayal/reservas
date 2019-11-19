@@ -1,9 +1,11 @@
 /**
  * react basic
  */
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import {Link} from 'react-router-dom';
+import {WaitsLoading} from '../../../hocs/RouterTransition';
+import {waitCallback} from '../../../componentes/basic/Actions';
 /**
  * componentes
  */
@@ -19,13 +21,18 @@ export default function generatePromocionesCard(
     promociones,
     actions
 ) {
+    const context = useContext(WaitsLoading);
     return Object.keys(promociones).map(
         e => {
             const acciones = GenerateActions.promociones(
                 e,
                 actions
                 ),
-                eventos = Object.values(promociones[e].eventos.list);
+                eventos = Object.values(promociones[e].eventos.list),
+                linkParam = {
+                    to:`/promociones/${e}`,
+                    params:{id:e}
+                };
             return {
                 content: () => (
                     <>
@@ -33,7 +40,9 @@ export default function generatePromocionesCard(
                             <div className="row">
                                 <div className="col-md-8">
                                     <span className="sub-title text-super side-margin inline-block align-center bold">
-                                        <Link to={"/promociones/"+e}>
+                                        <Link
+                                            to={"/promociones/"+e}
+                                            onClick={(ev) => waitCallback(ev,linkParam,context)}>
                                             <span className="text bold">{promociones[e].nombre}</span>
                                         </Link>
                                     </span>

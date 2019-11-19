@@ -7,108 +7,73 @@ import {Route,Switch} from 'react-router-dom';
 /**
  * sub elementos
  */
-import {
-    Formulario,
-    editFormHandler,
-    addFormHandler
-} from './sub/Formulario';
+import {Formulario} from './sub/Formulario';
+import {Franquicias} from './sub/Franquicias';
+import {VerFranquicia} from './sub/VerFranquicia';
 
-import {
-    listHandler,
-    Franquicias
-} from './sub/Franquicias';
-
-import {
-    singleHandler,
-    VerFranquicia
-} from './sub/VerFranquicia';
-
-import {
-    Navegacion,
-    FormActions
-} from '../../acciones/ActionsByView';
-
-import RequestHandler from '../../hocs/RequestHandler';
+import {Navegacion,FormActions} from '../../acciones/ActionsByView';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 
-export default function FranquiciasRouting (props) {
-    const modal = (props) => (
-        <ConfirmarModal
-            {...props}
-            title={"Eliminar Franquicia"}
-            content={"¿estás seguro de eliminar este franquicia?"} />
-    );
+export function FranquiciasRouting (props) {
+    const [open,toggle] = useState(false),
+        openModal = (e) => {
+            e.preventDefault();
+            toggle(true);
+        },
+        closeModal = (e) => {
+            e.preventDefault();
+            toggle(false);
+        };
     return (
         <>
+            <ConfirmarModal
+                open={open}
+                closeModal={closeModal}
+                title={"Eliminar Franquicia"}
+                content={"¿estás seguro de eliminar este franquicia?"} />
             <Route
                 path={props.match.url}
                 exact
-                component={
+                render={
                     (match) =>
-                        <RequestHandler
-                            component={
-                                (props) =>
-                                    <Franquicias
-                                        nav={Navegacion.listado('/franquicias')} {...props}/>
-                            }
-                            modal={modal}
-                            fetchHandler={listHandler(`/usuario/franquicias/${user.id}`)}/>
+                        <Franquicias
+                            toggleModal={openModal}
+                            data={props.data}
+                            nav={Navegacion.listado('/franquicias')} {...match}/>
                 } />
             <Switch>
                 <Route
                     path={`${props.match.url}/editar/:id`}
                     exact
-                    component={
+                    render={
                         (match) =>
-                            <RequestHandler
-                                component ={
-                                    (props) =>{
-                                        return (
-                                            <Formulario
-                                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/franquicias')}
-                                                formActions = {FormActions()}
-                                                editar={true}
-                                                {...props} />
-                                        )
-                                    }
-                                }
-                                modal={modal}
-                                fetchHandler={editFormHandler(`/usuario/franquicia/${match.match.params.id}`)}/>
+                            <Formulario
+                                data={props.data}
+                                toggleModal={openModal}
+                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/franquicias')}
+                                formActions = {FormActions()}
+                                editar={true} {...match} />
                     } />
                 <Route
                     path={`${props.match.url}/agregar`}
-                    component={
+                    render={
                         (match) =>
-                            <RequestHandler
-                                component ={
-                                    (props) =>{
-                                        return (
-                                            <Formulario
-                                                nav={Navegacion.agregar('/franquicias')}
-                                                formActions = {FormActions()}
-                                                editar={false}
-                                                {...props} />
-                                        )
-                                    }
-                                }
-                                modal={modal}
-                                fetchHandler={addFormHandler()}/>
-
+                            <Formulario
+                                data={props.data}
+                                toggleModal={openModal}
+                                nav={Navegacion.agregar('/franquicias')}
+                                formActions = {FormActions()}
+                                editar={false}
+                                {...match} />
                     } />
                 <Route
                     path={`${props.match.url}/:id`}
-                    component={
+                    render={
                         (match) =>
-                        <RequestHandler
-                            component ={
-                                (props) => (
-                                    <VerFranquicia
-                                        nav={Navegacion.singular(()=>false,match.match.params.id,'/franquicias')}
-                                        {...props} />
-                                )
-                            }
-                            modal={modal}
-                            fetchHandler={singleHandler(`/usuario/franquicia/${match.match.params.id}`)}/>
+                            <VerFranquicia
+                                data={props.data}
+                                toggleModal={openModal}
+                                nav={Navegacion.singular(()=>false,match.match.params.id,'/franquicias')} {...match} />
                     } />
             </Switch>
         </>

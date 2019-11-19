@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Calendar from 'react-calendar';
+import {Redirect} from 'react-router-dom';
 /**
  * elements
  */
@@ -14,63 +15,6 @@ import { FormFields } from '../FormFields';
  * api
  */
 import { GET } from '../../../utils/api';
-
-export const editFormHandler = (endpoint) => {
-    return function (params) {
-        this.setState({
-            data: null,
-            isLoading: true,
-        });
-
-        const request = GET({
-            endpoint: endpoint,
-            download: this.downloadHandler
-        });
-
-        request
-        .then(
-            response => {
-                this.setState({
-                    data: {
-                        selected: response.data.promociones[0],
-                        all: {
-                            eventos: response.data.eventos
-                        }
-                    },
-                    loadFinished: true
-                });
-            }
-        )
-        .catch(
-            error => {
-                console.log(error.message)
-            }
-        );
-    }
-}
-
-export const addFormHandler = (endpoint) => {
-    return function (params) {
-        const request = GET({
-            endpoint: endpoint,
-            download: this.downloadHandler
-        });
-        request
-        .then(
-            response => {
-                this.setState({
-                    data: { ...response.data },
-                    loadFinished: true
-                });
-            }
-        )
-        .catch(
-            error => {
-                console.log(error.message)
-            }
-        );
-    }
-}
 
 export class Formulario extends Component {
     constructor(props) {

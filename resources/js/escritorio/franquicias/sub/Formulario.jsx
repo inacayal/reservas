@@ -9,40 +9,10 @@ import ReactDOM from 'react-dom';
 import Titulo from '../../../componentes/basic/Titulo';
 import Actions from '../../../componentes/basic/Actions';
 /**
- * API
- */
-import { GET } from '../../../utils/api';
-/**
  * Formulario
  */
 import { FormularioEstablecimiento } from '../../configuracion/FormularioEstablecimiento';
 import { FormularioUsuario } from '../../configuracion/FormularioUsuario';
-
-export const editFormHandler = (endpoint) => {
-    return function (params) {
-        const request = GET({
-            endpoint: endpoint,
-            download: this.downloadHandler
-        });
-        request
-            .then(
-                response => {
-                    this.setState({ data: response.data.data });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
-    }
-}
-
-export const addFormHandler = () => {
-    return function (params) {
-        this.setState({data:{},loadFinished:true})
-    }
-}
 
 export class Formulario extends Component {
     constructor(props) {

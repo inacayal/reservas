@@ -3,42 +3,13 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+
 /**
  * components
  */
 import EventoFrame from '../../../reserva/pasos/evento/EventoFrame';
-import { GET } from '../../../utils/api';
 import Titulo from '../../../componentes/basic/Titulo';
-import LoadBar from '../../../componentes/control/LoadBar';
 import Actions from '../../../componentes/basic/Actions';
-
-export const formHandler = (endpoint) => {
-    return function (params) {
-        const date = this.state.date ? this.state.date : new Date(),
-            request = GET({
-                endpoint: endpoint + parseInt(date.getMonth() + 1) + '/' + date.getFullYear(),
-                download: this.downloadHandler
-            });
-        request
-            .then(
-                response => {
-                    const data = response.data;
-                    this.setState({
-                        data:{
-                            data:data,
-                            date:date
-                        },
-                        loadFinished:true
-                    });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
-    }
-}
 
 export class Formulario extends Component{
     constructor(props){

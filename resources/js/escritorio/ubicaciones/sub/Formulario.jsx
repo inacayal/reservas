@@ -12,53 +12,11 @@ import Calendar from 'react-calendar';
  */
 import Titulo from '../../../componentes/basic/Titulo';
 import Actions from '../../../componentes/basic/Actions';
-import {Redirect} from 'react-router-dom';
 /**
  * input component and handlers
  */
 import {Numeric} from '../../../componentes/input/Numeric';
 import {Text} from '../../../componentes/input/Text';
-/**
- * API
- */
-import LoadBar from '../../../utils/LoadBar';
-import { GET } from '../../../utils/api';
-import {ConfirmarModal} from '../../../componentes/modal/Modal';
-
-export const editFormHandler = (endpoint,location) => {
-    return function (params) {
-        const request = GET({
-            endpoint: endpoint,
-            download: this.downloadHandler
-        });
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: response.data.ubicaciones[0],
-                        loadFinished: true,
-                        redirect:<Redirect to={location}/>
-                    });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
-    }
-}
-
-export const addFormHandler = (endpoint,location) => {
-    return function (params) {
-        this.setState({
-            data: true,
-            loading: 100,
-            loadFinished:true,
-            redirect:<Redirect to={location}/>
-        });
-    }
-}
 
 export class Formulario extends Component {
     constructor(props) {

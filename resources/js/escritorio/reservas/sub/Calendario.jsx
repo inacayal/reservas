@@ -3,6 +3,7 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import {Redirect} from 'react-router-dom'
 /**
  * axios
  */
@@ -17,39 +18,6 @@ import Titulo from '../../../componentes/basic/Titulo';
  * constantes
  */
 import { NO_WEEK_CONTROLS } from '../../../constantes/CalendarControls';
-
-export const listHandler = (endpoint) => {
-    return function (params) {
-        const date = params.date||new Date(),
-            request = GET({
-                endpoint: endpoint + parseInt(date.getMonth()+1) + '/' + date.getFullYear(),
-                download: this.downloadHandler
-            });
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: {
-                            data:response.data.reservas.data,
-                            horarios: {
-                                data:response.data.horarios.data,
-                                intervalo:response.data.intervalo.id,
-                                antelacion: response.data.antelacion
-                            },
-                            date:date,
-                            show:params.show||"1",
-                        },
-                        loadFinished:true
-                    });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message);
-                }
-            );
-    }
-}
 
 export class Calendario extends Component {
     constructor(props){
