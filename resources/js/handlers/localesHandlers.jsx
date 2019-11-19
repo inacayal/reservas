@@ -3,33 +3,33 @@ import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
 import {GET} from '../utils/api';
 
+
 export const handlers = [
     {
-        endpoint:'/franquicias',
-        match:/\/franquicias$/,
+        endpoint:'/locales',
+        match:/\/locales$/,
         callback:(params) =>
-            listHandler(`/usuario/franquicias/${user.id}`,`/franquicias`)
+            listHandler(`/usuario/locales/${user.id}`,'/locales')
     },
     {
-        endpoint:'/franquicias/agregar',
-        match:/\/franquicias\/(agregar)$/,
+        endpoint:'/locales/agregar',
+        match:/\/locales\/(agregar)$/,
         callback:(params) =>
-            addFormHandler(``,`/franquicias/agregar`)
+            addFormHandler(`/usuario/add/${user.id}/1`,'/locales/agregar')
     },
     {
-        endpoint:'/franquicias/editar/:id',
-        match:/\/franquicias\/(editar\/\d+)$/,
+        endpoint:'/locales/editar/:id',
+        match:/\/locales\/(editar\/\d+)$/,
         callback:(params) =>
-            editFormHandler(`/usuario/franquicia/${params.id}`,`/franquicias/editar/${params.id}`)
+            editFormHandler(`/usuario/local/${params.id}`,`/locales/editar/${params.id}`)
     },
     {
-        endpoint:'/franquicias/:id',
-        match: /\/franquicias\/(\d+)$/,
+        endpoint:'/locales/:id',
+        match: /\/locales\/(\d+)$/,
         callback: (params) =>
-            singleHandler(`/usuario/franquicia/${params.id}`,`/franquicias/${params.id}`)
+            singleHandler(`/usuario/local/${params.id}`,`/locales/${params.id}`)
     }
 ];
-
 
 export const editFormHandler = (endpoint,location) => {
     return function (params) {
@@ -40,10 +40,11 @@ export const editFormHandler = (endpoint,location) => {
         request
             .then(
                 response => {
+                    const data = response.data.data
                     this.setState({
-                        data: response.data.data,
+                        data:data,
                         loadFinished:true,
-                        redirect: <Redirect to={location}/>
+                        redirect:<Redirect to={location}/>
                     });
                 }
             )
@@ -57,28 +58,18 @@ export const editFormHandler = (endpoint,location) => {
 
 export const addFormHandler = (endpoint,location) => {
     return function (params) {
-        this.setState({
-            data:true,
-            loadFinished:true,
-            redirect: <Redirect to={location}/>
-        })
-    }
-}
-
-
-export const listHandler = (endpoint,location) => {
-    return function (params) {
         const request = GET({
             endpoint: endpoint,
-            download: this.downloadHandler
+            download: this.props.downloadHandler
         });
         request
             .then(
                 response => {
+                    const data = response.data.usuarios.list;
                     this.setState({
-                        data: response.data.usuarios.data,
+                        data:data,
                         loadFinished:true,
-                        redirect: <Redirect to={location}/>
+                        redirect:<Redirect to={location}/>
                     });
                 }
             )
@@ -89,6 +80,35 @@ export const listHandler = (endpoint,location) => {
             );
     }
 }
+
+
+
+
+export const listHandler = (endpoint,location) => {
+    return function (params) {
+        const request = GET({
+            endpoint: endpoint,
+            download: this.downloadHandler
+        });
+
+        request
+            .then(
+                response => {
+                    this.setState({
+                        data: response.data.locales.data,
+                        loadFinished: true,
+                        redirect:<Redirect to={location}/>
+                    });
+                }
+            )
+            .catch(
+                error => {
+                    console.log(error.message)
+                }
+            );
+    }
+}
+
 
 export const singleHandler = (endpoint,location) => {
     return function (params) {
@@ -103,8 +123,9 @@ export const singleHandler = (endpoint,location) => {
                     this.setState({
                         data: response.data.data,
                         loadFinished:true,
-                        redirect: <Redirect to={location}/>
+                        redirect:<Redirect to={location}/>
                     });
+
                 }
             )
             .catch(

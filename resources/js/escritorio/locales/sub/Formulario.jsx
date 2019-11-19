@@ -21,57 +21,6 @@ import Actions from '../../../componentes/basic/Actions';
 import Titulo from '../../../componentes/basic/Titulo';
 import { Navegacion } from '../../../acciones/ActionsByView';
 
-export const editFormHandler = (endpoint) => {
-    return function (params) {
-        const request = GET({
-            endpoint: endpoint,
-            download: this.downloadHandler
-        });
-        request
-            .then(
-                response => {
-                    const data = response.data.data
-                    this.setState({
-                        data:data,
-                        loadFinished:true,
-                        redirect:<Redirect to={location}/>
-                    });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
-    }
-}
-
-export const addFormHandler = (endpoint) => {
-    return function (params) {
-        const request = GET({
-            endpoint: endpoint,
-            download: this.props.downloadHandler
-        });
-        request
-            .then(
-                response => {
-                    const data = response.data.usuarios.list;
-                    this.setState({
-                        data:data,
-                        loadFinished:true,
-                        redirect:<Redirect to={location}/>
-                    });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
-    }
-}
-
-
 export class Formulario extends Component{
     constructor(props){
         super(props);

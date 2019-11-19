@@ -1,7 +1,7 @@
 /**
  * react basic
  */
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useContext } from 'react';
 import ReactDOM from 'react-dom';
 /**
  * funciones
@@ -21,12 +21,12 @@ import {Toggle} from '../../input/Toggle';
 import {DAYS,MONTHS} from '../../../constantes/DaysMonths';
 import {getMonthLength} from '../../../utils/Helper';
 import { evaluateDateChange } from '../../../utils/Helper';
+import {WaitsLoading} from '../../../hocs/RouterTransition';
 
 const WeekDisplay = React.memo(
-    (
-        props
-    ) =>{
+    (props) =>{
         const
+            context = useContext(WaitsLoading),
             [nDate, changeDate] = useState(new Date(props.date)),
             week = generateWeek(
                 nDate,
@@ -51,8 +51,9 @@ const WeekDisplay = React.memo(
 
                 evaluateDateChange (
                     change,
-                    props.fetch,
+                    context,
                     (obj) => {changeDate(obj.date);},
+                    '/reservas',
                     "3"
                 );
             },
@@ -95,7 +96,7 @@ function DayCalendar(props) {
                 props.date,
                 props.data,
                 props.type,
-                props.actions.inner
+                props.actions
             ),
             [side,changeToggleSide] = useState(true),
             sideTitles = calendarNavigation(

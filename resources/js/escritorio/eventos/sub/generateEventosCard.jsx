@@ -1,18 +1,17 @@
 /**
  * react basic
  */
-import React, { Component } from 'react';
+import React, { Component,useContext } from 'react';
 import ReactDOM from 'react-dom';
 import {Link} from 'react-router-dom';
-/**
- * componentes
- */
 import {CommaList} from '../../../componentes/basic/CommaList';
 import {DAYS} from '../../../constantes/DaysMonths';
+import {waitCallback} from '../../../componentes/basic/Actions';
 /**
  * funciones
  */
 import { GenerateActions } from '../../../acciones/GenerateActions';
+import {WaitsLoading} from '../../../hocs/RouterTransition';
 
 export const assignHorarios = (hList) => {
     const keys = Object.keys(hList),
@@ -32,7 +31,8 @@ export default function generateEventosCard(
 ) {
     return Object.keys(eventos).map(
         e => {
-            const acciones = GenerateActions.eventos(
+            const context = useContext(WaitsLoading),
+                acciones = GenerateActions.eventos(
                     e,
                     actions
                 ),
@@ -43,7 +43,9 @@ export default function generateEventosCard(
                     <>
                         <div className="row">
                             <div className="col-md-8 no-padding">
-                                <Link to={'/eventos/'+e}>
+                                <Link
+                                    to={'/eventos/'+e}
+                                    onClick={(ev) => waitCallback(ev,{to:`/eventos/${e}`,params:{id:e}},context)}>
                                     <span className="text sub-title bold">
                                         {eventos[e].nombre}
                                     </span>

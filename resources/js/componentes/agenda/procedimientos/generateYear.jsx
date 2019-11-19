@@ -16,15 +16,16 @@ export default function generateYear(date,handler){
     let year = [],
         fourMonths=[],
         currentIndex = monthIndex[date.getMonth()].split('');
-    monthRows[currentIndex[0]][currentIndex[1]].class ="selected box-padding v-padding full-width highlight-border";
     for(let row = 0; row<monthRows.length; row++){
         year.push(
             <ButtonList
                 key={row}
+                container="thirty"
                 clickHandler={handler}
                 elems={monthRows[row]}
+                selected={row==currentIndex[0] ? date.getMonth()+1 : null}
+                selectedClass={"box-padding v-padding full-width highlight-nav highlight-border"}
                 displayList="flex-row no-margin nav-list full-width no-padding h-center"
-                container="thirty"
                 elemClass="box-padding highlight-hover box-transparent full-width"/>
         );
     }

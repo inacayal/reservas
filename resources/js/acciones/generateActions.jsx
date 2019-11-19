@@ -22,7 +22,8 @@ export const GenerateActions = {
         data,
         actions,
         key,
-        type
+        type,
+        fullDate
     ) => {
         let index = '';
         if (data)
@@ -30,9 +31,10 @@ export const GenerateActions = {
         else
             index = 'no_data';
         const acciones = ReservasActions[type][index](
-                actions,
-                key
-            );
+            actions,
+            key,
+            fullDate
+        );
         return (
             <Actions
                 overlay={type === 'month' ? true : false}
@@ -44,7 +46,8 @@ export const GenerateActions = {
         data,
         actions,
         key,
-        type
+        type,
+        fullDate
     ) => {
         const index = data ? 'data' : 'no_data',
             acciones = FeriadosActions[type][index](

@@ -18,7 +18,8 @@ const links = (key) => [
                 Ver
             </div>
         ),
-        to: '/franquicias/' + key
+        to: '/franquicias/' + key,
+        params:{id:key}
     },
     {
         title: (
@@ -27,7 +28,8 @@ const links = (key) => [
                 Editar
             </div>
         ),
-        to: '/franquicias/editar/' + key
+        to: '/franquicias/editar/' + key,
+        params:{id:key}
     },
     ,
     {
@@ -41,10 +43,10 @@ const links = (key) => [
 ];
 
 export function Franquicias (props) {
-    const data = Object.keys(this.props.data).map(
+    const data = Object.keys(props.data).map(
         e => ({
-            ...this.props.data[e],
-            acciones: <Actions links={this.links(e)} buttons={[]} />
+            ...props.data[e],
+            acciones: <Actions links={links(e)} buttons={[]} />
         })
     );
     return (

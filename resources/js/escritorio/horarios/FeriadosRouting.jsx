@@ -4,109 +4,72 @@ import {Route,Switch} from 'react-router-dom';
 /**
  * sub elementos
  */
-import {
-    FeriadoFormulario,
-    editFormHandler,
-    addFormHandler
-} from './formularios/FeriadoFormulario';
-
-import {
-    listHandler,
-    Feriados
-} from './sub/Feriados';
-
-import {
-    singleHandler,
-    VerFeriado
-} from './sub/VerFeriado';
-
-import {
-    Navegacion,
-    FormActions
-} from '../../acciones/ActionsByView';
-
-import RequestHandler from '../../hocs/RequestHandler';
+import {FeriadoFormulario} from './formularios/FeriadoFormulario';
+import {Feriados} from './sub/Feriados';
+import {VerFeriado} from './sub/VerFeriado';
+import {Navegacion,FormActions} from '../../acciones/ActionsByView';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 
-export default function UbicacionesRouting (props) {
-    const modal = (props) => (
-        <ConfirmarModal
-            {...props}
-            title={"Eliminar Feriado"}
-            content={"¿estás seguro de eliminar este feriado?"} />
-    );
+export function FeriadosRouting (props) {
+    const [open,toggle] = useState(false),
+        openModal = (e) => {
+            e.preventDefault();
+            toggle(true);
+        },
+        closeModal = (e) => {
+            e.preventDefault();
+            toggle(false);
+        };
     return (
         <>
+            <ConfirmarModal
+                open={open}
+                closeModal={closeModal}
+                title={"Eliminar Feriado"}
+                content={"¿estás seguro de eliminar este feriado?"} />
             <Route
                 path={props.match.url}
                 exact
-                component={
+                render={
                     (match) =>
-                        <RequestHandler
-                            component={
-                                (props) =>
-                                    <Feriados
-                                        nav={Navegacion.listado('/horarios/feriados')}
-                                        {...props} />
-                            }
-                            modal={modal}
-                            fetchHandler={listHandler(`/feriados/list/${user.id}/`)}/>
+                        <Feriados
+                            data={props.data}
+                            toggleModal={openModal}
+                            nav={Navegacion.listado('/horarios/feriados')} {...match} />
                 } />
             <Switch>
                 <Route
                     path={`${props.match.url}/editar/:id`}
                     exact
-                    component={
+                    render={
                         (match) =>
-                            <RequestHandler
-                                component ={
-                                    (props) =>{
-                                        return (
-                                            <FeriadoFormulario
-                                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/horarios/feriados')}
-                                                formActions={FormActions()}
-                                                editar={true}
-                                                {...props} />
-                                        )
-                                    }
-                                }
-                                modal={modal}
-                                fetchHandler={editFormHandler(`/feriados/single/${user.id}/${match.match.params.id}`)}/>
+                            <FeriadoFormulario
+                                data={props.data}
+                                toggleModal={openModal}
+                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/horarios/feriados')}
+                                formActions={FormActions()}
+                                editar={true} {...match} />
                     } />
                 <Route
                     path={`${props.match.url}/agregar`}
                     component={
                         (match) =>
-                            <RequestHandler
-                                component ={
-                                    (props) =>{
-                                        return (
-                                            <FeriadoFormulario
-                                                editar={false}
-                                                nav={Navegacion.agregar('/horarios/feriados')}
-                                                formActions={FormActions()}
-                                                {...props} />
-                                        )
-                                    }
-                                }
-                                modal={modal}
-                                fetchHandler={addFormHandler(`/feriados/add/${user.id}/`)}/>
+                            <FeriadoFormulario
+                                data={props.data}
+                                editar={false}
+                                nav={Navegacion.agregar('/horarios/feriados')}
+                                formActions={FormActions()} {...match} />
 
                     } />
                 <Route
                     path={`${props.match.url}/:id`}
                     component={
                         (match) =>
-                        <RequestHandler
-                            component ={
-                                (props) => (
-                                    <VerFeriado
-                                        nav={Navegacion.singular(()=>false,match.match.params.id,'/horarios/feriados')}
-                                        {...props} />
-                                )
-                            }
-                            modal={modal}
-                            fetchHandler={singleHandler(`/feriados/single/${user.id}/${match.match.params.id}`)}/>
+                            <VerFeriado
+                                data={props.data}
+                                toggleModal={openModal}
+                                nav={Navegacion.singular(()=>false,match.match.params.id,'/horarios/feriados')}
+                                {...props} />
                     } />
             </Switch>
         </>

@@ -1,7 +1,7 @@
 /**
  * react basic
  */
-import React, { Component, useState } from 'react';
+import React, { Component, useContext } from 'react';
 import {Link} from 'react-router-dom';
 import ReactDOM from 'react-dom';
 /**
@@ -18,6 +18,9 @@ import {GenerateActions} from '../../../acciones/GenerateActions';
  */
 import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
 import { CLASSBYSTATE } from '../../../constantes/CardObject';
+import {waitCallback} from '../../basic/Actions';
+import {WaitsLoading} from '../../../hocs/RouterTransition';
+
 
 export const ReservaDayByState = {
     data: (
@@ -29,7 +32,8 @@ export const ReservaDayByState = {
         const reservations = generateDayCardFromArray(
             data,
             actions,
-            dataStr
+            dataStr,
+            useContext(WaitsLoading)
         );
         return {
             title: {
@@ -96,8 +100,8 @@ export const ReservaMonthByState = {
                 <div>{renderActions}</div>
             </>
         ),
-        class: isSelectedDate 
-        ? 
+        class: isSelectedDate
+        ?
             "same-width text-center box-padding light-danger relative black-overlay selected"
         :
             "same-width text-center box-padding light-danger relative black-overlay"
@@ -114,10 +118,10 @@ export const ReservaMonthByState = {
                 {date.getDate()}
             </div>
         ),
-        class: isThisMonth 
-            ? 
-                isSelectedDate 
-                ? 
+        class: isThisMonth
+            ?
+                isSelectedDate
+                ?
                     "same-width text-center box-padding fix-height selected"
                 :
                     "same-width text-center box-padding fix-height"
@@ -133,7 +137,7 @@ export const ReservaWeekByState = {
         originalActions,
         dataIndex
     ) => ({
-        content:() => 
+        content:() =>
             <>
                 <div className="v-align-center light-danger c-title">
                     {dataIndex.getDate() + " "}
@@ -168,9 +172,9 @@ export const ReservaWeekByState = {
 function generateDayCardFromArray(
     data,
     actions,
-    dataStr
+    dataStr,
+    context
 ) {
-    let obj = {};
     return data.map(
         (e, i) => {
             let acciones = GenerateActions.reservas(
@@ -185,7 +189,9 @@ function generateDayCardFromArray(
                         <div className="container">
                             <div className="row">
                                 <div className="col-md-11 no-padding">
-                                    <Link to={'reservas/'+e.id}>
+                                    <Link
+                                        to={`reservas/${e.id}`}
+                                        onClick = {(ev) => waitCallback(ev,{to:`/reservas/${e.id}`,params:{id:e.id}},context)}>
                                         <span className="side-margin sub-title text bold subrayado inline-block">{e.nombre + " " + e.apellido}</span>
                                     </Link>
                                     {acciones}

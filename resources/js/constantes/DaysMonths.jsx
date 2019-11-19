@@ -50,22 +50,22 @@ export const MONTHS = [
 
 export const monthRows = [
     [
-        { title: "Enero", data: 1, class:"box-padding highlight-hover box-transparent full-width" },
-        { title: "Febrero", data: 2, class: "box-padding highlight-hover box-transparent full-width" },
-        { title: "Marzo", data: 3, class: "box-padding highlight-hover box-transparent full-width" },
-        { title: "Abril", data: 4, class: "box-padding highlight-hover box-transparent full-width"}
+        { title: "Enero", data: 1},
+        { title: "Febrero", data: 2},
+        { title: "Marzo", data: 3},
+        { title: "Abril", data: 4}
     ],
     [
-        { title: "Mayo", data: 5, class: "box-padding highlight-hover box-transparent full-width" }, 
-        { title: "Junio", data: 6, class: "box-padding highlight-hover box-transparent full-width" }, 
-        { title: "Julio", data: 7, class: "box-padding highlight-hover box-transparent full-width" }, 
-        { title: "Agosto", data: 8, class: "box-padding highlight-hover box-transparent full-width" }
+        { title: "Mayo", data: 5},
+        { title: "Junio", data: 6},
+        { title: "Julio", data: 7},
+        { title: "Agosto", data: 8}
     ],
     [
-        { title: "Septiembre", data: 9, class: "box-padding highlight-hover box-transparent full-width" }, 
-        { title: "Octubre", data: 10, class: "box-padding highlight-hover box-transparent full-width" }, 
-        { title: "Noviembre", data: 11, class: "box-padding highlight-hover box-transparent full-width" }, 
-        { title: "Diciembre", data: 12, class: "box-padding highlight-hover box-transparent full-width" }
+        { title: "Septiembre", data: 9},
+        { title: "Octubre", data: 10},
+        { title: "Noviembre", data: 11},
+        { title: "Diciembre", data: 12}
     ],
 ];
 

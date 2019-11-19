@@ -45,7 +45,8 @@ export const listHandler = (endpoint,location) => {
                             date:date,
                             show:params.show||"1"
                         },
-                        redirect:<Redirect to={location}/>,
+                        refresh:params.refresh||false,
+                        redirect:<Redirect to={location}/>,//?v=${params.show}&d=${date.getDate()}&m=${date.getMonth()+1}&y=${date.getFullYear()}`}/>,
                         loadFinished:true
                     });
                 }
@@ -86,7 +87,7 @@ export const singleHandler = (endpoint,location) => {
 
 export const formHandler = (endpoint,location) => {
     return function (params) {
-        const date = this.state.date ? this.state.date : new Date(),
+        const date = params.date||new Date(),
             request = GET({
                 endpoint: endpoint + parseInt(date.getMonth() + 1) + '/' + date.getFullYear(),
                 download: this.downloadHandler
@@ -101,6 +102,7 @@ export const formHandler = (endpoint,location) => {
                             date:date
                         },
                         loadFinished:true,
+                        refresh:params.refresh||false,
                         redirect:<Redirect to={location}/>,
                     });
                 }

@@ -24,7 +24,7 @@ export const Elements = {
             actions = { parent.props.actions }
             horarios = { parent.props.horariosReserva }
             render = { parent.props.dayRender }
-            date = { parent.state.date } 
+            date = { parent.state.date }
             verDia = {parent.verDia}
             fetch= {parent.props.fetchNewMonth}/>
     ),
@@ -49,7 +49,7 @@ export const Elements = {
     ),
     0: (parent) => (
         <YearCalendar
-            handleMonthClick={parent.handleMonthClick}
+            handleMonthClick={parent.changeSelectedMonth}
             changeCurrentYear={parent.changeYearCalendar}
             date={parent.state.date} />
     )

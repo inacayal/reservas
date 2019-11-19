@@ -23,15 +23,15 @@ function CalendarioMemo(props) {
                 feriado = props.data.feriados.data[date.getDate()],
                 feriadoNoLaboral = feriado!==undefined ? feriado.estado === 'no_laboral' : false;
             const disableByDate = view === 'month'
-                ? normal.estado === 'no_laboral' || feriadoNoLaboral 
+                ? normal.estado === 'no_laboral' || feriadoNoLaboral
                 : date.getMonth() < activeStartDate.getMonth() || date.getFullYear() < activeStartDate.getFullYear();
             return disableByDate;
         },
         monthChange = (date) => {
-            props.fetch(date);
+            props.fetch('/reservas/agregar',{date:date,refresh:true});
         },
         navChange = ({ activeStartDate, view }) => {
-            props.fetch(activeStartDate);
+            props.fetch('/reservas/agregar',{date:activeStartDate,refresh:true});
         },
         tileContent = ({ date, view }) => {
             const index = date.getDate(),
@@ -44,12 +44,12 @@ function CalendarioMemo(props) {
                         className="full-cover box-padding"
                         onMouseOver={
                             (feriado.estado === 'no_laboral' || date.getDate() < props.minDate.getDate())
-                                ? (e) => false 
+                                ? (e) => false
                                 : (e) => props.changeHover(date)
                             }
                         onMouseLeave={
-                            (feriado.estado === 'no_laboral' || date.getDate() < props.minDate.getDate()) 
-                                ? (e) => false 
+                            (feriado.estado === 'no_laboral' || date.getDate() < props.minDate.getDate())
+                                ? (e) => false
                                 : (e) => props.changeHover(props.showDate)}
                         onClick={props.clickCallback}>
                     </div>
@@ -62,13 +62,13 @@ function CalendarioMemo(props) {
                     <div
                         className="full-cover box-padding"
                         onMouseOver={
-                            (horario.estado === 'no_laboral' || date.getDate() < props.minDate.getDate()) 
-                                ? (e) => false 
+                            (horario.estado === 'no_laboral' || date.getDate() < props.minDate.getDate())
+                                ? (e) => false
                                 : (e) => props.changeHover(date)
                             }
                         onMouseLeave={
-                            (horario.estado === 'no_laboral' || date.getDate() < props.minDate.getDate()) 
-                                ? (e) => false 
+                            (horario.estado === 'no_laboral' || date.getDate() < props.minDate.getDate())
+                                ? (e) => false
                                 : (e) => props.changeHover(props.showDate)
                                 }>
                     </div>

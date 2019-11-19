@@ -36723,7 +36723,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(global) {/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
- * @version 1.16.0
+ * @version 1.15.0
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
  *
@@ -36745,17 +36745,16 @@ __webpack_require__.r(__webpack_exports__);
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined' && typeof navigator !== 'undefined';
+var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
 
-var timeoutDuration = function () {
-  var longerTimeoutBrowsers = ['Edge', 'Trident', 'Firefox'];
-  for (var i = 0; i < longerTimeoutBrowsers.length; i += 1) {
-    if (isBrowser && navigator.userAgent.indexOf(longerTimeoutBrowsers[i]) >= 0) {
-      return 1;
-    }
+var longerTimeoutBrowsers = ['Edge', 'Trident', 'Firefox'];
+var timeoutDuration = 0;
+for (var i = 0; i < longerTimeoutBrowsers.length; i += 1) {
+  if (isBrowser && navigator.userAgent.indexOf(longerTimeoutBrowsers[i]) >= 0) {
+    timeoutDuration = 1;
+    break;
   }
-  return 0;
-}();
+}
 
 function microtaskDebounce(fn) {
   var called = false;
@@ -36873,17 +36872,6 @@ function getScrollParent(element) {
   }
 
   return getScrollParent(getParentNode(element));
-}
-
-/**
- * Returns the reference node of the reference object, or the reference object itself.
- * @method
- * @memberof Popper.Utils
- * @param {Element|Object} reference - the reference element (the popper will be relative to this)
- * @returns {Element} parent
- */
-function getReferenceNode(reference) {
-  return reference && reference.referenceNode ? reference.referenceNode : reference;
 }
 
 var isIE11 = isBrowser && !!(window.MSInputMethodContext && document.documentMode);
@@ -37194,8 +37182,8 @@ function getBoundingClientRect(element) {
 
   // subtract scrollbar size from sizes
   var sizes = element.nodeName === 'HTML' ? getWindowSizes(element.ownerDocument) : {};
-  var width = sizes.width || element.clientWidth || result.width;
-  var height = sizes.height || element.clientHeight || result.height;
+  var width = sizes.width || element.clientWidth || result.right - result.left;
+  var height = sizes.height || element.clientHeight || result.bottom - result.top;
 
   var horizScrollbar = element.offsetWidth - width;
   var vertScrollbar = element.offsetHeight - height;
@@ -37347,7 +37335,7 @@ function getBoundaries(popper, reference, padding, boundariesElement) {
   // NOTE: 1 DOM access here
 
   var boundaries = { top: 0, left: 0 };
-  var offsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, getReferenceNode(reference));
+  var offsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, reference);
 
   // Handle viewport case
   if (boundariesElement === 'viewport') {
@@ -37475,7 +37463,7 @@ function computeAutoPlacement(placement, refRect, popper, reference, boundariesE
 function getReferenceOffsets(state, popper, reference) {
   var fixedPosition = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
-  var commonOffsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, getReferenceNode(reference));
+  var commonOffsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, reference);
   return getOffsetRectRelativeToArbitraryNode(reference, commonOffsetParent, fixedPosition);
 }
 
@@ -37737,7 +37725,7 @@ function destroy() {
 
   this.disableEventListeners();
 
-  // remove the popper if user explicitly asked for the deletion on destroy
+  // remove the popper if user explicity asked for the deletion on destroy
   // do not use `remove` because IE11 doesn't support it
   if (this.options.removeOnDestroy) {
     this.popper.parentNode.removeChild(this.popper);
@@ -44832,7 +44820,7 @@ exports.getTileClasses = getTileClasses;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.12.0
+/** @license React v16.10.2
  * react-dom.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -44856,8 +44844,16 @@ var checkPropTypes = __webpack_require__(/*! prop-types/checkPropTypes */ "./nod
 var tracing = __webpack_require__(/*! scheduler/tracing */ "./node_modules/scheduler/tracing.js");
 
 // Do not require this module directly! Use normal `invariant` calls with
-// template literal strings. The messages will be replaced with error codes
-// during build.
+// template literal strings. The messages will be converted to ReactError during
+// build, and in production they will be minified.
+
+// Do not require this module directly! Use normal `invariant` calls with
+// template literal strings. The messages will be converted to ReactError during
+// build, and in production they will be minified.
+function ReactError(error) {
+  error.name = 'Invariant Violation';
+  return error;
+}
 
 /**
  * Use invariant() to assert state which your program assumes to be true.
@@ -44870,11 +44866,13 @@ var tracing = __webpack_require__(/*! scheduler/tracing */ "./node_modules/sched
  * will remain to ensure logic does not differ in production.
  */
 
-if (!React) {
-  {
-    throw Error("ReactDOM was loaded before React. Make sure you load the React package before loading ReactDOM.");
+(function () {
+  if (!React) {
+    {
+      throw ReactError(Error("ReactDOM was loaded before React. Make sure you load the React package before loading ReactDOM."));
+    }
   }
-}
+})();
 
 /**
  * Injectable ordering of event plugins.
@@ -44901,31 +44899,37 @@ function recomputePluginOrdering() {
     var pluginModule = namesToPlugins[pluginName];
     var pluginIndex = eventPluginOrder.indexOf(pluginName);
 
-    if (!(pluginIndex > -1)) {
-      {
-        throw Error("EventPluginRegistry: Cannot inject event plugins that do not exist in the plugin ordering, `" + pluginName + "`.");
+    (function () {
+      if (!(pluginIndex > -1)) {
+        {
+          throw ReactError(Error("EventPluginRegistry: Cannot inject event plugins that do not exist in the plugin ordering, `" + pluginName + "`."));
+        }
       }
-    }
+    })();
 
     if (plugins[pluginIndex]) {
       continue;
     }
 
-    if (!pluginModule.extractEvents) {
-      {
-        throw Error("EventPluginRegistry: Event plugins must implement an `extractEvents` method, but `" + pluginName + "` does not.");
+    (function () {
+      if (!pluginModule.extractEvents) {
+        {
+          throw ReactError(Error("EventPluginRegistry: Event plugins must implement an `extractEvents` method, but `" + pluginName + "` does not."));
+        }
       }
-    }
+    })();
 
     plugins[pluginIndex] = pluginModule;
     var publishedEvents = pluginModule.eventTypes;
 
     for (var eventName in publishedEvents) {
-      if (!publishEventForPlugin(publishedEvents[eventName], pluginModule, eventName)) {
-        {
-          throw Error("EventPluginRegistry: Failed to publish event `" + eventName + "` for plugin `" + pluginName + "`.");
+      (function () {
+        if (!publishEventForPlugin(publishedEvents[eventName], pluginModule, eventName)) {
+          {
+            throw ReactError(Error("EventPluginRegistry: Failed to publish event `" + eventName + "` for plugin `" + pluginName + "`."));
+          }
         }
-      }
+      })();
     }
   }
 }
@@ -44940,11 +44944,13 @@ function recomputePluginOrdering() {
 
 
 function publishEventForPlugin(dispatchConfig, pluginModule, eventName) {
-  if (!!eventNameDispatchConfigs.hasOwnProperty(eventName)) {
-    {
-      throw Error("EventPluginHub: More than one plugin attempted to publish the same event name, `" + eventName + "`.");
+  (function () {
+    if (!!eventNameDispatchConfigs.hasOwnProperty(eventName)) {
+      {
+        throw ReactError(Error("EventPluginHub: More than one plugin attempted to publish the same event name, `" + eventName + "`."));
+      }
     }
-  }
+  })();
 
   eventNameDispatchConfigs[eventName] = dispatchConfig;
   var phasedRegistrationNames = dispatchConfig.phasedRegistrationNames;
@@ -44975,11 +44981,13 @@ function publishEventForPlugin(dispatchConfig, pluginModule, eventName) {
 
 
 function publishRegistrationName(registrationName, pluginModule, eventName) {
-  if (!!registrationNameModules[registrationName]) {
-    {
-      throw Error("EventPluginHub: More than one plugin attempted to publish the same registration name, `" + registrationName + "`.");
+  (function () {
+    if (!!registrationNameModules[registrationName]) {
+      {
+        throw ReactError(Error("EventPluginHub: More than one plugin attempted to publish the same registration name, `" + registrationName + "`."));
+      }
     }
-  }
+  })();
 
   registrationNameModules[registrationName] = pluginModule;
   registrationNameDependencies[registrationName] = pluginModule.eventTypes[eventName].dependencies;
@@ -45040,11 +45048,13 @@ var possibleRegistrationNames = {}; // Trust the developer to only use possibleR
  */
 
 function injectEventPluginOrder(injectedEventPluginOrder) {
-  if (!!eventPluginOrder) {
-    {
-      throw Error("EventPluginRegistry: Cannot inject event plugin ordering more than once. You are likely trying to load more than one copy of React.");
+  (function () {
+    if (!!eventPluginOrder) {
+      {
+        throw ReactError(Error("EventPluginRegistry: Cannot inject event plugin ordering more than once. You are likely trying to load more than one copy of React."));
+      }
     }
-  } // Clone the ordering so it cannot be dynamically mutated.
+  })(); // Clone the ordering so it cannot be dynamically mutated.
 
 
   eventPluginOrder = Array.prototype.slice.call(injectedEventPluginOrder);
@@ -45072,11 +45082,13 @@ function injectEventPluginsByName(injectedNamesToPlugins) {
     var pluginModule = injectedNamesToPlugins[pluginName];
 
     if (!namesToPlugins.hasOwnProperty(pluginName) || namesToPlugins[pluginName] !== pluginModule) {
-      if (!!namesToPlugins[pluginName]) {
-        {
-          throw Error("EventPluginRegistry: Cannot inject two different event plugins using the same name, `" + pluginName + "`.");
+      (function () {
+        if (!!namesToPlugins[pluginName]) {
+          {
+            throw ReactError(Error("EventPluginRegistry: Cannot inject two different event plugins using the same name, `" + pluginName + "`."));
+          }
         }
-      }
+      })();
 
       namesToPlugins[pluginName] = pluginModule;
       isOrderingDirty = true;
@@ -45127,11 +45139,13 @@ var invokeGuardedCallbackImpl = function (name, func, context, a, b, c, d, e, f)
       // when we call document.createEvent(). However this can cause confusing
       // errors: https://github.com/facebookincubator/create-react-app/issues/3482
       // So we preemptively throw with a better message instead.
-      if (!(typeof document !== 'undefined')) {
-        {
-          throw Error("The `document` global was defined when React was initialized, but is not defined anymore. This can happen in a test environment if a component schedules an update from an asynchronous callback, but the test has already finished running. To solve this, you can either unmount the component at the end of your test (and ensure that any asynchronous operations get canceled in `componentWillUnmount`), or you can change the test itself to be asynchronous.");
+      (function () {
+        if (!(typeof document !== 'undefined')) {
+          {
+            throw ReactError(Error("The `document` global was defined when React was initialized, but is not defined anymore. This can happen in a test environment if a component schedules an update from an asynchronous callback, but the test has already finished running. To solve this, you can either unmount the component at the end of your test (and ensure that any asynchronous operations get canceled in `componentWillUnmount`), or you can change the test itself to be asynchronous."));
+          }
         }
-      }
+      })();
 
       var evt = document.createEvent('Event'); // Keeps track of whether the user-provided callback threw an error. We
       // set this to true at the beginning, then set it to false right after
@@ -45319,11 +45333,13 @@ function clearCaughtError() {
     caughtError = null;
     return error;
   } else {
-    {
+    (function () {
       {
-        throw Error("clearCaughtError was called but no error was captured. This error is likely caused by a bug in React. Please file an issue.");
+        {
+          throw ReactError(Error("clearCaughtError was called but no error was captured. This error is likely caused by a bug in React. Please file an issue."));
+        }
       }
-    }
+    })();
   }
 }
 
@@ -45482,11 +45498,13 @@ function executeDispatchesInOrder(event) {
  */
 
 function accumulateInto(current, next) {
-  if (!(next != null)) {
-    {
-      throw Error("accumulateInto(...): Accumulated items must not be null or undefined.");
+  (function () {
+    if (!(next != null)) {
+      {
+        throw ReactError(Error("accumulateInto(...): Accumulated items must not be null or undefined."));
+      }
     }
-  }
+  })();
 
   if (current == null) {
     return next;
@@ -45572,11 +45590,13 @@ function runEventsInBatch(events) {
 
   forEachAccumulated(processingEventQueue, executeDispatchesAndReleaseTopLevel);
 
-  if (!!eventQueue) {
-    {
-      throw Error("processEventQueue(): Additional events were enqueued while processing an event queue. Support for this has not yet been implemented.");
+  (function () {
+    if (!!eventQueue) {
+      {
+        throw ReactError(Error("processEventQueue(): Additional events were enqueued while processing an event queue. Support for this has not yet been implemented."));
+      }
     }
-  } // This would be a good time to rethrow if any of the event handlers threw.
+  })(); // This would be a good time to rethrow if any of the event handlers threw.
 
 
   rethrowCaughtError();
@@ -45674,11 +45694,13 @@ function getListener(inst, registrationName) {
     return null;
   }
 
-  if (!(!listener || typeof listener === 'function')) {
-    {
-      throw Error("Expected `" + registrationName + "` listener to be a function, instead got a value of `" + typeof listener + "` type.");
+  (function () {
+    if (!(!listener || typeof listener === 'function')) {
+      {
+        throw ReactError(Error("Expected `" + registrationName + "` listener to be a function, instead got a value of `" + typeof listener + "` type."));
+      }
     }
-  }
+  })();
 
   return listener;
 }
@@ -46081,11 +46103,13 @@ function restoreStateOfTarget(target) {
     return;
   }
 
-  if (!(typeof restoreImpl === 'function')) {
-    {
-      throw Error("setRestoreImplementation() needs to be called to handle a target for controlled events. This error is likely caused by a bug in React. Please file an issue.");
+  (function () {
+    if (!(typeof restoreImpl === 'function')) {
+      {
+        throw ReactError(Error("setRestoreImplementation() needs to be called to handle a target for controlled events. This error is likely caused by a bug in React. Please file an issue."));
+      }
     }
-  }
+  })();
 
   var props = getFiberCurrentPropsFromNode(internalInstance.stateNode);
   restoreImpl(internalInstance.stateNode, internalInstance.type, props);
@@ -46126,8 +46150,12 @@ function restoreStateIfNeeded() {
   }
 }
 
-var enableUserTimingAPI = true; // Helps identify side effects in render-phase lifecycle hooks and setState
-// reducers by double invoking them in Strict Mode.
+var enableUserTimingAPI = true; // Helps identify side effects in begin-phase lifecycle hooks and setState reducers:
+
+var debugRenderPhaseSideEffects = false; // In some cases, StrictMode should also double-render lifecycles.
+// This can be confusing for tests though,
+// And it can be bad for performance in production.
+// This feature flag can be used to control the behavior:
 
 var debugRenderPhaseSideEffectsForStrictMode = true; // To preserve the "Pause on caught exceptions" behavior of the debugger, we
 // replay the begin phase of a failed component inside invokeGuardedCallback.
@@ -46138,9 +46166,10 @@ var warnAboutDeprecatedLifecycles = true; // Gather advanced timing metrics for 
 
 var enableProfilerTimer = true; // Trace which interactions trigger each commit.
 
-var enableSchedulerTracing = true; // SSR experiments
+var enableSchedulerTracing = true; // Only used in www builds.
 
-var enableSuspenseServerRenderer = false;
+var enableSuspenseServerRenderer = false; // TODO: true? Here it might just be false.
+
 var enableSelectiveHydration = false; // Only used in www builds.
 
  // Only used in www builds.
@@ -46153,8 +46182,11 @@ var disableJavaScriptURLs = false; // React Fire: prevent the value and checked 
 var disableInputAttributeSyncing = false; // These APIs will no longer be "unstable" in the upcoming 16.7 release,
 // Control this behavior with a flag to support 16.6 minor releases in the meanwhile.
 
-var exposeConcurrentModeAPIs = false;
-var warnAboutShorthandPropertyCollision = false; // Experimental React Flare event system and event components support.
+var enableStableConcurrentModeAPIs = false;
+var warnAboutShorthandPropertyCollision = false; // See https://github.com/react-native-community/discussions-and-proposals/issues/72 for more information
+// This is a flag so we can fix warnings in RN core before turning it on
+
+ // Experimental React Flare event system and event components support.
 
 var enableFlareAPI = false; // Experimental Host Component support.
 
@@ -46163,12 +46195,16 @@ var enableFundamentalAPI = false; // Experimental Scope support.
 var enableScopeAPI = false; // New API for JSX transforms to target - https://github.com/reactjs/rfcs/pull/107
 
  // We will enforce mocking scheduler with scheduler/unstable_mock at some point. (v17?)
-// Till then, we warn about the missing mock, but still fallback to a legacy mode compatible version
+// Till then, we warn about the missing mock, but still fallback to a sync mode compatible version
 
 var warnAboutUnmockedScheduler = false; // For tests, we flush suspense fallbacks in an act scope;
 // *except* in some of our own tests, where we test incremental loading states.
 
-var flushSuspenseFallbacksInTests = true; // Add a callback property to suspense to notify which promises are currently
+var flushSuspenseFallbacksInTests = true; // Changes priority of some events like mousemove to user-blocking priority,
+// but without making them discrete. The flag exists in case it causes
+// starvation problems.
+
+var enableUserBlockingEvents = false; // Add a callback property to suspense to notify which promises are currently
 // in the update queue. This allows reporting and tracing of what is causing
 // the user to see a loading state.
 // Also allows hydration callbacks to fire when a dehydrated boundary gets
@@ -46182,7 +46218,7 @@ var warnAboutDefaultPropsOnFunctionComponents = false;
 var warnAboutStringRefs = false;
 var disableLegacyContext = false;
 var disableSchedulerTimeoutBasedOnReactExpirationTime = false;
-var enableTrustedTypesIntegration = false; // Flag to turn event.target and event.currentTarget in ReactNative from a reactTag to a component instance
+var enableTrustedTypesIntegration = false;
 
 // the renderer. Such as when we're dispatching events or if third party
 // libraries need to call batchedUpdates. Eventually, this API will go away when
@@ -46316,11 +46352,14 @@ var listenToResponderEventTypesImpl;
 function setListenToResponderEventTypes(_listenToResponderEventTypesImpl) {
   listenToResponderEventTypesImpl = _listenToResponderEventTypesImpl;
 }
+var activeTimeouts = new Map();
 var rootEventTypesToEventResponderInstances = new Map();
 var DoNotPropagateToNextResponder = 0;
 var PropagateToNextResponder = 1;
 var currentTimeStamp = 0;
+var currentTimers = new Map();
 var currentInstance = null;
+var currentTimerIDCounter = 0;
 var currentDocument = null;
 var currentPropagationBehavior = DoNotPropagateToNextResponder;
 var eventResponderContext = {
@@ -46340,9 +46379,14 @@ var eventResponderContext = {
 
       case UserBlockingEvent:
         {
-          runWithPriority(UserBlockingPriority, function () {
-            return executeUserEventHandler(eventListener, eventValue);
-          });
+          if (enableUserBlockingEvents) {
+            runWithPriority(UserBlockingPriority, function () {
+              return executeUserEventHandler(eventListener, eventValue);
+            });
+          } else {
+            executeUserEventHandler(eventListener, eventValue);
+          }
+
           break;
         }
 
@@ -46445,6 +46489,50 @@ var eventResponderContext = {
       }
     }
   },
+  setTimeout: function (func, delay) {
+    validateResponderContext();
+
+    if (currentTimers === null) {
+      currentTimers = new Map();
+    }
+
+    var timeout = currentTimers.get(delay);
+    var timerId = currentTimerIDCounter++;
+
+    if (timeout === undefined) {
+      var timers = new Map();
+      var id = setTimeout(function () {
+        processTimers(timers, delay);
+      }, delay);
+      timeout = {
+        id: id,
+        timers: timers
+      };
+      currentTimers.set(delay, timeout);
+    }
+
+    timeout.timers.set(timerId, {
+      instance: currentInstance,
+      func: func,
+      id: timerId,
+      timeStamp: currentTimeStamp
+    });
+    activeTimeouts.set(timerId, timeout);
+    return timerId;
+  },
+  clearTimeout: function (timerId) {
+    validateResponderContext();
+    var timeout = activeTimeouts.get(timerId);
+
+    if (timeout !== undefined) {
+      var timers = timeout.timers;
+      timers.delete(timerId);
+
+      if (timers.size === 0) {
+        clearTimeout(timeout.id);
+      }
+    }
+  },
   getActiveDocument: getActiveDocument,
   objectAssign: _assign,
   getTimeStamp: function () {
@@ -46540,6 +46628,36 @@ function doesFiberHaveResponder(fiber, responder) {
 
 function getActiveDocument() {
   return currentDocument;
+}
+
+function processTimers(timers, delay) {
+  var timersArr = Array.from(timers.values());
+  var previousInstance = currentInstance;
+  var previousTimers = currentTimers;
+
+  try {
+    batchedEventUpdates(function () {
+      for (var i = 0; i < timersArr.length; i++) {
+        var _timersArr$i = timersArr[i],
+            instance = _timersArr$i.instance,
+            func = _timersArr$i.func,
+            id = _timersArr$i.id,
+            timeStamp = _timersArr$i.timeStamp;
+        currentInstance = instance;
+        currentTimeStamp = timeStamp + delay;
+
+        try {
+          func();
+        } finally {
+          activeTimeouts.delete(id);
+        }
+      }
+    });
+  } finally {
+    currentTimers = previousTimers;
+    currentInstance = previousInstance;
+    currentTimeStamp = 0;
+  }
 }
 
 function createDOMResponderEvent(topLevelType, nativeEvent, nativeEventTarget, passive, passiveSupported) {
@@ -46667,6 +46785,7 @@ function mountEventResponder(responder, responderInstance, props, state) {
 
   if (onMount !== null) {
     var previousInstance = currentInstance;
+    var previousTimers = currentTimers;
     currentInstance = responderInstance;
 
     try {
@@ -46675,6 +46794,7 @@ function mountEventResponder(responder, responderInstance, props, state) {
       });
     } finally {
       currentInstance = previousInstance;
+      currentTimers = previousTimers;
     }
   }
 }
@@ -46686,6 +46806,7 @@ function unmountEventResponder(responderInstance) {
     var props = responderInstance.props,
         state = responderInstance.state;
     var previousInstance = currentInstance;
+    var previousTimers = currentTimers;
     currentInstance = responderInstance;
 
     try {
@@ -46694,6 +46815,7 @@ function unmountEventResponder(responderInstance) {
       });
     } finally {
       currentInstance = previousInstance;
+      currentTimers = previousTimers;
     }
   }
 
@@ -46714,20 +46836,24 @@ function unmountEventResponder(responderInstance) {
 }
 
 function validateResponderContext() {
-  if (!(currentInstance !== null)) {
-    {
-      throw Error("An event responder context was used outside of an event cycle.");
+  (function () {
+    if (!(currentInstance !== null)) {
+      {
+        throw ReactError(Error("An event responder context was used outside of an event cycle. Use context.setTimeout() to use asynchronous responder context outside of event cycle ."));
+      }
     }
-  }
+  })();
 }
 
 function dispatchEventForResponderEventSystem(topLevelType, targetFiber, nativeEvent, nativeEventTarget, eventSystemFlags) {
   if (enableFlareAPI) {
     var previousInstance = currentInstance;
+    var previousTimers = currentTimers;
     var previousTimeStamp = currentTimeStamp;
     var previousDocument = currentDocument;
     var previousPropagationBehavior = currentPropagationBehavior;
-    currentPropagationBehavior = DoNotPropagateToNextResponder; // nodeType 9 is DOCUMENT_NODE
+    currentPropagationBehavior = DoNotPropagateToNextResponder;
+    currentTimers = null; // nodeType 9 is DOCUMENT_NODE
 
     currentDocument = nativeEventTarget.nodeType === 9 ? nativeEventTarget : nativeEventTarget.ownerDocument; // We might want to control timeStamp another way here
 
@@ -46738,6 +46864,7 @@ function dispatchEventForResponderEventSystem(topLevelType, targetFiber, nativeE
         traverseAndHandleEventResponderInstances(topLevelType, targetFiber, nativeEvent, nativeEventTarget, eventSystemFlags);
       });
     } finally {
+      currentTimers = previousTimers;
       currentInstance = previousInstance;
       currentTimeStamp = previousTimeStamp;
       currentDocument = previousDocument;
@@ -46766,11 +46893,13 @@ function registerRootEventType(rootEventType, eventResponderInstance) {
     rootEventTypesSet = eventResponderInstance.rootEventTypes = new Set();
   }
 
-  if (!!rootEventTypesSet.has(rootEventType)) {
-    {
-      throw Error("addRootEventTypes() found a duplicate root event type of \"" + rootEventType + "\". This might be because the event type exists in the event responder \"rootEventTypes\" array or because of a previous addRootEventTypes() using this root event type.");
+  (function () {
+    if (!!rootEventTypesSet.has(rootEventType)) {
+      {
+        throw ReactError(Error("addRootEventTypes() found a duplicate root event type of \"" + rootEventType + "\". This might be because the event type exists in the event responder \"rootEventTypes\" array or because of a previous addRootEventTypes() using this root event type."));
+      }
     }
-  }
+  })();
 
   rootEventTypesSet.add(rootEventType);
   rootEventResponderInstances.add(eventResponderInstance);
@@ -47082,11 +47211,13 @@ var didWarn = false;
 
 function sanitizeURL(url) {
   if (disableJavaScriptURLs) {
-    if (!!isJavaScriptProtocol.test(url)) {
-      {
-        throw Error("React has blocked a javascript: URL as a security precaution." + (ReactDebugCurrentFrame$1.getStackAddendum()));
+    (function () {
+      if (!!isJavaScriptProtocol.test(url)) {
+        {
+          throw ReactError(Error("React has blocked a javascript: URL as a security precaution." + (ReactDebugCurrentFrame$1.getStackAddendum())));
+        }
       }
-    }
+    })();
   } else if ( true && !didWarn && isJavaScriptProtocol.test(url)) {
     didWarn = true;
     warning$1(false, 'A future version of React will block javascript: URLs as a security precaution. ' + 'Use event handlers instead if you can. If you need to generate unsafe HTML try ' + 'using dangerouslySetInnerHTML instead. React was passed %s.', JSON.stringify(url));
@@ -47125,10 +47256,16 @@ function getToStringValue(value) {
 var toStringOrTrustedType = toString;
 
 if (enableTrustedTypesIntegration && typeof trustedTypes !== 'undefined') {
+  var isHTML = trustedTypes.isHTML;
+  var isScript = trustedTypes.isScript;
+  var isScriptURL = trustedTypes.isScriptURL; // TrustedURLs are deprecated and will be removed soon: https://github.com/WICG/trusted-types/pull/204
+
+  var isURL = trustedTypes.isURL ? trustedTypes.isURL : function (value) {
+    return false;
+  };
+
   toStringOrTrustedType = function (value) {
-    if (typeof value === 'object' && (trustedTypes.isHTML(value) || trustedTypes.isScript(value) || trustedTypes.isScriptURL(value) ||
-    /* TrustedURLs are deprecated and will be removed soon: https://github.com/WICG/trusted-types/pull/204 */
-    trustedTypes.isURL && trustedTypes.isURL(value))) {
+    if (typeof value === 'object' && (isHTML(value) || isScript(value) || isScriptURL(value) || isURL(value))) {
       // Pass Trusted Types through.
       return value;
     }
@@ -47769,11 +47906,13 @@ function updateNamedCousins(rootNode, props) {
 
       var otherProps = getFiberCurrentPropsFromNode$1(otherNode);
 
-      if (!otherProps) {
-        {
-          throw Error("ReactDOMInput: Mixing React and non-React radio inputs with the same `name` is not supported.");
+      (function () {
+        if (!otherProps) {
+          {
+            throw ReactError(Error("ReactDOMInput: Mixing React and non-React radio inputs with the same `name` is not supported."));
+          }
         }
-      } // We need update the tracked value on the named cousin since the value
+      })(); // We need update the tracked value on the named cousin since the value
       // was changed but the input saw no event or value set
 
 
@@ -48076,11 +48215,13 @@ var didWarnValDefaultVal = false;
 function getHostProps$3(element, props) {
   var node = element;
 
-  if (!(props.dangerouslySetInnerHTML == null)) {
-    {
-      throw Error("`dangerouslySetInnerHTML` does not make sense on <textarea>.");
+  (function () {
+    if (!(props.dangerouslySetInnerHTML == null)) {
+      {
+        throw ReactError(Error("`dangerouslySetInnerHTML` does not make sense on <textarea>."));
+      }
     }
-  } // Always set children to the same thing. In IE9, the selection range will
+  })(); // Always set children to the same thing. In IE9, the selection range will
   // get reset if `textContent` is mutated.  We could add a check in setTextContent
   // to only set the value if/when the value differs from the node value (which would
   // completely solve this IE9 bug), but Sebastian+Sophie seemed to like this
@@ -48120,18 +48261,22 @@ function initWrapperState$2(element, props) {
         warning$1(false, 'Use the `defaultValue` or `value` props instead of setting ' + 'children on <textarea>.');
       }
 
-      if (!(defaultValue == null)) {
-        {
-          throw Error("If you supply `defaultValue` on a <textarea>, do not pass children.");
-        }
-      }
-
-      if (Array.isArray(children)) {
-        if (!(children.length <= 1)) {
+      (function () {
+        if (!(defaultValue == null)) {
           {
-            throw Error("<textarea> can only have at most one child.");
+            throw ReactError(Error("If you supply `defaultValue` on a <textarea>, do not pass children."));
           }
         }
+      })();
+
+      if (Array.isArray(children)) {
+        (function () {
+          if (!(children.length <= 1)) {
+            {
+              throw ReactError(Error("<textarea> can only have at most one child."));
+            }
+          }
+        })();
 
         children = children[0];
       }
@@ -48511,447 +48656,9 @@ function getRawEventName(topLevelType) {
   return unsafeCastDOMTopLevelTypeToString(topLevelType);
 }
 
-/**
- * `ReactInstanceMap` maintains a mapping from a public facing stateful
- * instance (key) and the internal representation (value). This allows public
- * methods to accept the user facing instance as an argument and map them back
- * to internal methods.
- *
- * Note that this module is currently shared and assumed to be stateless.
- * If this becomes an actual Map, that will break.
- */
-
-/**
- * This API should be called `delete` but we'd have to make sure to always
- * transform these to strings for IE support. When this transform is fully
- * supported we can rename it.
- */
-
-function get(key) {
-  return key._reactInternalFiber;
-}
-function has(key) {
-  return key._reactInternalFiber !== undefined;
-}
-function set(key, value) {
-  key._reactInternalFiber = value;
-}
-
-// Don't change these two values. They're used by React Dev Tools.
-var NoEffect =
-/*              */
-0;
-var PerformedWork =
-/*         */
-1; // You can change the rest (and add more).
-
-var Placement =
-/*             */
-2;
-var Update =
-/*                */
-4;
-var PlacementAndUpdate =
-/*    */
-6;
-var Deletion =
-/*              */
-8;
-var ContentReset =
-/*          */
-16;
-var Callback =
-/*              */
-32;
-var DidCapture =
-/*            */
-64;
-var Ref =
-/*                   */
-128;
-var Snapshot =
-/*              */
-256;
-var Passive =
-/*               */
-512;
-var Hydrating =
-/*             */
-1024;
-var HydratingAndUpdate =
-/*    */
-1028; // Passive & Update & Callback & Ref & Snapshot
-
-var LifecycleEffectMask =
-/*   */
-932; // Union of all host effects
-
-var HostEffectMask =
-/*        */
-2047;
-var Incomplete =
-/*            */
-2048;
-var ShouldCapture =
-/*         */
-4096;
-
-var ReactCurrentOwner = ReactSharedInternals.ReactCurrentOwner;
-function getNearestMountedFiber(fiber) {
-  var node = fiber;
-  var nearestMounted = fiber;
-
-  if (!fiber.alternate) {
-    // If there is no alternate, this might be a new tree that isn't inserted
-    // yet. If it is, then it will have a pending insertion effect on it.
-    var nextNode = node;
-
-    do {
-      node = nextNode;
-
-      if ((node.effectTag & (Placement | Hydrating)) !== NoEffect) {
-        // This is an insertion or in-progress hydration. The nearest possible
-        // mounted fiber is the parent but we need to continue to figure out
-        // if that one is still mounted.
-        nearestMounted = node.return;
-      }
-
-      nextNode = node.return;
-    } while (nextNode);
-  } else {
-    while (node.return) {
-      node = node.return;
-    }
-  }
-
-  if (node.tag === HostRoot) {
-    // TODO: Check if this was a nested HostRoot when used with
-    // renderContainerIntoSubtree.
-    return nearestMounted;
-  } // If we didn't hit the root, that means that we're in an disconnected tree
-  // that has been unmounted.
-
-
-  return null;
-}
-function getSuspenseInstanceFromFiber(fiber) {
-  if (fiber.tag === SuspenseComponent) {
-    var suspenseState = fiber.memoizedState;
-
-    if (suspenseState === null) {
-      var current = fiber.alternate;
-
-      if (current !== null) {
-        suspenseState = current.memoizedState;
-      }
-    }
-
-    if (suspenseState !== null) {
-      return suspenseState.dehydrated;
-    }
-  }
-
-  return null;
-}
-function getContainerFromFiber(fiber) {
-  return fiber.tag === HostRoot ? fiber.stateNode.containerInfo : null;
-}
-function isFiberMounted(fiber) {
-  return getNearestMountedFiber(fiber) === fiber;
-}
-function isMounted(component) {
-  {
-    var owner = ReactCurrentOwner.current;
-
-    if (owner !== null && owner.tag === ClassComponent) {
-      var ownerFiber = owner;
-      var instance = ownerFiber.stateNode;
-      !instance._warnedAboutRefsInRender ? warningWithoutStack$1(false, '%s is accessing isMounted inside its render() function. ' + 'render() should be a pure function of props and state. It should ' + 'never access something that requires stale data from the previous ' + 'render, such as refs. Move this logic to componentDidMount and ' + 'componentDidUpdate instead.', getComponentName(ownerFiber.type) || 'A component') : void 0;
-      instance._warnedAboutRefsInRender = true;
-    }
-  }
-
-  var fiber = get(component);
-
-  if (!fiber) {
-    return false;
-  }
-
-  return getNearestMountedFiber(fiber) === fiber;
-}
-
-function assertIsMounted(fiber) {
-  if (!(getNearestMountedFiber(fiber) === fiber)) {
-    {
-      throw Error("Unable to find node on an unmounted component.");
-    }
-  }
-}
-
-function findCurrentFiberUsingSlowPath(fiber) {
-  var alternate = fiber.alternate;
-
-  if (!alternate) {
-    // If there is no alternate, then we only need to check if it is mounted.
-    var nearestMounted = getNearestMountedFiber(fiber);
-
-    if (!(nearestMounted !== null)) {
-      {
-        throw Error("Unable to find node on an unmounted component.");
-      }
-    }
-
-    if (nearestMounted !== fiber) {
-      return null;
-    }
-
-    return fiber;
-  } // If we have two possible branches, we'll walk backwards up to the root
-  // to see what path the root points to. On the way we may hit one of the
-  // special cases and we'll deal with them.
-
-
-  var a = fiber;
-  var b = alternate;
-
-  while (true) {
-    var parentA = a.return;
-
-    if (parentA === null) {
-      // We're at the root.
-      break;
-    }
-
-    var parentB = parentA.alternate;
-
-    if (parentB === null) {
-      // There is no alternate. This is an unusual case. Currently, it only
-      // happens when a Suspense component is hidden. An extra fragment fiber
-      // is inserted in between the Suspense fiber and its children. Skip
-      // over this extra fragment fiber and proceed to the next parent.
-      var nextParent = parentA.return;
-
-      if (nextParent !== null) {
-        a = b = nextParent;
-        continue;
-      } // If there's no parent, we're at the root.
-
-
-      break;
-    } // If both copies of the parent fiber point to the same child, we can
-    // assume that the child is current. This happens when we bailout on low
-    // priority: the bailed out fiber's child reuses the current child.
-
-
-    if (parentA.child === parentB.child) {
-      var child = parentA.child;
-
-      while (child) {
-        if (child === a) {
-          // We've determined that A is the current branch.
-          assertIsMounted(parentA);
-          return fiber;
-        }
-
-        if (child === b) {
-          // We've determined that B is the current branch.
-          assertIsMounted(parentA);
-          return alternate;
-        }
-
-        child = child.sibling;
-      } // We should never have an alternate for any mounting node. So the only
-      // way this could possibly happen is if this was unmounted, if at all.
-
-
-      {
-        {
-          throw Error("Unable to find node on an unmounted component.");
-        }
-      }
-    }
-
-    if (a.return !== b.return) {
-      // The return pointer of A and the return pointer of B point to different
-      // fibers. We assume that return pointers never criss-cross, so A must
-      // belong to the child set of A.return, and B must belong to the child
-      // set of B.return.
-      a = parentA;
-      b = parentB;
-    } else {
-      // The return pointers point to the same fiber. We'll have to use the
-      // default, slow path: scan the child sets of each parent alternate to see
-      // which child belongs to which set.
-      //
-      // Search parent A's child set
-      var didFindChild = false;
-      var _child = parentA.child;
-
-      while (_child) {
-        if (_child === a) {
-          didFindChild = true;
-          a = parentA;
-          b = parentB;
-          break;
-        }
-
-        if (_child === b) {
-          didFindChild = true;
-          b = parentA;
-          a = parentB;
-          break;
-        }
-
-        _child = _child.sibling;
-      }
-
-      if (!didFindChild) {
-        // Search parent B's child set
-        _child = parentB.child;
-
-        while (_child) {
-          if (_child === a) {
-            didFindChild = true;
-            a = parentB;
-            b = parentA;
-            break;
-          }
-
-          if (_child === b) {
-            didFindChild = true;
-            b = parentB;
-            a = parentA;
-            break;
-          }
-
-          _child = _child.sibling;
-        }
-
-        if (!didFindChild) {
-          {
-            throw Error("Child was not found in either parent set. This indicates a bug in React related to the return pointer. Please file an issue.");
-          }
-        }
-      }
-    }
-
-    if (!(a.alternate === b)) {
-      {
-        throw Error("Return fibers should always be each others' alternates. This error is likely caused by a bug in React. Please file an issue.");
-      }
-    }
-  } // If the root is not a host container, we're in a disconnected tree. I.e.
-  // unmounted.
-
-
-  if (!(a.tag === HostRoot)) {
-    {
-      throw Error("Unable to find node on an unmounted component.");
-    }
-  }
-
-  if (a.stateNode.current === a) {
-    // We've determined that A is the current branch.
-    return fiber;
-  } // Otherwise B has to be current branch.
-
-
-  return alternate;
-}
-function findCurrentHostFiber(parent) {
-  var currentParent = findCurrentFiberUsingSlowPath(parent);
-
-  if (!currentParent) {
-    return null;
-  } // Next we'll drill down this component to find the first HostComponent/Text.
-
-
-  var node = currentParent;
-
-  while (true) {
-    if (node.tag === HostComponent || node.tag === HostText) {
-      return node;
-    } else if (node.child) {
-      node.child.return = node;
-      node = node.child;
-      continue;
-    }
-
-    if (node === currentParent) {
-      return null;
-    }
-
-    while (!node.sibling) {
-      if (!node.return || node.return === currentParent) {
-        return null;
-      }
-
-      node = node.return;
-    }
-
-    node.sibling.return = node.return;
-    node = node.sibling;
-  } // Flow needs the return null here, but ESLint complains about it.
-  // eslint-disable-next-line no-unreachable
-
-
-  return null;
-}
-function findCurrentHostFiberWithNoPortals(parent) {
-  var currentParent = findCurrentFiberUsingSlowPath(parent);
-
-  if (!currentParent) {
-    return null;
-  } // Next we'll drill down this component to find the first HostComponent/Text.
-
-
-  var node = currentParent;
-
-  while (true) {
-    if (node.tag === HostComponent || node.tag === HostText || enableFundamentalAPI && node.tag === FundamentalComponent) {
-      return node;
-    } else if (node.child && node.tag !== HostPortal) {
-      node.child.return = node;
-      node = node.child;
-      continue;
-    }
-
-    if (node === currentParent) {
-      return null;
-    }
-
-    while (!node.sibling) {
-      if (!node.return || node.return === currentParent) {
-        return null;
-      }
-
-      node = node.return;
-    }
-
-    node.sibling.return = node.return;
-    node = node.sibling;
-  } // Flow needs the return null here, but ESLint complains about it.
-  // eslint-disable-next-line no-unreachable
-
-
-  return null;
-}
-
 var attemptSynchronousHydration;
 function setAttemptSynchronousHydration(fn) {
   attemptSynchronousHydration = fn;
-}
-var attemptUserBlockingHydration;
-function setAttemptUserBlockingHydration(fn) {
-  attemptUserBlockingHydration = fn;
-}
-var attemptContinuousHydration;
-function setAttemptContinuousHydration(fn) {
-  attemptContinuousHydration = fn;
-}
-var attemptHydrationAtCurrentPriority;
-function setAttemptHydrationAtCurrentPriority(fn) {
-  attemptHydrationAtCurrentPriority = fn;
 } // TODO: Upgrade this definition once we're on a newer version of Flow that
 // has this definition built-in.
 
@@ -48968,7 +48675,6 @@ var queuedMouse = null; // For pointer events there can be one latest event per 
 var queuedPointers = new Map();
 var queuedPointerCaptures = new Map(); // We could consider replaying selectionchange and touchmoves too.
 
-var queuedExplicitHydrationTargets = [];
 function hasQueuedDiscreteEvents() {
   return queuedDiscreteEvents.length > 0;
 }
@@ -49095,20 +48801,9 @@ function clearIfContinuousEvent(topLevelType, nativeEvent) {
   }
 }
 
-function accumulateOrCreateContinuousQueuedReplayableEvent(existingQueuedEvent, blockedOn, topLevelType, eventSystemFlags, nativeEvent) {
+function accumulateOrCreateQueuedReplayableEvent(existingQueuedEvent, blockedOn, topLevelType, eventSystemFlags, nativeEvent) {
   if (existingQueuedEvent === null || existingQueuedEvent.nativeEvent !== nativeEvent) {
-    var queuedEvent = createQueuedReplayableEvent(blockedOn, topLevelType, eventSystemFlags, nativeEvent);
-
-    if (blockedOn !== null) {
-      var _fiber2 = getInstanceFromNode$1(blockedOn);
-
-      if (_fiber2 !== null) {
-        // Attempt to increase the priority of this target.
-        attemptContinuousHydration(_fiber2);
-      }
-    }
-
-    return queuedEvent;
+    return createQueuedReplayableEvent(blockedOn, topLevelType, eventSystemFlags, nativeEvent);
   } // If we have already queued this exact event, then it's because
   // the different event systems have different DOM event listeners.
   // We can accumulate the flags and store a single event to be
@@ -49127,21 +48822,21 @@ function queueIfContinuousEvent(blockedOn, topLevelType, eventSystemFlags, nativ
     case TOP_FOCUS:
       {
         var focusEvent = nativeEvent;
-        queuedFocus = accumulateOrCreateContinuousQueuedReplayableEvent(queuedFocus, blockedOn, topLevelType, eventSystemFlags, focusEvent);
+        queuedFocus = accumulateOrCreateQueuedReplayableEvent(queuedFocus, blockedOn, topLevelType, eventSystemFlags, focusEvent);
         return true;
       }
 
     case TOP_DRAG_ENTER:
       {
         var dragEvent = nativeEvent;
-        queuedDrag = accumulateOrCreateContinuousQueuedReplayableEvent(queuedDrag, blockedOn, topLevelType, eventSystemFlags, dragEvent);
+        queuedDrag = accumulateOrCreateQueuedReplayableEvent(queuedDrag, blockedOn, topLevelType, eventSystemFlags, dragEvent);
         return true;
       }
 
     case TOP_MOUSE_OVER:
       {
         var mouseEvent = nativeEvent;
-        queuedMouse = accumulateOrCreateContinuousQueuedReplayableEvent(queuedMouse, blockedOn, topLevelType, eventSystemFlags, mouseEvent);
+        queuedMouse = accumulateOrCreateQueuedReplayableEvent(queuedMouse, blockedOn, topLevelType, eventSystemFlags, mouseEvent);
         return true;
       }
 
@@ -49149,7 +48844,7 @@ function queueIfContinuousEvent(blockedOn, topLevelType, eventSystemFlags, nativ
       {
         var pointerEvent = nativeEvent;
         var pointerId = pointerEvent.pointerId;
-        queuedPointers.set(pointerId, accumulateOrCreateContinuousQueuedReplayableEvent(queuedPointers.get(pointerId) || null, blockedOn, topLevelType, eventSystemFlags, pointerEvent));
+        queuedPointers.set(pointerId, accumulateOrCreateQueuedReplayableEvent(queuedPointers.get(pointerId) || null, blockedOn, topLevelType, eventSystemFlags, pointerEvent));
         return true;
       }
 
@@ -49157,79 +48852,15 @@ function queueIfContinuousEvent(blockedOn, topLevelType, eventSystemFlags, nativ
       {
         var _pointerEvent = nativeEvent;
         var _pointerId2 = _pointerEvent.pointerId;
-        queuedPointerCaptures.set(_pointerId2, accumulateOrCreateContinuousQueuedReplayableEvent(queuedPointerCaptures.get(_pointerId2) || null, blockedOn, topLevelType, eventSystemFlags, _pointerEvent));
+        queuedPointerCaptures.set(_pointerId2, accumulateOrCreateQueuedReplayableEvent(queuedPointerCaptures.get(_pointerId2) || null, blockedOn, topLevelType, eventSystemFlags, _pointerEvent));
         return true;
       }
   }
 
   return false;
-} // Check if this target is unblocked. Returns true if it's unblocked.
-
-function attemptExplicitHydrationTarget(queuedTarget) {
-  // TODO: This function shares a lot of logic with attemptToDispatchEvent.
-  // Try to unify them. It's a bit tricky since it would require two return
-  // values.
-  var targetInst = getClosestInstanceFromNode(queuedTarget.target);
-
-  if (targetInst !== null) {
-    var nearestMounted = getNearestMountedFiber(targetInst);
-
-    if (nearestMounted !== null) {
-      var tag = nearestMounted.tag;
-
-      if (tag === SuspenseComponent) {
-        var instance = getSuspenseInstanceFromFiber(nearestMounted);
-
-        if (instance !== null) {
-          // We're blocked on hydrating this boundary.
-          // Increase its priority.
-          queuedTarget.blockedOn = instance;
-          Scheduler.unstable_runWithPriority(queuedTarget.priority, function () {
-            attemptHydrationAtCurrentPriority(nearestMounted);
-          });
-          return;
-        }
-      } else if (tag === HostRoot) {
-        var root = nearestMounted.stateNode;
-
-        if (root.hydrate) {
-          queuedTarget.blockedOn = getContainerFromFiber(nearestMounted); // We don't currently have a way to increase the priority of
-          // a root other than sync.
-
-          return;
-        }
-      }
-    }
-  }
-
-  queuedTarget.blockedOn = null;
 }
 
-function queueExplicitHydrationTarget(target) {
-  if (enableSelectiveHydration) {
-    var priority = Scheduler.unstable_getCurrentPriorityLevel();
-    var queuedTarget = {
-      blockedOn: null,
-      target: target,
-      priority: priority
-    };
-    var i = 0;
-
-    for (; i < queuedExplicitHydrationTargets.length; i++) {
-      if (priority <= queuedExplicitHydrationTargets[i].priority) {
-        break;
-      }
-    }
-
-    queuedExplicitHydrationTargets.splice(i, 0, queuedTarget);
-
-    if (i === 0) {
-      attemptExplicitHydrationTarget(queuedTarget);
-    }
-  }
-}
-
-function attemptReplayContinuousQueuedEvent(queuedEvent) {
+function attemptReplayQueuedEvent(queuedEvent) {
   if (queuedEvent.blockedOn !== null) {
     return false;
   }
@@ -49238,12 +48869,6 @@ function attemptReplayContinuousQueuedEvent(queuedEvent) {
 
   if (nextBlockedOn !== null) {
     // We're still blocked. Try again later.
-    var _fiber3 = getInstanceFromNode$1(nextBlockedOn);
-
-    if (_fiber3 !== null) {
-      attemptContinuousHydration(_fiber3);
-    }
-
     queuedEvent.blockedOn = nextBlockedOn;
     return false;
   }
@@ -49251,8 +48876,8 @@ function attemptReplayContinuousQueuedEvent(queuedEvent) {
   return true;
 }
 
-function attemptReplayContinuousQueuedEventInMap(queuedEvent, key, map) {
-  if (attemptReplayContinuousQueuedEvent(queuedEvent)) {
+function attemptReplayQueuedEventInMap(queuedEvent, key, map) {
+  if (attemptReplayQueuedEvent(queuedEvent)) {
     map.delete(key);
   }
 }
@@ -49265,14 +48890,6 @@ function replayUnblockedEvents() {
 
     if (nextDiscreteEvent.blockedOn !== null) {
       // We're still blocked.
-      // Increase the priority of this boundary to unblock
-      // the next discrete event.
-      var _fiber4 = getInstanceFromNode$1(nextDiscreteEvent.blockedOn);
-
-      if (_fiber4 !== null) {
-        attemptUserBlockingHydration(_fiber4);
-      }
-
       break;
     }
 
@@ -49288,20 +48905,20 @@ function replayUnblockedEvents() {
   } // Next replay any continuous events.
 
 
-  if (queuedFocus !== null && attemptReplayContinuousQueuedEvent(queuedFocus)) {
+  if (queuedFocus !== null && attemptReplayQueuedEvent(queuedFocus)) {
     queuedFocus = null;
   }
 
-  if (queuedDrag !== null && attemptReplayContinuousQueuedEvent(queuedDrag)) {
+  if (queuedDrag !== null && attemptReplayQueuedEvent(queuedDrag)) {
     queuedDrag = null;
   }
 
-  if (queuedMouse !== null && attemptReplayContinuousQueuedEvent(queuedMouse)) {
+  if (queuedMouse !== null && attemptReplayQueuedEvent(queuedMouse)) {
     queuedMouse = null;
   }
 
-  queuedPointers.forEach(attemptReplayContinuousQueuedEventInMap);
-  queuedPointerCaptures.forEach(attemptReplayContinuousQueuedEventInMap);
+  queuedPointers.forEach(attemptReplayQueuedEventInMap);
+  queuedPointerCaptures.forEach(attemptReplayQueuedEventInMap);
 }
 
 function scheduleCallbackIfUnblocked(queuedEvent, unblocked) {
@@ -49353,30 +48970,444 @@ function retryIfBlockedOn(unblocked) {
 
   queuedPointers.forEach(unblock);
   queuedPointerCaptures.forEach(unblock);
+}
 
-  for (var _i = 0; _i < queuedExplicitHydrationTargets.length; _i++) {
-    var queuedTarget = queuedExplicitHydrationTargets[_i];
+/**
+ * `ReactInstanceMap` maintains a mapping from a public facing stateful
+ * instance (key) and the internal representation (value). This allows public
+ * methods to accept the user facing instance as an argument and map them back
+ * to internal methods.
+ *
+ * Note that this module is currently shared and assumed to be stateless.
+ * If this becomes an actual Map, that will break.
+ */
 
-    if (queuedTarget.blockedOn === unblocked) {
-      queuedTarget.blockedOn = null;
+/**
+ * This API should be called `delete` but we'd have to make sure to always
+ * transform these to strings for IE support. When this transform is fully
+ * supported we can rename it.
+ */
+
+function get(key) {
+  return key._reactInternalFiber;
+}
+function has(key) {
+  return key._reactInternalFiber !== undefined;
+}
+function set(key, value) {
+  key._reactInternalFiber = value;
+}
+
+// Don't change these two values. They're used by React Dev Tools.
+var NoEffect =
+/*              */
+0;
+var PerformedWork =
+/*         */
+1; // You can change the rest (and add more).
+
+var Placement =
+/*             */
+2;
+var Update =
+/*                */
+4;
+var PlacementAndUpdate =
+/*    */
+6;
+var Deletion =
+/*              */
+8;
+var ContentReset =
+/*          */
+16;
+var Callback =
+/*              */
+32;
+var DidCapture =
+/*            */
+64;
+var Ref =
+/*                   */
+128;
+var Snapshot =
+/*              */
+256;
+var Passive =
+/*               */
+512;
+var Hydrating =
+/*             */
+1024;
+var HydratingAndUpdate =
+/*    */
+1028; // Passive & Update & Callback & Ref & Snapshot
+
+var LifecycleEffectMask =
+/*   */
+932; // Union of all host effects
+
+var HostEffectMask =
+/*        */
+2047;
+var Incomplete =
+/*            */
+2048;
+var ShouldCapture =
+/*         */
+4096;
+
+var ReactCurrentOwner$1 = ReactSharedInternals.ReactCurrentOwner;
+function getNearestMountedFiber(fiber) {
+  var node = fiber;
+  var nearestMounted = fiber;
+
+  if (!fiber.alternate) {
+    // If there is no alternate, this might be a new tree that isn't inserted
+    // yet. If it is, then it will have a pending insertion effect on it.
+    var nextNode = node;
+
+    do {
+      node = nextNode;
+
+      if ((node.effectTag & (Placement | Hydrating)) !== NoEffect) {
+        // This is an insertion or in-progress hydration. The nearest possible
+        // mounted fiber is the parent but we need to continue to figure out
+        // if that one is still mounted.
+        nearestMounted = node.return;
+      }
+
+      nextNode = node.return;
+    } while (nextNode);
+  } else {
+    while (node.return) {
+      node = node.return;
     }
   }
 
-  while (queuedExplicitHydrationTargets.length > 0) {
-    var nextExplicitTarget = queuedExplicitHydrationTargets[0];
+  if (node.tag === HostRoot) {
+    // TODO: Check if this was a nested HostRoot when used with
+    // renderContainerIntoSubtree.
+    return nearestMounted;
+  } // If we didn't hit the root, that means that we're in an disconnected tree
+  // that has been unmounted.
 
-    if (nextExplicitTarget.blockedOn !== null) {
-      // We're still blocked.
-      break;
-    } else {
-      attemptExplicitHydrationTarget(nextExplicitTarget);
 
-      if (nextExplicitTarget.blockedOn === null) {
-        // We're unblocked.
-        queuedExplicitHydrationTargets.shift();
+  return null;
+}
+function getSuspenseInstanceFromFiber(fiber) {
+  if (fiber.tag === SuspenseComponent) {
+    var suspenseState = fiber.memoizedState;
+
+    if (suspenseState === null) {
+      var current = fiber.alternate;
+
+      if (current !== null) {
+        suspenseState = current.memoizedState;
       }
     }
+
+    if (suspenseState !== null) {
+      return suspenseState.dehydrated;
+    }
   }
+
+  return null;
+}
+function getContainerFromFiber(fiber) {
+  return fiber.tag === HostRoot ? fiber.stateNode.containerInfo : null;
+}
+function isFiberMounted(fiber) {
+  return getNearestMountedFiber(fiber) === fiber;
+}
+function isMounted(component) {
+  {
+    var owner = ReactCurrentOwner$1.current;
+
+    if (owner !== null && owner.tag === ClassComponent) {
+      var ownerFiber = owner;
+      var instance = ownerFiber.stateNode;
+      !instance._warnedAboutRefsInRender ? warningWithoutStack$1(false, '%s is accessing isMounted inside its render() function. ' + 'render() should be a pure function of props and state. It should ' + 'never access something that requires stale data from the previous ' + 'render, such as refs. Move this logic to componentDidMount and ' + 'componentDidUpdate instead.', getComponentName(ownerFiber.type) || 'A component') : void 0;
+      instance._warnedAboutRefsInRender = true;
+    }
+  }
+
+  var fiber = get(component);
+
+  if (!fiber) {
+    return false;
+  }
+
+  return getNearestMountedFiber(fiber) === fiber;
+}
+
+function assertIsMounted(fiber) {
+  (function () {
+    if (!(getNearestMountedFiber(fiber) === fiber)) {
+      {
+        throw ReactError(Error("Unable to find node on an unmounted component."));
+      }
+    }
+  })();
+}
+
+function findCurrentFiberUsingSlowPath(fiber) {
+  var alternate = fiber.alternate;
+
+  if (!alternate) {
+    // If there is no alternate, then we only need to check if it is mounted.
+    var nearestMounted = getNearestMountedFiber(fiber);
+
+    (function () {
+      if (!(nearestMounted !== null)) {
+        {
+          throw ReactError(Error("Unable to find node on an unmounted component."));
+        }
+      }
+    })();
+
+    if (nearestMounted !== fiber) {
+      return null;
+    }
+
+    return fiber;
+  } // If we have two possible branches, we'll walk backwards up to the root
+  // to see what path the root points to. On the way we may hit one of the
+  // special cases and we'll deal with them.
+
+
+  var a = fiber;
+  var b = alternate;
+
+  while (true) {
+    var parentA = a.return;
+
+    if (parentA === null) {
+      // We're at the root.
+      break;
+    }
+
+    var parentB = parentA.alternate;
+
+    if (parentB === null) {
+      // There is no alternate. This is an unusual case. Currently, it only
+      // happens when a Suspense component is hidden. An extra fragment fiber
+      // is inserted in between the Suspense fiber and its children. Skip
+      // over this extra fragment fiber and proceed to the next parent.
+      var nextParent = parentA.return;
+
+      if (nextParent !== null) {
+        a = b = nextParent;
+        continue;
+      } // If there's no parent, we're at the root.
+
+
+      break;
+    } // If both copies of the parent fiber point to the same child, we can
+    // assume that the child is current. This happens when we bailout on low
+    // priority: the bailed out fiber's child reuses the current child.
+
+
+    if (parentA.child === parentB.child) {
+      var child = parentA.child;
+
+      while (child) {
+        if (child === a) {
+          // We've determined that A is the current branch.
+          assertIsMounted(parentA);
+          return fiber;
+        }
+
+        if (child === b) {
+          // We've determined that B is the current branch.
+          assertIsMounted(parentA);
+          return alternate;
+        }
+
+        child = child.sibling;
+      } // We should never have an alternate for any mounting node. So the only
+      // way this could possibly happen is if this was unmounted, if at all.
+
+
+      (function () {
+        {
+          {
+            throw ReactError(Error("Unable to find node on an unmounted component."));
+          }
+        }
+      })();
+    }
+
+    if (a.return !== b.return) {
+      // The return pointer of A and the return pointer of B point to different
+      // fibers. We assume that return pointers never criss-cross, so A must
+      // belong to the child set of A.return, and B must belong to the child
+      // set of B.return.
+      a = parentA;
+      b = parentB;
+    } else {
+      // The return pointers point to the same fiber. We'll have to use the
+      // default, slow path: scan the child sets of each parent alternate to see
+      // which child belongs to which set.
+      //
+      // Search parent A's child set
+      var didFindChild = false;
+      var _child = parentA.child;
+
+      while (_child) {
+        if (_child === a) {
+          didFindChild = true;
+          a = parentA;
+          b = parentB;
+          break;
+        }
+
+        if (_child === b) {
+          didFindChild = true;
+          b = parentA;
+          a = parentB;
+          break;
+        }
+
+        _child = _child.sibling;
+      }
+
+      if (!didFindChild) {
+        // Search parent B's child set
+        _child = parentB.child;
+
+        while (_child) {
+          if (_child === a) {
+            didFindChild = true;
+            a = parentB;
+            b = parentA;
+            break;
+          }
+
+          if (_child === b) {
+            didFindChild = true;
+            b = parentB;
+            a = parentA;
+            break;
+          }
+
+          _child = _child.sibling;
+        }
+
+        (function () {
+          if (!didFindChild) {
+            {
+              throw ReactError(Error("Child was not found in either parent set. This indicates a bug in React related to the return pointer. Please file an issue."));
+            }
+          }
+        })();
+      }
+    }
+
+    (function () {
+      if (!(a.alternate === b)) {
+        {
+          throw ReactError(Error("Return fibers should always be each others' alternates. This error is likely caused by a bug in React. Please file an issue."));
+        }
+      }
+    })();
+  } // If the root is not a host container, we're in a disconnected tree. I.e.
+  // unmounted.
+
+
+  (function () {
+    if (!(a.tag === HostRoot)) {
+      {
+        throw ReactError(Error("Unable to find node on an unmounted component."));
+      }
+    }
+  })();
+
+  if (a.stateNode.current === a) {
+    // We've determined that A is the current branch.
+    return fiber;
+  } // Otherwise B has to be current branch.
+
+
+  return alternate;
+}
+function findCurrentHostFiber(parent) {
+  var currentParent = findCurrentFiberUsingSlowPath(parent);
+
+  if (!currentParent) {
+    return null;
+  } // Next we'll drill down this component to find the first HostComponent/Text.
+
+
+  var node = currentParent;
+
+  while (true) {
+    if (node.tag === HostComponent || node.tag === HostText) {
+      return node;
+    } else if (node.child) {
+      node.child.return = node;
+      node = node.child;
+      continue;
+    }
+
+    if (node === currentParent) {
+      return null;
+    }
+
+    while (!node.sibling) {
+      if (!node.return || node.return === currentParent) {
+        return null;
+      }
+
+      node = node.return;
+    }
+
+    node.sibling.return = node.return;
+    node = node.sibling;
+  } // Flow needs the return null here, but ESLint complains about it.
+  // eslint-disable-next-line no-unreachable
+
+
+  return null;
+}
+function findCurrentHostFiberWithNoPortals(parent) {
+  var currentParent = findCurrentFiberUsingSlowPath(parent);
+
+  if (!currentParent) {
+    return null;
+  } // Next we'll drill down this component to find the first HostComponent/Text.
+
+
+  var node = currentParent;
+
+  while (true) {
+    if (node.tag === HostComponent || node.tag === HostText || enableFundamentalAPI && node.tag === FundamentalComponent) {
+      return node;
+    } else if (node.child && node.tag !== HostPortal) {
+      node.child.return = node;
+      node = node.child;
+      continue;
+    }
+
+    if (node === currentParent) {
+      return null;
+    }
+
+    while (!node.sibling) {
+      if (!node.return || node.return === currentParent) {
+        return null;
+      }
+
+      node = node.return;
+    }
+
+    node.sibling.return = node.return;
+    node = node.sibling;
+  } // Flow needs the return null here, but ESLint complains about it.
+  // eslint-disable-next-line no-unreachable
+
+
+  return null;
 }
 
 function addEventBubbleListener(element, eventType, listener) {
@@ -49923,11 +49954,13 @@ function getPooledEvent(dispatchConfig, targetInst, nativeEvent, nativeInst) {
 function releasePooledEvent(event) {
   var EventConstructor = this;
 
-  if (!(event instanceof EventConstructor)) {
-    {
-      throw Error("Trying to release an event instance into a pool of a different type.");
+  (function () {
+    if (!(event instanceof EventConstructor)) {
+      {
+        throw ReactError(Error("Trying to release an event instance into a pool of a different type."));
+      }
     }
-  }
+  })();
 
   event.destructor();
 
@@ -50716,7 +50749,11 @@ function dispatchDiscreteEvent(topLevelType, eventSystemFlags, nativeEvent) {
 }
 
 function dispatchUserBlockingUpdate(topLevelType, eventSystemFlags, nativeEvent) {
-  runWithPriority$1(UserBlockingPriority$1, dispatchEvent.bind(null, topLevelType, eventSystemFlags, nativeEvent));
+  if (enableUserBlockingEvents) {
+    runWithPriority$1(UserBlockingPriority$1, dispatchEvent.bind(null, topLevelType, eventSystemFlags, nativeEvent));
+  } else {
+    dispatchEvent(topLevelType, eventSystemFlags, nativeEvent);
+  }
 }
 
 function dispatchEventForPluginEventSystem(topLevelType, eventSystemFlags, nativeEvent, targetInst) {
@@ -51494,36 +51531,44 @@ function assertValidProps(tag, props) {
 
 
   if (voidElementTags[tag]) {
-    if (!(props.children == null && props.dangerouslySetInnerHTML == null)) {
-      {
-        throw Error(tag + " is a void element tag and must neither have `children` nor use `dangerouslySetInnerHTML`." + (ReactDebugCurrentFrame$3.getStackAddendum()));
+    (function () {
+      if (!(props.children == null && props.dangerouslySetInnerHTML == null)) {
+        {
+          throw ReactError(Error(tag + " is a void element tag and must neither have `children` nor use `dangerouslySetInnerHTML`." + (ReactDebugCurrentFrame$3.getStackAddendum())));
+        }
       }
-    }
+    })();
   }
 
   if (props.dangerouslySetInnerHTML != null) {
-    if (!(props.children == null)) {
-      {
-        throw Error("Can only set one of `children` or `props.dangerouslySetInnerHTML`.");
+    (function () {
+      if (!(props.children == null)) {
+        {
+          throw ReactError(Error("Can only set one of `children` or `props.dangerouslySetInnerHTML`."));
+        }
       }
-    }
+    })();
 
-    if (!(typeof props.dangerouslySetInnerHTML === 'object' && HTML$1 in props.dangerouslySetInnerHTML)) {
-      {
-        throw Error("`props.dangerouslySetInnerHTML` must be in the form `{__html: ...}`. Please visit https://fb.me/react-invariant-dangerously-set-inner-html for more information.");
+    (function () {
+      if (!(typeof props.dangerouslySetInnerHTML === 'object' && HTML$1 in props.dangerouslySetInnerHTML)) {
+        {
+          throw ReactError(Error("`props.dangerouslySetInnerHTML` must be in the form `{__html: ...}`. Please visit https://fb.me/react-invariant-dangerously-set-inner-html for more information."));
+        }
       }
-    }
+    })();
   }
 
   {
     !(props.suppressContentEditableWarning || !props.contentEditable || props.children == null) ? warning$1(false, 'A component is `contentEditable` and contains `children` managed by ' + 'React. It is now your responsibility to guarantee that none of ' + 'those nodes are unexpectedly modified or duplicated. This is ' + 'probably not intentional.') : void 0;
   }
 
-  if (!(props.style == null || typeof props.style === 'object')) {
-    {
-      throw Error("The `style` prop expects a mapping from style properties to values, not a string. For example, style={{marginRight: spacing + 'em'}} when using JSX." + (ReactDebugCurrentFrame$3.getStackAddendum()));
+  (function () {
+    if (!(props.style == null || typeof props.style === 'object')) {
+      {
+        throw ReactError(Error("The `style` prop expects a mapping from style properties to values, not a string. For example, style={{marginRight: spacing + 'em'}} when using JSX." + (ReactDebugCurrentFrame$3.getStackAddendum())));
+      }
     }
-  }
+  })();
 }
 
 function isCustomComponent(tagName, props) {
@@ -54175,11 +54220,13 @@ var updatedAncestorInfo = function () {};
 // can re-export everything from this module.
 
 function shim() {
-  {
+  (function () {
     {
-      throw Error("The current renderer does not support persistence. This error is likely caused by a bug in React. Please file an issue.");
+      {
+        throw ReactError(Error("The current renderer does not support persistence. This error is likely caused by a bug in React. Please file an issue."));
+      }
     }
-  }
+  })();
 } // Persistence (when unsupported)
 
 
@@ -54415,31 +54462,14 @@ function insertInContainerBefore(container, child, beforeChild) {
   } else {
     container.insertBefore(child, beforeChild);
   }
-} // This is a specific event for the React Flare
-// event system, so event responders can act
-// accordingly to a DOM node being unmounted that
-// previously had active document focus.
-
-function dispatchDetachedVisibleNodeEvent(child) {
-  if (enableFlareAPI && selectionInformation && child === selectionInformation.focusedElem) {
-    var targetFiber = getClosestInstanceFromNode(child); // Simlulate a blur event to the React Flare responder system.
-
-    dispatchEventForResponderEventSystem('detachedvisiblenode', targetFiber, {
-      target: child,
-      timeStamp: Date.now()
-    }, child, RESPONDER_EVENT_SYSTEM | IS_PASSIVE);
-  }
 }
-
 function removeChild(parentInstance, child) {
-  dispatchDetachedVisibleNodeEvent(child);
   parentInstance.removeChild(child);
 }
 function removeChildFromContainer(container, child) {
   if (container.nodeType === COMMENT_NODE) {
     container.parentNode.removeChild(child);
   } else {
-    dispatchDetachedVisibleNodeEvent(child);
     container.removeChild(child);
   }
 }
@@ -54818,9 +54848,6 @@ function unmountFundamentalComponent(fundamentalInstance) {
     }
   }
 }
-function getInstanceFromNode$2(node) {
-  return getClosestInstanceFromNode(node) || null;
-}
 
 var randomKey = Math.random().toString(36).slice(2);
 var internalInstanceKey = '__reactInternalInstance$' + randomKey;
@@ -54831,17 +54858,11 @@ function precacheFiberNode(hostInst, node) {
 }
 function markContainerAsRoot(hostRoot, node) {
   node[internalContainerInstanceKey] = hostRoot;
-}
-function unmarkContainerAsRoot(node) {
-  node[internalContainerInstanceKey] = null;
-}
-function isContainerMarkedAsRoot(node) {
-  return !!node[internalContainerInstanceKey];
 } // Given a DOM node, return the closest HostComponent or HostText fiber ancestor.
 // If the target node is part of a hydrated or not yet rendered subtree, then
 // this may also return a SuspenseComponent or HostRoot to indicate that.
 // Conceptually the HostRoot fiber is a child of the Container node. So if you
-// pass the Container node as the targetNode, you will not actually get the
+// pass the Container node as the targetNode, you wiill not actually get the
 // HostRoot back. To get to the HostRoot, you need to pass a child of it.
 // The same thing applies to Suspense boundaries.
 
@@ -54955,11 +54976,13 @@ function getNodeFromInstance$1(inst) {
   // invariant for a missing parent, which is super confusing.
 
 
-  {
+  (function () {
     {
-      throw Error("getNodeFromInstance: Invalid argument.");
+      {
+        throw ReactError(Error("getNodeFromInstance: Invalid argument."));
+      }
     }
-  }
+  })();
 }
 function getFiberCurrentPropsFromNode$1(node) {
   return node[internalEventHandlersKey] || null;
@@ -55764,12 +55787,7 @@ var eventTypes$3 = {
     registrationName: 'onPointerLeave',
     dependencies: [TOP_POINTER_OUT, TOP_POINTER_OVER]
   }
-}; // We track the lastNativeEvent to ensure that when we encounter
-// cases where we process the same nativeEvent multiple times,
-// which can happen when have multiple ancestors, that we don't
-// duplicate enter
-
-var lastNativeEvent;
+};
 var EnterLeaveEventPlugin = {
   eventTypes: eventTypes$3,
 
@@ -55864,13 +55882,6 @@ var EnterLeaveEventPlugin = {
     enter.target = toNode;
     enter.relatedTarget = fromNode;
     accumulateEnterLeaveDispatches(leave, enter, from, to);
-
-    if (nativeEvent === lastNativeEvent) {
-      lastNativeEvent = null;
-      return [leave];
-    }
-
-    lastNativeEvent = nativeEvent;
     return [leave, enter];
   }
 };
@@ -56706,11 +56717,13 @@ function pushTopLevelContextObject(fiber, context, didChange) {
   if (disableLegacyContext) {
     return;
   } else {
-    if (!(contextStackCursor.current === emptyContextObject)) {
-      {
-        throw Error("Unexpected context found on stack. This error is likely caused by a bug in React. Please file an issue.");
+    (function () {
+      if (!(contextStackCursor.current === emptyContextObject)) {
+        {
+          throw ReactError(Error("Unexpected context found on stack. This error is likely caused by a bug in React. Please file an issue."));
+        }
       }
-    }
+    })();
 
     push(contextStackCursor, context, fiber);
     push(didPerformWorkStackCursor, didChange, fiber);
@@ -56753,11 +56766,13 @@ function processChildContext(fiber, type, parentContext) {
     }
 
     for (var contextKey in childContext) {
-      if (!(contextKey in childContextTypes)) {
-        {
-          throw Error((getComponentName(type) || 'Unknown') + ".getChildContext(): key \"" + contextKey + "\" is not defined in childContextTypes.");
+      (function () {
+        if (!(contextKey in childContextTypes)) {
+          {
+            throw ReactError(Error((getComponentName(type) || 'Unknown') + ".getChildContext(): key \"" + contextKey + "\" is not defined in childContextTypes."));
+          }
         }
-      }
+      })();
     }
 
     {
@@ -56798,11 +56813,13 @@ function invalidateContextProvider(workInProgress, type, didChange) {
   } else {
     var instance = workInProgress.stateNode;
 
-    if (!instance) {
-      {
-        throw Error("Expected to have an instance by this point. This error is likely caused by a bug in React. Please file an issue.");
+    (function () {
+      if (!instance) {
+        {
+          throw ReactError(Error("Expected to have an instance by this point. This error is likely caused by a bug in React. Please file an issue."));
+        }
       }
-    }
+    })();
 
     if (didChange) {
       // Merge parent and own context.
@@ -56830,11 +56847,13 @@ function findCurrentUnmaskedContext(fiber) {
   } else {
     // Currently this is only used with renderSubtreeIntoContainer; not sure if it
     // makes sense elsewhere
-    if (!(isFiberMounted(fiber) && fiber.tag === ClassComponent)) {
-      {
-        throw Error("Expected subtree parent to be a mounted class component. This error is likely caused by a bug in React. Please file an issue.");
+    (function () {
+      if (!(isFiberMounted(fiber) && fiber.tag === ClassComponent)) {
+        {
+          throw ReactError(Error("Expected subtree parent to be a mounted class component. This error is likely caused by a bug in React. Please file an issue."));
+        }
       }
-    }
+    })();
 
     var node = fiber;
 
@@ -56858,16 +56877,18 @@ function findCurrentUnmaskedContext(fiber) {
       node = node.return;
     } while (node !== null);
 
-    {
+    (function () {
       {
-        throw Error("Found unexpected detached subtree parent. This error is likely caused by a bug in React. Please file an issue.");
+        {
+          throw ReactError(Error("Found unexpected detached subtree parent. This error is likely caused by a bug in React. Please file an issue."));
+        }
       }
-    }
+    })();
   }
 }
 
 var LegacyRoot = 0;
-var BlockingRoot = 1;
+var BatchedRoot = 1;
 var ConcurrentRoot = 2;
 
 // Intentionally not named imports because Rollup would use dynamic dispatch for
@@ -56889,11 +56910,13 @@ if (enableSchedulerTracing) {
   // Provide explicit error message when production+profiling bundle of e.g.
   // react-dom is used with production (non-profiling) bundle of
   // scheduler/tracing
-  if (!(tracing.__interactionsRef != null && tracing.__interactionsRef.current != null)) {
-    {
-      throw Error("It is not supported to run the profiling version of a renderer (for example, `react-dom/profiling`) without also replacing the `scheduler/tracing` module with `scheduler/tracing-profiling`. Your bundler might have a setting for aliasing both modules. Learn more at http://fb.me/react-profiling");
+  (function () {
+    if (!(tracing.__interactionsRef != null && tracing.__interactionsRef.current != null)) {
+      {
+        throw ReactError(Error("It is not supported to run the profiling version of a renderer (for example, `react-dom/profiling`) without also replacing the `scheduler/tracing` module with `scheduler/tracing-profiling`. Your bundler might have a setting for aliasing both modules. Learn more at http://fb.me/react-profiling"));
+      }
     }
-  }
+  })();
 }
 
 var fakeCallbackNode = {}; // Except for NoPriority, these correspond to Scheduler priorities. We use
@@ -56942,11 +56965,13 @@ function getCurrentPriorityLevel() {
       return IdlePriority;
 
     default:
-      {
+      (function () {
         {
-          throw Error("Unknown priority level.");
+          {
+            throw ReactError(Error("Unknown priority level."));
+          }
         }
-      }
+      })();
 
   }
 }
@@ -56969,11 +56994,13 @@ function reactPriorityToSchedulerPriority(reactPriorityLevel) {
       return Scheduler_IdlePriority;
 
     default:
-      {
+      (function () {
         {
-          throw Error("Unknown priority level.");
+          {
+            throw ReactError(Error("Unknown priority level."));
+          }
         }
-      }
+      })();
 
   }
 }
@@ -57051,10 +57078,10 @@ function flushSyncCallbackQueueImpl() {
 }
 
 var NoMode = 0;
-var StrictMode = 1; // TODO: Remove BlockingMode and ConcurrentMode by reading from the root
+var StrictMode = 1; // TODO: Remove BatchedMode and ConcurrentMode by reading from the root
 // tag instead
 
-var BlockingMode = 2;
+var BatchedMode = 2;
 var ConcurrentMode = 4;
 var ProfileMode = 8;
 
@@ -57074,11 +57101,7 @@ var NoWork = 0; // TODO: Think of a better name for Never. The key difference wi
 var Never = 1; // Idle is slightly higher priority than Never. It must completely finish in
 // order to be consistent.
 
-var Idle = 2; // Continuous Hydration is a moving priority. It is slightly higher than Idle
-// and is used to increase priority of hover targets. It is increasing with
-// each usage so that last always wins.
-
-var ContinuousHydration = 3;
+var Idle = 2;
 var Sync = MAX_SIGNED_31_BIT_INT;
 var Batched = Sync - 1;
 var UNIT_SIZE = 10;
@@ -57126,12 +57149,6 @@ var HIGH_PRIORITY_EXPIRATION = 500;
 var HIGH_PRIORITY_BATCH_SIZE = 100;
 function computeInteractiveExpiration(currentTime) {
   return computeExpirationBucket(currentTime, HIGH_PRIORITY_EXPIRATION, HIGH_PRIORITY_BATCH_SIZE);
-}
-function computeContinuousHydrationExpiration(currentTime) {
-  // Each time we ask for a new one of these we increase the priority.
-  // This ensures that the last one always wins since we can't deprioritize
-  // once we've scheduled work already.
-  return ContinuousHydration++;
 }
 function inferPriorityFromExpirationTime(currentTime, expirationTime) {
   if (expirationTime === Sync) {
@@ -57636,9 +57653,7 @@ var scheduleRoot = function (root, element) {
     }
 
     flushPassiveEffects();
-    syncUpdates(function () {
-      updateContainer(element, root, null, null);
-    });
+    updateContainerAtExpirationTime(element, root, null, Sync, null);
   }
 };
 
@@ -58040,11 +58055,13 @@ function propagateContextChange(workInProgress, context, changedBits, renderExpi
       // mark it as having updates.
       var parentSuspense = fiber.return;
 
-      if (!(parentSuspense !== null)) {
-        {
-          throw Error("We just came from a parent so we must have had a parent. This is a bug in React.");
+      (function () {
+        if (!(parentSuspense !== null)) {
+          {
+            throw ReactError(Error("We just came from a parent so we must have had a parent. This is a bug in React."));
+          }
         }
-      }
+      })();
 
       if (parentSuspense.expirationTime < renderExpirationTime) {
         parentSuspense.expirationTime = renderExpirationTime;
@@ -58145,11 +58162,13 @@ function readContext(context, observedBits) {
     };
 
     if (lastContextDependency === null) {
-      if (!(currentlyRenderingFiber !== null)) {
-        {
-          throw Error("Context can only be read while React is rendering. In classes, you can read it in the render method or getDerivedStateFromProps. In function components, you can read it directly in the function body, but not inside Hooks like useReducer() or useMemo().");
+      (function () {
+        if (!(currentlyRenderingFiber !== null)) {
+          {
+            throw ReactError(Error("Context can only be read while React is rendering. In classes, you can read it in the render method or getDerivedStateFromProps. In function components, you can read it directly in the function body, but not inside Hooks like useReducer() or useMemo()."));
+          }
         }
-      } // This is the first dependency for this component. Create a new list.
+      })(); // This is the first dependency for this component. Create a new list.
 
 
       lastContextDependency = contextItem;
@@ -58436,7 +58455,7 @@ function getStateFromUpdate(workInProgress, queue, update, prevState, nextProps,
           {
             enterDisallowedContextReadInDEV();
 
-            if (debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
+            if (debugRenderPhaseSideEffects || debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
               payload.call(instance, prevState, nextProps);
             }
           }
@@ -58470,7 +58489,7 @@ function getStateFromUpdate(workInProgress, queue, update, prevState, nextProps,
           {
             enterDisallowedContextReadInDEV();
 
-            if (debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
+            if (debugRenderPhaseSideEffects || debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
               _payload.call(instance, prevState, nextProps);
             }
           }
@@ -58654,11 +58673,13 @@ function processUpdateQueue(workInProgress, queue, props, instance, renderExpira
 }
 
 function callCallback(callback, context) {
-  if (!(typeof callback === 'function')) {
-    {
-      throw Error("Invalid argument passed as callback. Expected a function. Instead received: " + callback);
+  (function () {
+    if (!(typeof callback === 'function')) {
+      {
+        throw ReactError(Error("Invalid argument passed as callback. Expected a function. Instead received: " + callback));
+      }
     }
-  }
+  })();
 
   callback.call(context);
 }
@@ -58769,11 +58790,13 @@ var didWarnAboutInvalidateContextType;
   Object.defineProperty(fakeInternalInstance, '_processChildContext', {
     enumerable: false,
     value: function () {
-      {
+      (function () {
         {
-          throw Error("_processChildContext is not available in React 16+. This likely means you have multiple copies of React and are attempting to nest a React 15 tree inside a React 16 tree using unstable_renderSubtreeIntoContainer, which isn't supported. Try to make sure you have only one copy of React (and ideally, switch to ReactDOM.createPortal).");
+          {
+            throw ReactError(Error("_processChildContext is not available in React 16+. This likely means you have multiple copies of React and are attempting to nest a React 15 tree inside a React 16 tree using unstable_renderSubtreeIntoContainer, which isn't supported. Try to make sure you have only one copy of React (and ideally, switch to ReactDOM.createPortal)."));
+          }
         }
-      }
+      })();
     }
   });
   Object.freeze(fakeInternalInstance);
@@ -58783,7 +58806,7 @@ function applyDerivedStateFromProps(workInProgress, ctor, getDerivedStateFromPro
   var prevState = workInProgress.memoizedState;
 
   {
-    if (debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
+    if (debugRenderPhaseSideEffects || debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
       // Invoke the function an extra time to help detect side-effects.
       getDerivedStateFromProps(nextProps, prevState);
     }
@@ -58810,7 +58833,7 @@ var classComponentUpdater = {
   isMounted: isMounted,
   enqueueSetState: function (inst, payload, callback) {
     var fiber = get(inst);
-    var currentTime = requestCurrentTimeForUpdate();
+    var currentTime = requestCurrentTime();
     var suspenseConfig = requestCurrentSuspenseConfig();
     var expirationTime = computeExpirationForFiber(currentTime, fiber, suspenseConfig);
     var update = createUpdate(expirationTime, suspenseConfig);
@@ -58829,7 +58852,7 @@ var classComponentUpdater = {
   },
   enqueueReplaceState: function (inst, payload, callback) {
     var fiber = get(inst);
-    var currentTime = requestCurrentTimeForUpdate();
+    var currentTime = requestCurrentTime();
     var suspenseConfig = requestCurrentSuspenseConfig();
     var expirationTime = computeExpirationForFiber(currentTime, fiber, suspenseConfig);
     var update = createUpdate(expirationTime, suspenseConfig);
@@ -58849,7 +58872,7 @@ var classComponentUpdater = {
   },
   enqueueForceUpdate: function (inst, callback) {
     var fiber = get(inst);
-    var currentTime = requestCurrentTimeForUpdate();
+    var currentTime = requestCurrentTime();
     var suspenseConfig = requestCurrentSuspenseConfig();
     var expirationTime = computeExpirationForFiber(currentTime, fiber, suspenseConfig);
     var update = createUpdate(expirationTime, suspenseConfig);
@@ -59030,7 +59053,7 @@ function constructClassInstance(workInProgress, ctor, props, renderExpirationTim
 
 
   {
-    if (debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
+    if (debugRenderPhaseSideEffects || debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
       new ctor(props, context); // eslint-disable-line no-new
     }
   }
@@ -59464,11 +59487,13 @@ var warnForMissingKey = function (child) {};
       return;
     }
 
-    if (!(typeof child._store === 'object')) {
-      {
-        throw Error("React Component in warnForMissingKey should have a _store. This error is likely caused by a bug in React. Please file an issue.");
+    (function () {
+      if (!(typeof child._store === 'object')) {
+        {
+          throw ReactError(Error("React Component in warnForMissingKey should have a _store. This error is likely caused by a bug in React. Please file an issue."));
+        }
       }
-    }
+    })();
 
     child._store.validated = true;
     var currentComponentErrorInfo = 'Each child in a list should have a unique ' + '"key" prop. See https://fb.me/react-warning-keys for ' + 'more information.' + getCurrentFiberStackInDev();
@@ -59513,20 +59538,24 @@ function coerceRef(returnFiber, current$$1, element) {
       if (owner) {
         var ownerFiber = owner;
 
-        if (!(ownerFiber.tag === ClassComponent)) {
-          {
-            throw Error("Function components cannot have refs. Did you mean to use React.forwardRef()?");
+        (function () {
+          if (!(ownerFiber.tag === ClassComponent)) {
+            {
+              throw ReactError(Error("Function components cannot have refs. Did you mean to use React.forwardRef()?"));
+            }
           }
-        }
+        })();
 
         inst = ownerFiber.stateNode;
       }
 
-      if (!inst) {
-        {
-          throw Error("Missing owner for string ref " + mixedRef + ". This error is likely caused by a bug in React. Please file an issue.");
+      (function () {
+        if (!inst) {
+          {
+            throw ReactError(Error("Missing owner for string ref " + mixedRef + ". This error is likely caused by a bug in React. Please file an issue."));
+          }
         }
-      }
+      })();
 
       var stringRef = '' + mixedRef; // Check if previous string ref matches new string ref
 
@@ -59552,17 +59581,21 @@ function coerceRef(returnFiber, current$$1, element) {
       ref._stringRef = stringRef;
       return ref;
     } else {
-      if (!(typeof mixedRef === 'string')) {
-        {
-          throw Error("Expected ref to be a function, a string, an object returned by React.createRef(), or null.");
+      (function () {
+        if (!(typeof mixedRef === 'string')) {
+          {
+            throw ReactError(Error("Expected ref to be a function, a string, an object returned by React.createRef(), or null."));
+          }
         }
-      }
+      })();
 
-      if (!element._owner) {
-        {
-          throw Error("Element ref was specified as a string (" + mixedRef + ") but no owner was set. This could happen for one of the following reasons:\n1. You may be adding a ref to a function component\n2. You may be adding a ref to a component that was not created inside a component's render method\n3. You have multiple copies of React loaded\nSee https://fb.me/react-refs-must-have-owner for more information.");
+      (function () {
+        if (!element._owner) {
+          {
+            throw ReactError(Error("Element ref was specified as a string (" + mixedRef + ") but no owner was set. This could happen for one of the following reasons:\n1. You may be adding a ref to a function component\n2. You may be adding a ref to a component that was not created inside a component's render method\n3. You have multiple copies of React loaded\nSee https://fb.me/react-refs-must-have-owner for more information."));
+          }
         }
-      }
+      })();
     }
   }
 
@@ -59577,11 +59610,13 @@ function throwOnInvalidObjectType(returnFiber, newChild) {
       addendum = ' If you meant to render a collection of children, use an array ' + 'instead.' + getCurrentFiberStackInDev();
     }
 
-    {
+    (function () {
       {
-        throw Error("Objects are not valid as a React child (found: " + (Object.prototype.toString.call(newChild) === '[object Object]' ? 'object with keys {' + Object.keys(newChild).join(', ') + '}' : newChild) + ")." + addendum);
+        {
+          throw ReactError(Error("Objects are not valid as a React child (found: " + (Object.prototype.toString.call(newChild) === '[object Object]' ? 'object with keys {' + Object.keys(newChild).join(', ') + '}' : newChild) + ")." + addendum));
+        }
       }
-    }
+    })();
   }
 }
 
@@ -60129,11 +60164,13 @@ function ChildReconciler(shouldTrackSideEffects) {
     // but using the iterator instead.
     var iteratorFn = getIteratorFn(newChildrenIterable);
 
-    if (!(typeof iteratorFn === 'function')) {
-      {
-        throw Error("An object is not an iterable. This error is likely caused by a bug in React. Please file an issue.");
+    (function () {
+      if (!(typeof iteratorFn === 'function')) {
+        {
+          throw ReactError(Error("An object is not an iterable. This error is likely caused by a bug in React. Please file an issue."));
+        }
       }
-    }
+    })();
 
     {
       // We don't support rendering Generators because it's a mutation.
@@ -60168,11 +60205,13 @@ function ChildReconciler(shouldTrackSideEffects) {
 
     var newChildren = iteratorFn.call(newChildrenIterable);
 
-    if (!(newChildren != null)) {
-      {
-        throw Error("An iterable object provided no iterator.");
+    (function () {
+      if (!(newChildren != null)) {
+        {
+          throw ReactError(Error("An iterable object provided no iterator."));
+        }
       }
-    }
+    })();
 
     var resultingFirstChild = null;
     var previousNewFiber = null;
@@ -60470,11 +60509,13 @@ function ChildReconciler(shouldTrackSideEffects) {
           {
             var Component = returnFiber.type;
 
-            {
+            (function () {
               {
-                throw Error((Component.displayName || Component.name || 'Component') + "(...): Nothing was returned from render. This usually means a return statement is missing. Or, to render nothing, return null.");
+                {
+                  throw ReactError(Error((Component.displayName || Component.name || 'Component') + "(...): Nothing was returned from render. This usually means a return statement is missing. Or, to render nothing, return null."));
+                }
               }
-            }
+            })();
           }
       }
     } // Remaining cases are all treated as empty.
@@ -60489,11 +60530,13 @@ function ChildReconciler(shouldTrackSideEffects) {
 var reconcileChildFibers = ChildReconciler(true);
 var mountChildFibers = ChildReconciler(false);
 function cloneChildFibers(current$$1, workInProgress) {
-  if (!(current$$1 === null || workInProgress.child === current$$1.child)) {
-    {
-      throw Error("Resuming work not yet implemented.");
+  (function () {
+    if (!(current$$1 === null || workInProgress.child === current$$1.child)) {
+      {
+        throw ReactError(Error("Resuming work not yet implemented."));
+      }
     }
-  }
+  })();
 
   if (workInProgress.child === null) {
     return;
@@ -60528,11 +60571,13 @@ var contextFiberStackCursor = createCursor(NO_CONTEXT);
 var rootInstanceStackCursor = createCursor(NO_CONTEXT);
 
 function requiredContext(c) {
-  if (!(c !== NO_CONTEXT)) {
-    {
-      throw Error("Expected host context to exist. This error is likely caused by a bug in React. Please file an issue.");
+  (function () {
+    if (!(c !== NO_CONTEXT)) {
+      {
+        throw ReactError(Error("Expected host context to exist. This error is likely caused by a bug in React. Please file an issue."));
+      }
     }
-  }
+  })();
 
   return c;
 }
@@ -60770,11 +60815,13 @@ function updateEventListener(listener, fiber, visistedResponders, respondersMap,
     props = listener.props;
   }
 
-  if (!(responder && responder.$$typeof === REACT_RESPONDER_TYPE)) {
-    {
-      throw Error("An invalid value was used as an event listener. Expect one or many event listeners created via React.unstable_useResponder().");
+  (function () {
+    if (!(responder && responder.$$typeof === REACT_RESPONDER_TYPE)) {
+      {
+        throw ReactError(Error("An invalid value was used as an event listener. Expect one or many event listeners created via React.unstable_useResponder()."));
+      }
     }
-  }
+  })();
 
   var listenerProps = props;
 
@@ -60889,7 +60936,6 @@ var UnmountPassive =
 128;
 
 var ReactCurrentDispatcher$1 = ReactSharedInternals.ReactCurrentDispatcher;
-var ReactCurrentBatchConfig$1 = ReactSharedInternals.ReactCurrentBatchConfig;
 var didWarnAboutMismatchedHooksForComponent;
 
 {
@@ -61007,11 +61053,13 @@ function warnOnHookMismatchInDev(currentHookName) {
 }
 
 function throwInvalidHookError() {
-  {
+  (function () {
     {
-      throw Error("Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:\n1. You might have mismatching versions of React and the renderer (such as React DOM)\n2. You might be breaking the Rules of Hooks\n3. You might have more than one copy of React in the same app\nSee https://fb.me/react-invalid-hook-call for tips about how to debug and fix this problem.");
+      {
+        throw ReactError(Error("Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:\n1. You might have mismatching versions of React and the renderer (such as React DOM)\n2. You might be breaking the Rules of Hooks\n3. You might have more than one copy of React in the same app\nSee https://fb.me/react-invalid-hook-call for tips about how to debug and fix this problem."));
+      }
     }
-  }
+  })();
 }
 
 function areHookInputsEqual(nextDeps, prevDeps) {
@@ -61161,11 +61209,13 @@ function renderWithHooks(current, workInProgress, Component, props, refOrContext
   // renderPhaseUpdates = null;
   // numberOfReRenders = 0;
 
-  if (!!didRenderTooFewHooks) {
-    {
-      throw Error("Rendered fewer hooks than expected. This may be caused by an accidental early return statement.");
+  (function () {
+    if (!!didRenderTooFewHooks) {
+      {
+        throw ReactError(Error("Rendered fewer hooks than expected. This may be caused by an accidental early return statement."));
+      }
     }
-  }
+  })();
 
   return children;
 }
@@ -61240,11 +61290,13 @@ function updateWorkInProgressHook() {
     nextCurrentHook = currentHook !== null ? currentHook.next : null;
   } else {
     // Clone from the current hook.
-    if (!(nextCurrentHook !== null)) {
-      {
-        throw Error("Rendered more hooks than during the previous render.");
+    (function () {
+      if (!(nextCurrentHook !== null)) {
+        {
+          throw ReactError(Error("Rendered more hooks than during the previous render."));
+        }
       }
-    }
+    })();
 
     currentHook = nextCurrentHook;
     var newHook = {
@@ -61305,11 +61357,13 @@ function updateReducer(reducer, initialArg, init) {
   var hook = updateWorkInProgressHook();
   var queue = hook.queue;
 
-  if (!(queue !== null)) {
-    {
-      throw Error("Should have a queue. This is likely a bug in React. Please file an issue.");
+  (function () {
+    if (!(queue !== null)) {
+      {
+        throw ReactError(Error("Should have a queue. This is likely a bug in React. Please file an issue."));
+      }
     }
-  }
+  })();
 
   queue.lastRenderedReducer = reducer;
 
@@ -61690,96 +61744,14 @@ function updateMemo(nextCreate, deps) {
   return nextValue;
 }
 
-function mountDeferredValue(value, config) {
-  var _mountState = mountState(value),
-      prevValue = _mountState[0],
-      setValue = _mountState[1];
-
-  mountEffect(function () {
-    Scheduler.unstable_next(function () {
-      var previousConfig = ReactCurrentBatchConfig$1.suspense;
-      ReactCurrentBatchConfig$1.suspense = config === undefined ? null : config;
-
-      try {
-        setValue(value);
-      } finally {
-        ReactCurrentBatchConfig$1.suspense = previousConfig;
-      }
-    });
-  }, [value, config]);
-  return prevValue;
-}
-
-function updateDeferredValue(value, config) {
-  var _updateState = updateState(value),
-      prevValue = _updateState[0],
-      setValue = _updateState[1];
-
-  updateEffect(function () {
-    Scheduler.unstable_next(function () {
-      var previousConfig = ReactCurrentBatchConfig$1.suspense;
-      ReactCurrentBatchConfig$1.suspense = config === undefined ? null : config;
-
-      try {
-        setValue(value);
-      } finally {
-        ReactCurrentBatchConfig$1.suspense = previousConfig;
-      }
-    });
-  }, [value, config]);
-  return prevValue;
-}
-
-function mountTransition(config) {
-  var _mountState2 = mountState(false),
-      isPending = _mountState2[0],
-      setPending = _mountState2[1];
-
-  var startTransition = mountCallback(function (callback) {
-    setPending(true);
-    Scheduler.unstable_next(function () {
-      var previousConfig = ReactCurrentBatchConfig$1.suspense;
-      ReactCurrentBatchConfig$1.suspense = config === undefined ? null : config;
-
-      try {
-        setPending(false);
-        callback();
-      } finally {
-        ReactCurrentBatchConfig$1.suspense = previousConfig;
-      }
-    });
-  }, [config, isPending]);
-  return [startTransition, isPending];
-}
-
-function updateTransition(config) {
-  var _updateState2 = updateState(false),
-      isPending = _updateState2[0],
-      setPending = _updateState2[1];
-
-  var startTransition = updateCallback(function (callback) {
-    setPending(true);
-    Scheduler.unstable_next(function () {
-      var previousConfig = ReactCurrentBatchConfig$1.suspense;
-      ReactCurrentBatchConfig$1.suspense = config === undefined ? null : config;
-
-      try {
-        setPending(false);
-        callback();
-      } finally {
-        ReactCurrentBatchConfig$1.suspense = previousConfig;
-      }
-    });
-  }, [config, isPending]);
-  return [startTransition, isPending];
-}
-
 function dispatchAction(fiber, queue, action) {
-  if (!(numberOfReRenders < RE_RENDER_LIMIT)) {
-    {
-      throw Error("Too many re-renders. React limits the number of renders to prevent an infinite loop.");
+  (function () {
+    if (!(numberOfReRenders < RE_RENDER_LIMIT)) {
+      {
+        throw ReactError(Error("Too many re-renders. React limits the number of renders to prevent an infinite loop."));
+      }
     }
-  }
+  })();
 
   {
     !(typeof arguments[3] !== 'function') ? warning$1(false, "State updates from the useState() and useReducer() Hooks don't support the " + 'second callback argument. To execute a side effect after ' + 'rendering, declare it in the component body with useEffect().') : void 0;
@@ -61824,7 +61796,7 @@ function dispatchAction(fiber, queue, action) {
       lastRenderPhaseUpdate.next = update;
     }
   } else {
-    var currentTime = requestCurrentTimeForUpdate();
+    var currentTime = requestCurrentTime();
     var suspenseConfig = requestCurrentSuspenseConfig();
     var expirationTime = computeExpirationForFiber(currentTime, fiber, suspenseConfig);
     var _update2 = {
@@ -61923,9 +61895,7 @@ var ContextOnlyDispatcher = {
   useRef: throwInvalidHookError,
   useState: throwInvalidHookError,
   useDebugValue: throwInvalidHookError,
-  useResponder: throwInvalidHookError,
-  useDeferredValue: throwInvalidHookError,
-  useTransition: throwInvalidHookError
+  useResponder: throwInvalidHookError
 };
 var HooksDispatcherOnMountInDEV = null;
 var HooksDispatcherOnMountWithHookTypesInDEV = null;
@@ -62026,16 +61996,6 @@ var InvalidNestedHooksDispatcherOnUpdateInDEV = null;
       currentHookNameInDev = 'useResponder';
       mountHookTypesDev();
       return createResponderListener(responder, props);
-    },
-    useDeferredValue: function (value, config) {
-      currentHookNameInDev = 'useDeferredValue';
-      mountHookTypesDev();
-      return mountDeferredValue(value, config);
-    },
-    useTransition: function (config) {
-      currentHookNameInDev = 'useTransition';
-      mountHookTypesDev();
-      return mountTransition(config);
     }
   };
   HooksDispatcherOnMountWithHookTypesInDEV = {
@@ -62117,16 +62077,6 @@ var InvalidNestedHooksDispatcherOnUpdateInDEV = null;
       currentHookNameInDev = 'useResponder';
       updateHookTypesDev();
       return createResponderListener(responder, props);
-    },
-    useDeferredValue: function (value, config) {
-      currentHookNameInDev = 'useDeferredValue';
-      updateHookTypesDev();
-      return mountDeferredValue(value, config);
-    },
-    useTransition: function (config) {
-      currentHookNameInDev = 'useTransition';
-      updateHookTypesDev();
-      return mountTransition(config);
     }
   };
   HooksDispatcherOnUpdateInDEV = {
@@ -62208,16 +62158,6 @@ var InvalidNestedHooksDispatcherOnUpdateInDEV = null;
       currentHookNameInDev = 'useResponder';
       updateHookTypesDev();
       return createResponderListener(responder, props);
-    },
-    useDeferredValue: function (value, config) {
-      currentHookNameInDev = 'useDeferredValue';
-      updateHookTypesDev();
-      return updateDeferredValue(value, config);
-    },
-    useTransition: function (config) {
-      currentHookNameInDev = 'useTransition';
-      updateHookTypesDev();
-      return updateTransition(config);
     }
   };
   InvalidNestedHooksDispatcherOnMountInDEV = {
@@ -62311,18 +62251,6 @@ var InvalidNestedHooksDispatcherOnUpdateInDEV = null;
       warnInvalidHookAccess();
       mountHookTypesDev();
       return createResponderListener(responder, props);
-    },
-    useDeferredValue: function (value, config) {
-      currentHookNameInDev = 'useDeferredValue';
-      warnInvalidHookAccess();
-      mountHookTypesDev();
-      return mountDeferredValue(value, config);
-    },
-    useTransition: function (config) {
-      currentHookNameInDev = 'useTransition';
-      warnInvalidHookAccess();
-      mountHookTypesDev();
-      return mountTransition(config);
     }
   };
   InvalidNestedHooksDispatcherOnUpdateInDEV = {
@@ -62416,18 +62344,6 @@ var InvalidNestedHooksDispatcherOnUpdateInDEV = null;
       warnInvalidHookAccess();
       updateHookTypesDev();
       return createResponderListener(responder, props);
-    },
-    useDeferredValue: function (value, config) {
-      currentHookNameInDev = 'useDeferredValue';
-      warnInvalidHookAccess();
-      updateHookTypesDev();
-      return updateDeferredValue(value, config);
-    },
-    useTransition: function (config) {
-      currentHookNameInDev = 'useTransition';
-      warnInvalidHookAccess();
-      updateHookTypesDev();
-      return updateTransition(config);
     }
   };
 }
@@ -62716,11 +62632,13 @@ function tryToClaimNextHydratableInstance(fiber) {
 
 function prepareToHydrateHostInstance(fiber, rootContainerInstance, hostContext) {
   if (!supportsHydration) {
-    {
+    (function () {
       {
-        throw Error("Expected prepareToHydrateHostInstance() to never be called. This error is likely caused by a bug in React. Please file an issue.");
+        {
+          throw ReactError(Error("Expected prepareToHydrateHostInstance() to never be called. This error is likely caused by a bug in React. Please file an issue."));
+        }
       }
-    }
+    })();
   }
 
   var instance = fiber.stateNode;
@@ -62738,11 +62656,13 @@ function prepareToHydrateHostInstance(fiber, rootContainerInstance, hostContext)
 
 function prepareToHydrateHostTextInstance(fiber) {
   if (!supportsHydration) {
-    {
+    (function () {
       {
-        throw Error("Expected prepareToHydrateHostTextInstance() to never be called. This error is likely caused by a bug in React. Please file an issue.");
+        {
+          throw ReactError(Error("Expected prepareToHydrateHostTextInstance() to never be called. This error is likely caused by a bug in React. Please file an issue."));
+        }
       }
-    }
+    })();
   }
 
   var textInstance = fiber.stateNode;
@@ -62782,41 +62702,46 @@ function prepareToHydrateHostTextInstance(fiber) {
 
 function prepareToHydrateHostSuspenseInstance(fiber) {
   if (!supportsHydration) {
-    {
+    (function () {
       {
-        throw Error("Expected prepareToHydrateHostSuspenseInstance() to never be called. This error is likely caused by a bug in React. Please file an issue.");
+        {
+          throw ReactError(Error("Expected prepareToHydrateHostSuspenseInstance() to never be called. This error is likely caused by a bug in React. Please file an issue."));
+        }
       }
-    }
+    })();
   }
 
   var suspenseState = fiber.memoizedState;
   var suspenseInstance = suspenseState !== null ? suspenseState.dehydrated : null;
 
-  if (!suspenseInstance) {
-    {
-      throw Error("Expected to have a hydrated suspense instance. This error is likely caused by a bug in React. Please file an issue.");
+  (function () {
+    if (!suspenseInstance) {
+      {
+        throw ReactError(Error("Expected to have a hydrated suspense instance. This error is likely caused by a bug in React. Please file an issue."));
+      }
     }
-  }
+  })();
 
   hydrateSuspenseInstance(suspenseInstance, fiber);
 }
 
 function skipPastDehydratedSuspenseInstance(fiber) {
   if (!supportsHydration) {
-    {
+    (function () {
       {
-        throw Error("Expected skipPastDehydratedSuspenseInstance() to never be called. This error is likely caused by a bug in React. Please file an issue.");
+        {
+          throw ReactError(Error("Expected skipPastDehydratedSuspenseInstance() to never be called. This error is likely caused by a bug in React. Please file an issue."));
+        }
       }
-    }
+    })();
   }
 
   var suspenseState = fiber.memoizedState;
   var suspenseInstance = suspenseState !== null ? suspenseState.dehydrated : null;
 
-  if (!suspenseInstance) {
-    {
-      throw Error("Expected to have a hydrated suspense instance. This error is likely caused by a bug in React. Please file an issue.");
-    }
+  if (suspenseInstance === null) {
+    // This Suspense boundary was hydrated without a match.
+    return nextHydratableInstance;
   }
 
   return getNextHydratableInstanceAfterSuspenseInstance(suspenseInstance);
@@ -62976,7 +62901,7 @@ function updateForwardRef(current$$1, workInProgress, Component, nextProps, rend
     setCurrentPhase('render');
     nextChildren = renderWithHooks(current$$1, workInProgress, render, nextProps, ref, renderExpirationTime);
 
-    if (debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
+    if (debugRenderPhaseSideEffects || debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
       // Only double-render components with Hooks
       if (workInProgress.memoizedState !== null) {
         nextChildren = renderWithHooks(current$$1, workInProgress, render, nextProps, ref, renderExpirationTime);
@@ -63180,7 +63105,7 @@ function updateFunctionComponent(current$$1, workInProgress, Component, nextProp
     setCurrentPhase('render');
     nextChildren = renderWithHooks(current$$1, workInProgress, Component, nextProps, context, renderExpirationTime);
 
-    if (debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
+    if (debugRenderPhaseSideEffects || debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
       // Only double-render components with Hooks
       if (workInProgress.memoizedState !== null) {
         nextChildren = renderWithHooks(current$$1, workInProgress, Component, nextProps, context, renderExpirationTime);
@@ -63303,7 +63228,7 @@ function finishClassComponent(current$$1, workInProgress, Component, shouldUpdat
       setCurrentPhase('render');
       nextChildren = instance.render();
 
-      if (debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
+      if (debugRenderPhaseSideEffects || debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
         instance.render();
       }
 
@@ -63352,11 +63277,13 @@ function updateHostRoot(current$$1, workInProgress, renderExpirationTime) {
   pushHostRootContext(workInProgress);
   var updateQueue = workInProgress.updateQueue;
 
-  if (!(updateQueue !== null)) {
-    {
-      throw Error("If the root does not have an updateQueue, we should have already bailed out. This error is likely caused by a bug in React. Please file an issue.");
+  (function () {
+    if (!(updateQueue !== null)) {
+      {
+        throw ReactError(Error("If the root does not have an updateQueue, we should have already bailed out. This error is likely caused by a bug in React. Please file an issue."));
+      }
     }
-  }
+  })();
 
   var nextProps = workInProgress.pendingProps;
   var prevState = workInProgress.memoizedState;
@@ -63543,11 +63470,13 @@ function mountLazyComponent(_current, workInProgress, elementType, updateExpirat
         // implementation detail.
 
 
-        {
+        (function () {
           {
-            throw Error("Element type is invalid. Received a promise that resolves to: " + Component + ". Lazy element type must resolve to a class or function." + hint);
+            {
+              throw ReactError(Error("Element type is invalid. Received a promise that resolves to: " + Component + ". Lazy element type must resolve to a class or function." + hint));
+            }
           }
-        }
+        })();
       }
   }
 
@@ -63676,7 +63605,7 @@ function mountIndeterminateComponent(_current, workInProgress, Component, render
         warningWithoutStack$1(false, '%s uses the legacy contextTypes API which is no longer supported. ' + 'Use React.createContext() with React.useContext() instead.', getComponentName(Component) || 'Unknown');
       }
 
-      if (debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
+      if (debugRenderPhaseSideEffects || debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
         // Only double-render components with Hooks
         if (workInProgress.memoizedState !== null) {
           value = renderWithHooks(null, workInProgress, Component, props, context, renderExpirationTime);
@@ -63750,7 +63679,7 @@ function validateFunctionComponentInDev(workInProgress, Component) {
 
 var SUSPENDED_MARKER = {
   dehydrated: null,
-  retryTime: NoWork
+  retryTime: Never
 };
 
 function shouldRemainOnFallback(suspenseContext, current$$1, workInProgress) {
@@ -63826,12 +63755,12 @@ function updateSuspenseComponent(current$$1, workInProgress, renderExpirationTim
 
 
   if (current$$1 === null) {
-    // If we're currently hydrating, try to hydrate this boundary.
-    // But only if this has a fallback.
-    if (nextProps.fallback !== undefined) {
-      tryToClaimNextHydratableInstance(workInProgress); // This could've been a dehydrated suspense component.
+    if (enableSuspenseServerRenderer) {
+      // If we're currently hydrating, try to hydrate this boundary.
+      // But only if this has a fallback.
+      if (nextProps.fallback !== undefined) {
+        tryToClaimNextHydratableInstance(workInProgress); // This could've been a dehydrated suspense component.
 
-      if (enableSuspenseServerRenderer) {
         var suspenseState = workInProgress.memoizedState;
 
         if (suspenseState !== null) {
@@ -63852,8 +63781,8 @@ function updateSuspenseComponent(current$$1, workInProgress, renderExpirationTim
       var primaryChildFragment = createFiberFromFragment(null, mode, NoWork, null);
       primaryChildFragment.return = workInProgress;
 
-      if ((workInProgress.mode & BlockingMode) === NoMode) {
-        // Outside of blocking mode, we commit the effects from the
+      if ((workInProgress.mode & BatchedMode) === NoMode) {
+        // Outside of batched mode, we commit the effects from the
         // partially completed, timed-out tree, too.
         var progressedState = workInProgress.memoizedState;
         var progressedPrimaryChild = progressedState !== null ? workInProgress.child.child : workInProgress.child;
@@ -63916,8 +63845,8 @@ function updateSuspenseComponent(current$$1, workInProgress, renderExpirationTim
 
             _primaryChildFragment.child = null;
 
-            if ((workInProgress.mode & BlockingMode) === NoMode) {
-              // Outside of blocking mode, we commit the effects from the
+            if ((workInProgress.mode & BatchedMode) === NoMode) {
+              // Outside of batched mode, we commit the effects from the
               // partially completed, timed-out tree, too.
               var _progressedChild = _primaryChildFragment.child = workInProgress.child;
 
@@ -63976,8 +63905,8 @@ function updateSuspenseComponent(current$$1, workInProgress, renderExpirationTim
 
         _primaryChildFragment2.return = workInProgress;
 
-        if ((workInProgress.mode & BlockingMode) === NoMode) {
-          // Outside of blocking mode, we commit the effects from the
+        if ((workInProgress.mode & BatchedMode) === NoMode) {
+          // Outside of batched mode, we commit the effects from the
           // partially completed, timed-out tree, too.
           var _progressedState = workInProgress.memoizedState;
 
@@ -64061,8 +63990,8 @@ function updateSuspenseComponent(current$$1, workInProgress, renderExpirationTim
         // primaryChildFragment.effectTag |= Placement;
 
 
-        if ((workInProgress.mode & BlockingMode) === NoMode) {
-          // Outside of blocking mode, we commit the effects from the
+        if ((workInProgress.mode & BatchedMode) === NoMode) {
+          // Outside of batched mode, we commit the effects from the
           // partially completed, timed-out tree, too.
           var _progressedState2 = workInProgress.memoizedState;
 
@@ -64131,9 +64060,9 @@ function retrySuspenseComponentWithoutHydrating(current$$1, workInProgress, rend
 function mountDehydratedSuspenseComponent(workInProgress, suspenseInstance, renderExpirationTime) {
   // During the first pass, we'll bail out and not drill into the children.
   // Instead, we'll leave the content in place and try to hydrate it later.
-  if ((workInProgress.mode & BlockingMode) === NoMode) {
+  if ((workInProgress.mode & BatchedMode) === NoMode) {
     {
-      warning$1(false, 'Cannot hydrate Suspense in legacy mode. Switch from ' + 'ReactDOM.hydrate(element, container) to ' + 'ReactDOM.createBlockingRoot(container, { hydrate: true })' + '.render(element) or remove the Suspense components from ' + 'the server rendered components.');
+      warning$1(false, 'Cannot hydrate Suspense in legacy mode. Switch from ' + 'ReactDOM.hydrate(element, container) to ' + 'ReactDOM.unstable_createSyncRoot(container, { hydrate: true })' + '.render(element) or remove the Suspense components from ' + 'the server rendered components.');
     }
 
     workInProgress.expirationTime = Sync;
@@ -64148,7 +64077,7 @@ function mountDehydratedSuspenseComponent(workInProgress, suspenseInstance, rend
     // a protocol to transfer that time, we'll just estimate it by using the current
     // time. This will mean that Suspense timeouts are slightly shifted to later than
     // they should be.
-    var serverDisplayTime = requestCurrentTimeForUpdate(); // Schedule a normal pri update to render this content.
+    var serverDisplayTime = requestCurrentTime(); // Schedule a normal pri update to render this content.
 
     var newExpirationTime = computeAsyncExpiration(serverDisplayTime);
 
@@ -64175,7 +64104,7 @@ function updateDehydratedSuspenseComponent(current$$1, workInProgress, suspenseI
   // but after we've already committed once.
   warnIfHydrating();
 
-  if ((workInProgress.mode & BlockingMode) === NoMode) {
+  if ((workInProgress.mode & BatchedMode) === NoMode) {
     return retrySuspenseComponentWithoutHydrating(current$$1, workInProgress, renderExpirationTime);
   }
 
@@ -64257,20 +64186,6 @@ function updateDehydratedSuspenseComponent(current$$1, workInProgress, suspenseI
   }
 }
 
-function scheduleWorkOnFiber(fiber, renderExpirationTime) {
-  if (fiber.expirationTime < renderExpirationTime) {
-    fiber.expirationTime = renderExpirationTime;
-  }
-
-  var alternate = fiber.alternate;
-
-  if (alternate !== null && alternate.expirationTime < renderExpirationTime) {
-    alternate.expirationTime = renderExpirationTime;
-  }
-
-  scheduleWorkOnParentPath(fiber.return, renderExpirationTime);
-}
-
 function propagateSuspenseContextChange(workInProgress, firstChild, renderExpirationTime) {
   // Mark any Suspense boundaries with fallbacks as having work to do.
   // If they were previously forced into fallbacks, they may now be able
@@ -64282,15 +64197,18 @@ function propagateSuspenseContextChange(workInProgress, firstChild, renderExpira
       var state = node.memoizedState;
 
       if (state !== null) {
-        scheduleWorkOnFiber(node, renderExpirationTime);
+        if (node.expirationTime < renderExpirationTime) {
+          node.expirationTime = renderExpirationTime;
+        }
+
+        var alternate = node.alternate;
+
+        if (alternate !== null && alternate.expirationTime < renderExpirationTime) {
+          alternate.expirationTime = renderExpirationTime;
+        }
+
+        scheduleWorkOnParentPath(node.return, renderExpirationTime);
       }
-    } else if (node.tag === SuspenseListComponent) {
-      // If the tail is hidden there might not be an Suspense boundaries
-      // to schedule work on. In this case we have to schedule it on the
-      // list itself.
-      // We don't have to traverse to the children of the list since
-      // the list will propagate the change when it rerenders.
-      scheduleWorkOnFiber(node, renderExpirationTime);
     } else if (node.child !== null) {
       node.child.return = node;
       node = node.child;
@@ -64435,7 +64353,7 @@ function validateSuspenseListChildren(children, revealOrder) {
   }
 }
 
-function initSuspenseListRenderState(workInProgress, isBackwards, tail, lastContentRow, tailMode, lastEffectBeforeRendering) {
+function initSuspenseListRenderState(workInProgress, isBackwards, tail, lastContentRow, tailMode) {
   var renderState = workInProgress.memoizedState;
 
   if (renderState === null) {
@@ -64445,8 +64363,7 @@ function initSuspenseListRenderState(workInProgress, isBackwards, tail, lastCont
       last: lastContentRow,
       tail: tail,
       tailExpiration: 0,
-      tailMode: tailMode,
-      lastEffect: lastEffectBeforeRendering
+      tailMode: tailMode
     };
   } else {
     // We can reuse the existing object from previous renders.
@@ -64456,7 +64373,6 @@ function initSuspenseListRenderState(workInProgress, isBackwards, tail, lastCont
     renderState.tail = tail;
     renderState.tailExpiration = 0;
     renderState.tailMode = tailMode;
-    renderState.lastEffect = lastEffectBeforeRendering;
   }
 } // This can end up rendering this component multiple passes.
 // The first pass splits the children fibers into two sets. A head and tail.
@@ -64497,8 +64413,8 @@ function updateSuspenseListComponent(current$$1, workInProgress, renderExpiratio
 
   pushSuspenseContext(workInProgress, suspenseContext);
 
-  if ((workInProgress.mode & BlockingMode) === NoMode) {
-    // Outside of blocking mode, SuspenseList doesn't work so we just
+  if ((workInProgress.mode & BatchedMode) === NoMode) {
+    // Outside of batched mode, SuspenseList doesn't work so we just
     // use make it a noop by treating it as the default revealOrder.
     workInProgress.memoizedState = null;
   } else {
@@ -64521,7 +64437,7 @@ function updateSuspenseListComponent(current$$1, workInProgress, renderExpiratio
           }
 
           initSuspenseListRenderState(workInProgress, false, // isBackwards
-          tail, lastContentRow, tailMode, workInProgress.lastEffect);
+          tail, lastContentRow, tailMode);
           break;
         }
 
@@ -64553,7 +64469,7 @@ function updateSuspenseListComponent(current$$1, workInProgress, renderExpiratio
 
           initSuspenseListRenderState(workInProgress, true, // isBackwards
           _tail, null, // last
-          tailMode, workInProgress.lastEffect);
+          tailMode);
           break;
         }
 
@@ -64562,7 +64478,7 @@ function updateSuspenseListComponent(current$$1, workInProgress, renderExpiratio
           initSuspenseListRenderState(workInProgress, false, // isBackwards
           null, // tail
           null, // last
-          undefined, workInProgress.lastEffect);
+          undefined);
           break;
         }
 
@@ -64870,12 +64786,7 @@ function beginWork$1(current$$1, workInProgress, renderExpirationTime) {
 
         case Profiler:
           if (enableProfilerTimer) {
-            // Profiler should only call onRender when one of its descendants actually rendered.
-            var hasChildWork = workInProgress.childExpirationTime >= renderExpirationTime;
-
-            if (hasChildWork) {
-              workInProgress.effectTag |= Update;
-            }
+            workInProgress.effectTag |= Update;
           }
 
           break;
@@ -64931,11 +64842,10 @@ function beginWork$1(current$$1, workInProgress, renderExpirationTime) {
         case SuspenseListComponent:
           {
             var didSuspendBefore = (current$$1.effectTag & DidCapture) !== NoEffect;
-
-            var _hasChildWork = workInProgress.childExpirationTime >= renderExpirationTime;
+            var hasChildWork = workInProgress.childExpirationTime >= renderExpirationTime;
 
             if (didSuspendBefore) {
-              if (_hasChildWork) {
+              if (hasChildWork) {
                 // If something was in fallback state last time, and we have all the
                 // same children then we're still in progressive loading state.
                 // Something might get unblocked by state updates or retries in the
@@ -64964,7 +64874,7 @@ function beginWork$1(current$$1, workInProgress, renderExpirationTime) {
 
             pushSuspenseContext(workInProgress, suspenseStackCursor.current);
 
-            if (_hasChildWork) {
+            if (hasChildWork) {
               break;
             } else {
               // If none of the children had any work, that means that none of
@@ -65121,11 +65031,13 @@ function beginWork$1(current$$1, workInProgress, renderExpirationTime) {
       }
   }
 
-  {
+  (function () {
     {
-      throw Error("Unknown unit of work tag (" + workInProgress.tag + "). This error is likely caused by a bug in React. Please file an issue.");
+      {
+        throw ReactError(Error("Unknown unit of work tag (" + workInProgress.tag + "). This error is likely caused by a bug in React. Please file an issue."));
+      }
     }
-  }
+  })();
 }
 
 function createFundamentalStateInstance(currentFiber, props, impl, state) {
@@ -65147,19 +65059,14 @@ function getSuspenseFallbackChild(fiber) {
   return fiber.child.sibling.child;
 }
 
-var emptyObject$1 = {};
-
 function collectScopedNodes(node, fn, scopedNodes) {
   if (enableScopeAPI) {
     if (node.tag === HostComponent) {
       var _type = node.type,
-          memoizedProps = node.memoizedProps,
-          stateNode = node.stateNode;
+          memoizedProps = node.memoizedProps;
 
-      var _instance = getPublicInstance(stateNode);
-
-      if (_instance !== null && fn(_type, memoizedProps || emptyObject$1, _instance) === true) {
-        scopedNodes.push(_instance);
+      if (fn(_type, memoizedProps) === true) {
+        scopedNodes.push(getPublicInstance(node.stateNode));
       }
     }
 
@@ -65175,34 +65082,6 @@ function collectScopedNodes(node, fn, scopedNodes) {
   }
 }
 
-function collectFirstScopedNode(node, fn) {
-  if (enableScopeAPI) {
-    if (node.tag === HostComponent) {
-      var _type2 = node.type,
-          memoizedProps = node.memoizedProps,
-          stateNode = node.stateNode;
-
-      var _instance2 = getPublicInstance(stateNode);
-
-      if (_instance2 !== null && fn(_type2, memoizedProps, _instance2) === true) {
-        return _instance2;
-      }
-    }
-
-    var child = node.child;
-
-    if (isFiberSuspenseAndTimedOut(node)) {
-      child = getSuspenseFallbackChild(node);
-    }
-
-    if (child !== null) {
-      return collectFirstScopedNodeFromChildren(child, fn);
-    }
-  }
-
-  return null;
-}
-
 function collectScopedNodesFromChildren(startingChild, fn, scopedNodes) {
   var child = startingChild;
 
@@ -65210,22 +65089,6 @@ function collectScopedNodesFromChildren(startingChild, fn, scopedNodes) {
     collectScopedNodes(child, fn, scopedNodes);
     child = child.sibling;
   }
-}
-
-function collectFirstScopedNodeFromChildren(startingChild, fn) {
-  var child = startingChild;
-
-  while (child !== null) {
-    var scopedNode = collectFirstScopedNode(child, fn);
-
-    if (scopedNode !== null) {
-      return scopedNode;
-    }
-
-    child = child.sibling;
-  }
-
-  return null;
 }
 
 function collectNearestScopeMethods(node, scope, childrenScopes) {
@@ -65254,10 +65117,11 @@ function collectNearestChildScopeMethods(startingChild, scope, childrenScopes) {
 }
 
 function isValidScopeNode(node, scope) {
-  return node.tag === ScopeComponent && node.type === scope && node.stateNode !== null;
+  return node.tag === ScopeComponent && node.type === scope;
 }
 
 function createScopeMethods(scope, instance) {
+  var fn = scope.fn;
   return {
     getChildren: function () {
       var currentFiber = instance.fiber;
@@ -65309,7 +65173,7 @@ function createScopeMethods(scope, instance) {
       var currentFiber = instance.fiber;
       return currentFiber.memoizedProps;
     },
-    queryAllNodes: function (fn) {
+    getScopedNodes: function () {
       var currentFiber = instance.fiber;
       var child = currentFiber.child;
       var scopedNodes = [];
@@ -65319,29 +65183,6 @@ function createScopeMethods(scope, instance) {
       }
 
       return scopedNodes.length === 0 ? null : scopedNodes;
-    },
-    queryFirstNode: function (fn) {
-      var currentFiber = instance.fiber;
-      var child = currentFiber.child;
-
-      if (child !== null) {
-        return collectFirstScopedNodeFromChildren(child, fn);
-      }
-
-      return null;
-    },
-    containsNode: function (node) {
-      var fiber = getInstanceFromNode$2(node);
-
-      while (fiber !== null) {
-        if (fiber.tag === ScopeComponent && fiber.type === scope && fiber.stateNode === instance) {
-          return true;
-        }
-
-        fiber = fiber.return;
-      }
-
-      return false;
     }
   };
 }
@@ -65876,11 +65717,13 @@ function completeWork(current, workInProgress, renderExpirationTime) {
           }
         } else {
           if (!newProps) {
-            if (!(workInProgress.stateNode !== null)) {
-              {
-                throw Error("We must have new props for new mounts. This error is likely caused by a bug in React. Please file an issue.");
+            (function () {
+              if (!(workInProgress.stateNode !== null)) {
+                {
+                  throw ReactError(Error("We must have new props for new mounts. This error is likely caused by a bug in React. Please file an issue."));
+                }
               }
-            } // This can happen when we abort work.
+            })(); // This can happen when we abort work.
 
 
             break;
@@ -65951,11 +65794,13 @@ function completeWork(current, workInProgress, renderExpirationTime) {
           updateHostText$1(current, workInProgress, oldText, newText);
         } else {
           if (typeof newText !== 'string') {
-            if (!(workInProgress.stateNode !== null)) {
-              {
-                throw Error("We must have new props for new mounts. This error is likely caused by a bug in React. Please file an issue.");
+            (function () {
+              if (!(workInProgress.stateNode !== null)) {
+                {
+                  throw ReactError(Error("We must have new props for new mounts. This error is likely caused by a bug in React. Please file an issue."));
+                }
               }
-            } // This can happen when we abort work.
+            })(); // This can happen when we abort work.
 
           }
 
@@ -65990,11 +65835,13 @@ function completeWork(current, workInProgress, renderExpirationTime) {
             if (current === null) {
               var _wasHydrated3 = popHydrationState(workInProgress);
 
-              if (!_wasHydrated3) {
-                {
-                  throw Error("A dehydrated suspense component was completed without a hydrated node. This is probably a bug in React.");
+              (function () {
+                if (!_wasHydrated3) {
+                  {
+                    throw ReactError(Error("A dehydrated suspense component was completed without a hydrated node. This is probably a bug in React."));
+                  }
                 }
-              }
+              })();
 
               prepareToHydrateHostSuspenseInstance(workInProgress);
 
@@ -66037,9 +65884,10 @@ function completeWork(current, workInProgress, renderExpirationTime) {
         var prevDidTimeout = false;
 
         if (current === null) {
-          if (workInProgress.memoizedProps.fallback !== undefined) {
-            popHydrationState(workInProgress);
-          }
+          // In cases where we didn't find a suitable hydration boundary we never
+          // put this in dehydrated mode, but we still need to pop the hydration
+          // state since we might be inside the insertion tree.
+          popHydrationState(workInProgress);
         } else {
           var prevState = current.memoizedState;
           prevDidTimeout = prevState !== null;
@@ -66069,12 +65917,12 @@ function completeWork(current, workInProgress, renderExpirationTime) {
         }
 
         if (nextDidTimeout && !prevDidTimeout) {
-          // If this subtreee is running in blocking mode we can suspend,
+          // If this subtreee is running in batched mode we can suspend,
           // otherwise we won't suspend.
           // TODO: This will still suspend a synchronous tree if anything
           // in the concurrent tree already suspended during this render.
           // This is a known bug.
-          if ((workInProgress.mode & BlockingMode) !== NoMode) {
+          if ((workInProgress.mode & BatchedMode) !== NoMode) {
             // TODO: Move this back to throwException because this is too late
             // if this is a large tree which is common for initial loads. We
             // don't know if we should restart a render or not until we get
@@ -66224,11 +66072,7 @@ function completeWork(current, workInProgress, renderExpirationTime) {
                   // Reset the effect list before doing the second pass since that's now invalid.
 
 
-                  if (renderState.lastEffect === null) {
-                    workInProgress.firstEffect = null;
-                  }
-
-                  workInProgress.lastEffect = renderState.lastEffect; // Reset the child fibers to their original state.
+                  workInProgress.firstEffect = workInProgress.lastEffect = null; // Reset the child fibers to their original state.
 
                   resetChildFibers(workInProgress, renderExpirationTime); // Set up the Suspense Context to force suspense and immediately
                   // rerender the children.
@@ -66251,22 +66095,21 @@ function completeWork(current, workInProgress, renderExpirationTime) {
 
             if (_suspended !== null) {
               workInProgress.effectTag |= DidCapture;
-              didSuspendAlready = true; // Ensure we transfer the update queue to the parent so that it doesn't
-              // get lost if this row ends up dropped during a second pass.
-
-              var _newThennables = _suspended.updateQueue;
-
-              if (_newThennables !== null) {
-                workInProgress.updateQueue = _newThennables;
-                workInProgress.effectTag |= Update;
-              }
-
+              didSuspendAlready = true;
               cutOffTailIfNeeded(renderState, true); // This might have been modified.
 
-              if (renderState.tail === null && renderState.tailMode === 'hidden' && !renderedTail.alternate) {
+              if (renderState.tail === null && renderState.tailMode === 'hidden') {
                 // We need to delete the row we just rendered.
-                // Reset the effect list to what it was before we rendered this
+                // Ensure we transfer the update queue to the parent.
+                var _newThennables = _suspended.updateQueue;
+
+                if (_newThennables !== null) {
+                  workInProgress.updateQueue = _newThennables;
+                  workInProgress.effectTag |= Update;
+                } // Reset the effect list to what it w as before we rendered this
                 // child. The nested children have already appended themselves.
+
+
                 var lastEffect = workInProgress.lastEffect = renderState.lastEffect; // Remove any effects that were appended after this point.
 
                 if (lastEffect !== null) {
@@ -66453,11 +66296,13 @@ function completeWork(current, workInProgress, renderExpirationTime) {
       }
 
     default:
-      {
+      (function () {
         {
-          throw Error("Unknown unit of work tag (" + workInProgress.tag + "). This error is likely caused by a bug in React. Please file an issue.");
+          {
+            throw ReactError(Error("Unknown unit of work tag (" + workInProgress.tag + "). This error is likely caused by a bug in React. Please file an issue."));
+          }
         }
-      }
+      })();
 
   }
 
@@ -66490,11 +66335,13 @@ function unwindWork(workInProgress, renderExpirationTime) {
         popTopLevelContextObject(workInProgress);
         var _effectTag = workInProgress.effectTag;
 
-        if (!((_effectTag & DidCapture) === NoEffect)) {
-          {
-            throw Error("The root failed to unmount after an error. This is likely a bug in React. Please file an issue.");
+        (function () {
+          if (!((_effectTag & DidCapture) === NoEffect)) {
+            {
+              throw ReactError(Error("The root failed to unmount after an error. This is likely a bug in React. Please file an issue."));
+            }
           }
-        }
+        })();
 
         workInProgress.effectTag = _effectTag & ~ShouldCapture | DidCapture;
         return workInProgress;
@@ -66515,11 +66362,13 @@ function unwindWork(workInProgress, renderExpirationTime) {
           var suspenseState = workInProgress.memoizedState;
 
           if (suspenseState !== null && suspenseState.dehydrated !== null) {
-            if (!(workInProgress.alternate !== null)) {
-              {
-                throw Error("Threw in newly mounted dehydrated component. This is likely a bug in React. Please file an issue.");
+            (function () {
+              if (!(workInProgress.alternate !== null)) {
+                {
+                  throw ReactError(Error("Threw in newly mounted dehydrated component. This is likely a bug in React. Please file an issue."));
+                }
               }
-            }
+            })();
 
             resetHydrationState();
           }
@@ -66830,11 +66679,13 @@ function commitBeforeMutationLifeCycles(current$$1, finishedWork) {
 
     default:
       {
-        {
+        (function () {
           {
-            throw Error("This unit of work tag should not have side-effects. This error is likely caused by a bug in React. Please file an issue.");
+            {
+              throw ReactError(Error("This unit of work tag should not have side-effects. This error is likely caused by a bug in React. Please file an issue."));
+            }
           }
-        }
+        })();
       }
   }
 }
@@ -67056,11 +66907,13 @@ function commitLifeCycles(finishedRoot, current$$1, finishedWork, committedExpir
 
     default:
       {
-        {
+        (function () {
           {
-            throw Error("This unit of work tag should not have side-effects. This error is likely caused by a bug in React. Please file an issue.");
+            {
+              throw ReactError(Error("This unit of work tag should not have side-effects. This error is likely caused by a bug in React. Please file an issue."));
+            }
           }
-        }
+        })();
       }
   }
 }
@@ -67405,11 +67258,13 @@ function commitContainer(finishedWork) {
 
     default:
       {
-        {
+        (function () {
           {
-            throw Error("This unit of work tag should not have side-effects. This error is likely caused by a bug in React. Please file an issue.");
+            {
+              throw ReactError(Error("This unit of work tag should not have side-effects. This error is likely caused by a bug in React. Please file an issue."));
+            }
           }
-        }
+        })();
       }
   }
 }
@@ -67425,11 +67280,13 @@ function getHostParentFiber(fiber) {
     parent = parent.return;
   }
 
-  {
+  (function () {
     {
-      throw Error("Expected to find a host parent. This error is likely caused by a bug in React. Please file an issue.");
+      {
+        throw ReactError(Error("Expected to find a host parent. This error is likely caused by a bug in React. Please file an issue."));
+      }
     }
-  }
+  })();
 }
 
 function isHostParent(fiber) {
@@ -67521,11 +67378,13 @@ function commitPlacement(finishedWork) {
     // eslint-disable-next-line-no-fallthrough
 
     default:
-      {
+      (function () {
         {
-          throw Error("Invalid host parent fiber. This error is likely caused by a bug in React. Please file an issue.");
+          {
+            throw ReactError(Error("Invalid host parent fiber. This error is likely caused by a bug in React. Please file an issue."));
+          }
         }
-      }
+      })();
 
   }
 
@@ -67602,11 +67461,13 @@ function unmountHostComponents(finishedRoot, current$$1, renderPriorityLevel) {
       var parent = node.return;
 
       findParent: while (true) {
-        if (!(parent !== null)) {
-          {
-            throw Error("Expected to find a host parent. This error is likely caused by a bug in React. Please file an issue.");
+        (function () {
+          if (!(parent !== null)) {
+            {
+              throw ReactError(Error("Expected to find a host parent. This error is likely caused by a bug in React. Please file an issue."));
+            }
           }
-        }
+        })();
 
         var parentStateNode = parent.stateNode;
 
@@ -67840,11 +67701,13 @@ function commitWork(current$$1, finishedWork) {
 
     case HostText:
       {
-        if (!(finishedWork.stateNode !== null)) {
-          {
-            throw Error("This should have a text node initialized. This error is likely caused by a bug in React. Please file an issue.");
+        (function () {
+          if (!(finishedWork.stateNode !== null)) {
+            {
+              throw ReactError(Error("This should have a text node initialized. This error is likely caused by a bug in React. Please file an issue."));
+            }
           }
-        }
+        })();
 
         var textInstance = finishedWork.stateNode;
         var newText = finishedWork.memoizedProps; // For hydration we reuse the update path but we treat the oldProps
@@ -67929,11 +67792,13 @@ function commitWork(current$$1, finishedWork) {
 
     default:
       {
-        {
+        (function () {
           {
-            throw Error("This unit of work tag should not have side-effects. This error is likely caused by a bug in React. Please file an issue.");
+            {
+              throw ReactError(Error("This unit of work tag should not have side-effects. This error is likely caused by a bug in React. Please file an issue."));
+            }
           }
-        }
+        })();
       }
   }
 }
@@ -68181,17 +68046,17 @@ function throwException(root, returnFiber, sourceFiber, value, renderExpirationT
           _workInProgress.updateQueue = updateQueue;
         } else {
           thenables.add(thenable);
-        } // If the boundary is outside of blocking mode, we should *not*
+        } // If the boundary is outside of batched mode, we should *not*
         // suspend the commit. Pretend as if the suspended component rendered
         // null and keep rendering. In the commit phase, we'll schedule a
         // subsequent synchronous update to re-render the Suspense.
         //
         // Note: It doesn't matter whether the component that suspended was
-        // inside a blocking mode tree. If the Suspense is outside of it, we
+        // inside a batched mode tree. If the Suspense is outside of it, we
         // should *not* suspend the commit.
 
 
-        if ((_workInProgress.mode & BlockingMode) === NoMode) {
+        if ((_workInProgress.mode & BatchedMode) === NoMode) {
           _workInProgress.effectTag |= DidCapture; // We're going to commit this fiber even though it didn't complete.
           // But we shouldn't call any lifecycle methods or callbacks. Remove
           // all lifecycle effect tags.
@@ -68357,6 +68222,7 @@ var RootErrored = 2;
 var RootSuspended = 3;
 var RootSuspendedWithDelay = 4;
 var RootCompleted = 5;
+var RootLocked = 6;
 // Describes where we are in the React execution stack
 var executionContext = NoContext; // The root we're working on
 
@@ -68416,7 +68282,7 @@ var spawnedWorkDuringRender = null; // Expiration times are computed by adding t
 // receive the same expiration time. Otherwise we get tearing.
 
 var currentEventTime = NoWork;
-function requestCurrentTimeForUpdate() {
+function requestCurrentTime() {
   if ((executionContext & (RenderContext | CommitContext)) !== NoContext) {
     // We're inside React, so it's fine to read the actual time.
     return msToExpirationTime(now());
@@ -68432,13 +68298,10 @@ function requestCurrentTimeForUpdate() {
   currentEventTime = msToExpirationTime(now());
   return currentEventTime;
 }
-function getCurrentTime() {
-  return msToExpirationTime(now());
-}
 function computeExpirationForFiber(currentTime, fiber, suspenseConfig) {
   var mode = fiber.mode;
 
-  if ((mode & BlockingMode) === NoMode) {
+  if ((mode & BatchedMode) === NoMode) {
     return Sync;
   }
 
@@ -68483,11 +68346,13 @@ function computeExpirationForFiber(currentTime, fiber, suspenseConfig) {
         break;
 
       default:
-        {
+        (function () {
           {
-            throw Error("Expected a valid priority level");
+            {
+              throw ReactError(Error("Expected a valid priority level"));
+            }
           }
-        }
+        })();
 
     }
   } // If we're in the middle of rendering a tree, do not update at the same
@@ -68503,6 +68368,21 @@ function computeExpirationForFiber(currentTime, fiber, suspenseConfig) {
   }
 
   return expirationTime;
+}
+var lastUniqueAsyncExpiration = NoWork;
+function computeUniqueAsyncExpiration() {
+  var currentTime = requestCurrentTime();
+  var result = computeAsyncExpiration(currentTime);
+
+  if (result <= lastUniqueAsyncExpiration) {
+    // Since we assume the current time monotonically increases, we only hit
+    // this branch when computeUniqueAsyncExpiration is fired multiple times
+    // within a 200ms window (or whatever the async bucket size is).
+    result -= 1;
+  }
+
+  lastUniqueAsyncExpiration = result;
+  return result;
 }
 function scheduleUpdateOnFiber(fiber, expirationTime) {
   checkForNestedUpdates();
@@ -68539,7 +68419,7 @@ function scheduleUpdateOnFiber(fiber, expirationTime) {
         // a batch. This is intentionally inside scheduleUpdateOnFiber instead of
         // scheduleCallbackForFiber to preserve the ability to schedule a callback
         // without immediately flushing it. We only do this for user-initiated
-        // updates, to preserve historical behavior of legacy mode.
+        // updates, to preserve historical behavior of sync mode.
         flushSyncCallbackQueue();
       }
     }
@@ -68700,7 +68580,7 @@ function ensureRootIsScheduled(root) {
   // time as an argument.
 
 
-  var currentTime = requestCurrentTimeForUpdate();
+  var currentTime = requestCurrentTime();
   var priorityLevel = inferPriorityFromExpirationTime(currentTime, expirationTime); // If there's an existing render task, confirm it has the correct priority and
   // expiration time. Otherwise, we'll cancel it and schedule a new one.
 
@@ -68751,7 +68631,7 @@ function performConcurrentWorkOnRoot(root, didTimeout) {
   if (didTimeout) {
     // The render task took too long to complete. Mark the current time as
     // expired to synchronously render all expired work in a single batch.
-    var currentTime = requestCurrentTimeForUpdate();
+    var currentTime = requestCurrentTime();
     markRootExpiredAtTime(root, currentTime); // This will schedule a synchronous callback.
 
     ensureRootIsScheduled(root);
@@ -68765,11 +68645,13 @@ function performConcurrentWorkOnRoot(root, didTimeout) {
   if (expirationTime !== NoWork) {
     var originalCallbackNode = root.callbackNode;
 
-    if (!((executionContext & (RenderContext | CommitContext)) === NoContext)) {
-      {
-        throw Error("Should not already be working.");
+    (function () {
+      if (!((executionContext & (RenderContext | CommitContext)) === NoContext)) {
+        {
+          throw ReactError(Error("Should not already be working."));
+        }
       }
-    }
+    })();
 
     flushPassiveEffects(); // If the root or expiration time have changed, throw out the existing stack
     // and prepare a fresh one. Otherwise we'll continue where we left off.
@@ -68823,6 +68705,7 @@ function performConcurrentWorkOnRoot(root, didTimeout) {
         stopFinishedWorkLoopTimer();
         var finishedWork = root.finishedWork = root.current.alternate;
         root.finishedExpirationTime = expirationTime;
+        resolveLocksOnRoot(root, expirationTime);
         finishConcurrentRender(root, finishedWork, workInProgressRootExitStatus, expirationTime);
       }
 
@@ -68847,11 +68730,13 @@ function finishConcurrentRender(root, finishedWork, exitStatus, expirationTime) 
     case RootIncomplete:
     case RootFatalErrored:
       {
-        {
+        (function () {
           {
-            throw Error("Root did not complete. This is a bug in React.");
+            {
+              throw ReactError(Error("Root did not complete. This is a bug in React."));
+            }
           }
-        }
+        })();
       }
     // Flow knows about invariant, so it complains if I add a break
     // statement, but eslint doesn't know about invariant, so it complains
@@ -68859,16 +68744,18 @@ function finishConcurrentRender(root, finishedWork, exitStatus, expirationTime) 
 
     case RootErrored:
       {
-        // If this was an async render, the error may have happened due to
-        // a mutation in a concurrent event. Try rendering one more time,
-        // synchronously, to see if the error goes away. If there are
-        // lower priority updates, let's include those, too, in case they
-        // fix the inconsistency. Render at Idle to include all updates.
-        // If it was Idle or Never or some not-yet-invented time, render
-        // at that time.
-        markRootExpiredAtTime(root, expirationTime > Idle ? Idle : expirationTime); // We assume that this second render pass will be synchronous
-        // and therefore not hit this path again.
+        if (expirationTime !== Idle) {
+          // If this was an async render, the error may have happened due to
+          // a mutation in a concurrent event. Try rendering one more time,
+          // synchronously, to see if the error goes away. If there are
+          // lower priority updates, let's include those, too, in case they
+          // fix the inconsistency. Render at Idle to include all updates.
+          markRootExpiredAtTime(root, Idle);
+          break;
+        } // Commit the root in its errored state.
 
+
+        commitRoot(root);
         break;
       }
 
@@ -69052,13 +68939,24 @@ function finishConcurrentRender(root, finishedWork, exitStatus, expirationTime) 
         break;
       }
 
+    case RootLocked:
+      {
+        // This root has a lock that prevents it from committing. Exit. If
+        // we begin work on the root again, without any intervening updates,
+        // it will finish without doing additional work.
+        markRootSuspendedAtTime(root, expirationTime);
+        break;
+      }
+
     default:
       {
-        {
+        (function () {
           {
-            throw Error("Unknown root exit status.");
+            {
+              throw ReactError(Error("Unknown root exit status."));
+            }
           }
-        }
+        })();
       }
   }
 } // This is the entry point for synchronous tasks that don't go
@@ -69076,11 +68974,13 @@ function performSyncWorkOnRoot(root) {
     // batch.commit() API.
     commitRoot(root);
   } else {
-    if (!((executionContext & (RenderContext | CommitContext)) === NoContext)) {
-      {
-        throw Error("Should not already be working.");
+    (function () {
+      if (!((executionContext & (RenderContext | CommitContext)) === NoContext)) {
+        {
+          throw ReactError(Error("Should not already be working."));
+        }
       }
-    }
+    })();
 
     flushPassiveEffects(); // If the root or expiration time have changed, throw out the existing stack
     // and prepare a fresh one. Otherwise we'll continue where we left off.
@@ -69127,17 +69027,21 @@ function performSyncWorkOnRoot(root) {
 
       if (workInProgress !== null) {
         // This is a sync render, so we should have finished the whole tree.
-        {
+        (function () {
           {
-            throw Error("Cannot commit an incomplete root. This error is likely caused by a bug in React. Please file an issue.");
+            {
+              throw ReactError(Error("Cannot commit an incomplete root. This error is likely caused by a bug in React. Please file an issue."));
+            }
           }
-        }
+        })();
       } else {
         // We now have a consistent tree. Because this is a sync render, we
-        // will commit it even if something suspended.
+        // will commit it even if something suspended. The only exception is
+        // if the root is locked (using the unstable_createBatch API).
         stopFinishedWorkLoopTimer();
         root.finishedWork = root.current.alternate;
         root.finishedExpirationTime = expirationTime;
+        resolveLocksOnRoot(root, expirationTime);
         finishSyncRender(root, workInProgressRootExitStatus, expirationTime);
       } // Before exiting, make sure there's a callback scheduled for the next
       // pending level.
@@ -69151,25 +69055,39 @@ function performSyncWorkOnRoot(root) {
 }
 
 function finishSyncRender(root, exitStatus, expirationTime) {
-  // Set this to null to indicate there's no in-progress render.
-  workInProgressRoot = null;
+  if (exitStatus === RootLocked) {
+    // This root has a lock that prevents it from committing. Exit. If we
+    // begin work on the root again, without any intervening updates, it
+    // will finish without doing additional work.
+    markRootSuspendedAtTime(root, expirationTime);
+  } else {
+    // Set this to null to indicate there's no in-progress render.
+    workInProgressRoot = null;
 
-  {
-    if (exitStatus === RootSuspended || exitStatus === RootSuspendedWithDelay) {
-      flushSuspensePriorityWarningInDEV();
+    {
+      if (exitStatus === RootSuspended || exitStatus === RootSuspendedWithDelay) {
+        flushSuspensePriorityWarningInDEV();
+      }
     }
-  }
 
-  commitRoot(root);
+    commitRoot(root);
+  }
 }
 
 function flushRoot(root, expirationTime) {
+  if ((executionContext & (RenderContext | CommitContext)) !== NoContext) {
+    (function () {
+      {
+        {
+          throw ReactError(Error("work.commit(): Cannot commit while already rendering. This likely means you attempted to commit from inside a lifecycle method."));
+        }
+      }
+    })();
+  }
+
   markRootExpiredAtTime(root, expirationTime);
   ensureRootIsScheduled(root);
-
-  if ((executionContext & (RenderContext | CommitContext)) === NoContext) {
-    flushSyncCallbackQueue();
-  }
+  flushSyncCallbackQueue();
 }
 function flushDiscreteUpdates() {
   // TODO: Should be able to flush inside batchedUpdates, but not inside `act`.
@@ -69193,9 +69111,21 @@ function flushDiscreteUpdates() {
   flushPassiveEffects();
 }
 
-function syncUpdates(fn, a, b, c) {
-  return runWithPriority$2(ImmediatePriority, fn.bind(null, a, b, c));
+function resolveLocksOnRoot(root, expirationTime) {
+  var firstBatch = root.firstBatch;
+
+  if (firstBatch !== null && firstBatch._defer && firstBatch._expirationTime >= expirationTime) {
+    scheduleCallback(NormalPriority, function () {
+      firstBatch._onComplete();
+
+      return null;
+    });
+    workInProgressRootExitStatus = RootLocked;
+  }
 }
+
+
+
 
 function flushPendingDiscreteUpdates() {
   if (rootsWithPendingDiscreteUpdates !== null) {
@@ -69276,11 +69206,13 @@ function unbatchedUpdates(fn, a) {
 }
 function flushSync(fn, a) {
   if ((executionContext & (RenderContext | CommitContext)) !== NoContext) {
-    {
+    (function () {
       {
-        throw Error("flushSync was called from inside a lifecycle method. It cannot be called when React is already rendering.");
+        {
+          throw ReactError(Error("flushSync was called from inside a lifecycle method. It cannot be called when React is already rendering."));
+        }
       }
-    }
+    })();
   }
 
   var prevExecutionContext = executionContext;
@@ -69361,7 +69293,6 @@ function handleError(root, thrownValue) {
       // Reset module-level state that was set during the render phase.
       resetContextDependencies();
       resetHooks();
-      resetCurrentFiber();
 
       if (workInProgress === null || workInProgress.return === null) {
         // Expected to be working on a non-root fiber. This is a fatal error
@@ -69758,23 +69689,16 @@ function commitRoot(root) {
 }
 
 function commitRootImpl(root, renderPriorityLevel) {
-  do {
-    // `flushPassiveEffects` will call `flushSyncUpdateQueue` at the end, which
-    // means `flushPassiveEffects` will sometimes result in additional
-    // passive effects. So we need to keep flushing in a loop until there are
-    // no more pending effects.
-    // TODO: Might be better if `flushPassiveEffects` did not automatically
-    // flush synchronous work at the end, to avoid factoring hazards like this.
-    flushPassiveEffects();
-  } while (rootWithPendingPassiveEffects !== null);
-
+  flushPassiveEffects();
   flushRenderPhaseStrictModeWarningsInDEV();
 
-  if (!((executionContext & (RenderContext | CommitContext)) === NoContext)) {
-    {
-      throw Error("Should not already be working.");
+  (function () {
+    if (!((executionContext & (RenderContext | CommitContext)) === NoContext)) {
+      {
+        throw ReactError(Error("Should not already be working."));
+      }
     }
-  }
+  })();
 
   var finishedWork = root.finishedWork;
   var expirationTime = root.finishedExpirationTime;
@@ -69786,11 +69710,13 @@ function commitRootImpl(root, renderPriorityLevel) {
   root.finishedWork = null;
   root.finishedExpirationTime = NoWork;
 
-  if (!(finishedWork !== root.current)) {
-    {
-      throw Error("Cannot commit the same tree as before. This error is likely caused by a bug in React. Please file an issue.");
+  (function () {
+    if (!(finishedWork !== root.current)) {
+      {
+        throw ReactError(Error("Cannot commit the same tree as before. This error is likely caused by a bug in React. Please file an issue."));
+      }
     }
-  } // commitRoot never returns a continuation; it always finishes synchronously.
+  })(); // commitRoot never returns a continuation; it always finishes synchronously.
   // So we can clear these now to allow a new callback to be scheduled.
 
 
@@ -69854,11 +69780,13 @@ function commitRootImpl(root, renderPriorityLevel) {
         invokeGuardedCallback(null, commitBeforeMutationEffects, null);
 
         if (hasCaughtError()) {
-          if (!(nextEffect !== null)) {
-            {
-              throw Error("Should be working on an effect.");
+          (function () {
+            if (!(nextEffect !== null)) {
+              {
+                throw ReactError(Error("Should be working on an effect."));
+              }
             }
-          }
+          })();
 
           var error = clearCaughtError();
           captureCommitPhaseError(nextEffect, error);
@@ -69884,11 +69812,13 @@ function commitRootImpl(root, renderPriorityLevel) {
         invokeGuardedCallback(null, commitMutationEffects, null, root, renderPriorityLevel);
 
         if (hasCaughtError()) {
-          if (!(nextEffect !== null)) {
-            {
-              throw Error("Should be working on an effect.");
+          (function () {
+            if (!(nextEffect !== null)) {
+              {
+                throw ReactError(Error("Should be working on an effect."));
+              }
             }
-          }
+          })();
 
           var _error = clearCaughtError();
 
@@ -69916,11 +69846,13 @@ function commitRootImpl(root, renderPriorityLevel) {
         invokeGuardedCallback(null, commitLayoutEffects, null, root, expirationTime);
 
         if (hasCaughtError()) {
-          if (!(nextEffect !== null)) {
-            {
-              throw Error("Should be working on an effect.");
+          (function () {
+            if (!(nextEffect !== null)) {
+              {
+                throw ReactError(Error("Should be working on an effect."));
+              }
             }
-          }
+          })();
 
           var _error2 = clearCaughtError();
 
@@ -70206,11 +70138,13 @@ function flushPassiveEffectsImpl() {
   rootWithPendingPassiveEffects = null;
   pendingPassiveEffectsExpirationTime = NoWork;
 
-  if (!((executionContext & (RenderContext | CommitContext)) === NoContext)) {
-    {
-      throw Error("Cannot flush passive effects while already rendering.");
+  (function () {
+    if (!((executionContext & (RenderContext | CommitContext)) === NoContext)) {
+      {
+        throw ReactError(Error("Cannot flush passive effects while already rendering."));
+      }
     }
-  }
+  })();
 
   var prevExecutionContext = executionContext;
   executionContext |= CommitContext;
@@ -70226,11 +70160,13 @@ function flushPassiveEffectsImpl() {
       invokeGuardedCallback(null, commitPassiveHookEffects, null, effect);
 
       if (hasCaughtError()) {
-        if (!(effect !== null)) {
-          {
-            throw Error("Should be working on an effect.");
+        (function () {
+          if (!(effect !== null)) {
+            {
+              throw ReactError(Error("Should be working on an effect."));
+            }
           }
-        }
+        })();
 
         var error = clearCaughtError();
         captureCommitPhaseError(effect, error);
@@ -70391,10 +70327,10 @@ function retryTimedOutBoundary(boundaryFiber, retryTime) {
   // previously was rendered in its fallback state. One of the promises that
   // suspended it has resolved, which means at least part of the tree was
   // likely unblocked. Try rendering again, at a new expiration time.
-  if (retryTime === NoWork) {
+  if (retryTime === Never) {
     var suspenseConfig = null; // Retries don't carry over the already committed update.
 
-    var currentTime = requestCurrentTimeForUpdate();
+    var currentTime = requestCurrentTime();
     retryTime = computeExpirationForFiber(currentTime, boundaryFiber, suspenseConfig);
   } // TODO: Special case idle priority?
 
@@ -70409,7 +70345,7 @@ function retryTimedOutBoundary(boundaryFiber, retryTime) {
 
 function retryDehydratedSuspenseBoundary(boundaryFiber) {
   var suspenseState = boundaryFiber.memoizedState;
-  var retryTime = NoWork;
+  var retryTime = Never;
 
   if (suspenseState !== null) {
     retryTime = suspenseState.retryTime;
@@ -70418,7 +70354,7 @@ function retryDehydratedSuspenseBoundary(boundaryFiber) {
   retryTimedOutBoundary(boundaryFiber, retryTime);
 }
 function resolveRetryThenable(boundaryFiber, thenable) {
-  var retryTime = NoWork; // Default
+  var retryTime = Never; // Default
 
   var retryCache;
 
@@ -70439,11 +70375,13 @@ function resolveRetryThenable(boundaryFiber, thenable) {
         break;
 
       default:
-        {
+        (function () {
           {
-            throw Error("Pinged unknown suspense boundary type. This is probably a bug in React.");
+            {
+              throw ReactError(Error("Pinged unknown suspense boundary type. This is probably a bug in React."));
+            }
           }
-        }
+        })();
 
     }
   } else {
@@ -70500,11 +70438,13 @@ function checkForNestedUpdates() {
     nestedUpdateCount = 0;
     rootWithNestedUpdates = null;
 
-    {
+    (function () {
       {
-        throw Error("Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.");
+        {
+          throw ReactError(Error("Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops."));
+        }
       }
-    }
+    })();
   }
 
   {
@@ -70592,14 +70532,12 @@ if ( true && replayFailedUnitOfWorkWithInvokeGuardedCallback) {
       if (originalError !== null && typeof originalError === 'object' && typeof originalError.then === 'function') {
         // Don't replay promises. Treat everything else like an error.
         throw originalError;
-      } // Keep this code in sync with handleError; any changes here must have
+      } // Keep this code in sync with renderRoot; any changes here must have
       // corresponding changes there.
 
 
       resetContextDependencies();
-      resetHooks(); // Don't reset current debug fiber, since we're about to work on the
-      // same fiber again.
-      // Unwind the failed stack frame
+      resetHooks(); // Unwind the failed stack frame
 
       unwindInterruptedWork(unitOfWork); // Restore the original properties of the fiber.
 
@@ -70694,7 +70632,7 @@ var didWarnAboutUnmockedScheduler = false; // TODO Before we release concurrent 
 function warnIfUnmockedScheduler(fiber) {
   {
     if (didWarnAboutUnmockedScheduler === false && Scheduler.unstable_flushAllWithoutAsserting === undefined) {
-      if (fiber.mode & BlockingMode || fiber.mode & ConcurrentMode) {
+      if (fiber.mode & BatchedMode || fiber.mode & ConcurrentMode) {
         didWarnAboutUnmockedScheduler = true;
         warningWithoutStack$1(false, 'In Concurrent or Sync modes, the "scheduler" module needs to be mocked ' + 'to guarantee consistent behaviour across tests and browsers. ' + 'For example, with jest: \n' + "jest.mock('scheduler', () => require('scheduler/unstable_mock'));\n\n" + 'For more info, visit https://fb.me/react-mock-scheduler');
       } else if (warnAboutUnmockedScheduler === true) {
@@ -70798,7 +70736,7 @@ function flushSuspensePriorityWarningInDEV() {
       componentsThatTriggeredHighPriSuspend = null;
 
       if (componentNames.length > 0) {
-        warningWithoutStack$1(false, '%s triggered a user-blocking update that suspended.' + '\n\n' + 'The fix is to split the update into multiple parts: a user-blocking ' + 'update to provide immediate feedback, and another update that ' + 'triggers the bulk of the changes.' + '\n\n' + 'Refer to the documentation for useTransition to learn how ' + 'to implement this pattern.', // TODO: Add link to React docs with more information, once it exists
+        warningWithoutStack$1(false, '%s triggered a user-blocking update that suspended.' + '\n\n' + 'The fix is to split the update into multiple parts: a user-blocking ' + 'update to provide immediate feedback, and another update that ' + 'triggers the bulk of the changes.' + '\n\n' + 'Refer to the documentation for useSuspenseTransition to learn how ' + 'to implement this pattern.', // TODO: Add link to React docs with more information, once it exists
         componentNames.sort().join(', '));
       }
     }
@@ -70885,10 +70823,10 @@ function startWorkOnPendingInteractions(root, expirationTime) {
       });
     }
   }); // Store the current set of interactions on the FiberRoot for a few reasons:
-  // We can re-use it in hot functions like performConcurrentWorkOnRoot()
-  // without having to recalculate it. We will also use it in commitWork() to
-  // pass to any Profiler onRender() hooks. This also provides DevTools with a
-  // way to access it when the onCommitRoot() hook is called.
+  // We can re-use it in hot functions like renderRoot() without having to
+  // recalculate it. We will also use it in commitWork() to pass to any Profiler
+  // onRender() hooks. This also provides DevTools with a way to access it when
+  // the onCommitRoot() hook is called.
 
   root.memoizedInteractions = interactions;
 
@@ -70996,7 +70934,7 @@ function injectInternals(internals) {
         var didError = (root.current.effectTag & DidCapture) === DidCapture;
 
         if (enableProfilerTimer) {
-          var currentTime = getCurrentTime();
+          var currentTime = requestCurrentTime();
           var priorityLevel = inferPriorityFromExpirationTime(currentTime, expirationTime);
           hook.onCommitFiberRoot(rendererID, root, priorityLevel, didError);
         } else {
@@ -71337,9 +71275,9 @@ function createHostRootFiber(tag) {
   var mode;
 
   if (tag === ConcurrentRoot) {
-    mode = ConcurrentMode | BlockingMode | StrictMode;
-  } else if (tag === BlockingRoot) {
-    mode = BlockingMode | StrictMode;
+    mode = ConcurrentMode | BatchedMode | StrictMode;
+  } else if (tag === BatchedRoot) {
+    mode = BatchedMode | StrictMode;
   } else {
     mode = NoMode;
   }
@@ -71381,7 +71319,7 @@ key, pendingProps, owner, mode, expirationTime) {
 
       case REACT_CONCURRENT_MODE_TYPE:
         fiberTag = Mode;
-        mode |= ConcurrentMode | BlockingMode | StrictMode;
+        mode |= ConcurrentMode | BatchedMode | StrictMode;
         break;
 
       case REACT_STRICT_MODE_TYPE:
@@ -71458,11 +71396,13 @@ key, pendingProps, owner, mode, expirationTime) {
             }
           }
 
-          {
+          (function () {
             {
-              throw Error("Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: " + (type == null ? type : typeof type) + "." + info);
+              {
+                throw ReactError(Error("Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: " + (type == null ? type : typeof type) + "." + info));
+              }
             }
-          }
+          })();
         }
     }
   }
@@ -71646,6 +71586,7 @@ function FiberRootNode(containerInfo, tag, hydrate) {
   this.context = null;
   this.pendingContext = null;
   this.hydrate = hydrate;
+  this.firstBatch = null;
   this.callbackNode = null;
   this.callbackPriority = NoPriority;
   this.firstPendingTime = NoWork;
@@ -71801,22 +71742,79 @@ function getContextForSubtree(parentComponent) {
   return parentContext;
 }
 
+function scheduleRootUpdate(current$$1, element, expirationTime, suspenseConfig, callback) {
+  {
+    if (phase === 'render' && current !== null && !didWarnAboutNestedUpdates) {
+      didWarnAboutNestedUpdates = true;
+      warningWithoutStack$1(false, 'Render methods should be a pure function of props and state; ' + 'triggering nested component updates from render is not allowed. ' + 'If necessary, trigger nested updates in componentDidUpdate.\n\n' + 'Check the render method of %s.', getComponentName(current.type) || 'Unknown');
+    }
+  }
+
+  var update = createUpdate(expirationTime, suspenseConfig); // Caution: React DevTools currently depends on this property
+  // being called "element".
+
+  update.payload = {
+    element: element
+  };
+  callback = callback === undefined ? null : callback;
+
+  if (callback !== null) {
+    !(typeof callback === 'function') ? warningWithoutStack$1(false, 'render(...): Expected the last optional `callback` argument to be a ' + 'function. Instead received: %s.', callback) : void 0;
+    update.callback = callback;
+  }
+
+  enqueueUpdate(current$$1, update);
+  scheduleWork(current$$1, expirationTime);
+  return expirationTime;
+}
+
+function updateContainerAtExpirationTime(element, container, parentComponent, expirationTime, suspenseConfig, callback) {
+  // TODO: If this is a nested container, this won't be the root.
+  var current$$1 = container.current;
+
+  {
+    if (ReactFiberInstrumentation_1.debugTool) {
+      if (current$$1.alternate === null) {
+        ReactFiberInstrumentation_1.debugTool.onMountContainer(container);
+      } else if (element === null) {
+        ReactFiberInstrumentation_1.debugTool.onUnmountContainer(container);
+      } else {
+        ReactFiberInstrumentation_1.debugTool.onUpdateContainer(container);
+      }
+    }
+  }
+
+  var context = getContextForSubtree(parentComponent);
+
+  if (container.context === null) {
+    container.context = context;
+  } else {
+    container.pendingContext = context;
+  }
+
+  return scheduleRootUpdate(current$$1, element, expirationTime, suspenseConfig, callback);
+}
+
 function findHostInstance(component) {
   var fiber = get(component);
 
   if (fiber === undefined) {
     if (typeof component.render === 'function') {
-      {
+      (function () {
         {
-          throw Error("Unable to find node on an unmounted component.");
+          {
+            throw ReactError(Error("Unable to find node on an unmounted component."));
+          }
         }
-      }
+      })();
     } else {
-      {
+      (function () {
         {
-          throw Error("Argument appears to not be a ReactComponent. Keys: " + Object.keys(component));
+          {
+            throw ReactError(Error("Argument appears to not be a ReactComponent. Keys: " + Object.keys(component)));
+          }
         }
-      }
+      })();
     }
   }
 
@@ -71835,17 +71833,21 @@ function findHostInstanceWithWarning(component, methodName) {
 
     if (fiber === undefined) {
       if (typeof component.render === 'function') {
-        {
+        (function () {
           {
-            throw Error("Unable to find node on an unmounted component.");
+            {
+              throw ReactError(Error("Unable to find node on an unmounted component."));
+            }
           }
-        }
+        })();
       } else {
-        {
+        (function () {
           {
-            throw Error("Argument appears to not be a ReactComponent. Keys: " + Object.keys(component));
+            {
+              throw ReactError(Error("Argument appears to not be a ReactComponent. Keys: " + Object.keys(component)));
+            }
           }
-        }
+        })();
       }
     }
 
@@ -71880,7 +71882,7 @@ function createContainer(containerInfo, tag, hydrate, hydrationCallbacks) {
 }
 function updateContainer(element, container, parentComponent, callback) {
   var current$$1 = container.current;
-  var currentTime = requestCurrentTimeForUpdate();
+  var currentTime = requestCurrentTime();
 
   {
     // $FlowExpectedError - jest isn't a global, and isn't recognized outside of tests
@@ -71892,50 +71894,7 @@ function updateContainer(element, container, parentComponent, callback) {
 
   var suspenseConfig = requestCurrentSuspenseConfig();
   var expirationTime = computeExpirationForFiber(currentTime, current$$1, suspenseConfig);
-
-  {
-    if (ReactFiberInstrumentation_1.debugTool) {
-      if (current$$1.alternate === null) {
-        ReactFiberInstrumentation_1.debugTool.onMountContainer(container);
-      } else if (element === null) {
-        ReactFiberInstrumentation_1.debugTool.onUnmountContainer(container);
-      } else {
-        ReactFiberInstrumentation_1.debugTool.onUpdateContainer(container);
-      }
-    }
-  }
-
-  var context = getContextForSubtree(parentComponent);
-
-  if (container.context === null) {
-    container.context = context;
-  } else {
-    container.pendingContext = context;
-  }
-
-  {
-    if (phase === 'render' && current !== null && !didWarnAboutNestedUpdates) {
-      didWarnAboutNestedUpdates = true;
-      warningWithoutStack$1(false, 'Render methods should be a pure function of props and state; ' + 'triggering nested component updates from render is not allowed. ' + 'If necessary, trigger nested updates in componentDidUpdate.\n\n' + 'Check the render method of %s.', getComponentName(current.type) || 'Unknown');
-    }
-  }
-
-  var update = createUpdate(expirationTime, suspenseConfig); // Caution: React DevTools currently depends on this property
-  // being called "element".
-
-  update.payload = {
-    element: element
-  };
-  callback = callback === undefined ? null : callback;
-
-  if (callback !== null) {
-    !(typeof callback === 'function') ? warningWithoutStack$1(false, 'render(...): Expected the last optional `callback` argument to be a ' + 'function. Instead received: %s.', callback) : void 0;
-    update.callback = callback;
-  }
-
-  enqueueUpdate(current$$1, update);
-  scheduleWork(current$$1, expirationTime);
-  return expirationTime;
+  return updateContainerAtExpirationTime(element, container, parentComponent, expirationTime, suspenseConfig, callback);
 }
 function getPublicRootInstance(container) {
   var containerFiber = container.current;
@@ -71967,73 +71926,9 @@ function attemptSynchronousHydration$1(fiber) {
     case SuspenseComponent:
       flushSync(function () {
         return scheduleWork(fiber, Sync);
-      }); // If we're still blocked after this, we need to increase
-      // the priority of any promises resolving within this
-      // boundary so that they next attempt also has higher pri.
-
-      var retryExpTime = computeInteractiveExpiration(requestCurrentTimeForUpdate());
-      markRetryTimeIfNotHydrated(fiber, retryExpTime);
+      });
       break;
   }
-}
-
-function markRetryTimeImpl(fiber, retryTime) {
-  var suspenseState = fiber.memoizedState;
-
-  if (suspenseState !== null && suspenseState.dehydrated !== null) {
-    if (suspenseState.retryTime < retryTime) {
-      suspenseState.retryTime = retryTime;
-    }
-  }
-} // Increases the priority of thennables when they resolve within this boundary.
-
-
-function markRetryTimeIfNotHydrated(fiber, retryTime) {
-  markRetryTimeImpl(fiber, retryTime);
-  var alternate = fiber.alternate;
-
-  if (alternate) {
-    markRetryTimeImpl(alternate, retryTime);
-  }
-}
-
-function attemptUserBlockingHydration$1(fiber) {
-  if (fiber.tag !== SuspenseComponent) {
-    // We ignore HostRoots here because we can't increase
-    // their priority and they should not suspend on I/O,
-    // since you have to wrap anything that might suspend in
-    // Suspense.
-    return;
-  }
-
-  var expTime = computeInteractiveExpiration(requestCurrentTimeForUpdate());
-  scheduleWork(fiber, expTime);
-  markRetryTimeIfNotHydrated(fiber, expTime);
-}
-function attemptContinuousHydration$1(fiber) {
-  if (fiber.tag !== SuspenseComponent) {
-    // We ignore HostRoots here because we can't increase
-    // their priority and they should not suspend on I/O,
-    // since you have to wrap anything that might suspend in
-    // Suspense.
-    return;
-  }
-
-  var expTime = computeContinuousHydrationExpiration(requestCurrentTimeForUpdate());
-  scheduleWork(fiber, expTime);
-  markRetryTimeIfNotHydrated(fiber, expTime);
-}
-function attemptHydrationAtCurrentPriority$1(fiber) {
-  if (fiber.tag !== SuspenseComponent) {
-    // We ignore HostRoots here because we can't increase
-    // their priority other than synchronously flush it.
-    return;
-  }
-
-  var currentTime = requestCurrentTimeForUpdate();
-  var expTime = computeExpirationForFiber(currentTime, fiber, null);
-  scheduleWork(fiber, expTime);
-  markRetryTimeIfNotHydrated(fiber, expTime);
 }
 function findHostInstanceWithNoPortals(fiber) {
   var hostFiber = findCurrentHostFiberWithNoPortals(fiber);
@@ -72164,43 +72059,249 @@ function injectIntoDevTools(devToolsConfig) {
 // This file intentionally does *not* have the Flow annotation.
 // Don't add it. See `./inline-typed.js` for an explanation.
 
+function createPortal$1(children, containerInfo, // TODO: figure out the API for cross-renderer implementation.
+implementation) {
+  var key = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+  return {
+    // This tag allow us to uniquely identify this as a React Portal
+    $$typeof: REACT_PORTAL_TYPE,
+    key: key == null ? null : '' + key,
+    children: children,
+    containerInfo: containerInfo,
+    implementation: implementation
+  };
+}
+
+// TODO: this is special because it gets imported during build.
+
+var ReactVersion = '16.10.2';
+
 // TODO: This type is shared between the reconciler and ReactDOM, but will
 // eventually be lifted out to the renderer.
-function ReactDOMRoot(container, options) {
-  this._internalRoot = createRootImpl(container, ConcurrentRoot, options);
-}
+setAttemptSynchronousHydration(attemptSynchronousHydration$1);
+var ReactCurrentOwner = ReactSharedInternals.ReactCurrentOwner;
+var topLevelUpdateWarnings;
+var warnOnInvalidCallback;
+var didWarnAboutUnstableCreatePortal = false;
 
-function ReactDOMBlockingRoot(container, tag, options) {
-  this._internalRoot = createRootImpl(container, tag, options);
-}
-
-ReactDOMRoot.prototype.render = ReactDOMBlockingRoot.prototype.render = function (children, callback) {
-  var root = this._internalRoot;
-  var cb = callback === undefined ? null : callback;
-
-  {
-    warnOnInvalidCallback(cb, 'render');
+{
+  if (typeof Map !== 'function' || // $FlowIssue Flow incorrectly thinks Map has no prototype
+  Map.prototype == null || typeof Map.prototype.forEach !== 'function' || typeof Set !== 'function' || // $FlowIssue Flow incorrectly thinks Set has no prototype
+  Set.prototype == null || typeof Set.prototype.clear !== 'function' || typeof Set.prototype.forEach !== 'function') {
+    warningWithoutStack$1(false, 'React depends on Map and Set built-in types. Make sure that you load a ' + 'polyfill in older browsers. https://fb.me/react-polyfills');
   }
 
-  updateContainer(children, root, null, cb);
+  topLevelUpdateWarnings = function (container) {
+    if (container._reactRootContainer && container.nodeType !== COMMENT_NODE) {
+      var hostInstance = findHostInstanceWithNoPortals(container._reactRootContainer._internalRoot.current);
+
+      if (hostInstance) {
+        !(hostInstance.parentNode === container) ? warningWithoutStack$1(false, 'render(...): It looks like the React-rendered content of this ' + 'container was removed without using React. This is not ' + 'supported and will cause errors. Instead, call ' + 'ReactDOM.unmountComponentAtNode to empty a container.') : void 0;
+      }
+    }
+
+    var isRootRenderedBySomeReact = !!container._reactRootContainer;
+    var rootEl = getReactRootElementInContainer(container);
+    var hasNonRootReactChild = !!(rootEl && getInstanceFromNode$1(rootEl));
+    !(!hasNonRootReactChild || isRootRenderedBySomeReact) ? warningWithoutStack$1(false, 'render(...): Replacing React-rendered children with a new root ' + 'component. If you intended to update the children of this node, ' + 'you should instead have the existing children update their state ' + 'and render the new components instead of calling ReactDOM.render.') : void 0;
+    !(container.nodeType !== ELEMENT_NODE || !container.tagName || container.tagName.toUpperCase() !== 'BODY') ? warningWithoutStack$1(false, 'render(): Rendering components directly into document.body is ' + 'discouraged, since its children are often manipulated by third-party ' + 'scripts and browser extensions. This may lead to subtle ' + 'reconciliation issues. Try rendering into a container element created ' + 'for your app.') : void 0;
+  };
+
+  warnOnInvalidCallback = function (callback, callerName) {
+    !(callback === null || typeof callback === 'function') ? warningWithoutStack$1(false, '%s(...): Expected the last optional `callback` argument to be a ' + 'function. Instead received: %s.', callerName, callback) : void 0;
+  };
+}
+
+setRestoreImplementation(restoreControlledState$$1);
+
+function ReactBatch(root) {
+  var expirationTime = computeUniqueAsyncExpiration();
+  this._expirationTime = expirationTime;
+  this._root = root;
+  this._next = null;
+  this._callbacks = null;
+  this._didComplete = false;
+  this._hasChildren = false;
+  this._children = null;
+  this._defer = true;
+}
+
+ReactBatch.prototype.render = function (children) {
+  var _this = this;
+
+  (function () {
+    if (!_this._defer) {
+      {
+        throw ReactError(Error("batch.render: Cannot render a batch that already committed."));
+      }
+    }
+  })();
+
+  this._hasChildren = true;
+  this._children = children;
+  var internalRoot = this._root._internalRoot;
+  var expirationTime = this._expirationTime;
+  var work = new ReactWork();
+  updateContainerAtExpirationTime(children, internalRoot, null, expirationTime, null, work._onCommit);
+  return work;
 };
 
-ReactDOMRoot.prototype.unmount = ReactDOMBlockingRoot.prototype.unmount = function (callback) {
-  var root = this._internalRoot;
-  var cb = callback === undefined ? null : callback;
-
-  {
-    warnOnInvalidCallback(cb, 'render');
+ReactBatch.prototype.then = function (onComplete) {
+  if (this._didComplete) {
+    onComplete();
+    return;
   }
 
-  var container = root.containerInfo;
-  updateContainer(null, root, null, function () {
-    unmarkContainerAsRoot(container);
+  var callbacks = this._callbacks;
 
-    if (cb !== null) {
-      cb();
+  if (callbacks === null) {
+    callbacks = this._callbacks = [];
+  }
+
+  callbacks.push(onComplete);
+};
+
+ReactBatch.prototype.commit = function () {
+  var _this2 = this;
+
+  var internalRoot = this._root._internalRoot;
+  var firstBatch = internalRoot.firstBatch;
+
+  (function () {
+    if (!(_this2._defer && firstBatch !== null)) {
+      {
+        throw ReactError(Error("batch.commit: Cannot commit a batch multiple times."));
+      }
     }
-  });
+  })();
+
+  if (!this._hasChildren) {
+    // This batch is empty. Return.
+    this._next = null;
+    this._defer = false;
+    return;
+  }
+
+  var expirationTime = this._expirationTime; // Ensure this is the first batch in the list.
+
+  if (firstBatch !== this) {
+    // This batch is not the earliest batch. We need to move it to the front.
+    // Update its expiration time to be the expiration time of the earliest
+    // batch, so that we can flush it without flushing the other batches.
+    if (this._hasChildren) {
+      expirationTime = this._expirationTime = firstBatch._expirationTime; // Rendering this batch again ensures its children will be the final state
+      // when we flush (updates are processed in insertion order: last
+      // update wins).
+      // TODO: This forces a restart. Should we print a warning?
+
+      this.render(this._children);
+    } // Remove the batch from the list.
+
+
+    var previous = null;
+    var batch = firstBatch;
+
+    while (batch !== this) {
+      previous = batch;
+      batch = batch._next;
+    }
+
+    (function () {
+      if (!(previous !== null)) {
+        {
+          throw ReactError(Error("batch.commit: Cannot commit a batch multiple times."));
+        }
+      }
+    })();
+
+    previous._next = batch._next; // Add it to the front.
+
+    this._next = firstBatch;
+    firstBatch = internalRoot.firstBatch = this;
+  } // Synchronously flush all the work up to this batch's expiration time.
+
+
+  this._defer = false;
+  flushRoot(internalRoot, expirationTime); // Pop the batch from the list.
+
+  var next = this._next;
+  this._next = null;
+  firstBatch = internalRoot.firstBatch = next; // Append the next earliest batch's children to the update queue.
+
+  if (firstBatch !== null && firstBatch._hasChildren) {
+    firstBatch.render(firstBatch._children);
+  }
+};
+
+ReactBatch.prototype._onComplete = function () {
+  if (this._didComplete) {
+    return;
+  }
+
+  this._didComplete = true;
+  var callbacks = this._callbacks;
+
+  if (callbacks === null) {
+    return;
+  } // TODO: Error handling.
+
+
+  for (var i = 0; i < callbacks.length; i++) {
+    var _callback = callbacks[i];
+
+    _callback();
+  }
+};
+
+function ReactWork() {
+  this._callbacks = null;
+  this._didCommit = false; // TODO: Avoid need to bind by replacing callbacks in the update queue with
+  // list of Work objects.
+
+  this._onCommit = this._onCommit.bind(this);
+}
+
+ReactWork.prototype.then = function (onCommit) {
+  if (this._didCommit) {
+    onCommit();
+    return;
+  }
+
+  var callbacks = this._callbacks;
+
+  if (callbacks === null) {
+    callbacks = this._callbacks = [];
+  }
+
+  callbacks.push(onCommit);
+};
+
+ReactWork.prototype._onCommit = function () {
+  if (this._didCommit) {
+    return;
+  }
+
+  this._didCommit = true;
+  var callbacks = this._callbacks;
+
+  if (callbacks === null) {
+    return;
+  } // TODO: Error handling.
+
+
+  for (var i = 0; i < callbacks.length; i++) {
+    var _callback2 = callbacks[i];
+
+    (function () {
+      if (!(typeof _callback2 === 'function')) {
+        {
+          throw ReactError(Error("Invalid argument passed as callback. Expected a function. Instead received: " + _callback2));
+        }
+      }
+    })();
+
+    _callback2();
+  }
 };
 
 function createRootImpl(container, tag, options) {
@@ -72218,70 +72319,88 @@ function createRootImpl(container, tag, options) {
   return root;
 }
 
-function createRoot(container, options) {
-  if (!isValidContainer(container)) {
-    {
-      throw Error("createRoot(...): Target container is not a DOM element.");
+function ReactSyncRoot(container, tag, options) {
+  this._internalRoot = createRootImpl(container, tag, options);
+}
+
+function ReactRoot(container, options) {
+  this._internalRoot = createRootImpl(container, ConcurrentRoot, options);
+}
+
+ReactRoot.prototype.render = ReactSyncRoot.prototype.render = function (children, callback) {
+  var root = this._internalRoot;
+  var work = new ReactWork();
+  callback = callback === undefined ? null : callback;
+
+  {
+    warnOnInvalidCallback(callback, 'render');
+  }
+
+  if (callback !== null) {
+    work.then(callback);
+  }
+
+  updateContainer(children, root, null, work._onCommit);
+  return work;
+};
+
+ReactRoot.prototype.unmount = ReactSyncRoot.prototype.unmount = function (callback) {
+  var root = this._internalRoot;
+  var work = new ReactWork();
+  callback = callback === undefined ? null : callback;
+
+  {
+    warnOnInvalidCallback(callback, 'render');
+  }
+
+  if (callback !== null) {
+    work.then(callback);
+  }
+
+  updateContainer(null, root, null, work._onCommit);
+  return work;
+}; // Sync roots cannot create batches. Only concurrent ones.
+
+
+ReactRoot.prototype.createBatch = function () {
+  var batch = new ReactBatch(this);
+  var expirationTime = batch._expirationTime;
+  var internalRoot = this._internalRoot;
+  var firstBatch = internalRoot.firstBatch;
+
+  if (firstBatch === null) {
+    internalRoot.firstBatch = batch;
+    batch._next = null;
+  } else {
+    // Insert sorted by expiration time then insertion order
+    var insertAfter = null;
+    var insertBefore = firstBatch;
+
+    while (insertBefore !== null && insertBefore._expirationTime >= expirationTime) {
+      insertAfter = insertBefore;
+      insertBefore = insertBefore._next;
+    }
+
+    batch._next = insertBefore;
+
+    if (insertAfter !== null) {
+      insertAfter._next = batch;
     }
   }
 
-  warnIfReactDOMContainerInDEV(container);
-  return new ReactDOMRoot(container, options);
-}
-function createBlockingRoot(container, options) {
-  if (!isValidContainer(container)) {
-    {
-      throw Error("createRoot(...): Target container is not a DOM element.");
-    }
-  }
+  return batch;
+};
+/**
+ * True if the supplied DOM node is a valid node element.
+ *
+ * @param {?DOMElement} node The candidate DOM node.
+ * @return {boolean} True if the DOM is a valid DOM node.
+ * @internal
+ */
 
-  warnIfReactDOMContainerInDEV(container);
-  return new ReactDOMBlockingRoot(container, BlockingRoot, options);
-}
-function createLegacyRoot(container, options) {
-  return new ReactDOMBlockingRoot(container, LegacyRoot, options);
-}
+
 function isValidContainer(node) {
   return !!(node && (node.nodeType === ELEMENT_NODE || node.nodeType === DOCUMENT_NODE || node.nodeType === DOCUMENT_FRAGMENT_NODE || node.nodeType === COMMENT_NODE && node.nodeValue === ' react-mount-point-unstable '));
-}
-function warnOnInvalidCallback(callback, callerName) {
-  {
-    !(callback === null || typeof callback === 'function') ? warningWithoutStack$1(false, '%s(...): Expected the last optional `callback` argument to be a ' + 'function. Instead received: %s.', callerName, callback) : void 0;
-  }
-}
-
-function warnIfReactDOMContainerInDEV(container) {
-  {
-    if (isContainerMarkedAsRoot(container)) {
-      if (container._reactRootContainer) {
-        warningWithoutStack$1(false, 'You are calling ReactDOM.createRoot() on a container that was previously ' + 'passed to ReactDOM.render(). This is not supported.');
-      } else {
-        warningWithoutStack$1(false, 'You are calling ReactDOM.createRoot() on a container that ' + 'has already been passed to createRoot() before. Instead, call ' + 'root.render() on the existing root instead if you want to update it.');
-      }
-    }
-  }
-}
-
-var ReactCurrentOwner$1 = ReactSharedInternals.ReactCurrentOwner;
-var topLevelUpdateWarnings;
-var warnedAboutHydrateAPI = false;
-
-{
-  topLevelUpdateWarnings = function (container) {
-    if (container._reactRootContainer && container.nodeType !== COMMENT_NODE) {
-      var hostInstance = findHostInstanceWithNoPortals(container._reactRootContainer._internalRoot.current);
-
-      if (hostInstance) {
-        !(hostInstance.parentNode === container) ? warningWithoutStack$1(false, 'render(...): It looks like the React-rendered content of this ' + 'container was removed without using React. This is not ' + 'supported and will cause errors. Instead, call ' + 'ReactDOM.unmountComponentAtNode to empty a container.') : void 0;
-      }
-    }
-
-    var isRootRenderedBySomeReact = !!container._reactRootContainer;
-    var rootEl = getReactRootElementInContainer(container);
-    var hasNonRootReactChild = !!(rootEl && getInstanceFromNode$1(rootEl));
-    !(!hasNonRootReactChild || isRootRenderedBySomeReact) ? warningWithoutStack$1(false, 'render(...): Replacing React-rendered children with a new root ' + 'component. If you intended to update the children of this node, ' + 'you should instead have the existing children update their state ' + 'and render the new components instead of calling ReactDOM.render.') : void 0;
-    !(container.nodeType !== ELEMENT_NODE || !container.tagName || container.tagName.toUpperCase() !== 'BODY') ? warningWithoutStack$1(false, 'render(): Rendering components directly into document.body is ' + 'discouraged, since its children are often manipulated by third-party ' + 'scripts and browser extensions. This may lead to subtle ' + 'reconciliation issues. Try rendering into a container element created ' + 'for your app.') : void 0;
-  };
 }
 
 function getReactRootElementInContainer(container) {
@@ -72300,6 +72419,9 @@ function shouldHydrateDueToLegacyHeuristic(container) {
   var rootElement = getReactRootElementInContainer(container);
   return !!(rootElement && rootElement.nodeType === ELEMENT_NODE && rootElement.hasAttribute(ROOT_ATTRIBUTE_NAME));
 }
+
+setBatchingImplementation(batchedUpdates$1, discreteUpdates$1, flushDiscreteUpdates, batchedEventUpdates$1);
+var warnedAboutHydrateAPI = false;
 
 function legacyCreateRootFromDOMContainer(container, forceHydrate) {
   var shouldHydrate = forceHydrate || shouldHydrateDueToLegacyHeuristic(container); // First clear any existing content.
@@ -72325,9 +72447,10 @@ function legacyCreateRootFromDOMContainer(container, forceHydrate) {
       warnedAboutHydrateAPI = true;
       lowPriorityWarningWithoutStack$1(false, 'render(): Calling ReactDOM.render() to hydrate server-rendered markup ' + 'will stop working in React v17. Replace the ReactDOM.render() call ' + 'with ReactDOM.hydrate() if you want React to attach to the server HTML.');
     }
-  }
+  } // Legacy roots are not batched.
 
-  return createLegacyRoot(container, shouldHydrate ? {
+
+  return new ReactSyncRoot(container, LegacyRoot, shouldHydrate ? {
     hydrate: true
   } : undefined);
 }
@@ -72381,169 +72504,16 @@ function legacyRenderSubtreeIntoContainer(parentComponent, children, container, 
   return getPublicRootInstance(fiberRoot);
 }
 
-function findDOMNode(componentOrElement) {
-  {
-    var owner = ReactCurrentOwner$1.current;
-
-    if (owner !== null && owner.stateNode !== null) {
-      var warnedAboutRefsInRender = owner.stateNode._warnedAboutRefsInRender;
-      !warnedAboutRefsInRender ? warningWithoutStack$1(false, '%s is accessing findDOMNode inside its render(). ' + 'render() should be a pure function of props and state. It should ' + 'never access something that requires stale data from the previous ' + 'render, such as refs. Move this logic to componentDidMount and ' + 'componentDidUpdate instead.', getComponentName(owner.type) || 'A component') : void 0;
-      owner.stateNode._warnedAboutRefsInRender = true;
-    }
-  }
-
-  if (componentOrElement == null) {
-    return null;
-  }
-
-  if (componentOrElement.nodeType === ELEMENT_NODE) {
-    return componentOrElement;
-  }
-
-  {
-    return findHostInstanceWithWarning(componentOrElement, 'findDOMNode');
-  }
-
-  return findHostInstance(componentOrElement);
-}
-function hydrate(element, container, callback) {
-  if (!isValidContainer(container)) {
-    {
-      throw Error("Target container is not a DOM element.");
-    }
-  }
-
-  {
-    var isModernRoot = isContainerMarkedAsRoot(container) && container._reactRootContainer === undefined;
-
-    if (isModernRoot) {
-      warningWithoutStack$1(false, 'You are calling ReactDOM.hydrate() on a container that was previously ' + 'passed to ReactDOM.createRoot(). This is not supported. ' + 'Did you mean to call createRoot(container, {hydrate: true}).render(element)?');
-    }
-  } // TODO: throw or warn if we couldn't hydrate?
-
-
-  return legacyRenderSubtreeIntoContainer(null, element, container, true, callback);
-}
-function render(element, container, callback) {
-  if (!isValidContainer(container)) {
-    {
-      throw Error("Target container is not a DOM element.");
-    }
-  }
-
-  {
-    var isModernRoot = isContainerMarkedAsRoot(container) && container._reactRootContainer === undefined;
-
-    if (isModernRoot) {
-      warningWithoutStack$1(false, 'You are calling ReactDOM.render() on a container that was previously ' + 'passed to ReactDOM.createRoot(). This is not supported. ' + 'Did you mean to call root.render(element)?');
-    }
-  }
-
-  return legacyRenderSubtreeIntoContainer(null, element, container, false, callback);
-}
-function unstable_renderSubtreeIntoContainer(parentComponent, element, containerNode, callback) {
-  if (!isValidContainer(containerNode)) {
-    {
-      throw Error("Target container is not a DOM element.");
-    }
-  }
-
-  if (!(parentComponent != null && has(parentComponent))) {
-    {
-      throw Error("parentComponent must be a valid React Component");
-    }
-  }
-
-  return legacyRenderSubtreeIntoContainer(parentComponent, element, containerNode, false, callback);
-}
-function unmountComponentAtNode(container) {
-  if (!isValidContainer(container)) {
-    {
-      throw Error("unmountComponentAtNode(...): Target container is not a DOM element.");
-    }
-  }
-
-  {
-    var isModernRoot = isContainerMarkedAsRoot(container) && container._reactRootContainer === undefined;
-
-    if (isModernRoot) {
-      warningWithoutStack$1(false, 'You are calling ReactDOM.unmountComponentAtNode() on a container that was previously ' + 'passed to ReactDOM.createRoot(). This is not supported. Did you mean to call root.unmount()?');
-    }
-  }
-
-  if (container._reactRootContainer) {
-    {
-      var rootEl = getReactRootElementInContainer(container);
-      var renderedByDifferentReact = rootEl && !getInstanceFromNode$1(rootEl);
-      !!renderedByDifferentReact ? warningWithoutStack$1(false, "unmountComponentAtNode(): The node you're attempting to unmount " + 'was rendered by another copy of React.') : void 0;
-    } // Unmount should not be batched.
-
-
-    unbatchedUpdates(function () {
-      legacyRenderSubtreeIntoContainer(null, null, container, false, function () {
-        container._reactRootContainer = null;
-        unmarkContainerAsRoot(container);
-      });
-    }); // If you call unmountComponentAtNode twice in quick succession, you'll
-    // get `true` twice. That's probably fine?
-
-    return true;
-  } else {
-    {
-      var _rootEl = getReactRootElementInContainer(container);
-
-      var hasNonRootReactChild = !!(_rootEl && getInstanceFromNode$1(_rootEl)); // Check if the container itself is a React root node.
-
-      var isContainerReactRoot = container.nodeType === ELEMENT_NODE && isValidContainer(container.parentNode) && !!container.parentNode._reactRootContainer;
-      !!hasNonRootReactChild ? warningWithoutStack$1(false, "unmountComponentAtNode(): The node you're attempting to unmount " + 'was rendered by React and is not a top-level container. %s', isContainerReactRoot ? 'You may have accidentally passed in a React root node instead ' + 'of its container.' : 'Instead, have the parent component update its state and ' + 'rerender in order to remove this component.') : void 0;
-    }
-
-    return false;
-  }
-}
-
-function createPortal$1(children, containerInfo, // TODO: figure out the API for cross-renderer implementation.
-implementation) {
-  var key = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-  return {
-    // This tag allow us to uniquely identify this as a React Portal
-    $$typeof: REACT_PORTAL_TYPE,
-    key: key == null ? null : '' + key,
-    children: children,
-    containerInfo: containerInfo,
-    implementation: implementation
-  };
-}
-
-// TODO: this is special because it gets imported during build.
-
-var ReactVersion = '16.12.0';
-
-setAttemptSynchronousHydration(attemptSynchronousHydration$1);
-setAttemptUserBlockingHydration(attemptUserBlockingHydration$1);
-setAttemptContinuousHydration(attemptContinuousHydration$1);
-setAttemptHydrationAtCurrentPriority(attemptHydrationAtCurrentPriority$1);
-var didWarnAboutUnstableCreatePortal = false;
-
-{
-  if (typeof Map !== 'function' || // $FlowIssue Flow incorrectly thinks Map has no prototype
-  Map.prototype == null || typeof Map.prototype.forEach !== 'function' || typeof Set !== 'function' || // $FlowIssue Flow incorrectly thinks Set has no prototype
-  Set.prototype == null || typeof Set.prototype.clear !== 'function' || typeof Set.prototype.forEach !== 'function') {
-    warningWithoutStack$1(false, 'React depends on Map and Set built-in types. Make sure that you load a ' + 'polyfill in older browsers. https://fb.me/react-polyfills');
-  }
-}
-
-setRestoreImplementation(restoreControlledState$$1);
-setBatchingImplementation(batchedUpdates$1, discreteUpdates$1, flushDiscreteUpdates, batchedEventUpdates$1);
-
 function createPortal$$1(children, container) {
   var key = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
-  if (!isValidContainer(container)) {
-    {
-      throw Error("Target container is not a DOM element.");
+  (function () {
+    if (!isValidContainer(container)) {
+      {
+        throw ReactError(Error("Target container is not a DOM element."));
+      }
     }
-  } // TODO: pass ReactDOM portal implementation as third argument
+  })(); // TODO: pass ReactDOM portal implementation as third argument
 
 
   return createPortal$1(children, container, null, key);
@@ -72551,12 +72521,123 @@ function createPortal$$1(children, container) {
 
 var ReactDOM = {
   createPortal: createPortal$$1,
-  // Legacy
-  findDOMNode: findDOMNode,
-  hydrate: hydrate,
-  render: render,
-  unstable_renderSubtreeIntoContainer: unstable_renderSubtreeIntoContainer,
-  unmountComponentAtNode: unmountComponentAtNode,
+  findDOMNode: function (componentOrElement) {
+    {
+      var owner = ReactCurrentOwner.current;
+
+      if (owner !== null && owner.stateNode !== null) {
+        var warnedAboutRefsInRender = owner.stateNode._warnedAboutRefsInRender;
+        !warnedAboutRefsInRender ? warningWithoutStack$1(false, '%s is accessing findDOMNode inside its render(). ' + 'render() should be a pure function of props and state. It should ' + 'never access something that requires stale data from the previous ' + 'render, such as refs. Move this logic to componentDidMount and ' + 'componentDidUpdate instead.', getComponentName(owner.type) || 'A component') : void 0;
+        owner.stateNode._warnedAboutRefsInRender = true;
+      }
+    }
+
+    if (componentOrElement == null) {
+      return null;
+    }
+
+    if (componentOrElement.nodeType === ELEMENT_NODE) {
+      return componentOrElement;
+    }
+
+    {
+      return findHostInstanceWithWarning(componentOrElement, 'findDOMNode');
+    }
+
+    return findHostInstance(componentOrElement);
+  },
+  hydrate: function (element, container, callback) {
+    (function () {
+      if (!isValidContainer(container)) {
+        {
+          throw ReactError(Error("Target container is not a DOM element."));
+        }
+      }
+    })();
+
+    {
+      !!container._reactHasBeenPassedToCreateRootDEV ? warningWithoutStack$1(false, 'You are calling ReactDOM.hydrate() on a container that was previously ' + 'passed to ReactDOM.%s(). This is not supported. ' + 'Did you mean to call createRoot(container, {hydrate: true}).render(element)?', enableStableConcurrentModeAPIs ? 'createRoot' : 'unstable_createRoot') : void 0;
+    } // TODO: throw or warn if we couldn't hydrate?
+
+
+    return legacyRenderSubtreeIntoContainer(null, element, container, true, callback);
+  },
+  render: function (element, container, callback) {
+    (function () {
+      if (!isValidContainer(container)) {
+        {
+          throw ReactError(Error("Target container is not a DOM element."));
+        }
+      }
+    })();
+
+    {
+      !!container._reactHasBeenPassedToCreateRootDEV ? warningWithoutStack$1(false, 'You are calling ReactDOM.render() on a container that was previously ' + 'passed to ReactDOM.%s(). This is not supported. ' + 'Did you mean to call root.render(element)?', enableStableConcurrentModeAPIs ? 'createRoot' : 'unstable_createRoot') : void 0;
+    }
+
+    return legacyRenderSubtreeIntoContainer(null, element, container, false, callback);
+  },
+  unstable_renderSubtreeIntoContainer: function (parentComponent, element, containerNode, callback) {
+    (function () {
+      if (!isValidContainer(containerNode)) {
+        {
+          throw ReactError(Error("Target container is not a DOM element."));
+        }
+      }
+    })();
+
+    (function () {
+      if (!(parentComponent != null && has(parentComponent))) {
+        {
+          throw ReactError(Error("parentComponent must be a valid React Component"));
+        }
+      }
+    })();
+
+    return legacyRenderSubtreeIntoContainer(parentComponent, element, containerNode, false, callback);
+  },
+  unmountComponentAtNode: function (container) {
+    (function () {
+      if (!isValidContainer(container)) {
+        {
+          throw ReactError(Error("unmountComponentAtNode(...): Target container is not a DOM element."));
+        }
+      }
+    })();
+
+    {
+      !!container._reactHasBeenPassedToCreateRootDEV ? warningWithoutStack$1(false, 'You are calling ReactDOM.unmountComponentAtNode() on a container that was previously ' + 'passed to ReactDOM.%s(). This is not supported. Did you mean to call root.unmount()?', enableStableConcurrentModeAPIs ? 'createRoot' : 'unstable_createRoot') : void 0;
+    }
+
+    if (container._reactRootContainer) {
+      {
+        var rootEl = getReactRootElementInContainer(container);
+        var renderedByDifferentReact = rootEl && !getInstanceFromNode$1(rootEl);
+        !!renderedByDifferentReact ? warningWithoutStack$1(false, "unmountComponentAtNode(): The node you're attempting to unmount " + 'was rendered by another copy of React.') : void 0;
+      } // Unmount should not be batched.
+
+
+      unbatchedUpdates(function () {
+        legacyRenderSubtreeIntoContainer(null, null, container, false, function () {
+          container._reactRootContainer = null;
+        });
+      }); // If you call unmountComponentAtNode twice in quick succession, you'll
+      // get `true` twice. That's probably fine?
+
+      return true;
+    } else {
+      {
+        var _rootEl = getReactRootElementInContainer(container);
+
+        var hasNonRootReactChild = !!(_rootEl && getInstanceFromNode$1(_rootEl)); // Check if the container itself is a React root node.
+
+        var isContainerReactRoot = container.nodeType === ELEMENT_NODE && isValidContainer(container.parentNode) && !!container.parentNode._reactRootContainer;
+        !!hasNonRootReactChild ? warningWithoutStack$1(false, "unmountComponentAtNode(): The node you're attempting to unmount " + 'was rendered by React and is not a top-level container. %s', isContainerReactRoot ? 'You may have accidentally passed in a React root node instead ' + 'of its container.' : 'Instead, have the parent component update its state and ' + 'rerender in order to remove this component.') : void 0;
+      }
+
+      return false;
+    }
+  },
   // Temporary alias since we already shipped React 16 RC with it.
   // TODO: remove in React 17.
   unstable_createPortal: function () {
@@ -72568,7 +72649,17 @@ var ReactDOM = {
     return createPortal$$1.apply(void 0, arguments);
   },
   unstable_batchedUpdates: batchedUpdates$1,
+  // TODO remove this legacy method, unstable_discreteUpdates replaces it
+  unstable_interactiveUpdates: function (fn, a, b, c) {
+    flushDiscreteUpdates();
+    return discreteUpdates$1(fn, a, b, c);
+  },
+  unstable_discreteUpdates: discreteUpdates$1,
+  unstable_flushDiscreteUpdates: flushDiscreteUpdates,
   flushSync: flushSync,
+  unstable_createRoot: createRoot,
+  unstable_createSyncRoot: createSyncRoot,
+  unstable_flushControlled: flushControlled,
   __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {
     // Keep in sync with ReactDOMUnstableNativeDependencies.js
     // ReactTestUtils.js, and ReactTestUtilsAct.js. This is an array for better minification.
@@ -72576,18 +72667,46 @@ var ReactDOM = {
   }
 };
 
-if (exposeConcurrentModeAPIs) {
-  ReactDOM.createRoot = createRoot;
-  ReactDOM.createBlockingRoot = createBlockingRoot;
-  ReactDOM.unstable_discreteUpdates = discreteUpdates$1;
-  ReactDOM.unstable_flushDiscreteUpdates = flushDiscreteUpdates;
-  ReactDOM.unstable_flushControlled = flushControlled;
+function createRoot(container, options) {
+  var functionName = enableStableConcurrentModeAPIs ? 'createRoot' : 'unstable_createRoot';
 
-  ReactDOM.unstable_scheduleHydration = function (target) {
-    if (target) {
-      queueExplicitHydrationTarget(target);
+  (function () {
+    if (!isValidContainer(container)) {
+      {
+        throw ReactError(Error(functionName + "(...): Target container is not a DOM element."));
+      }
     }
-  };
+  })();
+
+  warnIfReactDOMContainerInDEV(container);
+  return new ReactRoot(container, options);
+}
+
+function createSyncRoot(container, options) {
+  var functionName = enableStableConcurrentModeAPIs ? 'createRoot' : 'unstable_createRoot';
+
+  (function () {
+    if (!isValidContainer(container)) {
+      {
+        throw ReactError(Error(functionName + "(...): Target container is not a DOM element."));
+      }
+    }
+  })();
+
+  warnIfReactDOMContainerInDEV(container);
+  return new ReactSyncRoot(container, BatchedRoot, options);
+}
+
+function warnIfReactDOMContainerInDEV(container) {
+  {
+    !!container._reactRootContainer ? warningWithoutStack$1(false, 'You are calling ReactDOM.%s() on a container that was previously ' + 'passed to ReactDOM.render(). This is not supported.', enableStableConcurrentModeAPIs ? 'createRoot' : 'unstable_createRoot') : void 0;
+    container._reactHasBeenPassedToCreateRootDEV = true;
+  }
+}
+
+if (enableStableConcurrentModeAPIs) {
+  ReactDOM.createRoot = createRoot;
+  ReactDOM.createSyncRoot = createSyncRoot;
 }
 
 var foundDevTools = injectIntoDevTools({
@@ -76282,8 +76401,6 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_mod
 
 var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
 
-var _reactTable = __webpack_require__(/*! react-table */ "./node_modules/react-table/es/index.js");
-
 var _uniqid = _interopRequireDefault(__webpack_require__(/*! uniqid */ "./node_modules/uniqid/index.js"));
 
 var _classnames = _interopRequireDefault(__webpack_require__(/*! classnames */ "./node_modules/classnames/index.js"));
@@ -76347,7 +76464,6 @@ var _default = function _default(ReactTable) {
 
       _this.getColumnsWithFixed = function (columns, parentIsfixed, parentIsLastFixed, parentIsFirstFixed) {
         return columns.map(function (column, index) {
-          var defaultColumn = _this.props.column;
           var fixed = column.fixed || parentIsfixed || false;
           var nextColumn = (0, _helpers.findNextColumnNotHidden)(columns, index);
 
@@ -76362,12 +76478,12 @@ var _default = function _default(ReactTable) {
 
           var output = _objectSpread({}, column, {
             fixed: fixed,
-            className: (0, _classnames.default)(defaultColumn.className, column.className, fixed && 'rthfc-td-fixed', (0, _helpers.isLeftFixed)({
+            className: (0, _classnames.default)(column.className, fixed && 'rthfc-td-fixed', (0, _helpers.isLeftFixed)({
               fixed: fixed
             }) && 'rthfc-td-fixed-left', (0, _helpers.isRightFixed)({
               fixed: fixed
             }) && 'rthfc-td-fixed-right', isLastFixed && 'rthfc-td-fixed-left-last', isFirstFixed && 'rthfc-td-fixed-right-first'),
-            headerClassName: (0, _classnames.default)(defaultColumn.headerClassName, column.headerClassName, fixed && 'rthfc-th-fixed', (0, _helpers.isLeftFixed)({
+            headerClassName: (0, _classnames.default)(column.headerClassName, fixed && 'rthfc-th-fixed', (0, _helpers.isLeftFixed)({
               fixed: fixed
             }) && 'rthfc-th-fixed-left', (0, _helpers.isRightFixed)({
               fixed: fixed
@@ -76474,15 +76590,13 @@ var _default = function _default(ReactTable) {
     getProps: _propTypes.default.func,
     innerRef: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
     className: _propTypes.default.string,
-    uniqClassName: _propTypes.default.string,
-    column: _propTypes.default.object
+    uniqClassName: _propTypes.default.string
   };
   ReactTableFixedColumns.defaultProps = {
     getProps: null,
     innerRef: null,
     className: null,
-    uniqClassName: null,
-    column: _reactTable.ReactTableDefaults.column
+    uniqClassName: null
   };
   return ReactTableFixedColumns;
 };
@@ -76509,8 +76623,6 @@ exports.default = void 0;
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
-
-var _reactTable = __webpack_require__(/*! react-table */ "./node_modules/react-table/es/index.js");
 
 var _uniqid = _interopRequireDefault(__webpack_require__(/*! uniqid */ "./node_modules/uniqid/index.js"));
 
@@ -76643,7 +76755,6 @@ var _default = function _default(ReactTable) {
       value: function getColumnsWithFixed(columns, parentIsfixed, parentIsLastFixed, parentIsFirstFixed) {
         var _this2 = this;
 
-        var defaultColumn = this.props.column;
         return columns.map(function (column, index) {
           var fixed = column.fixed || parentIsfixed || false;
           var nextColumn = (0, _helpers.findNextColumnNotHidden)(columns, index);
@@ -76669,13 +76780,13 @@ var _default = function _default(ReactTable) {
 
           var output = _objectSpread({}, column, {
             fixed: fixed,
-            className: (0, _classnames.default)(defaultColumn.className, column.className, fixed && 'rthfc-td-fixed', columnIsLeftFixed && 'rthfc-td-fixed-left', columnIsRightFixed && 'rthfc-td-fixed-right', isLastFixed && 'rthfc-td-fixed-left-last', isFirstFixed && 'rthfc-td-fixed-right-first'),
-            style: _objectSpread({}, defaultColumn.style, column.style, {
+            className: (0, _classnames.default)(column.className, fixed && 'rthfc-td-fixed', columnIsLeftFixed && 'rthfc-td-fixed-left', columnIsRightFixed && 'rthfc-td-fixed-right', isLastFixed && 'rthfc-td-fixed-left-last', isFirstFixed && 'rthfc-td-fixed-right-first'),
+            style: _objectSpread({}, column.style, {
               left: left,
               right: right
             }),
-            headerClassName: (0, _classnames.default)(defaultColumn.headerClassName, column.headerClassName, fixed && 'rthfc-th-fixed', columnIsLeftFixed && 'rthfc-th-fixed-left', columnIsRightFixed && 'rthfc-th-fixed-right', (_parentIsLastFixed || parentIsLastFixed && isLastFixed) && 'rthfc-th-fixed-left-last', (_parentIsFirstFixed || parentIsFirstFixed && isFirstFixed) && 'rthfc-th-fixed-right-first'),
-            headerStyle: _objectSpread({}, defaultColumn.headerStyle, column.headerStyle, {
+            headerClassName: (0, _classnames.default)(column.headerClassName, fixed && 'rthfc-th-fixed', columnIsLeftFixed && 'rthfc-th-fixed-left', columnIsRightFixed && 'rthfc-th-fixed-right', (_parentIsLastFixed || parentIsLastFixed && isLastFixed) && 'rthfc-th-fixed-left-last', (_parentIsFirstFixed || parentIsFirstFixed && isFirstFixed) && 'rthfc-th-fixed-right-first'),
+            headerStyle: _objectSpread({}, column.headerStyle, {
               left: left,
               right: right
             })
@@ -76721,15 +76832,13 @@ var _default = function _default(ReactTable) {
     innerRef: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
     className: _propTypes.default.string,
     onResizedChange: _propTypes.default.func,
-    uniqClassName: _propTypes.default.string,
-    column: _propTypes.default.object
+    uniqClassName: _propTypes.default.string
   };
   ReactTableFixedColumns.defaultProps = {
     innerRef: null,
     className: null,
     onResizedChange: null,
-    uniqClassName: null,
-    column: _reactTable.ReactTableDefaults.column
+    uniqClassName: null
   };
   return ReactTableFixedColumns;
 };
@@ -80270,7 +80379,7 @@ exports.classNamesShape = classNamesShape;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.12.0
+/** @license React v16.10.2
  * react.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -80292,7 +80401,7 @@ var checkPropTypes = __webpack_require__(/*! prop-types/checkPropTypes */ "./nod
 
 // TODO: this is special because it gets imported during build.
 
-var ReactVersion = '16.12.0';
+var ReactVersion = '16.10.2';
 
 // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
 // nor polyfill, then a plain number is used for performance.
@@ -80333,8 +80442,16 @@ function getIteratorFn(maybeIterable) {
 }
 
 // Do not require this module directly! Use normal `invariant` calls with
-// template literal strings. The messages will be replaced with error codes
-// during build.
+// template literal strings. The messages will be converted to ReactError during
+// build, and in production they will be minified.
+
+// Do not require this module directly! Use normal `invariant` calls with
+// template literal strings. The messages will be converted to ReactError during
+// build, and in production they will be minified.
+function ReactError(error) {
+  error.name = 'Invariant Violation';
+  return error;
+}
 
 /**
  * Use invariant() to assert state which your program assumes to be true.
@@ -80588,11 +80705,13 @@ Component.prototype.isReactComponent = {};
  */
 
 Component.prototype.setState = function (partialState, callback) {
-  if (!(typeof partialState === 'object' || typeof partialState === 'function' || partialState == null)) {
-    {
-      throw Error("setState(...): takes an object of state variables to update or a function which returns an object of state variables.");
+  (function () {
+    if (!(typeof partialState === 'object' || typeof partialState === 'function' || partialState == null)) {
+      {
+        throw ReactError(Error("setState(...): takes an object of state variables to update or a function which returns an object of state variables."));
+      }
     }
-  }
+  })();
 
   this.updater.enqueueSetState(this, partialState, callback, 'setState');
 };
@@ -80982,8 +81101,8 @@ function defineRefPropWarningGetter(props, displayName) {
 }
 /**
  * Factory method to create a new React element. This no longer adheres to
- * the class pattern, so do not use new to call it. Also, instanceof check
- * will not work. Instead test $$typeof field against Symbol.for('react.element') to check
+ * the class pattern, so do not use new to call it. Also, no instanceof check
+ * will work. Instead test $$typeof field against Symbol.for('react.element') to check
  * if something is a React Element.
  *
  * @param {*} type
@@ -81225,11 +81344,13 @@ function cloneAndReplaceKey(oldElement, newKey) {
  */
 
 function cloneElement(element, config, children) {
-  if (!!(element === null || element === undefined)) {
-    {
-      throw Error("React.cloneElement(...): The argument must be a React element, but you passed " + element + ".");
+  (function () {
+    if (!!(element === null || element === undefined)) {
+      {
+        throw ReactError(Error("React.cloneElement(...): The argument must be a React element, but you passed " + element + "."));
+      }
     }
-  }
+  })();
 
   var propName; // Original props are copied
 
@@ -81462,11 +81583,13 @@ function traverseAllChildrenImpl(children, nameSoFar, callback, traverseContext)
 
       var childrenString = '' + children;
 
-      {
+      (function () {
         {
-          throw Error("Objects are not valid as a React child (found: " + (childrenString === '[object Object]' ? 'object with keys {' + Object.keys(children).join(', ') + '}' : childrenString) + ")." + addendum);
+          {
+            throw ReactError(Error("Objects are not valid as a React child (found: " + (childrenString === '[object Object]' ? 'object with keys {' + Object.keys(children).join(', ') + '}' : childrenString) + ")." + addendum));
+          }
         }
-      }
+      })();
     }
   }
 
@@ -81652,11 +81775,13 @@ function toArray(children) {
 
 
 function onlyChild(children) {
-  if (!isValidElement(children)) {
-    {
-      throw Error("React.Children.only expected to receive a single React element child.");
+  (function () {
+    if (!isValidElement(children)) {
+      {
+        throw ReactError(Error("React.Children.only expected to receive a single React element child."));
+      }
     }
-  }
+  })();
 
   return children;
 }
@@ -81857,11 +81982,13 @@ function memo(type, compare) {
 function resolveDispatcher() {
   var dispatcher = ReactCurrentDispatcher.current;
 
-  if (!(dispatcher !== null)) {
-    {
-      throw Error("Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:\n1. You might have mismatching versions of React and the renderer (such as React DOM)\n2. You might be breaking the Rules of Hooks\n3. You might have more than one copy of React in the same app\nSee https://fb.me/react-invalid-hook-call for tips about how to debug and fix this problem.");
+  (function () {
+    if (!(dispatcher !== null)) {
+      {
+        throw ReactError(Error("Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:\n1. You might have mismatching versions of React and the renderer (such as React DOM)\n2. You might be breaking the Rules of Hooks\n3. You might have more than one copy of React in the same app\nSee https://fb.me/react-invalid-hook-call for tips about how to debug and fix this problem."));
+      }
     }
-  }
+  })();
 
   return dispatcher;
 }
@@ -81936,14 +82063,6 @@ function useResponder(responder, listenerProps) {
   }
 
   return dispatcher.useResponder(responder, listenerProps || emptyObject$1);
-}
-function useTransition(config) {
-  var dispatcher = resolveDispatcher();
-  return dispatcher.useTransition(config);
-}
-function useDeferredValue(value, config) {
-  var dispatcher = resolveDispatcher();
-  return dispatcher.useDeferredValue(value, config);
 }
 
 function withSuspenseConfig(scope, config) {
@@ -82434,9 +82553,10 @@ function createEventResponder(displayName, responderConfig) {
   return eventResponder;
 }
 
-function createScope() {
+function createScope(fn) {
   var scopeComponent = {
-    $$typeof: REACT_SCOPE_TYPE
+    $$typeof: REACT_SCOPE_TYPE,
+    fn: fn
   };
 
   {
@@ -82446,8 +82566,12 @@ function createScope() {
   return scopeComponent;
 }
 
-// Helps identify side effects in render-phase lifecycle hooks and setState
-// reducers by double invoking them in Strict Mode.
+// Helps identify side effects in begin-phase lifecycle hooks and setState reducers:
+
+ // In some cases, StrictMode should also double-render lifecycles.
+// This can be confusing for tests though,
+// And it can be bad for performance in production.
+// This feature flag can be used to control the behavior:
 
  // To preserve the "Pause on caught exceptions" behavior of the debugger, we
 // replay the begin phase of a failed component inside invokeGuardedCallback.
@@ -82458,8 +82582,9 @@ function createScope() {
 
  // Trace which interactions trigger each commit.
 
- // SSR experiments
+ // Only used in www builds.
 
+ // TODO: true? Here it might just be false.
 
  // Only used in www builds.
 
@@ -82473,7 +82598,10 @@ function createScope() {
  // These APIs will no longer be "unstable" in the upcoming 16.7 release,
 // Control this behavior with a flag to support 16.6 minor releases in the meanwhile.
 
-var exposeConcurrentModeAPIs = false;
+
+ // See https://github.com/react-native-community/discussions-and-proposals/issues/72 for more information
+// This is a flag so we can fix warnings in RN core before turning it on
+
  // Experimental React Flare event system and event components support.
 
 var enableFlareAPI = false; // Experimental Host Component support.
@@ -82483,10 +82611,14 @@ var enableFundamentalAPI = false; // Experimental Scope support.
 var enableScopeAPI = false; // New API for JSX transforms to target - https://github.com/reactjs/rfcs/pull/107
 
 var enableJSXTransformAPI = false; // We will enforce mocking scheduler with scheduler/unstable_mock at some point. (v17?)
-// Till then, we warn about the missing mock, but still fallback to a legacy mode compatible version
+// Till then, we warn about the missing mock, but still fallback to a sync mode compatible version
 
  // For tests, we flush suspense fallbacks in an act scope;
 // *except* in some of our own tests, where we test incremental loading states.
+
+ // Changes priority of some events like mousemove to user-blocking priority,
+// but without making them discrete. The flag exists in case it causes
+// starvation problems.
 
  // Add a callback property to suspense to notify which promises are currently
 // in the update queue. This allows reporting and tracing of what is causing
@@ -82497,12 +82629,6 @@ var enableJSXTransformAPI = false; // We will enforce mocking scheduler with sch
  // Part of the simplification of React.createElement so we can eventually move
 // from React.createElement to React.jsx
 // https://github.com/reactjs/rfcs/blob/createlement-rfc/text/0000-create-element-changes.md
-
-
-
-
-
- // Flag to turn event.target and event.currentTarget in ReactNative from a reactTag to a component instance
 
 var React = {
   Children: {
@@ -82533,20 +82659,15 @@ var React = {
   Profiler: REACT_PROFILER_TYPE,
   StrictMode: REACT_STRICT_MODE_TYPE,
   Suspense: REACT_SUSPENSE_TYPE,
+  unstable_SuspenseList: REACT_SUSPENSE_LIST_TYPE,
   createElement: createElementWithValidation,
   cloneElement: cloneElementWithValidation,
   createFactory: createFactoryWithValidation,
   isValidElement: isValidElement,
   version: ReactVersion,
+  unstable_withSuspenseConfig: withSuspenseConfig,
   __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: ReactSharedInternals
 };
-
-if (exposeConcurrentModeAPIs) {
-  React.useTransition = useTransition;
-  React.useDeferredValue = useDeferredValue;
-  React.SuspenseList = REACT_SUSPENSE_LIST_TYPE;
-  React.unstable_withSuspenseConfig = withSuspenseConfig;
-}
 
 if (enableFlareAPI) {
   React.unstable_useResponder = useResponder;
@@ -82707,7 +82828,7 @@ function resolvePathname(to, from) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v0.18.0
+/** @license React v0.16.2
  * scheduler-tracing.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -82726,8 +82847,12 @@ if (true) {
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-// Helps identify side effects in render-phase lifecycle hooks and setState
-// reducers by double invoking them in Strict Mode.
+// Helps identify side effects in begin-phase lifecycle hooks and setState reducers:
+
+ // In some cases, StrictMode should also double-render lifecycles.
+// This can be confusing for tests though,
+// And it can be bad for performance in production.
+// This feature flag can be used to control the behavior:
 
  // To preserve the "Pause on caught exceptions" behavior of the debugger, we
 // replay the begin phase of a failed component inside invokeGuardedCallback.
@@ -82738,8 +82863,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
  // Trace which interactions trigger each commit.
 
-var enableSchedulerTracing = true; // SSR experiments
+var enableSchedulerTracing = true; // Only used in www builds.
 
+ // TODO: true? Here it might just be false.
 
  // Only used in www builds.
 
@@ -82754,6 +82880,9 @@ var enableSchedulerTracing = true; // SSR experiments
 // Control this behavior with a flag to support 16.6 minor releases in the meanwhile.
 
 
+ // See https://github.com/react-native-community/discussions-and-proposals/issues/72 for more information
+// This is a flag so we can fix warnings in RN core before turning it on
+
  // Experimental React Flare event system and event components support.
 
  // Experimental Host Component support.
@@ -82763,10 +82892,14 @@ var enableSchedulerTracing = true; // SSR experiments
  // New API for JSX transforms to target - https://github.com/reactjs/rfcs/pull/107
 
  // We will enforce mocking scheduler with scheduler/unstable_mock at some point. (v17?)
-// Till then, we warn about the missing mock, but still fallback to a legacy mode compatible version
+// Till then, we warn about the missing mock, but still fallback to a sync mode compatible version
 
  // For tests, we flush suspense fallbacks in an act scope;
 // *except* in some of our own tests, where we test incremental loading states.
+
+ // Changes priority of some events like mousemove to user-blocking priority,
+// but without making them discrete. The flag exists in case it causes
+// starvation problems.
 
  // Add a callback property to suspense to notify which promises are currently
 // in the update queue. This allows reporting and tracing of what is causing
@@ -82777,12 +82910,6 @@ var enableSchedulerTracing = true; // SSR experiments
  // Part of the simplification of React.createElement so we can eventually move
 // from React.createElement to React.jsx
 // https://github.com/reactjs/rfcs/blob/createlement-rfc/text/0000-create-element-changes.md
-
-
-
-
-
- // Flag to turn event.target and event.currentTarget in ReactNative from a reactTag to a component instance
 
 var DEFAULT_THREAD_ID = 0; // Counters used to generate unique IDs.
 
@@ -83142,7 +83269,7 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v0.18.0
+/** @license React v0.16.2
  * scheduler.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -83163,7 +83290,15 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var enableSchedulerDebugging = false;
 var enableIsInputPending = false;
+var enableMessageLoopImplementation = true;
 var enableProfiling = true;
+
+// works by scheduling a requestAnimationFrame, storing the time for the start
+// of the frame, then scheduling a postMessage which gets scheduled after paint.
+// Within the postMessage handler do as much work as possible until time + frame
+// rate. By separating the idle call into a separate event tick we ensure that
+// layout, paint and other browser work is counted against the available time.
+// The frame rate is dynamically adjusted.
 
 var requestHostCallback;
 
@@ -83234,14 +83369,11 @@ typeof MessageChannel !== 'function') {
   var _Date = window.Date;
   var _setTimeout = window.setTimeout;
   var _clearTimeout = window.clearTimeout;
+  var requestAnimationFrame = window.requestAnimationFrame;
+  var cancelAnimationFrame = window.cancelAnimationFrame;
 
   if (typeof console !== 'undefined') {
-    // TODO: Scheduler no longer requires these methods to be polyfilled. But
-    // maybe we want to continue warning if they don't exist, to preserve the
-    // option to rely on it in the future?
-    var requestAnimationFrame = window.requestAnimationFrame;
-    var cancelAnimationFrame = window.cancelAnimationFrame; // TODO: Remove fb.me link
-
+    // TODO: Remove fb.me link
     if (typeof requestAnimationFrame !== 'function') {
       console.error("This browser doesn't support requestAnimationFrame. " + 'Make sure that you load a ' + 'polyfill in older browsers. https://fb.me/react-polyfills');
     }
@@ -83263,18 +83395,26 @@ typeof MessageChannel !== 'function') {
     };
   }
 
+  var isRAFLoopRunning = false;
   var isMessageLoopRunning = false;
   var scheduledHostCallback = null;
-  var taskTimeoutID = -1; // Scheduler periodically yields in case there is other work on the main
-  // thread, like user events. By default, it yields multiple times per frame.
-  // It does not attempt to align with frame boundaries, since most tasks don't
-  // need to be frame aligned; for those that do, use requestAnimationFrame.
-
-  var yieldInterval = 5;
-  var deadline = 0; // TODO: Make this configurable
+  var rAFTimeoutID = -1;
+  var taskTimeoutID = -1;
+  var frameLength = enableMessageLoopImplementation ? // We won't attempt to align with the vsync. Instead we'll yield multiple
+  // times per frame, often enough to keep it responsive even at really
+  // high frame rates > 120.
+  5 : // Use a heuristic to measure the frame rate and yield at the end of the
+  // frame. We start out assuming that we run at 30fps but then the
+  // heuristic tracking will adjust this value to a faster fps if we get
+  // more frequent animation frames.
+  33.33;
+  var prevRAFTime = -1;
+  var prevRAFInterval = -1;
+  var frameDeadline = 0;
+  var fpsLocked = false; // TODO: Make this configurable
   // TODO: Adjust this based on priority?
 
-  var maxYieldInterval = 300;
+  var maxFrameLength = 300;
   var needsPaint = false;
 
   if (enableIsInputPending && navigator !== undefined && navigator.scheduling !== undefined && navigator.scheduling.isInputPending !== undefined) {
@@ -83283,23 +83423,23 @@ typeof MessageChannel !== 'function') {
     shouldYieldToHost = function () {
       var currentTime = exports.unstable_now();
 
-      if (currentTime >= deadline) {
-        // There's no time left. We may want to yield control of the main
-        // thread, so the browser can perform high priority tasks. The main ones
-        // are painting and user input. If there's a pending paint or a pending
-        // input, then we should yield. But if there's neither, then we can
-        // yield less often while remaining responsive. We'll eventually yield
-        // regardless, since there could be a pending paint that wasn't
+      if (currentTime >= frameDeadline) {
+        // There's no time left in the frame. We may want to yield control of
+        // the main thread, so the browser can perform high priority tasks. The
+        // main ones are painting and user input. If there's a pending paint or
+        // a pending input, then we should yield. But if there's neither, then
+        // we can yield less often while remaining responsive. We'll eventually
+        // yield regardless, since there could be a pending paint that wasn't
         // accompanied by a call to `requestPaint`, or other main thread tasks
         // like network events.
         if (needsPaint || scheduling.isInputPending()) {
           // There is either a pending paint or a pending input.
           return true;
         } // There's no pending input. Only yield if we've reached the max
-        // yield interval.
+        // frame length.
 
 
-        return currentTime >= maxYieldInterval;
+        return currentTime >= frameDeadline + maxFrameLength;
       } else {
         // There's still time left in the frame.
         return false;
@@ -83313,7 +83453,7 @@ typeof MessageChannel !== 'function') {
     // `isInputPending` is not available. Since we have no way of knowing if
     // there's pending input, always yield at the end of the frame.
     shouldYieldToHost = function () {
-      return exports.unstable_now() >= deadline;
+      return exports.unstable_now() >= frameDeadline;
     }; // Since we yield every frame regardless, `requestPaint` has no effect.
 
 
@@ -83327,58 +83467,166 @@ typeof MessageChannel !== 'function') {
     }
 
     if (fps > 0) {
-      yieldInterval = Math.floor(1000 / fps);
+      frameLength = Math.floor(1000 / fps);
+      fpsLocked = true;
     } else {
       // reset the framerate
-      yieldInterval = 5;
+      frameLength = 33.33;
+      fpsLocked = false;
     }
   };
 
   var performWorkUntilDeadline = function () {
-    if (scheduledHostCallback !== null) {
-      var currentTime = exports.unstable_now(); // Yield after `yieldInterval` ms, regardless of where we are in the vsync
-      // cycle. This means there's always time remaining at the beginning of
-      // the message event.
+    if (enableMessageLoopImplementation) {
+      if (scheduledHostCallback !== null) {
+        var currentTime = exports.unstable_now(); // Yield after `frameLength` ms, regardless of where we are in the vsync
+        // cycle. This means there's always time remaining at the beginning of
+        // the message event.
 
-      deadline = currentTime + yieldInterval;
-      var hasTimeRemaining = true;
+        frameDeadline = currentTime + frameLength;
+        var hasTimeRemaining = true;
 
-      try {
-        var hasMoreWork = scheduledHostCallback(hasTimeRemaining, currentTime);
+        try {
+          var hasMoreWork = scheduledHostCallback(hasTimeRemaining, currentTime);
 
-        if (!hasMoreWork) {
-          isMessageLoopRunning = false;
-          scheduledHostCallback = null;
-        } else {
-          // If there's more work, schedule the next message event at the end
-          // of the preceding one.
+          if (!hasMoreWork) {
+            isMessageLoopRunning = false;
+            scheduledHostCallback = null;
+          } else {
+            // If there's more work, schedule the next message event at the end
+            // of the preceding one.
+            port.postMessage(null);
+          }
+        } catch (error) {
+          // If a scheduler task throws, exit the current browser task so the
+          // error can be observed.
           port.postMessage(null);
+          throw error;
         }
-      } catch (error) {
-        // If a scheduler task throws, exit the current browser task so the
-        // error can be observed.
-        port.postMessage(null);
-        throw error;
-      }
+      } else {
+        isMessageLoopRunning = false;
+      } // Yielding to the browser will give it a chance to paint, so we can
+      // reset this.
+
+
+      needsPaint = false;
     } else {
-      isMessageLoopRunning = false;
-    } // Yielding to the browser will give it a chance to paint, so we can
-    // reset this.
+      if (scheduledHostCallback !== null) {
+        var _currentTime = exports.unstable_now();
+
+        var _hasTimeRemaining = frameDeadline - _currentTime > 0;
+
+        try {
+          var _hasMoreWork = scheduledHostCallback(_hasTimeRemaining, _currentTime);
+
+          if (!_hasMoreWork) {
+            scheduledHostCallback = null;
+          }
+        } catch (error) {
+          // If a scheduler task throws, exit the current browser task so the
+          // error can be observed, and post a new task as soon as possible
+          // so we can continue where we left off.
+          port.postMessage(null);
+          throw error;
+        }
+      } // Yielding to the browser will give it a chance to paint, so we can
+      // reset this.
 
 
-    needsPaint = false;
+      needsPaint = false;
+    }
   };
 
   var channel = new MessageChannel();
   var port = channel.port2;
   channel.port1.onmessage = performWorkUntilDeadline;
 
+  var onAnimationFrame = function (rAFTime) {
+    if (scheduledHostCallback === null) {
+      // No scheduled work. Exit.
+      prevRAFTime = -1;
+      prevRAFInterval = -1;
+      isRAFLoopRunning = false;
+      return;
+    } // Eagerly schedule the next animation callback at the beginning of the
+    // frame. If the scheduler queue is not empty at the end of the frame, it
+    // will continue flushing inside that callback. If the queue *is* empty,
+    // then it will exit immediately. Posting the callback at the start of the
+    // frame ensures it's fired within the earliest possible frame. If we
+    // waited until the end of the frame to post the callback, we risk the
+    // browser skipping a frame and not firing the callback until the frame
+    // after that.
+
+
+    isRAFLoopRunning = true;
+    requestAnimationFrame(function (nextRAFTime) {
+      _clearTimeout(rAFTimeoutID);
+
+      onAnimationFrame(nextRAFTime);
+    }); // requestAnimationFrame is throttled when the tab is backgrounded. We
+    // don't want to stop working entirely. So we'll fallback to a timeout loop.
+    // TODO: Need a better heuristic for backgrounded work.
+
+    var onTimeout = function () {
+      frameDeadline = exports.unstable_now() + frameLength / 2;
+      performWorkUntilDeadline();
+      rAFTimeoutID = _setTimeout(onTimeout, frameLength * 3);
+    };
+
+    rAFTimeoutID = _setTimeout(onTimeout, frameLength * 3);
+
+    if (prevRAFTime !== -1 && // Make sure this rAF time is different from the previous one. This check
+    // could fail if two rAFs fire in the same frame.
+    rAFTime - prevRAFTime > 0.1) {
+      var rAFInterval = rAFTime - prevRAFTime;
+
+      if (!fpsLocked && prevRAFInterval !== -1) {
+        // We've observed two consecutive frame intervals. We'll use this to
+        // dynamically adjust the frame rate.
+        //
+        // If one frame goes long, then the next one can be short to catch up.
+        // If two frames are short in a row, then that's an indication that we
+        // actually have a higher frame rate than what we're currently
+        // optimizing. For example, if we're running on 120hz display or 90hz VR
+        // display. Take the max of the two in case one of them was an anomaly
+        // due to missed frame deadlines.
+        if (rAFInterval < frameLength && prevRAFInterval < frameLength) {
+          frameLength = rAFInterval < prevRAFInterval ? prevRAFInterval : rAFInterval;
+
+          if (frameLength < 8.33) {
+            // Defensive coding. We don't support higher frame rates than 120hz.
+            // If the calculated frame length gets lower than 8, it is probably
+            // a bug.
+            frameLength = 8.33;
+          }
+        }
+      }
+
+      prevRAFInterval = rAFInterval;
+    }
+
+    prevRAFTime = rAFTime;
+    frameDeadline = rAFTime + frameLength; // We use the postMessage trick to defer idle work until after the repaint.
+
+    port.postMessage(null);
+  };
+
   requestHostCallback = function (callback) {
     scheduledHostCallback = callback;
 
-    if (!isMessageLoopRunning) {
-      isMessageLoopRunning = true;
-      port.postMessage(null);
+    if (enableMessageLoopImplementation) {
+      if (!isMessageLoopRunning) {
+        isMessageLoopRunning = true;
+        port.postMessage(null);
+      }
+    } else {
+      if (!isRAFLoopRunning) {
+        // Start a rAF loop.
+        isRAFLoopRunning = true;
+        requestAnimationFrame(function (rAFTime) {
+          onAnimationFrame(rAFTime);
+        });
+      }
     }
   };
 
@@ -83562,50 +83810,47 @@ function stopLoggingProfilingEvents() {
   eventLogIndex = 0;
   return buffer;
 }
-function markTaskStart(task, ms) {
+function markTaskStart(task, time) {
   if (enableProfiling) {
     profilingState[QUEUE_SIZE]++;
 
     if (eventLog !== null) {
-      // performance.now returns a float, representing milliseconds. When the
-      // event is logged, it's coerced to an int. Convert to microseconds to
-      // maintain extra degrees of precision.
-      logEvent([TaskStartEvent, ms * 1000, task.id, task.priorityLevel]);
+      logEvent([TaskStartEvent, time, task.id, task.priorityLevel]);
     }
   }
 }
-function markTaskCompleted(task, ms) {
+function markTaskCompleted(task, time) {
   if (enableProfiling) {
     profilingState[PRIORITY] = NoPriority;
     profilingState[CURRENT_TASK_ID] = 0;
     profilingState[QUEUE_SIZE]--;
 
     if (eventLog !== null) {
-      logEvent([TaskCompleteEvent, ms * 1000, task.id]);
+      logEvent([TaskCompleteEvent, time, task.id]);
     }
   }
 }
-function markTaskCanceled(task, ms) {
+function markTaskCanceled(task, time) {
   if (enableProfiling) {
     profilingState[QUEUE_SIZE]--;
 
     if (eventLog !== null) {
-      logEvent([TaskCancelEvent, ms * 1000, task.id]);
+      logEvent([TaskCancelEvent, time, task.id]);
     }
   }
 }
-function markTaskErrored(task, ms) {
+function markTaskErrored(task, time) {
   if (enableProfiling) {
     profilingState[PRIORITY] = NoPriority;
     profilingState[CURRENT_TASK_ID] = 0;
     profilingState[QUEUE_SIZE]--;
 
     if (eventLog !== null) {
-      logEvent([TaskErrorEvent, ms * 1000, task.id]);
+      logEvent([TaskErrorEvent, time, task.id]);
     }
   }
 }
-function markTaskRun(task, ms) {
+function markTaskRun(task, time) {
   if (enableProfiling) {
     runIdCounter++;
     profilingState[PRIORITY] = task.priorityLevel;
@@ -83613,34 +83858,34 @@ function markTaskRun(task, ms) {
     profilingState[CURRENT_RUN_ID] = runIdCounter;
 
     if (eventLog !== null) {
-      logEvent([TaskRunEvent, ms * 1000, task.id, runIdCounter]);
+      logEvent([TaskRunEvent, time, task.id, runIdCounter]);
     }
   }
 }
-function markTaskYield(task, ms) {
+function markTaskYield(task, time) {
   if (enableProfiling) {
     profilingState[PRIORITY] = NoPriority;
     profilingState[CURRENT_TASK_ID] = 0;
     profilingState[CURRENT_RUN_ID] = 0;
 
     if (eventLog !== null) {
-      logEvent([TaskYieldEvent, ms * 1000, task.id, runIdCounter]);
+      logEvent([TaskYieldEvent, time, task.id, runIdCounter]);
     }
   }
 }
-function markSchedulerSuspended(ms) {
+function markSchedulerSuspended(time) {
   if (enableProfiling) {
     mainThreadIdCounter++;
 
     if (eventLog !== null) {
-      logEvent([SchedulerSuspendEvent, ms * 1000, mainThreadIdCounter]);
+      logEvent([SchedulerSuspendEvent, time, mainThreadIdCounter]);
     }
   }
 }
-function markSchedulerUnsuspended(ms) {
+function markSchedulerUnsuspended(time) {
   if (enableProfiling) {
     if (eventLog !== null) {
-      logEvent([SchedulerResumeEvent, ms * 1000, mainThreadIdCounter]);
+      logEvent([SchedulerResumeEvent, time, mainThreadIdCounter]);
     }
   }
 }
@@ -84663,7 +84908,7 @@ function warning(condition, message) {
 
 /* WEBPACK VAR INJECTION */(function(process) {/* 
 (The MIT License)
-Copyright (c) 2014-2019 Halász Ádám <mail@adamhalasz.com>
+Copyright (c) 2014 Halász Ádám <mail@adamhalasz.com>
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
@@ -84680,9 +84925,9 @@ if(false){ var i, mac, networkInterfaces; }
 
 //  Exports
 // ================================================
-module.exports = module.exports.default = function(prefix = '', suffix = ''){ return prefix + address + pid + now().toString(36) + suffix; }
-module.exports.process = function(prefix = '', suffix = ''){ return prefix + pid + now().toString(36) + suffix; }
-module.exports.time    = function(prefix = '', suffix = ''){ return prefix + now().toString(36) + suffix; }
+module.exports = module.exports.default = function(prefix){ return (prefix || '') + address + pid + now().toString(36); }
+module.exports.process = function(prefix){ return (prefix || '') + pid + now().toString(36); }
+module.exports.time    = function(prefix){ return (prefix || '') + now().toString(36); }
 
 //  Helpers
 // ================================================
@@ -85207,17 +85452,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var GenerateActions = {
-  reservas: function reservas(data, actions, key, type) {
+  reservas: function reservas(data, actions, key, type, fullDate) {
     var index = '';
     if (data) index = data.estado ? data.estado : 'data';else index = 'no_data';
-    var acciones = _ReservasActions__WEBPACK_IMPORTED_MODULE_3__["ReservasActions"][type][index](actions, key);
+    var acciones = _ReservasActions__WEBPACK_IMPORTED_MODULE_3__["ReservasActions"][type][index](actions, key, fullDate);
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_2__["default"], {
       overlay: type === 'month' ? true : false,
       links: acciones.links,
       buttons: acciones.buttons
     });
   },
-  feriados: function feriados(data, actions, key, type) {
+  feriados: function feriados(data, actions, key, type, fullDate) {
     var index = data ? 'data' : 'no_data',
         acciones = _FeriadosActions__WEBPACK_IMPORTED_MODULE_4__["FeriadosActions"][type][index](key, actions);
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -85287,7 +85532,7 @@ var HorariosActions = {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-pen inline-box side-margin"
         }), "Editar"),
-        to: '/horarios/editar/' + key,
+        to: "/horarios/editar/".concat(key),
         params: {
           id: key
         }
@@ -85299,10 +85544,7 @@ var HorariosActions = {
           className: "fas fa-trash inline-box side-margin"
         }), "Eliminar"),
         click: actions.eliminar,
-        data: key,
-        params: {
-          id: key
-        }
+        data: key
       }]
     };
   },
@@ -85313,8 +85555,8 @@ var HorariosActions = {
           className: "smaller-text text bold"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-plus-circle inline-box side-margin"
-        }), "Agregar horario"),
-        to: '/horarios/agregar/' + key,
+        }), "Agregar"),
+        to: "/horarios/agregar/".concat(key),
         params: {
           day: key
         }
@@ -85453,7 +85695,7 @@ var ReservasActions = {
     }
   },
   month: {
-    data: function data(actions, _data2) {
+    data: function data(actions, _data2, date) {
       return {
         buttons: [{
           title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -85462,7 +85704,7 @@ var ReservasActions = {
             className: "fas fa-eye inline-box side-margin"
           })),
           click: actions.ver,
-          data: _data2
+          data: date
         }],
         links: null
       };
@@ -85623,6 +85865,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
 /* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 /* harmony import */ var _utils_Helper__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utils/Helper */ "./resources/js/utils/Helper.jsx");
+/* harmony import */ var _hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../hocs/RouterTransition */ "./resources/js/hocs/RouterTransition.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -85641,6 +85884,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /**
  * react basic
  */
@@ -85655,6 +85900,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 /**
  * constantes
  */
+
 
 
 
@@ -85678,8 +85924,9 @@ function (_Component) {
     };
     _this.changeWeekCalendar = _this.changeWeekCalendar.bind(_assertThisInitialized(_this));
     _this.changeMonthCalendar = _this.changeMonthCalendar.bind(_assertThisInitialized(_this));
-    _this.changeView = _this.changeView.bind(_assertThisInitialized(_this));
     _this.changeYearCalendar = _this.changeYearCalendar.bind(_assertThisInitialized(_this));
+    _this.changeSelectedMonth = _this.changeSelectedMonth.bind(_assertThisInitialized(_this));
+    _this.changeView = _this.changeView.bind(_assertThisInitialized(_this));
     _this.verDia = _this.verDia.bind(_assertThisInitialized(_this));
     return _this;
   }
@@ -85690,7 +85937,6 @@ function (_Component) {
       e.preventDefault();
       var day = parseInt(e.currentTarget.getAttribute('data')),
           date = this.state.date.setDate(day);
-      this.state.controls[this.state.show]["class"] = "box-transparent highlight-hover h-padding small-v-padding bordered transparent-border";
       this.setState({
         show: "3",
         date: new Date(date)
@@ -85701,10 +85947,8 @@ function (_Component) {
     value: function changeView(e) {
       var show = e.currentTarget.getAttribute('data'),
           controls = this.state.controls;
-      controls[this.state.show]["class"] = "box-transparent highlight-hover h-padding small-v-padding bordered transparent-border";
       this.setState({
-        show: show,
-        controls: controls
+        show: show
       });
     }
   }, {
@@ -85722,7 +85966,7 @@ function (_Component) {
         n: new Date(date.setDate(date.getDate() + offset - date.getDay())),
         m: 1
       };
-      Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_5__["evaluateDateChange"])(change, this.props.fetchNewMonth, this.setState.bind(this), "2");
+      Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_5__["evaluateDateChange"])(change, this.context, this.setState.bind(this), this.props.endpoint, "2");
     }
   }, {
     key: "changeMonthCalendar",
@@ -85735,34 +85979,52 @@ function (_Component) {
         n: new Date(date.setMonth(date.getMonth() + offset)),
         m: 1
       };
-      Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_5__["evaluateDateChange"])(change, this.props.fetchNewMonth, this.setState.bind(this), "1");
+      Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_5__["evaluateDateChange"])(change, this.context, this.setState.bind(this), this.props.endpoint, "1");
+    }
+  }, {
+    key: "changeSelectedMonth",
+    value: function changeSelectedMonth(e) {
+      e.preventDefault();
+      var month = parseInt(e.currentTarget.getAttribute('data')),
+          date = this.state.date,
+          change = {
+        o: new Date(date),
+        n: new Date(date.setMonth(month - 1)),
+        m: 1
+      };
+      Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_5__["evaluateDateChange"])(change, this.context, this.setState.bind(this), this.props.endpoint, "1");
     }
   }, {
     key: "changeYearCalendar",
     value: function changeYearCalendar(e) {
       e.preventDefault();
-      var offset = parseInt(e.currentTarget.getAttribute('data'));
-      var date = new Date(this.state.date);
-      date.setFullYear(parseInt(date.getFullYear()) + offset);
-      this.setState({
-        date: date
-      });
+      var offset = parseInt(e.currentTarget.getAttribute('data')),
+          date = new Date(this.state.date),
+          change = {
+        o: new Date(date),
+        n: new Date(date.setFullYear(parseInt(date.getFullYear()) + offset)),
+        m: 1
+      };
+      Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_5__["evaluateDateChange"])(change, this.context, this.setState.bind(this), this.props.endpoint, "1");
     }
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps) {
-      if ((prevProps.date !== this.props.date || prevProps.show !== this.props.show) && this.props.type === 'reservas') this.setState({
-        date: this.props.date,
-        show: this.props.show
-      });
+      if ((prevProps.date !== this.props.date || prevProps.show !== this.props.show) && this.props.type === 'reservas') {
+        this.setState({
+          date: this.props.date,
+          show: this.props.show
+        });
+      }
     }
   }, {
     key: "render",
     value: function render() {
-      this.state.controls[this.state.show]["class"] = "blue-background highlight-border h-padding small-v-padding";
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row justify-content-end v-padding"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        selected: this.state.show,
+        selectedClass: "blue-background highlight-border h-padding small-v-padding",
         clickHandler: this.changeView,
         displayList: "flex-row h-center nav-list no-padding",
         elemClass: "box-transparent highlight-hover h-padding small-v-padding bordered transparent-border",
@@ -85775,6 +86037,8 @@ function (_Component) {
 
   return Agenda;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+_defineProperty(Agenda, "contextType", _hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_6__["WaitsLoading"]);
 
 
 
@@ -85855,7 +86119,7 @@ var Elements = {
   },
   0: function _(parent) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_vistas_YearCalendar__WEBPACK_IMPORTED_MODULE_2__["default"], {
-      handleMonthClick: parent.handleMonthClick,
+      handleMonthClick: parent.changeSelectedMonth,
       changeCurrentYear: parent.changeYearCalendar,
       date: parent.state.date
     });
@@ -86172,6 +86436,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 /* harmony import */ var _constantes_CardObject__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../constantes/CardObject */ "./resources/js/constantes/CardObject.jsx");
+/* harmony import */ var _hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../hocs/RouterTransition */ "./resources/js/hocs/RouterTransition.jsx");
+/* harmony import */ var _basic_Actions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
 /**
  * react basic
  */
@@ -86190,10 +86456,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var HorarioWeekByState = {
   laboral: function laboral(renderActions, sectionData, statusIndex, originalActions, dataIndex) {
     var eventos = sectionData.eventos.list,
-        eventoLength = Object.keys(eventos).length;
+        eventoLength = Object.keys(eventos).length,
+        context = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_7__["WaitsLoading"]);
     return {
       content: function content() {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -86203,8 +86472,16 @@ var HorarioWeekByState = {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "inline-block side-margin text-top bold"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Link"], {
-          to: '/horarios/' + dataIndex,
-          className: "text bold subrayado"
+          to: "/horarios/".concat(dataIndex),
+          className: "text bold subrayado",
+          onClick: function onClick(ev) {
+            return Object(_basic_Actions__WEBPACK_IMPORTED_MODULE_8__["waitCallback"])(ev, {
+              to: "/horarios/".concat(dataIndex),
+              params: {
+                id: dataIndex
+              }
+            }, context);
+          }
         }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__["DAYS"][sectionData.diaSemana - 1])), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "inline-block side-margin"
         }, renderActions)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -86250,6 +86527,7 @@ var HorarioWeekByState = {
   no_laboral: function no_laboral(renderActions, sectionData, statusIndex, originalActions, dataIndex) {
     return {
       content: function content() {
+        var context = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_7__["WaitsLoading"]);
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "full-width box-padding"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -86257,8 +86535,16 @@ var HorarioWeekByState = {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "bold inline-block side-margin text-top"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Link"], {
-          to: '/horarios/' + dataIndex,
-          className: "text bold subrayado"
+          to: "/horarios/".concat(dataIndex),
+          className: "text bold subrayado",
+          onClick: function onClick(ev) {
+            return Object(_basic_Actions__WEBPACK_IMPORTED_MODULE_8__["waitCallback"])(ev, {
+              to: "/horarios/".concat(dataIndex),
+              params: {
+                id: dataIndex
+              }
+            }, context);
+          }
         }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__["DAYS"][sectionData.diaSemana - 1])), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "inline-block side-margin"
         }, renderActions)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -86332,6 +86618,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../acciones/GenerateActions */ "./resources/js/acciones/GenerateActions.jsx");
 /* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 /* harmony import */ var _constantes_CardObject__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../constantes/CardObject */ "./resources/js/constantes/CardObject.jsx");
+/* harmony import */ var _basic_Actions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
+/* harmony import */ var _hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../hocs/RouterTransition */ "./resources/js/hocs/RouterTransition.jsx");
 /**
  * react basic
  */
@@ -86355,9 +86643,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var ReservaDayByState = {
   data: function data(display, _data, actions, dataStr) {
-    var reservations = generateDayCardFromArray(_data, actions, dataStr);
+    var reservations = generateDayCardFromArray(_data, actions, dataStr, Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_9__["WaitsLoading"]));
     return {
       title: {
         data: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -86453,8 +86743,7 @@ var ReservaWeekByState = {
   }
 };
 
-function generateDayCardFromArray(data, actions, dataStr) {
-  var obj = {};
+function generateDayCardFromArray(data, actions, dataStr, context) {
   return data.map(function (e, i) {
     var acciones = _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_5__["GenerateActions"].reservas(e, actions, e.id, 'day');
     return {
@@ -86466,7 +86755,15 @@ function generateDayCardFromArray(data, actions, dataStr) {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "col-md-11 no-padding"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
-          to: 'reservas/' + e.id
+          to: "reservas/".concat(e.id),
+          onClick: function onClick(ev) {
+            return Object(_basic_Actions__WEBPACK_IMPORTED_MODULE_8__["waitCallback"])(ev, {
+              to: "/reservas/".concat(e.id),
+              params: {
+                id: e.id
+              }
+            }, context);
+          }
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "side-margin sub-title text bold subrayado inline-block"
         }, e.nombre + " " + e.apellido)), acciones), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -86694,7 +86991,7 @@ function generateMonth(date, data, actions, type) {
       weekCtr = 6;
     }
 
-    week.push(Object(_AssignByStatus__WEBPACK_IMPORTED_MODULE_4__["AssignMonthByStatus"])(_acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_3__["GenerateActions"][type](data[dateStr], actions, data[dateStr] ? (data[dateStr] || {}).id : dateStr, 'month'), data[dateStr], new Date(datePtr), date, type, true));
+    week.push(Object(_AssignByStatus__WEBPACK_IMPORTED_MODULE_4__["AssignMonthByStatus"])(_acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_3__["GenerateActions"][type](data[dateStr], actions, data[dateStr] ? (data[dateStr] || {}).id : dateStr, 'month', new Date(datePtr)), data[dateStr], new Date(datePtr), date, type, true));
 
     if (weekCtr === 6) {
       weekCtr = 0;
@@ -86774,7 +87071,7 @@ var generateWeek = function generateWeek(date, data, actions, type) {
         currentData = _moveIndex2[0],
         index = _moveIndex2[1],
         dateIndex = _moveIndex2[2],
-        acciones = _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_3__["GenerateActions"][type](currentData, actions, index, 'week'),
+        acciones = _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_3__["GenerateActions"][type](currentData, actions, index, 'week', date),
         elem = Object(_AssignByStatus__WEBPACK_IMPORTED_MODULE_4__["AssignWeekByStatus"])(acciones, currentData, index, actions, type);
 
     if (dateIndex) {
@@ -86824,15 +87121,16 @@ function generateYear(date, handler) {
   var year = [],
       fourMonths = [],
       currentIndex = _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_3__["monthIndex"][date.getMonth()].split('');
-  _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_3__["monthRows"][currentIndex[0]][currentIndex[1]]["class"] = "selected box-padding v-padding full-width highlight-border";
 
   for (var row = 0; row < _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_3__["monthRows"].length; row++) {
     year.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
       key: row,
+      container: "thirty",
       clickHandler: handler,
       elems: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_3__["monthRows"][row],
+      selected: row == currentIndex[0] ? date.getMonth() + 1 : null,
+      selectedClass: "box-padding v-padding full-width highlight-nav highlight-border",
       displayList: "flex-row no-margin nav-list full-width no-padding h-center",
-      container: "thirty",
       elemClass: "box-padding highlight-hover box-transparent full-width"
     }));
   }
@@ -86863,6 +87161,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _input_Toggle__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../input/Toggle */ "./resources/js/componentes/input/Toggle.jsx");
 /* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 /* harmony import */ var _utils_Helper__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../utils/Helper */ "./resources/js/utils/Helper.jsx");
+/* harmony import */ var _hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../hocs/RouterTransition */ "./resources/js/hocs/RouterTransition.jsx");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -86897,8 +87196,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var WeekDisplay = react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(function (props) {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(new Date(props.date)),
+  var context = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_10__["WaitsLoading"]),
+      _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(new Date(props.date)),
       _useState2 = _slicedToArray(_useState, 2),
       nDate = _useState2[0],
       changeDate = _useState2[1],
@@ -86915,9 +87216,9 @@ var WeekDisplay = react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(function (pr
       n: new Date(nDate.setDate(nDate.getDate() + offset - nDate.getDay())),
       m: 1
     };
-    Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_9__["evaluateDateChange"])(change, props.fetch, function (obj) {
+    Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_9__["evaluateDateChange"])(change, context, function (obj) {
       changeDate(obj.date);
-    }, "3");
+    }, '/reservas', "3");
   },
       classes = "no-padding full-width flex-row nav-list";
 
@@ -86940,7 +87241,7 @@ var WeekDisplay = react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(function (pr
 
 function DayCalendar(props) {
   if (props.horarios) {
-    var _generateDay = Object(_procedimientos_generateDay__WEBPACK_IMPORTED_MODULE_2__["default"])(props.horarios.data, props.horarios.intervalo, props.horarios.caida, props.date, props.data, props.type, props.actions.inner),
+    var _generateDay = Object(_procedimientos_generateDay__WEBPACK_IMPORTED_MODULE_2__["default"])(props.horarios.data, props.horarios.intervalo, props.horarios.caida, props.date, props.data, props.type, props.actions),
         _generateDay2 = _slicedToArray(_generateDay, 2),
         dayReservationHours = _generateDay2[0],
         foundLength = _generateDay2[1],
@@ -87261,6 +87562,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../hocs/RouterTransition */ "./resources/js/hocs/RouterTransition.jsx");
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Button */ "./resources/js/componentes/basic/Button.jsx");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 /**
  * react basic
  */
@@ -87283,15 +87592,17 @@ var waitCallback = function waitCallback(ev, e, context) {
   context(e.to, e.params);
 };
 function Actions(props) {
-  var _this = this;
-
   var context = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_2__["WaitsLoading"]),
+      _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      showOptions = _useState2[0],
+      changeHover = _useState2[1],
       format = props.overlay ? {
     overHandler: function overHandler(e) {
-      return _this.changeHover(true);
+      return changeHover(true);
     },
     leaveHandler: function leaveHandler(e) {
-      return _this.changeHover(false);
+      return changeHover(false);
     },
     container: "overlay-gradient full-cover",
     list: showOptions ? "nav-list text-super flex-row no-padding " : "hidden",
@@ -87316,6 +87627,7 @@ function Actions(props) {
       button: "box-transparent highlight-hover full-width text-right button-border border-box"
     }
   };
+
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     onMouseOver: format.overHandler,
     onMouseLeave: format.leaveHandler,
@@ -87328,7 +87640,9 @@ function Actions(props) {
       className: format.element.link
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Link"], {
       to: e.to,
-      onClick: function onClick(ev) {
+      onClick: props.otherSection ? function () {
+        return false;
+      } : function (ev) {
         return waitCallback(ev, e, context);
       }
     }, e.title));
@@ -87407,7 +87721,7 @@ function ButtonList(props) {
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Button__WEBPACK_IMPORTED_MODULE_2__["default"], {
       data: e.data,
       icon: e.icon,
-      "class": e["class"] ? e["class"] : props.elemClass,
+      "class": props.selected == e.data ? props.selectedClass : props.elemClass,
       click: e.click ? e.click : props.clickHandler,
       disabled: e.disabled,
       title: e.title
@@ -88990,52 +89304,40 @@ var HOURS = {
 var MONTHS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 var monthRows = [[{
   title: "Enero",
-  data: 1,
-  "class": "box-padding highlight-hover box-transparent full-width"
+  data: 1
 }, {
   title: "Febrero",
-  data: 2,
-  "class": "box-padding highlight-hover box-transparent full-width"
+  data: 2
 }, {
   title: "Marzo",
-  data: 3,
-  "class": "box-padding highlight-hover box-transparent full-width"
+  data: 3
 }, {
   title: "Abril",
-  data: 4,
-  "class": "box-padding highlight-hover box-transparent full-width"
+  data: 4
 }], [{
   title: "Mayo",
-  data: 5,
-  "class": "box-padding highlight-hover box-transparent full-width"
+  data: 5
 }, {
   title: "Junio",
-  data: 6,
-  "class": "box-padding highlight-hover box-transparent full-width"
+  data: 6
 }, {
   title: "Julio",
-  data: 7,
-  "class": "box-padding highlight-hover box-transparent full-width"
+  data: 7
 }, {
   title: "Agosto",
-  data: 8,
-  "class": "box-padding highlight-hover box-transparent full-width"
+  data: 8
 }], [{
   title: "Septiembre",
-  data: 9,
-  "class": "box-padding highlight-hover box-transparent full-width"
+  data: 9
 }, {
   title: "Octubre",
-  data: 10,
-  "class": "box-padding highlight-hover box-transparent full-width"
+  data: 10
 }, {
   title: "Noviembre",
-  data: 11,
-  "class": "box-padding highlight-hover box-transparent full-width"
+  data: 11
 }, {
   title: "Diciembre",
-  data: 12,
-  "class": "box-padding highlight-hover box-transparent full-width"
+  data: 12
 }]];
 var monthIndex = ["00", "01", "02", "03", "10", "11", "12", "13", "20", "21", "22", "23", "30", "31", "32", "33"];
 
@@ -89061,17 +89363,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _componentes_control_Profile__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../componentes/control/Profile */ "./resources/js/componentes/control/Profile.jsx");
 /* harmony import */ var _promociones_PromocionesRouting__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./promociones/PromocionesRouting */ "./resources/js/escritorio/promociones/PromocionesRouting.jsx");
 /* harmony import */ var _handlers_promocionesHandlers__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../handlers/promocionesHandlers */ "./resources/js/handlers/promocionesHandlers.jsx");
-/* harmony import */ var _reservas_ReservasRouting__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./reservas/ReservasRouting */ "./resources/js/escritorio/reservas/ReservasRouting.jsx");
-/* harmony import */ var _handlers_reservasHandlers__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../handlers/reservasHandlers */ "./resources/js/handlers/reservasHandlers.jsx");
-/* harmony import */ var _handlers_ubicacionesHandlers__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../handlers/ubicacionesHandlers */ "./resources/js/handlers/ubicacionesHandlers.jsx");
-/* harmony import */ var _ubicaciones_UbicacionesRouting__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./ubicaciones/UbicacionesRouting */ "./resources/js/escritorio/ubicaciones/UbicacionesRouting.jsx");
-/* harmony import */ var _handlers_franquiciasHandlers__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../handlers/franquiciasHandlers */ "./resources/js/handlers/franquiciasHandlers.jsx");
-/* harmony import */ var _franquicias_FranquiciasRouting__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./franquicias/FranquiciasRouting */ "./resources/js/escritorio/franquicias/FranquiciasRouting.jsx");
-/* harmony import */ var _configuracion_ConfiguracionRouting__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./configuracion/ConfiguracionRouting */ "./resources/js/escritorio/configuracion/ConfiguracionRouting.jsx");
-/* harmony import */ var _escritorio_EscritorioRouting__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./escritorio/EscritorioRouting */ "./resources/js/escritorio/escritorio/EscritorioRouting.jsx");
-/* harmony import */ var _eventos_EventosRouting__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./eventos/EventosRouting */ "./resources/js/escritorio/eventos/EventosRouting.jsx");
-/* harmony import */ var _horarios_HorariosRouting__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./horarios/HorariosRouting */ "./resources/js/escritorio/horarios/HorariosRouting.jsx");
-/* harmony import */ var _locales_LocalesRouting__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./locales/LocalesRouting */ "./resources/js/escritorio/locales/LocalesRouting.jsx");
+/* harmony import */ var _locales_LocalesRouting__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./locales/LocalesRouting */ "./resources/js/escritorio/locales/LocalesRouting.jsx");
+/* harmony import */ var _handlers_localesHandlers__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../handlers/localesHandlers */ "./resources/js/handlers/localesHandlers.jsx");
+/* harmony import */ var _reservas_ReservasRouting__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./reservas/ReservasRouting */ "./resources/js/escritorio/reservas/ReservasRouting.jsx");
+/* harmony import */ var _handlers_reservasHandlers__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../handlers/reservasHandlers */ "./resources/js/handlers/reservasHandlers.jsx");
+/* harmony import */ var _handlers_ubicacionesHandlers__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../handlers/ubicacionesHandlers */ "./resources/js/handlers/ubicacionesHandlers.jsx");
+/* harmony import */ var _ubicaciones_UbicacionesRouting__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./ubicaciones/UbicacionesRouting */ "./resources/js/escritorio/ubicaciones/UbicacionesRouting.jsx");
+/* harmony import */ var _handlers_franquiciasHandlers__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../handlers/franquiciasHandlers */ "./resources/js/handlers/franquiciasHandlers.jsx");
+/* harmony import */ var _franquicias_FranquiciasRouting__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./franquicias/FranquiciasRouting */ "./resources/js/escritorio/franquicias/FranquiciasRouting.jsx");
+/* harmony import */ var _handlers_eventosHandlers__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../handlers/eventosHandlers */ "./resources/js/handlers/eventosHandlers.jsx");
+/* harmony import */ var _eventos_EventosRouting__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./eventos/EventosRouting */ "./resources/js/escritorio/eventos/EventosRouting.jsx");
+/* harmony import */ var _horarios_HorariosRouting__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./horarios/HorariosRouting */ "./resources/js/escritorio/horarios/HorariosRouting.jsx");
+/* harmony import */ var _handlers_horariosHandlers__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../handlers/horariosHandlers */ "./resources/js/handlers/horariosHandlers.jsx");
+/* harmony import */ var _horarios_FeriadosRouting__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./horarios/FeriadosRouting */ "./resources/js/escritorio/horarios/FeriadosRouting.jsx");
+/* harmony import */ var _handlers_feriadosHandlers__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../handlers/feriadosHandlers */ "./resources/js/handlers/feriadosHandlers.jsx");
+/* harmony import */ var _configuracion_ConfiguracionRouting__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./configuracion/ConfiguracionRouting */ "./resources/js/escritorio/configuracion/ConfiguracionRouting.jsx");
+/* harmony import */ var _escritorio_EscritorioRouting__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./escritorio/EscritorioRouting */ "./resources/js/escritorio/escritorio/EscritorioRouting.jsx");
 /**
  * react basic
  */
@@ -89080,6 +89387,11 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * navigation
  */
+
+
+
+
+
 
 
 
@@ -89122,37 +89434,47 @@ function AppRouting(props) {
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
         current: '0'
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_escritorio_EscritorioRouting__WEBPACK_IMPORTED_MODULE_15__["default"], match));
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_escritorio_EscritorioRouting__WEBPACK_IMPORTED_MODULE_23__["default"], match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/reservas",
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
         current: '1',
-        handlers: _handlers_reservasHandlers__WEBPACK_IMPORTED_MODULE_9__["handlers"]
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_reservas_ReservasRouting__WEBPACK_IMPORTED_MODULE_8__["ReservasRouting"], match));
+        handlers: _handlers_reservasHandlers__WEBPACK_IMPORTED_MODULE_11__["handlers"]
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_reservas_ReservasRouting__WEBPACK_IMPORTED_MODULE_10__["ReservasRouting"], match));
+    }
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
+    path: "/horarios/feriados",
+    render: function render(match) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        current: '2',
+        handlers: _handlers_feriadosHandlers__WEBPACK_IMPORTED_MODULE_21__["handlers"]
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_horarios_FeriadosRouting__WEBPACK_IMPORTED_MODULE_20__["FeriadosRouting"], match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/horarios",
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        current: '2'
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_horarios_HorariosRouting__WEBPACK_IMPORTED_MODULE_17__["default"], match));
+        current: '2',
+        handlers: _handlers_horariosHandlers__WEBPACK_IMPORTED_MODULE_19__["handlers"]
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_horarios_HorariosRouting__WEBPACK_IMPORTED_MODULE_18__["HorariosRouting"], match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/ubicaciones",
     render: function render(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
         current: '3',
-        handlers: _handlers_ubicacionesHandlers__WEBPACK_IMPORTED_MODULE_10__["handlers"]
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ubicaciones_UbicacionesRouting__WEBPACK_IMPORTED_MODULE_11__["UbicacionesRouting"], match));
+        handlers: _handlers_ubicacionesHandlers__WEBPACK_IMPORTED_MODULE_12__["handlers"]
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ubicaciones_UbicacionesRouting__WEBPACK_IMPORTED_MODULE_13__["UbicacionesRouting"], match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/eventos",
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        current: '4'
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_eventos_EventosRouting__WEBPACK_IMPORTED_MODULE_16__["default"], match));
+        current: '4',
+        handlers: _handlers_eventosHandlers__WEBPACK_IMPORTED_MODULE_16__["handlers"]
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_eventos_EventosRouting__WEBPACK_IMPORTED_MODULE_17__["EventosRouting"], match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/promociones",
@@ -89166,23 +89488,24 @@ function AppRouting(props) {
     path: "/locales",
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        current: '6'
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_locales_LocalesRouting__WEBPACK_IMPORTED_MODULE_18__["default"], match));
+        current: '6',
+        handlers: _handlers_localesHandlers__WEBPACK_IMPORTED_MODULE_9__["handlers"]
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_locales_LocalesRouting__WEBPACK_IMPORTED_MODULE_8__["LocalesRouting"], match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/configuracion",
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
         current: '7'
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_ConfiguracionRouting__WEBPACK_IMPORTED_MODULE_14__["default"], match));
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_ConfiguracionRouting__WEBPACK_IMPORTED_MODULE_22__["default"], match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/franquicias",
     render: function render(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
         current: '8',
-        handlers: _handlers_franquiciasHandlers__WEBPACK_IMPORTED_MODULE_12__["handlers"]
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_franquicias_FranquiciasRouting__WEBPACK_IMPORTED_MODULE_13__["FranquiciasRouting"], match));
+        handlers: _handlers_franquiciasHandlers__WEBPACK_IMPORTED_MODULE_14__["handlers"]
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_franquicias_FranquiciasRouting__WEBPACK_IMPORTED_MODULE_15__["FranquiciasRouting"], match));
     }
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-2 hidden-s background-border"
@@ -90757,12 +91080,12 @@ function (_Component) {
 /*!************************************************************!*\
   !*** ./resources/js/escritorio/eventos/EventosRouting.jsx ***!
   \************************************************************/
-/*! exports provided: default */
+/*! exports provided: EventosRouting */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return EventosRouting; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EventosRouting", function() { return EventosRouting; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -90773,8 +91096,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../acciones/ActionsByView */ "./resources/js/acciones/ActionsByView.jsx");
 /* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
-/* harmony import */ var _hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../hocs/RequestHandler */ "./resources/js/hocs/RequestHandler.jsx");
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 /**
  * react basic
@@ -90791,76 +91121,70 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 
-
 function EventosRouting(props) {
-  var modal = function modal(props) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__["ConfirmarModal"], _extends({}, props, {
-      title: "Eliminar Evento",
-      content: "¿estás seguro de eliminar este evento?"
-    }));
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      open = _useState2[0],
+      toggle = _useState2[1],
+      openModal = function openModal(e) {
+    e.preventDefault();
+    toggle(true);
+  },
+      closeModal = function closeModal(e) {
+    e.preventDefault();
+    toggle(false);
   };
 
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Route"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__["ConfirmarModal"], {
+    open: open,
+    closeModal: closeModal,
+    title: "Eliminar Franquicia",
+    content: "¿estás seguro de eliminar este franquicia?"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Route"], {
     path: props.match.url,
     exact: true,
-    component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Eventos__WEBPACK_IMPORTED_MODULE_3__["Eventos"], _extends({
-            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].listado('/eventos')
-          }, props));
-        },
-        modal: modal,
-        fetchHandler: Object(_sub_Eventos__WEBPACK_IMPORTED_MODULE_3__["listHandler"])("/eventos/list/".concat(user.id))
-      });
+    render: function render(match) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Eventos__WEBPACK_IMPORTED_MODULE_3__["Eventos"], _extends({
+        data: props.data,
+        toggleModal: openModal,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].listado('/eventos')
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Route"], {
     path: "".concat(props.match.url, "/editar/:id"),
     exact: true,
-    component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_2__["Formulario"], _extends({
-            editar: true,
-            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].formulario(function () {
-              return false;
-            }, match.match.params.id, '/eventos'),
-            formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])()
-          }, props));
-        },
-        modal: modal,
-        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_2__["editFormHandler"])("eventos/single/".concat(user.id, "/").concat(match.match.params.id))
-      });
+    render: function render(match) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_2__["Formulario"], _extends({
+        data: props.data,
+        editar: true,
+        toggleModal: openModal,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].formulario(function () {
+          return false;
+        }, match.match.params.id, '/eventos'),
+        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])()
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Route"], {
     path: "".concat(props.match.url, "/agregar"),
-    component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_2__["Formulario"], _extends({
-            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].agregar('/eventos'),
-            formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
-            editar: false
-          }, props));
-        },
-        modal: modal,
-        fetchHandler: Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_2__["addFormHandler"])('/eventos/add/27')
-      });
+    render: function render(match) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_2__["Formulario"], _extends({
+        data: props.data,
+        toggleModal: openModal,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].agregar('/eventos'),
+        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
+        editar: false
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Route"], {
     path: "".concat(props.match.url, "/:id"),
-    component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerEvento__WEBPACK_IMPORTED_MODULE_4__["VerEvento"], _extends({
-            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].singular(function () {
-              return false;
-            }, match.match.params.id, '/eventos')
-          }, props));
-        },
-        modal: modal,
-        fetchHandler: Object(_sub_VerEvento__WEBPACK_IMPORTED_MODULE_4__["singleHandler"])("/eventos/single/".concat(user.id, "/").concat(match.match.params.id))
-      });
+    render: function render(match) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerEvento__WEBPACK_IMPORTED_MODULE_4__["VerEvento"], _extends({
+        data: props.data,
+        toggleModal: openModal,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].singular(function () {
+          return false;
+        }, match.match.params.id, '/eventos')
+      }, match));
     }
   })));
 }
@@ -90999,12 +91323,11 @@ var FormFields = function FormFields(props) {
 /*!*********************************************************!*\
   !*** ./resources/js/escritorio/eventos/sub/Eventos.jsx ***!
   \*********************************************************/
-/*! exports provided: listHandler, Eventos */
+/*! exports provided: Eventos */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "listHandler", function() { return listHandler; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Eventos", function() { return Eventos; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -91012,108 +91335,35 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
 /* harmony import */ var _generateEventosCard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./generateEventosCard */ "./resources/js/escritorio/eventos/sub/generateEventosCard.jsx");
-/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
 /**
  * react basic
  */
 
 
-/**
- * componentes
- */
 
 
-/**
- * funciones
- */
-
-
-
-var listHandler = function listHandler(endpoint) {
-  return function (params) {
-    var _this = this;
-
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
-    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_4__["GET"])({
-      endpoint: endpoint,
-      download: this.downloadHandler
-    });
-    request.then(function (response) {
-      _this.setState({
-        data: response.data.eventos.data
-      });
-    })["catch"](function (error) {
-      console.log(error.message);
-    });
-  };
-};
-var Eventos =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(Eventos, _Component);
-
-  function Eventos(props) {
-    _classCallCheck(this, Eventos);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(Eventos).call(this, props));
-  }
-
-  _createClass(Eventos, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {}
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {}
-  }, {
-    key: "render",
-    value: function render() {
-      var eventos = Object(_generateEventosCard__WEBPACK_IMPORTED_MODULE_3__["default"])(this.props.data, {
-        eliminar: this.props.toggleModal
-      });
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        title: "Eventos",
-        links: this.props.nav.links
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "bold top-padding row"
-      }, "Mostrando " + eventos.length + " eventos encontrados"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-        className: "nav-list no-padding"
-      }, eventos.map(function (elem, index) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-          key: index,
-          className: elem["class"]
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(elem.content, null));
-      })))));
-    }
-  }]);
-
-  return Eventos;
-}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+function Eventos(props) {
+  var eventos = Object(_generateEventosCard__WEBPACK_IMPORTED_MODULE_3__["default"])(props.data, {
+    eliminar: props.toggleModal
+  });
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    title: "Eventos",
+    links: props.nav.links
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "bold top-padding row"
+  }, "Mostrando " + eventos.length + " eventos encontrados"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+    className: "nav-list no-padding"
+  }, eventos.map(function (elem, index) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+      key: index,
+      className: elem["class"]
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(elem.content, null));
+  })))));
+}
 
 /***/ }),
 
@@ -91121,13 +91371,11 @@ function (_Component) {
 /*!************************************************************!*\
   !*** ./resources/js/escritorio/eventos/sub/Formulario.jsx ***!
   \************************************************************/
-/*! exports provided: editFormHandler, addFormHandler, Formulario */
+/*! exports provided: Formulario */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "editFormHandler", function() { return editFormHandler; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addFormHandler", function() { return addFormHandler; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Formulario", function() { return Formulario; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -91139,7 +91387,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
 /* harmony import */ var _FormFields__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../FormFields */ "./resources/js/escritorio/eventos/FormFields.jsx");
 /* harmony import */ var _generateEventosCard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./generateEventosCard */ "./resources/js/escritorio/eventos/sub/generateEventosCard.jsx");
-/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -91160,12 +91407,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 
@@ -91181,84 +91422,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
-var editFormHandler = function editFormHandler(endpoint) {
-  return function (params) {
-    var _this = this;
-
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
-    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_7__["GET"])({
-      endpoint: endpoint,
-      download: this.downloadHandler
-    });
-    request.then(function (response) {
-      var data = {};
-      data = {
-        selected: response.data.eventos[0],
-        all: {
-          feriados: response.data.feriados,
-          horarios: response.data.horarios,
-          promociones: response.data.promociones
-        }
-      };
-      data.selected.horarios.list = Object(_generateEventosCard__WEBPACK_IMPORTED_MODULE_6__["assignHorarios"])(data.selected.horarios.list)[0];
-      data.all.horarios.list = Object(_generateEventosCard__WEBPACK_IMPORTED_MODULE_6__["assignHorarios"])(data.all.horarios.list)[0];
-
-      _this.setState({
-        data: _objectSpread({}, data)
-      });
-    })["catch"](function (error) {
-      console.log(error.message);
-    });
-  };
-};
-var addFormHandler = function addFormHandler(endpoint) {
-  return function (params) {
-    var _this2 = this;
-
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
-    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_7__["GET"])({
-      endpoint: endpoint,
-      download: this.downloadHandler
-    });
-    request.then(function (response) {
-      var data = {};
-      data = response.data;
-      data.horarios.list = Object(_generateEventosCard__WEBPACK_IMPORTED_MODULE_6__["assignHorarios"])(data.horarios.list)[0];
-
-      _this2.setState({
-        data: _objectSpread({}, data)
-      });
-    })["catch"](function (error) {
-      console.log(error.message);
-    });
-  };
-};
 var Formulario =
 /*#__PURE__*/
 function (_Component) {
   _inherits(Formulario, _Component);
 
   function Formulario(props) {
-    var _this3;
+    var _this;
 
     _classCallCheck(this, Formulario);
 
-    _this3 = _possibleConstructorReturn(this, _getPrototypeOf(Formulario).call(this, props));
-    if (_this3.props.editar) _this3.props.nav.buttons[0].click = _this3.props.toggleModal;
-    _this3.enviarFormulario = _this3.enviarFormulario.bind(_assertThisInitialized(_this3));
-    _this3.cancelarFormulario = _this3.cancelarFormulario.bind(_assertThisInitialized(_this3));
-    _this3.props.formActions.buttons.guardar.click = _this3.enviarFormulario;
-    _this3.props.formActions.buttons.cancelar.click = _this3.cancelarFormulario;
-    return _this3;
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Formulario).call(this, props));
+    if (_this.props.editar) _this.props.nav.buttons[0].click = _this.props.toggleModal;
+    _this.enviarFormulario = _this.enviarFormulario.bind(_assertThisInitialized(_this));
+    _this.cancelarFormulario = _this.cancelarFormulario.bind(_assertThisInitialized(_this));
+    _this.props.formActions.buttons.guardar.click = _this.enviarFormulario;
+    _this.props.formActions.buttons.cancelar.click = _this.cancelarFormulario;
+    return _this;
   }
 
   _createClass(Formulario, [{
@@ -91305,12 +91485,11 @@ function (_Component) {
 /*!***********************************************************!*\
   !*** ./resources/js/escritorio/eventos/sub/VerEvento.jsx ***!
   \***********************************************************/
-/*! exports provided: singleHandler, VerEvento */
+/*! exports provided: VerEvento */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "singleHandler", function() { return singleHandler; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VerEvento", function() { return VerEvento; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -91322,24 +91501,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _generateEventosCard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./generateEventosCard */ "./resources/js/escritorio/eventos/sub/generateEventosCard.jsx");
 /* harmony import */ var _componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/CommaList */ "./resources/js/componentes/basic/CommaList.jsx");
 /* harmony import */ var _componentes_tables_PromocionesTable__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/tables/PromocionesTable */ "./resources/js/componentes/tables/PromocionesTable.jsx");
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
 /**
  * react basic
  */
@@ -91359,106 +91520,56 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var singleHandler = function singleHandler(endpoint) {
-  return function (params) {
-    var _this = this;
-
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
-    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
-      endpoint: endpoint,
-      download: this.downloadHandler
-    });
-    request.then(function (response) {
-      _this.setState({
-        data: response.data.eventos[0]
-      });
-    })["catch"](function (error) {
-      console.log(error);
-    });
-  };
-};
-var VerEvento =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(VerEvento, _Component);
-
-  function VerEvento(props) {
-    var _this2;
-
-    _classCallCheck(this, VerEvento);
-
-    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(VerEvento).call(this, props));
-    _this2.props.nav.buttons[0].click = _this2.props.toggleModal;
-    return _this2;
-  }
-
-  _createClass(VerEvento, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {}
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      console.log('localesUnmount');
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var data = this.props.data,
-          promociones = Object.values(data.promociones.data),
-          horarios = Object.values(data.horarios.list),
-          feriados = Object.values(data.feriados.list);
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        title: data.nombre,
-        links: this.props.nav.links,
-        buttons: this.props.nav.buttons
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-3 light-danger bold"
-      }, "Descripci\xF3n: "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-9"
-      }, data.descripcion)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row v-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-        className: "highlight no-margin bold v-padding"
-      }, "Horarios"), horarios.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-        className: "nav-list no-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_6__["CommaList"], {
-        list: Object(_generateEventosCard__WEBPACK_IMPORTED_MODULE_5__["assignHorarios"])(data.horarios.list)[0],
-        endpoint: "/horarios"
-      })) : "No hay horarios asociados"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-        className: "highlight bold"
-      }, "Feriados"), feriados.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-        className: "nav-list no-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_6__["CommaList"], {
-        list: data.feriados.list,
-        endpoint: "/feriados"
-      })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "bold"
-      }, "No hay feriados asociados"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row v-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-12"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "sub-title bold"
-      }, "Promociones"), promociones.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_tables_PromocionesTable__WEBPACK_IMPORTED_MODULE_7__["default"], {
-        data: promociones
-      }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "bold h-padding"
-      }, "No hay promociones asociadas"))));
-    }
-  }]);
-
-  return VerEvento;
-}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+function VerEvento(props) {
+  props.nav.buttons[0].click = props.toggleModal;
+  var data = props.data,
+      promociones = Object.values(data.promociones.data),
+      horarios = Object.values(data.horarios.list),
+      feriados = Object.values(data.feriados.list);
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    title: data.nombre,
+    links: props.nav.links,
+    buttons: props.nav.buttons
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 light-danger bold"
+  }, "Descripci\xF3n: "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-9"
+  }, data.descripcion)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "highlight no-margin bold v-padding"
+  }, "Horarios"), horarios.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+    className: "nav-list no-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_6__["CommaList"], {
+    list: Object(_generateEventosCard__WEBPACK_IMPORTED_MODULE_5__["assignHorarios"])(data.horarios.list)[0],
+    endpoint: "/horarios"
+  })) : "No hay horarios asociados"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "highlight bold"
+  }, "Feriados"), feriados.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+    className: "nav-list no-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_6__["CommaList"], {
+    list: data.feriados.list,
+    endpoint: "/feriados"
+  })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "bold"
+  }, "No hay feriados asociados"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-12"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "sub-title bold"
+  }, "Promociones"), promociones.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_tables_PromocionesTable__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    data: promociones
+  }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "bold h-padding"
+  }, "No hay promociones asociadas"))));
+}
 
 /***/ }),
 
@@ -91480,7 +91591,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/CommaList */ "./resources/js/componentes/basic/CommaList.jsx");
 /* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
-/* harmony import */ var _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../acciones/GenerateActions */ "./resources/js/acciones/GenerateActions.jsx");
+/* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
+/* harmony import */ var _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../acciones/GenerateActions */ "./resources/js/acciones/GenerateActions.jsx");
+/* harmony import */ var _hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../hocs/RouterTransition */ "./resources/js/hocs/RouterTransition.jsx");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -91495,15 +91608,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-/**
- * componentes
- */
 
 
 
 /**
  * funciones
  */
+
 
 
 var assignHorarios = function assignHorarios(hList) {
@@ -91517,7 +91628,8 @@ var assignHorarios = function assignHorarios(hList) {
 };
 function generateEventosCard(eventos, actions) {
   return Object.keys(eventos).map(function (e) {
-    var acciones = _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_5__["GenerateActions"].eventos(e, actions),
+    var context = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_7__["WaitsLoading"]),
+        acciones = _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_6__["GenerateActions"].eventos(e, actions),
         promociones = Object.values(eventos[e].promociones.list),
         _assignHorarios = assignHorarios(eventos[e].horarios.list),
         _assignHorarios2 = _slicedToArray(_assignHorarios, 2),
@@ -91531,7 +91643,15 @@ function generateEventosCard(eventos, actions) {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "col-md-8 no-padding"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
-          to: '/eventos/' + e
+          to: '/eventos/' + e,
+          onClick: function onClick(ev) {
+            return Object(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_5__["waitCallback"])(ev, {
+              to: "/eventos/".concat(e),
+              params: {
+                id: e
+              }
+            }, context);
+          }
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "text sub-title bold"
         }, eventos[e].nombre)), acciones), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -91839,14 +91959,20 @@ var links = function links(key) {
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
       className: "fas fa-eye"
     }), "Ver"),
-    to: '/franquicias/' + key
+    to: '/franquicias/' + key,
+    params: {
+      id: key
+    }
   }, {
     title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "smaller-text text bold"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
       className: "fas fa-pen"
     }), "Editar"),
-    to: '/franquicias/editar/' + key
+    to: '/franquicias/editar/' + key,
+    params: {
+      id: key
+    }
   },, {
     title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "smaller-text text bold"
@@ -91858,12 +91984,10 @@ var links = function links(key) {
 };
 
 function Franquicias(props) {
-  var _this = this;
-
-  var data = Object.keys(this.props.data).map(function (e) {
-    return _objectSpread({}, _this.props.data[e], {
+  var data = Object.keys(props.data).map(function (e) {
+    return _objectSpread({}, props.data[e], {
       acciones: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        links: _this.links(e),
+        links: links(e),
         buttons: []
       })
     });
@@ -91900,29 +92024,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
 /* harmony import */ var _componentes_tables_LocalesTable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/tables/LocalesTable */ "./resources/js/componentes/tables/LocalesTable.jsx");
 /* harmony import */ var _hocs_ExpandableComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../hocs/ExpandableComponent */ "./resources/js/hocs/ExpandableComponent.jsx");
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /**
  * react basic
@@ -91937,161 +92043,126 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var VerFranquicia =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(VerFranquicia, _Component);
 
-  function VerFranquicia(props) {
-    var _this;
-
-    _classCallCheck(this, VerFranquicia);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(VerFranquicia).call(this, props));
-    _this.props.nav.buttons[0].click = _this.props.toggleModal;
-    return _this;
-  }
-
-  _createClass(VerFranquicia, [{
-    key: "enviarFormulario",
-    value: function enviarFormulario(e) {
-      e.preventDefault();
-      console.log('guardar');
+function links(key) {
+  return [{
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "smaller-text text bold"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fas fa-eye"
+    }), "Ver"),
+    to: '/locales/' + key,
+    params: {
+      id: key
     }
   }, {
-    key: "cancelarFormulario",
-    value: function cancelarFormulario(e) {
-      e.preventDefault();
-      console.log('guardar');
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "smaller-text text bold"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fas fa-pen"
+    }), "Editar"),
+    to: '/locales/editar/' + key,
+    params: {
+      id: key
     }
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {}
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      console.log('localesUnmount');
-    }
-  }, {
-    key: "links",
-    value: function links(key) {
-      return [{
-        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "smaller-text text bold"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fas fa-eye"
-        }), "Ver"),
-        to: '/locales/' + key
-      }, {
-        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "smaller-text text bold"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fas fa-pen"
-        }), "Editar"),
-        to: '/locales/editar/' + key
-      }];
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this2 = this;
+  }];
+}
 
-      var data = this.props.data,
-          localesData = Object.values(data.locales.data).map(function (e) {
-        return _objectSpread({}, e, {
-          acciones: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_2__["default"], {
-            links: _this2.links(e.id),
-            buttons: []
-          })
-        });
-      }),
-          agregar = [{
-        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "smaller-text text bold"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fas fa-plus-circle inline-box side-margin"
-        }), " Agregar Local"),
-        to: "/locales/agregar"
-      }];
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        title: data.nombre,
-        links: this.props.nav.links,
-        buttons: this.props.nav.buttons
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container full-width no-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row top-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6 sub-title bold"
-      }, "Locales"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6 text-right"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        links: agregar
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row h-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_tables_LocalesTable__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        data: localesData
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_ExpandableComponent__WEBPACK_IMPORTED_MODULE_5__["ExpandableComponent"], {
-        title: "Información",
-        show: true,
-        component: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row justify-content-end v-padding"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-4"
-        }, "foto perfil"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-8"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-          className: "full-width light-danger bold"
-        }, "Administrador"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.administrador))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row v-padding"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-4"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-          className: "full-width light-danger bold"
-        }, "Nombre"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.nombre)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-4"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-          className: "full-width light-danger bold"
-        }, "Correo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.correoLocal)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-4"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-          className: "full-width light-danger bold"
-        }, "Tel\xE9fono"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.telefonoLocal))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row v-padding"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-6"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-          className: "full-width light-danger bold"
-        }, "Raz\xF3n Social"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.razonSocial)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-6"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-          className: "full-width light-danger bold"
-        }, "CUIT / CUIL"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.cuitCuil))))
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_ExpandableComponent__WEBPACK_IMPORTED_MODULE_5__["ExpandableComponent"], {
-        title: "Usuario",
-        component: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row v-padding"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-4"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-          className: "full-width light-danger bold"
-        }, "Username"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.username)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-4"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-          className: "full-width light-danger bold"
-        }, "Correo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.email)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-4"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-          className: "full-width light-danger bold"
-        }, "Contrase\xF1a de usuario"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "*******************")))
-      })));
-    }
-  }]);
-
-  return VerFranquicia;
-}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+function VerFranquicia(props) {
+  props.nav.buttons[0].click = props.toggleModal;
+  var data = props.data,
+      localesData = Object.values(data.locales.data).map(function (e) {
+    return _objectSpread({}, e, {
+      acciones: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        links: links(e.id),
+        buttons: []
+      })
+    });
+  }),
+      agregar = [{
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "smaller-text text bold"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fas fa-plus-circle inline-box side-margin"
+    }), " Agregar Local"),
+    to: "/locales/agregar"
+  }];
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    title: data.nombre,
+    links: props.nav.links,
+    buttons: props.nav.buttons
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container full-width no-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row top-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6 sub-title bold"
+  }, "Locales"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6 text-right"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    otherSection: true,
+    links: agregar
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row h-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_tables_LocalesTable__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    data: localesData
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_ExpandableComponent__WEBPACK_IMPORTED_MODULE_5__["ExpandableComponent"], {
+    title: "Información",
+    show: true,
+    component: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "row justify-content-end v-padding"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "col-md-4"
+    }, "foto perfil"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "col-md-8"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+      className: "full-width light-danger bold"
+    }, "Administrador"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.administrador))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "row v-padding"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "col-md-4"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+      className: "full-width light-danger bold"
+    }, "Nombre"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.nombre)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "col-md-4"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+      className: "full-width light-danger bold"
+    }, "Correo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.correoLocal)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "col-md-4"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+      className: "full-width light-danger bold"
+    }, "Tel\xE9fono"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.telefonoLocal))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "row v-padding"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "col-md-6"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+      className: "full-width light-danger bold"
+    }, "Raz\xF3n Social"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.razonSocial)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "col-md-6"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+      className: "full-width light-danger bold"
+    }, "CUIT / CUIL"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.cuitCuil))))
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_ExpandableComponent__WEBPACK_IMPORTED_MODULE_5__["ExpandableComponent"], {
+    title: "Usuario",
+    component: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "row v-padding"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "col-md-4"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+      className: "full-width light-danger bold"
+    }, "Username"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.username)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "col-md-4"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+      className: "full-width light-danger bold"
+    }, "Correo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.email)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "col-md-4"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+      className: "full-width light-danger bold"
+    }, "Contrase\xF1a de usuario"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "*******************")))
+  })));
+}
 
 /***/ }),
 
@@ -92284,12 +92355,12 @@ var EventoFields = function EventoFields(props) {
 /*!**************************************************************!*\
   !*** ./resources/js/escritorio/horarios/FeriadosRouting.jsx ***!
   \**************************************************************/
-/*! exports provided: default */
+/*! exports provided: FeriadosRouting */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return UbicacionesRouting; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FeriadosRouting", function() { return FeriadosRouting; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -92299,9 +92370,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _sub_Feriados__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sub/Feriados */ "./resources/js/escritorio/horarios/sub/Feriados.jsx");
 /* harmony import */ var _sub_VerFeriado__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sub/VerFeriado */ "./resources/js/escritorio/horarios/sub/VerFeriado.jsx");
 /* harmony import */ var _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../acciones/ActionsByView */ "./resources/js/acciones/ActionsByView.jsx");
-/* harmony import */ var _hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../hocs/RequestHandler */ "./resources/js/hocs/RequestHandler.jsx");
-/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
+/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
@@ -92315,76 +92393,69 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 
-
-function UbicacionesRouting(props) {
-  var modal = function modal(props) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_8__["ConfirmarModal"], _extends({}, props, {
-      title: "Eliminar Feriado",
-      content: "¿estás seguro de eliminar este feriado?"
-    }));
+function FeriadosRouting(props) {
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      open = _useState2[0],
+      toggle = _useState2[1],
+      openModal = function openModal(e) {
+    e.preventDefault();
+    toggle(true);
+  },
+      closeModal = function closeModal(e) {
+    e.preventDefault();
+    toggle(false);
   };
 
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__["ConfirmarModal"], {
+    open: open,
+    closeModal: closeModal,
+    title: "Eliminar Feriado",
+    content: "¿estás seguro de eliminar este feriado?"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: props.match.url,
     exact: true,
-    component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Feriados__WEBPACK_IMPORTED_MODULE_4__["Feriados"], _extends({
-            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].listado('/horarios/feriados')
-          }, props));
-        },
-        modal: modal,
-        fetchHandler: Object(_sub_Feriados__WEBPACK_IMPORTED_MODULE_4__["listHandler"])("/feriados/list/".concat(user.id, "/"))
-      });
+    render: function render(match) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Feriados__WEBPACK_IMPORTED_MODULE_4__["Feriados"], _extends({
+        data: props.data,
+        toggleModal: openModal,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].listado('/horarios/feriados')
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "".concat(props.match.url, "/editar/:id"),
     exact: true,
-    component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_formularios_FeriadoFormulario__WEBPACK_IMPORTED_MODULE_3__["FeriadoFormulario"], _extends({
-            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].formulario(function () {
-              return false;
-            }, match.match.params.id, '/horarios/feriados'),
-            formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
-            editar: true
-          }, props));
-        },
-        modal: modal,
-        fetchHandler: Object(_formularios_FeriadoFormulario__WEBPACK_IMPORTED_MODULE_3__["editFormHandler"])("/feriados/single/".concat(user.id, "/").concat(match.match.params.id))
-      });
+    render: function render(match) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_formularios_FeriadoFormulario__WEBPACK_IMPORTED_MODULE_3__["FeriadoFormulario"], _extends({
+        data: props.data,
+        toggleModal: openModal,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].formulario(function () {
+          return false;
+        }, match.match.params.id, '/horarios/feriados'),
+        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
+        editar: true
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "".concat(props.match.url, "/agregar"),
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_formularios_FeriadoFormulario__WEBPACK_IMPORTED_MODULE_3__["FeriadoFormulario"], _extends({
-            editar: false,
-            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].agregar('/horarios/feriados'),
-            formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])()
-          }, props));
-        },
-        modal: modal,
-        fetchHandler: Object(_formularios_FeriadoFormulario__WEBPACK_IMPORTED_MODULE_3__["addFormHandler"])("/feriados/add/".concat(user.id, "/"))
-      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_formularios_FeriadoFormulario__WEBPACK_IMPORTED_MODULE_3__["FeriadoFormulario"], _extends({
+        data: props.data,
+        editar: false,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].agregar('/horarios/feriados'),
+        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])()
+      }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "".concat(props.match.url, "/:id"),
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerFeriado__WEBPACK_IMPORTED_MODULE_5__["VerFeriado"], _extends({
-            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].singular(function () {
-              return false;
-            }, match.match.params.id, '/horarios/feriados')
-          }, props));
-        },
-        modal: modal,
-        fetchHandler: Object(_sub_VerFeriado__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])("/feriados/single/".concat(user.id, "/").concat(match.match.params.id))
-      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerFeriado__WEBPACK_IMPORTED_MODULE_5__["VerFeriado"], _extends({
+        data: props.data,
+        toggleModal: openModal,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].singular(function () {
+          return false;
+        }, match.match.params.id, '/horarios/feriados')
+      }, props));
     }
   })));
 }
@@ -92395,25 +92466,31 @@ function UbicacionesRouting(props) {
 /*!**************************************************************!*\
   !*** ./resources/js/escritorio/horarios/HorariosRouting.jsx ***!
   \**************************************************************/
-/*! exports provided: default */
+/*! exports provided: HorariosRouting */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return HorariosRouting; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HorariosRouting", function() { return HorariosRouting; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _FeriadosRouting__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FeriadosRouting */ "./resources/js/escritorio/horarios/FeriadosRouting.jsx");
-/* harmony import */ var _formularios_HorarioFormulario__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./formularios/HorarioFormulario */ "./resources/js/escritorio/horarios/formularios/HorarioFormulario.jsx");
-/* harmony import */ var _sub_Horarios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sub/Horarios */ "./resources/js/escritorio/horarios/sub/Horarios.jsx");
-/* harmony import */ var _sub_VerHorario__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sub/VerHorario */ "./resources/js/escritorio/horarios/sub/VerHorario.jsx");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../acciones/ActionsByView */ "./resources/js/acciones/ActionsByView.jsx");
-/* harmony import */ var _hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../hocs/RequestHandler */ "./resources/js/hocs/RequestHandler.jsx");
-/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
+/* harmony import */ var _formularios_HorarioFormulario__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./formularios/HorarioFormulario */ "./resources/js/escritorio/horarios/formularios/HorarioFormulario.jsx");
+/* harmony import */ var _sub_Horarios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./sub/Horarios */ "./resources/js/escritorio/horarios/sub/Horarios.jsx");
+/* harmony import */ var _sub_VerHorario__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sub/VerHorario */ "./resources/js/escritorio/horarios/sub/VerHorario.jsx");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../acciones/ActionsByView */ "./resources/js/acciones/ActionsByView.jsx");
+/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 /**
  * react basic
@@ -92427,7 +92504,6 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 
-
 /**
  * react router
  */
@@ -92435,79 +92511,68 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 
-
 function HorariosRouting(props) {
-  var modal = function modal(props) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_9__["ConfirmarModal"], _extends({}, props, {
-      title: "Eliminar Horario",
-      content: "¿estás seguro de eliminar este horario?"
-    }));
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      open = _useState2[0],
+      toggle = _useState2[1],
+      openModal = function openModal(e) {
+    e.preventDefault();
+    toggle(true);
+  },
+      closeModal = function closeModal(e) {
+    e.preventDefault();
+    toggle(false);
   };
 
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Route"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__["ConfirmarModal"], {
+    open: open,
+    closeModal: closeModal,
+    title: "Eliminar Horario",
+    content: "¿estás seguro de eliminar este horario?"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Route"], {
     path: props.match.url,
     exact: true,
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Horarios__WEBPACK_IMPORTED_MODULE_4__["Horarios"], props);
-        },
-        modal: modal,
-        fetchHandler: Object(_sub_Horarios__WEBPACK_IMPORTED_MODULE_4__["listHandler"])("/horarios/list/".concat(user.id))
-      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Horarios__WEBPACK_IMPORTED_MODULE_3__["Horarios"], _extends({
+        data: props.data,
+        toggleModal: openModal
+      }, match));
     }
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Route"], {
-    path: "".concat(props.match.url, "/feriados"),
-    component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FeriadosRouting__WEBPACK_IMPORTED_MODULE_2__["default"], match);
-    }
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Route"], {
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Route"], {
     path: "".concat(props.match.url, "/agregar/:day"),
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_formularios_HorarioFormulario__WEBPACK_IMPORTED_MODULE_3__["HorarioFormulario"], _extends({
-            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_7__["Navegacion"].agregar('/horarios'),
-            editar: false,
-            formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_7__["FormActions"])()
-          }, props));
-        },
-        modal: modal,
-        fetchHandler: Object(_formularios_HorarioFormulario__WEBPACK_IMPORTED_MODULE_3__["addFormHandler"])("/horarios/add/".concat(user.id))
-      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_formularios_HorarioFormulario__WEBPACK_IMPORTED_MODULE_2__["HorarioFormulario"], _extends({
+        editar: false,
+        data: props.data,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].agregar('/horarios'),
+        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])()
+      }, match));
     }
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Route"], {
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Route"], {
     path: "".concat(props.match.url, "/editar/:id"),
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_formularios_HorarioFormulario__WEBPACK_IMPORTED_MODULE_3__["HorarioFormulario"], _extends({
-            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_7__["Navegacion"].formulario(function () {
-              return false;
-            }, match.match.params.id, '/horarios'),
-            formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_7__["FormActions"])(),
-            editar: true
-          }, props));
-        },
-        modal: modal,
-        fetchHandler: Object(_formularios_HorarioFormulario__WEBPACK_IMPORTED_MODULE_3__["editFormHandler"])("/horarios/single/".concat(user.id, "/").concat(match.match.params.id))
-      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_formularios_HorarioFormulario__WEBPACK_IMPORTED_MODULE_2__["HorarioFormulario"], _extends({
+        data: props.data,
+        toggleModal: openModal,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].formulario(function () {
+          return false;
+        }, match.match.params.id, '/horarios'),
+        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
+        editar: true
+      }, match));
     }
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["Route"], {
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Route"], {
     path: "".concat(props.match.url, "/:id"),
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_RequestHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        component: function component(props) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerHorario__WEBPACK_IMPORTED_MODULE_5__["VerHorario"], _extends({
-            nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_7__["Navegacion"].singular(function () {
-              return false;
-            }, match.match.params.id, '/horarios'),
-            formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_7__["FormActions"])()
-          }, props));
-        },
-        modal: modal,
-        fetchHandler: Object(_sub_VerHorario__WEBPACK_IMPORTED_MODULE_5__["singleHandler"])("/horarios/single/".concat(user.id, "/").concat(match.match.params.id))
-      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerHorario__WEBPACK_IMPORTED_MODULE_4__["VerHorario"], _extends({
+        data: props.data,
+        toggleModal: openModal,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].singular(function () {
+          return false;
+        }, match.match.params.id, '/horarios'),
+        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])()
+      }, props));
     }
   })));
 }
@@ -92758,13 +92823,11 @@ var SelectFields = function SelectFields(props) {
 /*!****************************************************************************!*\
   !*** ./resources/js/escritorio/horarios/formularios/FeriadoFormulario.jsx ***!
   \****************************************************************************/
-/*! exports provided: editFormHandler, addFormHandler, FeriadoFormulario */
+/*! exports provided: FeriadoFormulario */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "editFormHandler", function() { return editFormHandler; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addFormHandler", function() { return addFormHandler; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FeriadoFormulario", function() { return FeriadoFormulario; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -92773,15 +92836,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Calendario__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Calendario */ "./resources/js/escritorio/horarios/Calendario.jsx");
 /* harmony import */ var _SelectFields__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../SelectFields */ "./resources/js/escritorio/horarios/SelectFields.jsx");
 /* harmony import */ var _EventoFields__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../EventoFields */ "./resources/js/escritorio/horarios/EventoFields.jsx");
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/input/Toggle */ "./resources/js/componentes/input/Toggle.jsx");
-/* harmony import */ var _componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../componentes/control/LoadBar */ "./resources/js/componentes/control/LoadBar.jsx");
-/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
-/* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
-/* harmony import */ var _utils_Helper__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../../utils/Helper */ "./resources/js/utils/Helper.jsx");
-/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/input/Toggle */ "./resources/js/componentes/input/Toggle.jsx");
+/* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var _utils_Helper__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../utils/Helper */ "./resources/js/utils/Helper.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -92815,90 +92874,34 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-
-
-
 /**
  * constants
  */
 
 
 
-/**
- * api
- */
-
-
-var editFormHandler = function editFormHandler(endpoint) {
-  return function (params) {
-    var _this = this;
-
-    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_13__["GET"])({
-      endpoint: endpoint,
-      download: this.downloadHandler
-    });
-    request.then(function (response) {
-      _this.setState({
-        data: {
-          date: new Date(response.data.feriados[0].fecha),
-          feriados: response.data.feriados[0],
-          eventos: response.data.eventos,
-          minutes: Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_12__["generateHoursFromInterval"])(response.data.intervalo),
-          side: response.data.feriados[0].estado === 'laboral'
-        },
-        loadFinished: true
-      });
-    })["catch"](function (error) {
-      console.log(error.message);
-    });
-  };
-};
-var addFormHandler = function addFormHandler(endpoint) {
-  return function (params) {
-    var _this2 = this;
-
-    var date = params.date ? params.date : new Date();
-    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_13__["GET"])({
-      endpoint: endpoint + (date.getMonth() + 1) + '/' + date.getFullYear(),
-      download: this.downloadHandler
-    });
-    request.then(function (response) {
-      _this2.setState({
-        data: {
-          date: date,
-          feriados: response.data.feriados.list,
-          eventos: response.data.eventos,
-          minutes: Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_12__["generateHoursFromInterval"])(response.data.intervalo)
-        },
-        loadFinished: true
-      });
-    })["catch"](function (error) {
-      console.log(error.message);
-    });
-  };
-};
 var FeriadoFormulario =
 /*#__PURE__*/
 function (_Component) {
   _inherits(FeriadoFormulario, _Component);
 
   function FeriadoFormulario(props) {
-    var _this3;
+    var _this;
 
     _classCallCheck(this, FeriadoFormulario);
 
-    _this3 = _possibleConstructorReturn(this, _getPrototypeOf(FeriadoFormulario).call(this, props));
-    _this3.state = {
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(FeriadoFormulario).call(this, props));
+    _this.state = {
       right: true,
       side: true
     };
-    _this3.changeToggleSide = _this3.changeToggleSide.bind(_assertThisInitialized(_this3));
-    _this3.enviarFormulario = _this3.enviarFormulario.bind(_assertThisInitialized(_this3));
-    _this3.cancelarFormulario = _this3.cancelarFormulario.bind(_assertThisInitialized(_this3));
-    if (_this3.props.editar) _this3.props.nav.buttons[0].click = _this3.toggleModal;
-    _this3.props.formActions.buttons.guardar.click = _this3.enviarFormulario;
-    _this3.props.formActions.buttons.cancelar.click = _this3.cancelarFormulario;
-    return _this3;
+    _this.changeToggleSide = _this.changeToggleSide.bind(_assertThisInitialized(_this));
+    _this.enviarFormulario = _this.enviarFormulario.bind(_assertThisInitialized(_this));
+    _this.cancelarFormulario = _this.cancelarFormulario.bind(_assertThisInitialized(_this));
+    if (_this.props.editar) _this.props.nav.buttons[0].click = _this.toggleModal;
+    _this.props.formActions.buttons.guardar.click = _this.enviarFormulario;
+    _this.props.formActions.buttons.cancelar.click = _this.cancelarFormulario;
+    return _this;
   }
 
   _createClass(FeriadoFormulario, [{
@@ -92927,13 +92930,13 @@ function (_Component) {
     key: "render",
     value: function render() {
       var data = this.props.data;
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_5__["default"], {
         title: this.props.editar ? data.feriados.nombre : "Agregar Feriado",
         links: this.props.nav.links,
         buttons: this.props.nav.buttons
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "bold"
-      }, this.props.editar ? _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_11__["MONTHS"][data.date.getMonth()] + " de " + data.date.getFullYear() : ""), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+      }, this.props.editar ? _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_8__["MONTHS"][data.date.getMonth()] + " de " + data.date.getFullYear() : ""), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         className: "full-width"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
@@ -92956,7 +92959,7 @@ function (_Component) {
         className: "row sub-title"
       }, data.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row justify-content-end"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_7__["Toggle"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_6__["Toggle"], {
         rightTitle: "Laboral",
         leftTitle: "No laboral",
         name: "estado",
@@ -92983,7 +92986,7 @@ function (_Component) {
         data: this.props.data.feriados
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row justify-content-end"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_7__["default"], {
         buttons: Object.values(this.props.formActions.buttons)
       })))));
     }
@@ -92998,13 +93001,11 @@ function (_Component) {
 /*!****************************************************************************!*\
   !*** ./resources/js/escritorio/horarios/formularios/HorarioFormulario.jsx ***!
   \****************************************************************************/
-/*! exports provided: editFormHandler, addFormHandler, HorarioFormulario */
+/*! exports provided: HorarioFormulario */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "editFormHandler", function() { return editFormHandler; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addFormHandler", function() { return addFormHandler; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HorarioFormulario", function() { return HorarioFormulario; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -93014,14 +93015,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
 /* harmony import */ var _SelectFields__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../SelectFields */ "./resources/js/escritorio/horarios/SelectFields.jsx");
 /* harmony import */ var _EventoFields__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../EventoFields */ "./resources/js/escritorio/horarios/EventoFields.jsx");
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/input/Toggle */ "./resources/js/componentes/input/Toggle.jsx");
-/* harmony import */ var _componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../componentes/control/LoadBar */ "./resources/js/componentes/control/LoadBar.jsx");
-/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
-/* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
-/* harmony import */ var _utils_Helper__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../../utils/Helper */ "./resources/js/utils/Helper.jsx");
-/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
+/* harmony import */ var _componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/input/Toggle */ "./resources/js/componentes/input/Toggle.jsx");
+/* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -93055,86 +93051,32 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-
-
-
 /**
  * constants
  */
 
 
-
-/**
- * api
- */
-
-
-var editFormHandler = function editFormHandler(endpoint) {
-  return function (params) {
-    var _this = this;
-
-    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_13__["GET"])({
-      endpoint: endpoint,
-      download: this.downloadHandler
-    });
-    request.then(function (response) {
-      _this.setState({
-        data: {
-          horarios: response.data.horarios[0],
-          eventos: response.data.eventos,
-          minutes: Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_12__["generateHoursFromInterval"])(response.data.intervalo),
-          side: response.data.horarios[0].estado === 'laboral'
-        },
-        loadFinished: true
-      });
-    })["catch"](function (error) {
-      console.log(error.message);
-    });
-  };
-};
-var addFormHandler = function addFormHandler(endpoint) {
-  return function (params) {
-    var _this2 = this;
-
-    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_13__["GET"])({
-      endpoint: endpoint,
-      download: this.downloadHandler
-    });
-    request.then(function (response) {
-      _this2.setState({
-        data: {
-          horarios: null,
-          eventos: response.data.eventos,
-          minutes: Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_12__["generateHoursFromInterval"])(response.data.intervalo)
-        },
-        loadFinished: true
-      });
-    })["catch"](function (error) {
-      console.log(error.message);
-    });
-  };
-};
 var HorarioFormulario =
 /*#__PURE__*/
 function (_Component) {
   _inherits(HorarioFormulario, _Component);
 
   function HorarioFormulario(props) {
-    var _this3;
+    var _this;
 
     _classCallCheck(this, HorarioFormulario);
 
-    _this3 = _possibleConstructorReturn(this, _getPrototypeOf(HorarioFormulario).call(this, props));
-    _this3.state = {
-      side: _this3.props.data ? _this3.props.data.side : true
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(HorarioFormulario).call(this, props));
+    _this.state = {
+      side: _this.props.data ? _this.props.data.side : true
     };
-    _this3.changeToggleSide = _this3.changeToggleSide.bind(_assertThisInitialized(_this3));
-    _this3.enviarFormulario = _this3.enviarFormulario.bind(_assertThisInitialized(_this3));
-    _this3.cancelarFormulario = _this3.cancelarFormulario.bind(_assertThisInitialized(_this3));
-    if (_this3.props.editar) _this3.props.nav.buttons[0].click = _this3.props.toggleModal;
-    _this3.props.formActions.buttons.guardar.click = _this3.enviarFormulario;
-    _this3.props.formActions.buttons.cancelar.click = _this3.cancelarFormulario;
-    return _this3;
+    _this.changeToggleSide = _this.changeToggleSide.bind(_assertThisInitialized(_this));
+    _this.enviarFormulario = _this.enviarFormulario.bind(_assertThisInitialized(_this));
+    _this.cancelarFormulario = _this.cancelarFormulario.bind(_assertThisInitialized(_this));
+    if (_this.props.editar) _this.props.nav.buttons[0].click = _this.props.toggleModal;
+    _this.props.formActions.buttons.guardar.click = _this.enviarFormulario;
+    _this.props.formActions.buttons.cancelar.click = _this.cancelarFormulario;
+    return _this;
   }
 
   _createClass(HorarioFormulario, [{
@@ -93150,9 +93092,6 @@ function (_Component) {
       console.log('guardar');
     }
   }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {}
-  }, {
     key: "changeToggleSide",
     value: function changeToggleSide(e) {
       this.setState({
@@ -93164,7 +93103,7 @@ function (_Component) {
     value: function render() {
       var data = this.props.data;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        title: this.props.editar ? "Editar horario del " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_11__["DAYS"][parseInt(data.horarios.diaSemana) - 1] : "Agregar horario al " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_11__["DAYS"][parseInt(this.props.match.params.day) - 1],
+        title: this.props.editar ? "Editar horario del " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_8__["DAYS"][parseInt(data.horarios.diaSemana) - 1] : "Agregar horario al " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_8__["DAYS"][parseInt(this.props.match.params.day) - 1],
         links: this.props.nav.links,
         buttons: this.props.nav.buttons
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
@@ -93187,7 +93126,7 @@ function (_Component) {
         className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row justify-content-end"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_7__["Toggle"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_6__["Toggle"], {
         rightTitle: "Laboral",
         leftTitle: "No laboral",
         name: "estado",
@@ -93206,7 +93145,7 @@ function (_Component) {
         data: data.horarios
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_7__["default"], {
         buttons: Object.values(this.props.formActions.buttons)
       }))))))));
     }
@@ -93221,25 +93160,20 @@ function (_Component) {
 /*!***********************************************************!*\
   !*** ./resources/js/escritorio/horarios/sub/Feriados.jsx ***!
   \***********************************************************/
-/*! exports provided: listHandler, Feriados */
+/*! exports provided: Feriados */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "listHandler", function() { return listHandler; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Feriados", function() { return Feriados; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _componentes_agenda_Agenda__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/agenda/Agenda */ "./resources/js/componentes/agenda/Agenda.jsx");
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
-/* harmony import */ var _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../constantes/CalendarControls */ "./resources/js/constantes/CalendarControls.jsx");
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
-/* harmony import */ var _componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../componentes/control/LoadBar */ "./resources/js/componentes/control/LoadBar.jsx");
-/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../constantes/CalendarControls */ "./resources/js/constantes/CalendarControls.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -93269,64 +93203,28 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-
-/**
- * function
- */
-
-
 /**
  * constants
  */
 
 
 
-
-/**
- * api
- */
-
-
-var listHandler = function listHandler(endpoint) {
-  return function (params) {
-    var _this = this;
-
-    var date = params.date || new Date(),
-        request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_9__["GET"])({
-      endpoint: endpoint + (date.getMonth() + 1) + '/' + date.getFullYear(),
-      download: this.downloadHandler
-    });
-    request.then(function (response) {
-      _this.setState({
-        data: {
-          date: date,
-          data: response.data.feriados.data || {},
-          intervalo: response.data.intervalo,
-          show: params.show || "2"
-        },
-        loadFinished: true
-      });
-    })["catch"](function (error) {
-      console.log(error.message);
-    });
-  };
-};
 var Feriados =
 /*#__PURE__*/
 function (_Component) {
   _inherits(Feriados, _Component);
 
   function Feriados(props) {
-    var _this2;
+    var _this;
 
     _classCallCheck(this, Feriados);
 
-    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(Feriados).call(this, props));
-    _this2.state = {
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Feriados).call(this, props));
+    _this.state = {
       show: "2",
-      controls: _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_6__["NO_DAY_CONTROL"]
+      controls: _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_4__["NO_DAY_CONTROL"]
     };
-    return _this2;
+    return _this;
   }
 
   _createClass(Feriados, [{
@@ -93351,7 +93249,7 @@ function (_Component) {
     key: "render",
     value: function render() {
       var data = this.props.data;
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
         title: "Feriados",
         links: this.props.nav.links
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -93365,6 +93263,7 @@ function (_Component) {
         },
         controls: this.state.controls,
         fetchNewMonth: this.props.fetch,
+        endpoint: "/horarios/feriados",
         data: data.data
       })));
     }
@@ -93379,42 +93278,19 @@ function (_Component) {
 /*!***********************************************************!*\
   !*** ./resources/js/escritorio/horarios/sub/Horarios.jsx ***!
   \***********************************************************/
-/*! exports provided: listHandler, Horarios */
+/*! exports provided: Horarios */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "listHandler", function() { return listHandler; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Horarios", function() { return Horarios; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_agenda_Agenda__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/agenda/Agenda */ "./resources/js/componentes/agenda/Agenda.jsx");
-/* harmony import */ var _componentes_basic_CardList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/CardList */ "./resources/js/componentes/basic/CardList.jsx");
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
-/* harmony import */ var _componentes_agenda_procedimientos_generateWeek__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/agenda/procedimientos/generateWeek */ "./resources/js/componentes/agenda/procedimientos/generateWeek.jsx");
-/* harmony import */ var _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../constantes/CalendarControls */ "./resources/js/constantes/CalendarControls.jsx");
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _componentes_agenda_procedimientos_generateWeek__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/agenda/procedimientos/generateWeek */ "./resources/js/componentes/agenda/procedimientos/generateWeek.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 /**
  * react basic
  */
@@ -93425,12 +93301,9 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  */
 
 
-
-
 /**
  * api
  */
-
 
 /**
  * function
@@ -93442,65 +93315,21 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  */
 
 
-
-var listHandler = function listHandler(endpoint) {
-  return function (params) {
-    var _this = this;
-
-    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_5__["GET"])({
-      endpoint: endpoint,
-      download: this.downloadHandler
-    });
-    request.then(function (response) {
-      _this.setState({
-        data: response.data.horarios.data,
-        loadFinished: true
-      });
-    })["catch"](function (error) {
-      console.log(error.message);
-    });
-  };
-};
-var Horarios =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(Horarios, _Component);
-
-  function Horarios(props) {
-    _classCallCheck(this, Horarios);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(Horarios).call(this, props));
-  }
-
-  _createClass(Horarios, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {}
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      console.log('horariosUnmount');
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var week = Object(_componentes_agenda_procedimientos_generateWeek__WEBPACK_IMPORTED_MODULE_6__["default"])(null, this.props.data, {
-        eliminar: this.props.toggleModal
-      }, 'horarios');
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        title: "Horarios"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-        className: "justify no-padding full-width flex-column nav-list h-center"
-      }, week.map(function (elem, index) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-          key: index,
-          className: elem["class"]
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(elem.content, null));
-      })));
-    }
-  }]);
-
-  return Horarios;
-}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+function Horarios(props) {
+  var week = Object(_componentes_agenda_procedimientos_generateWeek__WEBPACK_IMPORTED_MODULE_3__["default"])(null, props.data, {
+    eliminar: props.toggleModal
+  }, 'horarios');
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    title: "Horarios"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+    className: "justify no-padding full-width flex-column nav-list h-center"
+  }, week.map(function (elem, index) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+      key: index,
+      className: elem["class"]
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(elem.content, null));
+  })));
+}
 
 /***/ }),
 
@@ -93508,58 +93337,30 @@ function (_Component) {
 /*!*************************************************************!*\
   !*** ./resources/js/escritorio/horarios/sub/VerFeriado.jsx ***!
   \*************************************************************/
-/*! exports provided: singleHandler, VerFeriado */
+/*! exports provided: VerFeriado */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "singleHandler", function() { return singleHandler; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VerFeriado", function() { return VerFeriado; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var _componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/control/LoadBar */ "./resources/js/componentes/control/LoadBar.jsx");
-/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _Calendario__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Calendario */ "./resources/js/escritorio/horarios/Calendario.jsx");
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
-/* harmony import */ var _componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../componentes/basic/CommaList */ "./resources/js/componentes/basic/CommaList.jsx");
-/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
-/* harmony import */ var _componentes_tables_EventosTable__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../componentes/tables/EventosTable */ "./resources/js/componentes/tables/EventosTable.jsx");
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _Calendario__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Calendario */ "./resources/js/escritorio/horarios/Calendario.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var _componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/CommaList */ "./resources/js/componentes/basic/CommaList.jsx");
+/* harmony import */ var _componentes_tables_EventosTable__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/tables/EventosTable */ "./resources/js/componentes/tables/EventosTable.jsx");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
 /**
  * react basic
- */
-
-
-
-/**
- * sub elementos
  */
 
 
@@ -93573,145 +93374,87 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-
-var singleHandler = function singleHandler(endpoint) {
-  return function (params) {
-    var _this = this;
-
-    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_4__["GET"])({
-      endpoint: endpoint,
-      download: this.downloadHandler
+function VerFeriado(props) {
+  props.nav.buttons[0].click = props.toggleModal;
+  var data = props.data,
+      date = new Date(data.data.fecha),
+      estado = data.data.estado.replace('_', ' '),
+      eventos = Object.values(data.eventos.data).map(function (e) {
+    return _objectSpread({}, e, {
+      nombre: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+        to: "/eventos/" + e.id
+      }, e.nombre),
+      promociones: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_6__["CommaList"], {
+        list: e.promociones.list,
+        endpoint: '/promociones'
+      })
     });
-    request.then(function (response) {
-      console.log(response.data);
-
-      _this.setState({
-        data: {
-          data: response.data.feriados[0],
-          eventos: response.data.eventos,
-          intervalo: response.data.intervalo
-        },
-        loadFinished: true
-      });
-    })["catch"](function (error) {
-      console.log(error.message);
-    });
-  };
-};
-var VerFeriado =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(VerFeriado, _Component);
-
-  function VerFeriado(props) {
-    var _this2;
-
-    _classCallCheck(this, VerFeriado);
-
-    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(VerFeriado).call(this, props));
-    _this2.props.nav.buttons[0].click = _this2.props.toggleModal;
-    return _this2;
-  }
-
-  _createClass(VerFeriado, [{
-    key: "fetchData",
-    value: function fetchData() {}
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      this.fetchData();
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      console.log('localesUnmount');
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var data = this.props.data,
-          date = new Date(data.data.fecha),
-          estado = data.data.estado.replace('_', ' '),
-          eventos = Object.values(data.eventos.data).map(function (e) {
-        return _objectSpread({}, e, {
-          nombre: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
-            to: "/eventos/" + e.id
-          }, e.nombre),
-          promociones: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_8__["CommaList"], {
-            list: e.promociones.list,
-            endpoint: '/promociones'
-          })
-        });
-      });
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_5__["default"], {
-        title: data.data.nombre,
-        links: this.props.nav.links,
-        buttons: this.props.nav.buttons
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container full-width v-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row justify-content-end v-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "bold"
-      }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__["DAYS"][date.getDay()] + " " + date.getDate() + " de " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_7__["MONTHS"][date.getMonth()] + " del " + date.getFullYear()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Calendario__WEBPACK_IMPORTED_MODULE_6__["Calendario"], {
-        editar: true,
-        date: date,
-        data: data.data
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6 container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "h-padding row bold justify-content-end sub-title full-width"
-      }, "feriado " + estado), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "bold row light-danger"
-      }, "Horario de atenci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "bold side-margin"
-      }, "Apertura:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "side-margin"
-      }, data.data.apertura.atencion.hora + ":" + data.data.apertura.atencion.minuto + "hs")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "side-margin"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "bold side-margin"
-      }, "Cierre:"), data.data.cierre.atencion.hora + ":" + data.data.cierre.atencion.minuto + "hs"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row bold light-danger top-padding"
-      }, "Horario de reservas:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row "
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "bold side-margin"
-      }, "Apertura:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "side-margin"
-      }, data.data.apertura.reserva.hora + ":" + data.data.apertura.reserva.minuto + "hs")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "bold side-margin"
-      }, "Cierre:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "side-margin"
-      }, data.data.cierre.reserva.hora + ":" + data.data.cierre.reserva.minuto + "hs"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row top-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "bold light-danger"
-      }, "Descripci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.data.descripcion)))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-        className: "sub-title bold"
-      }, "Eventos"), eventos.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_tables_EventosTable__WEBPACK_IMPORTED_MODULE_10__["default"], {
-        data: eventos,
-        showPromociones: true
-      }) : "No hay eventos asociados")));
-    }
-  }]);
-
-  return VerFeriado;
-}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+  });
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    title: data.data.nombre,
+    links: props.nav.links,
+    buttons: props.nav.buttons
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container full-width v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row justify-content-end v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "bold"
+  }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__["DAYS"][date.getDay()] + " " + date.getDate() + " de " + _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__["MONTHS"][date.getMonth()] + " del " + date.getFullYear()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Calendario__WEBPACK_IMPORTED_MODULE_4__["Calendario"], {
+    editar: true,
+    date: date,
+    data: data.data
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6 container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "h-padding row bold justify-content-end sub-title full-width"
+  }, "feriado " + estado), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "bold row light-danger"
+  }, "Horario de atenci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "bold side-margin"
+  }, "Apertura:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "side-margin"
+  }, data.data.apertura.atencion.hora + ":" + data.data.apertura.atencion.minuto + "hs")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "side-margin"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "bold side-margin"
+  }, "Cierre:"), data.data.cierre.atencion.hora + ":" + data.data.cierre.atencion.minuto + "hs"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row bold light-danger top-padding"
+  }, "Horario de reservas:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row "
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "bold side-margin"
+  }, "Apertura:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "side-margin"
+  }, data.data.apertura.reserva.hora + ":" + data.data.apertura.reserva.minuto + "hs")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "bold side-margin"
+  }, "Cierre:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "side-margin"
+  }, data.data.cierre.reserva.hora + ":" + data.data.cierre.reserva.minuto + "hs"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row top-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "bold light-danger"
+  }, "Descripci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.data.descripcion)))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "sub-title bold"
+  }, "Eventos"), eventos.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_tables_EventosTable__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    data: eventos,
+    showPromociones: true
+  }) : "No hay eventos asociados")));
+}
 
 /***/ }),
 
@@ -93719,12 +93462,11 @@ function (_Component) {
 /*!*************************************************************!*\
   !*** ./resources/js/escritorio/horarios/sub/VerHorario.jsx ***!
   \*************************************************************/
-/*! exports provided: singleHandler, VerHorario */
+/*! exports provided: VerHorario */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "singleHandler", function() { return singleHandler; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VerHorario", function() { return VerHorario; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -93735,30 +93477,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 /* harmony import */ var _componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/basic/CommaList */ "./resources/js/componentes/basic/CommaList.jsx");
 /* harmony import */ var _componentes_tables_EventosTable__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/tables/EventosTable */ "./resources/js/componentes/tables/EventosTable.jsx");
-/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 /**
  * react basic
@@ -93778,123 +93501,76 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-
-var singleHandler = function singleHandler(endpoint) {
-  return function (params) {
-    var _this = this;
-
-    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_7__["GET"])({
-      endpoint: endpoint,
-      download: this.downloadHandler
+function VerHorario(props) {
+  props.nav.buttons[0].click = props.toggleModal;
+  var data = props.data,
+      estado = data.estado.replace('_', ' '),
+      eventos = Object.values(data.eventos.data).map(function (e) {
+    return _objectSpread({}, e, {
+      nombre: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+        to: "/eventos/" + e.id
+      }, e.nombre),
+      promociones: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_5__["CommaList"], {
+        list: e.promociones.list,
+        endpoint: '/promociones'
+      })
     });
-    request.then(function (response) {
-      _this.setState({
-        data: response.data.horarios[0],
-        loadFinished: true
-      });
-    })["catch"](function (error) {
-      console.log(error.message);
-    });
-  };
-};
-var VerHorario =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(VerHorario, _Component);
-
-  function VerHorario(props) {
-    var _this2;
-
-    _classCallCheck(this, VerHorario);
-
-    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(VerHorario).call(this, props));
-    _this2.props.nav.buttons[0].click = _this2.props.toggleModal;
-    return _this2;
-  }
-
-  _createClass(VerHorario, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {}
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      console.log('localesUnmount');
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var data = this.props.data,
-          estado = data.estado.replace('_', ' '),
-          eventos = Object.values(data.eventos.data).map(function (e) {
-        return _objectSpread({}, e, {
-          nombre: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
-            to: "/eventos/" + e.id
-          }, e.nombre),
-          promociones: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_5__["CommaList"], {
-            list: e.promociones.list,
-            endpoint: '/promociones'
-          })
-        });
-      });
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        title: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_4__["DAYS"][data.diaSemana - 1],
-        links: this.props.nav.links,
-        buttons: this.props.nav.buttons
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row bold sub-title justify-content-end"
-      }, "día " + estado), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row "
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6 container-fluid"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "bold row light-danger side-margin"
-      }, "Horario de atenci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "bold side-margin"
-      }, "Apertura:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "side-margin"
-      }, data.apertura.atencion.hora + ":" + data.apertura.atencion.minuto + "hs")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "bold side-margin"
-      }, "Cierre:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "side-margin"
-      }, data.cierre.atencion.hora + ":" + data.cierre.atencion.minuto + "hs")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6 container-fluid"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row bold light-danger side-margin top-padding"
-      }, "Horario de reservas:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row medium-left-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "bold side-margin"
-      }, "Apertura:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "side-margin"
-      }, data.apertura.reserva.hora + ":" + data.apertura.reserva.minuto + "hs")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "bold side-margin"
-      }, "Cierre:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "side-margin"
-      }, data.cierre.reserva.hora + ":" + data.cierre.reserva.minuto + "hs"))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row v-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-        className: "sub-title bold"
-      }, "Eventos"), eventos.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_tables_EventosTable__WEBPACK_IMPORTED_MODULE_6__["default"], {
-        data: eventos,
-        showPromociones: true
-      }) : "No hay eventos asociados")));
-    }
-  }]);
-
-  return VerHorario;
-}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+  });
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    title: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_4__["DAYS"][data.diaSemana - 1],
+    links: props.nav.links,
+    buttons: props.nav.buttons
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row bold sub-title justify-content-end"
+  }, "día " + estado), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row "
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6 container-fluid"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "bold row light-danger side-margin"
+  }, "Horario de atenci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "bold side-margin"
+  }, "Apertura:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "side-margin"
+  }, data.apertura.atencion.hora + ":" + data.apertura.atencion.minuto + "hs")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "bold side-margin"
+  }, "Cierre:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "side-margin"
+  }, data.cierre.atencion.hora + ":" + data.cierre.atencion.minuto + "hs")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6 container-fluid"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row bold light-danger side-margin top-padding"
+  }, "Horario de reservas:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row medium-left-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "bold side-margin"
+  }, "Apertura:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "side-margin"
+  }, data.apertura.reserva.hora + ":" + data.apertura.reserva.minuto + "hs")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "bold side-margin"
+  }, "Cierre:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "side-margin"
+  }, data.cierre.reserva.hora + ":" + data.cierre.reserva.minuto + "hs"))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "sub-title bold"
+  }, "Eventos"), eventos.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_tables_EventosTable__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    data: eventos,
+    showPromociones: true
+  }) : "No hay eventos asociados")));
+}
 
 /***/ }),
 
@@ -93979,13 +93655,12 @@ var FormularioFranquicia = function FormularioFranquicia(props) {
 /*!************************************************************!*\
   !*** ./resources/js/escritorio/locales/LocalesRouting.jsx ***!
   \************************************************************/
-/*! exports provided: handlers, default */
+/*! exports provided: LocalesRouting */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handlers", function() { return handlers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return LocalesRouting; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LocalesRouting", function() { return LocalesRouting; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -94018,40 +93693,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-/**
- * sub elementos
- */
 
 
 
 
 
-
-var handlers = [{
-  endpoint: '/locales',
-  match: /\/locales$/,
-  callback: function callback(params) {
-    return Object(_sub_Locales__WEBPACK_IMPORTED_MODULE_5__["listHandler"])("/usuario/locales/".concat(user.id));
-  }
-}, {
-  endpoint: '/locales/agregar',
-  match: /\/locales\/(agregar)$/,
-  callback: function callback(params) {
-    return Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["addFormHandler"])("/usuario/add/".concat(user.id, "/1"));
-  }
-}, {
-  endpoint: '/locales/editar/:id',
-  match: /\/locales\/(editar\/\d+)$/,
-  callback: function callback(params) {
-    return Object(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["editFormHandler"])("/usuario/local/".concat(match.match.params.id));
-  }
-}, {
-  endpoint: '/locales/:id',
-  match: /\/locales\/(\d+)$/,
-  callback: function callback(params) {
-    return Object(_sub_VerLocal__WEBPACK_IMPORTED_MODULE_6__["singleHandler"])("/usuario/local/".concat(match.match.params.id));
-  }
-}];
 function LocalesRouting(props) {
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -94084,7 +93730,7 @@ function LocalesRouting(props) {
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "".concat(props.match.url, "/editar/:id"),
     exact: true,
-    component: function component(match) {
+    render: function render(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["Formulario"], _extends({
         editar: true,
         data: props.data,
@@ -94097,7 +93743,7 @@ function LocalesRouting(props) {
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "".concat(props.match.url, "/agregar"),
-    component: function component(match) {
+    render: function render(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["Formulario"], _extends({
         editar: false,
         data: props.data,
@@ -94108,7 +93754,7 @@ function LocalesRouting(props) {
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "".concat(props.match.url, "/:id"),
-    component: function component(match) {
+    render: function render(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerLocal__WEBPACK_IMPORTED_MODULE_6__["VerLocal"], _extends({
         data: props.data,
         toggleModal: openModal,
@@ -94126,13 +93772,11 @@ function LocalesRouting(props) {
 /*!************************************************************!*\
   !*** ./resources/js/escritorio/locales/sub/Formulario.jsx ***!
   \************************************************************/
-/*! exports provided: editFormHandler, addFormHandler, Formulario */
+/*! exports provided: Formulario */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "editFormHandler", function() { return editFormHandler; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addFormHandler", function() { return addFormHandler; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Formulario", function() { return Formulario; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -94189,69 +93833,23 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var editFormHandler = function editFormHandler(endpoint) {
-  return function (params) {
-    var _this = this;
-
-    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
-      endpoint: endpoint,
-      download: this.downloadHandler
-    });
-    request.then(function (response) {
-      var data = response.data.data;
-
-      _this.setState({
-        data: data,
-        loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
-      });
-    })["catch"](function (error) {
-      console.log(error.message);
-    });
-  };
-};
-var addFormHandler = function addFormHandler(endpoint) {
-  return function (params) {
-    var _this2 = this;
-
-    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
-      endpoint: endpoint,
-      download: this.props.downloadHandler
-    });
-    request.then(function (response) {
-      var data = response.data.usuarios.list;
-
-      _this2.setState({
-        data: data,
-        loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
-      });
-    })["catch"](function (error) {
-      console.log(error.message);
-    });
-  };
-};
 var Formulario =
 /*#__PURE__*/
 function (_Component) {
   _inherits(Formulario, _Component);
 
   function Formulario(props) {
-    var _this3;
+    var _this;
 
     _classCallCheck(this, Formulario);
 
-    _this3 = _possibleConstructorReturn(this, _getPrototypeOf(Formulario).call(this, props));
-    _this3.enviarFormulario = _this3.enviarFormulario.bind(_assertThisInitialized(_this3));
-    _this3.cancelarFormulario = _this3.cancelarFormulario.bind(_assertThisInitialized(_this3));
-    if (_this3.props.editar) _this3.props.nav.buttons[0].click = _this3.props.toggleModal;
-    _this3.props.formActions.buttons.cancelar.click = _this3.cancelarFormulario;
-    _this3.props.formActions.buttons.guardar.click = _this3.enviarFormulario;
-    return _this3;
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Formulario).call(this, props));
+    _this.enviarFormulario = _this.enviarFormulario.bind(_assertThisInitialized(_this));
+    _this.cancelarFormulario = _this.cancelarFormulario.bind(_assertThisInitialized(_this));
+    if (_this.props.editar) _this.props.nav.buttons[0].click = _this.props.toggleModal;
+    _this.props.formActions.buttons.cancelar.click = _this.cancelarFormulario;
+    _this.props.formActions.buttons.guardar.click = _this.enviarFormulario;
+    return _this;
   }
 
   _createClass(Formulario, [{
@@ -94307,12 +93905,11 @@ function (_Component) {
 /*!*********************************************************!*\
   !*** ./resources/js/escritorio/locales/sub/Locales.jsx ***!
   \*********************************************************/
-/*! exports provided: listHandler, Locales */
+/*! exports provided: Locales */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "listHandler", function() { return listHandler; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Locales", function() { return Locales; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -94353,27 +93950,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-var listHandler = function listHandler(endpoint) {
-  return function (params) {
-    var _this = this;
-
-    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_4__["GET"])({
-      endpoint: endpoint,
-      download: this.downloadHandler
-    });
-    request.then(function (response) {
-      _this.setState({
-        data: response.data.locales.data,
-        loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
-      });
-    })["catch"](function (error) {
-      console.log(error.message);
-    });
-  };
-};
 
 var links = function links(key) {
   return [{
@@ -94382,14 +93958,20 @@ var links = function links(key) {
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
       className: "fas fa-eye"
     }), "Ver"),
-    to: '/locales/' + key
+    to: '/locales/' + key,
+    params: {
+      id: key
+    }
   }, {
     title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "smaller-text text bold"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
       className: "fas fa-pen"
     }), "Editar"),
-    to: '/locales/editar/' + key
+    to: '/locales/editar/' + key,
+    params: {
+      id: key
+    }
   }];
 };
 
@@ -94420,12 +94002,11 @@ function Locales(props) {
 /*!**********************************************************!*\
   !*** ./resources/js/escritorio/locales/sub/VerLocal.jsx ***!
   \**********************************************************/
-/*! exports provided: singleHandler, VerLocal */
+/*! exports provided: VerLocal */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "singleHandler", function() { return singleHandler; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VerLocal", function() { return VerLocal; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -94458,27 +94039,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var singleHandler = function singleHandler(endpoint) {
-  return function (params) {
-    var _this = this;
-
-    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
-      endpoint: endpoint,
-      download: this.downloadHandler
-    });
-    request.then(function (response) {
-      _this.setState({
-        data: response.data.data,
-        loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
-      });
-    })["catch"](function (error) {
-      console.log(error.message);
-    });
-  };
-};
 
 var links = function links(key) {
   return [{
@@ -94487,14 +94047,20 @@ var links = function links(key) {
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
       className: "fas fa-eye"
     }), "Ver"),
-    to: '/franquicias/' + key
+    to: '/franquicias/' + key,
+    params: {
+      id: key
+    }
   }, {
     title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "smaller-text text bold"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
       className: "fas fa-pen"
     }), "Editar"),
-    to: '/franquicias/editar/' + key
+    to: '/franquicias/editar/' + key,
+    params: {
+      id: key
+    }
   }];
 };
 
@@ -94502,12 +94068,13 @@ function VerLocal(props) {
   var data = props.data;
   props.nav.buttons[0].click = props.toggleModal;
   data.franquicia.acciones = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    otherSection: true,
     links: links(data.franquicia.id)
   });
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_5__["default"], {
     title: data.nombre,
-    links: this.props.nav.links,
-    buttons: this.props.nav.buttons
+    links: props.nav.links,
+    buttons: props.nav.buttons
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -95048,15 +94615,15 @@ var generateList = function generateList(list) {
 function VerPromocion(props) {
   props.nav.buttons[0].click = props.toggleModal;
 
-  var eventos = generateList(this.props.data.eventos.data, '/eventos'),
-      data = _objectSpread({}, this.props.data, {
+  var eventos = generateList(props.data.eventos.data, '/eventos'),
+      data = _objectSpread({}, props.data, {
     eventos: eventos
   });
 
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__["default"], {
     title: data.nombre,
-    links: this.props.nav.links,
-    buttons: this.props.nav.buttons
+    links: props.nav.links,
+    buttons: props.nav.buttons
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container full-width "
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -95321,21 +94888,19 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Calendario).call(this, props));
     _this.state = {
-      date: new Date(),
-      controls: _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_7__["NO_WEEK_CONTROLS"]
+      date: _this.props.data.date,
+      controls: _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_7__["NO_WEEK_CONTROLS"],
+      show: "1"
     };
     _this.verReserva = _this.verReserva.bind(_assertThisInitialized(_this));
     _this.aceptarReserva = _this.aceptarReserva.bind(_assertThisInitialized(_this));
     _this.rechazarReserva = _this.rechazarReserva.bind(_assertThisInitialized(_this));
     _this.revertirReserva = _this.revertirReserva.bind(_assertThisInitialized(_this));
     _this.actions = {
-      outer: null,
-      inner: {
-        ver: _this.verReserva,
-        aceptar: _this.aceptarReserva,
-        rechazar: _this.rechazarReserva,
-        revertir: _this.revertirReserva
-      }
+      ver: _this.verReserva,
+      aceptar: _this.aceptarReserva,
+      rechazar: _this.rechazarReserva,
+      revertir: _this.revertirReserva
     };
     return _this;
   }
@@ -95357,8 +94922,15 @@ function (_Component) {
     }
   }, {
     key: "verReserva",
-    value: function verReserva() {
-      console.log('verReserva');
+    value: function verReserva(e) {
+      e.preventDefault();
+      var date = new Date(e.currentTarget.getAttribute('data')),
+          show = this.state.show,
+          controls = this.state.controls;
+      this.setState({
+        date: date,
+        show: "3"
+      });
     }
   }, {
     key: "componentWillUnmount",
@@ -95375,15 +94947,16 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_agenda_Agenda__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        show: data.show,
+        show: this.state.show,
         horariosReserva: data.horarios,
-        date: data.date,
+        date: this.state.date,
         weekRender: true,
         dayRender: true,
         actions: this.actions,
         controls: this.state.controls,
         data: data.data,
         type: "reservas",
+        endpoint: "/reservas",
         fetchNewMonth: this.props.fetch
       })));
     }
@@ -95411,6 +94984,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _reserva_pasos_evento_EventoFrame__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../reserva/pasos/evento/EventoFrame */ "./resources/js/reserva/pasos/evento/EventoFrame.jsx");
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
 /* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
+/* harmony import */ var _hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../hocs/RouterTransition */ "./resources/js/hocs/RouterTransition.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -95429,6 +95003,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /**
  * react basic
  */
@@ -95437,6 +95013,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 /**
  * components
  */
+
 
 
 
@@ -95496,7 +95073,7 @@ function (_Component) {
         displayTitles: false,
         current: true,
         fecha: data.date,
-        fetch: this.props.fetch,
+        fetch: this.context,
         data: data.data,
         formActions: this.props.formActions
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -95509,6 +95086,8 @@ function (_Component) {
 
   return Formulario;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+_defineProperty(Formulario, "contextType", _hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_5__["WaitsLoading"]);
 
 /***/ }),
 
@@ -95772,10 +95351,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
  */
 
 
-
-/**
- * sub elementos
- */
 
 
 
@@ -96226,6 +95801,328 @@ function generateUbicacionesCard(ubicaciones, actions) {
 
 /***/ }),
 
+/***/ "./resources/js/handlers/eventosHandlers.jsx":
+/*!***************************************************!*\
+  !*** ./resources/js/handlers/eventosHandlers.jsx ***!
+  \***************************************************/
+/*! exports provided: handlers */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handlers", function() { return handlers; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/api */ "./resources/js/utils/api.jsx");
+/* harmony import */ var _escritorio_eventos_sub_generateEventosCard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../escritorio/eventos/sub/generateEventosCard */ "./resources/js/escritorio/eventos/sub/generateEventosCard.jsx");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+var handlers = [{
+  endpoint: '/eventos',
+  match: /\/eventos$/,
+  callback: function callback(params) {
+    return listHandler("/eventos/list/".concat(user.id), "/eventos");
+  }
+}, {
+  endpoint: '/eventos/agregar',
+  match: /\/eventos\/(agregar)$/,
+  callback: function callback(params) {
+    return addFormHandler("/eventos/add/".concat(user.id), "/eventos/agregar");
+  }
+}, {
+  endpoint: '/eventos/editar/:id',
+  match: /\/eventos\/(editar\/\d+)$/,
+  callback: function callback(params) {
+    return editFormHandler("eventos/single/".concat(user.id, "/").concat(params.id), "/eventos/editar/".concat(params.id));
+  }
+}, {
+  endpoint: '/eventos/:id',
+  match: /\/eventos\/(\d+)$/,
+  callback: function callback(params) {
+    return singleHandler("/eventos/single/".concat(user.id, "/").concat(params.id), "/eventos/".concat(params.id));
+  }
+}];
+
+var editFormHandler = function editFormHandler(endpoint, location) {
+  return function (params) {
+    var _this = this;
+
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
+      endpoint: endpoint,
+      download: this.downloadHandler
+    });
+    request.then(function (response) {
+      var data = {
+        selected: response.data.eventos[0],
+        all: {
+          feriados: response.data.feriados,
+          horarios: response.data.horarios,
+          promociones: response.data.promociones
+        }
+      };
+      data.selected.horarios.list = Object(_escritorio_eventos_sub_generateEventosCard__WEBPACK_IMPORTED_MODULE_4__["assignHorarios"])(data.selected.horarios.list)[0];
+      data.all.horarios.list = Object(_escritorio_eventos_sub_generateEventosCard__WEBPACK_IMPORTED_MODULE_4__["assignHorarios"])(data.all.horarios.list)[0];
+
+      _this.setState({
+        data: _objectSpread({}, data),
+        loadFinished: true,
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+          to: location
+        })
+      });
+    })["catch"](function (error) {
+      console.log(error.message);
+    });
+  };
+};
+
+var addFormHandler = function addFormHandler(endpoint, location) {
+  return function (params) {
+    var _this2 = this;
+
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
+      endpoint: endpoint,
+      download: this.downloadHandler
+    });
+    request.then(function (response) {
+      var data = {};
+      data = response.data;
+      data.horarios.list = Object(_escritorio_eventos_sub_generateEventosCard__WEBPACK_IMPORTED_MODULE_4__["assignHorarios"])(data.horarios.list)[0];
+
+      _this2.setState({
+        data: _objectSpread({}, data),
+        loadFinished: true,
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+          to: location
+        })
+      });
+    })["catch"](function (error) {
+      console.log(error.message);
+    });
+  };
+};
+
+var listHandler = function listHandler(endpoint, location) {
+  return function (params) {
+    var _this3 = this;
+
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
+      endpoint: endpoint,
+      download: this.downloadHandler
+    });
+    request.then(function (response) {
+      _this3.setState({
+        data: response.data.eventos.data,
+        loadFinished: true,
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+          to: location
+        })
+      });
+    })["catch"](function (error) {
+      console.log(error.message);
+    });
+  };
+};
+
+var singleHandler = function singleHandler(endpoint, location) {
+  return function (params) {
+    var _this4 = this;
+
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
+      endpoint: endpoint,
+      download: this.downloadHandler
+    });
+    request.then(function (response) {
+      _this4.setState({
+        data: response.data.eventos[0],
+        loadFinished: true,
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+          to: location
+        })
+      });
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  };
+};
+
+/***/ }),
+
+/***/ "./resources/js/handlers/feriadosHandlers.jsx":
+/*!****************************************************!*\
+  !*** ./resources/js/handlers/feriadosHandlers.jsx ***!
+  \****************************************************/
+/*! exports provided: handlers, editFormHandler, addFormHandler, listHandler, singleHandler */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handlers", function() { return handlers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "editFormHandler", function() { return editFormHandler; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addFormHandler", function() { return addFormHandler; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "listHandler", function() { return listHandler; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "singleHandler", function() { return singleHandler; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/api */ "./resources/js/utils/api.jsx");
+/* harmony import */ var _utils_Helper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/Helper */ "./resources/js/utils/Helper.jsx");
+
+
+
+
+
+var handlers = [{
+  endpoint: "/horarios/feriados",
+  match: /(\/horarios\/feriados)$/,
+  callback: function callback(params) {
+    return listHandler("/feriados/list/".concat(user.id, "/"), "/horarios/feriados");
+  }
+}, {
+  endpoint: "/horarios/feriados/agregar",
+  match: /\/(horarios\/feriados\/agregar)$/,
+  callback: function callback(params) {
+    return addFormHandler("/feriados/add/".concat(user.id, "/"), "/horarios/feriados/agregar");
+  }
+}, {
+  endpoint: "/horarios/feriados/editar/:id",
+  match: /\/horarios\/(feriados\/editar\/\d+)$/,
+  callback: function callback(params) {
+    return editFormHandler("/feriados/single/".concat(user.id, "/").concat(params.id), "/horarios/feriados/editar/".concat(params.id));
+  }
+}, {
+  endpoint: "/horarios/feriados/:id",
+  match: /\/horarios\/feriados\/(\d+)$/,
+  callback: function callback(params) {
+    return singleHandler("/feriados/single/".concat(user.id, "/").concat(params.id), "/horarios/feriados/".concat(params.id));
+  }
+}];
+var editFormHandler = function editFormHandler(endpoint, location) {
+  return function (params) {
+    var _this = this;
+
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
+      endpoint: endpoint,
+      download: this.downloadHandler
+    });
+    request.then(function (response) {
+      _this.setState({
+        data: {
+          date: new Date(response.data.feriados[0].fecha),
+          feriados: response.data.feriados[0],
+          eventos: response.data.eventos,
+          minutes: Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_4__["generateHoursFromInterval"])(response.data.intervalo),
+          side: response.data.feriados[0].estado === 'laboral'
+        },
+        loadFinished: true,
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+          to: location
+        }),
+        refresh: true
+      });
+    })["catch"](function (error) {
+      console.log(error.message);
+    });
+  };
+};
+var addFormHandler = function addFormHandler(endpoint, location) {
+  return function (params) {
+    var _this2 = this;
+
+    var date = params.date ? params.date : new Date();
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
+      endpoint: endpoint + (date.getMonth() + 1) + '/' + date.getFullYear(),
+      download: this.downloadHandler
+    });
+    request.then(function (response) {
+      _this2.setState({
+        data: {
+          date: date,
+          feriados: response.data.feriados.list,
+          eventos: response.data.eventos,
+          minutes: Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_4__["generateHoursFromInterval"])(response.data.intervalo)
+        },
+        loadFinished: true,
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+          to: location
+        }),
+        refresh: true
+      });
+    })["catch"](function (error) {
+      console.log(error.message);
+    });
+  };
+};
+var listHandler = function listHandler(endpoint, location) {
+  return function (params) {
+    var _this3 = this;
+
+    var date = params.date || new Date(),
+        request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
+      endpoint: endpoint + (date.getMonth() + 1) + '/' + date.getFullYear(),
+      download: this.downloadHandler
+    });
+    request.then(function (response) {
+      _this3.setState({
+        data: {
+          date: date,
+          data: response.data.feriados.data || {},
+          intervalo: response.data.intervalo,
+          show: params.show || "2"
+        },
+        loadFinished: true,
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+          to: location
+        }),
+        refresh: true
+      });
+    })["catch"](function (error) {
+      console.log(error.message);
+    });
+  };
+};
+var singleHandler = function singleHandler(endpoint, location) {
+  return function (params) {
+    var _this4 = this;
+
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
+      endpoint: endpoint,
+      download: this.downloadHandler
+    });
+    request.then(function (response) {
+      _this4.setState({
+        data: {
+          data: response.data.feriados[0],
+          eventos: response.data.eventos,
+          intervalo: response.data.intervalo
+        },
+        loadFinished: true,
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+          to: location
+        })
+      });
+    })["catch"](function (error) {
+      console.log(error.message);
+    });
+  };
+};
+
+/***/ }),
+
 /***/ "./resources/js/handlers/franquiciasHandlers.jsx":
 /*!*******************************************************!*\
   !*** ./resources/js/handlers/franquiciasHandlers.jsx ***!
@@ -96252,7 +96149,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var handlers = [{
   endpoint: '/franquicias',
-  match: /\/franquicias/,
+  match: /\/franquicias$/,
   callback: function callback(params) {
     return listHandler("/usuario/franquicias/".concat(user.id), "/franquicias");
   }
@@ -96266,13 +96163,13 @@ var handlers = [{
   endpoint: '/franquicias/editar/:id',
   match: /\/franquicias\/(editar\/\d+)$/,
   callback: function callback(params) {
-    return editFormHandler("/usuario/franquicia/".concat(match.match.params.id));
+    return editFormHandler("/usuario/franquicia/".concat(params.id), "/franquicias/editar/".concat(params.id));
   }
 }, {
   endpoint: '/franquicias/:id',
   match: /\/franquicias\/(\d+)$/,
   callback: function callback(params) {
-    return singleHandler("/usuario/franquicia/".concat(match.match.params.id));
+    return singleHandler("/usuario/franquicia/".concat(params.id), "/franquicias/".concat(params.id));
   }
 }];
 var editFormHandler = function editFormHandler(endpoint, location) {
@@ -96286,6 +96183,7 @@ var editFormHandler = function editFormHandler(endpoint, location) {
     request.then(function (response) {
       _this.setState({
         data: response.data.data,
+        loadFinished: true,
         redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
           to: location
         })
@@ -96298,7 +96196,7 @@ var editFormHandler = function editFormHandler(endpoint, location) {
 var addFormHandler = function addFormHandler(endpoint, location) {
   return function (params) {
     this.setState({
-      data: {},
+      data: true,
       loadFinished: true,
       redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
         to: location
@@ -96317,6 +96215,7 @@ var listHandler = function listHandler(endpoint, location) {
     request.then(function (response) {
       _this2.setState({
         data: response.data.usuarios.data,
+        loadFinished: true,
         redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
           to: location
         })
@@ -96330,11 +96229,6 @@ var singleHandler = function singleHandler(endpoint, location) {
   return function (params) {
     var _this3 = this;
 
-    this.setState({
-      data: null,
-      isLoading: true,
-      loadFinished: false
-    });
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
@@ -96342,6 +96236,294 @@ var singleHandler = function singleHandler(endpoint, location) {
     request.then(function (response) {
       _this3.setState({
         data: response.data.data,
+        loadFinished: true,
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+          to: location
+        })
+      });
+    })["catch"](function (error) {
+      console.log(error.message);
+    });
+  };
+};
+
+/***/ }),
+
+/***/ "./resources/js/handlers/horariosHandlers.jsx":
+/*!****************************************************!*\
+  !*** ./resources/js/handlers/horariosHandlers.jsx ***!
+  \****************************************************/
+/*! exports provided: handlers */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handlers", function() { return handlers; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/api */ "./resources/js/utils/api.jsx");
+/* harmony import */ var _utils_Helper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/Helper */ "./resources/js/utils/Helper.jsx");
+
+
+
+
+
+var handlers = [{
+  endpoint: '/horarios',
+  match: /\/horarios$/,
+  callback: function callback(params) {
+    return listHandler("/horarios/list/".concat(user.id), "/horarios");
+  }
+}, {
+  endpoint: '/horarios/agregar/:day',
+  match: /\/horarios\/(agregar\/\d+)$/,
+  callback: function callback(params) {
+    return addFormHandler("/horarios/add/".concat(user.id), "/horarios/agregar/".concat(params.day));
+  }
+}, {
+  endpoint: '/horarios/editar/:id',
+  match: /\/horarios\/(editar\/\d+)$/,
+  callback: function callback(params) {
+    return editFormHandler("/horarios/single/".concat(user.id, "/").concat(params.id), "/horarios/editar/".concat(params.id));
+  }
+}, {
+  endpoint: '/horarios/:id',
+  match: /\/horarios\/(\d+)$/,
+  callback: function callback(params) {
+    return singleHandler("/horarios/single/".concat(user.id, "/").concat(params.id), "/horarios/".concat(params.id));
+  }
+}];
+
+var editFormHandler = function editFormHandler(endpoint, location) {
+  return function (params) {
+    var _this = this;
+
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
+      endpoint: endpoint,
+      download: this.downloadHandler
+    });
+    request.then(function (response) {
+      _this.setState({
+        data: {
+          horarios: response.data.horarios[0],
+          eventos: response.data.eventos,
+          minutes: Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_4__["generateHoursFromInterval"])(response.data.intervalo),
+          side: response.data.horarios[0].estado === 'laboral'
+        },
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+          to: location
+        }),
+        loadFinished: true
+      });
+    })["catch"](function (error) {
+      console.log(error.message);
+    });
+  };
+};
+
+var addFormHandler = function addFormHandler(endpoint, location) {
+  return function (params) {
+    var _this2 = this;
+
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
+      endpoint: endpoint,
+      download: this.downloadHandler
+    });
+    request.then(function (response) {
+      _this2.setState({
+        data: {
+          horarios: null,
+          eventos: response.data.eventos,
+          minutes: Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_4__["generateHoursFromInterval"])(response.data.intervalo)
+        },
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+          to: location
+        }),
+        loadFinished: true
+      });
+    })["catch"](function (error) {
+      console.log(error.message);
+    });
+  };
+};
+
+var listHandler = function listHandler(endpoint, location) {
+  return function (params) {
+    var _this3 = this;
+
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
+      endpoint: endpoint,
+      download: this.downloadHandler
+    });
+    request.then(function (response) {
+      _this3.setState({
+        data: response.data.horarios.data,
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+          to: location
+        }),
+        loadFinished: true
+      });
+    })["catch"](function (error) {
+      console.log(error.message);
+    });
+  };
+};
+
+var singleHandler = function singleHandler(endpoint, location) {
+  return function (params) {
+    var _this4 = this;
+
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
+      endpoint: endpoint,
+      download: this.downloadHandler
+    });
+    request.then(function (response) {
+      _this4.setState({
+        data: response.data.horarios[0],
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+          to: location
+        }),
+        loadFinished: true
+      });
+    })["catch"](function (error) {
+      console.log(error.message);
+    });
+  };
+};
+
+/***/ }),
+
+/***/ "./resources/js/handlers/localesHandlers.jsx":
+/*!***************************************************!*\
+  !*** ./resources/js/handlers/localesHandlers.jsx ***!
+  \***************************************************/
+/*! exports provided: handlers, editFormHandler, addFormHandler, listHandler, singleHandler */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handlers", function() { return handlers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "editFormHandler", function() { return editFormHandler; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addFormHandler", function() { return addFormHandler; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "listHandler", function() { return listHandler; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "singleHandler", function() { return singleHandler; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/api */ "./resources/js/utils/api.jsx");
+
+
+
+
+var handlers = [{
+  endpoint: '/locales',
+  match: /\/locales$/,
+  callback: function callback(params) {
+    return listHandler("/usuario/locales/".concat(user.id), '/locales');
+  }
+}, {
+  endpoint: '/locales/agregar',
+  match: /\/locales\/(agregar)$/,
+  callback: function callback(params) {
+    return addFormHandler("/usuario/add/".concat(user.id, "/1"), '/locales/agregar');
+  }
+}, {
+  endpoint: '/locales/editar/:id',
+  match: /\/locales\/(editar\/\d+)$/,
+  callback: function callback(params) {
+    return editFormHandler("/usuario/local/".concat(params.id), "/locales/editar/".concat(params.id));
+  }
+}, {
+  endpoint: '/locales/:id',
+  match: /\/locales\/(\d+)$/,
+  callback: function callback(params) {
+    return singleHandler("/usuario/local/".concat(params.id), "/locales/".concat(params.id));
+  }
+}];
+var editFormHandler = function editFormHandler(endpoint, location) {
+  return function (params) {
+    var _this = this;
+
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
+      endpoint: endpoint,
+      download: this.downloadHandler
+    });
+    request.then(function (response) {
+      var data = response.data.data;
+
+      _this.setState({
+        data: data,
+        loadFinished: true,
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+          to: location
+        })
+      });
+    })["catch"](function (error) {
+      console.log(error.message);
+    });
+  };
+};
+var addFormHandler = function addFormHandler(endpoint, location) {
+  return function (params) {
+    var _this2 = this;
+
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
+      endpoint: endpoint,
+      download: this.props.downloadHandler
+    });
+    request.then(function (response) {
+      var data = response.data.usuarios.list;
+
+      _this2.setState({
+        data: data,
+        loadFinished: true,
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+          to: location
+        })
+      });
+    })["catch"](function (error) {
+      console.log(error.message);
+    });
+  };
+};
+var listHandler = function listHandler(endpoint, location) {
+  return function (params) {
+    var _this3 = this;
+
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
+      endpoint: endpoint,
+      download: this.downloadHandler
+    });
+    request.then(function (response) {
+      _this3.setState({
+        data: response.data.locales.data,
+        loadFinished: true,
+        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+          to: location
+        })
+      });
+    })["catch"](function (error) {
+      console.log(error.message);
+    });
+  };
+};
+var singleHandler = function singleHandler(endpoint, location) {
+  return function (params) {
+    var _this4 = this;
+
+    var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
+      endpoint: endpoint,
+      download: this.downloadHandler
+    });
+    request.then(function (response) {
+      _this4.setState({
+        data: response.data.data,
+        loadFinished: true,
         redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
           to: location
         })
@@ -96568,9 +96750,11 @@ var listHandler = function listHandler(endpoint, location) {
           date: date,
           show: params.show || "1"
         },
+        refresh: params.refresh || false,
         redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
           to: location
         }),
+        //?v=${params.show}&d=${date.getDate()}&m=${date.getMonth()+1}&y=${date.getFullYear()}`}/>,
         loadFinished: true
       });
     })["catch"](function (error) {
@@ -96603,7 +96787,7 @@ var formHandler = function formHandler(endpoint, location) {
   return function (params) {
     var _this3 = this;
 
-    var date = this.state.date ? this.state.date : new Date(),
+    var date = params.date || new Date(),
         request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint + parseInt(date.getMonth() + 1) + '/' + date.getFullYear(),
       download: this.downloadHandler
@@ -96617,6 +96801,7 @@ var formHandler = function formHandler(endpoint, location) {
           date: date
         },
         loadFinished: true,
+        refresh: params.refresh || false,
         redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
           to: location
         })
@@ -97137,6 +97322,7 @@ function (_Component) {
       loadFinished: false,
       loading: 0,
       preventRedirect: true,
+      refresh: false,
       fetchData: _this2.assignHandler(_this2.props.handlerArray, _this2.props.location, _this2.props.route.params)
     };
     _this2.downloadHandler = _utils_LoadBar__WEBPACK_IMPORTED_MODULE_3__["downloadHandler"].bind(_assertThisInitialized(_this2));
@@ -97158,11 +97344,14 @@ function (_Component) {
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(pp) {
-      if (pp.location !== this.props.location && this.state.loadFinished) this.setState({
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(this.props.children, {
-          data: this.state.data
-        })
-      });
+      if ((pp.location !== this.props.location || this.state.refresh) && this.state.loadFinished) {
+        this.setState({
+          refresh: false,
+          redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(this.props.children, {
+            data: this.state.data
+          })
+        });
+      }
     }
   }, {
     key: "componentDidMount",
@@ -97175,7 +97364,6 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      console.log(this.state.data);
       return this.state.data ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(WaitsLoading.Provider, {
         value: this.awaitLoading
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_LoadBar__WEBPACK_IMPORTED_MODULE_3__["LoadBar"], {
@@ -97500,12 +97688,18 @@ function CalendarioMemo(props) {
     return disableByDate;
   },
       monthChange = function monthChange(date) {
-    props.fetch(date);
+    props.fetch('/reservas/agregar', {
+      date: date,
+      refresh: true
+    });
   },
       navChange = function navChange(_ref2) {
     var activeStartDate = _ref2.activeStartDate,
         view = _ref2.view;
-    props.fetch(activeStartDate);
+    props.fetch('/reservas/agregar', {
+      date: activeStartDate,
+      refresh: true
+    });
   },
       tileContent = function tileContent(_ref3) {
     var date = _ref3.date,
@@ -98284,17 +98478,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getMonthLength", function() { return getMonthLength; });
 /* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 
-var evaluateDateChange = function evaluateDateChange(changeObject, fetchCallback, changeDate, view) {
+var evaluateDateChange = function evaluateDateChange(changeObject, fetchCallback, changeDate, path, view) {
   var oDate = changeObject.o,
-      nDate = changeObject.n,
-      index = _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_0__["monthIndex"][oDate.getMonth()];
+      nDate = changeObject.n;
 
-  if (oDate.getMonth() !== nDate.getMonth()) {
+  if (oDate.getMonth() !== nDate.getMonth() || oDate.getFullYear() !== nDate.getFullYear()) {
     nDate.setDate(changeObject.m);
-    _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_0__["monthRows"][index[0]][index[1]]["class"] = "";
-    return fetchCallback({
+    return fetchCallback(path, {
       date: new Date(nDate),
-      show: view
+      show: view,
+      refresh: true
     });
   } else return changeDate({
     date: new Date(nDate),
@@ -98456,8 +98649,8 @@ axios__WEBPACK_IMPORTED_MODULE_0___default.a.interceptors.response.use(function 
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\laravel\reservas\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\laravel\reservas\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Proyectos\Reservas\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Proyectos\Reservas\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

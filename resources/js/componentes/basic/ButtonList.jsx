@@ -13,9 +13,9 @@ function ButtonList(props) {
                         <Button
                             data={e.data}
                             icon={e.icon}
-                            class={(e.class) ? e.class : props.elemClass}
+                            class={props.selected == e.data ? props.selectedClass : props.elemClass}
                             click={(e.click) ? e.click : props.clickHandler}
-                            disabled={e.disabled}  
+                            disabled={e.disabled}
                             title={e.title} />
                     </li>
                 )

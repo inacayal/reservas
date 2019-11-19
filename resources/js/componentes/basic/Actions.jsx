@@ -1,7 +1,7 @@
 /**
  * react basic
  */
-import React, { Component, useContext } from 'react';
+import React, { Component, useContext,useState } from 'react';
 import ReactDOM from 'react-dom';
 import {WaitsLoading} from '../../hocs/RouterTransition';
 import {withRouter,Redirect} from 'react-router-dom';
@@ -21,11 +21,12 @@ export const waitCallback = (ev,e,context) => {
 
 export default function Actions (props) {
     const context = useContext(WaitsLoading),
+        [showOptions,changeHover] = useState(false),
         format = props.overlay
         ?
         {
-            overHandler: (e) => this.changeHover(true),
-            leaveHandler: (e) => this.changeHover(false),
+            overHandler: (e) => changeHover(true),
+            leaveHandler: (e) => changeHover(false),
             container: "overlay-gradient full-cover",
             list: showOptions ? "nav-list text-super flex-row no-padding " : "hidden",
             element: {
@@ -63,7 +64,7 @@ export default function Actions (props) {
                                     className= {format.element.link}>
                                     <Link
                                         to={e.to}
-                                        onClick={(ev) => waitCallback(ev,e,context)}>
+                                        onClick={props.otherSection ? () => false : (ev) => waitCallback(ev,e,context)}>
                                         {e.title}
                                     </Link>
                                 </li>

@@ -10,17 +10,18 @@ import ReactDOM from 'react-dom';
 import EventoFrame from '../../../reserva/pasos/evento/EventoFrame';
 import Titulo from '../../../componentes/basic/Titulo';
 import Actions from '../../../componentes/basic/Actions';
+import {WaitsLoading} from '../../../hocs/RouterTransition';
 
 export class Formulario extends Component{
     constructor(props){
         super(props);
-
         this.enviarFormulario = this.enviarFormulario.bind(this);
         this.cancelarFormulario = this.cancelarFormulario.bind(this);
-
         this.props.formActions.buttons.cancelar.click = this.cancelarFormulario;
         this.props.formActions.buttons.guardar.click = this.enviarFormulario;
     }
+
+    static contextType = WaitsLoading;
 
     enviarFormulario(e){
         e.preventDefault();
@@ -53,7 +54,7 @@ export class Formulario extends Component{
                                 displayTitles={false}
                                 current={true}
                                 fecha={data.date}
-                                fetch = {this.props.fetch}
+                                fetch = {this.context}
                                 data={data.data}
                                 formActions={this.props.formActions}/>
                         </div>

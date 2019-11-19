@@ -7,51 +7,12 @@ import ReactDOM from 'react-dom';
  * components
  */
 import Agenda from '../../../componentes/agenda/Agenda';
-import ButtonList from '../../../componentes/basic/ButtonList';
 import Titulo from '../../../componentes/basic/Titulo';
-/**
- * function
- */
-import {ConfirmarModal} from '../../../componentes/modal/Modal';
 /**
  * constants
  */
 import {NO_DAY_CONTROL} from '../../../constantes/CalendarControls';
 import {DAYS,MONTHS} from '../../../constantes/DaysMonths';
-import LoadBar from '../../../componentes/control/LoadBar';
-/**
- * api
- */
-import { GET } from '../../../utils/api';
-
-export const listHandler = (endpoint) => {
-    return function (params){
-        const date = params.date||new Date(),
-            request = GET({
-                endpoint: endpoint + (date.getMonth() + 1) + '/' + date.getFullYear(),
-                download: this.downloadHandler
-            });
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data:{
-                            date:date,
-                            data: response.data.feriados.data||{},
-                            intervalo: response.data.intervalo,
-                            show: params.show||"2"
-                        },
-                        loadFinished:true
-                    });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
-    }
-}
 
 export class Feriados extends Component {
     constructor(props){
@@ -90,6 +51,7 @@ export class Feriados extends Component {
                         actions={{eliminar:this.toggleModal}}
                         controls={this.state.controls}
                         fetchNewMonth={this.props.fetch}
+                        endpoint="/horarios/feriados"
                         data={data.data}/>
                 </div>
             </>

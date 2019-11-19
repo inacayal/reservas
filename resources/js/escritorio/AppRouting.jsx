@@ -14,6 +14,9 @@ import Profile from '../componentes/control/Profile'
 import {PromocionesRouting} from './promociones/PromocionesRouting';
 import {handlers as promocionesHandlers} from '../handlers/promocionesHandlers';
 
+import {LocalesRouting} from './locales/LocalesRouting';
+import {handlers as localesHandlers} from '../handlers/localesHandlers';
+
 import {ReservasRouting} from './reservas/ReservasRouting';
 import {handlers as reservasHandlers} from '../handlers/reservasHandlers';
 
@@ -23,11 +26,18 @@ import {UbicacionesRouting} from './ubicaciones/UbicacionesRouting';
 import {handlers as franquiciasHandlers} from '../handlers/franquiciasHandlers';
 import {FranquiciasRouting} from './franquicias/FranquiciasRouting';
 
+import {handlers as eventosHandlers} from '../handlers/eventosHandlers';
+import {EventosRouting} from './eventos/EventosRouting';
+
+import {HorariosRouting} from './horarios/HorariosRouting';
+import {handlers as horariosHandlers} from '../handlers/horariosHandlers';
+
+import {FeriadosRouting} from './horarios/FeriadosRouting';
+import {handlers as feriadosHandlers} from '../handlers/feriadosHandlers';
+
 import ConfiguracionRouting from './configuracion/ConfiguracionRouting';
+
 import EscritorioRouting from './escritorio/EscritorioRouting';
-import EventosRouting from './eventos/EventosRouting';
-import HorariosRouting from './horarios/HorariosRouting';
-import LocalesRouting from './locales/LocalesRouting';
 
 
 
@@ -55,19 +65,34 @@ export default function AppRouting (props) {
                             path='/reservas'
                             component={
                                 (match) =>
-                                    <MainFrame current={'1'} handlers={reservasHandlers}>
+                                    <MainFrame
+                                        current={'1'}
+                                        handlers={reservasHandlers}>
                                         <ReservasRouting {...match} />
                                     </MainFrame>
                             } />
                         <Route
+                            path='/horarios/feriados'
+                            render={
+                                (match) =>(
+                                    <MainFrame
+                                        current={'2'}
+                                        handlers={feriadosHandlers}>
+                                        <FeriadosRouting {...match}/>
+                                    </MainFrame>
+                                )
+                            }/>
+                        <Route
                             path='/horarios'
                             component={
-                                (match) =>
-                                    <MainFrame current={'2'}>
+                                (match) => (
+                                    <MainFrame
+                                        current={'2'}
+                                        handlers={horariosHandlers}>
                                         <HorariosRouting {...match} />
                                     </MainFrame>
-                                }
-                            />
+                                )
+                            }/>
                         <Route
                             path='/ubicaciones'
                             render={
@@ -82,7 +107,9 @@ export default function AppRouting (props) {
                             path='/eventos'
                             component={
                                 (match) =>
-                                    <MainFrame current={'4'}>
+                                    <MainFrame
+                                        current={'4'}
+                                        handlers={eventosHandlers}>
                                         <EventosRouting {...match} />
                                     </MainFrame>
                             } />
@@ -100,7 +127,9 @@ export default function AppRouting (props) {
                             path='/locales'
                             component={
                                 (match) =>
-                                    <MainFrame current={'6'}>
+                                    <MainFrame
+                                        current={'6'}
+                                        handlers={localesHandlers}>
                                         <LocalesRouting {...match} />
                                     </MainFrame>
                             } />

@@ -47,6 +47,7 @@ export class RouterTransition extends Component {
             loadFinished:false,
             loading:0,
             preventRedirect:true,
+            refresh:false,
             fetchData:this.assignHandler(this.props.handlerArray,this.props.location,this.props.route.params)
         };
 
@@ -65,10 +66,13 @@ export class RouterTransition extends Component {
     }
 
     componentDidUpdate(pp){
-        if (pp.location !== this.props.location && this.state.loadFinished)
+        if ((pp.location !== this.props.location || this.state.refresh) && this.state.loadFinished){
             this.setState({
+                refresh:false,
                 redirect:React.cloneElement(this.props.children,{data:this.state.data})
             })
+        }
+
     }
 
     componentDidMount() {
@@ -80,7 +84,6 @@ export class RouterTransition extends Component {
     }
 
     render() {
-        console.log(this.state.data)
         return (
             (this.state.data)
             ?

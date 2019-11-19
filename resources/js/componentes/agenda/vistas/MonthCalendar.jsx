@@ -45,11 +45,10 @@ function MonthCalendar(props) {
                 <div className="container justify full-width flex-row nav-list ">
                     {
                         DAYS.map(
-                            (e, i) => 
-                                <div 
-                                    key={i} 
-                                    className="box-padding same-width box-transparent highlight-title text-center"
-                                >
+                            (e, i) =>
+                                <div
+                                    key={i}
+                                    className="box-padding same-width box-transparent highlight-title text-center">
                                     {e}
                                 </div>
                         )
@@ -60,12 +59,12 @@ function MonthCalendar(props) {
                 <div className="container">
                     {
                         weeks.map(
-                            (e, i) => 
+                            (e, i) =>
                                 <div key={i} className="row">
                                     <ul className="justify no-padding full-width flex-row nav-list h-center">
                                         {
                                             e.map(
-                                                (elem,index) => 
+                                                (elem,index) =>
                                                     <li key={index} className={elem.class}>{elem.content}</li>
                                             )
                                         }

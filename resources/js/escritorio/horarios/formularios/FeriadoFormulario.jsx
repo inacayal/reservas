@@ -9,79 +9,14 @@ import { EventoFields } from '../EventoFields';
 /**
  * elements
  */
-import ButtonList from '../../../componentes/basic/ButtonList';
 import Titulo from '../../../componentes/basic/Titulo';
 import { Toggle } from '../../../componentes/input/Toggle';
-import LoadBar from '../../../componentes/control/LoadBar';
-import {ConfirmarModal} from '../../../componentes/modal/Modal';
 import Actions from '../../../componentes/basic/Actions';
 /**
  * constants
  */
 import {DAYS,MONTHS} from '../../../constantes/DaysMonths';
 import {generateHoursFromInterval} from '../../../utils/Helper';
-/**
- * api
- */
-import { GET } from '../../../utils/api';
-
-export const editFormHandler = (endpoint) => {
-    return function (params){
-        const request = GET({
-            endpoint: endpoint,
-            download: this.downloadHandler
-        });
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: {
-                            date: new Date(response.data.feriados[0].fecha),
-                            feriados: response.data.feriados[0],
-                            eventos: response.data.eventos,
-                            minutes: generateHoursFromInterval(response.data.intervalo),
-                            side: response.data.feriados[0].estado === 'laboral'
-                        },
-                        loadFinished: true
-                    });
-                }
-            )
-        .catch(
-            error => {
-                console.log(error.message);
-            }
-        );
-    }
-}
-
-export const addFormHandler = (endpoint) => {
-    return function (params){
-        const date = params.date ? params.date : new Date();
-        const request = GET({
-            endpoint: endpoint + (date.getMonth() + 1) + '/' + date.getFullYear(),
-            download: this.downloadHandler
-        });
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: {
-                            date: date,
-                            feriados: response.data.feriados.list,
-                            eventos: response.data.eventos,
-                            minutes: generateHoursFromInterval(response.data.intervalo),
-                        },
-                        loadFinished: true
-                    });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message);
-                }
-            );
-    }
-}
 
 export class FeriadoFormulario extends Component {
     constructor(props){

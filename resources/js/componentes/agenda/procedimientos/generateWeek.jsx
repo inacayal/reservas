@@ -42,7 +42,8 @@ const generateWeek = (
                     currentData,
                     actions,
                     index,
-                    'week'
+                    'week',
+                    date
                 ),
                 elem = AssignWeekByStatus(
                     acciones,

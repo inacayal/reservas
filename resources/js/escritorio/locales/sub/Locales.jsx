@@ -20,31 +20,6 @@ import { GET } from '../../../utils/api';
 import { Navegacion } from '../../../acciones/ActionsByView';
 import LocalesTable from '../../../componentes/tables/LocalesTable';
 
-export const listHandler = (endpoint) => {
-    return function (params) {
-        const request = GET({
-            endpoint: endpoint,
-            download: this.downloadHandler
-        });
-
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: response.data.locales.data,
-                        loadFinished: true,
-                        redirect:<Redirect to={location}/>
-                    });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
-    }
-}
-
 const links = (key) =>
     [
         {
@@ -54,7 +29,8 @@ const links = (key) =>
                     Ver
                 </div>
             ),
-            to: '/locales/' + key
+            to: '/locales/' + key,
+            params:{id:key}
         },
         {
             title: (
@@ -63,7 +39,8 @@ const links = (key) =>
                     Editar
                 </div>
             ),
-            to: '/locales/editar/' + key
+            to: '/locales/editar/' + key,
+            params:{id:key}
         }
     ];
 

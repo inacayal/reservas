@@ -1,7 +1,7 @@
 /**
  * react basic
  */
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component, useState, useContext } from 'react';
 import ReactDOM from 'react-dom';
 /**
  * componentes
@@ -14,6 +14,8 @@ import {Link} from 'react-router-dom';
  */
 import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
 import { CLASSBYSTATE } from '../../../constantes/CardObject';
+import {WaitsLoading} from '../../../hocs/RouterTransition';
+import {waitCallback} from '../../basic/Actions';
 
 
 export const HorarioWeekByState = {
@@ -25,15 +27,22 @@ export const HorarioWeekByState = {
         dataIndex
     ) =>{
         const eventos = sectionData.eventos.list,
-            eventoLength = Object.keys(eventos).length;
-
+            eventoLength = Object.keys(eventos).length,
+            context = useContext(WaitsLoading);
         return {
             content: () =>
                 <>
                     <div className="full-width" >
                         <div className="seventy inline-block sub-title">
                             <div className="inline-block side-margin text-top bold">
-                                <Link to={'/horarios/' + dataIndex} className="text bold subrayado">{DAYS[sectionData.diaSemana - 1]}</Link>
+                                <Link
+                                    to={`/horarios/${dataIndex}`}
+                                    className="text bold subrayado"
+                                    onClick={
+                                        (ev) => waitCallback(ev,{to:`/horarios/${dataIndex}`,params:{id:dataIndex}},context)
+                                    }>
+                                    {DAYS[sectionData.diaSemana - 1]}
+                                </Link>
                             </div>
                             <div className="inline-block side-margin">
                                 {renderActions}
@@ -93,31 +102,42 @@ export const HorarioWeekByState = {
         dataIndex
     ) =>
         ({
-            content: () =>
-                <>
-                    <div className="full-width box-padding">
-                        <div className="seventy inline-block sub-title">
-                            <div className="bold inline-block side-margin text-top">
-                                <Link to={'/horarios/' + dataIndex} className="text bold subrayado">{DAYS[sectionData.diaSemana - 1]}</Link>
+            content: () => {
+                const context = useContext(WaitsLoading);
+                return (
+                    <>
+                        <div className="full-width box-padding">
+                            <div className="seventy inline-block sub-title">
+                                <div className="bold inline-block side-margin text-top">
+                                    <Link
+                                        to={`/horarios/${dataIndex}`}
+                                        className="text bold subrayado"
+                                        onClick={
+                                            (ev) => waitCallback(ev,{to:`/horarios/${dataIndex}`,params:{id:dataIndex}},context)
+                                        }>
+                                        {DAYS[sectionData.diaSemana - 1]}
+                                    </Link>
+                                </div>
+                                <div className="inline-block side-margin">
+                                    {renderActions}
+                                </div>
                             </div>
-                            <div className="inline-block side-margin">
-                                {renderActions}
+                            <div className="thirty inline-block text-right smaller-text border-bottom ">
+                                Día no laboral
                             </div>
                         </div>
-                        <div className="thirty inline-block text-right smaller-text border-bottom ">
-                            Día no laboral
+                        <div className="full-width ">
+                            <div className="half box-padding inline-block">
+                                <div className="light-danger bold">Sin apertura</div>
+                            </div>
+                            <div className="half box-padding inline-block">
+                                <span className="light-danger bold">Descripción</span>
+                                <span>{" " + sectionData.descripcion}</span>
+                            </div>
                         </div>
-                    </div>
-                    <div className="full-width ">
-                        <div className="half box-padding inline-block">
-                            <div className="light-danger bold">Sin apertura</div>
-                        </div>
-                        <div className="half box-padding inline-block">
-                            <span className="light-danger bold">Descripción</span>
-                            <span>{" " + sectionData.descripcion}</span>
-                        </div>
-                    </div>
-                </>,
+                    </>
+                )
+            },
             class: "box-padding background-border"
         }),
     no_data: (

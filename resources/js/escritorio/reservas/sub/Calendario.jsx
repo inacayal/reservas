@@ -11,7 +11,7 @@ import {GET} from '../../../utils/api';
 /**
  * componentes
  */
-import Calendar from '../../../componentes/agenda/Agenda';
+import Agenda from '../../../componentes/agenda/Agenda';
 import LoadBar from '../../../componentes/control/LoadBar';
 import Titulo from '../../../componentes/basic/Titulo';
 /**
@@ -23,8 +23,9 @@ export class Calendario extends Component {
     constructor(props){
         super(props);
         this.state = {
-            date: new Date(),
-            controls: NO_WEEK_CONTROLS
+            date: this.props.data.date,
+            controls: NO_WEEK_CONTROLS,
+            show:"1"
         };
 
         this.verReserva = this.verReserva.bind(this);
@@ -33,13 +34,10 @@ export class Calendario extends Component {
         this.revertirReserva = this.revertirReserva.bind(this);
 
         this.actions = {
-            outer: null,
-            inner: {
-                ver: this.verReserva,
-                aceptar: this.aceptarReserva,
-                rechazar: this.rechazarReserva,
-                revertir: this.revertirReserva
-            }
+            ver: this.verReserva,
+            aceptar: this.aceptarReserva,
+            rechazar: this.rechazarReserva,
+            revertir: this.revertirReserva
         };
     }
 
@@ -55,8 +53,12 @@ export class Calendario extends Component {
         console.log('rechazarReserva');
     }
 
-    verReserva() {
-        console.log('verReserva');
+    verReserva(e) {
+        e.preventDefault();
+        const date = new Date(e.currentTarget.getAttribute('data')),
+            show = this.state.show,
+            controls=this.state.controls;
+        this.setState({date:date,show:"3"})
     }
 
     componentWillUnmount() {
@@ -71,16 +73,17 @@ export class Calendario extends Component {
                     title={"Reservaciones"}
                     links={this.props.nav.links} />
                 <div className="container">
-                    <Calendar
-                        show={data.show}
+                    <Agenda
+                        show={this.state.show}
                         horariosReserva={data.horarios}
-                        date={data.date}
+                        date={this.state.date}
                         weekRender={true}
                         dayRender={true}
                         actions={this.actions}
                         controls={this.state.controls}
                         data={data.data}
                         type="reservas"
+                        endpoint="/reservas"
                         fetchNewMonth={this.props.fetch}/>
                 </div>
             </>

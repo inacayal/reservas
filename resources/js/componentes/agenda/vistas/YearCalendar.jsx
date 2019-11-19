@@ -20,12 +20,12 @@ import {DAYS,MONTHS} from '../../../constantes/DaysMonths';
 
 function YearCalendar(props){
     const navigation = calendarNavigation(
-            { 
-                left: -1, 
-                right: 1 
+            {
+                left: -1,
+                right: 1
             },
             'año'
-        ), 
+        ),
         months = generateYear(
             props.date,
             props.handleMonthClick

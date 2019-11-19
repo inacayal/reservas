@@ -84,7 +84,7 @@ export default function generateMonth (
         monthEnd=null;
     datePtr.setDate(datePtr.getDate() - datePtr.getDate() + 1);
     let dateStr = datePtr.getDate();
-    
+
     for (let ptr = 0; ptr<monthLength; ptr++){
         let weekCtr = datePtr.getDay(),
             elem = {};
@@ -107,7 +107,8 @@ export default function generateMonth (
                     data[dateStr],
                     actions,
                     data[dateStr] ? (data[dateStr]||{}).id : dateStr,
-                    'month'
+                    'month',
+                    new Date(datePtr)
                 ),
                 data[dateStr],
                 new Date(datePtr),
@@ -116,13 +117,13 @@ export default function generateMonth (
                 true
             )
         );
-        
+
         if (weekCtr === 6) {
             weekCtr = 0;
             month.push(monthEnd === null ? week : week.concat(monthEnd));
             week = [];
         } else weekCtr++;
-        
+
         datePtr = new Date(datePtr);
         datePtr.setDate(datePtr.getDate() + 1);
         dateStr = datePtr.getDate();

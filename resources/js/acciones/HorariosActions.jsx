@@ -18,7 +18,7 @@ export const HorariosActions = {
                         Editar
                     </div>
                 ),
-                to: '/horarios/editar/' + key,
+                to: `/horarios/editar/${key}`,
                 params:{id:key}
             }
         ],
@@ -31,8 +31,7 @@ export const HorariosActions = {
                     </div>
                 ),
                 click: actions.eliminar,
-                data: key,
-                params:{id:key}
+                data: key
             }
         ]
     }),
@@ -44,10 +43,10 @@ export const HorariosActions = {
                 title: (
                     <div className="smaller-text text bold">
                         <i className="fas fa-plus-circle inline-box side-margin" />
-                        Agregar horario
+                        Agregar
                     </div>
                 ),
-                to: '/horarios/agregar/' + key,
+                to: `/horarios/agregar/${key}`,
                 params:{day:key}
             }
         ],

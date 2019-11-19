@@ -8,59 +8,13 @@ import ReactDOM from 'react-dom';
  */
 import {Route, Switch} from 'react-router-dom';
 import {Navegacion,FormActions} from '../../acciones/ActionsByView';
-/**
- * sub elementos
- */
-import {
-    editFormHandler,
-    addFormHandler,
-    Formulario
-} from './sub/Formulario';
-
-import {
-    listHandler,
-    Locales
-} from './sub/Locales';
-
-import {
-    singleHandler,
-    VerLocal
-} from './sub/VerLocal';
-
+import {Formulario} from './sub/Formulario';
+import {Locales} from './sub/Locales';
+import {VerLocal} from './sub/VerLocal';
 import RequestHandler from '../../hocs/RequestHandler';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 
-
-export const handlers = [
-    {
-        endpoint:'/locales',
-        match:/\/locales$/,
-        callback:(params) =>
-            listHandler(`/usuario/locales/${user.id}`)
-    },
-    {
-        endpoint:'/locales/agregar',
-        match:/\/locales\/(agregar)$/,
-        callback:(params) =>
-            addFormHandler(`/usuario/add/${user.id}/1`)
-    },
-    {
-        endpoint:'/locales/editar/:id',
-        match:/\/locales\/(editar\/\d+)$/,
-        callback:(params) =>
-            editFormHandler(`/usuario/local/${match.match.params.id}`)
-    },
-    {
-        endpoint:'/locales/:id',
-        match: /\/locales\/(\d+)$/,
-        callback: (params) =>
-            singleHandler(`/usuario/local/${match.match.params.id}`)
-
-    }
-];
-
-
-export default function LocalesRouting (props) {
+export function LocalesRouting (props) {
     const [open,toggle] = useState(false),
         openModal = (e) => {
             e.preventDefault();
@@ -85,24 +39,24 @@ export default function LocalesRouting (props) {
                         <Locales
                             data={props.data}
                             toggleModal={openModal}
-                            nav={Navegacion.listado('/locales')} {...match} />
+                            nav={Navegacion.listado('/locales')} {...match}/>
                 } />
             <Switch>
                 <Route
                     path={`${props.match.url}/editar/:id`}
                     exact
-                    component={
+                    render={
                         (match) =>
                             <Formulario
                                 editar={true}
                                 data={props.data}
                                 toggleModal={openModal}
                                 nav={Navegacion.formulario(()=>false,match.match.params.id,'/locales')}
-                                formActions={FormActions()} {...match} />
+                                formActions={FormActions()} {...match}/>
                     } />
                 <Route
                     path={`${props.match.url}/agregar`}
-                    component={
+                    render={
                         (match) =>
                             <Formulario
                                 editar={false}
@@ -113,7 +67,7 @@ export default function LocalesRouting (props) {
                     } />
                 <Route
                     path={`${props.match.url}/:id`}
-                    component={
+                    render={
                         (match) =>
                             <VerLocal
                                 data={props.data}

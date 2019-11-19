@@ -18,32 +18,6 @@ import FranquiciasTable from '../../../componentes/tables/FranquiciasTable';
 import {ExpandableComponent} from '../../../hocs/ExpandableComponent';
 import Actions from '../../../componentes/basic/Actions';
 
-export const singleHandler = (endpoint) => {
-    return function (params) {
-        const request = GET({
-            endpoint: endpoint,
-            download: this.downloadHandler
-        });
-
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: response.data.data,
-                        loadFinished:true,
-                        redirect:<Redirect to={location}/>
-                    });
-
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
-    }
-}
-
 const links = (key) => [
     {
         title: (
@@ -52,7 +26,8 @@ const links = (key) => [
                 Ver
             </div>
         ),
-        to: '/franquicias/' + key
+        to: '/franquicias/' + key,
+        params:{id:key}
     },
     {
         title: (
@@ -61,20 +36,21 @@ const links = (key) => [
                 Editar
             </div>
         ),
-        to: '/franquicias/editar/' + key
+        to: '/franquicias/editar/' + key,
+        params:{id:key}
     }
 ];
 
 export function VerLocal (props) {
     const data = props.data;
     props.nav.buttons[0].click = props.toggleModal;
-    data.franquicia.acciones= <Actions links ={links(data.franquicia.id)}/>;
+    data.franquicia.acciones= <Actions otherSection links={links(data.franquicia.id)}/>;
     return (
         <>
             < Titulo
                 title={data.nombre}
-                links={this.props.nav.links}
-                buttons ={this.props.nav.buttons}/>
+                links={props.nav.links}
+                buttons ={props.nav.buttons}/>
             <div className="container">
                 <div className="v-padding row">
                     <FranquiciasTable data={[data.franquicia]} withPagination={false}/>

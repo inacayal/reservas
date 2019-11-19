@@ -4,9 +4,6 @@
 import React, {Component,useState} from 'react';
 import ReactDOM from 'react-dom';
 import {Route,Switch} from 'react-router-dom';
-/**
- * sub elementos
- */
 import {Formulario} from './sub/Formulario';
 import {Ubicaciones} from './sub/Ubicaciones';
 import {VerUbicacion} from './sub/VerUbicacion';

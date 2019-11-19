@@ -82,7 +82,8 @@ export const ReservasActions = {
     month: {
         data: (
             actions,
-            data
+            data,
+            date
         ) => ({
                 buttons: [
                     {
@@ -92,7 +93,7 @@ export const ReservasActions = {
                             </div>
                         ),
                         click: actions.ver,
-                        data: data
+                        data: date
                     }
                 ],
                 links:null

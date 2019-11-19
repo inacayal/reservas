@@ -34,14 +34,14 @@ const generateList = (list) => {
 };
 export function VerPromocion (props) {
     props.nav.buttons[0].click = props.toggleModal;
-    const eventos = generateList(this.props.data.eventos.data,'/eventos'),
-        data = {...this.props.data,eventos};
+    const eventos = generateList(props.data.eventos.data,'/eventos'),
+        data = {...props.data,eventos};
     return (
         <>
             < Titulo
                 title={data.nombre}
-                links={this.props.nav.links}
-                buttons ={this.props.nav.buttons}/>
+                links={props.nav.links}
+                buttons ={props.nav.buttons}/>
             <div className="container full-width ">
                 <div className="row">
                     <div className="col-md-6">

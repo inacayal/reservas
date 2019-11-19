@@ -10,75 +10,12 @@ import Titulo from '../../../componentes/basic/Titulo';
  */
 import { SelectFields } from '../SelectFields';
 import { EventoFields } from '../EventoFields';
-import ButtonList from '../../../componentes/basic/ButtonList';
 import { Toggle } from '../../../componentes/input/Toggle';
-import LoadBar from '../../../componentes/control/LoadBar';
-import {ConfirmarModal} from '../../../componentes/modal/Modal';
 import Actions from '../../../componentes/basic/Actions';
 /**
  * constants
  */
 import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
-import {generateHoursFromInterval} from '../../../utils/Helper';
-/**
- * api
- */
-import { GET } from '../../../utils/api';
-
-export const editFormHandler = (endpoint) => {
-    return function (params) {
-        const request = GET({
-            endpoint: endpoint,
-            download: this.downloadHandler
-        });
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data:{
-                            horarios:response.data.horarios[0],
-                            eventos:response.data.eventos,
-                            minutes: generateHoursFromInterval(response.data.intervalo),
-                            side: response.data.horarios[0].estado === 'laboral'
-                        },
-                        loadFinished: true
-                    });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message);
-                }
-            );
-    }
-}
-
-export const addFormHandler = (endpoint) => {
-    return function (params) {
-        const request = GET({
-            endpoint: endpoint,
-            download: this.downloadHandler
-        });
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data:{
-                            horarios: null,
-                            eventos: response.data.eventos,
-                            minutes: generateHoursFromInterval(response.data.intervalo)
-                        },
-                        loadFinished: true
-                    });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message);
-                }
-            );
-    }
-}
 
 export class HorarioFormulario extends Component {
     constructor(props) {
@@ -106,8 +43,6 @@ export class HorarioFormulario extends Component {
     cancelarFormulario(e){
         e.preventDefault();
         console.log('guardar');
-    }
-    componentDidMount() {
     }
 
     changeToggleSide(e) {
