@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
-import {GET} from '../utils/api';
+import {GET} from '../../utils/api';
 
-export const handlers = [
+export const promocionesHandlers = [
     {
         endpoint:'/promociones',
         match:/\/promociones$/,
@@ -31,7 +31,7 @@ export const handlers = [
 ];
 
 
-export const singleHandler = (endpoint,location) => {
+const singleHandler = (endpoint,location) => {
     return function (params) {
         const request = GET({
             endpoint: endpoint,
@@ -40,8 +40,10 @@ export const singleHandler = (endpoint,location) => {
         request
             .then(
                 response => {
+                    const data = response.data.promociones[0];
                     this.setState({
-                        data: response.data.promociones[0],
+                        data: data,
+                        nombre:data.nombre,
                         loadFinished: true,
                         redirect:<Redirect to={location}/>
                     });
@@ -56,7 +58,7 @@ export const singleHandler = (endpoint,location) => {
 }
 
 
-export const listHandler = (endpoint,location) => {
+const listHandler = (endpoint,location) => {
     return function (params) {
         const request = GET({
             endpoint: endpoint,
@@ -82,7 +84,7 @@ export const listHandler = (endpoint,location) => {
 }
 
 
-export const editFormHandler = (endpoint,location) => {
+const editFormHandler = (endpoint,location) => {
     return function (params) {
         this.setState({
             data: null,
@@ -97,13 +99,15 @@ export const editFormHandler = (endpoint,location) => {
         request
         .then(
             response => {
+                const data  = response.data.promociones[0];
                 this.setState({
                     data: {
-                        selected: response.data.promociones[0],
+                        selected: data,
                         all: {
                             eventos: response.data.eventos
                         }
                     },
+                    nombre:data.nombre,
                     loadFinished: true,
                     redirect:<Redirect to={location}/>
                 });
@@ -117,7 +121,7 @@ export const editFormHandler = (endpoint,location) => {
     }
 }
 
-export const addFormHandler = (endpoint,location) => {
+const addFormHandler = (endpoint,location) => {
     return function (params) {
         const request = GET({
             endpoint: endpoint,

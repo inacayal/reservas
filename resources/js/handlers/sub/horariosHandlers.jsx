@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
-import {GET} from '../utils/api';
-import {generateHoursFromInterval} from '../utils/Helper';
+import {GET} from '../../utils/api';
+import {generateHoursFromInterval} from '../../utils/Helper';
+import {DAYS} from '../../constantes/DaysMonths';
 
-export const handlers = [
+export const horariosHandlers = [
     {
         endpoint:'/horarios',
         match:/\/horarios$/,
@@ -40,13 +41,16 @@ const editFormHandler = (endpoint,location) => {
         request
             .then(
                 response => {
+                    const data = response.data.horarios[0],
+                        nombre = DAYS[parseInt(data.diaSemana)-1];
                     this.setState({
                         data:{
-                            horarios:response.data.horarios[0],
+                            horarios:data,
                             eventos:response.data.eventos,
                             minutes: generateHoursFromInterval(response.data.intervalo),
                             side: response.data.horarios[0].estado === 'laboral'
                         },
+                        nombre:`Horario del ${nombre}`,
                         redirect:<Redirect to={location}/>,
                         loadFinished: true
                     });
@@ -123,8 +127,11 @@ const singleHandler = (endpoint,location) => {
         request
             .then(
                 response => {
+                    const data = response.data.horarios[0],
+                        nombre = DAYS[parseInt(data.diaSemana)-1];
                     this.setState({
-                        data: response.data.horarios[0],
+                        data: data,
+                        nombre:`Horario del ${nombre}`,
                         redirect:<Redirect to={location}/>,
                         loadFinished:true
                     });

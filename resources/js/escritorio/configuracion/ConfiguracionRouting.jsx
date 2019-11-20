@@ -7,38 +7,14 @@ import ReactDOM from 'react-dom';
 /**
  * form sub elements
  */
-import {
-    establecimientoHandler,
-    Establecimiento
-} from './sub/Establecimiento';
-
-import {
-    usuarioHandler,
-    Usuario
-} from './sub/Usuario';
-
-import {
-    reservaHandler,
-    Reservas
-} from './sub/Reservas';
-
-import {
-    configuracionHandler,
-    Configuracion
-} from './sub/Configuracion';
-
-import {
-    Navegacion,
-    FormActions
-} from '../../acciones/ActionsByView';
-
-import RequestHandler from '../../hocs/RequestHandler';
+import {Establecimiento} from './sub/Establecimiento';
+import {Usuario} from './sub/Usuario';
+import {Reservas} from './sub/Reservas';
+import {Configuracion} from './sub/Configuracion';
+import {Navegacion,FormActions} from '../../acciones/ActionsByView';
 
  export default function ConfiguracionRouting (props) {
-    const nav = Navegacion.agregar('/configuracion'),
-        modal = (props) => (
-            <></>
-        );
+    const nav = Navegacion.agregar('/configuracion');
     return (
         <>
             <Route
@@ -46,63 +22,39 @@ import RequestHandler from '../../hocs/RequestHandler';
                 exact
                 component={
                     (match) =>
-                        <RequestHandler
-                            component={
-                                (props) =>
-                                    <Configuracion {...props} />
-                            }
-                            modal={modal}
-                            fetchHandler={configuracionHandler(`usuario/local/${user.id}`)}/>
+                        <Configuracion data={props.data} {...match} />
                 } />
             <Route
                 path={`${props.match.url}/usuario`}
                 exact
                 component={
-                    (match) =>
-                        <RequestHandler
-                            component ={
-                                (props) => (
-                                    <Usuario
-                                        formActions={FormActions()}
-                                        nav={nav}
-                                        {...props} />
-                                )
-                            }
-                            modal={modal}
-                            fetchHandler={usuarioHandler(`usuario/local/${user.id}`)}/>
+                    (match) => (
+                        <Usuario
+                            data={props.data}
+                            formActions={FormActions()}
+                            nav={nav} {...match} />
+                    )
                 } />
             <Route
                 path={`${props.match.url}/establecimiento`}
                 component={
-                    (match) =>
-                        <RequestHandler
-                            component ={
-                                (props) =>(
-                                    <Establecimiento
-                                        formActions={FormActions()}
-                                        nav={nav}
-                                        {...props} />
-                                )
-                            }
-                            modal={modal}
-                            fetchHandler={establecimientoHandler(`usuario/local/${user.id}`)}/>
-                } />
+                    (match) =>(
+                        <Establecimiento
+                            data={props.data}
+                            formActions={FormActions()}
+                            nav={nav} {...match} />
+                    )
+                }/>
             <Route
                 path={`${props.match.url}/reservas`}
                 component={
-                    (match) =>
-                        <RequestHandler
-                            component ={
-                                (props) => (
-                                    <Reservas
-                                        formActions={FormActions()}
-                                        nav={nav}
-                                        {...props}/>
-                                )
-                            }
-                            modal={modal}
-                            fetchHandler={reservaHandler(`usuario/local/${user.id}`)}/>
-                    } />
+                    (match) => (
+                        <Reservas
+                            data={props.data}
+                            formActions={FormActions()}
+                            nav={nav} {...match}/>
+                    )
+                } />
         </>
     );
 }

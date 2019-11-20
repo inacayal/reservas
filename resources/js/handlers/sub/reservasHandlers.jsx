@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
-import {GET} from '../utils/api';
+import {GET} from '../../utils/api';
 
-export const handlers = [
+export const reservasHandlers = [
     {
         endpoint:'/reservas',
         match:/\/reservas$/,
@@ -24,7 +24,7 @@ export const handlers = [
     }
 ];
 
-export const listHandler = (endpoint,location) => {
+const listHandler = (endpoint,location) => {
     return function (params) {
         const date = params.date||new Date(),
             request = GET({
@@ -60,7 +60,7 @@ export const listHandler = (endpoint,location) => {
 }
 
 
-export const singleHandler = (endpoint,location) => {
+const singleHandler = (endpoint,location) => {
     return function (params) {
         const request = GET({
             endpoint: endpoint,
@@ -69,8 +69,10 @@ export const singleHandler = (endpoint,location) => {
         request
             .then(
                 response => {
+                    const data = response.data.reservas[0];
                     this.setState({
-                        data: response.data.reservas[0],
+                        data: data,
+                        nombre:`Reserva de ${data.nombre} ${data.apellido}`,
                         loadFinished:true,
                         redirect:<Redirect to={location}/>
                     });
@@ -85,7 +87,7 @@ export const singleHandler = (endpoint,location) => {
 }
 
 
-export const formHandler = (endpoint,location) => {
+const formHandler = (endpoint,location) => {
     return function (params) {
         const date = params.date||new Date(),
             request = GET({

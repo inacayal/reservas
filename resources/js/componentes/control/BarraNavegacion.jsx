@@ -13,22 +13,22 @@ function BarraNavegacion(props) {
         {
             title: (
                 <i className="fas fa-bars" />
-            ),
-            class:"btn c-title light-danger margin-box reduce-padding"
+            )
         }
     ];
     return (
         <>
             <div className="col-sm-8 relative">
-                <h4 className="bold align-bottom">
+                <h4 className="bold align-bottom white-font" style={{color:"white"}}>
                     {user.nombre}
                 </h4>
             </div>
-            <div className="col-sm-4 no-padding relative">
+            <div className="col-sm-4 no-padding ">
                 <ButtonList
+                    selected = {false}
                     clickHandler={props.func}
                     displayList="full-width no-padding text-right nav-list align-bottom"
-                    elemClass="light-danger nav-reserva pointer inline-block"
+                    elemClass="light-danger inline-block btn c-title light-danger reduce-padding"
                     elems={items} />
             </div>
         </>

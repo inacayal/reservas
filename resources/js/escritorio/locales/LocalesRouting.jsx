@@ -11,10 +11,9 @@ import {Navegacion,FormActions} from '../../acciones/ActionsByView';
 import {Formulario} from './sub/Formulario';
 import {Locales} from './sub/Locales';
 import {VerLocal} from './sub/VerLocal';
-import RequestHandler from '../../hocs/RequestHandler';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 
-export function LocalesRouting (props) {
+export default function LocalesRouting (props) {
     const [open,toggle] = useState(false),
         openModal = (e) => {
             e.preventDefault();

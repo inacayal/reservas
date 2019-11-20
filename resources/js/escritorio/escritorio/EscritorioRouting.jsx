@@ -9,31 +9,16 @@ import ReactDOM from 'react-dom';
 import Escritorio from './sub/Escritorio';
 import {Route} from 'react-router-dom';
 
-export default class EscritorioRouting extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    componentDidMount(){
-        console.log('configuracionMount');
-    }
-
-    componentWillUnmount(){
-        console.log('configuracionUnmount');
-    }
-
-    render() {
-        return (
-            <>
-                <Route
-                    path={this.props.match.url}
-                    exact
-                    component={
-                        (match) =>
-                            <Escritorio
-                                {...match} />
-                    } />
-            </>
-        );
-    }
+export default function EscritorioRouting (props) {
+    return (
+        <>
+            <Route
+                path={props.match.url}
+                exact
+                render={
+                    (match) =>
+                        <Escritorio data={props.data} {...match} />
+                } />
+        </>
+    );
 }

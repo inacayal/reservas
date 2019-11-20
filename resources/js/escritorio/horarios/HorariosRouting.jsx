@@ -16,7 +16,7 @@ import { Route, Switch } from 'react-router-dom';
 import {Navegacion,FormActions} from '../../acciones/ActionsByView';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 
-export function HorariosRouting (props) {
+export default function HorariosRouting (props) {
     const [open,toggle] = useState(false),
         openModal = (e) => {
             e.preventDefault();

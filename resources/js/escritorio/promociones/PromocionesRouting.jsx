@@ -14,7 +14,7 @@ import {ConfirmarModal} from '../../componentes/modal/Modal';
 import { Route, Switch } from 'react-router-dom';
 import {Navegacion,FormActions} from '../../acciones/ActionsByView';
 
-export function PromocionesRouting (props) {
+export default function PromocionesRouting (props) {
     const [open,toggle] = useState(false),
         openModal = (e) => {
             e.preventDefault();

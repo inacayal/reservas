@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
-import {GET} from '../utils/api';
+import {GET} from '../../utils/api';
 
-export const handlers = [
+export const franquiciasHandlers = [
     {
         endpoint:'/franquicias',
         match:/\/franquicias$/,
@@ -31,7 +31,7 @@ export const handlers = [
 ];
 
 
-export const editFormHandler = (endpoint,location) => {
+const editFormHandler = (endpoint,location) => {
     return function (params) {
         const request = GET({
             endpoint: endpoint,
@@ -40,9 +40,11 @@ export const editFormHandler = (endpoint,location) => {
         request
             .then(
                 response => {
+                    const data = response.data.data;
                     this.setState({
-                        data: response.data.data,
+                        data: data,
                         loadFinished:true,
+                        nombre:data.nombre,
                         redirect: <Redirect to={location}/>
                     });
                 }
@@ -55,7 +57,7 @@ export const editFormHandler = (endpoint,location) => {
     }
 }
 
-export const addFormHandler = (endpoint,location) => {
+const addFormHandler = (endpoint,location) => {
     return function (params) {
         this.setState({
             data:true,
@@ -66,7 +68,7 @@ export const addFormHandler = (endpoint,location) => {
 }
 
 
-export const listHandler = (endpoint,location) => {
+const listHandler = (endpoint,location) => {
     return function (params) {
         const request = GET({
             endpoint: endpoint,
@@ -90,7 +92,7 @@ export const listHandler = (endpoint,location) => {
     }
 }
 
-export const singleHandler = (endpoint,location) => {
+const singleHandler = (endpoint,location) => {
     return function (params) {
         const request = GET({
             endpoint: endpoint,
@@ -100,8 +102,10 @@ export const singleHandler = (endpoint,location) => {
         request
             .then(
                 response => {
+                    const data = response.data.data
                     this.setState({
-                        data: response.data.data,
+                        data: data,
+                        nombre:data.nombre,
                         loadFinished:true,
                         redirect: <Redirect to={location}/>
                     });

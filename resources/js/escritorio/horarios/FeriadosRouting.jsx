@@ -10,7 +10,7 @@ import {VerFeriado} from './sub/VerFeriado';
 import {Navegacion,FormActions} from '../../acciones/ActionsByView';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 
-export function FeriadosRouting (props) {
+export default function FeriadosRouting (props) {
     const [open,toggle] = useState(false),
         openModal = (e) => {
             e.preventDefault();

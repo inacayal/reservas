@@ -9,7 +9,7 @@ import {Calendario} from './sub/Calendario';
 import {VerReserva} from './sub/VerReserva';
 import{Navegacion,FormActions} from '../../acciones/ActionsByView';
 
-export function ReservasRouting (props) {
+export default function ReservasRouting (props) {
     return (
         <>
             <Route

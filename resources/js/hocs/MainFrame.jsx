@@ -10,8 +10,7 @@ import {
 /**
  * navigation
  */
-import BreadCrumb from '../componentes/control/BreadCrumb';
-import Lateral from '../escritorio/Lateral';
+import Profile from '../componentes/control/Profile';
 import {RouterTransition} from './RouterTransition';
 
 export const searchHandler = (handlerArray,path) => {
@@ -27,31 +26,21 @@ const searchRoute = (handler) => {
 }
 
 export default function MainFrame (props) {
-    const current = window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, ''),
-        location = useLocation(),
+    const location = useLocation(),
         handler =searchHandler(props.handlers,location.pathname),
         route = searchRoute(handler);
     return (
-        <div className="row">
-            <div className="col-md-2 no-padding">
-                <Lateral
-                    current={props.current}
-                    items={sidebar}/>
-            </div>
-            <div className="col-md-10 container-fluid background-border" style={{height:"85vh"}}>
-                <div className="row extra-box-padding">
-                    <BreadCrumb items={current.split('/')}/>
-                </div>
-                <div className="row extra-h-padding" style={{height:'87.5%'}}>
-                    <div className="col-md-12 container-fluid white-background no-padding" style={{height:'100%'}}>
-                        <RouterTransition
-                            route={route}
-                            location={location.pathname}
-                            handlerArray = {props.handlers}>
-                            {props.children}
-                        </RouterTransition>
-                    </div>
-                </div>
+        <div className="row" style={{height:'95%',borderRadius:"5px",overflow:'hidden'}}>
+            <RouterTransition
+                url={window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, '')}
+                sidebarElem={props.current}
+                route={route}
+                location={location.pathname}
+                handlerArray = {props.handlers}>
+                {props.children}
+            </RouterTransition>
+            <div className="col-md-2 hidden-sm white-background">
+                <Profile />
             </div>
         </div>
     );

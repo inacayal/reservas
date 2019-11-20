@@ -13,7 +13,7 @@ import {Route, Switch} from 'react-router-dom';
 import {Navegacion,FormActions} from '../../acciones/ActionsByView'
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 
-export function EventosRouting (props) {
+export default function EventosRouting (props) {
     const [open,toggle] = useState(false),
         openModal = (e) => {
             e.preventDefault();

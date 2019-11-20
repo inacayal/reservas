@@ -11,32 +11,6 @@ import Titulo from '../../../componentes/basic/Titulo';
 import { GET } from '../../../utils/api';
 import Actions from '../../../componentes/basic/Actions';
 
-export const establecimientoHandler = (endpoint) => {
-    return function (params) {
-        this.setState({
-            data: null,
-            isLoading: true,
-            loadFinished: false
-        });
-
-        const request = GET({
-            endpoint: endpoint,
-            download: this.downloadHandler
-        });
-
-        request
-            .then(
-                response => {
-                    this.setState({ data: response.data.data });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
-    }
-}
 
 export class Establecimiento extends Component {
     constructor(props) {
@@ -66,7 +40,6 @@ export class Establecimiento extends Component {
     }
 
     render() {
-        console.log(this.props)
         return (
             <>
                 <Titulo

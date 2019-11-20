@@ -1,116 +1,37 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
-import {GET} from '../utils/api';
+import {GET} from '../../utils/api';
 
-
-export const handlers = [
+export const configuracionHandlers = [
     {
-        endpoint:'/locales',
-        match:/\/locales$/,
+        endpoint:'/configuracion',
+        match:/\/configuracion$/,
         callback:(params) =>
-            listHandler(`/usuario/locales/${user.id}`,'/locales')
+            configuracionHandler(`usuario/local/${user.id}`,'/configuracion')
     },
     {
-        endpoint:'/locales/agregar',
-        match:/\/locales\/(agregar)$/,
+        endpoint:'/configuracion/usuario',
+        match:/\/configuracion\/(usuario)$/,
         callback:(params) =>
-            addFormHandler(`/usuario/add/${user.id}/1`,'/locales/agregar')
+            usuarioHandler(`usuario/local/${user.id}`,'/configuracion/usuario')
     },
     {
-        endpoint:'/locales/editar/:id',
-        match:/\/locales\/(editar\/\d+)$/,
+        endpoint:'/configuracion/establecimiento',
+        match:/\/configuracion\/(establecimiento)$/,
         callback:(params) =>
-            editFormHandler(`/usuario/local/${params.id}`,`/locales/editar/${params.id}`)
+            establecimientoHandler(`usuario/local/${user.id}`,'/configuracion/establecimiento')
     },
     {
-        endpoint:'/locales/:id',
-        match: /\/locales\/(\d+)$/,
+        endpoint:'/configuracion/reservas',
+        match: /\/configuracion\/(reservas)$/,
         callback: (params) =>
-            singleHandler(`/usuario/local/${params.id}`,`/locales/${params.id}`)
+            reservaHandler(`usuario/local/${user.id}`,'/configuracion/reservas')
     }
 ];
 
-export const editFormHandler = (endpoint,location) => {
-    return function (params) {
-        const request = GET({
-            endpoint: endpoint,
-            download: this.downloadHandler
-        });
-        request
-            .then(
-                response => {
-                    const data = response.data.data
-                    this.setState({
-                        data:data,
-                        loadFinished:true,
-                        redirect:<Redirect to={location}/>
-                    });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
-    }
-}
 
-export const addFormHandler = (endpoint,location) => {
-    return function (params) {
-        const request = GET({
-            endpoint: endpoint,
-            download: this.props.downloadHandler
-        });
-        request
-            .then(
-                response => {
-                    const data = response.data.usuarios.list;
-                    this.setState({
-                        data:data,
-                        loadFinished:true,
-                        redirect:<Redirect to={location}/>
-                    });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
-    }
-}
-
-
-
-
-export const listHandler = (endpoint,location) => {
-    return function (params) {
-        const request = GET({
-            endpoint: endpoint,
-            download: this.downloadHandler
-        });
-
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: response.data.locales.data,
-                        loadFinished: true,
-                        redirect:<Redirect to={location}/>
-                    });
-                }
-            )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
-    }
-}
-
-
-export const singleHandler = (endpoint,location) => {
+const establecimientoHandler = (endpoint,location) => {
     return function (params) {
         const request = GET({
             endpoint: endpoint,
@@ -123,9 +44,84 @@ export const singleHandler = (endpoint,location) => {
                     this.setState({
                         data: response.data.data,
                         loadFinished:true,
-                        redirect:<Redirect to={location}/>
+                        redirect: <Redirect to={location}/>
                     });
+                }
+            )
+            .catch(
+                error => {
+                    console.log(error.message)
+                }
+            );
+    }
+}
 
+const configuracionHandler = (endpoint,location) => {
+    return function (params) {
+        const request = GET({
+            endpoint: endpoint,
+            download: this.downloadHandler
+        });
+
+        request
+            .then(
+                response => {
+                    this.setState({
+                        data: response.data.data,
+                        loadFinished:true,
+                        redirect: <Redirect to={location}/>
+                    });
+                }
+            )
+            .catch(
+                error => {
+                    console.log(error.message)
+                }
+            );
+    }
+}
+
+const reservaHandler = (endpoint,location) => {
+    return function (params){
+        const request = GET({
+            endpoint: endpoint,
+            download: this.downloadHandler
+        });
+
+        request
+            .then(
+                response => {
+                    this.setState({
+                        data: response.data.data,
+                        loadFinished:true,
+                        redirect: <Redirect to={location}/>
+                    });
+                }
+            )
+            .catch(
+                error => {
+                    console.log(error.message)
+                }
+            );
+    }
+}
+
+
+const usuarioHandler = (endpoint,location) => {
+    return function (params){
+        const request = GET({
+            endpoint: endpoint,
+            download: this.downloadHandler
+        });
+
+        request
+            .then(
+                response => {
+                    this.setState({
+                        data: response.data.data,
+                        loadFinished:true,
+                        redirect: <Redirect to={location}/>
+                    });
                 }
             )
             .catch(

@@ -11,7 +11,7 @@ import {Navegacion,FormActions} from '../../acciones/ActionsByView';
 
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 
-export function UbicacionesRouting (props) {
+export default function UbicacionesRouting (props) {
     const [open,toggle] = useState(false),
         openModal = (e) => {
             e.preventDefault();

@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom';
  * componentes
  */
 import {Link} from 'react-router-dom';
+import {waitCallback} from '../basic/Actions';
 
 const map = {
     escritorio:   () => (
@@ -69,10 +70,10 @@ const map = {
             <span className="text bold">Promociones</span>
         </>
     ),
-    editar: () => (
+    editar: (nombre) => (
       <>
           <i className="fas fa-pen inline-box side-margin" />
-          <span className="text bold">Editar</span>
+          <span className="text bold">{"Editar "+nombre||''}</span>
       </>
     ),
     agregar: () => (
@@ -92,49 +93,75 @@ const map = {
             <i className="fas fa-store inline-box side-margin" />
             <span className="text bold">Establecimiento</span>
         </>
+    ),
+    ver:(nombre) => (
+        <>
+            <i className="fas fa-eye inline-box side-margin" />
+            <span className="text bold">{nombre}</span>
+        </>
     )
 };
 
-function BreadCrumb(props) {
-    let stored = '',
-      display = null;
-    return (
-        <>
-            <ul className="flex-row nav-list white-background full-width h-padding">
-                {
-                    props.items.map(
-                        (e,i) => {
-                            stored += e==='escritorio' ? '/' : e + '/';
-                            display = map[e] ? map[e]():'';
-                            return (
-                                <li key={i} className="margin-box ">
-                                    {
-                                        i === props.items.length-1 || e === 'editar' || e === 'agregar'
-                                        ?
-                                            <div className="inline-block line-v-middle smaller-text margin-box">{display}</div>
-                                        :
-                                            <>
-                                                <Link to={stored}>
-                                                    <span className="bold decorate-blue-hover smaller-text text bold inline-block">
-                                                        {display}
-                                                    </span>
-                                                </Link>
-                                                <i className={
-                                                    map[props.items[i+1]]
-                                                    ?
-                                                        "h-padding inline-block margin-box line-v-middle highlight middle-font fas fa-angle-right"
-                                                    :
-                                                        "hidden h-padding"
-                                                }/>
-                                            </>
-                                    }
-                                </li>
-                            );
-                        }
-                    )
-                }
-            </ul>
-        </>
-    );
+export default class BreadCrumb extends Component {
+    constructor(props){
+        super(props)
+    }
+
+    shouldComponentUpdate(pp,ns){
+        return pp.url !== this.props.url || pp.nombre !== this.props.nombre;
+    }
+    render (){
+        let stored = '',
+            display = null;
+        const props = this.props;
+        return (
+            <>
+                <ul className="flex-row top-padding nav-list white-background full-width h-padding">
+                    {
+                        props.items.map(
+                            (e,i) => {
+                                stored = e==='escritorio' ? '' : `${stored}/${e}`;
+                                display = map[e] ? map[e](props.nombre): map.ver(props.nombre);
+
+                                const clickCallback =  ((st) => {
+                                    return (ev) =>
+                                        waitCallback(ev,{to:`${st}`,params:{}},props.load)
+                                })(stored);
+
+                                if (props.items[i-1] === 'editar')
+                                    display = '';
+
+                                return (
+                                    <li key={i} className="margin-box ">
+                                        {
+                                            i === props.items.length-1 || e === 'editar' || e === 'agregar'
+                                            ?
+                                                <div className="inline-block line-v-middle smaller-text margin-box">{display}</div>
+                                            :
+                                                <>
+                                                    <Link
+                                                        to={stored||'/'}
+                                                        onClick={
+                                                            e==='escritorio'|| (e==='horarios'&& props.items[i+1] === 'feriados')
+                                                            ?
+                                                                () => false
+                                                            :
+                                                                clickCallback
+                                                        }>
+                                                        <span className="bold decorate-blue-hover smaller-text text bold inline-block">
+                                                            {display}
+                                                        </span>
+                                                    </Link>
+                                                    <i className={"h-padding inline-block margin-box line-v-middle highlight middle-font fas fa-angle-right"}/>
+                                                </>
+                                        }
+                                    </li>
+                                );
+                            }
+                        )
+                    }
+                </ul>
+            </>
+        )
+    };
 }
-export default BreadCrumb;

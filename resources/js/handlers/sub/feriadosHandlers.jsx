@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
-import {GET} from '../utils/api';
-import {generateHoursFromInterval} from '../utils/Helper';
+import {GET} from '../../utils/api';
+import {generateHoursFromInterval} from '../../utils/Helper';
 
-export const handlers = [
+export const feriadosHandlers = [
     {
         endpoint:`/horarios/feriados`,
         match:/(\/horarios\/feriados)$/,
@@ -31,7 +31,7 @@ export const handlers = [
     }
 ];
 
-export const editFormHandler = (endpoint,location) => {
+const editFormHandler = (endpoint,location) => {
     return function (params){
         const request = GET({
             endpoint: endpoint,
@@ -40,14 +40,16 @@ export const editFormHandler = (endpoint,location) => {
         request
             .then(
                 response => {
+                    const data = response.data.feriados[0];
                     this.setState({
                         data: {
                             date: new Date(response.data.feriados[0].fecha),
-                            feriados: response.data.feriados[0],
+                            feriados: data,
                             eventos: response.data.eventos,
                             minutes: generateHoursFromInterval(response.data.intervalo),
                             side: response.data.feriados[0].estado === 'laboral'
                         },
+                        nombre:data.nombre,
                         loadFinished: true,
                         redirect:<Redirect to={location}/>,
                         refresh:true
@@ -62,7 +64,7 @@ export const editFormHandler = (endpoint,location) => {
     }
 }
 
-export const addFormHandler = (endpoint,location) => {
+const addFormHandler = (endpoint,location) => {
     return function (params){
         const date = params.date ? params.date : new Date();
         const request = GET({
@@ -93,7 +95,7 @@ export const addFormHandler = (endpoint,location) => {
     }
 }
 
-export const listHandler = (endpoint,location) => {
+const listHandler = (endpoint,location) => {
     return function (params){
         const date = params.date||new Date(),
             request = GET({
@@ -126,7 +128,7 @@ export const listHandler = (endpoint,location) => {
 }
 
 
-export const singleHandler = (endpoint,location) => {
+const singleHandler = (endpoint,location) => {
     return function (params){
         const request = GET({
             endpoint: endpoint,
@@ -136,12 +138,14 @@ export const singleHandler = (endpoint,location) => {
         request
             .then(
                 response => {
+                    const data = response.data.feriados[0];
                     this.setState({
                         data: {
-                            data:response.data.feriados[0],
+                            data:data,
                             eventos:response.data.eventos,
                             intervalo:response.data.intervalo
                         },
+                        nombre:data.nombre,
                         loadFinished:true,
                         redirect:<Redirect to={location}/>
                     });

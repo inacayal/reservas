@@ -15,41 +15,41 @@ export const FormularioEstablecimiento = (props) => {
         <>
             <div className="row v-padding">
                 <div className="col-md-4">
-                    <Text 
-                        rows={1} 
-                        titulo="Nombre" 
-                        name="nombre" 
-                        value={data.nombre} 
-                        classes={"border-box input-text margin-box"} 
+                    <Text
+                        rows={1}
+                        titulo="Nombre"
+                        name="nombre"
+                        value={data.nombre}
+                        classes={"border-box input-text margin-box"}
                         container="full-width" />
                 </div>
                 <div className="col-md-4">
-                    <Text 
-                        rows={1} 
-                        titulo="Correo" 
-                        name="correo_local" 
-                        value={data.correoLocal} 
-                        classes={"border-box input-text margin-box"} 
+                    <Text
+                        rows={1}
+                        titulo="Correo"
+                        name="correo_local"
+                        value={data.correoLocal}
+                        classes={"border-box input-text margin-box"}
                         container="full-width" />
                 </div>
                 <div className="col-md-4">
-                    <Text 
-                        rows={1} 
-                        titulo="Teléfono" 
-                        name="telefono_local" 
-                        value={data.telefonoLocal} 
-                        classes={"border-box input-text margin-box"} 
+                    <Text
+                        rows={1}
+                        titulo="Teléfono"
+                        name="telefono_local"
+                        value={data.telefonoLocal}
+                        classes={"border-box input-text margin-box"}
                         container="full-width" />
                 </div>
             </div>
             <div className="row v-padding">
                 <div className="col-md-6">
-                    <Text 
-                        rows={1} 
-                        titulo="Razón Social" 
-                        name="razon_social" 
-                        value={data.razonSocial} 
-                        classes={"border-box input-text margin-box"} 
+                    <Text
+                        rows={1}
+                        titulo="Razón Social"
+                        name="razon_social"
+                        value={data.razonSocial}
+                        classes={"border-box input-text margin-box"}
                         container="full-width" />
                 </div>
                 <div className="col-md-6">
@@ -63,7 +63,7 @@ export const FormularioEstablecimiento = (props) => {
                 </div>
             </div>
             {
-                props.isFranquicia 
+                props.isFranquicia
                 ?
                     <></>
                 :
@@ -106,7 +106,7 @@ export const FormularioEstablecimiento = (props) => {
                         <FormularioUbicacion data={data}/>
                     </>
             }
-            
+
         </>
     );
 }

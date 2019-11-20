@@ -202,7 +202,8 @@ export default function generateConfigurationCards (
                                 Editar
                             </div>
                         ),
-                        to: e.route
+                        to: e.route,
+                        params:{}
                     }
                 ];
             return {

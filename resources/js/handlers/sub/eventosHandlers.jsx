@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
-import {GET} from '../utils/api';
-import { assignHorarios } from '../escritorio/eventos/sub/generateEventosCard';
+import {GET} from '../../utils/api';
+import { assignHorarios } from '../../escritorio/eventos/sub/generateEventosCard';
 
-export const handlers = [
+export const eventosHandlers = [
     {
         endpoint:'/eventos',
         match:/\/eventos$/,
@@ -53,6 +53,7 @@ const editFormHandler = (endpoint,location) => {
                     data.all.horarios.list = assignHorarios(data.all.horarios.list)[0];
                     this.setState({
                         data: {...data},
+                        nombre:data.selected.nombre,
                         loadFinished:true,
                         redirect: <Redirect to={location}/>
                     });
@@ -81,6 +82,7 @@ const addFormHandler = (endpoint,location) => {
                     data.horarios.list = assignHorarios(data.horarios.list)[0];
                     this.setState({
                         data: {...data},
+                        nombre:null,
                         loadFinished:true,
                         redirect: <Redirect to={location}/>
                     });
@@ -93,7 +95,6 @@ const addFormHandler = (endpoint,location) => {
         );
     }
 }
-
 
 const listHandler = (endpoint,location) => {
     return function (params) {
@@ -108,6 +109,7 @@ const listHandler = (endpoint,location) => {
                     this.setState({
                         data: response.data.eventos.data,
                         loadFinished:true,
+                        nombre:null,
                         redirect: <Redirect to={location}/>
                     });
                 }
@@ -130,8 +132,10 @@ const singleHandler = (endpoint,location) => {
         request
             .then(
                 response => {
+                    const data = response.data.eventos[0];
                     this.setState({
-                        data: response.data.eventos[0],
+                        data:data,
+                        nombre:data.nombre,
                         loadFinished:true,
                         redirect: <Redirect to={location}/>
                     });

@@ -17,11 +17,15 @@ export function downloadHandler(pEvent) {
     this.setState(state);
 }
 export function LoadBar (progress){
-    return <div style={
-        {
-            width:`${progress.loaded}%`,
-            backgroundColor:"var(--highlight-blue)",
-            height:"4px",
-        }
-    }></div>;
+    return (
+        <div className="col-md-12 no-padding no-margin">
+            <div style={
+                {
+                    width:`${progress.loaded}%`,
+                    backgroundColor:"var(--highlight-blue)",
+                    height:"6px"
+                }
+            }/>
+        </div>
+    )
 }

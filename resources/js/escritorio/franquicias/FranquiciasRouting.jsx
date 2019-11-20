@@ -14,7 +14,7 @@ import {VerFranquicia} from './sub/VerFranquicia';
 import {Navegacion,FormActions} from '../../acciones/ActionsByView';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 
-export function FranquiciasRouting (props) {
+export default function FranquiciasRouting (props) {
     const [open,toggle] = useState(false),
         openModal = (e) => {
             e.preventDefault();
