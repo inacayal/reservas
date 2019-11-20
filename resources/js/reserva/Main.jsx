@@ -1,25 +1,12 @@
-/**
- * react basic
- */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-/**
- * pasos de la reserva
- */
 import Local from './pasos/Local.jsx';
 import EventoFrame from "./pasos/evento/EventoFrame.jsx";
 import Exito from "./pasos/Exito.jsx";
-/**
- * control
- */
 import Paginado from '../componentes/control/Paginado.jsx';
-/**
- * handlers input
- */
 import { showOptions, selectOption } from '../componentes/input/Select'
 import { onTextChange } from '../componentes/input/Text'
 
-//holds reservation state
 export default class Main extends Component {
     constructor() {
         super();
@@ -62,38 +49,38 @@ export default class Main extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <Local 
-                        {...selectHandlers} 
-                        select={this.state.select.local} 
+                    <Local
+                        {...selectHandlers}
+                        select={this.state.select.local}
                         current={this.state.navPanel === 0}/>
-                    <EventoFrame 
-                        {...selectHandlers} 
+                    <EventoFrame
+                        {...selectHandlers}
                         displayTitles={true}
-                        eventos={this.state.select.evento} 
-                        persona={this.state.select.personas} 
-                        hora={this.state.select.hora} 
-                        ubicacion={this.state.select.ubicacion} 
-                        current={this.state.navPanel === 1} 
-                        fecha={this.state.fecha} 
+                        eventos={this.state.select.evento}
+                        persona={this.state.select.personas}
+                        hora={this.state.select.hora}
+                        ubicacion={this.state.select.ubicacion}
+                        current={this.state.navPanel === 1}
+                        fecha={this.state.fecha}
                         tileDisabled={() => false}
                         dayChange = {this.onCalendarChange}
                         monthChange = {() => false}
                         navChange = {() => false}/>
-                    <Exito 
+                    <Exito
                         current={this.state.navPanel === 2}/>
                 </div>
-                <Paginado 
+                <Paginado
                     leftData={this.state.navPanel-1}
                     rightData={this.state.navPanel+1}
-                    current={this.state.navPanel} 
-                    pages ={this.panels} 
+                    current={this.state.navPanel}
+                    pages ={this.panels}
                     click={this.clickNavigation}
                     enableMaxSides={true}/>
             </div>
         );
     }
 }
-    
+
 if (document.getElementById('reserva-container')) {
     ReactDOM.render(<Main />, document.getElementById('reserva-container'));
 }

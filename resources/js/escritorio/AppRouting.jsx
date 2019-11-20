@@ -25,7 +25,7 @@ export default function AppRouting (props) {
         <>
             <div className="dark-border-bottom dark-background full-width" style={{position:"absolute",height:'40%'}}>
             </div>
-            <div className="container-fluid full-width" style={{position:'absolute',height:"100vh",padding:"25px"}}>
+            <div className="container-fluid full-width full-height" style={{position:'absolute',padding:"25px"}}>
                 <div className="row" style={{height:'5%'}}>
                     <BarraNavegacion />
                 </div>
@@ -37,8 +37,9 @@ export default function AppRouting (props) {
                             (match) =>
                                 <MainFrame
                                     handlers = {handlers.escritorio}
-                                    current = {'0'} >
-                                    <EscritorioRouting {...match} />
+                                    current = {'0'}
+                                    {...match}>
+                                    <EscritorioRouting/>
                                 </MainFrame>
                         }/>
                     <Route
@@ -47,7 +48,7 @@ export default function AppRouting (props) {
                             (match) =>
                                 <MainFrame
                                     current={'1'}
-                                    handlers={handlers.reservas}>
+                                    handlers={handlers.reservas} {...match}>
                                     <ReservasRouting {...match} />
                                 </MainFrame>
                         } />
@@ -57,7 +58,7 @@ export default function AppRouting (props) {
                             (match) =>(
                                 <MainFrame
                                     current={'2'}
-                                    handlers={handlers.feriados}>
+                                    handlers={handlers.feriados}{...match}>
                                     <FeriadosRouting {...match}/>
                                 </MainFrame>
                             )
@@ -68,7 +69,7 @@ export default function AppRouting (props) {
                             (match) => (
                                 <MainFrame
                                     current={'2'}
-                                    handlers={handlers.horarios}>
+                                    handlers={handlers.horarios}{...match}>
                                     <HorariosRouting {...match} />
                                 </MainFrame>
                             )
@@ -79,7 +80,7 @@ export default function AppRouting (props) {
                             (match) =>
                                 <MainFrame
                                     current = {'3'}
-                                    handlers={handlers.ubicaciones}>
+                                    handlers={handlers.ubicaciones}{...match}>
                                     <UbicacionesRouting {...match} />
                                 </MainFrame>
                         } />
@@ -89,7 +90,7 @@ export default function AppRouting (props) {
                             (match) =>
                                 <MainFrame
                                     current={'4'}
-                                    handlers={handlers.eventos}>
+                                    handlers={handlers.eventos}{...match}>
                                     <EventosRouting {...match} />
                                 </MainFrame>
                         } />
@@ -99,7 +100,7 @@ export default function AppRouting (props) {
                             (match) =>
                                 <MainFrame
                                     current={'5'}
-                                    handlers={handlers.promociones}>
+                                    handlers={handlers.promociones}{...match}>
                                     <PromocionesRouting {...match} />
                                 </MainFrame>
                         } />
@@ -109,7 +110,7 @@ export default function AppRouting (props) {
                             (match) =>
                                 <MainFrame
                                     current={'6'}
-                                    handlers={handlers.locales}>
+                                    handlers={handlers.locales}{...match}>
                                     <LocalesRouting {...match} />
                                 </MainFrame>
                         } />
@@ -119,7 +120,7 @@ export default function AppRouting (props) {
                             (match) =>
                                 <MainFrame
                                     handlers={handlers.configuracion}
-                                    current={'7'}>
+                                    current={'7'}{...match}>
                                     <ConfiguracionRouting {...match} />
                                 </MainFrame>
                         } />
@@ -129,7 +130,7 @@ export default function AppRouting (props) {
                             (match) =>
                                 <MainFrame
                                     current={'8'}
-                                    handlers={handlers.franquicias}>
+                                    handlers={handlers.franquicias}{...match}>
                                     <FranquiciasRouting {...match}/>
                                 </MainFrame>
                             }/>

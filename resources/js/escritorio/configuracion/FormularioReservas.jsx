@@ -67,11 +67,11 @@ const SelectData = {
 };
 
 export const FormularioReservas = (props)  => {
-    
-    SelectData.intervalo.selected = props.data.intervalo.id||"";
+
+    SelectData.intervalo.selected = (props.data.intervalo||{}).id||"";
     SelectData.antelacion.selected = props.data.antelacionReserva||"";
     SelectData.caida.selected = props.data.caida||"";
-    
+
     return (
         <>
             <div className="row v-padding">

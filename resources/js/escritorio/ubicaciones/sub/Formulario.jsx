@@ -3,20 +3,11 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-/**
- * react calendar date picker
- */
-import Calendar from 'react-calendar';
-/**
- * componentes
- */
 import Titulo from '../../../componentes/basic/Titulo';
 import Actions from '../../../componentes/basic/Actions';
-/**
- * input component and handlers
- */
 import {Numeric} from '../../../componentes/input/Numeric';
 import {Text} from '../../../componentes/input/Text';
+import {DisplaysMessages} from '../../../hocs/MainFrame';
 
 export class Formulario extends Component {
     constructor(props) {
@@ -30,9 +21,15 @@ export class Formulario extends Component {
             this.props.nav.buttons[0].click = this.props.toggleModal;
     }
 
+    static contextType = DisplaysMessages;
+
     enviarFormulario(e){
         e.preventDefault();
-        console.log('guardar');
+        this.context({
+            message:{
+                data:'clicked from Ubicaciones form'
+            }
+        })
     }
 
     cancelarFormulario(e){

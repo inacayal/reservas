@@ -3,10 +3,8 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {
-    useRouteMatch,
-    useLocation
-} from 'react-router-dom';
+import {useRouteMatch,useLocation} from 'react-router-dom';
+import Message from '../utils/Message';
 /**
  * navigation
  */
@@ -21,27 +19,56 @@ export const searchHandler = (handlerArray,path) => {
     return handler[0];
 }
 
-const searchRoute = (handler) => {
-    return useRouteMatch(handler.endpoint);
-}
+export const DisplaysMessages = React.createContext({});
 
-export default function MainFrame (props) {
-    const location = useLocation(),
-        handler =searchHandler(props.handlers,location.pathname),
-        route = searchRoute(handler);
-    return (
-        <div className="row" style={{height:'95%',borderRadius:"5px",overflow:'hidden'}}>
-            <RouterTransition
-                url={window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, '')}
-                sidebarElem={props.current}
-                route={route}
-                location={location.pathname}
-                handlerArray = {props.handlers}>
-                {props.children}
-            </RouterTransition>
-            <div className="col-md-2 hidden-sm white-background">
-                <Profile />
+export default class MainFrame extends Component {
+    constructor(props){
+        super(props);
+        this.state={
+            showMessage:false,
+            message:{data:'culo'}
+        }
+        this.showMessage = this.showMessage.bind(this)
+    }
+
+    showMessage({message}){
+        this.setState({
+                showMessage:true,
+                message:message
+            }
+        );
+        setTimeout( () =>
+            this.setState({
+                showMessage:false,
+                message:{}
+            }),
+        5000)
+    }
+
+    render(){
+        const props = this.props,
+            location = props.location,
+            handler =searchHandler(props.handlers,location.pathname),
+            route = props.match;
+        return (
+            <div className="row round-border" style={{height:'95%',overflow:'hidden'}}>
+                <Message
+                    show={this.state.showMessage}
+                    message={this.state.message}/>
+                <DisplaysMessages.Provider value={this.showMessage}>
+                    <RouterTransition
+                        url={window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, '')}
+                        sidebarElem={props.current}
+                        route={route}
+                        location={location.pathname}
+                        handlerArray = {props.handlers}>
+                        {props.children}
+                    </RouterTransition>
+                </DisplaysMessages.Provider>
+                <div className="col-md-2 hidden-sm white-background">
+                    <Profile />
+                </div>
             </div>
-        </div>
-    );
+        )
+    }
 }
