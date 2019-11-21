@@ -13,7 +13,6 @@ import withFixedColumns from "react-table-hoc-fixed-columns";
 import "react-table-hoc-fixed-columns/lib/styles.css";
 
 export default function PromocionesTable(props){
-    console.log(props.data);
     const columns = [
             {
                 Header: "Nombre",

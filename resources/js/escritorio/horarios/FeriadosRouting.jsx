@@ -35,7 +35,7 @@ export default function FeriadosRouting (props) {
                         <Feriados
                             data={props.data}
                             toggleModal={openModal}
-                            nav={Navegacion.listado('/horarios/feriados')} {...match} />
+                            nav={Navegacion.listado('horarios/feriados')} {...match} />
                 } />
             <Switch>
                 <Route
@@ -46,7 +46,7 @@ export default function FeriadosRouting (props) {
                             <FeriadoFormulario
                                 data={props.data}
                                 toggleModal={openModal}
-                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/horarios/feriados')}
+                                nav={Navegacion.formulario(()=>false,match.match.params.id,'horarios/feriados')}
                                 formActions={FormActions()}
                                 editar={true} {...match} />
                     } />
@@ -57,7 +57,7 @@ export default function FeriadosRouting (props) {
                             <FeriadoFormulario
                                 data={props.data}
                                 editar={false}
-                                nav={Navegacion.agregar('/horarios/feriados')}
+                                nav={Navegacion.agregar('horarios/feriados')}
                                 formActions={FormActions()} {...match} />
 
                     } />
@@ -68,7 +68,7 @@ export default function FeriadosRouting (props) {
                             <VerFeriado
                                 data={props.data}
                                 toggleModal={openModal}
-                                nav={Navegacion.singular(()=>false,match.match.params.id,'/horarios/feriados')}
+                                nav={Navegacion.singular(()=>false,match.match.params.id,'horarios/feriados')}
                                 {...props} />
                     } />
             </Switch>

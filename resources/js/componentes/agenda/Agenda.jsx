@@ -1,16 +1,7 @@
-/**
- * react basic
- */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-/**
- * componentes
- */
 import {Elements} from './Elements';
 import ButtonList from '../basic/ButtonList';
-/**
- * constantes
- */
 import {DAYS,MONTHS,monthRows,monthIndex} from '../../constantes/DaysMonths';
 import { getMonthLength} from '../../utils/Helper';
 import {evaluateDateChange} from '../../utils/Helper';
@@ -69,8 +60,9 @@ export default class Agenda extends Component {
             change,
             this.context,
             this.setState.bind(this),
-            this.props.endpoint,
-            "2"
+            `/${this.props.endpoint}`,
+            "2",
+            this.props.endpoint
         );
     }
 
@@ -87,8 +79,9 @@ export default class Agenda extends Component {
             change,
             this.context,
             this.setState.bind(this),
-            this.props.endpoint,
-            "1"
+            `/${this.props.endpoint}`,
+            "1",
+            this.props.endpoint
         );
     }
 
@@ -105,8 +98,9 @@ export default class Agenda extends Component {
             change,
             this.context,
             this.setState.bind(this),
-            this.props.endpoint,
-            "1"
+            `/${this.props.endpoint}`,
+            "1",
+            this.props.endpoint
         );
     }
 
@@ -123,8 +117,9 @@ export default class Agenda extends Component {
             change,
             this.context,
             this.setState.bind(this),
-            this.props.endpoint,
-            "1"
+            `/${this.props.endpoint}`,
+            "1",
+            this.props.endpoint
         );
     }
 

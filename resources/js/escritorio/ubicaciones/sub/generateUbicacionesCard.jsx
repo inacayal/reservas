@@ -4,22 +4,14 @@
 import React, { Component, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import {Link} from 'react-router-dom';
-/**
- * componentes
- */
 import ButtonList from '../../../componentes/basic/ButtonList';
-/**
- * funciones
- */
 import { GenerateActions } from '../../../acciones/GenerateActions';
-import {WaitsLoading} from '../../../hocs/RouterTransition';
-import {waitCallback} from '../../../componentes/basic/Actions';
+import CustomLink from '../../../componentes/basic/CustomLink';
 
 export default function generateUbicacionesCard(
     ubicaciones,
     actions
 ){
-    const context = useContext(WaitsLoading);
     return Object.keys(ubicaciones).map(
         e => {
             const acciones = GenerateActions.ubicaciones(
@@ -28,7 +20,8 @@ export default function generateUbicacionesCard(
                 ),
                 linkParam = {
                     to:`/ubicaciones/${e}`,
-                    params:{id:e}
+                    params:{id:e},
+                    route:'ubicaciones'
                 };
             return {
                 content:() => (
@@ -39,11 +32,11 @@ export default function generateUbicacionesCard(
                             </div>
                             <div className="col-md-9 container">
                                 <div className="row">
-                                    <Link
-                                        to={linkParam}
-                                        onClick={(ev) => waitCallback(ev,linkParam,context)}>
-                                        <span className="bold sub-title side-margin text">{ubicaciones[e].nombre}</span>
-                                    </Link>
+                                    <CustomLink params={linkParam}>
+                                        <span className="bold sub-title side-margin text">
+                                            {ubicaciones[e].nombre}
+                                        </span>
+                                    </CustomLink>
                                     {acciones}
                                 </div>
                                 <div className="row v-padding">

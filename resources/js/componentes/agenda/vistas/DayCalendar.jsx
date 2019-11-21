@@ -1,24 +1,9 @@
-/**
- * react basic
- */
 import React, { Component, useState, useContext } from 'react';
-import ReactDOM from 'react-dom';
-/**
- * funciones
- */
-import generateDay from '../procedimientos/generateDay';
-import generateWeek from '../procedimientos/generateWeek';
-/**
- * componentes
- */
-import ButtonList from '../../basic/ButtonList';
+import ReactDOM from 'react-dom';import generateDay from '../procedimientos/generateDay';
+import generateWeek from '../procedimientos/generateWeek';import ButtonList from '../../basic/ButtonList';
 import calendarNavigation from '../calendarNavigation';
 import {CardList} from '../../basic/CardList';
-import {Toggle} from '../../input/Toggle';
-/**
- * constantes
- */
-import {DAYS,MONTHS} from '../../../constantes/DaysMonths';
+import {Toggle} from '../../input/Toggle';import {DAYS,MONTHS} from '../../../constantes/DaysMonths';
 import {getMonthLength} from '../../../utils/Helper';
 import { evaluateDateChange } from '../../../utils/Helper';
 import {WaitsLoading} from '../../../hocs/RouterTransition';
@@ -54,7 +39,8 @@ const WeekDisplay = React.memo(
                     context,
                     (obj) => {changeDate(obj.date);},
                     '/reservas',
-                    "3"
+                    "3",
+                    'reservas'
                 );
             },
             classes = "no-padding full-width flex-row nav-list";

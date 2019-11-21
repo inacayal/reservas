@@ -3,15 +3,10 @@
  */
 import React, { Component,useContext } from 'react';
 import ReactDOM from 'react-dom';
-import {Link} from 'react-router-dom';
 import {CommaList} from '../../../componentes/basic/CommaList';
 import {DAYS} from '../../../constantes/DaysMonths';
-import {waitCallback} from '../../../componentes/basic/Actions';
-/**
- * funciones
- */
 import { GenerateActions } from '../../../acciones/GenerateActions';
-import {WaitsLoading} from '../../../hocs/RouterTransition';
+import CustomLink from '../../../componentes/basic/CustomLink';
 
 export const assignHorarios = (hList) => {
     const keys = Object.keys(hList),
@@ -31,25 +26,27 @@ export default function generateEventosCard(
 ) {
     return Object.keys(eventos).map(
         e => {
-            const context = useContext(WaitsLoading),
-                acciones = GenerateActions.eventos(
+            const acciones = GenerateActions.eventos(
                     e,
                     actions
                 ),
                 promociones = Object.values(eventos[e].promociones.list),
-                [horarios,horariosLength] = assignHorarios(eventos[e].horarios.list);
+                [horarios,horariosLength] = assignHorarios(eventos[e].horarios.list),
+                linkParam={
+                    to:`/eventos/${e}`,
+                    params:{id:e},
+                    route:'eventos'
+                };
             return {
                 content: () => (
                     <>
                         <div className="row">
                             <div className="col-md-8 no-padding">
-                                <Link
-                                    to={'/eventos/'+e}
-                                    onClick={(ev) => waitCallback(ev,{to:`/eventos/${e}`,params:{id:e}},context)}>
+                                <CustomLink params={linkParam}>
                                     <span className="text sub-title bold">
                                         {eventos[e].nombre}
                                     </span>
-                                </Link>
+                                </CustomLink>
                                 {acciones}
                             </div>
                             <div className="col-md-4 border-bottom text-right no-margin no-padding">

@@ -29,7 +29,7 @@ export default class Lateral extends Component {
             hoverToggle = this.hoverToggle,
             props = this.props;
         return (
-            <ul className="nav-list no-padding white-background" style={{height:'93.1%'}}>
+            <ul className="nav-list no-padding" style={{height:'93.1%'}}>
             {
                 props.items.map(
                     (e, i) => (
@@ -99,7 +99,7 @@ const SubElements = (props) => {
     let eClass = "";
 
     if (props.isCurrent) {
-        eClass = "nav-list no-padding dark-background";
+        eClass = "nav-list no-padding border-background";
     } else if (!props.isHover){
         eClass="hidden"
     } else
@@ -117,7 +117,7 @@ const SubElements = (props) => {
                             onMouseLeave ={()=>hoverToggle()}>
                             <Link to={sub.route}>
                                 <span className="inline-block half">
-                                    <span style={{color:'white'}}>{sub.title}</span>
+                                    <span>{sub.title}</span>
                                 </span>
                                 <span className="inline-block text-right half">
                                     <i className={hover===ind ? "line-v-middle middle-font highlight fas fa-angle-right" : "hidden"}/>

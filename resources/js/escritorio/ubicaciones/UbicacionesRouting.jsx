@@ -36,7 +36,7 @@ export default function UbicacionesRouting (props) {
                         <Ubicaciones
                             data={props.data}
                             toggleModal={openModal}
-                            nav={Navegacion.listado('/ubicaciones')} {...match}/>
+                            nav={Navegacion.listado('ubicaciones')} {...match}/>
                     )
                 }/>
             <Switch>
@@ -51,7 +51,7 @@ export default function UbicacionesRouting (props) {
                                     data={props.data}
                                     toggleModal={openModal}
                                     formActions = {FormActions()}
-                                    nav={Navegacion.formulario(()=>false,match.match.params.id,'/ubicaciones')}
+                                    nav={Navegacion.formulario(()=>false,match.match.params.id,'ubicaciones')}
                                     {...match} />
 
                             )
@@ -66,7 +66,7 @@ export default function UbicacionesRouting (props) {
                                 data={props.data}
                                 toggleModal={openModal}
                                 formActions = {FormActions()}
-                                nav={Navegacion.agregar('/ubicaciones')}
+                                nav={Navegacion.agregar('ubicaciones')}
                                 {...match} />
                     } />
                 <Route
@@ -76,7 +76,7 @@ export default function UbicacionesRouting (props) {
                             <VerUbicacion
                                 data={props.data}
                                 toggleModal={openModal}
-                                nav={Navegacion.singular(()=>false,match.match.params.id,'/ubicaciones')}
+                                nav={Navegacion.singular(()=>false,match.match.params.id,'ubicaciones')}
                                 {...match} />
                     } />
             </Switch>

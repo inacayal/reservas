@@ -51,7 +51,7 @@ export default function PromocionesRouting (props) {
                                 data={props.data}
                                 editar={true}
                                 toggleModal={openModal}
-                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/promociones')}
+                                nav={Navegacion.formulario(()=>false,match.match.params.id,'promociones')}
                                 formActions={FormActions()} {...match} />
                     }/>
                 <Route
@@ -63,7 +63,7 @@ export default function PromocionesRouting (props) {
                                 editar={false}
                                 toggleModal={openModal}
                                 formActions = {FormActions()}
-                                nav={Navegacion.agregar('/promociones')} {...match} />
+                                nav={Navegacion.agregar('promociones')} {...match} />
                     } />
                 <Route
                     path={`${props.match.url}/:id`}
@@ -72,7 +72,7 @@ export default function PromocionesRouting (props) {
                             <VerPromocion
                                 data={props.data}
                                 toggleModal={openModal}
-                                nav={Navegacion.singular(()=>false,match.match.params.id,'/promociones')} {...match} />
+                                nav={Navegacion.singular(()=>false,match.match.params.id,'promociones')} {...match} />
                         } />
             </Switch>
         </>

@@ -37,9 +37,8 @@ export default function AppRouting (props) {
                             (match) =>
                                 <MainFrame
                                     handlers = {handlers.escritorio}
-                                    current = {'0'}
-                                    {...match}>
-                                    <EscritorioRouting/>
+                                    current = {'0'} {...match}>
+                                    <EscritorioRouting {...match}/>
                                 </MainFrame>
                         }/>
                     <Route
@@ -58,7 +57,7 @@ export default function AppRouting (props) {
                             (match) =>(
                                 <MainFrame
                                     current={'2'}
-                                    handlers={handlers.feriados}{...match}>
+                                    handlers={handlers['horarios/feriados']}{...match}>
                                     <FeriadosRouting {...match}/>
                                 </MainFrame>
                             )
@@ -86,12 +85,13 @@ export default function AppRouting (props) {
                         } />
                     <Route
                         path='/eventos'
+                        withRouter
                         component={
                             (match) =>
                                 <MainFrame
                                     current={'4'}
                                     handlers={handlers.eventos}{...match}>
-                                    <EventosRouting {...match} />
+                                    <EventosRouting {...match}/>
                                 </MainFrame>
                         } />
                     <Route

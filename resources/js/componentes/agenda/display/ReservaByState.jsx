@@ -2,25 +2,13 @@
  * react basic
  */
 import React, { Component, useContext } from 'react';
-import {Link} from 'react-router-dom';
 import ReactDOM from 'react-dom';
-/**
- * componentes
- */
 import {CardList} from '../../basic/CardList';
 import ButtonList from '../../basic/ButtonList';
-/**
- * funciones
- */
 import {GenerateActions} from '../../../acciones/GenerateActions';
-/**
- * constantes
- */
 import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
 import { CLASSBYSTATE } from '../../../constantes/CardObject';
-import {waitCallback} from '../../basic/Actions';
-import {WaitsLoading} from '../../../hocs/RouterTransition';
-
+import CustomLink from '../../basic/CustomLink';
 
 export const ReservaDayByState = {
     data: (
@@ -32,8 +20,7 @@ export const ReservaDayByState = {
         const reservations = generateDayCardFromArray(
             data,
             actions,
-            dataStr,
-            useContext(WaitsLoading)
+            dataStr
         );
         return {
             title: {
@@ -172,8 +159,7 @@ export const ReservaWeekByState = {
 function generateDayCardFromArray(
     data,
     actions,
-    dataStr,
-    context
+    dataStr
 ) {
     return data.map(
         (e, i) => {
@@ -183,17 +169,22 @@ function generateDayCardFromArray(
                 e.id,
                 'day'
             );
+            const linkParam = {
+                to:`/reservas/${e.id}`,
+                params:{id:e.id},
+                route:'reservas'
+            }
             return {
                 title: {
                     data: (
                         <div className="container">
                             <div className="row">
                                 <div className="col-md-11 no-padding">
-                                    <Link
-                                        to={`reservas/${e.id}`}
-                                        onClick = {(ev) => waitCallback(ev,{to:`/reservas/${e.id}`,params:{id:e.id}},context)}>
-                                        <span className="side-margin sub-title text bold subrayado inline-block">{e.nombre + " " + e.apellido}</span>
-                                    </Link>
+                                    <CustomLink params={linkParam}>
+                                        <span className="side-margin sub-title text bold subrayado inline-block">
+                                            {e.nombre + " " + e.apellido}
+                                        </span>
+                                    </CustomLink>
                                     {acciones}
                                 </div>
                                 <div className="col-md-1 no-padding smaller-text">

@@ -7,9 +7,6 @@ import ReactDOM from 'react-dom';
  * constantes
  */
 import {DAYS} from '../../../constantes/DaysMonths';
-/**
- * funciones
- */
 import {GenerateActions} from '../../../acciones/GenerateActions';
 import {AssignWeekByStatus} from './AssignByStatus';
 

@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
 import BreadCrumb from '../componentes/control/BreadCrumb';
 import Lateral from '../componentes/control/Lateral';
+import {handlers} from '../handlers/index';
 /**
  * navigation
  */
@@ -23,8 +24,9 @@ function assignHandler(handlerArray,location,params){
     return handler.bind(this);
 }
 
-function awaitLoading(location,params){
-    const fetchData = this.assignHandler(this.props.handlerArray,location,params);
+function awaitLoading(location,params,match){
+    const handler = handlers[match],
+        fetchData = this.assignHandler(handler,location,params);
     this.setState(
         {
             loading:0,
@@ -87,9 +89,9 @@ export class RouterTransition extends Component {
 
     render() {
         return (
-            <>
+            <WaitsLoading.Provider value={this.awaitLoading}>
                 <LoadBar loaded={this.state.loading}/>
-                <div className="col-md-2 no-padding white-background">
+                <div className="col-md-2 no-padding light-background">
                     <Lateral
                         current={this.props.sidebarElem}
                         items={sidebar}/>
@@ -99,42 +101,38 @@ export class RouterTransition extends Component {
                         <BreadCrumb
                             items={this.props.url.split('/')}
                             url={this.props.url}
-                            nombre={this.state.nombre}
-                            load={this.awaitLoading}
-                            match={this.props.children.props.match.path}/>
+                            nombre={this.state.nombre}/>
                     </div>
                     <div className="row white-background" style={{height:'100%'}}>
                         <div className="col-md-12 container-fluid no-padding" style={{height:'90%'}}>
                         {
                             (this.state.data)
                             ?
-                                <WaitsLoading.Provider value={this.awaitLoading}>
-                                    <div style={{padding:"10px 16px", height:"99%"}}
-                                        className="main-container h-overflow-auto">
-                                        <div className="visible relative">
-                                            <div className={this.state.loadFinished ? "hidden" : "top-padding full-width overlay"} style={{marginLeft:"-15px"}}/>
-                                            {
-                                                this.state.loadFinished && !this.state.preventRedirect
-                                                ?
-                                                    this.state.redirect
-                                                :
-                                                    React.cloneElement(
-                                                        this.props.children,
-                                                        {
-                                                            data:this.state.data
-                                                        }
-                                                    )
-                                            }
-                                        </div>
+                                <div style={{padding:"10px 16px", height:"99%"}}
+                                    className="main-container h-overflow-auto">
+                                    <div className="visible relative">
+                                        <div className={this.state.loadFinished ? "hidden" : "top-padding full-width overlay"} style={{marginLeft:"-15px"}}/>
+                                        {
+                                            this.state.loadFinished && !this.state.preventRedirect
+                                            ?
+                                                this.state.redirect
+                                            :
+                                                React.cloneElement(
+                                                    this.props.children,
+                                                    {
+                                                        data:this.state.data
+                                                    }
+                                                )
+                                        }
                                     </div>
-                                </WaitsLoading.Provider>
+                                </div>
                             :
                                 <></>
                         }
                         </div>
                     </div>
                 </div>
-            </>
+            </WaitsLoading.Provider>
         );
     }
 }

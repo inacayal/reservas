@@ -83,7 +83,7 @@ export class Calendario extends Component {
                         controls={this.state.controls}
                         data={data.data}
                         type="reservas"
-                        endpoint="/reservas"
+                        endpoint="reservas"
                         fetchNewMonth={this.props.fetch}/>
                 </div>
             </>

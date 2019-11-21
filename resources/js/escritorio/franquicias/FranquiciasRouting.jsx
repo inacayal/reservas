@@ -39,7 +39,7 @@ export default function FranquiciasRouting (props) {
                         <Franquicias
                             toggleModal={openModal}
                             data={props.data}
-                            nav={Navegacion.listado('/franquicias')} {...match}/>
+                            nav={Navegacion.listado('franquicias')} {...match}/>
                 } />
             <Switch>
                 <Route
@@ -50,7 +50,7 @@ export default function FranquiciasRouting (props) {
                             <Formulario
                                 data={props.data}
                                 toggleModal={openModal}
-                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/franquicias')}
+                                nav={Navegacion.formulario(()=>false,match.match.params.id,'franquicias')}
                                 formActions = {FormActions()}
                                 editar={true} {...match} />
                     } />
@@ -61,7 +61,7 @@ export default function FranquiciasRouting (props) {
                             <Formulario
                                 data={props.data}
                                 toggleModal={openModal}
-                                nav={Navegacion.agregar('/franquicias')}
+                                nav={Navegacion.agregar('franquicias')}
                                 formActions = {FormActions()}
                                 editar={false}
                                 {...match} />
@@ -73,7 +73,7 @@ export default function FranquiciasRouting (props) {
                             <VerFranquicia
                                 data={props.data}
                                 toggleModal={openModal}
-                                nav={Navegacion.singular(()=>false,match.match.params.id,'/franquicias')} {...match} />
+                                nav={Navegacion.singular(()=>false,match.match.params.id,'franquicias')} {...match} />
                     } />
             </Switch>
         </>

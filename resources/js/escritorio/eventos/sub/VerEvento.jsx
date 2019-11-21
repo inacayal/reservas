@@ -65,7 +65,7 @@ export function VerEvento (props) {
                     {
                         promociones.length>0
                         ?
-                        <PromocionesTable data={promociones}/>
+                            <PromocionesTable data={promociones}/>
                         :
                         <div className="bold h-padding">No hay promociones asociadas</div>
                     }

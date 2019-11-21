@@ -38,7 +38,7 @@ export default function EventosRouting (props) {
                         <Eventos
                             data={props.data}
                             toggleModal={openModal}
-                            nav={Navegacion.listado('/eventos')} {...match} />
+                            nav={Navegacion.listado('eventos')} {...match} />
                 } />
             <Switch>
                 <Route
@@ -50,7 +50,7 @@ export default function EventosRouting (props) {
                                 data={props.data}
                                 editar={true}
                                 toggleModal={openModal}
-                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/eventos')}
+                                nav={Navegacion.formulario(()=>false,match.match.params.id,'eventos')}
                                 formActions={FormActions()} {...match} />
                             )
                     } />
@@ -61,7 +61,7 @@ export default function EventosRouting (props) {
                             <Formulario
                                 data={props.data}
                                 toggleModal={openModal}
-                                nav={Navegacion.agregar('/eventos')}
+                                nav={Navegacion.agregar('eventos')}
                                 formActions = {FormActions()}
                                 editar={false} {...match} />
                         )
@@ -73,7 +73,7 @@ export default function EventosRouting (props) {
                             <VerEvento
                                 data={props.data}
                                 toggleModal={openModal}
-                                nav={Navegacion.singular(()=>false,match.match.params.id,'/eventos')} {...match} />
+                                nav={Navegacion.singular(()=>false,match.match.params.id,'eventos')} {...match} />
                             )
                     }/>
             </Switch>

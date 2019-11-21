@@ -16,8 +16,9 @@ export const UbicacionesActions = (
                     Editar
                 </div>
             ),
-            to: '/ubicaciones/editar/' + key,
-            params:{id:key}
+            to: `/ubicaciones/editar/${key}`,
+            params:{id:key},
+            route:'ubicaciones'
         }
     ],
     buttons: [

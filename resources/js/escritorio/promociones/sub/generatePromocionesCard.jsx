@@ -1,27 +1,17 @@
 /**
  * react basic
  */
-import React, { Component, useContext } from 'react';
+import React, { Component} from 'react';
 import ReactDOM from 'react-dom';
-import {Link} from 'react-router-dom';
-import {WaitsLoading} from '../../../hocs/RouterTransition';
-import {waitCallback} from '../../../componentes/basic/Actions';
-/**
- * componentes
- */
 import ButtonList from '../../../componentes/basic/ButtonList';
 import {CommaList} from '../../../componentes/basic/CommaList';
-/**
- * funciones
- */
-
 import { GenerateActions } from '../../../acciones/GenerateActions';
+import CustomLink from '../../../componentes/basic/CustomLink';
 
 export default function generatePromocionesCard(
     promociones,
     actions
 ) {
-    const context = useContext(WaitsLoading);
     return Object.keys(promociones).map(
         e => {
             const acciones = GenerateActions.promociones(
@@ -31,7 +21,8 @@ export default function generatePromocionesCard(
                 eventos = Object.values(promociones[e].eventos.list),
                 linkParam = {
                     to:`/promociones/${e}`,
-                    params:{id:e}
+                    params:{id:e},
+                    route:'promociones'
                 };
             return {
                 content: () => (
@@ -40,11 +31,9 @@ export default function generatePromocionesCard(
                             <div className="row">
                                 <div className="col-md-8">
                                     <span className="sub-title text-super side-margin inline-block align-center bold">
-                                        <Link
-                                            to={"/promociones/"+e}
-                                            onClick={(ev) => waitCallback(ev,linkParam,context)}>
+                                        <CustomLink params={linkParam}>
                                             <span className="text bold">{promociones[e].nombre}</span>
-                                        </Link>
+                                        </CustomLink>
                                     </span>
                                     {acciones}
                                 </div>

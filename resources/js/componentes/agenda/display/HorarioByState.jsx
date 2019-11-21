@@ -3,19 +3,11 @@
  */
 import React, { Component, useState, useContext } from 'react';
 import ReactDOM from 'react-dom';
-/**
- * componentes
- */
 import CardList from '../../basic/CardList';
 import {CommaList} from '../../basic/CommaList';
-import {Link} from 'react-router-dom';
-/**
- * constantes
- */
 import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
 import { CLASSBYSTATE } from '../../../constantes/CardObject';
-import {WaitsLoading} from '../../../hocs/RouterTransition';
-import {waitCallback} from '../../basic/Actions';
+import CustomLink from '../../basic/CustomLink';
 
 
 export const HorarioWeekByState = {
@@ -28,23 +20,22 @@ export const HorarioWeekByState = {
     ) =>{
         const eventos = sectionData.eventos.list,
             eventoLength = Object.keys(eventos).length,
-            context = useContext(WaitsLoading);
+            linkParam={
+                to:`/horarios/${dataIndex}`,
+                params:{id:dataIndex},
+                route:'horarios'
+            };
         return {
             content: () =>
                 <>
                     <div className="full-width" >
                         <div className="seventy inline-block sub-title">
                             <div className="inline-block side-margin text-top bold">
-                                <Link
-                                    to={`/horarios/${dataIndex}`}
-                                    className="text bold subrayado"
-                                    onClick={
-                                        (ev) => waitCallback(ev,{to:`/horarios/${dataIndex}`,params:{id:dataIndex}},context)
-                                    }>
-                                    {DAYS[sectionData.diaSemana - 1]}
-                                </Link>
-                            </div>
-                            <div className="inline-block side-margin">
+                                <CustomLink params={linkParam}>
+                                    <span className="text bold subrayado">
+                                        {DAYS[sectionData.diaSemana - 1]}
+                                    </span>
+                                </CustomLink>
                                 {renderActions}
                             </div>
                         </div>
@@ -101,45 +92,46 @@ export const HorarioWeekByState = {
         originalActions,
         dataIndex
     ) =>
-        ({
-            content: () => {
-                const context = useContext(WaitsLoading);
-                return (
-                    <>
-                        <div className="full-width box-padding">
-                            <div className="seventy inline-block sub-title">
-                                <div className="bold inline-block side-margin text-top">
-                                    <Link
-                                        to={`/horarios/${dataIndex}`}
-                                        className="text bold subrayado"
-                                        onClick={
-                                            (ev) => waitCallback(ev,{to:`/horarios/${dataIndex}`,params:{id:dataIndex}},context)
-                                        }>
-                                        {DAYS[sectionData.diaSemana - 1]}
-                                    </Link>
+        {
+            const linkParam = {
+                to:`/horarios/${dataIndex}`,
+                params:{id:dataIndex},
+                route:'horarios'
+            };
+            return {
+                content: () => {
+                    return (
+                        <>
+                            <div className="full-width box-padding">
+                                <div className="seventy inline-block sub-title">
+                                    <div className="bold inline-block side-margin text-top">
+                                        <CustomLink params={linkParam}>
+                                            <span className="text bold subrayado">
+                                                {DAYS[sectionData.diaSemana - 1]}
+                                            </span>
+                                        </CustomLink>
+                                        {renderActions}
+                                    </div>
                                 </div>
-                                <div className="inline-block side-margin">
-                                    {renderActions}
+                                <div className="thirty inline-block text-right smaller-text border-bottom ">
+                                    Día no laboral
                                 </div>
                             </div>
-                            <div className="thirty inline-block text-right smaller-text border-bottom ">
-                                Día no laboral
+                            <div className="full-width ">
+                                <div className="half box-padding inline-block">
+                                    <div className="light-danger bold">Sin apertura</div>
+                                </div>
+                                <div className="half box-padding inline-block">
+                                    <span className="light-danger bold">Descripción</span>
+                                    <span>{" " + sectionData.descripcion}</span>
+                                </div>
                             </div>
-                        </div>
-                        <div className="full-width ">
-                            <div className="half box-padding inline-block">
-                                <div className="light-danger bold">Sin apertura</div>
-                            </div>
-                            <div className="half box-padding inline-block">
-                                <span className="light-danger bold">Descripción</span>
-                                <span>{" " + sectionData.descripcion}</span>
-                            </div>
-                        </div>
-                    </>
-                )
-            },
-            class: "box-padding background-border"
-        }),
+                        </>
+                    )
+                },
+                class: "box-padding background-border"
+            }
+        },
     no_data: (
         renderActions,
         sectionData,

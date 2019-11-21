@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {useRouteMatch,useLocation} from 'react-router-dom';
+import {matchPath} from 'react-router-dom';
 import Message from '../utils/Message';
 /**
  * navigation
@@ -49,7 +49,7 @@ export default class MainFrame extends Component {
         const props = this.props,
             location = props.location,
             handler =searchHandler(props.handlers,location.pathname),
-            route = props.match;
+            match = matchPath(location.pathname,{path:handler.endpoint});
         return (
             <div className="row round-border" style={{height:'95%',overflow:'hidden'}}>
                 <Message
@@ -59,7 +59,7 @@ export default class MainFrame extends Component {
                     <RouterTransition
                         url={window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, '')}
                         sidebarElem={props.current}
-                        route={route}
+                        route={match}
                         location={location.pathname}
                         handlerArray = {props.handlers}>
                         {props.children}

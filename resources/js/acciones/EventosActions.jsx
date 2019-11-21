@@ -17,8 +17,9 @@ export const EventosActions = (
                         Editar
                     </div>
                 ),
-                to: '/eventos/editar/' + key,
-                params:{id:key}
+                to: `/eventos/editar/${key}`,
+                params:{id:key},
+                route:'eventos'
             }
         ],
         buttons: [

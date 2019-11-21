@@ -3,7 +3,6 @@
  */
 import React, { Component, useContext,useState } from 'react';
 import ReactDOM from 'react-dom';
-import {WaitsLoading} from '../../hocs/RouterTransition';
 import {withRouter,Redirect} from 'react-router-dom';
 /**
  * componentes
@@ -12,16 +11,10 @@ import Button from './Button';
 /**
  * react router
  */
-import {Link} from 'react-router-dom';
-
-export const waitCallback = (ev,e,context) => {
-    ev.preventDefault();
-    context(e.to,e.params);
-}
+import CustomLink from './CustomLink';
 
 export default function Actions (props) {
-    const context = useContext(WaitsLoading),
-        [showOptions,changeHover] = useState(false),
+    const [showOptions,changeHover] = useState(false),
         format = props.overlay
         ?
         {
@@ -58,16 +51,22 @@ export default function Actions (props) {
                     props.links
                     ?
                         props.links.map(
-                            (e,ind) =>
-                                <li
-                                    key={ind}
-                                    className= {format.element.link}>
-                                    <Link
-                                        to={e.to}
-                                        onClick={props.otherSection ? () => false : (ev) => waitCallback(ev,e,context)}>
-                                        {e.title}
-                                    </Link>
-                                </li>
+                            (e,ind) => {
+                                const linkParam = {
+                                    to:e.to,
+                                    params:e.params,
+                                    route:e.route
+                                }
+                                return (
+                                    <li
+                                        key={ind}
+                                        className= {format.element.link}>
+                                        <CustomLink params={linkParam}>
+                                            {e.title}
+                                        </CustomLink>
+                                    </li>
+                                )
+                            }
                         )
                     :
                         <></>

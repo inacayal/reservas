@@ -3,11 +3,7 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-/**
- * componentes
- */
-import {Link} from 'react-router-dom';
-import {waitCallback} from '../basic/Actions';
+import CustomLink from '../basic/CustomLink';
 
 const map = {
     escritorio:   () => (
@@ -102,6 +98,8 @@ const map = {
     )
 };
 
+const externalRoutes = ['escritorio','horarios']
+
 export default class BreadCrumb extends Component {
     constructor(props){
         super(props)
@@ -122,15 +120,13 @@ export default class BreadCrumb extends Component {
                             (e,i) => {
                                 stored = e==='escritorio' ? '' : `${stored}/${e}`;
                                 display = map[e] ? map[e](props.nombre): map.ver(props.nombre);
-
-                                const clickCallback =  ((st) => {
-                                    return (ev) =>
-                                        waitCallback(ev,{to:`${st}`,params:{}},props.load)
-                                })(stored);
-
+                                const linkParam = {
+                                    to:`${stored}`||'/',
+                                    params:{},
+                                    route:e
+                                };
                                 if (props.items[i-1] === 'editar')
                                     display = '';
-
                                 return (
                                     <li key={i} className="margin-box ">
                                         {
@@ -139,19 +135,11 @@ export default class BreadCrumb extends Component {
                                                 <div className="inline-block line-v-middle smaller-text margin-box">{display}</div>
                                             :
                                                 <>
-                                                    <Link
-                                                        to={stored||'/'}
-                                                        onClick={
-                                                            e==='escritorio'|| (e==='horarios'&& props.items[i+1] === 'feriados')
-                                                            ?
-                                                                () => false
-                                                            :
-                                                                clickCallback
-                                                        }>
+                                                    <CustomLink params={linkParam}>
                                                         <span className="bold decorate-blue-hover smaller-text text bold inline-block">
                                                             {display}
                                                         </span>
-                                                    </Link>
+                                                    </CustomLink>
                                                     <i className={"h-padding inline-block margin-box line-v-middle highlight middle-font fas fa-angle-right"}/>
                                                 </>
                                         }

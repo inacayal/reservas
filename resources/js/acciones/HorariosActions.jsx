@@ -19,7 +19,8 @@ export const HorariosActions = {
                     </div>
                 ),
                 to: `/horarios/editar/${key}`,
-                params:{id:key}
+                params:{id:key},
+                route:'horarios'
             }
         ],
         buttons: [
@@ -47,7 +48,8 @@ export const HorariosActions = {
                     </div>
                 ),
                 to: `/horarios/agregar/${key}`,
-                params:{day:key}
+                params:{day:key},
+                route:'horarios'
             }
         ],
         buttons: []

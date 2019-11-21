@@ -14,8 +14,9 @@ export const Navegacion = {
                         Listado
                     </div>
                 ),
-                to: root,
-                params:{}
+                to:`/${root}`,
+                params:{},
+                route:root
             }
         ]
     }),
@@ -28,8 +29,9 @@ export const Navegacion = {
                         Agregar
                     </div>
                 ),
-                to: root+'/agregar',
-                params:{}
+                to: `/${root}/agregar`,
+                params:{},
+                route:root
             }
         ]
     }),
@@ -46,8 +48,9 @@ export const Navegacion = {
                         Listado
                     </div>
                 ),
-                to: root,
-                params:{}
+                to:`/${root}` ,
+                params:{},
+                route:root
             }, {
                 title: (
                     <div className="smaller-text text bold">
@@ -55,8 +58,9 @@ export const Navegacion = {
                         Ver
                     </div>
                 ),
-                to: root+'/' + key,
-                params:{id:key}
+                to:`/${root}/${key}`,
+                params:{id:key},
+                route:root
             }
         ],
         buttons: [
@@ -85,8 +89,9 @@ export const Navegacion = {
                         Listado
                     </div>
                 ),
-                to: root,
-                params:{}
+                to:`/${root}`,
+                params:{},
+                route:root
             }, {
                 title: (
                     <div className="smaller-text text bold">
@@ -94,8 +99,9 @@ export const Navegacion = {
                         Editar
                     </div>
                 ),
-                to: root+'/editar/' + key,
-                params:{id:key}
+                to:`/${root}/editar/${key}`,
+                params:{id:key},
+                route:root
             }
         ],
         buttons: [

@@ -51,7 +51,7 @@ export class Feriados extends Component {
                         actions={{eliminar:this.toggleModal}}
                         controls={this.state.controls}
                         fetchNewMonth={this.props.fetch}
-                        endpoint="/horarios/feriados"
+                        endpoint="horarios/feriados"
                         data={data.data}/>
                 </div>
             </>

@@ -18,6 +18,6 @@ export const handlers = {
     franquicias:franquiciasHandlers,
     eventos:eventosHandlers,
     horarios:horariosHandlers,
-    feriados:feriadosHandlers,
+    'horarios/feriados':feriadosHandlers,
     configuracion:configuracionHandlers,
 };

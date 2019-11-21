@@ -3,15 +3,19 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { AssignWeekComponent, AssignMonthComponent, AssignDayComponent } from '../display/AssignRenderComponent';
+import {
+    AssignWeekComponent,
+    AssignMonthComponent,
+    AssignDayComponent
+} from '../display/AssignRenderComponent';
 
 const assignIndex = (
     data
 ) => {
     let rIndex = '';
-    if (data) 
+    if (data)
         rIndex = data.estado ? data.estado : 'data';
-    else 
+    else
         rIndex = 'no_data';
     return rIndex;
 }
@@ -58,7 +62,7 @@ export const AssignMonthByStatus = (
     isThisMonth
 ) => {
     const index = assignIndex(sectionData),
-        isSelectedDate = isThisMonth 
+        isSelectedDate = isThisMonth
             ?
                 currentDate.getDate() === date.getDate() && currentDate.getMonth() === date.getMonth() && currentDate.getFullYear() === date.getFullYear()
             :
@@ -72,4 +76,3 @@ export const AssignMonthByStatus = (
         isThisMonth
     );
 }
-

@@ -5,13 +5,14 @@ export const evaluateDateChange = (
     fetchCallback,
     changeDate,
     path,
-    view
+    view,
+    section
 ) => {
     const oDate = changeObject.o,
         nDate = changeObject.n;
     if (oDate.getMonth() !== nDate.getMonth() || oDate.getFullYear() !== nDate.getFullYear()) {
         nDate.setDate(changeObject.m);
-        return fetchCallback(path,{date:new Date(nDate),show:view,refresh:true});
+        return fetchCallback(path,{date:new Date(nDate),show:view,refresh:true},section);
     } else
         return changeDate({date:new Date(nDate),show:view});
 };

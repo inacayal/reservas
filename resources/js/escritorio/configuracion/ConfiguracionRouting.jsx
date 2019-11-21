@@ -14,7 +14,7 @@ import {Configuracion} from './sub/Configuracion';
 import {Navegacion,FormActions} from '../../acciones/ActionsByView';
 
  export default function ConfiguracionRouting (props) {
-    const nav = Navegacion.agregar('/configuracion');
+    const nav = Navegacion.agregar('configuracion');
     return (
         <>
             <Route

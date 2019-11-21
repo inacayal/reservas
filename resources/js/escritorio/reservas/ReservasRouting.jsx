@@ -19,7 +19,7 @@ export default function ReservasRouting (props) {
                     (match) =>
                         <Calendario
                             data={props.data}
-                            nav={Navegacion.listado('/reservas')} {...match}/>
+                            nav={Navegacion.listado('reservas')} {...match}/>
                 } />
             <Switch>
                 <Route
@@ -30,7 +30,7 @@ export default function ReservasRouting (props) {
                                 editar={false}
                                 data={props.data}
                                 formActions = {FormActions()}
-                                nav={Navegacion.agregar('/reservas')} {...match}/>
+                                nav={Navegacion.agregar('reservas')} {...match}/>
                     } />
                 <Route
                     path={`${props.match.url}/:id`}
@@ -38,7 +38,7 @@ export default function ReservasRouting (props) {
                         (match) =>
                             <VerReserva
                                 data={props.data}
-                                nav={Navegacion.singular(()=>false,match.match.params.id,'/reservas')} {...match}/>
+                                nav={Navegacion.singular(()=>false,match.match.params.id,'reservas')} {...match}/>
                     } />
             </Switch>
         </>

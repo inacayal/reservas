@@ -38,7 +38,7 @@ export default function LocalesRouting (props) {
                         <Locales
                             data={props.data}
                             toggleModal={openModal}
-                            nav={Navegacion.listado('/locales')} {...match}/>
+                            nav={Navegacion.listado('locales')} {...match}/>
                 } />
             <Switch>
                 <Route
@@ -50,7 +50,7 @@ export default function LocalesRouting (props) {
                                 editar={true}
                                 data={props.data}
                                 toggleModal={openModal}
-                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/locales')}
+                                nav={Navegacion.formulario(()=>false,match.match.params.id,'locales')}
                                 formActions={FormActions()} {...match}/>
                     } />
                 <Route
@@ -61,7 +61,7 @@ export default function LocalesRouting (props) {
                                 editar={false}
                                 data={props.data}
                                 toggleModal={openModal}
-                                nav={Navegacion.agregar('/locales')}
+                                nav={Navegacion.agregar('locales')}
                                 formActions = {FormActions()} {...match} />
                     } />
                 <Route
@@ -71,7 +71,7 @@ export default function LocalesRouting (props) {
                             <VerLocal
                                 data={props.data}
                                 toggleModal={openModal}
-                                nav={Navegacion.singular(()=>false,match.match.params.id,'/locales')} {...match} />
+                                nav={Navegacion.singular(()=>false,match.match.params.id,'locales')} {...match} />
                     }/>
             </Switch>
         </>

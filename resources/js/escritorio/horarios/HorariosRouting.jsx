@@ -50,7 +50,7 @@ export default function HorariosRouting (props) {
                             <HorarioFormulario
                                 editar={false}
                                 data={props.data}
-                                nav={Navegacion.agregar('/horarios')}
+                                nav={Navegacion.agregar('horarios')}
                                 formActions={FormActions()} {...match} />
                         )
                     }/>
@@ -61,7 +61,7 @@ export default function HorariosRouting (props) {
                             <HorarioFormulario
                                 data={props.data}
                                 toggleModal={openModal}
-                                nav={Navegacion.formulario(()=>false,match.match.params.id,'/horarios')}
+                                nav={Navegacion.formulario(()=>false,match.match.params.id,'horarios')}
                                 formActions={FormActions()}
                                 editar={true} {...match} />
                         )
@@ -73,7 +73,7 @@ export default function HorariosRouting (props) {
                             <VerHorario
                                 data={props.data}
                                 toggleModal={openModal}
-                                nav={Navegacion.singular(()=>false,match.match.params.id,'/horarios')}
+                                nav={Navegacion.singular(()=>false,match.match.params.id,'horarios')}
                                 formActions={FormActions()}
                                 {...props} />
                         )
