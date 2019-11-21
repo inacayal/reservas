@@ -26,7 +26,7 @@ export default class MainFrame extends Component {
         super(props);
         this.state={
             showMessage:false,
-            message:{data:'culo'}
+            message:{}
         }
         this.showMessage = this.showMessage.bind(this)
     }

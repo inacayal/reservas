@@ -14,14 +14,14 @@ use App\Traits\DependencyOptions;
 
 /**
  * Class Ubicacione
- * 
+ *
  * @property int $id
  * @property int $id_usuario
  * @property string $nombre
  * @property string $descripcion
  * @property int $cantidad_maxima
  * @property int $id_estado
- * 
+ *
  * @property \App\Models\EstadoSalon $estado_salon
  * @property \App\Models\User $user
  * @property \Illuminate\Database\Eloquent\Collection $reservas
@@ -36,6 +36,12 @@ class Ubicacion extends Eloquent
 	 */
 	private static $dataKey = 'id';
 	private static $valueKey = 'nombre';
+	private static $validation = [
+		'nombre'			=> 'required|max:45|alpha_num',
+		'descripcion'		=> 'required|max:50|alpha_num',
+		'cantidad_maxima'	=> 'required|integer',
+		'maximo_personas'	=> 'required|integer'
+	];
 	private static $dataResource = '\\App\\Http\\Resources\\UbicacionesResource';
 	/**
 	 * Eloquent constants and castings

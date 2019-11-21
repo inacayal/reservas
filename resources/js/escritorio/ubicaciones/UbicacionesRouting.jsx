@@ -7,9 +7,32 @@ import {Route,Switch} from 'react-router-dom';
 import {Formulario} from './sub/Formulario';
 import {Ubicaciones} from './sub/Ubicaciones';
 import {VerUbicacion} from './sub/VerUbicacion';
-import {Navegacion,FormActions} from '../../acciones/ActionsByView';
-
+import {Navegacion} from '../../acciones/ActionsByView';
+import Validator from '../../hocs/Validator';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
+
+const validation = {
+    nombre:{
+        required:true,
+        max:45,
+        alpha_numeric:true
+    },
+    descripcion:{
+        required:false,
+        max:50,
+        alpha_numeric:true
+    },
+    capacidad_maxima:{
+        required:true,
+        numeric:true,
+        min:1
+    },
+    maximo_personas:{
+        required:true,
+        numeric:true,
+        min:1
+    }
+}
 
 export default function UbicacionesRouting (props) {
     const [open,toggle] = useState(false),
@@ -45,29 +68,43 @@ export default function UbicacionesRouting (props) {
                     exact
                     render={
                         (match) =>{
+                            const form ={
+                                nombre:props.data.nombre,
+                                descripcion:props.data.descripcion,
+                                capacidad_maxima:props.data.capacidad,
+                                maximo_personas:props.data.maximo
+                            };
                             return (
-                                <Formulario
-                                    editar={true}
-                                    data={props.data}
-                                    toggleModal={openModal}
-                                    formActions = {FormActions()}
-                                    nav={Navegacion.formulario(()=>false,match.match.params.id,'ubicaciones')}
-                                    {...match} />
-
+                                <Validator form={form} validation={validation}>
+                                    <Formulario
+                                        editar={true}
+                                        data={props.data}
+                                        toggleModal={openModal}
+                                        nav={Navegacion.formulario(()=>false,match.match.params.id,'ubicaciones')}{...match} />
+                                </Validator>
                             )
                         }
                 } />
                 <Route
                     path={`${props.match.url}/agregar`}
                     component={
-                        (match) =>
-                            <Formulario
-                                editar={false}
-                                data={props.data}
-                                toggleModal={openModal}
-                                formActions = {FormActions()}
-                                nav={Navegacion.agregar('ubicaciones')}
-                                {...match} />
+                        (match) => {
+                            const form ={
+                                nombre:"",
+                                descripcion:"",
+                                capacidad_maxima:"",
+                                maximo_personas:""
+                            };
+                            return (
+                                <Validator form={form} validation={validation}>
+                                    <Formulario
+                                        editar={false}
+                                        data={props.data}
+                                        toggleModal={openModal}
+                                        nav={Navegacion.agregar('ubicaciones')} {...match} />
+                                </Validator>
+                            )
+                        }
                     } />
                 <Route
                     path={`${props.match.url}/:id`}

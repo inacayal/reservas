@@ -3,37 +3,18 @@
  */
 import React, { Component, useState } from 'react';
 import ReactDOM from 'react-dom';
-/**
- * 
- * @param {*} e 
- * handler
- */
-export function onNumberChange(e) {
-    let input = e.currentTarget,
-        name = input.getAttribute('name'),
-        numberInput = this.state.input;
 
-    numberInput[name] = input.value;
-    this.setState({ numeric: numberInput });
-}
-/**
- * 
- * @param {*} props 
- * component
- */
 function noMemoNumeric(props) {
-    const
-        [number, changeNumber] = useState(props.value||0);
     return (
-        <div className={props.container ? props.container : ""}>
+        <div className="full-width">
             <h6 className="highlight no-margin bold">{props.titulo}</h6>
-            <div className={props.classes}>
+            <div className="border-box input-text">
                 <input
                     type="number"
                     name={props.name}
                     className="full-width box-transparent"
-                    onChange={(e) => changeNumber(e.currentTarget.value)}
-                    value={number} />
+                    onChange={props.changeHandler}
+                    value={props.value}/>
             </div>
         </div>
     );

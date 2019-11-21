@@ -88641,71 +88641,35 @@ var MultipleSelect = react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(noMemoMul
 /*!****************************************************!*\
   !*** ./resources/js/componentes/input/Numeric.jsx ***!
   \****************************************************/
-/*! exports provided: onNumberChange, Numeric */
+/*! exports provided: Numeric */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "onNumberChange", function() { return onNumberChange; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Numeric", function() { return Numeric; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 /**
  * react basic
  */
 
 
-/**
- * 
- * @param {*} e 
- * handler
- */
-
-function onNumberChange(e) {
-  var input = e.currentTarget,
-      name = input.getAttribute('name'),
-      numberInput = this.state.input;
-  numberInput[name] = input.value;
-  this.setState({
-    numeric: numberInput
-  });
-}
-/**
- * 
- * @param {*} props 
- * component
- */
 
 function noMemoNumeric(props) {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.value || 0),
-      _useState2 = _slicedToArray(_useState, 2),
-      number = _useState2[0],
-      changeNumber = _useState2[1];
-
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: props.container ? props.container : ""
+    className: "full-width"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
     className: "highlight no-margin bold"
   }, props.titulo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: props.classes
+    className: "border-box input-text"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "number",
     name: props.name,
     className: "full-width box-transparent",
-    onChange: function onChange(e) {
-      return changeNumber(e.currentTarget.value);
-    },
-    value: number
+    onChange: props.changeHandler,
+    value: props.value
   })));
 }
 
@@ -88851,72 +88815,41 @@ var Select = react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(noMemoSelect);
 /*!*************************************************!*\
   !*** ./resources/js/componentes/input/Text.jsx ***!
   \*************************************************/
-/*! exports provided: onTextChange, Text */
+/*! exports provided: Text */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "onTextChange", function() { return onTextChange; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Text", function() { return Text; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 /**
  * react basic
  */
 
 
 /**
- * 
- * @param {*} e 
- * handler
- */
-
-function onTextChange(e) {
-  var input = e.currentTarget,
-      name = input.getAttribute('name'),
-      textInputs = this.state.text;
-  textInputs[name] = input.value;
-  this.setState({
-    text: textInputs
-  });
-}
-/**
- * 
- * @param {*} props 
+ *
+ * @param {*} props
  * component
  */
 
 var noMemoText = function noMemoText(props) {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.value || ""),
-      _useState2 = _slicedToArray(_useState, 2),
-      text = _useState2[0],
-      changeText = _useState2[1];
-
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: props.container ? props.container : ""
+    className: "full-width"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
     className: "highlight no-margin bold"
   }, props.titulo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: props.classes
+    className: "border-box input-text margin-box"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
     name: props.name,
     rows: props.rows,
     readOnly: props.readOnly,
     className: "full-width box-transparent",
-    onChange: function onChange(e) {
-      return changeText(e.currentTarget.value);
-    },
-    value: text
+    onChange: props.changeHandler,
+    value: props.value
   })));
 };
 
@@ -95040,7 +94973,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _sub_Ubicaciones__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sub/Ubicaciones */ "./resources/js/escritorio/ubicaciones/sub/Ubicaciones.jsx");
 /* harmony import */ var _sub_VerUbicacion__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sub/VerUbicacion */ "./resources/js/escritorio/ubicaciones/sub/VerUbicacion.jsx");
 /* harmony import */ var _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../acciones/ActionsByView */ "./resources/js/acciones/ActionsByView.jsx");
-/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
+/* harmony import */ var _hocs_Validator__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../hocs/Validator */ "./resources/js/hocs/Validator.jsx");
+/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
@@ -95062,6 +94996,29 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+var validation = {
+  nombre: {
+    required: true,
+    max: 45,
+    alpha_numeric: true
+  },
+  descripcion: {
+    required: false,
+    max: 50,
+    alpha_numeric: true
+  },
+  capacidad_maxima: {
+    required: true,
+    numeric: true,
+    min: 1
+  },
+  maximo_personas: {
+    required: true,
+    numeric: true,
+    min: 1
+  }
+};
 function UbicacionesRouting(props) {
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -95076,7 +95033,7 @@ function UbicacionesRouting(props) {
     toggle(false);
   };
 
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__["ConfirmarModal"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_8__["ConfirmarModal"], {
     open: open,
     closeModal: closeModal,
     title: "Eliminar Ubicación",
@@ -95095,26 +95052,42 @@ function UbicacionesRouting(props) {
     path: "".concat(props.match.url, "/editar/:id"),
     exact: true,
     render: function render(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], _extends({
+      var form = {
+        nombre: props.data.nombre,
+        descripcion: props.data.descripcion,
+        capacidad_maxima: props.data.capacidad,
+        maximo_personas: props.data.maximo
+      };
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        form: form,
+        validation: validation
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], _extends({
         editar: true,
         data: props.data,
         toggleModal: openModal,
-        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
         nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].formulario(function () {
           return false;
         }, match.match.params.id, 'ubicaciones')
-      }, match));
+      }, match)));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "".concat(props.match.url, "/agregar"),
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], _extends({
+      var form = {
+        nombre: "",
+        descripcion: "",
+        capacidad_maxima: "",
+        maximo_personas: ""
+      };
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        form: form,
+        validation: validation
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], _extends({
         editar: false,
         data: props.data,
         toggleModal: openModal,
-        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
         nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].agregar('ubicaciones')
-      }, match));
+      }, match)));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "".concat(props.match.url, "/:id"),
@@ -95147,30 +95120,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
-/* harmony import */ var _componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/input/Numeric */ "./resources/js/componentes/input/Numeric.jsx");
-/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
-/* harmony import */ var _hocs_MainFrame__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../hocs/MainFrame */ "./resources/js/hocs/MainFrame.jsx");
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+/* harmony import */ var _componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/input/Numeric */ "./resources/js/componentes/input/Numeric.jsx");
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var _hocs_Validator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../hocs/Validator */ "./resources/js/hocs/Validator.jsx");
 /**
  * react basic
  */
@@ -95180,112 +95132,59 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
-var Formulario =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(Formulario, _Component);
-
-  function Formulario(props) {
-    var _this;
-
-    _classCallCheck(this, Formulario);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Formulario).call(this, props));
-    _this.enviarFormulario = _this.enviarFormulario.bind(_assertThisInitialized(_this));
-    _this.cancelarFormulario = _this.cancelarFormulario.bind(_assertThisInitialized(_this));
-    _this.props.formActions.buttons.guardar.click = _this.enviarFormulario;
-    _this.props.formActions.buttons.cancelar.click = _this.cancelarFormulario;
-    if (_this.props.editar) _this.props.nav.buttons[0].click = _this.props.toggleModal;
-    return _this;
-  }
-
-  _createClass(Formulario, [{
-    key: "enviarFormulario",
-    value: function enviarFormulario(e) {
-      e.preventDefault();
-      this.context({
-        message: {
-          data: 'clicked from Ubicaciones form'
-        }
-      });
-    }
-  }, {
-    key: "cancelarFormulario",
-    value: function cancelarFormulario(e) {
-      e.preventDefault();
-      console.log('guardar');
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var data = this.props.data;
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        title: this.props.editar ? data.nombre : "Agregar ubicación",
-        links: this.props.nav.links,
-        buttons: this.props.nav.buttons
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        className: "full-width"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-4 bold"
-      }, "foto de la ubicacion"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-8 container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_5__["Text"], {
-        rows: 1,
-        titulo: "Nombre de la ubicaci\xF3n",
-        name: "nombre",
-        value: this.props.editar ? data.nombre : "",
-        classes: "border-box input-text margin-box",
-        container: "full-width"
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row v-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_5__["Text"], {
-        rows: 4,
-        titulo: "Descripcion",
-        name: "descripcion",
-        value: this.props.editar ? data.descripcion : "",
-        classes: "border-box input-text margin-box",
-        container: "full-width"
-      })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row v-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_4__["Numeric"], {
-        titulo: "Capacidad m\xE1xima",
-        name: "capacidad_maxima",
-        value: this.props.editar ? data.capacidad : "",
-        classes: "border-box input-text margin-box",
-        container: "full-width"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "smaller-text"
-      }, "M\xE1ximo de personas en la ubicaci\xF3n")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_4__["Numeric"], {
-        titulo: "M\xE1ximo personas",
-        name: "maximo_personas",
-        value: this.props.editar ? data.maximo : "",
-        classes: "border-box input-text margin-box",
-        container: "full-width"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "smaller-text"
-      }, "M\xE1ximo de personas en una reservaci\xF3n"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row justify-content-end h-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        buttons: Object.values(this.props.formActions.buttons)
-      })))));
-    }
-  }]);
-
-  return Formulario;
-}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
-
-_defineProperty(Formulario, "contextType", _hocs_MainFrame__WEBPACK_IMPORTED_MODULE_6__["DisplaysMessages"]);
+function Formulario(props) {
+  if (props.editar) props.nav.buttons[0].click = props.toggleModal;
+  var data = props.data || {};
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    title: props.editar ? data.nombre : "Agregar ubicación",
+    links: props.nav.links,
+    buttons: props.nav.buttons
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-4 bold"
+  }, "foto de la ubicacion"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-8 container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_4__["Text"], {
+    rows: 1,
+    titulo: "Nombre de la ubicaci\xF3n",
+    name: "nombre",
+    value: props.fields.nombre,
+    changeHandler: props.change
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_4__["Text"], {
+    rows: 4,
+    titulo: "Descripcion",
+    name: "descripcion",
+    value: props.fields.descripcion,
+    changeHandler: props.change
+  })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_3__["Numeric"], {
+    titulo: "Capacidad m\xE1xima",
+    name: "capacidad_maxima",
+    value: props.fields.capacidad_maxima,
+    changeHandler: props.change
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "smaller-text"
+  }, "M\xE1ximo de personas en la ubicaci\xF3n")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_3__["Numeric"], {
+    titulo: "M\xE1ximo personas",
+    name: "maximo_personas",
+    value: props.fields.maximo_personas,
+    changeHandler: props.change
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "smaller-text"
+  }, "M\xE1ximo de personas en una reservaci\xF3n")))));
+}
 
 /***/ }),
 
@@ -97055,9 +96954,7 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(MainFrame).call(this, props));
     _this.state = {
       showMessage: false,
-      message: {
-        data: 'culo'
-      }
+      message: {}
     };
     _this.showMessage = _this.showMessage.bind(_assertThisInitialized(_this));
     return _this;
@@ -97307,6 +97204,217 @@ function (_Component) {
 
   return RouterTransition;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+/***/ }),
+
+/***/ "./resources/js/hocs/Validator.jsx":
+/*!*****************************************!*\
+  !*** ./resources/js/hocs/Validator.jsx ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Validator; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _MainFrame__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MainFrame */ "./resources/js/hocs/MainFrame.jsx");
+/* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+/**
+ * react basic
+ */
+
+
+
+/**
+ * react router
+ */
+
+
+var evaluateRule = {
+  required: function required(_ref) {
+    var val = _ref.val,
+        name = _ref.name;
+    if (val === "" || !val) return "el campo ".concat(name, " no puede estar vac\xEDo");
+  },
+  min: function min(_ref2) {
+    var val = _ref2.val,
+        _min = _ref2.min,
+        name = _ref2.name;
+    if (parseInt(val) < _min) return "el campo ".concat(name, " no puede ser menor a ").concat(_min);
+  },
+  max: function max(_ref3) {
+    var val = _ref3.val,
+        _max = _ref3.max,
+        name = _ref3.name;
+    if (parseInt(val) > _max) return "el campo ".concat(name, " no puede ser mayor a ").concat(_max);
+  },
+  alpha_numeric: function alpha_numeric(_ref4) {
+    var val = _ref4.val,
+        name = _ref4.name;
+    if (val.match(/[^a-zA-Z\d\s:\,\.\;\:]/gi)) return "el campo ".concat(name, " debe contener caracteres alfanum\xE9ricos");
+  },
+  numeric: function numeric(_ref5) {
+    var val = _ref5.val,
+        name = _ref5.name;
+    if (val.match(/[^\d]/gi)) return "el campo ".concat(name, " debe contener \xFAnicamente n\xFAmeros");
+  }
+};
+var extFields = ['max', 'min'];
+
+var validateValue = function validateValue(val, rules, name) {
+  return Object.keys(rules).reduce(function (tot, r) {
+    var arg = {
+      val: val,
+      name: name
+    };
+    if (extFields.indexOf(r) !== -1) arg[r] = rules[r];
+    var err = evaluateRule[r](arg);
+    if (err) tot.push(err);
+    return tot;
+  }, []);
+};
+
+var Validator =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Validator, _Component);
+
+  function Validator(props) {
+    var _this;
+
+    _classCallCheck(this, Validator);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Validator).call(this, props));
+    _this.enviarFormulario = _this.enviarFormulario.bind(_assertThisInitialized(_this));
+    _this.cancelarFormulario = _this.cancelarFormulario.bind(_assertThisInitialized(_this));
+    _this.sendPutRequest = _this.sendPutRequest.bind(_assertThisInitialized(_this));
+    _this.sendPostRequest = _this.sendPostRequest.bind(_assertThisInitialized(_this));
+    _this.changeFormField = _this.changeFormField.bind(_assertThisInitialized(_this));
+    _this.state = {
+      form: {},
+      errors: {},
+      validation: {}
+    };
+    _this.actions = [{
+      title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "smaller-text text bold"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fas fa-times-circle inline-box side-margin"
+      }), "Cancelar"),
+      click: _this.cancelarFormulario
+    }, {
+      title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "smaller-text text bold"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fas fa-check-circle inline-box side-margin"
+      }), "Guardar"),
+      click: _this.enviarFormulario
+    }];
+    return _this;
+  }
+
+  _createClass(Validator, [{
+    key: "changeFormField",
+    value: function changeFormField(e) {
+      e.preventDefault();
+      var input = e.currentTarget,
+          name = e.target.name,
+          form = this.state.form,
+          errors = this.state.errors,
+          er = validateValue(input.value, this.state.validation[name], name);
+      form[name] = input.value;
+      errors[name] = er;
+      this.setState({
+        form: form,
+        errors: errors
+      });
+    }
+  }, {
+    key: "enviarFormulario",
+    value: function enviarFormulario(e) {
+      e.preventDefault();
+      this.context({
+        message: {
+          data: 'clicked from Ubicaciones form',
+          type: 'success'
+        }
+      });
+    }
+  }, {
+    key: "cancelarFormulario",
+    value: function cancelarFormulario(e) {
+      e.preventDefault();
+      this.context({
+        message: {
+          data: 'cancelar from Ubicaciones form',
+          type: 'failure'
+        }
+      });
+    }
+  }, {
+    key: "sendPostRequest",
+    value: function sendPostRequest() {}
+  }, {
+    key: "sendPutRequest",
+    value: function sendPutRequest() {}
+  }, {
+    key: "render",
+    value: function render() {
+      var Form = react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(this.props.children, {
+        fields: this.state.form,
+        change: this.changeFormField,
+        errors: this.state.errors
+      });
+      console.log(this.state.errors);
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        className: "full-width"
+      }, Form, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row justify-content-end h-padding"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        buttons: Object.values(this.actions)
+      })));
+    }
+  }], [{
+    key: "getDerivedStateFromProps",
+    value: function getDerivedStateFromProps(props) {
+      return {
+        form: props.form,
+        errors: {},
+        validation: props.validation
+      };
+    }
+  }]);
+
+  return Validator;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+_defineProperty(Validator, "contextType", _MainFrame__WEBPACK_IMPORTED_MODULE_2__["DisplaysMessages"]);
+
+
 
 /***/ }),
 
@@ -98478,19 +98586,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
+
+var type = {
+  success: {
+    backgroundColor: 'var(--success)',
+    color: 'white'
+  },
+  warning: {
+    backgroundColor: 'var(--warning)',
+    color: 'white'
+  },
+  failure: {
+    backgroundColor: 'var(--danger)',
+    color: 'white'
+  }
+};
 function Message(props) {
+  var style = _objectSpread({
+    position: "fixed",
+    top: "20px",
+    right: "20px",
+    zIndex: "5",
+    borderRadius: "3px"
+  }, type[props.message.type]);
+
   if (props.show) {
-    console.log("show");
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "extra-box-padding round-border background-border",
-      style: {
-        position: "fixed",
-        top: "20px",
-        right: "20px",
-        zIndex: "5"
-      }
+      className: "extra-box-padding",
+      style: style
     }, props.message.data);
   } else return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null);
 }
