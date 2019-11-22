@@ -66,14 +66,20 @@ export class RouterTransition extends Component {
     }
 
     shouldComponentUpdate(np,ns){
-        return np.location !== this.props.location || ns.loadFinished || this.state.loadFinished;
+        if (np.message !== this.props.message){
+            return false;
+        } else
+            return np.location !== this.props.location || ns.loadFinished || this.state.loadFinished;
     }
 
     componentDidUpdate(pp){
         if ((pp.location !== this.props.location || this.state.refresh) && this.state.loadFinished){
             this.setState({
                 refresh:false,
-                redirect:React.cloneElement(this.props.children,{data:this.state.data})
+                redirect:React.cloneElement(
+                    this.props.children,
+                    {data:this.state.data}
+                )
             })
         }
 

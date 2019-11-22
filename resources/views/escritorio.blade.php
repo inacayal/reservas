@@ -9,25 +9,26 @@
                     'data'=> "0",
                     'disabled'=> false,
                     'title'=> "Escritorio",
-                    'route'=> '/',
+                    'route'=> '',
                     'sub'=> []
                 ],
                 [
                     'data'=> "1",
                     'disabled'=> false,
                     'title'=> "Reservaciones",
-                    'route'=> '/reservas',
+                    'route'=> 'reservas',
                     'sub'=> []
                 ],
                 [
                     'data'=> "2",
                     'disabled'=> false,
                     'title'=> "Horarios",
-                    'route'=> '/horarios',
+                    'route'=> 'horarios',
                     'sub'=> [
                         [
                             'title'=> 'Feriados',
-                            'route'=> '/horarios/feriados',
+                            'to' => '/horarios/feriados',
+                            'route'=> 'horarios/feriados',
                             'data'=> "0",
                             'class'=> "medium-left-padding box-transparent box-padding bold-hover full-width text-left"
                         ]
@@ -37,51 +38,54 @@
                     'data'=> "3",
                     'disabled'=> false,
                     'title'=> "Ubicaciones",
-                    'route'=> '/ubicaciones',
+                    'route'=> 'ubicaciones',
                     'sub'=> []
                 ],
                 [
                     'data'=> "4",
                     'disabled'=> false,
                     'title'=> "Eventos",
-                    'route'=> '/eventos',
+                    'route'=> 'eventos',
                     'sub'=> []
                 ],
                 [
                     'data'=> "5",
                     'disabled'=> false,
                     'title'=> "Promociones",
-                    'route'=> '/promociones',
+                    'route'=> 'promociones',
                     'sub'=> []
                 ],
                 [
                     'data'=> "6",
                     'disabled'=> false,
                     'title'=> "Locales",
-                    'route'=> '/locales',
+                    'route'=> 'locales',
                     'sub'=> []
                 ],
                 [
                     'data'=> "7",
                     'disabled'=> false,
                     'title'=> "Configuración",
-                    'route'=> '/configuracion',
+                    'route'=> 'configuracion',
                     'sub'=> [
                         [
                             'title'=>"Establecimiento",
-                            'route'=> '/configuracion/establecimiento',
+                            'to'=> '/configuracion/establecimiento',
+                            'route'=>'configuracion',
                             'data'=>"0",
                             'class'=> "medium-left-padding box-transparent box-padding bold-hover full-width text-left"
                         ],
                         [
                             'title'=>"Usuario",
-                            'route'=> '/configuracion/usuario',
+                            'to'=> '/configuracion/usuario',
+                            'route'=>'configuracion',
                             'data'=>"1",
                             'class'=> "medium-left-padding box-transparent box-padding bold-hover full-width text-left"
                         ],
                         [
                             'title'=> "Reservas",
-                            'route'=> '/configuracion/reservas',
+                            'to'=> '/configuracion/reservas',
+                            'route'=>'configuracion',
                             'data'=> "2",
                             'class'=> "medium-left-padding box-transparent box-padding bold-hover full-width text-left"
                         ]
@@ -89,7 +93,7 @@
                 ],
                 [
                     'data'=> "8",
-                    'route'=> '/franquicias',
+                    'route'=> 'franquicias',
                     'disabled'=> false,
                     'title'=> "Franquicias",
                     'sub'=> []

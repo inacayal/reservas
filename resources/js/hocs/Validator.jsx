@@ -8,45 +8,102 @@ import {DisplaysMessages} from './MainFrame';
  * react router
  */
 import Actions from '../componentes/basic/Actions';
+import {FormActions} from '../acciones/ActionsByView'
 
 const evaluateRule = {
     required:({val,name}) => {
         if (val==="" || !val)
-            return `el campo ${name} no puede estar vacío`;
+            return {
+                description:`el campo ${name} no puede estar vacío`,
+                type:'required',
+                field:name
+            };
     },
     min:({val,min,name}) => {
         if (parseInt(val) < min)
-            return `el campo ${name} no puede ser menor a ${min}`;
+            return {
+                description:`el campo ${name} no puede ser menor a ${min}`,
+                type:'min',
+                field:name
+            };
     },
     max:({val,max,name}) => {
-        if (parseInt(val) > max)
-            return `el campo ${name} no puede ser mayor a ${max}`;
+        if (val.length > max){
+            return {
+                description:`el campo ${name} no puede tener más de ${max} caracteres`,
+                type:'max',
+                field:name
+            };
+        }
     },
     alpha_numeric:({val,name}) => {
-        if (val.match(/[^a-zA-Z\d\s:\,\.\;\:]/gi))
-            return `el campo ${name} debe contener caracteres alfanuméricos`;
+        if (val.match(/[^a-zA-Z\d\s\,\.ñáéíóú]/gi))
+            return {
+                description:`el campo ${name} debe contener caracteres alfanuméricos`,
+                type:'alpha_numeric',
+                field:name
+            };
     },
     numeric: ({val,name}) => {
         if (val.match(/[^\d]/gi))
-            return `el campo ${name} debe contener únicamente números`;
+            return {
+                description:`el campo ${name} debe contener únicamente números`,
+                type:'numeric',
+                field:name
+            };
     }
 }
 
 const extFields = ['max','min'];
 
-const validateValue = (val,rules,name) =>
+const validateValue = (val,{rules,fieldName}) =>
     Object.keys(rules).reduce(
-        (tot,r) => {
+        (t,r) => {
             const arg = {
                 val:val,
-                name:name
+                name:fieldName
             };
-            if (extFields.indexOf(r)!==-1)
+            if (extFields.indexOf(r)!==-1){
                 arg[r] = rules[r];
+            }
             const err = evaluateRule[r](arg);
             if (err)
-                tot.push(err);
-            return tot;
+                t.push(err);
+            return t;
+        }, []
+    );
+
+const formatErrors = (errors,name,ind) => (
+    <li key={ind}>
+        <div className="bold smaller-text">
+            {`En el campo ${name}`}
+        </div>
+        <ul className="h-padding">
+        {
+            errors.map(
+                (e,i) => <li key={i} className="smaller-text">{e.description}</li>
+            )
+        }
+        </ul>
+    </li>
+)
+
+const searchForErrors = (errors,fields) =>
+    Object.keys(errors).reduce(
+        (t,e,i) => {
+            const err = errors[e].length>0
+                ?
+                    formatErrors(
+                        errors[e],
+                        fields[e].fieldName,
+                        i
+                    )
+                :
+                    null;
+            if (err){
+                t.push(err);
+            }
+            return t;
         }, []
     );
 
@@ -58,31 +115,12 @@ export default class Validator extends Component{
         this.sendPutRequest   = this.sendPutRequest.bind(this);
         this.sendPostRequest = this.sendPostRequest.bind(this);
         this.changeFormField = this.changeFormField.bind(this);
+        this.actions = FormActions(this.enviarFormulario,this.cancelarFormulario);
         this.state = {
             form:{},
             errors:{},
             validation:{}
         };
-        this.actions =[
-            {
-                title: (
-                    <div className="smaller-text text bold">
-                        <i className="fas fa-times-circle inline-box side-margin" />
-                        Cancelar
-                    </div>
-                ),
-                click: this.cancelarFormulario
-            },
-            {
-                title: (
-                    <div className="smaller-text text bold">
-                        <i className="fas fa-check-circle inline-box side-margin" />
-                        Guardar
-                    </div>
-                ),
-                click: this.enviarFormulario
-            },
-        ];
     }
 
     static contextType = DisplaysMessages;
@@ -94,22 +132,40 @@ export default class Validator extends Component{
             name = e.target.name,
             form = this.state.form,
             errors = this.state.errors,
-            er = validateValue(input.value,this.state.validation[name],name);
+            er = validateValue(input.value,this.state.validation[name]);
 
         form[name]=input.value;
         errors[name] = er;
-
         this.setState({form,errors});
     }
 
     enviarFormulario(e){
         e.preventDefault();
-        this.context({
-            message:{
-                data:'clicked from Ubicaciones form',
-                type:'success'
-            }
-        })
+        const hasErrors = searchForErrors(this.state.errors,this.state.validation);
+        if (hasErrors.length>0)
+            this.context({
+                message:{
+                    data:(
+                        <ul className="h-padding nav-list">
+                            {hasErrors}
+                        </ul>
+                    ),
+                    title:(
+                        <>
+                            <i className="far fa-exclamation-triangle bold sub-title side-margin" />
+                            <span className="side-margin">Errores</span>
+                        </>
+                    ),
+                    type:'failure'
+                }
+            })
+        else
+            this.context({
+                message:{
+                    data:'no errors found',
+                    type:'success'
+                }
+            })
     }
 
     cancelarFormulario(e){
@@ -125,7 +181,6 @@ export default class Validator extends Component{
     static getDerivedStateFromProps (props){
         return {
             form:props.form,
-            errors:{},
             validation:props.validation
         }
     }
@@ -147,7 +202,6 @@ export default class Validator extends Component{
                 errors:this.state.errors
             }
         );
-        console.log(this.state.errors)
         return (
             <form className="full-width">
                 {Form}

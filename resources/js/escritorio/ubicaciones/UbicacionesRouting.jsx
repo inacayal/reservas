@@ -13,24 +13,34 @@ import {ConfirmarModal} from '../../componentes/modal/Modal';
 
 const validation = {
     nombre:{
-        required:true,
-        max:45,
-        alpha_numeric:true
+        rules:{
+            required:true,
+            max:45,
+            alpha_numeric:true
+        },
+        fieldName:"Nombre"
     },
     descripcion:{
-        required:false,
-        max:50,
-        alpha_numeric:true
+        rules:{
+            max:50
+        },
+        fieldName:"Descripción"
     },
     capacidad_maxima:{
-        required:true,
-        numeric:true,
-        min:1
+        rules:{
+            required:true,
+            numeric:true,
+            min:1
+        },
+        fieldName:"Capacidad máxima"
     },
     maximo_personas:{
-        required:true,
-        numeric:true,
-        min:1
+        rules:{
+            required:true,
+            numeric:true,
+            min:1
+        },
+        fieldName:"Máximo Personas"
     }
 }
 

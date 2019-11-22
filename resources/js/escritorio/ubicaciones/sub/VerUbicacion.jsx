@@ -22,27 +22,23 @@ export function VerUbicacion (props) {
                     imagen de ubicacion
                 </div>
                 <div className="col-md-8 container">
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="bold highlight">
-                                Descripcion:
-                            </div>
-                            <div>{data.descripcion}</div>
-                        </div>
+                    <div className="row bold highlight top-padding">
+                        Descripcion:
                     </div>
-                    <div className="row v-padding">
-                        <div className="col-md-6">
-                            <div className="bold highlight">
-                                Máximo por mesa
-                            </div>
-                            <div>{data.maximo+" personas"}</div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="bold highlight">
-                                Capacidad máxima
-                            </div>
-                            <div>{data.capacidad+" personas"}</div>
-                        </div>
+                    <div className="row">
+                        {data.descripcion}
+                    </div>
+                    <div className="row v-padding bold highlight top-padding">
+                        Máximo por mesa
+                    </div>
+                    <div className="row">
+                        {data.maximo+" personas"}
+                    </div>
+                    <div className="row bold highlight top-padding">
+                        Capacidad máxima
+                    </div>
+                    <div className="row">
+                        {data.capacidad+" personas"}
                     </div>
                 </div>
             </div>

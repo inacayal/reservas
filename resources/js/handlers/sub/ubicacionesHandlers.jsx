@@ -57,9 +57,7 @@ const singleHandler  = (endpoint,location) => {
     }
 }
 
-const listHandler = (
-    endpoint,location
-) => {
+const listHandler = (endpoint,location) => {
     return function (params) {
         const request = GET({
             endpoint: endpoint,

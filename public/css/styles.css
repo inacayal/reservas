@@ -27,6 +27,10 @@
   --text-color:#000000;
   --light-border: #f2f2f2;
   --dark:rgba(0,59,120,0.95);
+  --dark-border:#606060;
+  --danger-transparent: rgba(227, 52, 47,0.9);
+  --success-transparent: rgba(56, 193, 114,0.9);
+  --warning-transparent: rgba(255, 237, 74,0.9);
 }
 
 html,body {
@@ -39,6 +43,16 @@ html,body {
     scrollbar-width: thin !important;
     scrollbar-color: #888 #fff !important;
 }
+.light-text{
+    color:var(--dark-border);
+}
+.error-box{
+    border-bottom:solid 1px var(--light-danger) !important;
+}
+.error{
+    color:var(--danger);
+}
+
 body::-webkit-scrollbar {
     width: 5px;
 }
@@ -76,6 +90,11 @@ body::-webkit-scrollbar-thumb:hover {
 .bold-hover:hover{
     font-weight: bolder !important;
     cursor:pointer;
+}
+.light-input{
+    border-bottom: solid 1px var(--border);
+    padding:2px 5px;
+    margin-bottom:5px;
 }
 .top-margin{
     margin-top:15px;
@@ -126,7 +145,7 @@ body::-webkit-scrollbar-thumb:hover {
     border-bottom:solid 1px var(--highlight-blue);
 }
 .border-box-no-padding{
-    padding:2px 4px;
+    padding:2px 5px;
     border:solid 1px var(--border) !important;
 }
 .light-bg{

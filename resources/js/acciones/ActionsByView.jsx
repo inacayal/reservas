@@ -119,27 +119,24 @@ export const Navegacion = {
 };
 
 export const FormActions = (
-    key
-) => ({
-    buttons: {
-        cancelar:{
-            title: (
-                <div className="smaller-text text bold">
-                    <i className="fas fa-times-circle inline-box side-margin" />
-                    Cancelar
-                </div>
-            ),
-            click: () => false
-        },
-        guardar:{
-            title: (
-                <div className="smaller-text text bold">
-                    <i className="fas fa-check-circle inline-box side-margin" />
-                    Guardar
-                </div>
-            ),
-            data:key,
-            click: () => false
-        },
-    }
-})
+    sendHandler,cancelHandler
+) => [
+    {
+        title: (
+            <div className="smaller-text text bold">
+                <i className="fas fa-times-circle inline-box side-margin" />
+                Cancelar
+            </div>
+        ),
+        click: cancelHandler
+    },
+    {
+        title: (
+            <div className="smaller-text text bold">
+                <i className="fas fa-check-circle inline-box side-margin" />
+                Guardar
+            </div>
+        ),
+        click: sendHandler
+    },
+];

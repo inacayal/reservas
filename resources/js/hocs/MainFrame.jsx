@@ -28,7 +28,16 @@ export default class MainFrame extends Component {
             showMessage:false,
             message:{}
         }
-        this.showMessage = this.showMessage.bind(this)
+        this.showMessage = this.showMessage.bind(this);
+        this.hideMessage = this.hideMessage.bind(this);
+    }
+
+    hideMessage(){
+        if (this.state.showMessage)
+            this.setState({
+                showMessage:false,
+                message:{}
+            });
     }
 
     showMessage({message}){
@@ -37,12 +46,7 @@ export default class MainFrame extends Component {
                 message:message
             }
         );
-        setTimeout( () =>
-            this.setState({
-                showMessage:false,
-                message:{}
-            }),
-        5000)
+        setTimeout(this.hideMessage,5000);
     }
 
     render(){
@@ -53,10 +57,12 @@ export default class MainFrame extends Component {
         return (
             <div className="row round-border" style={{height:'95%',overflow:'hidden'}}>
                 <Message
+                    hide={this.hideMessage}
                     show={this.state.showMessage}
                     message={this.state.message}/>
                 <DisplaysMessages.Provider value={this.showMessage}>
                     <RouterTransition
+                        message={this.state.showMessage}
                         url={window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, '')}
                         sidebarElem={props.current}
                         route={match}

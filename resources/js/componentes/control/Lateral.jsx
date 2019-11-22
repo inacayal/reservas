@@ -3,7 +3,7 @@
  */
 import React, { Component,useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Link } from 'react-router-dom';
+import CustomLink from '../basic/CustomLink';
 /**
  * componentes
  */
@@ -32,58 +32,64 @@ export default class Lateral extends Component {
             <ul className="nav-list no-padding" style={{height:'93.1%'}}>
             {
                 props.items.map(
-                    (e, i) => (
-                        <li
-                            className="full-width relative"
-                            key={i}
-                            onMouseOver ={()=>hoverToggle(i)}
-                            onMouseLeave ={()=>hoverToggle()}>
-                            <button
-                                title={e.title}
-                                data={i}
-                                className={
-                                    props.current == i
-                                    ?
-                                    "selected bold full-width text-left bold no-border no-padding"
-                                    :
-                                    "box-transparent full-width text-left box-padding highlight-hover bold-hover"
-                                }>
-                            <Link to={e.route}>
-                                <div className={props.current == i ? "fat-border box-padding" : ""}>
-                                    <span className="half inline-block">
-                                        {e.title}
-                                    </span>
-                                    <span className="inline-block text-right half">
-                                        <i className={
-                                            props.current == i||hover === i
-                                            ?
+                    (e, i) => {
+                        const linkParam = {
+                            to:`/${e.route}`,
+                            route:e.route,
+                            params:{}
+                        }
+                        return(
+                            <li
+                                className="full-width relative"
+                                key={i}
+                                onMouseOver ={()=>hoverToggle(i)}
+                                onMouseLeave ={()=>hoverToggle()}>
+                                <button
+                                    title={e.title}
+                                    data={i}
+                                    className={
+                                        props.current == i
+                                        ?
+                                        "selected bold full-width text-left bold no-border no-padding"
+                                        :
+                                        "box-transparent full-width text-left box-padding highlight-hover bold-hover"}>
+                                    <CustomLink params={linkParam}>
+                                        <div className={props.current == i ? "fat-border box-padding" : ""}>
+                                            <span className="half inline-block">
+                                                {e.title}
+                                            </span>
+                                            <span className="inline-block text-right half">
+                                                <i className={
+                                                    props.current == i||hover === i
+                                                    ?
 
-                                            "line-v-middle middle-font highlight fas fa-angle-right"
-                                            :
-                                            e.sub.length>0
-                                            ?
-                                            "line-v-middle middle-font border-font fas fa-angle-right"
-                                            :
-                                            "hidden"
-                                        }/>
-                                    </span>
-                                </div>
-                            </Link>
-                            {
-                                (e.sub.length>0)
-                                ?
-                                    <SubElements
-                                        isCurrent={props.current == i}
-                                        isHover={hover===i}
-                                        index ={i}
-                                        sub={e.sub}
-                                        {...props}/>
-                                :
-                                    <div></div>
-                            }
-                        </button>
-                    </li>
-                    )
+                                                    "line-v-middle middle-font highlight fas fa-angle-right"
+                                                    :
+                                                    e.sub.length>0
+                                                    ?
+                                                    "line-v-middle middle-font border-font fas fa-angle-right"
+                                                    :
+                                                    "hidden"
+                                                }/>
+                                            </span>
+                                        </div>
+                                    </CustomLink>
+                                    {
+                                        (e.sub.length>0)
+                                        ?
+                                            <SubElements
+                                                isCurrent={props.current == i}
+                                                isHover={hover===i}
+                                                index ={i}
+                                                sub={e.sub}
+                                                {...props}/>
+                                        :
+                                            <div></div>
+                                    }
+                                </button>
+                            </li>
+                        )
+                    }
                 )
             }
             </ul>
@@ -109,22 +115,29 @@ const SubElements = (props) => {
         <ul className={eClass}>
             {
                 sub.map(
-                    (sub, ind) => (
-                        <li
-                            key={ind}
-                            className={sub.class+" border-transparent bold-hover text"}
-                            onMouseOver ={()=>hoverToggle(ind)}
-                            onMouseLeave ={()=>hoverToggle()}>
-                            <Link to={sub.route}>
-                                <span className="inline-block half">
-                                    <span>{sub.title}</span>
-                                </span>
-                                <span className="inline-block text-right half">
-                                    <i className={hover===ind ? "line-v-middle middle-font highlight fas fa-angle-right" : "hidden"}/>
-                                </span>
-                            </Link>
-                        </li>
-                    )
+                    (sub, ind) => {
+                        const linkParam = {
+                            to:`/${sub.to}`,
+                            route:sub.route,
+                            params:{}
+                        }
+                        return(
+                            <li
+                                key={ind}
+                                className={sub.class+" border-transparent bold-hover text"}
+                                onMouseOver ={()=>hoverToggle(ind)}
+                                onMouseLeave ={()=>hoverToggle()}>
+                                <CustomLink params={linkParam}>
+                                    <span className="inline-block half">
+                                        <span>{sub.title}</span>
+                                    </span>
+                                    <span className="inline-block text-right half">
+                                        <i className={hover===ind ? "line-v-middle middle-font highlight fas fa-angle-right" : "hidden"}/>
+                                    </span>
+                                </CustomLink>
+                            </li>
+                        )
+                    }
                 )
             }
         </ul>
