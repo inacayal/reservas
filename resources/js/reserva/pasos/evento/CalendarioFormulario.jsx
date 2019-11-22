@@ -19,100 +19,113 @@ import { Select } from "../../../componentes/input/Select.jsx";
 import { Text } from "../../../componentes/input/Text.jsx";
 import { generateListByLocationCapacity } from './Handlers';
 
-const SelectData = {
-    ubicacion:{
-        name:"ubicacion",
-        show: false,
-        selected: null,
-        search: "",
-        input: React.createRef(),
-        list: {}
-    },
-    evento: {
-        name: "evento",
-        show: false,
-        selected: null,
-        search: "",
-        input: React.createRef(),
-        list: {}
-    },
-    hora: {
-        name: "hora",
-        show: false,
-        selected: null,
-        search: "",
-        input: React.createRef(),
-        list: {}
-    },
-    minuto: {
-        name: "minuto",
-        show: false,
-        selected: null,
-        search: "",
-        input: React.createRef(),
-        list: {}
-    },
-    personas: {
-        name: "personas",
-        show: false,
-        selected: null,
-        search: "",
-        input: React.createRef(),
-        list: {}
-    }
-}
-
 export default function CalendarioFormulario(props) {
-    const 
-        [horaSelect, changeHora] = useState(SelectData.hora),
-        [minutoSelect, changeMinuto] = useState(SelectData.minuto),
-        [ubicacionSelect, changeUbicacion] = useState(SelectData.ubicacion),
-        [eventoSelect, changeEvento] = useState(SelectData.evento),
-        [personasSelect, changePersonas] = useState(SelectData.personas),
+    const ubicacion = props.ubicaciones.data[props.fields.id_ubicacion] || null,
+        personas = ubicacion ? generateListByLocationCapacity(ubicacion.maximo+1) : {},
+        promociones = props.fields.id_evento ? eventos.data[eventoSelect.selected].promociones.data : null,
         eventos = props.currentData.eventos,
-        promociones = eventoSelect.selected
-            ? eventos.data[eventoSelect.selected].promociones.data
-            : null,
-        ubicacion = props.ubicaciones.data[ubicacionSelect.selected] || null,
-        dateChange = () => {
-            changeHora(SelectData.hora);
-            changeMinuto(SelectData.minuto);
-            changeUbicacion(SelectData.ubicacion);
-            changeEvento(SelectData.evento);
-            changePersonas(SelectData.personas);
-        };
-    
-    useEffect(dateChange,[props.date]);
-
-    horaSelect.list = (props.horario.hList) 
-        ? props.horario.hList 
-        : {};
-    minutoSelect.list = horaSelect.selected
-        ? props.horario.hourArray[horaSelect.selected]
-        : {};
-    personasSelect.list = (ubicacion) 
-        ? generateListByLocationCapacity(ubicacion.maximo+1)
-        : {};
-    ubicacionSelect.list = props.ubicaciones.list;
-    eventoSelect.list = eventos.list;
-        
+        select = {
+            id_ubicacion:{
+                name:"id_ubicacion",
+                show: false,
+                selected: null,
+                search: "",
+                input: React.createRef(),
+                list: props.ubicaciones.list
+            },
+            id_evento: {
+                name: "id_evento",
+                show: false,
+                selected: null,
+                search: "",
+                input: React.createRef(),
+                list: eventos.list
+            },
+            hora_reserva: {
+                name: "hora_reserva",
+                show: false,
+                selected: null,
+                search: "",
+                input: React.createRef(),
+                list: props.horario.hList||{}
+            },
+            minuto_reserva: {
+                name: "minuto_reserva",
+                show: false,
+                selected: null,
+                search: "",
+                input: React.createRef(),
+                list: props.horario.hourArray[props.fields.hora_reserva]||{}
+            },
+            cantidad_personas: {
+                name: "cantidad_personas",
+                show: false,
+                selected: null,
+                search: "",
+                input: React.createRef(),
+                list:personas
+            }
+        }
     return (
         <>
             <div className="row box-padding">
                 <h3 className={props.displayTitles ? "bold highlight-title align-center" : "hidden"}>datos de contacto</h3>
             </div>
             <div className="row v-padding">
-                <div className="col-sm-4">
-                    <Text rows={1} titulo="nombre  y apellido" name="name" value={props.nombre} classes={"border-box input-text margin-box"} />
+                <div className="col-sm-4 container">
+                    <div className="row">
+                        <div className="col-md-6">
+                            <Text
+                                rows={1}
+                                titulo="Nombre"
+                                name="nombre"
+                                holder="Nombre del solicitante hasta 100 caracteres"
+                                value={props.fields.nombre}
+                                changeHandler={props.change}
+                                errors={props.errors.nombre}/>
+                        </div>
+                        <div className="col-md-6">
+                            <Text
+                                rows={1}
+                                titulo="Apellido"
+                                name="apellido"
+                                holder="Apellido del solicitante hasta 100 caracteres"
+                                value={props.fields.apellido}
+                                changeHandler={props.change}
+                                errors={props.errors.apellido} />
+                        </div>
+                    </div>
+
                 </div>
                 <div className="col-sm-4">
-                    <Text rows={1} titulo="correo electrónico" name="email" value={props.correo} classes={"border-box input-text margin-box"} />
+                    <Text
+                        rows={1}
+                        titulo="correo electrónico"
+                        name="email"
+                        holder="Email del solicitante hasta 100 caracteres"
+                        value={props.fields.email}
+                        changeHandler={props.change}
+                        errors={props.errors.email}/>
                 </div>
                 <div className="col-sm-4">
-                    <Text rows={1} titulo="teléfono" name="telefono" value={props.telefono} classes={"border-box input-text margin-box"} container="full-width" />
+                    <Text
+                        rows={1}
+                        titulo="teléfono"
+                        name="telefono"
+                        holder="Teléfono del solicitante hasta 20 caracteres"
+                        value={props.fields.telefono}
+                        changeHandler={props.change}
+                        errors={props.errors.telefono}/>
                 </div>
                 <div className="col-sm-6">
-                    <Text rows={3} titulo="Observaciones" name="descripcion" value={props.descripcion} classes={"border-box input-text margin-box"} container="full-width" />
+                    <Text
+                        rows={3}
+                        titulo="Observaciones"
+                        name="descripcion"
+                        holder="Observaciones de la reserva (alguna petición extra o algo que quieras dejar claro)"
+                        value={props.fields.descripcion}
+                        changeHandler={props.change}
+                        errors={props.errors.telefono}/>
                 </div>
             </div>
             <div className="no-padding top-padding col-md-3">
@@ -126,8 +139,8 @@ export default function CalendarioFormulario(props) {
                     <div className="col-md-6 text-left">
                         <h6 className="highlight bold no-margin">Ubicación</h6>
                         <Select
-                            changeSelect={changeUbicacion}
-                            select = {ubicacionSelect}
+                            changeSelect={props.change}
+                            select = {select.id_ubicacion}
                             titulo="selecciona la ubicación" />
                     </div>
                     <div className="col-md-6 text-left">
@@ -138,8 +151,8 @@ export default function CalendarioFormulario(props) {
                             <div className="row">
                                 <div className="col-sm-5 h-padding text-left" style={{paddingLeft:"0px"}}>
                                     <Select
-                                        changeSelect={changeHora}
-                                        select = {horaSelect}
+                                        changeSelect={props.change}
+                                        select = {select.hora_reserva}
                                         titulo="hora" />
                                 </div>
                                 <div className="col-sm-1 text-center v-align-center h-padding">
@@ -147,12 +160,12 @@ export default function CalendarioFormulario(props) {
                                 </div>
                                 <div className="col-md-6 text-left relative visible h-padding">
                                     <div
-                                        className={horaSelect.selected ? "hidden" : "top-padding full-width overlay"} />
+                                        className={select.hora_reserva.selected ? "hidden" : "top-padding full-width overlay"} />
                                     <Select
-                                        changeSelect={changeMinuto}
-                                        select = {minutoSelect}
+                                        changeSelect={props.change}
+                                        select = {select.minuto_reserva}
                                         titulo="minutos"
-                                        readOnly={horaSelect.selected ? true : false} />
+                                        readOnly={select.hora_reserva.selected ? true : false} />
                                 </div>
                             </div>
                             <div className="row">
@@ -168,14 +181,14 @@ export default function CalendarioFormulario(props) {
                                 <div className="col-md-12">
                                     <h6 className="highlight bold no-margin">Ocasión</h6>
                                     <Select
-                                        changeSelect={changeEvento}
-                                        select = {eventoSelect}
+                                        changeSelect={props.change}
+                                        select = {select.id_evento}
                                         titulo="selecciona tipo de evento de tu reserva"/>
                                     {
-                                        eventoSelect.selected
+                                        select.id_evento.selected
                                             ?
                                             <div className="smaller-text">
-                                                <div>{"Descripcion: " + eventos.data[eventoSelect.selected].descripcion}</div>
+                                                <div>{"Descripcion: " + eventos.data[select.id_evento.selected].descripcion}</div>
                                             </div>
                                             :
                                             <></>
@@ -185,15 +198,23 @@ export default function CalendarioFormulario(props) {
                             <div className="row v-padding text-left">
                                 <div className="v-padding col-md-12 flex-row relative visible" >
                                     <div
-                                        className={ubicacionSelect.selected ? "hidden" : "top-padding full-width overlay"}/>
+                                        className={select.id_ubicacion.selected ? "hidden" : "top-padding full-width overlay"}/>
                                     <div className="full-width">
                                         <h6 className="highlight bold no-margin">Personas</h6>
                                         <Select
-                                            changeSelect={changePersonas}
-                                            select = {personasSelect}
+                                            changeSelect={props.change}
+                                            select = {select.cantidad_personas}
                                             titulo="selecciona la cantidad de personas"
-                                            readOnly={ubicacionSelect.selected ? true : false} />
-                                        <div className="smaller-text">{ubicacionSelect.selected ? "Máximo " + ubicacion.maximo + " personas para " + ubicacion.nombre : "Debes seleccionar una ubicación"}</div>
+                                            readOnly={select.id_ubicacion.selected ? true : false} />
+                                        <div className="smaller-text">
+                                            {
+                                                select.id_ubicacion.selected
+                                                ?
+                                                    "Máximo " + ubicacion.maximo + " personas para " + ubicacion.nombre
+                                                :
+                                                    "Debes seleccionar una ubicación"
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -209,7 +230,7 @@ export default function CalendarioFormulario(props) {
                                             (p, i) =>
                                                 <li key={i} className="full-width border-button">
                                                     <div className="inline-block v-align-center">
-                                                        <input type="radio" name="promocion" value={p.id} />
+                                                        <input type="radio" name="id_promocion" value={props.fields.id_promocion} />
                                                     </div>
                                                     <div className="inline-block">
                                                         <div className="bold">{p.nombre}</div>
@@ -226,7 +247,7 @@ export default function CalendarioFormulario(props) {
                     </div>
                 </div>
             </div>
-            
+
         </>
     )
 }

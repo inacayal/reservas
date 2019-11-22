@@ -43,8 +43,7 @@ export const generateHourArray = (
 export const calculateOffset = (
     a,
     dt,
-    d,
-    c
+    d
 ) => {
     const o = { dias: parseInt(a / 24), horas: a % 24 },
         cH = parseInt(d.cierre.reserva.hora),
@@ -57,9 +56,6 @@ export const calculateOffset = (
         dt.setDate(dt.getDate() + 1);
         dt.setHours(0, 0, 0, 0);
     }
-
-    c(dt);
-
     return dt;
 };
 
@@ -70,7 +66,7 @@ export const generateAcceptedHours = ({
     f,
     m
 }) => {
-    const 
+    const
         sH = m.getDate() === f.getDate() && m.getMonth() === f.getMonth() && m.getFullYear() === f.getFullYear()
             ? g.apertura.reserva.hora + a
             : g.apertura.reserva.hora,

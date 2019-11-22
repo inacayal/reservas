@@ -79,7 +79,7 @@ function CalendarioMemo(props) {
     useEffect(() =>  noOp,[props.showDate]);
     return (
         <>
-            <input type="date" value={props.showDate} readOnly className="hidden" />
+            <input type="date" value={props.showDate} readOnly name="fecha_reserva" className="hidden" />
             <Calendar
                 tileClassName='relative'
                 showNeighboringMonth={false}
