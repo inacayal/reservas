@@ -4,8 +4,6 @@ import Local from './pasos/Local.jsx';
 import EventoFrame from "./pasos/evento/EventoFrame.jsx";
 import Exito from "./pasos/Exito.jsx";
 import Paginado from '../componentes/control/Paginado.jsx';
-import { showOptions, selectOption } from '../componentes/input/Select'
-import { onTextChange } from '../componentes/input/Text'
 
 export default class Main extends Component {
     constructor() {

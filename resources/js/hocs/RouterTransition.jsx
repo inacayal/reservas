@@ -54,15 +54,40 @@ export class RouterTransition extends Component {
             refresh:false,
             fetchData:this.assignHandler(this.props.handlerArray,this.props.location,this.props.route.params)
         };
-
         this.downloadHandler = downloadHandler.bind(this);
         this.awaitLoading = awaitLoading.bind(this);
         this.fetchHandler = this.fetchHandler.bind(this);
+        this.displayErrors = this.displayErrors.bind(this);
     }
 
 
     fetchHandler(params){
         this.state.fetchData(params);
+    }
+
+    displayErrors(error){
+        this.props.displayMessage({
+            message:{
+                data:(
+                    <div className="h-padding">
+                        <div className="inline-block ">
+                            <span className="side-margin bold">código</span>
+                            <span className="side-margin bold">{error.response.status}</span>
+                        </div>
+                        <div className="inline-block side-margin">
+                            {error.response.statusText}
+                        </div>
+                    </div>
+                ),
+                title:(
+                    <>
+                        <i className="far fa-exclamation-triangle bold sub-title side-margin" />
+                        <span className="side-margin">Errores</span>
+                    </>
+                ),
+                type:'failure'
+            }
+        });
     }
 
     shouldComponentUpdate(np,ns){
@@ -82,7 +107,6 @@ export class RouterTransition extends Component {
                 )
             })
         }
-
     }
 
     componentDidMount() {
@@ -90,7 +114,6 @@ export class RouterTransition extends Component {
     }
 
     componentWillUnmount(){
-
     }
 
     render() {

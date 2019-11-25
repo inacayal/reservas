@@ -48,11 +48,7 @@ const establecimientoHandler = (endpoint,location) => {
                     });
                 }
             )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
+            .catch(this.displayErrors);
     }
 }
 
@@ -73,11 +69,7 @@ const configuracionHandler = (endpoint,location) => {
                     });
                 }
             )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
+            .catch(this.displayErrors);
     }
 }
 
@@ -98,11 +90,7 @@ const reservaHandler = (endpoint,location) => {
                     });
                 }
             )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
+            .catch(this.displayErrors);
     }
 }
 
@@ -124,10 +112,6 @@ const usuarioHandler = (endpoint,location) => {
                     });
                 }
             )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
+            .catch(this.displayErrors);
     }
 }

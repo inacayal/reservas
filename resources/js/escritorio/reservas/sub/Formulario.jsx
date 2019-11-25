@@ -15,21 +15,19 @@ export function Formulario (props) {
             <Titulo
                 title='Agregar Reservación'
                 links={props.nav.links} />
-            <form className="full-width">
-                <div className="container">
-                    <div className="row">
-                        <EventoFrame
-                            displayTitles={false}
-                            current={true}
-                            fecha={data.date}
-                            fetch = {context}
-                            data={data.data}
-                            fields={props.fields}
-                            change={props.change}
-                            errors={props.errors}/>
-                    </div>
+            <div className="container">
+                <div className="row">
+                    <EventoFrame
+                        displayTitles={false}
+                        current={true}
+                        fecha={data.date}
+                        fetch = {context}
+                        data={data.data}
+                        fields={props.fields}
+                        change={props.change}
+                        errors={props.errors}/>
                 </div>
-            </form>
+            </div>
         </>
     );
 }

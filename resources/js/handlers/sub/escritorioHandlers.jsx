@@ -30,10 +30,6 @@ const escritorioHandler = (endpoint,location) => {
                     });
                 }
             )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
+            .catch(this.displayErrors);
     }
 }

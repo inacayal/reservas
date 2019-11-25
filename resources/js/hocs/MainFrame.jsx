@@ -67,7 +67,8 @@ export default class MainFrame extends Component {
                         sidebarElem={props.current}
                         route={match}
                         location={location.pathname}
-                        handlerArray = {props.handlers}>
+                        handlerArray = {props.handlers}
+                        displayMessage={this.showMessage}>
                         {props.children}
                     </RouterTransition>
                 </DisplaysMessages.Provider>

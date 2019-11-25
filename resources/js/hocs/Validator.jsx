@@ -12,7 +12,7 @@ import {FormActions} from '../acciones/ActionsByView'
 
 const evaluateRule = {
     required:({val,name}) => {
-        if (val==="" || !val)
+        if (val=="" || !val)
             return {
                 description:`el campo ${name} no puede estar vacío`,
                 type:'required',
@@ -44,12 +44,28 @@ const evaluateRule = {
                 field:name
             };
     },
+    email:({val,name}) => {
+        if (!val.match(/@/gi))
+            return {
+                description:`el campo ${name} debe ser un correo`,
+                type:'email',
+                field:name
+            };
+    },
     numeric: ({val,name}) => {
         if (val.match(/[^\d]/gi))
             return {
                 description:`el campo ${name} debe contener únicamente números`,
                 type:'numeric',
                 field:name
+            };
+    },
+    phone: ({val,name}) => {
+        if (val.match(/[^\d\-\s]/gi))
+            return {
+                description:`el campo ${name} debe ser un número de teléfono`,
+                type:'phone',
+                field: name
             };
     }
 }
@@ -127,14 +143,14 @@ export default class Validator extends Component{
 
     changeFormField(e){
         e.preventDefault();
-
         const input = e.currentTarget,
-            name = e.target.name,
+            name = input.getAttribute('name'),
+            value = input.getAttribute('value') === null ? input.value : input.getAttribute('value'),
             form = this.state.form,
             errors = this.state.errors,
-            er = validateValue(input.value,this.state.validation[name]);
+            er = validateValue(value.toString(),this.state.validation[name]);
 
-        form[name]=input.value;
+        form[name]=value;
         errors[name] = er;
         this.setState({form,errors});
     }

@@ -49,11 +49,7 @@ const singleHandler  = (endpoint,location) => {
                     });
                 }
             )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
+            .catch(this.displayErrors);
     }
 }
 
@@ -73,11 +69,7 @@ const listHandler = (endpoint,location) => {
                     });
                 }
             )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
+            .catch(this.displayErrors);
     }
 }
 
@@ -99,11 +91,7 @@ const editFormHandler = (endpoint,location) => {
                     });
                 }
             )
-            .catch(
-                error => {
-                    console.log(error.message)
-                }
-            );
+            .catch(this.displayErrors);
     }
 }
 
