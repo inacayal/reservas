@@ -14,8 +14,8 @@ export default function CalendarioFormulario(props) {
     const   fields = props.fields,
             ubicacion = props.ubicaciones.data[props.fields.id_ubicacion] || null,
             personas = ubicacion ? generateListByLocationCapacity(ubicacion.maximo+1) : {},
-            promociones = props.fields.id_evento ? eventos.data[eventoSelect.selected].promociones.data : null,
             eventos = props.currentData.eventos,
+            promociones = props.fields.id_evento ? eventos.data[fields.id_evento].promociones.data : null,
             select = {
                 id_ubicacion:{
                     name:"id_ubicacion",
