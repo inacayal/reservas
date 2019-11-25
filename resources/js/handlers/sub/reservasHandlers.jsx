@@ -81,11 +81,11 @@ const singleHandler = (endpoint,location) => {
 
 const formHandler = (endpoint,location) => {
     return function (params) {
-        const date = params.date||new Date(),
-            request = GET({
-                endpoint: endpoint + parseInt(date.getMonth() + 1) + '/' + date.getFullYear(),
-                download: this.downloadHandler
-            });
+        const   date = params.date||new Date(),
+                request = GET({
+                    endpoint: `${endpoint}${parseInt(date.getMonth() + 1)}/${date.getFullYear()}`,
+                    download: this.downloadHandler
+                });
         request
             .then(
                 response => {

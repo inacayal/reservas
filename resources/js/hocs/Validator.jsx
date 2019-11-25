@@ -123,6 +123,41 @@ const searchForErrors = (errors,fields) =>
         }, []
     );
 
+const resetDependencies = (
+    form,
+    vali,
+    err,
+    name
+) => {
+    vali[name].dependencies.map(
+        e => {
+            form[e] = "";
+            err[e] = validateValue("",vali[e]);
+        }
+    );
+    return [form,err];
+}
+
+const assignValues = (
+    value,
+    name,
+    form,
+    validate,
+    err
+) => {
+    if ((validate[name].dependencies||[]).length > 0 && (value == "" || value == null)){
+        [form,err] = resetDependencies(
+            form,
+            validate,
+            err,
+            name
+        );
+    }
+    form[name] = value;
+    err[name] = validateValue(value,validate[name])
+    return [form,err];
+}
+
 export default class Validator extends Component{
     constructor(props){
         super(props);
@@ -143,15 +178,17 @@ export default class Validator extends Component{
 
     changeFormField(e){
         e.preventDefault();
-        const input = e.currentTarget,
-            name = input.getAttribute('name'),
-            value = input.getAttribute('value') === null ? input.value : input.getAttribute('value'),
-            form = this.state.form,
-            errors = this.state.errors,
-            er = validateValue(value.toString(),this.state.validation[name]);
+        const   input = e.currentTarget,
+                name = input.getAttribute('name'),
+                value = input.getAttribute('value') === null ? input.value : input.getAttribute('value'),
+                [form,errors] = assignValues(
+                    value.toString(),
+                    name,
+                    this.state.form,
+                    this.state.validation,
+                    this.state.errors
+                );
 
-        form[name]=value;
-        errors[name] = er;
         this.setState({form,errors});
     }
 

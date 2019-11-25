@@ -13,14 +13,16 @@ const validation = {
             required:true,
             numeric:true
         },
-        fieldName:"Ubicación"
+        fieldName:"Ubicación",
+        dependencies:["cantidad_personas"]
     },
     id_evento:{
         rules:{
             required:true,
             numeric:true
         },
-        fieldName:"Ocasión"
+        fieldName:"Ocasión",
+        dependencies:["id_promocion"]
     },
     id_promocion:{
         rules:{
@@ -34,7 +36,8 @@ const validation = {
             required:true,
             numeric:true
         },
-        fieldName:"Hora de la reserva"
+        fieldName:"Hora de la reserva",
+        dependencies:["minuto_reserva"]
     },
     minuto_reserva:{
         rules:{
@@ -97,55 +100,55 @@ const validation = {
     }
 }
 
-export default function ReservasRouting (props) {
-    return (
-        <>
+const ReservasRouting = (props) => (
+    <>
+        <Route
+            path={props.match.url}
+            exact
+            render={
+                (match) =>
+                    <Calendario
+                        data={props.data}
+                        nav={Navegacion.listado('reservas')} {...match}/>
+            } />
+        <Switch>
             <Route
-                path={props.match.url}
-                exact
+                path={`${props.match.url}/agregar`}
+                render={
+                    (match) => {
+                        const form ={
+                            id_ubicacion:"",
+                            id_evento:"",
+                            id_promocion:"",
+                            hora_reserva:"",
+                            minuto_reserva:"",
+                            cantidad_personas:"",
+                            nombre:"",
+                            apellido:"",
+                            email:"",
+                            telefono:"",
+                            descripcion_evento:"",
+                            fecha_reserva:""
+                        };
+                        return (
+                            <Validator form={form} validation={validation}>
+                                <Formulario
+                                    data={props.data}
+                                    nav={Navegacion.agregar('reservas')} {...match}/>
+                            </Validator>
+                        );
+                    }
+                } />
+            <Route
+                path={`${props.match.url}/:id`}
                 render={
                     (match) =>
-                        <Calendario
+                        <VerReserva
                             data={props.data}
-                            nav={Navegacion.listado('reservas')} {...match}/>
+                            nav={Navegacion.singular(()=>false,match.match.params.id,'reservas')} {...match}/>
                 } />
-            <Switch>
-                <Route
-                    path={`${props.match.url}/agregar`}
-                    render={
-                        (match) => {
-                            const form ={
-                                id_ubicacion:"",
-                                id_evento:"",
-                                id_promocion:"",
-                                hora_reserva:"",
-                                minuto_reserva:"",
-                                cantidad_personas:"",
-                                nombre:"",
-                                apellido:"",
-                                email:"",
-                                telefono:"",
-                                descripcion_evento:"",
-                                fecha_reserva:""
-                            };
-                            return (
-                                <Validator form={form} validation={validation}>
-                                    <Formulario
-                                        data={props.data}
-                                        nav={Navegacion.agregar('reservas')} {...match}/>
-                                </Validator>
-                            );
-                        }
-                    } />
-                <Route
-                    path={`${props.match.url}/:id`}
-                    render={
-                        (match) =>
-                            <VerReserva
-                                data={props.data}
-                                nav={Navegacion.singular(()=>false,match.match.params.id,'reservas')} {...match}/>
-                    } />
-            </Switch>
-        </>
-    );
-}
+        </Switch>
+    </>
+)
+
+export default ReservasRouting;

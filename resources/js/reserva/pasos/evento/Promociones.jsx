@@ -1,54 +1,53 @@
-/**
- * react basic
- */
-import React, { Component, useState, useEffect } from 'react';
+import React,
+{
+    Component,
+    useState,
+    useEffect
+} from 'react';
 import ReactDOM from 'react-dom';
-/**
- * react calendar
- */
 import Calendar from 'react-calendar';
 import {CommaList} from '../../../componentes/basic/CommaList';
-/**
- * CONSTANTS
- */
-import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
+import {
+    DAYS,
+    MONTHS
+} from '../../../constantes/DaysMonths';
 
 export default function Promociones (props) {
-    const
-        data = props.data,
-        list = props.list,
-        showData = Object.keys(props.data).reduce(
-            (tot,curr, i) => {
-                const promo = props.data[curr].promociones;
-                if ( promo && promo.data ){
-                    Object.keys(promo.data).map(
-                        (e,i) => {
-                            const eventos = promo.data[e].eventos.list;
-                            if (tot[e]){
-                                Object.assign(tot[e].eventos, eventos);
-                            } else {
-                                tot[e] = {
-                                    nombre: promo.data[e].nombre,
-                                    eventos: eventos,
-                                    descripcion: promo.data[e].descripcion,
-                                    descuento: promo.data[e].descuento,
-                                };
+    const   data = props.data,
+            list = props.list,
+            showData = Object.keys(props.data).reduce(
+                (tot,curr, i) => {
+                    const promo = props.data[curr].promociones;
+                    if ( promo && promo.data ){
+                        Object.keys(promo.data).map(
+                            (e,i) => {
+                                const eventos = promo.data[e].eventos.list;
+                                if (tot[e]){
+                                    Object.assign(tot[e].eventos, eventos);
+                                } else {
+                                    tot[e] = {
+                                        nombre: promo.data[e].nombre,
+                                        eventos: eventos,
+                                        descripcion: promo.data[e].descripcion,
+                                        descuento: promo.data[e].descuento,
+                                    };
+                                }
                             }
-                        }
-                    )
-                }
-                return tot;
-            },
-            {}
-        ),
-        dataArray = Object.keys(showData);
+                        )
+                    }
+                    return tot;
+                },
+                {}
+            ),
+            dataArray = Object.keys(showData);
 
     return (
-        <div className="row border-box" style={{padding:"10px 0px 0px 10px"}}>
-            <div className="bold highlight full-width ">
+        <>
+            <div className="sub-title highlight">
                 Promociones
             </div>
-            <ul className="nav-list no-padding full-width" style={{ maxHeight: "35vh", overflowY: "auto"}}>
+            <ul style={{ maxHeight: "45vh", overflowY: "auto"}}
+                className="nav-list no-padding full-width" >
                 {
                     dataArray.length>0
                     ?
@@ -69,9 +68,8 @@ export default function Promociones (props) {
                                             </div>
                                         </div>
                                         <div>
-                                            <div className="smaller-text">{showData[e].descripcion}</div>
-                                            <div className="smaller-text inline-block side-margin">en los eventos:</div>
-                                            <CommaList list = {eventoArray} endpoint='' /> 
+                                            <div className="smaller-text">{showData[e].descripcion}<span className="side-margin bold">en los eventos:</span></div>
+                                            <CommaList list = {eventoArray} endpoint='' />
                                         </div>
                                     </li>
                                 )
@@ -81,6 +79,6 @@ export default function Promociones (props) {
                         <div style={{padding:"0px 10px 10px 0px"}}> Sin promociones para mostrar</div>
                 }
             </ul>
-        </div>
+        </>
     )
 }

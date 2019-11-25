@@ -11,39 +11,38 @@ import { Text } from "../../../componentes/input/Text.jsx";
 import { generateListByLocationCapacity } from './Handlers';
 
 export default function CalendarioFormulario(props) {
-    const
-        fields = props.fields,
-        ubicacion = props.ubicaciones.data[props.fields.id_ubicacion] || null,
-        personas = ubicacion ? generateListByLocationCapacity(ubicacion.maximo+1) : {},
-        promociones = props.fields.id_evento ? eventos.data[eventoSelect.selected].promociones.data : null,
-        eventos = props.currentData.eventos,
-        select = {
-            id_ubicacion:{
-                name:"id_ubicacion",
-                selected: fields.id_ubicacion,
-                list: props.ubicaciones.list
-            },
-            id_evento: {
-                name: "id_evento",
-                selected: fields.id_evento,
-                list: eventos.list
-            },
-            hora_reserva: {
-                name: "hora_reserva",
-                selected: fields.hora_reserva,
-                list: props.horario.hList||{}
-            },
-            minuto_reserva: {
-                name: "minuto_reserva",
-                selected: fields.minuto_reserva,
-                list: props.horario.hourArray[props.fields.hora_reserva]||{}
-            },
-            cantidad_personas: {
-                name: "cantidad_personas",
-                selected: fields.cantidad_personas,
-                list:personas
-            }
-        };
+    const   fields = props.fields,
+            ubicacion = props.ubicaciones.data[props.fields.id_ubicacion] || null,
+            personas = ubicacion ? generateListByLocationCapacity(ubicacion.maximo+1) : {},
+            promociones = props.fields.id_evento ? eventos.data[eventoSelect.selected].promociones.data : null,
+            eventos = props.currentData.eventos,
+            select = {
+                id_ubicacion:{
+                    name:"id_ubicacion",
+                    selected: fields.id_ubicacion,
+                    list: props.ubicaciones.list
+                },
+                id_evento: {
+                    name: "id_evento",
+                    selected: fields.id_evento,
+                    list: eventos.list
+                },
+                hora_reserva: {
+                    name: "hora_reserva",
+                    selected: fields.hora_reserva,
+                    list: props.horario.hList||{}
+                },
+                minuto_reserva: {
+                    name: "minuto_reserva",
+                    selected: fields.hora_reserva,
+                    list: props.horario.hourArray[props.fields.hora_reserva]||{}
+                },
+                cantidad_personas: {
+                    name: "cantidad_personas",
+                    selected: fields.cantidad_personas,
+                    list:personas
+                }
+            };
     return (
         <div className="container-fluid">
             <div className="row box-padding">
@@ -51,18 +50,22 @@ export default function CalendarioFormulario(props) {
             </div>
             <div className="row h-padding">
                 <h6 className="highlight bold no-margin">Hora de reserva</h6>
-                <span className="side-margin row smaller-text h-padding inline-block" style={{verticalAlign:"bottom"}}>{props.date+""}</span>
+                <span   className="side-margin row smaller-text h-padding inline-block"
+                        style={{verticalAlign:"bottom"}}>
+                    {props.date+""}
+                </span>
             </div>
             <div className="row box-padding">
-                <div className="col-sm-5 h-padding text-left" style={{paddingLeft:"0px"}}>
-                    <Select
-                        titulo="hora"
-                        changeSelect={props.change}
-                        errors={props.errors.hora_reserva}
-                        {...select.hora_reserva}/>
+                <div    className="col-sm-5 h-padding text-left"
+                        style={{paddingLeft:"0px"}}>
+                    <Select titulo="hora"
+                            changeSelect={props.change}
+                            errors={props.errors.hora_reserva}
+                            {...select.hora_reserva}/>
                 </div>
                 <div className="col-sm-1 text-center v-align-center h-padding">
-                    <h6 className="c-title" style={{ color: "#bfbfbf" }}>:</h6>
+                    <h6 className="c-title"
+                        style={{ color: "#bfbfbf" }}>:</h6>
                 </div>
                 <div className="col-md-6 text-left relative visible h-padding">
                     <div className={
@@ -70,67 +73,61 @@ export default function CalendarioFormulario(props) {
                         ? "hidden"
                         : "top-padding full-width overlay"
                     }/>
-                    <Select
-                        titulo="minutos"
-                        changeSelect={props.change}
-                        errors={props.errors.minuto_reserva}
-                        readOnly={select.hora_reserva.selected ? true : false}
-                        {...select.minuto_reserva}/>
+                    <Select titulo="minutos"
+                            changeSelect={props.change}
+                            errors={props.errors.minuto_reserva}
+                            readOnly={select.hora_reserva.selected ? true : false}
+                            {...select.minuto_reserva}/>
                 </div>
             </div>
 
             <div className="row v-padding">
                 <div className="col-md-4">
-                    <Text
-                        rows={1}
-                        titulo="Nombre"
-                        name="nombre"
-                        holder="Nombre del solicitante hasta 100 caracteres"
-                        value={props.fields.nombre}
-                        changeHandler={props.change}
-                        errors={props.errors.nombre}/>
+                    <Text   rows={1}
+                            titulo="Nombre"
+                            name="nombre"
+                            holder="Nombre del solicitante hasta 100 caracteres"
+                            value={props.fields.nombre}
+                            changeHandler={props.change}
+                            errors={props.errors.nombre}/>
                 </div>
                 <div className="col-md-4">
-                    <Text
-                        rows={1}
-                        titulo="Apellido"
-                        name="apellido"
-                        holder="Apellido del solicitante hasta 100 caracteres"
-                        value={props.fields.apellido}
-                        changeHandler={props.change}
-                        errors={props.errors.apellido} />
+                    <Text   rows={1}
+                            titulo="Apellido"
+                            name="apellido"
+                            holder="Apellido del solicitante hasta 100 caracteres"
+                            value={props.fields.apellido}
+                            changeHandler={props.change}
+                            errors={props.errors.apellido} />
                 </div>
                 <div className="col-sm-4">
-                    <Text
-                        rows={1}
-                        titulo="correo electrónico"
-                        name="email"
-                        holder="Email del solicitante hasta 100 caracteres"
-                        value={props.fields.email}
-                        changeHandler={props.change}
-                        errors={props.errors.email}/>
+                    <Text   rows={1}
+                            titulo="correo electrónico"
+                            name="email"
+                            holder="Email del solicitante hasta 100 caracteres"
+                            value={props.fields.email}
+                            changeHandler={props.change}
+                            errors={props.errors.email}/>
                 </div>
             </div>
             <div className="row v-padding full-width">
                 <div className="col-md-6">
-                    <Text
-                        rows={1}
-                        titulo="Teléfono"
-                        name="telefono"
-                        holder="Teléfono del solicitante hasta 20 caracteres"
-                        value={props.fields.telefono}
-                        changeHandler={props.change}
-                        errors={props.errors.telefono}/>
+                    <Text   rows={1}
+                            titulo="Teléfono"
+                            name="telefono"
+                            holder="Teléfono del solicitante hasta 20 caracteres"
+                            value={props.fields.telefono}
+                            changeHandler={props.change}
+                            errors={props.errors.telefono}/>
                 </div>
                 <div className="col-md-6">
-                    <Text
-                        rows={3}
-                        titulo="Observaciones"
-                        name="descripcion_evento"
-                        holder="Observaciones de la reserva (alguna petición extra o algo que quieras dejar claro)"
-                        value={props.fields.descripcion}
-                        changeHandler={props.change}
-                        errors={props.errors.descripcion_evento}/>
+                    <Text   rows={3}
+                            titulo="Observaciones"
+                            name="descripcion_evento"
+                            holder="Observaciones de la reserva (alguna petición extra o algo que quieras dejar claro)"
+                            value={props.fields.descripcion}
+                            changeHandler={props.change}
+                            errors={props.errors.descripcion_evento}/>
                 </div>
             </div>
             <div className="row top-padding">
@@ -143,14 +140,15 @@ export default function CalendarioFormulario(props) {
                 <div className="col-md-9">
                     <div className="row">
                         <div className="col-md-6 text-left">
-                            <h6 className="highlight bold no-margin">Ubicación</h6>
-                            <Select
-                                changeSelect={props.change}
-                                titulo="selecciona la ubicación"
-                                errors={props.errors.id_ubicacion}
-                                {...select.id_ubicacion}/>
+                            <h6 className="highlight bold no-margin">
+                                Ubicación
+                            </h6>
+                            <Select changeSelect={props.change}
+                                    titulo="selecciona la ubicación"
+                                    errors={props.errors.id_ubicacion}
+                                    {...select.id_ubicacion}/>
                         </div>
-                        <div className="col-md-6 text-left v-padding flex-row relative visible">
+                        <div className="col-md-6 text-left flex-row relative visible">
                             <div className={
                                 select.id_ubicacion.selected
                                 ?
@@ -158,12 +156,14 @@ export default function CalendarioFormulario(props) {
                                 :
                                     "top-padding full-width overlay"}/>
                             <div className="full-width">
-                                <h6 className="highlight bold no-margin">Personas</h6>
-                                <Select
-                                    changeSelect={props.change}
-                                    titulo="selecciona la cantidad de personas"
-                                    readOnly={select.id_ubicacion.selected ? true : false}
-                                    {...select.cantidad_personas}/>
+                                <h6 className="highlight bold no-margin">
+                                    Personas
+                                </h6>
+                                <Select changeSelect={props.change}
+                                        titulo="selecciona la cantidad de personas"
+                                        readOnly={select.id_ubicacion.selected ? true : false}
+                                        errors={props.errors.cantidad_personas}
+                                        {...select.cantidad_personas}/>
                                 <div className="smaller-text">
                                     {
                                         select.id_ubicacion.selected
@@ -174,7 +174,6 @@ export default function CalendarioFormulario(props) {
                                     }
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <div className="row v-padding">
@@ -182,21 +181,22 @@ export default function CalendarioFormulario(props) {
                             <div className="container">
                                 <div className="row text-left">
                                     <div className="col-md-12">
-                                        <h6 className="highlight bold no-margin">Ocasión</h6>
-                                        <Select
-                                            changeSelect={props.change}
-                                            titulo="selecciona tipo de evento de tu reserva"
-                                            errors={props.errors.id_evento}
-                                            {...select.id_evento}/>
-                                            {
-                                                select.id_evento.selected
-                                                    ?
-                                                    <div className="smaller-text">
-                                                        <div>{"Descripcion: " + eventos.data[select.id_evento.selected].descripcion}</div>
-                                                    </div>
-                                                    :
-                                                    <></>
-                                            }
+                                        <h6 className="highlight bold no-margin">
+                                            Ocasión
+                                        </h6>
+                                        <Select changeSelect={props.change}
+                                                titulo="selecciona tipo de evento de tu reserva"
+                                                errors={props.errors.id_evento}
+                                                {...select.id_evento}/>
+                                        {
+                                            select.id_evento.selected
+                                                ?
+                                                <div className="smaller-text">
+                                                    <div>{"Descripcion: " + eventos.data[select.id_evento.selected].descripcion}</div>
+                                                </div>
+                                                :
+                                                <></>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -209,14 +209,27 @@ export default function CalendarioFormulario(props) {
                                         {
                                             Object.values(promociones).map(
                                                 (p, i) =>
-                                                    <li key={i} className="full-width border-button">
+                                                    <li key={i}
+                                                        className="full-width border-button">
                                                         <div className="inline-block v-align-center">
-                                                            <input type="radio" name="id_promocion" value={props.fields.id_promocion} />
+                                                            <input  type="radio"
+                                                                    name="id_promocion"
+                                                                    value={props.fields.id_promocion} />
                                                         </div>
                                                         <div className="inline-block">
-                                                            <div className="bold">{p.nombre}</div>
-                                                            <div className="smaller-text">{p.descripcion}</div>
-                                                            <div className="text-right smaller-text bold">{p.descuento !== 0 ? p.descuento+"% descuento":"sin descuento"}</div>
+                                                            <div className="bold">
+                                                                {p.nombre}
+                                                            </div>
+                                                            <div className="smaller-text">
+                                                                {p.descripcion}
+                                                            </div>
+                                                            <div className="text-right smaller-text bold">
+                                                                {
+                                                                    p.descuento !== 0
+                                                                        ? `${p.descuento}% de descuento`
+                                                                        :"sin descuento"
+                                                                }
+                                                            </div>
                                                         </div>
                                                     </li>
                                             )
