@@ -1,15 +1,14 @@
-/**
- * react basic
- */
-import React, { Component } from 'react';
+import React, {
+    Component
+} from 'react';
+import {
+    DAYS,
+    MONTHS
+} from '../../../constantes/DaysMonths';
 import ReactDOM from 'react-dom';
 import {Link} from 'react-router-dom';
-/**
- * basic
- */
 import Titulo from '../../../componentes/basic/Titulo';
-import {Calendario} from '../Calendario';
-import {DAYS, MONTHS} from '../../../constantes/DaysMonths';
+import {Calendario} from '../formularios/Calendario';
 import {CommaList} from '../../../componentes/basic/CommaList';
 import EventosTable from '../../../componentes/tables/EventosTable';
 

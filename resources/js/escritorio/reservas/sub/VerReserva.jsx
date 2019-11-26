@@ -1,19 +1,16 @@
 /**
  * react basic
  */
-import React, { Component } from 'react';
+import React, {
+    Component
+} from 'react';
+import {
+    Link,
+    Redirect
+} from 'react-router-dom';
 import ReactDOM from 'react-dom';
-import {Link,Redirect} from 'react-router-dom';
-/**
- * sub elementos
- */
-import LoadBar from '../../../componentes/control/LoadBar';
-import { GET } from '../../../utils/api';
-import {Calendario} from '../../horarios/Calendario';
+import {Calendario} from '../../horarios/formularios/Calendario';
 import {MONTHS} from '../../../constantes/DaysMonths';
-/**
- * basic
- */
 import Titulo from '../../../componentes/basic/Titulo';
 import {ReservasActions} from '../../../acciones/ReservasActions';
 

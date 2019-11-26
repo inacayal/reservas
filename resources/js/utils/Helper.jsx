@@ -24,7 +24,7 @@ export const evaluateDateChange = (
 
 export const generateHoursFromInterval = (interval) => {
     let res = {};
-    res["00"] = "00";
+    res["0"] = "00";
     for (let ctr = interval; ctr < 60; ctr += interval) {
         res[ctr] = (ctr).toString();
     }

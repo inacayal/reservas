@@ -64,7 +64,8 @@ export default function CalendarioEventos(props){
                                     data={props.data}
                                     changeHover={changeHover}
                                     fetch={props.fetch}
-                                    clickCallback={props.clickCallback}/>
+                                    clickCallback={props.clickCallback}
+                                    change ={props.change} />
                     </div>
                 </div>
             </div>

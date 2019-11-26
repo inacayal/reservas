@@ -33,8 +33,7 @@ export default class Validator extends Component{
     static contextType = DisplaysMessages;
 
     changeFormField(e){
-        e.preventDefault();
-        const   input = e.currentTarget,
+        const   input = e.currentTarget||e,
                 name = input.getAttribute('name'),
                 value = input.getAttribute('needsvalue') === '1'
                     ? input.value

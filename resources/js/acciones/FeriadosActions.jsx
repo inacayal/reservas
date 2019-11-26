@@ -25,7 +25,7 @@ export const FeriadosActions = {
                     ),
                     to: `/horarios/feriados/editar/${key}`,
                     params:{id:key},
-                    route:'feriados'
+                    route:'horarios/feriados'
                 }
             ],
             buttons: [
@@ -56,7 +56,7 @@ export const FeriadosActions = {
                     ),
                     to: `/horarios/feriados/${key}`,
                     params:{id:key},
-                    route:'feriados'
+                    route:'horarios/feriados'
                 },{
                     title: (
                         <div className="smaller-text decorate-hover text small-v-padding">

@@ -1,10 +1,17 @@
 /**
  * react basic
  */
-import React, { Component, useState, useEffect } from 'react';
+import React, {
+    Component,
+    useState,
+    useEffect
+} from 'react';
+import { 
+    DAYS,
+    MONTHS
+} from '../../../constantes/DaysMonths';
 import ReactDOM from 'react-dom';
 import Calendar from 'react-calendar';
-import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
 import Promociones from './Promociones';
 import { Select } from "../../../componentes/input/Select.jsx";
 import { Text } from "../../../componentes/input/Text.jsx";

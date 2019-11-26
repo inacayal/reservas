@@ -1,4 +1,11 @@
 const validation = {
+    fecha_reserva: {
+        rules:{
+            required:true,
+            isDate:true
+        },
+        fieldName:"Fecha"
+    },
     id_ubicacion:{
         rules:{
             required:true,

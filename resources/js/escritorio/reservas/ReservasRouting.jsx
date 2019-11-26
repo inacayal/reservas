@@ -29,6 +29,7 @@ const ReservasRouting = (props) => (
                 render={
                     (match) => {
                         const form ={
+                            fecha_reserva: new Date(),
                             id_ubicacion:"",
                             id_evento:"",
                             id_promocion:"",
@@ -39,8 +40,7 @@ const ReservasRouting = (props) => (
                             apellido:"",
                             email:"",
                             telefono:"",
-                            descripcion_evento:"",
-                            fecha_reserva:""
+                            descripcion_evento:""
                         };
                         return (
                             <Validator form={form} validation={validation}>

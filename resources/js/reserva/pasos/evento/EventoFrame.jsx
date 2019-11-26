@@ -1,8 +1,7 @@
 /**
  * react basic
  */
-import React,
-{
+import React, {
     Component,
     useState,
     useEffect
@@ -52,15 +51,14 @@ export default class EventoFrame extends Component {
         this.changeDate = this.changeDate.bind(this);
         this.fetchData = this.fetchData.bind(this);
     }
-
     changeDate(d){
         return (e) => {
             const   date = new Date(d),
                     props = this.props,
                     generateData = props.data.feriados.data[date.getDate()]
                         ? props.data.feriados.data[date.getDate()]
-                        : props.data.horarios.data[date.getDay() + 1];
-
+                        : props.data.horarios.data[date.getDay() + 1],
+                    curr = e.currentTarget;
             this.setState ({
                 date:date,
                 horario: generateAcceptedHours({
@@ -71,7 +69,11 @@ export default class EventoFrame extends Component {
                     m: this.state.min
                 }),
                 current:generateData
-            });
+            },
+                () => {
+                    this.props.change(curr)
+                }
+            );
         }
     }
 
@@ -88,28 +90,26 @@ export default class EventoFrame extends Component {
                 horario = this.state.horario,
                 currentData = this.state.current,
                 ubicaciones = props.data.ubicaciones;
-
         return (
             <div className="container">
-                <CalendarioEventos
-                    data={props.data}
-                    current = {currentData}
-                    showDate={showDate}
-                    minDate={minDate}
-                    clickCallback={this.changeDate}
-                    fetch = {this.fetchData}/>
+                <CalendarioEventos  data={props.data}
+                                    current = {currentData}
+                                    showDate={showDate}
+                                    minDate={minDate}
+                                    clickCallback={this.changeDate}
+                                    fetch = {this.fetchData}
+                                    change={props.change}/>
                 <div className="row justify-content-end smaller-text top-padding">
-                    {'Debes reservar con al menos ' + props.data.antelacion + ' horas de antelación.'}
+                    {`Debes reservar con al menos ${props.data.antelacion} horas de antelación.'`}
                 </div>
                 <div className="row">
-                    <CalendarioFormulario
-                        date={showDate}
-                        currentData={currentData}
-                        ubicaciones={ubicaciones}
-                        horario={horario}
-                        fields={props.fields}
-                        change={props.change}
-                        errors={props.errors} />
+                    <CalendarioFormulario   date={showDate}
+                                            currentData={currentData}
+                                            ubicaciones={ubicaciones}
+                                            horario={horario}
+                                            fields={props.fields}
+                                            change={props.change}
+                                            errors={props.errors} />
                 </div>
             </div>
         );
