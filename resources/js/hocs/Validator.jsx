@@ -4,159 +4,15 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {DisplaysMessages} from './MainFrame';
-/**
- * react router
- */
 import Actions from '../componentes/basic/Actions';
 import {FormActions} from '../acciones/ActionsByView'
-
-const evaluateRule = {
-    required:({val,name}) => {
-        if (val=="" || !val)
-            return {
-                description:`el campo ${name} no puede estar vacío`,
-                type:'required',
-                field:name
-            };
-    },
-    min:({val,min,name}) => {
-        if (parseInt(val) < min)
-            return {
-                description:`el campo ${name} no puede ser menor a ${min}`,
-                type:'min',
-                field:name
-            };
-    },
-    max:({val,max,name}) => {
-        if (val.length > max){
-            return {
-                description:`el campo ${name} no puede tener más de ${max} caracteres`,
-                type:'max',
-                field:name
-            };
-        }
-    },
-    alpha_numeric:({val,name}) => {
-        if (val.match(/[^a-zA-Z\d\s\,\.ñáéíóú]/gi))
-            return {
-                description:`el campo ${name} debe contener caracteres alfanuméricos`,
-                type:'alpha_numeric',
-                field:name
-            };
-    },
-    email:({val,name}) => {
-        if (!val.match(/@/gi))
-            return {
-                description:`el campo ${name} debe ser un correo`,
-                type:'email',
-                field:name
-            };
-    },
-    numeric: ({val,name}) => {
-        if (val.match(/[^\d]/gi))
-            return {
-                description:`el campo ${name} debe contener únicamente números`,
-                type:'numeric',
-                field:name
-            };
-    },
-    phone: ({val,name}) => {
-        if (val.match(/[^\d\-\s]/gi))
-            return {
-                description:`el campo ${name} debe ser un número de teléfono`,
-                type:'phone',
-                field: name
-            };
-    }
-}
-
-const extFields = ['max','min'];
-
-const validateValue = (val,{rules,fieldName}) =>
-    Object.keys(rules).reduce(
-        (t,r) => {
-            const arg = {
-                val:val,
-                name:fieldName
-            };
-            if (extFields.indexOf(r)!==-1){
-                arg[r] = rules[r];
-            }
-            const err = evaluateRule[r](arg);
-            if (err)
-                t.push(err);
-            return t;
-        }, []
-    );
-
-const formatErrors = (errors,name,ind) => (
-    <li key={ind}>
-        <div className="bold smaller-text">
-            {`En el campo ${name}`}
-        </div>
-        <ul className="h-padding">
-        {
-            errors.map(
-                (e,i) => <li key={i} className="smaller-text">{e.description}</li>
-            )
-        }
-        </ul>
-    </li>
-)
-
-const searchForErrors = (errors,fields) =>
-    Object.keys(errors).reduce(
-        (t,e,i) => {
-            const err = errors[e].length>0
-                ?
-                    formatErrors(
-                        errors[e],
-                        fields[e].fieldName,
-                        i
-                    )
-                :
-                    null;
-            if (err){
-                t.push(err);
-            }
-            return t;
-        }, []
-    );
-
-const resetDependencies = (
-    form,
-    vali,
-    err,
-    name
-) => {
-    vali[name].dependencies.map(
-        e => {
-            form[e] = "";
-            err[e] = validateValue("",vali[e]);
-        }
-    );
-    return [form,err];
-}
-
-const assignValues = (
-    value,
-    name,
-    form,
-    validate,
-    err
-) => {
-    if ((validate[name].dependencies||[]).length > 0 && (value == "" || value == null)){
-        [form,err] = resetDependencies(
-            form,
-            validate,
-            err,
-            name
-        );
-    }
-    form[name] = value;
-    err[name] = validateValue(value,validate[name])
-    return [form,err];
-}
+import {
+    validateValue,
+    formatErrors,
+    searchErrors,
+    resetDependencies,
+    assignValues
+} from './handlers/validatorHandlers';
 
 export default class Validator extends Component{
     constructor(props){
@@ -180,43 +36,54 @@ export default class Validator extends Component{
         e.preventDefault();
         const   input = e.currentTarget,
                 name = input.getAttribute('name'),
-                value = input.getAttribute('value') === null ? input.value : input.getAttribute('value'),
+                value = input.getAttribute('needsvalue') === '1'
+                    ? input.value
+                    : input.getAttribute('value'),
                 [form,errors] = assignValues(
-                    value.toString(),
+                    value,
                     name,
                     this.state.form,
                     this.state.validation,
                     this.state.errors
                 );
-
         this.setState({form,errors});
     }
 
     enviarFormulario(e){
         e.preventDefault();
-        const hasErrors = searchForErrors(this.state.errors,this.state.validation);
+        const [hasErrors,errors] = searchErrors(
+                this.state.errors,
+                this.state.validation,
+                this.state.form
+            );
         if (hasErrors.length>0)
-            this.context({
-                message:{
-                    data:(
-                        <ul className="h-padding nav-list">
-                            {hasErrors}
-                        </ul>
-                    ),
-                    title:(
-                        <>
-                            <i className="far fa-exclamation-triangle bold sub-title side-margin" />
-                            <span className="side-margin">Errores</span>
-                        </>
-                    ),
-                    type:'failure'
-                }
-            })
+            this.setState(
+                {errors},
+                () =>
+                    this.context({
+                        message:{
+                            data:(
+                                <ul className="h-padding nav-list">
+                                    {hasErrors}
+                                </ul>
+                            ),
+                            title:(
+                                <>
+                                    <i className="far fa-exclamation-triangle bold sub-title side-margin" />
+                                    <span className="side-margin">Errores</span>
+                                </>
+                            ),
+                            type:'failure',
+                            update:false
+                        }
+                    })
+            );
         else
             this.context({
                 message:{
                     data:'no errors found',
-                    type:'success'
+                    type:'success',
+                    update:false
                 }
             })
     }
@@ -226,7 +93,8 @@ export default class Validator extends Component{
         this.context({
             message:{
                 data:'cancelar from Ubicaciones form',
-                type:'failure'
+                type:'failure',
+                update:false
             }
         })
     }

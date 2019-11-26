@@ -34,7 +34,7 @@ export default function CalendarioFormulario(props) {
                 },
                 minuto_reserva: {
                     name: "minuto_reserva",
-                    selected: fields.hora_reserva,
+                    selected: fields.minuto_reserva,
                     list: props.horario.hourArray[props.fields.hora_reserva]||{}
                 },
                 cantidad_personas: {
@@ -52,13 +52,13 @@ export default function CalendarioFormulario(props) {
                 <h6 className="highlight bold no-margin">Hora de reserva</h6>
                 <span   className="side-margin row smaller-text h-padding inline-block"
                         style={{verticalAlign:"bottom"}}>
-                    {props.date+""}
+                    {`${DAYS[props.date.getDay()]}, ${props.date.getDate()} de ${MONTHS[props.date.getMonth()]} del ${props.date.getFullYear()}`}
                 </span>
             </div>
             <div className="row box-padding">
                 <div    className="col-sm-5 h-padding text-left"
                         style={{paddingLeft:"0px"}}>
-                    <Select titulo="hora"
+                    <Select titulo="Hora"
                             changeSelect={props.change}
                             errors={props.errors.hora_reserva}
                             {...select.hora_reserva}/>
@@ -73,7 +73,7 @@ export default function CalendarioFormulario(props) {
                         ? "hidden"
                         : "top-padding full-width overlay"
                     }/>
-                    <Select titulo="minutos"
+                    <Select titulo="Minutos"
                             changeSelect={props.change}
                             errors={props.errors.minuto_reserva}
                             readOnly={select.hora_reserva.selected ? true : false}
@@ -102,7 +102,7 @@ export default function CalendarioFormulario(props) {
                 </div>
                 <div className="col-sm-4">
                     <Text   rows={1}
-                            titulo="correo electrónico"
+                            titulo="Correo electrónico"
                             name="email"
                             holder="Email del solicitante hasta 100 caracteres"
                             value={props.fields.email}
@@ -144,7 +144,7 @@ export default function CalendarioFormulario(props) {
                                 Ubicación
                             </h6>
                             <Select changeSelect={props.change}
-                                    titulo="selecciona la ubicación"
+                                    titulo="Selecciona la ubicación"
                                     errors={props.errors.id_ubicacion}
                                     {...select.id_ubicacion}/>
                         </div>
@@ -160,7 +160,7 @@ export default function CalendarioFormulario(props) {
                                     Personas
                                 </h6>
                                 <Select changeSelect={props.change}
-                                        titulo="selecciona la cantidad de personas"
+                                        titulo="Selecciona la cantidad de personas"
                                         readOnly={select.id_ubicacion.selected ? true : false}
                                         errors={props.errors.cantidad_personas}
                                         {...select.cantidad_personas}/>
@@ -185,7 +185,7 @@ export default function CalendarioFormulario(props) {
                                             Ocasión
                                         </h6>
                                         <Select changeSelect={props.change}
-                                                titulo="selecciona tipo de evento de tu reserva"
+                                                titulo="Selecciona tipo de evento de tu reserva"
                                                 errors={props.errors.id_evento}
                                                 {...select.id_evento}/>
                                         {
@@ -240,7 +240,6 @@ export default function CalendarioFormulario(props) {
                             }
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

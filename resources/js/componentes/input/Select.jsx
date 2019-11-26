@@ -36,7 +36,10 @@ const noMemoSelect = (props) => {
                 <div className={
                     (show)
                         ? "full-width flex-row relative"
-                        : "full-width relative border-bottom flex-row"
+                        :
+                        hasError
+                            ? "full-width relative border-bottom flex-row error-box"
+                            : "full-width relative border-bottom flex-row"
                     }
                     onClick={showCallback}
                     select={ select.name}>
@@ -56,8 +59,8 @@ const noMemoSelect = (props) => {
                             onBlur={() => toggle(false) }
                             className={
                                 (show)
-                                ? "small-v-padding"
-                                : "hidden"
+                                    ? "small-v-padding"
+                                    : "hidden"
                             }/>
                     </div>
                     <div className="margin-left v-align-center">
@@ -66,7 +69,7 @@ const noMemoSelect = (props) => {
                                 ? "fas fa-search"
                                 : "fas fa-angle-down"
                             }
-                            style={{ color:"#bfbfbf"}}/>
+                            style={hasError ? { color:"var(--danger)"} : { color:"#bfbfbf"}}/>
                     </div>
                 </div>
                 <div className="absolute full-width">
@@ -83,6 +86,7 @@ const noMemoSelect = (props) => {
                                             key={ind}
                                             name={select.name}
                                             value={ind == select.selected ? "" : ind}
+                                            needsvalue={0}
                                             onMouseDown={
                                                 (e) => {
                                                     toggle(false);

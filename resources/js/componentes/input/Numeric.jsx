@@ -17,7 +17,8 @@ function noMemoNumeric(props) {
                     placeholder={props.holder}
                     className={hasError && props.errors[0].type!=='required' ? "full-width box-transparent error" : "full-width box-transparent"}
                     onChange={props.changeHandler}
-                    value={props.value}/>
+                    value={props.value}
+                    needsvalue={1}/>
             </div>
             {
                 hasError

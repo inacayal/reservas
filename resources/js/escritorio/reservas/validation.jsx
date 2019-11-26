@@ -1,0 +1,90 @@
+const validation = {
+    id_ubicacion:{
+        rules:{
+            required:true,
+            numeric:true
+        },
+        fieldName:"Ubicación",
+        dependencies:["cantidad_personas"]
+    },
+    id_evento:{
+        rules:{
+            required:true,
+            numeric:true
+        },
+        fieldName:"Ocasión",
+        dependencies:["id_promocion"]
+    },
+    id_promocion:{
+        rules:{
+            numeric:true
+        },
+        fieldName:"Promoción"
+    },
+    hora_reserva:{
+        rules:{
+            required:true,
+            numeric:true
+        },
+        fieldName:"Hora de la reserva",
+        dependencies:["minuto_reserva"]
+    },
+    minuto_reserva:{
+        rules:{
+            required:true,
+            numeric:true
+        },
+        fieldName:"Minuto de la reserva"
+    },
+    cantidad_personas:{
+        rules:{
+            required:true,
+            numeric:true,
+            min:1
+        },
+        fieldName:"Cantidad de personas"
+    },
+    nombre:{
+        rules:{
+            required:true,
+            max:40,
+            alpha_numeric:true
+        },
+        fieldName:"Nombre"
+    },
+    apellido:{
+        rules:{
+            required:true,
+            max:40,
+            alpha_numeric:true
+        },
+        fieldName:"Nombre"
+    },
+    email:{
+        rules:{
+            required:true,
+            email:true,
+            max:40
+        },
+        fieldName:"Correo electrónico"
+    },
+    telefono:{
+        rules:{
+            required:true,
+            max:20,
+            phone:true
+        },
+        fieldName:"Teléfono"
+    },
+    descripcion_evento:{
+        rules:{},
+        fieldName:"Observaciones"
+    },
+    fecha_reserva:{
+        rules:{
+            required:true
+        },
+        fieldName:"Fecha de la reserva"
+    }
+};
+export default validation;

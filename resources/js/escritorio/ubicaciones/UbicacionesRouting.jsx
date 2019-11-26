@@ -10,39 +10,7 @@ import {VerUbicacion} from './sub/VerUbicacion';
 import {Navegacion} from '../../acciones/ActionsByView';
 import Validator from '../../hocs/Validator';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
-
-const validation = {
-    nombre:{
-        rules:{
-            required:true,
-            max:45,
-            alpha_numeric:true
-        },
-        fieldName:"Nombre"
-    },
-    descripcion:{
-        rules:{
-            max:50
-        },
-        fieldName:"Descripción"
-    },
-    capacidad_maxima:{
-        rules:{
-            required:true,
-            numeric:true,
-            min:1
-        },
-        fieldName:"Capacidad máxima"
-    },
-    maximo_personas:{
-        rules:{
-            required:true,
-            numeric:true,
-            min:1
-        },
-        fieldName:"Máximo Personas"
-    }
-}
+import validation from './validation';
 
 export default function UbicacionesRouting (props) {
     const [open,toggle] = useState(false),

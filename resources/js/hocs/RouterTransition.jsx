@@ -6,41 +6,14 @@ import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
 import BreadCrumb from '../componentes/control/BreadCrumb';
 import Lateral from '../componentes/control/Lateral';
-import {handlers} from '../handlers/index';
 import {
     downloadHandler,
     LoadBar
 } from '../utils/LoadBar';
-import {searchHandler} from './MainFrame';
-
-function assignHandler(
-    handlerArray,
-    location,
-    params
-){
-    let handler = searchHandler(handlerArray,location);
-    handler = handler.callback(params);
-    return handler.bind(this);
-}
-
-function awaitLoading(
-    location,
-    params,
-    match
-){
-    const handler = handlers[match],
-        fetchData = this.assignHandler(handler,location,params);
-    this.setState(
-        {
-            loading:0,
-            loadFinished:false,
-            fetchData:fetchData,
-            preventRedirect:false
-        },() => {
-            this.fetchHandler(params);
-        }
-    );
-}
+import {
+    assignHandler,
+    awaitLoading
+} from './handlers/routerTransitionHandlers';
 
 export const WaitsLoading = React.createContext({});
 
@@ -48,7 +21,6 @@ export class RouterTransition extends Component {
     constructor(props){
         super(props);
         this.assignHandler = assignHandler.bind(this);
-
         this.state = {
             data:null,
             loadFinished:false,
@@ -94,9 +66,9 @@ export class RouterTransition extends Component {
     }
 
     shouldComponentUpdate(np,ns){
-        if (np.message !== this.props.message){
+        if (np.message !== this.props.message)
             return false;
-        } else
+        else
             return np.location !== this.props.location
                 || ns.loadFinished
                 || this.state.loadFinished;
