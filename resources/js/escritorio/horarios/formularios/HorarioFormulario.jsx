@@ -28,7 +28,7 @@ export function HorarioFormulario (props) {
             <Titulo    title={
                             props.editar
                                 ? `Editar horario del ${DAYS[parseInt(data.horarios.diaSemana) - 1]}`
-                                : `Agregar horario al ${DAYS[parseInt(this.props.match.params.day) - 1]}`
+                                : `Agregar horario al ${DAYS[parseInt(props.match.params.day) - 1]}`
                         }
                         links={props.nav.links}
                         buttons={props.nav.buttons} />

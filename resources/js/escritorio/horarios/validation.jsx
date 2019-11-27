@@ -1,17 +1,19 @@
 export const horariosValidation = {
-    fecha_feriado : {
+    id:{
+        rules:{},
+        fieldName:"Id"
+    },
+    id_dia_semana:{
         rules:{
-            required:true,
-            isDate:true
+            required:true
         },
-        fieldName:"Fecha"
+        fieldName:"Día Semana"
     },
     id_evento:{
         rules:{
-            min:1
+            required:true
         },
-        fieldName:"Eventos",
-        isMultiple:true
+        fieldName:"Eventos"
     },
     apertura_reserva_hora: {
         rules:{
@@ -78,14 +80,20 @@ export const horariosValidation = {
 export const feriadoValidation = {
     id_evento:{
         rules:{
-            min:1
+            required:true
         },
-        fieldName:"Eventos",
-        isMultiple:true
+        fieldName:"Eventos"
+    },
+    fecha_feriado : {
+        rules:{
+            required:true
+        },
+        fieldName:"Fecha"
     },
     nombre:{
         rules:{
-            max:50
+            max:50,
+            required:true
         },
         fieldName:"Nombre"
     },

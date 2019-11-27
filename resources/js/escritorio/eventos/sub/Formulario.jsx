@@ -10,7 +10,7 @@ import Actions from '../../../componentes/basic/Actions';
  * API
  */
 import { FormFields } from '../FormFields';
-import { assignHorarios } from './generateEventosCard';
+import { assignHorarios } from '../../../generators/generateEventosCard';
 
 export class Formulario extends Component {
     constructor(props) {

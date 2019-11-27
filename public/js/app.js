@@ -88308,42 +88308,6 @@ var SubElements = function SubElements(props) {
 
 /***/ }),
 
-/***/ "./resources/js/componentes/control/LoadBar.jsx":
-/*!******************************************************!*\
-  !*** ./resources/js/componentes/control/LoadBar.jsx ***!
-  \******************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/**
- * react basic
- */
-
-
-
-function LoadBar(props) {
-  var style = {
-    width: props.loaded + '%',
-    height: '5px'
-  };
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "full-width"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "background-border",
-    style: style
-  }));
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (LoadBar);
-
-/***/ }),
-
 /***/ "./resources/js/componentes/control/Paginado.jsx":
 /*!*******************************************************!*\
   !*** ./resources/js/componentes/control/Paginado.jsx ***!
@@ -88502,8 +88466,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MultipleSelect", function() { return MultipleSelect; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _hocs_DisplaysErrors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../hocs/DisplaysErrors */ "./resources/js/hocs/DisplaysErrors.jsx");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -88518,122 +88483,128 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var noMemoMultipleSelect = function noMemoMultipleSelect(props) {
-  var _ref = props.changeSelect ? [props.select, props.changeSelect] : Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.select),
-      _ref2 = _slicedToArray(_ref, 2),
-      select = _ref2[0],
-      changeSelect = _ref2[1],
-      _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(""),
+  var hasError = props.hasError,
+      _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
       _useState2 = _slicedToArray(_useState, 2),
-      hover = _useState2[0],
-      changeHover = _useState2[1],
-      selectOption = function selectOption(select, value) {
-    var selectMimic = Object.assign({}, select);
-    var list = selectMimic.selected,
-        index = selectMimic.selected.indexOf(value);
-
-    if (index !== -1) {
-      list = excludeOption(list, index);
-    } else list.push(value);
-
-    selectMimic.selected = list;
-    changeSelect(selectMimic);
-  },
-      showOptions = function showOptions(select) {
-    var selectMimic = Object.assign({}, select);
-    selectMimic.show = !selectMimic.show;
-    changeSelect(selectMimic);
-  },
-      excludeOption = function excludeOption(list, index) {
-    var excerpt = [];
-    excerpt = list.splice(0, index);
-    return excerpt.concat(list.splice(1, list.length - 1));
-  },
-      options = Object.keys(props.optionData);
+      show = _useState2[0],
+      toggle = _useState2[1],
+      _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(""),
+      _useState4 = _slicedToArray(_useState3, 2),
+      term = _useState4[0],
+      updateSearch = _useState4[1],
+      selected = props.selected,
+      input = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null),
+      options = Object.keys(props.optionData),
+      selectedArray = selected.split(',');
 
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-    if (select.show) select.input.current.focus();
-  }, [select.show]);
+    if (show) setTimeout(function () {
+      return input.current.focus();
+    }, 0);
+  }, [show]);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "relative",
-    style: select.show ? {
+    style: show ? {
       zIndex: 2
     } : {
       zIndex: 0
     }
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
     className: "nav-list no-padding full-width justify-text"
-  }, select.selected.map(function (e, i) {
+  }, selected !== "" ? selectedArray.map(function (e, i) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
       key: i,
       className: "bold highlight-title inline-block side-margin small-v-margin smaller-text button-border border-box"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-      onClick: function onClick(e) {
-        var selectMimic = Object.assign({}, select);
-        selectMimic.selected = excludeOption(select.selected, select.selected.indexOf(e.currentTarget.getAttribute('keyvalue')));
-        changeSelect(selectMimic);
-      },
+      value: selected.replace(new RegExp("".concat(e, ",|").concat(e), 'gi'), ''),
+      name: props.name,
+      onClick: props.change,
       className: "fas fa-times pointer",
       style: {
         color: "#bfbfbf",
         paddingRight: "5px"
       }
     }), props.optionData[e]);
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
-    name: select.name,
+  }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    name: props.name,
     className: "hidden",
-    disabled: select.readOnly
+    disabled: props.readOnly
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-    defaultValue: select.selected.join(',')
+    defaultValue: selected
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
-    htmlFor: select.name,
+    htmlFor: props.name,
     className: "select inherit-width"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: select.show ? "full-width flex-row relative" : "full-width relative border-bottom flex-row",
-    onClick: select.show ? function () {
+    className: show ? "full-width flex-row relative" : "full-width relative border-bottom flex-row",
+    onClick: show ? function () {
       return false;
     } : function () {
-      return showOptions(select);
+      return toggle(!show);
     },
-    select: select.name
+    select: props.name
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "select-title"
+    className: "select-title v-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: select.show ? "hidden" : ""
-  }, select.selected.length > 0 ? select.selected.length + " " + select.name + " seleccionados" : props.titulo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    className: show ? "hidden" : ""
+  }, props.selected.length > 0 ? "".concat(selectedArray.length, " ").concat(props.fieldName, " seleccionados") : props.titulo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "text",
-    defaultValue: select.search ? select.search : "",
-    ref: select.input,
-    className: select.show ? "" : "hidden",
-    select: select.name
+    defaultValue: "",
+    ref: input,
+    onChange: function onChange(e) {
+      return updateSearch(e.currentTarget.value);
+    },
+    className: show ? "" : "hidden",
+    select: props.name
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "margin-left v-align-center"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
     onClick: function onClick() {
-      return showOptions(select);
+      return toggle(!show);
     },
-    className: select.show ? "fas fa-times" : "fas fa-angle-down",
+    className: show ? "fas fa-times" : "fas fa-angle-down",
     style: {
       color: "#bfbfbf"
     }
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "absolute full-width"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-    className: select.show ? "option-list box-shadow max-height" : "hidden"
-  }, options.map(function (e, ind) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+    className: show ? "option-list box-shadow max-height" : "hidden"
+  }, options.reduce(function (tot, e, ind) {
+    var exists = selected.match(e),
+        value = selected !== "" ? "".concat(selected, ",").concat(e) : "".concat(e),
+        element = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
       key: ind,
-      keyvalue: e,
-      select: select.name,
-      onMouseDown: function onMouseDown(ev) {
-        return selectOption(select, ev.currentTarget.getAttribute('keyvalue'));
-      },
-      className: select.selected.indexOf(e.toString()) !== -1 ? "option selected" : "option"
+      value: exists ? selected.replace(new RegExp("".concat(e, ",|").concat(e), 'gi'), '') : value,
+      name: props.name,
+      onClick: props.change,
+      className: exists ? "option selected" : "option"
     }, props.optionData[e]);
-  })))));
+
+    if (term) {
+      var search = props.optionData[e].toString(),
+          el = search.match(new RegExp(term, 'gi')) ? element : null;
+      if (el) tot.push(el);
+    } else tot.push(element);
+
+    return tot;
+  }, [])))));
 };
 
-var MultipleSelect = react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(noMemoMultipleSelect);
+var MultiSelect = react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(noMemoMultipleSelect);
+var MultipleSelect = function MultipleSelect(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_DisplaysErrors__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    errors: props.errors
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(MultiSelect, {
+    change: props.changeSelect,
+    name: props.name,
+    selected: props.selected,
+    fieldName: props.fieldName,
+    titulo: props.titulo,
+    optionData: props.optionData
+  }));
+};
 
 /***/ }),
 
@@ -88649,16 +88620,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Numeric", function() { return Numeric; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _hocs_DisplaysErrors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../hocs/DisplaysErrors */ "./resources/js/hocs/DisplaysErrors.jsx");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
 /**
  * react basic
  */
 
 
 
+
 function noMemoNumeric(props) {
-  var hasError = (props.errors || []).length > 0;
+  console.log('render');
+  var hasError = props.hasError;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "full-width"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
@@ -88669,21 +88643,25 @@ function noMemoNumeric(props) {
     type: "number",
     name: props.name,
     placeholder: props.holder,
-    className: hasError && props.errors[0].type !== 'required' ? "full-width box-transparent error" : "full-width box-transparent",
+    className: hasError && props.value !== '' ? "full-width box-transparent error" : "full-width box-transparent",
     onChange: props.changeHandler,
     value: props.value,
     needsvalue: 1
-  })), hasError ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-    className: "nav-list no-padding"
-  }, props.errors.map(function (e, i) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-      key: i,
-      className: "smaller-text error"
-    }, e.description);
-  })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null));
+  })));
 }
 
-var Numeric = react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(noMemoNumeric);
+var Number = react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(noMemoNumeric);
+var Numeric = function Numeric(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_DisplaysErrors__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    errors: props.errors
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Number, {
+    titulo: props.titulo,
+    holder: props.holder,
+    name: props.name,
+    value: props.value,
+    changeHandler: props.changeHandler
+  }));
+};
 
 /***/ }),
 
@@ -88701,6 +88679,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _hocs_DisplaysErrors__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../hocs/DisplaysErrors */ "./resources/js/hocs/DisplaysErrors.jsx");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -88712,20 +88691,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var noMemoSelect = function noMemoSelect(props) {
   var hasError = (props.errors || []).length > 0,
+      selected = props.selected.toString(),
       input = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null),
       _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
       _useState2 = _slicedToArray(_useState, 2),
       show = _useState2[0],
       toggle = _useState2[1],
-      _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.list[props.selected] || ""),
+      _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.list[selected] || ""),
       _useState4 = _slicedToArray(_useState3, 2),
       term = _useState4[0],
       updateSearch = _useState4[1],
-      select = props,
       showCallback = function showCallback(e) {
     toggle(true);
+    updateSearch(props.list[selected] || "");
     setTimeout(function () {
       return input.current.focus();
     }, 10);
@@ -88739,23 +88720,23 @@ var noMemoSelect = function noMemoSelect(props) {
       zIndex: 0
     }
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
-    name: select.name,
+    name: props.name,
     className: "hidden",
-    disabled: select.readOnly
+    disabled: props.readOnly
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-    defaultValue: select.selected
+    defaultValue: selected
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
-    htmlFor: select.name,
+    htmlFor: props.name,
     className: "select inherit-width"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: show ? "full-width flex-row relative" : hasError ? "full-width relative border-bottom flex-row error-box" : "full-width relative border-bottom flex-row",
     onClick: showCallback,
-    select: select.name
+    select: props.name
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "select-title v-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
     className: show ? "hidden" : ""
-  }, select.selected ? select.list[select.selected] : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+  }, selected ? props.list[selected] : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
     style: {
       color: "gray"
     }
@@ -88783,21 +88764,21 @@ var noMemoSelect = function noMemoSelect(props) {
     className: "absolute full-width"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
     className: show ? "option-list box-shadow max-height" : "hidden"
-  }, Object.keys(select.list).reduce(function (tot, ind) {
+  }, Object.keys(props.list).reduce(function (tot, ind) {
     var element = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
       key: ind,
-      name: select.name,
-      value: ind == select.selected ? "" : ind,
+      name: props.name,
+      value: ind == selected ? "" : ind,
       needsvalue: 0,
       onMouseDown: function onMouseDown(e) {
         toggle(false);
         props.changeSelect(e);
       },
-      className: ind == select.selected ? "option selected" : "option"
-    }, select.list[ind]);
+      className: ind == selected ? "option selected" : "option"
+    }, props.list[ind]);
 
     if (term) {
-      var search = select.list[ind].toString(),
+      var search = props.list[ind].toString(),
           el = search.match(new RegExp(term, 'gi')) ? element : null;
       if (el) tot.push(el);
     } else tot.push(element);
@@ -88813,7 +88794,18 @@ var noMemoSelect = function noMemoSelect(props) {
   })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null));
 };
 
-var Select = react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(noMemoSelect);
+var SelectMemo = react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(noMemoSelect);
+var Select = function Select(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_DisplaysErrors__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    errors: props.errors
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SelectMemo, {
+    name: props.name,
+    selected: props.selected,
+    list: props.list,
+    titulo: props.titulo,
+    changeSelect: props.changeSelect
+  }));
+};
 
 /***/ }),
 
@@ -88831,19 +88823,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _hocs_DisplaysErrors__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../hocs/DisplaysErrors */ "./resources/js/hocs/DisplaysErrors.jsx");
 /**
  * react basic
  */
 
 
-/**
- *
- * @param {*} props
- * component
- */
+
 
 var noMemoText = function noMemoText(props) {
-  var hasError = (props.errors || []).length > 0;
+  var hasError = props.hasError;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "full-width"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
@@ -88855,21 +88844,26 @@ var noMemoText = function noMemoText(props) {
     rows: props.rows,
     readOnly: props.readOnly,
     placeholder: props.holder,
-    className: hasError && props.errors[0].type !== 'required' ? "full-width box-transparent error" : "full-width box-transparent",
+    className: hasError && props.value !== '' ? "full-width box-transparent error" : "full-width box-transparent",
     onChange: props.changeHandler,
     value: props.value,
     needsvalue: 1
-  })), hasError ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-    className: "nav-list no-padding"
-  }, props.errors.map(function (e, i) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-      key: i,
-      className: "smaller-text error"
-    }, e.description);
-  })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null));
+  })));
 };
 
-var Text = react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(noMemoText);
+var TextArea = react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(noMemoText);
+var Text = function Text(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_DisplaysErrors__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    errors: props.errors
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(TextArea, {
+    rows: props.rows,
+    titulo: props.titulo,
+    holder: props.holder,
+    name: props.name,
+    value: props.value,
+    changeHandler: props.changeHandler
+  }));
+};
 
 /***/ }),
 
@@ -90777,6 +90771,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../acciones/ActionsByView */ "./resources/js/acciones/ActionsByView.jsx");
 /* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
+/* harmony import */ var _hocs_Validator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../hocs/Validator */ "./resources/js/hocs/Validator.jsx");
+/* harmony import */ var _validation__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./validation */ "./resources/js/escritorio/eventos/validation.jsx");
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
@@ -90792,9 +90788,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
  */
 
 
-/**
- * sub elementos
- */
+
 
 
 
@@ -90835,26 +90829,28 @@ function EventosRouting(props) {
     path: "".concat(props.match.url, "/editar/:id"),
     exact: true,
     render: function render(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_2__["Formulario"], _extends({
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        errors: true
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_2__["Formulario"], _extends({
         data: props.data,
         editar: true,
         toggleModal: openModal,
         nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].formulario(function () {
           return false;
-        }, match.match.params.id, 'eventos'),
-        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])()
-      }, match));
+        }, match.match.params.id, 'eventos')
+      }, match)));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Route"], {
     path: "".concat(props.match.url, "/agregar"),
     render: function render(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_2__["Formulario"], _extends({
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        errors: true
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_2__["Formulario"], _extends({
         data: props.data,
         toggleModal: openModal,
         nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["Navegacion"].agregar('eventos'),
-        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__["FormActions"])(),
         editar: false
-      }, match));
+      }, match)));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Route"], {
     path: "".concat(props.match.url, "/:id"),
@@ -91015,7 +91011,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _generateEventosCard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./generateEventosCard */ "./resources/js/escritorio/eventos/sub/generateEventosCard.jsx");
+/* harmony import */ var _generators_generateEventosCard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../generators/generateEventosCard */ "./resources/js/generators/generateEventosCard.jsx");
 /**
  * react basic
  */
@@ -91024,7 +91020,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function Eventos(props) {
-  var eventos = Object(_generateEventosCard__WEBPACK_IMPORTED_MODULE_3__["default"])(props.data, {
+  var eventos = Object(_generators_generateEventosCard__WEBPACK_IMPORTED_MODULE_3__["default"])(props.data, {
     eliminar: props.toggleModal
   });
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -91067,7 +91063,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
 /* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
 /* harmony import */ var _FormFields__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../FormFields */ "./resources/js/escritorio/eventos/FormFields.jsx");
-/* harmony import */ var _generateEventosCard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./generateEventosCard */ "./resources/js/escritorio/eventos/sub/generateEventosCard.jsx");
+/* harmony import */ var _generators_generateEventosCard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../generators/generateEventosCard */ "./resources/js/generators/generateEventosCard.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -91179,7 +91175,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _generateEventosCard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./generateEventosCard */ "./resources/js/escritorio/eventos/sub/generateEventosCard.jsx");
+/* harmony import */ var _generators_generateEventosCard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../generators/generateEventosCard */ "./resources/js/generators/generateEventosCard.jsx");
 /* harmony import */ var _componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/CommaList */ "./resources/js/componentes/basic/CommaList.jsx");
 /* harmony import */ var _componentes_tables_PromocionesTable__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/tables/PromocionesTable */ "./resources/js/componentes/tables/PromocionesTable.jsx");
 /**
@@ -91226,7 +91222,7 @@ function VerEvento(props) {
   }, "Horarios"), horarios.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
     className: "nav-list no-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_6__["CommaList"], {
-    list: Object(_generateEventosCard__WEBPACK_IMPORTED_MODULE_5__["assignHorarios"])(data.horarios.list)[0],
+    list: Object(_generators_generateEventosCard__WEBPACK_IMPORTED_MODULE_5__["assignHorarios"])(data.horarios.list)[0],
     endpoint: "/horarios"
   })) : "No hay horarios asociados"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-6"
@@ -91254,103 +91250,52 @@ function VerEvento(props) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/eventos/sub/generateEventosCard.jsx":
-/*!*********************************************************************!*\
-  !*** ./resources/js/escritorio/eventos/sub/generateEventosCard.jsx ***!
-  \*********************************************************************/
-/*! exports provided: assignHorarios, default */
+/***/ "./resources/js/escritorio/eventos/validation.jsx":
+/*!********************************************************!*\
+  !*** ./resources/js/escritorio/eventos/validation.jsx ***!
+  \********************************************************/
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "assignHorarios", function() { return assignHorarios; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return generateEventosCard; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/CommaList */ "./resources/js/componentes/basic/CommaList.jsx");
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
-/* harmony import */ var _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../acciones/GenerateActions */ "./resources/js/acciones/GenerateActions.jsx");
-/* harmony import */ var _componentes_basic_CustomLink__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/basic/CustomLink */ "./resources/js/componentes/basic/CustomLink.jsx");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+var _validation;
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-/**
- * react basic
- */
-
-
-
-
-
-
-var assignHorarios = function assignHorarios(hList) {
-  var keys = Object.keys(hList),
-      res = keys.reduce(function (_final, curr) {
-    var el = hList[curr];
-    _final[el] = _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_3__["DAYS"][curr - 1];
-    return _final;
-  }, {});
-  return [res, keys.length];
-};
-function generateEventosCard(eventos, actions) {
-  return Object.keys(eventos).map(function (e) {
-    var acciones = _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_4__["GenerateActions"].eventos(e, actions),
-        promociones = Object.values(eventos[e].promociones.list),
-        _assignHorarios = assignHorarios(eventos[e].horarios.list),
-        _assignHorarios2 = _slicedToArray(_assignHorarios, 2),
-        horarios = _assignHorarios2[0],
-        horariosLength = _assignHorarios2[1],
-        linkParam = {
-      to: "/eventos/".concat(e),
-      params: {
-        id: e
-      },
-      route: 'eventos'
-    };
-
-    return {
-      content: function content() {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-8 no-padding"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CustomLink__WEBPACK_IMPORTED_MODULE_5__["default"], {
-          params: linkParam
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "text sub-title bold"
-        }, eventos[e].nombre)), acciones), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-4 border-bottom text-right no-margin no-padding"
-        }, eventos[e].estado)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row v-padding"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-6 no-padding"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "bold light-danger"
-        }, "Descripci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, eventos[e].descripcion)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-6 no-padding"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "bold light-danger"
-        }, "Horarios"), horariosLength > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_2__["CommaList"], {
-          list: horarios,
-          endpoint: "/horarios"
-        }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No has asignado horarios a este evento"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "bold light-danger top-padding"
-        }, "Promociones"), promociones.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_2__["CommaList"], {
-          list: eventos[e].promociones.list,
-          endpoint: "/promociones"
-        }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No has asignado promociones a este evento"))));
-      },
-      "class": "v-padding container"
-    };
-  });
-}
+var validation = (_validation = {
+  nombre: {
+    rules: {},
+    fieldName: "Id"
+  }
+}, _defineProperty(_validation, "nombre", {
+  rules: {
+    required: true,
+    max: 45,
+    alpha_numeric: true
+  },
+  fieldName: "Nombre"
+}), _defineProperty(_validation, "descripcion", {
+  rules: {
+    max: 50
+  },
+  fieldName: "Descripción"
+}), _defineProperty(_validation, "capacidad_maxima", {
+  rules: {
+    required: true,
+    numeric: true,
+    min: 1
+  },
+  fieldName: "Capacidad máxima"
+}), _defineProperty(_validation, "maximo_personas", {
+  rules: {
+    required: true,
+    numeric: true,
+    min: 1
+  },
+  fieldName: "Máximo Personas"
+}), _validation);
+/* harmony default export */ __webpack_exports__["default"] = (validation);
 
 /***/ }),
 
@@ -91915,8 +91860,8 @@ function FeriadosRouting(props) {
       var feriado = props.data.feriados,
           form = {
         nombre: feriado.nombre,
-        date: props.data.date,
-        id_evento: Object.keys(props.data.eventos.list),
+        fecha_feriado: props.data.date,
+        id_evento: Object.keys(props.data.eventos.list).join(','),
         apertura_reserva_hora: feriado.apertura.reserva.hora,
         apertura_reserva_minuto: feriado.apertura.reserva.minuto,
         cierre_reserva_hora: feriado.cierre.reserva.hora,
@@ -91945,8 +91890,9 @@ function FeriadosRouting(props) {
     path: "".concat(props.match.url, "/agregar"),
     component: function component(match) {
       var form = {
+        fecha_feriado: new Date(props.data.date),
         nombre: "",
-        id_evento: [],
+        id_evento: "",
         apertura_reserva_hora: "",
         apertura_reserva_minuto: "",
         cierre_reserva_hora: "",
@@ -91967,7 +91913,7 @@ function FeriadosRouting(props) {
         nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_2__["Navegacion"].formulario(function () {
           return false;
         }, match.match.params.id, 'horarios/feriados'),
-        editar: true
+        editar: false
       }, match)));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
@@ -92063,7 +92009,9 @@ function HorariosRouting(props) {
     path: "".concat(props.match.url, "/agregar/:day"),
     component: function component(match) {
       var form = {
-        id_evento: [],
+        id_dia_semana: match.match.params.day,
+        id: "",
+        id_evento: "",
         apertura_reserva_hora: "",
         apertura_reserva_minuto: "",
         cierre_reserva_hora: "",
@@ -92073,7 +92021,7 @@ function HorariosRouting(props) {
         cierre_atencion_hora: "",
         cierre_atencion_minuto: "",
         descripcion: "",
-        id_estado: ""
+        id_estado: true
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_8__["default"], {
         form: form,
@@ -92090,7 +92038,9 @@ function HorariosRouting(props) {
     component: function component(match) {
       var horarios = props.data.horarios,
           form = {
-        id_evento: Object.keys(props.data.eventos.list),
+        id: match.match.params.id,
+        id_dia_semana: horarios.diaSemana,
+        id_evento: Object.keys(props.data.eventos.list).join(','),
         apertura_reserva_hora: horarios.apertura.reserva.hora,
         apertura_reserva_minuto: horarios.apertura.reserva.minuto,
         cierre_reserva_hora: horarios.cierre.reserva.hora,
@@ -92163,11 +92113,24 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 function CalendarioMemo(props) {
-  var today = props.editar ? props.date : new Date(),
-      _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.date),
+  var today = new Date(props.date),
+      _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({
+    event: null,
+    dt: today
+  }),
       _useState2 = _slicedToArray(_useState, 2),
-      day = _useState2[0],
-      changeDay = _useState2[1],
+      dateEvent = _useState2[0],
+      changeDate = _useState2[1],
+      frst = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(true),
+      inputRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null),
+      changeDay = function changeDay(date) {
+    changeDate({
+      event: new Event('change', {
+        bubbles: true
+      }),
+      dt: date
+    });
+  },
       tileDisabled = function tileDisabled(_ref) {
     var activeStartDate = _ref.activeStartDate,
         date = _ref.date,
@@ -92177,30 +92140,37 @@ function CalendarioMemo(props) {
     return disableByDate;
   },
       monthChange = function monthChange(date) {
-    props.fetch({
-      date: date
-    });
+    props.fetch('/horarios/feriados/agregar', {
+      date: date,
+      refresh: true
+    }, 'horarios/feriados');
   },
       navChange = function navChange(_ref2) {
     var activeStartDate = _ref2.activeStartDate,
         view = _ref2.view;
-    props.fetch({
-      date: activeStartDate
-    });
+    props.fetch('/horarios/feriados/agregar', {
+      date: activeStartDate,
+      refresh: true
+    }, 'horarios/feriados');
   };
 
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    if (!frst.current) inputRef.current.dispatchEvent(dateEvent.event);else frst.current = false;
+  }, [dateEvent]);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "date",
-    value: day,
-    name: "fecha_feriado",
     readOnly: true,
+    type: "date",
+    value: dateEvent.dt,
+    onChange: props.change,
+    name: "fecha_feriado",
+    ref: inputRef,
     className: "hidden"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_calendar__WEBPACK_IMPORTED_MODULE_3___default.a, {
     showNavigation: !props.editar,
     tileClassName: "relative",
     showNeighboringMonth: false,
-    value: props.editar ? today : day,
-    minDate: today,
+    value: props.editar ? today : dateEvent.dt,
+    minDate: new Date(),
     onClickDay: props.editar ? function () {
       return false;
     } : function (date) {
@@ -92233,6 +92203,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
 /* harmony import */ var _componentes_input_MultipleSelect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/input/MultipleSelect */ "./resources/js/componentes/input/MultipleSelect.jsx");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 
 
 
@@ -92241,8 +92213,7 @@ __webpack_require__.r(__webpack_exports__);
 var EventoFields = function EventoFields(props) {
   var eventos = {
     name: "id_evento",
-    selected: props.fields.id_evento,
-    list: props.editar ? props.eventos.list : {}
+    selected: props.fields.id_evento
   };
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "".concat(props["class"].col, " relative visible v-padding")
@@ -92250,18 +92221,20 @@ var EventoFields = function EventoFields(props) {
     className: props.side ? "hidden" : "top-padding full-width overlay"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "bold light-danger full-width"
-  }, "Eventos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_MultipleSelect__WEBPACK_IMPORTED_MODULE_4__["MultipleSelect"], {
-    select: eventos,
-    titulo: "selecciona los eventos",
-    optionData: props.eventos.list
-  })), props["class"].type === 'feriado' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, "Eventos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_MultipleSelect__WEBPACK_IMPORTED_MODULE_4__["MultipleSelect"], _extends({
+    fieldName: "Eventos",
+    titulo: "Selecciona los eventos",
+    optionData: props.eventos.list,
+    errors: props.errors.id_evento,
+    changeSelect: props.change
+  }, eventos))), props["class"].type === 'feriado' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "".concat(props["class"].col, " v-padding")
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_3__["Text"], {
     rows: 3,
     titulo: "Nombre",
     name: "nombre",
     holder: "Nombre del feriado hasta 50 caracteres",
-    errors: props.errors.descripcion,
+    errors: props.errors.nombre,
     value: props.fields.nombre,
     changeHandler: props.change
   })) : "", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -92301,6 +92274,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/input/Toggle */ "./resources/js/componentes/input/Toggle.jsx");
 /* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
 /* harmony import */ var _utils_Helper__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../utils/Helper */ "./resources/js/utils/Helper.jsx");
+/* harmony import */ var _hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../hocs/RouterTransition */ "./resources/js/hocs/RouterTransition.jsx");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -92322,8 +92296,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 function FeriadoFormulario(props) {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.fields.id_estado),
+  var context = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_10__["WaitsLoading"]),
+      _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.fields.id_estado),
       _useState2 = _slicedToArray(_useState, 2),
       side = _useState2[0],
       toggle = _useState2[1],
@@ -92344,11 +92320,12 @@ function FeriadoFormulario(props) {
     className: "col-md-6"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Calendario__WEBPACK_IMPORTED_MODULE_3__["Calendario"], {
     editar: props.editar,
-    date: data.date,
+    date: props.fields.fecha_feriado,
     data: data,
-    fetch: props.fetch
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "bold smaller-text text-center"
+    change: props.change,
+    fetch: context
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "bold smaller-text v-padding margin-box"
   }, "* Los d\xEDas inhabilitados ya tienen feriados asignados")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-lg-6"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -92443,7 +92420,7 @@ function HorarioFormulario(props) {
 
   if (props.editar) props.nav.buttons[0].click = props.toggleModal;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    title: props.editar ? "Editar horario del ".concat(_constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__["DAYS"][parseInt(data.horarios.diaSemana) - 1]) : "Agregar horario al ".concat(_constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__["DAYS"][parseInt(this.props.match.params.day) - 1]),
+    title: props.editar ? "Editar horario del ".concat(_constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__["DAYS"][parseInt(data.horarios.diaSemana) - 1]) : "Agregar horario al ".concat(_constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__["DAYS"][parseInt(props.match.params.day) - 1]),
     links: props.nav.links,
     buttons: props.nav.buttons
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -92588,12 +92565,16 @@ var SelectFields = function SelectFields(props) {
       color: "#bfbfbf"
     }
   }, ":")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6 text-left relative visible h-padding"
+    className: "col-md-5 text-left relative visible h-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
     titulo: "Minuto",
     changeSelect: props.change,
     errors: props.errors.apertura_reserva_minuto
-  }, select.apertura_reserva_minuto)))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, select.apertura_reserva_minuto))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-1 text-center v-align-center h-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "text"
+  }, "horas"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "left-padding col-md-12 bold"
@@ -92614,12 +92595,16 @@ var SelectFields = function SelectFields(props) {
       color: "#bfbfbf"
     }
   }, ":")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6 text-left relative visible h-padding"
+    className: "col-md-5 text-left relative visible h-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
     titulo: "Minutos",
     changeSelect: props.change,
     errors: props.errors.cierre_reserva_minuto
-  }, select.cierre_reserva_minuto)))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, select.cierre_reserva_minuto))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-1 text-center v-align-center h-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "text"
+  }, "horas"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row v-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "sub-title light-danger full-width"
@@ -92642,12 +92627,16 @@ var SelectFields = function SelectFields(props) {
       color: "#bfbfbf"
     }
   }, ":")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6 text-left h-padding"
+    className: "col-md-5 text-left h-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
     titulo: "Minutos",
     changeSelect: props.change,
     errors: props.errors.apertura_atencion_minuto
-  }, select.apertura_atencion_minuto)))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, select.apertura_atencion_minuto))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-1 text-center v-align-center h-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "text"
+  }, "horas"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "left-padding col-md-12 bold"
@@ -92668,12 +92657,16 @@ var SelectFields = function SelectFields(props) {
       color: "#bfbfbf"
     }
   }, ":")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6 text-left relative visible h-padding"
+    className: "col-md-5 text-left relative visible h-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
     titulo: "Minutos",
     changeSelect: props.change,
     errors: props.errors.cierre_atencion_minuto
-  }, select.cierre_atencion_minuto))))));
+  }, select.cierre_atencion_minuto))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-1 text-center v-align-center h-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "text"
+  }, "horas")))));
 };
 
 /***/ }),
@@ -93090,19 +93083,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "horariosValidation", function() { return horariosValidation; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "feriadoValidation", function() { return feriadoValidation; });
 var horariosValidation = {
-  fecha_feriado: {
+  id: {
+    rules: {},
+    fieldName: "Id"
+  },
+  id_dia_semana: {
     rules: {
-      required: true,
-      isDate: true
+      required: true
     },
-    fieldName: "Fecha"
+    fieldName: "Día Semana"
   },
   id_evento: {
     rules: {
-      min: 1
+      required: true
     },
-    fieldName: "Eventos",
-    isMultiple: true
+    fieldName: "Eventos"
   },
   apertura_reserva_hora: {
     rules: {
@@ -93166,14 +93161,20 @@ var horariosValidation = {
 var feriadoValidation = {
   id_evento: {
     rules: {
-      min: 1
+      required: true
     },
-    fieldName: "Eventos",
-    isMultiple: true
+    fieldName: "Eventos"
+  },
+  fecha_feriado: {
+    rules: {
+      required: true
+    },
+    fieldName: "Fecha"
   },
   nombre: {
     rules: {
-      max: 50
+      max: 50,
+      required: true
     },
     fieldName: "Nombre"
   },
@@ -94166,31 +94167,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _generatePromocionesCard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./generatePromocionesCard */ "./resources/js/escritorio/promociones/sub/generatePromocionesCard.jsx");
-/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
+/* harmony import */ var _generators_generatePromocionesCard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../generators/generatePromocionesCard */ "./resources/js/generators/generatePromocionesCard.jsx");
 /**
  * react basic
  */
 
 
 
-/**
- * componentes
- */
-
-
-/**
- * funciones
- */
-
-
-/**
- * api
- */
 
 
 function Promociones(props) {
-  var promociones = Object(_generatePromocionesCard__WEBPACK_IMPORTED_MODULE_4__["default"])(props.data, {
+  var promociones = Object(_generators_generatePromocionesCard__WEBPACK_IMPORTED_MODULE_4__["default"])(props.data, {
     eliminar: props.toggleModal
   });
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -94233,7 +94220,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _eventos_sub_generateEventosCard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../eventos/sub/generateEventosCard */ "./resources/js/escritorio/eventos/sub/generateEventosCard.jsx");
+/* harmony import */ var _generators_generateEventosCard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../generators/generateEventosCard */ "./resources/js/generators/generateEventosCard.jsx");
 /* harmony import */ var _componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/CommaList */ "./resources/js/componentes/basic/CommaList.jsx");
 /* harmony import */ var _componentes_tables_EventosTable__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/tables/EventosTable */ "./resources/js/componentes/tables/EventosTable.jsx");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -94261,7 +94248,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var generateList = function generateList(list) {
   var eventos = Object.values(list).map(function (e, i) {
-    var horarios = Object(_eventos_sub_generateEventosCard__WEBPACK_IMPORTED_MODULE_5__["assignHorarios"])(e.horarios.list)[0];
+    var horarios = Object(_generators_generateEventosCard__WEBPACK_IMPORTED_MODULE_5__["assignHorarios"])(e.horarios.list)[0];
     return _objectSpread({}, e, {
       nombre: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
         to: "/eventos/" + e.id
@@ -94308,90 +94295,6 @@ function VerPromocion(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_tables_EventosTable__WEBPACK_IMPORTED_MODULE_7__["default"], {
     data: data.eventos
   }))));
-}
-
-/***/ }),
-
-/***/ "./resources/js/escritorio/promociones/sub/generatePromocionesCard.jsx":
-/*!*****************************************************************************!*\
-  !*** ./resources/js/escritorio/promociones/sub/generatePromocionesCard.jsx ***!
-  \*****************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return generatePromocionesCard; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/CommaList */ "./resources/js/componentes/basic/CommaList.jsx");
-/* harmony import */ var _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../acciones/GenerateActions */ "./resources/js/acciones/GenerateActions.jsx");
-/* harmony import */ var _componentes_basic_CustomLink__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/basic/CustomLink */ "./resources/js/componentes/basic/CustomLink.jsx");
-/**
- * react basic
- */
-
-
-
-
-
-
-function generatePromocionesCard(promociones, actions) {
-  return Object.keys(promociones).map(function (e) {
-    var acciones = _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_4__["GenerateActions"].promociones(e, actions),
-        eventos = Object.values(promociones[e].eventos.list),
-        linkParam = {
-      to: "/promociones/".concat(e),
-      params: {
-        id: e
-      },
-      route: 'promociones'
-    };
-    return {
-      content: function content() {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "container no-padding"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-8"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "sub-title text-super side-margin inline-block align-center bold"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CustomLink__WEBPACK_IMPORTED_MODULE_5__["default"], {
-          params: linkParam
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "text bold"
-        }, promociones[e].nombre))), acciones), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-4 border-bottom text-right no-margin no-padding"
-        }, promociones[e].estado)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row h-padding"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-6"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "bold light-danger"
-        }, "Descripci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, promociones[e].descripcion)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-6"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "bold light-danger top-padding"
-        }, "Eventos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, eventos.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_3__["CommaList"], {
-          list: promociones[e].eventos.list,
-          endpoint: "/eventos"
-        }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No has asignado horarios a este evento")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "bold light-danger top-padding"
-        }, "Descuento"), promociones[e].descuento ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "side-margin"
-        }, promociones[e].descuento, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "bold side-margin"
-        }, "%")) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "bold"
-        }, " Sin descuento asignado "))))));
-      },
-      "class": "v-padding"
-    };
-  });
 }
 
 /***/ }),
@@ -94495,11 +94398,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../utils/api */ "./resources/js/utils/api.jsx");
-/* harmony import */ var _componentes_agenda_Agenda__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/agenda/Agenda */ "./resources/js/componentes/agenda/Agenda.jsx");
-/* harmony import */ var _componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/control/LoadBar */ "./resources/js/componentes/control/LoadBar.jsx");
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../constantes/CalendarControls */ "./resources/js/constantes/CalendarControls.jsx");
+/* harmony import */ var _componentes_agenda_Agenda__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/agenda/Agenda */ "./resources/js/componentes/agenda/Agenda.jsx");
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../constantes/CalendarControls */ "./resources/js/constantes/CalendarControls.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -94524,21 +94425,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-/**
- * axios
- */
 
-
-/**
- * componentes
- */
-
-
-
-
-/**
- * constantes
- */
 
 
 var Calendario =
@@ -94554,7 +94441,7 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Calendario).call(this, props));
     _this.state = {
       date: _this.props.data.date,
-      controls: _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_7__["NO_WEEK_CONTROLS"],
+      controls: _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_5__["NO_WEEK_CONTROLS"],
       show: "1"
     };
     _this.verReserva = _this.verReserva.bind(_assertThisInitialized(_this));
@@ -94606,12 +94493,12 @@ function (_Component) {
     key: "render",
     value: function render() {
       var data = this.props.data;
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__["default"], {
         title: "Reservaciones",
         links: this.props.nav.links
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_agenda_Agenda__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_agenda_Agenda__WEBPACK_IMPORTED_MODULE_3__["default"], {
         show: this.state.show,
         horariosReserva: data.horarios,
         date: this.state.date,
@@ -95084,6 +94971,7 @@ function UbicacionesRouting(props) {
     exact: true,
     render: function render(match) {
       var form = {
+        id: props.data.id,
         nombre: props.data.nombre,
         descripcion: props.data.descripcion,
         capacidad_maxima: props.data.capacidad,
@@ -95105,6 +94993,7 @@ function UbicacionesRouting(props) {
     path: "".concat(props.match.url, "/agregar"),
     component: function component(match) {
       var form = {
+        id: "",
         nombre: "",
         descripcion: "",
         capacidad_maxima: "",
@@ -95245,24 +95134,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _generateUbicacionesCard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./generateUbicacionesCard */ "./resources/js/escritorio/ubicaciones/sub/generateUbicacionesCard.jsx");
+/* harmony import */ var _generators_generateUbicacionesCard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../generators/generateUbicacionesCard */ "./resources/js/generators/generateUbicacionesCard.jsx");
 /**
  * react basic
  */
 
 
-/**
- * componentes
- */
-
-
-/**
- * funciones
- */
 
 
 function Ubicaciones(props) {
-  var ubicaciones = Object(_generateUbicacionesCard__WEBPACK_IMPORTED_MODULE_3__["default"])(props.data, {
+  var ubicaciones = Object(_generators_generateUbicacionesCard__WEBPACK_IMPORTED_MODULE_3__["default"])(props.data, {
     eliminar: props.toggleModal
   });
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -95343,10 +95224,243 @@ function VerUbicacion(props) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/ubicaciones/sub/generateUbicacionesCard.jsx":
-/*!*****************************************************************************!*\
-  !*** ./resources/js/escritorio/ubicaciones/sub/generateUbicacionesCard.jsx ***!
-  \*****************************************************************************/
+/***/ "./resources/js/escritorio/ubicaciones/validation.jsx":
+/*!************************************************************!*\
+  !*** ./resources/js/escritorio/ubicaciones/validation.jsx ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var _validation;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var validation = (_validation = {
+  nombre: {
+    rules: {},
+    fieldName: "Id"
+  }
+}, _defineProperty(_validation, "nombre", {
+  rules: {
+    required: true,
+    max: 45,
+    alpha_numeric: true
+  },
+  fieldName: "Nombre"
+}), _defineProperty(_validation, "descripcion", {
+  rules: {
+    max: 50
+  },
+  fieldName: "Descripción"
+}), _defineProperty(_validation, "capacidad_maxima", {
+  rules: {
+    required: true,
+    numeric: true,
+    min: 1
+  },
+  fieldName: "Capacidad máxima"
+}), _defineProperty(_validation, "maximo_personas", {
+  rules: {
+    required: true,
+    numeric: true,
+    min: 1
+  },
+  fieldName: "Máximo Personas"
+}), _validation);
+/* harmony default export */ __webpack_exports__["default"] = (validation);
+
+/***/ }),
+
+/***/ "./resources/js/generators/generateEventosCard.jsx":
+/*!*********************************************************!*\
+  !*** ./resources/js/generators/generateEventosCard.jsx ***!
+  \*********************************************************/
+/*! exports provided: assignHorarios, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "assignHorarios", function() { return assignHorarios; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return generateEventosCard; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../componentes/basic/CommaList */ "./resources/js/componentes/basic/CommaList.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../acciones/GenerateActions */ "./resources/js/acciones/GenerateActions.jsx");
+/* harmony import */ var _componentes_basic_CustomLink__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../componentes/basic/CustomLink */ "./resources/js/componentes/basic/CustomLink.jsx");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+/**
+ * react basic
+ */
+
+
+
+
+
+
+var assignHorarios = function assignHorarios(hList) {
+  var keys = Object.keys(hList),
+      res = keys.reduce(function (_final, curr) {
+    var el = hList[curr];
+    _final[el] = _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_3__["DAYS"][curr - 1];
+    return _final;
+  }, {});
+  return [res, keys.length];
+};
+function generateEventosCard(eventos, actions) {
+  return Object.keys(eventos).map(function (e) {
+    var acciones = _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_4__["GenerateActions"].eventos(e, actions),
+        promociones = Object.values(eventos[e].promociones.list),
+        _assignHorarios = assignHorarios(eventos[e].horarios.list),
+        _assignHorarios2 = _slicedToArray(_assignHorarios, 2),
+        horarios = _assignHorarios2[0],
+        horariosLength = _assignHorarios2[1],
+        linkParam = {
+      to: "/eventos/".concat(e),
+      params: {
+        id: e
+      },
+      route: 'eventos'
+    };
+
+    return {
+      content: function content() {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-8 no-padding"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CustomLink__WEBPACK_IMPORTED_MODULE_5__["default"], {
+          params: linkParam
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "text sub-title bold"
+        }, eventos[e].nombre)), acciones), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-4 border-bottom text-right no-margin no-padding"
+        }, eventos[e].estado)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row v-padding"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-6 no-padding"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "bold light-danger"
+        }, "Descripci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, eventos[e].descripcion)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-6 no-padding"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "bold light-danger"
+        }, "Horarios"), horariosLength > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_2__["CommaList"], {
+          list: horarios,
+          endpoint: "/horarios"
+        }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No has asignado horarios a este evento"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "bold light-danger top-padding"
+        }, "Promociones"), promociones.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_2__["CommaList"], {
+          list: eventos[e].promociones.list,
+          endpoint: "/promociones"
+        }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No has asignado promociones a este evento"))));
+      },
+      "class": "v-padding container"
+    };
+  });
+}
+
+/***/ }),
+
+/***/ "./resources/js/generators/generatePromocionesCard.jsx":
+/*!*************************************************************!*\
+  !*** ./resources/js/generators/generatePromocionesCard.jsx ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return generatePromocionesCard; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../componentes/basic/CommaList */ "./resources/js/componentes/basic/CommaList.jsx");
+/* harmony import */ var _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../acciones/GenerateActions */ "./resources/js/acciones/GenerateActions.jsx");
+/* harmony import */ var _componentes_basic_CustomLink__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../componentes/basic/CustomLink */ "./resources/js/componentes/basic/CustomLink.jsx");
+/**
+ * react basic
+ */
+
+
+
+
+
+
+function generatePromocionesCard(promociones, actions) {
+  return Object.keys(promociones).map(function (e) {
+    var acciones = _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_4__["GenerateActions"].promociones(e, actions),
+        eventos = Object.values(promociones[e].eventos.list),
+        linkParam = {
+      to: "/promociones/".concat(e),
+      params: {
+        id: e
+      },
+      route: 'promociones'
+    };
+    return {
+      content: function content() {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "container no-padding"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-8"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "sub-title text-super side-margin inline-block align-center bold"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CustomLink__WEBPACK_IMPORTED_MODULE_5__["default"], {
+          params: linkParam
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "text bold"
+        }, promociones[e].nombre))), acciones), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-4 border-bottom text-right no-margin no-padding"
+        }, promociones[e].estado)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row h-padding"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-6"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "bold light-danger"
+        }, "Descripci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, promociones[e].descripcion)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-6"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "bold light-danger top-padding"
+        }, "Eventos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, eventos.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_3__["CommaList"], {
+          list: promociones[e].eventos.list,
+          endpoint: "/eventos"
+        }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No has asignado horarios a este evento")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "bold light-danger top-padding"
+        }, "Descuento"), promociones[e].descuento ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "side-margin"
+        }, promociones[e].descuento, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "bold side-margin"
+        }, "%")) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "bold"
+        }, " Sin descuento asignado "))))));
+      },
+      "class": "v-padding"
+    };
+  });
+}
+
+/***/ }),
+
+/***/ "./resources/js/generators/generateUbicacionesCard.jsx":
+/*!*************************************************************!*\
+  !*** ./resources/js/generators/generateUbicacionesCard.jsx ***!
+  \*************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -95358,9 +95472,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
-/* harmony import */ var _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../acciones/GenerateActions */ "./resources/js/acciones/GenerateActions.jsx");
-/* harmony import */ var _componentes_basic_CustomLink__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/basic/CustomLink */ "./resources/js/componentes/basic/CustomLink.jsx");
+/* harmony import */ var _componentes_basic_ButtonList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../componentes/basic/ButtonList */ "./resources/js/componentes/basic/ButtonList.jsx");
+/* harmony import */ var _acciones_GenerateActions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../acciones/GenerateActions */ "./resources/js/acciones/GenerateActions.jsx");
+/* harmony import */ var _componentes_basic_CustomLink__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../componentes/basic/CustomLink */ "./resources/js/componentes/basic/CustomLink.jsx");
 /**
  * react basic
  */
@@ -95422,51 +95536,6 @@ function generateUbicacionesCard(ubicaciones, actions) {
     };
   });
 }
-
-/***/ }),
-
-/***/ "./resources/js/escritorio/ubicaciones/validation.jsx":
-/*!************************************************************!*\
-  !*** ./resources/js/escritorio/ubicaciones/validation.jsx ***!
-  \************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-var validation = {
-  nombre: {
-    rules: {
-      required: true,
-      max: 45,
-      alpha_numeric: true
-    },
-    fieldName: "Nombre"
-  },
-  descripcion: {
-    rules: {
-      max: 50
-    },
-    fieldName: "Descripción"
-  },
-  capacidad_maxima: {
-    rules: {
-      required: true,
-      numeric: true,
-      min: 1
-    },
-    fieldName: "Capacidad máxima"
-  },
-  maximo_personas: {
-    rules: {
-      required: true,
-      numeric: true,
-      min: 1
-    },
-    fieldName: "Máximo Personas"
-  }
-};
-/* harmony default export */ __webpack_exports__["default"] = (validation);
 
 /***/ }),
 
@@ -95709,7 +95778,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _utils_api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/api */ "./resources/js/utils/api.jsx");
-/* harmony import */ var _escritorio_eventos_sub_generateEventosCard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../escritorio/eventos/sub/generateEventosCard */ "./resources/js/escritorio/eventos/sub/generateEventosCard.jsx");
+/* harmony import */ var _generators_generateEventosCard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../generators/generateEventosCard */ "./resources/js/generators/generateEventosCard.jsx");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -95764,8 +95833,8 @@ var editFormHandler = function editFormHandler(endpoint, location) {
           promociones: response.data.promociones
         }
       };
-      data.selected.horarios.list = Object(_escritorio_eventos_sub_generateEventosCard__WEBPACK_IMPORTED_MODULE_4__["assignHorarios"])(data.selected.horarios.list)[0];
-      data.all.horarios.list = Object(_escritorio_eventos_sub_generateEventosCard__WEBPACK_IMPORTED_MODULE_4__["assignHorarios"])(data.all.horarios.list)[0];
+      data.selected.horarios.list = Object(_generators_generateEventosCard__WEBPACK_IMPORTED_MODULE_4__["assignHorarios"])(data.selected.horarios.list)[0];
+      data.all.horarios.list = Object(_generators_generateEventosCard__WEBPACK_IMPORTED_MODULE_4__["assignHorarios"])(data.all.horarios.list)[0];
 
       _this.setState({
         data: _objectSpread({}, data),
@@ -95790,7 +95859,7 @@ var addFormHandler = function addFormHandler(endpoint, location) {
     request.then(function (response) {
       var data = {};
       data = response.data;
-      data.horarios.list = Object(_escritorio_eventos_sub_generateEventosCard__WEBPACK_IMPORTED_MODULE_4__["assignHorarios"])(data.horarios.list)[0];
+      data.horarios.list = Object(_generators_generateEventosCard__WEBPACK_IMPORTED_MODULE_4__["assignHorarios"])(data.horarios.list)[0];
 
       _this2.setState({
         data: _objectSpread({}, data),
@@ -96822,6 +96891,39 @@ var addFormHandler = function addFormHandler(endpoint, location) {
 
 /***/ }),
 
+/***/ "./resources/js/hocs/DisplaysErrors.jsx":
+/*!**********************************************!*\
+  !*** ./resources/js/hocs/DisplaysErrors.jsx ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return DisplaysErrors; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+
+
+function DisplaysErrors(props) {
+  var hasError = (props.errors || []).length > 0,
+      OriginalComponent = react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(props.children, {
+    hasError: hasError
+  });
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, OriginalComponent, hasError ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+    className: "nav-list no-padding"
+  }, props.errors.map(function (e, i) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+      key: i,
+      className: "smaller-text error"
+    }, e.description);
+  })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null));
+}
+
+/***/ }),
+
 /***/ "./resources/js/hocs/ExpandableComponent.jsx":
 /*!***************************************************!*\
   !*** ./resources/js/hocs/ExpandableComponent.jsx ***!
@@ -97480,7 +97582,7 @@ var evaluateRule = {
   required: function required(_ref) {
     var val = _ref.val,
         name = _ref.name;
-    if (val == "" || !val) return {
+    if (val.length === 0 || !val) return {
       description: "el campo ".concat(name, " no puede estar vac\xEDo"),
       type: 'required',
       field: name
@@ -97530,7 +97632,7 @@ var evaluateRule = {
   numeric: function numeric(_ref6) {
     var val = _ref6.val,
         name = _ref6.name;
-    if (val.match(/[^\d]/gi)) return {
+    if (!parseInt(val)) return {
       description: "el campo ".concat(name, " debe contener \xFAnicamente n\xFAmeros"),
       type: 'numeric',
       field: name
@@ -97552,7 +97654,7 @@ function validateValue(val, _ref8) {
       fieldName = _ref8.fieldName;
   return Object.keys(rules).reduce(function (t, r) {
     var arg = {
-      val: val.toString(),
+      val: val,
       name: fieldName
     };
 

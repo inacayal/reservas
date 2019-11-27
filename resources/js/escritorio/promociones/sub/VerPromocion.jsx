@@ -10,7 +10,7 @@ import {Redirect} from 'react-router-dom';
 import { GET } from '../../../utils/api';
 import Titulo from '../../../componentes/basic/Titulo';
 import {Link} from 'react-router-dom';
-import { assignHorarios } from '../../eventos/sub/generateEventosCard';
+import { assignHorarios } from '../../../generators/generateEventosCard';
 import {CommaList} from '../../../componentes/basic/CommaList';
 import EventosTable from '../../../componentes/tables/EventosTable'
 

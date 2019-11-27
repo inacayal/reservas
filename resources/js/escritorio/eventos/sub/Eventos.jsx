@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Titulo from '../../../componentes/basic/Titulo';
-import generateEventosCard from './generateEventosCard';
+import generateEventosCard from '../../../generators/generateEventosCard';
 
 export function Eventos (props) {
     const eventos = generateEventosCard(

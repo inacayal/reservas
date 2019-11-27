@@ -4,18 +4,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
-/**
- * componentes
- */
 import Titulo from '../../../componentes/basic/Titulo';
-/**
- * funciones
- */
-import generatePromocionesCard from './generatePromocionesCard';
-/**
- * api
- */
-import { GET } from '../../../utils/api';
+import generatePromocionesCard from '../../../generators/generatePromocionesCard';
 
 export function Promociones (props) {
     const promociones = generatePromocionesCard(

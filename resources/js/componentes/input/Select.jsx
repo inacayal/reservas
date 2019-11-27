@@ -5,18 +5,19 @@ import React,
         useRef
     } from 'react';
 import ReactDOM from 'react-dom';
+import DisplaysErrors from '../../hocs/DisplaysErrors'
 
 const noMemoSelect = (props) => {
-    const hasError = (props.errors||[]).length>0,
-        input = useRef(null),
-        [show,toggle] = useState(false),
-        [term,updateSearch] = useState(props.list[props.selected]||""),
-        select = props,
-        showCallback = (e) => {
-            toggle(true);
-            setTimeout(()=>input.current.focus(),10)
-        };
-
+    const   hasError = (props.errors||[]).length>0,
+            selected = props.selected.toString(),
+            input = useRef(null),
+            [show,toggle] = useState(false),
+            [term,updateSearch] = useState(props.list[selected]||""),
+            showCallback = (e) => {
+                toggle(true);
+                updateSearch(props.list[selected]||"");
+                setTimeout(()=>input.current.focus(),10)
+            };
     return(
         <div
             className="relative"
@@ -25,13 +26,13 @@ const noMemoSelect = (props) => {
                 ? { zIndex: 2 }
                 : { zIndex: 0}}>
             <select
-                name={select.name}
+                name={props.name}
                 className="hidden"
-                disabled ={select.readOnly}>
-                <option defaultValue={select.selected}></option>
+                disabled ={props.readOnly}>
+                <option defaultValue={selected}></option>
             </select>
             <label
-                htmlFor={select.name}
+                htmlFor={props.name}
                 className="select inherit-width">
                 <div className={
                     (show)
@@ -42,26 +43,25 @@ const noMemoSelect = (props) => {
                             : "full-width relative border-bottom flex-row"
                     }
                     onClick={showCallback}
-                    select={ select.name}>
+                    select={ props.name}>
                     <div className="select-title v-padding">
                         <span className={(show) ? "hidden" : ""}>
                         {
-                            (select.selected)
-                                ? select.list[select.selected]
+                            (selected)
+                                ? props.list[selected]
                                 : <span style={{color:"gray"}}>{props.titulo}</span>
                         }
                         </span>
-                        <input
-                            type="text"
-                            defaultValue={term}
-                            ref={input}
-                            onChange = {e => updateSearch(e.currentTarget.value)}
-                            onBlur={() => toggle(false) }
-                            className={
-                                (show)
-                                    ? "small-v-padding"
-                                    : "hidden"
-                            }/>
+                        <input  type="text"
+                                defaultValue={term}
+                                ref={input}
+                                onChange = {e => updateSearch(e.currentTarget.value)}
+                                onBlur={() => toggle(false) }
+                                className={
+                                    (show)
+                                        ? "small-v-padding"
+                                        : "hidden"
+                                }/>
                     </div>
                     <div className="margin-left v-align-center">
                         <i className={
@@ -76,16 +76,16 @@ const noMemoSelect = (props) => {
                     <ul
                         className={
                             (show)
-                            ? "option-list box-shadow max-height"
-                            : "hidden"}>
+                                ? "option-list box-shadow max-height"
+                                : "hidden"
+                        }>
                         {
-                            Object.keys(select.list).reduce(
+                            Object.keys(props.list).reduce(
                                 function (tot,ind) {
                                     const element = (
-                                        <li
-                                            key={ind}
-                                            name={select.name}
-                                            value={ind == select.selected ? "" : ind}
+                                        <li key={ind}
+                                            name={props.name}
+                                            value={ind == selected ? "" : ind}
                                             needsvalue={0}
                                             onMouseDown={
                                                 (e) => {
@@ -94,16 +94,18 @@ const noMemoSelect = (props) => {
                                                 }
                                             }
                                             className={
-                                                (ind == select.selected)
-                                                ? "option selected"
-                                                : "option"
+                                                (ind == selected)
+                                                    ? "option selected"
+                                                    : "option"
                                             }>
-                                            {select.list[ind]}
+                                            {props.list[ind]}
                                         </li>
                                     );
                                     if (term){
-                                        const search = select.list[ind].toString(),
-                                            el = search.match(new RegExp(term,'gi')) ? element : null;
+                                        const search = props.list[ind].toString(),
+                                            el = search.match(new RegExp(term,'gi'))
+                                                ? element
+                                                : null;
                                         if (el)
                                             tot.push(el);
                                     }else
@@ -132,4 +134,14 @@ const noMemoSelect = (props) => {
     );
 }
 
-export const Select = React.memo(noMemoSelect);
+const SelectMemo = React.memo(noMemoSelect);
+
+export const Select = (props) => (
+    <DisplaysErrors errors = {props.errors}>
+        <SelectMemo     name={props.name}
+                        selected={props.selected}
+                        list={props.list}
+                        titulo={props.titulo}
+                        changeSelect={props.changeSelect}/>
+    </DisplaysErrors>
+);

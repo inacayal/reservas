@@ -3,20 +3,9 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {Redirect} from 'react-router-dom'
-/**
- * axios
- */
-import {GET} from '../../../utils/api';
-/**
- * componentes
- */
+import {Redirect} from 'react-router-dom';
 import Agenda from '../../../componentes/agenda/Agenda';
-import LoadBar from '../../../componentes/control/LoadBar';
 import Titulo from '../../../componentes/basic/Titulo';
-/**
- * constantes
- */
 import { NO_WEEK_CONTROLS } from '../../../constantes/CalendarControls';
 
 export class Calendario extends Component {

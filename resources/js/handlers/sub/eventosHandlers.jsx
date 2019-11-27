@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
 import {GET} from '../../utils/api';
-import { assignHorarios } from '../../escritorio/eventos/sub/generateEventosCard';
+import { assignHorarios } from '../../generators/generateEventosCard';
 
 export const eventosHandlers = [
     {

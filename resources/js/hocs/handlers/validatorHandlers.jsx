@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 const evaluateRule = {
     required:({val,name}) => {
-        if (val=="" || !val)
+        if (val.length===0 || !val)
             return {
                 description:`el campo ${name} no puede estar vacío`,
                 type:'required',
@@ -44,7 +44,7 @@ const evaluateRule = {
             };
     },
     numeric: ({val,name}) => {
-        if (val.match(/[^\d]/gi))
+        if (!parseInt(val))
             return {
                 description:`el campo ${name} debe contener únicamente números`,
                 type:'numeric',
@@ -70,7 +70,7 @@ export function validateValue (
     return Object.keys(rules).reduce(
         (t,r) => {
             const arg = {
-                val:val.toString(),
+                val:val,
                 name:fieldName
             };
             if (extFields.indexOf(r)!==-1){
@@ -161,7 +161,7 @@ export function assignValues (
             err,
             name
         );
-    form[name] = value;
+    form[name] =  value;
     err[name] = validateValue(value,validate[name])
     return [form,err];
 }

@@ -16,7 +16,7 @@ import {Select} from '../../../componentes/input/Select';
 import {Text} from '../../../componentes/input/Text';
 
 export const SelectFields = (props) => {
-    const   fields = props.fields, 
+    const   fields = props.fields,
             select = {
                 apertura_reserva_hora: {
                     name: "apertura_reserva_hora",
@@ -59,7 +59,6 @@ export const SelectFields = (props) => {
                     list: props.minutos
                 }
             };
-
     return (
         <>
             <div className="col-md-12">
@@ -83,11 +82,16 @@ export const SelectFields = (props) => {
                             :
                         </h6>
                     </div>
-                    <div className="col-md-6 text-left relative visible h-padding">
+                    <div className="col-md-5 text-left relative visible h-padding">
                         <Select titulo="Minuto"
                                 changeSelect={props.change}
                                 errors={props.errors.apertura_reserva_minuto}
                                 {...select.apertura_reserva_minuto}/>
+                    </div>
+                    <div className="col-sm-1 text-center v-align-center h-padding">
+                        <h6 className="text">
+                            horas
+                        </h6>
                     </div>
                 </div>
                 <div className="row">
@@ -107,11 +111,16 @@ export const SelectFields = (props) => {
                             :
                         </h6>
                     </div>
-                    <div className="col-md-6 text-left relative visible h-padding">
+                    <div className="col-md-5 text-left relative visible h-padding">
                         <Select titulo="Minutos"
                                 changeSelect={props.change}
                                 errors={props.errors.cierre_reserva_minuto}
                                 {...select.cierre_reserva_minuto}/>
+                    </div>
+                    <div className="col-sm-1 text-center v-align-center h-padding">
+                        <h6 className="text">
+                            horas
+                        </h6>
                     </div>
                 </div>
                 <div className="row v-padding">
@@ -134,11 +143,16 @@ export const SelectFields = (props) => {
                             :
                         </h6>
                     </div>
-                    <div className="col-md-6 text-left h-padding">
+                    <div className="col-md-5 text-left h-padding">
                         <Select titulo="Minutos"
                                 changeSelect={props.change}
                                 errors={props.errors.apertura_atencion_minuto}
                                 {...select.apertura_atencion_minuto}/>
+                    </div>
+                    <div className="col-sm-1 text-center v-align-center h-padding">
+                        <h6 className="text">
+                            horas
+                        </h6>
                     </div>
                 </div>
                 <div className="row">
@@ -158,11 +172,16 @@ export const SelectFields = (props) => {
                             :
                         </h6>
                     </div>
-                    <div className="col-md-6 text-left relative visible h-padding">
+                    <div className="col-md-5 text-left relative visible h-padding">
                         <Select titulo="Minutos"
                                 changeSelect={props.change}
                                 errors={props.errors.cierre_atencion_minuto}
                                 {...select.cierre_atencion_minuto}/>
+                    </div>
+                    <div className="col-sm-1 text-center v-align-center h-padding">
+                        <h6 className="text">
+                            horas
+                        </h6>
                     </div>
                 </div>
             </div>

@@ -3,10 +3,10 @@
  */
 import React, { Component,useContext } from 'react';
 import ReactDOM from 'react-dom';
-import {CommaList} from '../../../componentes/basic/CommaList';
-import {DAYS} from '../../../constantes/DaysMonths';
-import { GenerateActions } from '../../../acciones/GenerateActions';
-import CustomLink from '../../../componentes/basic/CustomLink';
+import {CommaList} from '../componentes/basic/CommaList';
+import {DAYS} from '../constantes/DaysMonths';
+import { GenerateActions } from '../acciones/GenerateActions';
+import CustomLink from '../componentes/basic/CustomLink';
 
 export const assignHorarios = (hList) => {
     const keys = Object.keys(hList),

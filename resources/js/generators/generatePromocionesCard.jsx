@@ -3,10 +3,10 @@
  */
 import React, { Component} from 'react';
 import ReactDOM from 'react-dom';
-import ButtonList from '../../../componentes/basic/ButtonList';
-import {CommaList} from '../../../componentes/basic/CommaList';
-import { GenerateActions } from '../../../acciones/GenerateActions';
-import CustomLink from '../../../componentes/basic/CustomLink';
+import ButtonList from '../componentes/basic/ButtonList';
+import {CommaList} from '../componentes/basic/CommaList';
+import { GenerateActions } from '../acciones/GenerateActions';
+import CustomLink from '../componentes/basic/CustomLink';
 
 export default function generatePromocionesCard(
     promociones,

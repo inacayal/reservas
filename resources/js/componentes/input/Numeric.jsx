@@ -1,39 +1,54 @@
 /**
  * react basic
  */
-import React, { Component, useState } from 'react';
+import React, {
+    Component,
+    useState
+} from 'react';
+import DisplaysErrors from '../../hocs/DisplaysErrors';
 import ReactDOM from 'react-dom';
 
 function noMemoNumeric(props) {
-    const hasError = (props.errors||[]).length>0;
+    console.log('render')
+    const   hasError = props.hasError;
     return (
         <div className="full-width">
-            <h6 className={props.description ? "highlight bold no-margin" : "highlight bold"}>{props.titulo}</h6>
+            <h6 className={
+                props.description
+                ? "highlight bold no-margin"
+                : "highlight bold"}>
+                {props.titulo}
+            </h6>
             {props.description||""}
-            <div className={hasError ? "light-input error-box error" : "light-input "}>
-                <input
-                    type="number"
-                    name={props.name}
-                    placeholder={props.holder}
-                    className={hasError && props.errors[0].type!=='required' ? "full-width box-transparent error" : "full-width box-transparent"}
-                    onChange={props.changeHandler}
-                    value={props.value}
-                    needsvalue={1}/>
-            </div>
-            {
+            <div className={
                 hasError
-                ?
-                    <ul className="nav-list no-padding">
-                        {
-                            props.errors.map(
-                                (e,i) => <li key={i} className="smaller-text error">{e.description}</li>
-                            )
+                    ? "light-input error-box error"
+                    : "light-input "
+                }>
+                <input  type="number"
+                        name={props.name}
+                        placeholder={props.holder}
+                        className={
+                            hasError && props.value !==''
+                                ? "full-width box-transparent error"
+                                : "full-width box-transparent"
                         }
-                    </ul>
-                :
-                    <></>
-            }
+                        onChange={props.changeHandler}
+                        value={props.value}
+                        needsvalue={1}/>
+            </div>
         </div>
     );
 }
-export const Numeric = React.memo(noMemoNumeric);
+
+const Number = React.memo(noMemoNumeric);
+
+export const Numeric = (props) => (
+    <DisplaysErrors errors = {props.errors}>
+        <Number titulo={props.titulo}
+                holder={props.holder}
+                name={props.name}
+                value={props.value}
+                changeHandler={props.changeHandler}/>
+    </DisplaysErrors>
+)

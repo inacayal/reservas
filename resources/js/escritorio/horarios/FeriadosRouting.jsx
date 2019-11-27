@@ -19,15 +19,15 @@ import Validator from '../../hocs/Validator';
 import {feriadoValidation as validation} from './validation';
 
 export default function FeriadosRouting (props) {
-    const [open,toggle] = useState(false),
-        openModal = (e) => {
-            e.preventDefault();
-            toggle(true);
-        },
-        closeModal = (e) => {
-            e.preventDefault();
-            toggle(false);
-        };
+    const   [open,toggle] = useState(false),
+            openModal = (e) => {
+                e.preventDefault();
+                toggle(true);
+            },
+            closeModal = (e) => {
+                e.preventDefault();
+                toggle(false);
+            };
     return (
         <>
             <ConfirmarModal open={open}
@@ -51,8 +51,8 @@ export default function FeriadosRouting (props) {
                                 const   feriado = props.data.feriados,
                                         form ={
                                             nombre:                    feriado.nombre,
-                                            date:                      props.data.date,
-                                            id_evento:                 Object.keys(props.data.eventos.list),
+                                            fecha_feriado:             props.data.date,
+                                            id_evento:                 Object.keys(props.data.eventos.list).join(','),
                                             apertura_reserva_hora:     feriado.apertura.reserva.hora,
                                             apertura_reserva_minuto:   feriado.apertura.reserva.minuto,
                                             cierre_reserva_hora:       feriado.cierre.reserva.hora,
@@ -80,8 +80,9 @@ export default function FeriadosRouting (props) {
                         component={
                             (match) => {
                                 const form ={
+                                    fecha_feriado:             new Date(props.data.date),
                                     nombre:                    "",
-                                    id_evento:                 [],
+                                    id_evento:                 "",
                                     apertura_reserva_hora:     "",
                                     apertura_reserva_minuto:   "",
                                     cierre_reserva_hora:       "",
@@ -100,7 +101,7 @@ export default function FeriadosRouting (props) {
                                             data={props.data}
                                             toggleModal={openModal}
                                             nav={Navegacion.formulario(()=>false,match.match.params.id,'horarios/feriados')}
-                                            editar={true} {...match} />
+                                            editar={false} {...match} />
                                     </Validator>
                                 )
                             }

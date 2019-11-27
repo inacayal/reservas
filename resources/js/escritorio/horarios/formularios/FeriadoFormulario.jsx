@@ -3,7 +3,8 @@
  */
 import React, {
     Component,
-    useState
+    useState,
+    useContext
 } from 'react';
 import ReactDOM from 'react-dom';
 import {
@@ -17,22 +18,23 @@ import Titulo from '../../../componentes/basic/Titulo';
 import { Toggle } from '../../../componentes/input/Toggle';
 import Actions from '../../../componentes/basic/Actions';
 import {generateHoursFromInterval} from '../../../utils/Helper';
+import {WaitsLoading} from '../../../hocs/RouterTransition';
 
 export function FeriadoFormulario (props) {
-    const     [side,toggle] = useState(props.fields.id_estado),
-              data = props.data;
+    const   context = useContext(WaitsLoading),
+            [side,toggle] = useState(props.fields.id_estado),
+            data = props.data;
     if (props.editar)
         props.nav.buttons[0].click = toggle;
     return (
         <>
-            <Titulo
-                title={
+            <Titulo title={
                     props.editar
                         ? data.feriados.nombre
                         : "Agregar Feriado"
-                }
-                links={props.nav.links}
-                buttons={props.nav.buttons} />
+                    }
+                    links={props.nav.links}
+                    buttons={props.nav.buttons} />
             <div className="bold">
                 {
                     props.editar
@@ -44,12 +46,13 @@ export function FeriadoFormulario (props) {
                 <div className="row v-padding">
                     <div className="col-md-6">
                         <Calendario editar={props.editar}
-                                    date={data.date}
+                                    date={props.fields.fecha_feriado}
                                     data={data}
-                                    fetch={props.fetch}/>
-                        <span className="bold smaller-text text-center">
+                                    change={props.change}
+                                    fetch={context}/>
+                        <div className="bold smaller-text v-padding margin-box">
                             * Los días inhabilitados ya tienen feriados asignados
-                        </span>
+                        </div>
                     </div>
                     <div className="col-lg-6">
                         <div className="container">

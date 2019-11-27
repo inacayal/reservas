@@ -49,9 +49,13 @@ function CalendarioMemo(props) {
             tileContent = ({ date, view }) => {
                 const   index = date.getDate(),
                         feriado = props.data.feriados.data[index],
-                        data = feriado !== undefined ? feriado : props.data.horarios.data[date.getDay()+1],
+                        data = feriado !== undefined
+                            ? feriado
+                            : props.data.horarios.data[date.getDay()+1],
                         cond = data.estado === 'no_laboral' || compareDates(date, props.minDate, {d:'<',m:'=',y:'='}),
-                        handler =  (date) => (e) => props.changeHover(date);
+                        handler =  (date) =>
+                            (e) =>
+                                props.changeHover(date);
 
                 return feriado !== undefined
                     ?

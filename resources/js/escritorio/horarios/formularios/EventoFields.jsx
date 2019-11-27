@@ -16,9 +16,6 @@ export const EventoFields = (props) => {
     const  eventos = {
         name: "id_evento",
         selected: props.fields.id_evento,
-        list: props.editar
-            ? props.eventos.list
-            : {}
     };
     return (
         <>
@@ -31,9 +28,11 @@ export const EventoFields = (props) => {
                 <div className="bold light-danger full-width">
                     Eventos
                 </div>
-                <MultipleSelect select={eventos}
-                                titulo="selecciona los eventos"
-                                optionData={props.eventos.list} />
+                <MultipleSelect fieldName={"Eventos"}
+                                titulo="Selecciona los eventos"
+                                optionData={props.eventos.list}
+                                errors={props.errors.id_evento}
+                                changeSelect={props.change} {...eventos}/>
             </div>
             {
                 props.class.type==='feriado'
@@ -43,7 +42,7 @@ export const EventoFields = (props) => {
                                 titulo="Nombre"
                                 name="nombre"
                                 holder="Nombre del feriado hasta 50 caracteres"
-                                errors={props.errors.descripcion}
+                                errors={props.errors.nombre}
                                 value={props.fields.nombre}
                                 changeHandler={props.change}/>
                     </div>

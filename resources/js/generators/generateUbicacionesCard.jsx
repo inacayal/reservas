@@ -4,9 +4,9 @@
 import React, { Component, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import {Link} from 'react-router-dom';
-import ButtonList from '../../../componentes/basic/ButtonList';
-import { GenerateActions } from '../../../acciones/GenerateActions';
-import CustomLink from '../../../componentes/basic/CustomLink';
+import ButtonList from '../componentes/basic/ButtonList';
+import { GenerateActions } from '../acciones/GenerateActions';
+import CustomLink from '../componentes/basic/CustomLink';
 
 export default function generateUbicacionesCard(
     ubicaciones,

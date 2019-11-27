@@ -3,14 +3,8 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-/**
- * componentes
- */
 import Titulo from '../../../componentes/basic/Titulo';
-/**
- * funciones
- */
-import generateUbicacionesCard from './generateUbicacionesCard';
+import generateUbicacionesCard from '../../../generators/generateUbicacionesCard';
 
 export function Ubicaciones (props) {
     const ubicaciones = generateUbicacionesCard(

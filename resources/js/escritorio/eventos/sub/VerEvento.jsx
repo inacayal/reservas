@@ -12,7 +12,7 @@ import { GET } from '../../../utils/api';
  * basic
  */
 import Titulo from '../../../componentes/basic/Titulo';
-import { assignHorarios } from './generateEventosCard';
+import { assignHorarios } from '../../../generators/generateEventosCard';
 import {CommaList} from '../../../componentes/basic/CommaList';
 import PromocionesTable from '../../../componentes/tables/PromocionesTable';
 
