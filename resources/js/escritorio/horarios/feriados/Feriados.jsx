@@ -3,16 +3,24 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-/**
- * components
- */
 import Agenda from '../../../componentes/agenda/Agenda';
 import Titulo from '../../../componentes/basic/Titulo';
-/**
- * constants
- */
 import {NO_DAY_CONTROL} from '../../../constantes/CalendarControls';
 import {DAYS,MONTHS} from '../../../constantes/DaysMonths';
+
+const links = [
+    {
+        title: (
+            <div className="smaller-text text bold">
+                <i className="fas fa-calendar-week inline-box side-margin" />
+                Horarios
+            </div>
+        ),
+        to:`/horarios`,
+        params:{},
+        route:`horarios`
+    }
+];
 
 export class Feriados extends Component {
     constructor(props){
@@ -37,12 +45,12 @@ export class Feriados extends Component {
     }
 
     render(){
-        const data = this.props.data;
+        const   data = this.props.data,
+                nav = this.props.nav.links.concat(links);
         return (
             <>
-                <Titulo
-                    title="Feriados"
-                    links={this.props.nav.links} />
+                <Titulo title="Feriados"
+                        links={nav} />
                 <div className="container">
                     <Agenda
                         show={data.show}

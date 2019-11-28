@@ -1,21 +1,11 @@
-/**
- * react basic
- */
-import React, { Component } from 'react';
+import React, {
+    Component
+} from 'react';
 import ReactDOM from 'react-dom';
-/**
- * input elements
- */
 import { Select } from '../../componentes/input/Select';
+import {Numeric} from '../../componentes/input/Numeric';
 
-const SelectData = {
-    intervalo: {
-        name: "intervalo",
-        show: false,
-        selected: null,
-        search: "",
-        input: React.createRef(),
-        list: {
+const   minutos = {
             1: "1 minuto",
             2: "2 minutos",
             3: "3 minutos",
@@ -27,29 +17,15 @@ const SelectData = {
             15: "15 minutos",
             20: "20 minutos",
             30: "30 minutos"
-        }
-    },
-    caida: {
-        name: "caida",
-        show: false,
-        selected: null,
-        search: "",
-        input: React.createRef(),
-        list: {
+        },
+        caida= {
             10: "10 minutos",
             20: "20 minutos",
             30: "30 minutos",
             40: "40 minutos",
             50: "50 minutos"
-        }
-    },
-    antelacion: {
-        name: "antelacion",
-        show: false,
-        selected: null,
-        search: "",
-        input: React.createRef(),
-        list: {
+        },
+        antelacion = {
             1: "1 horas",
             2: "2 horas",
             3: "3 horas",
@@ -63,37 +39,78 @@ const SelectData = {
             24: "24 horas",
             36: "36 horas"
         }
-    }
-};
+
 
 export const FormularioReservas = (props)  => {
-
-    SelectData.intervalo.selected = (props.data.intervalo||{}).id||"";
-    SelectData.antelacion.selected = props.data.antelacionReserva||"";
-    SelectData.caida.selected = props.data.caida||"";
+    const select = {
+        intervalo: {
+            name: "intervalo_reserva",
+            selected: props.fields.intervalo_reserva,
+            list: minutos
+        },
+        caida: {
+            name: "caida_reserva",
+            selected: props.fields.caida_reserva,
+            list: caida
+        },
+        antelacion: {
+            name: "antelacion_reserva",
+            selected: props.fields.antelacion_reserva,
+            list: antelacion
+        }
+    };
 
     return (
         <>
             <div className="row v-padding">
                 <div className="col-md-6">
-                    <h6 className="highlight no-margin bold">Antelación de la reserva</h6>
-                    <Select
-                        select={SelectData.antelacion}
-                        titulo="selecciona la antelación de la reserva" />
+                    <h6 className="highlight no-margin bold">
+                        Antelación de la reserva
+                    </h6>
+                    <Select titulo="Selecciona la antelación de las reservas"
+                            changeSelect={props.change}
+                            errors={props.errors.antelacion_reserva}
+                            {...select.antelacion}/>
+                    <span className="smaller-text">
+                        El mínimo de horas que el usuario debe esperar antes de hacer la reservación (si la suma de esta y la hora actual excede el cierre de reservas actual, el usuario tendrá que reservar el próximo día)
+                    </span>
                 </div>
                 <div className="col-md-6">
-                    <h6 className="highlight no-margin bold">Intervalo de la reserva</h6>
-                    <Select
-                        select={SelectData.intervalo}
-                        titulo="selecciona el intervalo de reservas" />
+                    <h6 className="highlight no-margin bold">
+                        Intervalo de la reserva
+                    </h6>
+                    <Select titulo="Selecciona la antelación de las reservas"
+                            changeSelect={props.change}
+                            errors={props.errors.intervalo_reserva}
+                            {...select.intervalo}/>
+                    <span className="smaller-text">
+                        El espacio temporal entre los minutos disponibles para hacer la reserva en una hora.
+                    </span>
                 </div>
             </div>
-            <div className="row">
-                <div className="col-md-6 v-padding">
-                    <h6 className="highlight no-margin bold">Caída de la reserva</h6>
-                    <Select
-                        select={SelectData.caida}
-                        titulo="selecciona el tiempo de caída de la reserva" />
+            <div className="row v-padding">
+                <div className="col-md-6">
+                    <h6 className="highlight no-margin bold">
+                        Caída de la reserva
+                    </h6>
+                    <Select titulo="Selecciona la antelación de las reservas"
+                            changeSelect={props.change}
+                            errors={props.errors.caida_reserva}
+                            {...select.caida}/>
+                    <span className="smaller-text">
+                        La cantidad de minutos que pasarán desde la hora de la reserva para que se considere como inválida
+                    </span>
+                </div>
+                <div className="col-md-6">
+                    <Numeric    titulo="Disponibilidad de reservas"
+                                name="disponibilidad_reserva"
+                                holder="Puedes elegir hasta 60 días como máximo"
+                                value={props.fields.disponibilidad_reserva}
+                                changeHandler={props.change}
+                                errors={props.errors.disponibilidad_reserva}/>
+                    <span className="smaller-text">
+                        La cantidad de días a partir de la fecha actual, disponibles para hacer la reserva.
+                    </span>
                 </div>
             </div>
         </>

@@ -1,23 +1,27 @@
-/**
- * react basic
- */
-import React, { Component } from 'react';
+import {
+    DAYS,
+    MONTHS
+} from '../../../constantes/DaysMonths';
+import React, {
+    Component
+} from 'react';
 import ReactDOM from 'react-dom';
-/**
- * components
- */
 import Titulo from '../../../componentes/basic/Titulo';
-/**
- * api
- */
-/**
- * function
- */
 import generateWeek from '../../../componentes/agenda/procedimientos/generateWeek';
-/**
- * constants
- */
-import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
+
+const links = [
+    {
+        title: (
+            <div className="smaller-text text bold">
+                <i className="fas fa-calendar-day inline-box side-margin" />
+                Feriados
+            </div>
+        ),
+        to:`/horarios/feriados`,
+        params:{},
+        route:`horarios/feriados`
+    }
+];
 
 export function Horarios (props) {
     const week = generateWeek(
@@ -28,8 +32,8 @@ export function Horarios (props) {
         );
     return (
         <>
-            <Titulo
-                title="Horarios"/>
+            <Titulo title="Horarios"
+                    links={links}/>
             <ul className="justify no-padding full-width flex-column nav-list h-center">
                 {
                     week.map(

@@ -1,16 +1,9 @@
-/**
- * react basic
- */
-import React, { Component } from 'react';
+import React, {
+    Component
+} from 'react';
 import ReactDOM from 'react-dom';
-/**
- * componentes
- */
 import Titulo from '../../../componentes/basic/Titulo';
-/**
- * funciones
- */
-import generateConfigurationCards from './generateConfigurationCards';
+import generateConfigurationCards from '../../../generators/generateConfigurationCards';
 
 export function Configuracion (props) {
     const configuracion = generateConfigurationCards(
@@ -18,8 +11,7 @@ export function Configuracion (props) {
     );
     return (
         <>
-            <Titulo
-                title="Configuración"/>
+            <Titulo title="Configuración"/>
             <ul className="full-width nav-list h-padding">
                 {
                     configuracion.map(

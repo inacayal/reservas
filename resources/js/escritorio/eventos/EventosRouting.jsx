@@ -82,7 +82,7 @@ export default function EventosRouting (props) {
                                 return (
                                     <Validator  form={fields}
                                                 validation={validation}>
-                                        <Formulario data={props.data}
+                                        <Formulario data={{all:props.data}}
                                                     toggleModal={openModal}
                                                     nav={Navegacion.agregar('eventos')}
                                                     editar={false} {...match} />

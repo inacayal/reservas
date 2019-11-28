@@ -35,6 +35,15 @@ const evaluateRule = {
             };
         }
     },
+    minLen:({val,minLen,name}) => {
+        if (val.length < minLen){
+            return {
+                description:`el campo ${name} no puede tener menos de ${minLen} caracteres`,
+                type:'max',
+                field:name
+            };
+        }
+    },
     alpha_numeric:({val,name}) => {
         if (val.match(/[^a-zA-Z\d\s\,\.ñáéíóú]/gi))
             return {
@@ -60,7 +69,7 @@ const evaluateRule = {
             };
     },
     phone: ({val,name}) => {
-        if (val.match(/[^\d\-\s]/gi))
+        if (val.match(/[^\d\-\s\(\)]/gi))
             return {
                 description:`el campo ${name} debe ser un número de teléfono`,
                 type:'phone',
@@ -69,7 +78,7 @@ const evaluateRule = {
     }
 }
 
-const extFields = ['maxLen','minVal','maxVal'];
+const extFields = ['maxLen','minVal','maxVal','minLen'];
 
 export function validateValue (
     val,
@@ -124,12 +133,12 @@ export function searchErrors (
                             ? errors[e]
                             : validateValue(form[e],fields[e]),
                         err = flds.length>0
-                        ? formatErrors(
-                            flds,
-                            fields[e].fieldName,
-                            i
-                        )
-                        : null;
+                            ? formatErrors(
+                                flds,
+                                fields[e].fieldName,
+                                i
+                            )
+                            : null;
                 errors[e] = flds;
                 if (err){
                     t.push(err);

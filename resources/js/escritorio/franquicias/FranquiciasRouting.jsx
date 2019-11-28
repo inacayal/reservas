@@ -1,29 +1,28 @@
 /**
  * react basic
  */
-import React, { Component, useState } from 'react';
+import React, {
+    Component,
+    useState
+} from 'react';
 import ReactDOM from 'react-dom';
 import {Route,Switch} from 'react-router-dom';
-/**
- * sub elementos
- */
 import {Formulario} from './sub/Formulario';
 import {Franquicias} from './sub/Franquicias';
 import {VerFranquicia} from './sub/VerFranquicia';
-
 import {Navegacion,FormActions} from '../../acciones/ActionsByView';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 
 export default function FranquiciasRouting (props) {
-    const [open,toggle] = useState(false),
-        openModal = (e) => {
-            e.preventDefault();
-            toggle(true);
-        },
-        closeModal = (e) => {
-            e.preventDefault();
-            toggle(false);
-        };
+    const   [open,toggle] = useState(false),
+            openModal = (e) => {
+                e.preventDefault();
+                toggle(true);
+            },
+            closeModal = (e) => {
+                e.preventDefault();
+                toggle(false);
+            };
     return (
         <>
             <ConfirmarModal

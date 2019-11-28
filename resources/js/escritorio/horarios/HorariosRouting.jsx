@@ -15,9 +15,9 @@ import {
     Switch
 } from 'react-router-dom';
 import ReactDOM from 'react-dom';
-import {HorarioFormulario} from './sub/HorarioFormulario';
-import {Horarios} from './sub/Horarios';
-import {VerHorario} from './sub/VerHorario';
+import {HorarioFormulario} from './horarios/HorarioFormulario';
+import {Horarios} from './horarios/Horarios';
+import {VerHorario} from './horarios/VerHorario';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 import Validator from '../../hocs/Validator';
 import {horariosValidation as validation} from './validation'

@@ -1,13 +1,13 @@
 /**
  * react basic
  */
-import React, { Component, useState } from 'react';
+import React, {
+    Component,
+    useState
+} from 'react';
 import ReactDOM from 'react-dom';
-/**
- * react components
- */
-import Actions from '../../../componentes/basic/Actions';
-import {ExpandableComponent} from '../../../hocs/ExpandableComponent';
+import Actions from '../componentes/basic/Actions';
+import {ExpandableComponent} from '../hocs/ExpandableComponent';
 
 const configurationCards = [
     {
@@ -210,11 +210,11 @@ export default function generateConfigurationCards (
                 content: () => {
                     return (
                         <>
-                            <ExpandableComponent
-                                title = {e.title}
-                                show={i===0}
-                                links = {links}
-                                component = {e.element(data)}/>
+                            <ExpandableComponent    title = {e.title}
+                                                    show={i===0}
+                                                    links = {links}>
+                                {e.element(data)}
+                            </ExpandableComponent>
                         </>
                     );
                 },

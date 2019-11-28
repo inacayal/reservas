@@ -38,7 +38,7 @@ export const ExpandableComponent = (props) => {
             </div>
             <div className={more ? "row" : "hidden"}>
                 <div className="container">
-                    {props.component}
+                    {props.children}
                 </div>
             </div>
         </div>

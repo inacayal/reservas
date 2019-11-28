@@ -11,9 +11,9 @@ import {
     FormActions
 } from '../../acciones/ActionsByView';
 import ReactDOM from 'react-dom';
-import {FeriadoFormulario} from './sub/FeriadoFormulario';
-import {Feriados} from './sub/Feriados';
-import {VerFeriado} from './sub/VerFeriado';
+import {FeriadoFormulario} from './feriados/FeriadoFormulario';
+import {Feriados} from './feriados/Feriados';
+import {VerFeriado} from './feriados/VerFeriado';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 import Validator from '../../hocs/Validator';
 import {feriadoValidation as validation} from './validation';
@@ -100,7 +100,7 @@ export default function FeriadosRouting (props) {
                                         <FeriadoFormulario
                                             data={props.data}
                                             toggleModal={openModal}
-                                            nav={Navegacion.formulario(()=>false,match.match.params.id,'horarios/feriados')}
+                                            nav={Navegacion.agregar('horarios/feriados')}
                                             editar={false} {...match} />
                                     </Validator>
                                 )
