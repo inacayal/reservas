@@ -47,14 +47,14 @@ const validation = {
         rules:{
             required:true,
             numeric:true,
-            min:1
+            minVal:1
         },
         fieldName:"Cantidad de personas"
     },
     nombre:{
         rules:{
             required:true,
-            max:40,
+            maxLen:40,
             alpha_numeric:true
         },
         fieldName:"Nombre"
@@ -62,7 +62,7 @@ const validation = {
     apellido:{
         rules:{
             required:true,
-            max:40,
+            maxLen:40,
             alpha_numeric:true
         },
         fieldName:"Nombre"
@@ -71,14 +71,14 @@ const validation = {
         rules:{
             required:true,
             email:true,
-            max:40
+            maxLen:40
         },
         fieldName:"Correo electrónico"
     },
     telefono:{
         rules:{
             required:true,
-            max:20,
+            maxLen:20,
             phone:true
         },
         fieldName:"Teléfono"

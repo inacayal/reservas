@@ -65,7 +65,7 @@ export const horariosValidation = {
     },
     descripcion:{
         rules:{
-            max:100
+            maxLen:100
         },
         fieldName:"Descripción"
     },
@@ -92,7 +92,7 @@ export const feriadoValidation = {
     },
     nombre:{
         rules:{
-            max:50,
+            maxLen:50,
             required:true
         },
         fieldName:"Nombre"
@@ -147,7 +147,8 @@ export const feriadoValidation = {
     },
     descripcion:{
         rules:{
-            max:100
+            maxLen:100,
+            required:true
         },
         fieldName:"Descripción"
     },

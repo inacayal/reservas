@@ -11,7 +11,7 @@ import {
     FormActions
 } from '../../acciones/ActionsByView';
 import ReactDOM from 'react-dom';
-import {FeriadoFormulario} from './formularios/FeriadoFormulario';
+import {FeriadoFormulario} from './sub/FeriadoFormulario';
 import {Feriados} from './sub/Feriados';
 import {VerFeriado} from './sub/VerFeriado';
 import {ConfirmarModal} from '../../componentes/modal/Modal';

@@ -1,6 +1,3 @@
-/**
- * react basic
- */
 import React, {
     Component,
     useState,
@@ -11,9 +8,9 @@ import {
     DAYS,
     MONTHS
 } from '../../../constantes/DaysMonths';
-import {Calendario} from './Calendario';
-import { SelectFields } from './SelectFields';
-import { EventoFields } from './EventoFields';
+import {Calendario} from '../formularios/Calendario';
+import { SelectFields } from '../formularios/SelectFields';
+import { EventoFields } from '../formularios/EventoFields';
 import Titulo from '../../../componentes/basic/Titulo';
 import { Toggle } from '../../../componentes/input/Toggle';
 import Actions from '../../../componentes/basic/Actions';
@@ -30,7 +27,7 @@ export function FeriadoFormulario (props) {
         <>
             <Titulo title={
                     props.editar
-                        ? data.feriados.nombre
+                        ? props.fields.nombre
                         : "Agregar Feriado"
                     }
                     links={props.nav.links}

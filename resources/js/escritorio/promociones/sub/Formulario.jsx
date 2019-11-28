@@ -1,58 +1,72 @@
-import React, { Component } from 'react';
+import React, {
+    Component
+} from 'react';
 import ReactDOM from 'react-dom';
-import Calendar from 'react-calendar';
-import {Redirect} from 'react-router-dom';
-/**
- * elements
- */
 import  Titulo from '../../../componentes/basic/Titulo';
-import Actions from '../../../componentes/basic/Actions';
-/**
- * handlers and elements
- */
-import { FormFields } from '../FormFields';
-/**
- * api
- */
-import { GET } from '../../../utils/api';
+import { MultipleSelect } from '../../../componentes/input/MultipleSelect';
+import { Numeric } from '../../../componentes/input/Numeric';
+import { Text } from '../../../componentes/input/Text';
 
-export class Formulario extends Component {
-    constructor(props) {
-        super(props);
-        if (this.props.editar)
-            this.props.nav.buttons[0].click = this.toggleModal;
-        this.props.formActions.buttons.cancelar.click = this.cancelarFormulario;
-        this.props.formActions.buttons.guardar.click = this.enviarFormulario;
-    }
-
-    enviarFormulario(e){
-        e.preventDefault();
-        console.log('guardar');
-    }
-
-    cancelarFormulario(e){
-        e.preventDefault();
-        console.log('cancelar');
-    }
-
-    render() {
-        return (
-            <>
-                <Titulo
-                title={this.props.editar
-                    ? this.props.data.selected.nombre
-                    : "Agregar Promoción"}
-                    links={this.props.nav.links}
-                    buttons={this.props.nav.buttons}/>
-                <form className="full-width box-padding">
-                    <FormFields editar={this.props.editar} {...this.props.data} />
-                    <div className="container">
-                        <div className="row justify-content-end v-padding">
-                            <Actions buttons={Object.values(this.props.formActions)}/>
+export function Formulario (props) {
+    if (props.editar)
+        props.nav.buttons[0].click = props.toggleModal;
+    return (
+        <>
+            <Titulo title={
+                        props.editar
+                            ? props.fields.nombre
+                            : "Agregar Promoción"
+                    }
+                    links={props.nav.links}
+                    buttons={props.nav.buttons}/>
+            <div className="container no-padding">
+                <div className="row v-padding">
+                    <div className="col-md-6">
+                        <div className="container">
+                            <div className="row v-padding">
+                                <Text   rows={1}
+                                        titulo="Nombre"
+                                        holder="Nombre de la ubicación hasta 45 caracteres"
+                                        name="nombre"
+                                        value={props.fields.nombre}
+                                        changeHandler={props.change}
+                                        errors={props.errors.nombre}/>
+                            </div>
+                            <div className="row v-padding">
+                                <Numeric    titulo="Descuento"
+                                            name="descuento"
+                                            holder="Descuento de la promoción hasta 100%"
+                                            value={props.fields.descuento}
+                                            changeHandler={props.change}
+                                            errors={props.errors.descuento}/>
+                            </div>
                         </div>
                     </div>
-                </form>
-            </>
-        );
-    }
+                    <div className="col-md-6 top-padding">
+                        <div>
+                            <h6 className="highlight no-margin bold">
+                                Eventos
+                            </h6>
+                            <MultipleSelect fieldName={"Eventos"}
+                                            name="eventos"
+                                            titulo="Selecciona los eventos"
+                                            optionData={props.data.all.eventos.list}
+                                            errors={props.errors.id_evento}
+                                            changeSelect={props.change}
+                                            selected={props.fields.eventos}/>
+                        </div>
+                        <div className="v-padding">
+                            <Text   rows={3}
+                                    titulo="Descripción"
+                                    holder="Breve descripción de la promoción hasta 45 caracteres"
+                                    name="descripcion"
+                                    value={props.fields.descripcion}
+                                    changeHandler={props.change}
+                                    errors={props.errors.descripcion}/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
 }

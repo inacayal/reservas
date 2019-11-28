@@ -42,7 +42,7 @@ const noMemoMultipleSelect = (props) => {
                             (e,i) => (
                                 <li key={i}
                                     className="bold highlight-title inline-block side-margin small-v-margin smaller-text button-border border-box">
-                                    <i  value={selected.replace(new RegExp(`${e}\,|${e}`,'gi'),'')}
+                                    <i  value={selected.replace(new RegExp(`${e},|${e}|,${e}$`,'gi'),'')}
                                         name={props.name}
                                         onClick={props.change}
                                         className="fas fa-times pointer"

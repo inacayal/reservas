@@ -16,7 +16,7 @@ export function Formulario (props) {
         <>
             <Titulo title={
                         props.editar
-                            ? data.nombre
+                            ? props.fields.nombre
                             : "Agregar ubicación"
                     }
                     links={props.nav.links}

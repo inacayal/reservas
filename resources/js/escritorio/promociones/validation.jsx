@@ -3,30 +3,26 @@ export const validation = {
         rules:{},
         fieldName:"Id"
     },
-    promociones:{
+    eventos:{
         rules:{},
-        fieldName:"Promociones"
+        fieldName:"Eventos"
     },
-    horarios:{
+    descuento:{
         rules:{
-            required:true
+            maxVal:100,
+            minVal:0
         },
-        fieldName:"Horarios"
-    },
-    feriados:{
-        rules:{},
-        fieldName:"Feriados"
+        fieldName:"Descuento"
     },
     descripcion:{
         rules:{
-            max:100,
-            required:true
+            maxLen:50
         },
         fieldName:"Descripción"
     },
     nombre:{
         rules:{
-            max:45,
+            maxLen:50,
             required:true
         },
         fieldName:"Nombre"

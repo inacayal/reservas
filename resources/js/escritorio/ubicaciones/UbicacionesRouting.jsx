@@ -50,7 +50,8 @@ export default function UbicacionesRouting (props) {
                                     maximo_personas:props.data.maximo
                                 };
                                 return (
-                                    <Validator form={form} validation={validation}>
+                                    <Validator  form={form}
+                                                validation={validation}>
                                         <Formulario editar={true}
                                                     data={props.data}
                                                     toggleModal={openModal}
@@ -70,7 +71,8 @@ export default function UbicacionesRouting (props) {
                                     maximo_personas:""
                                 };
                                 return (
-                                    <Validator form={form} validation={validation}>
+                                    <Validator  form={form} 
+                                                validation={validation}>
                                         <Formulario editar={false}
                                                     data={props.data}
                                                     toggleModal={openModal}

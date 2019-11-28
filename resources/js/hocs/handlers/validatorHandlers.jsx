@@ -10,18 +10,26 @@ const evaluateRule = {
                 field:name
             };
     },
-    min:({val,min,name}) => {
-        if (parseInt(val) < min)
+    maxVal:({val,maxVal,name}) => {
+        if (parseInt(val) > maxVal)
             return {
-                description:`el campo ${name} no puede ser menor a ${min}`,
+                description:`el campo ${name} no puede ser mayor a ${maxVal}`,
+                type:'max',
+                field:name
+            };
+    },
+    minVal:({val,minVal,name}) => {
+        if (parseInt(val) < minVal)
+            return {
+                description:`el campo ${name} no puede ser menor a ${minVal}`,
                 type:'min',
                 field:name
             };
     },
-    max:({val,max,name}) => {
-        if (val.length > max){
+    maxLen:({val,maxLen,name}) => {
+        if (val.length > maxLen){
             return {
-                description:`el campo ${name} no puede tener más de ${max} caracteres`,
+                description:`el campo ${name} no puede tener más de ${maxLen} caracteres`,
                 type:'max',
                 field:name
             };
@@ -61,7 +69,7 @@ const evaluateRule = {
     }
 }
 
-const extFields = ['max','min'];
+const extFields = ['maxLen','minVal','maxVal'];
 
 export function validateValue (
     val,

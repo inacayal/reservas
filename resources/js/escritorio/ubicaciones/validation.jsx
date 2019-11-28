@@ -6,14 +6,14 @@ const validation = {
     nombre:{
         rules:{
             required:true,
-            max:45,
+            maxLen:45,
             alpha_numeric:true
         },
         fieldName:"Nombre"
     },
     descripcion:{
         rules:{
-            max:50
+            maxLen:50
         },
         fieldName:"Descripción"
     },
@@ -21,7 +21,7 @@ const validation = {
         rules:{
             required:true,
             numeric:true,
-            min:1
+            minVal:1
         },
         fieldName:"Capacidad máxima"
     },
@@ -29,7 +29,7 @@ const validation = {
         rules:{
             required:true,
             numeric:true,
-            min:1
+            minVal:1
         },
         fieldName:"Máximo Personas"
     }

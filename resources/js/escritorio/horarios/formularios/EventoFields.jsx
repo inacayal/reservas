@@ -13,17 +13,13 @@ import { Text } from '../../../componentes/input/Text';
 import { MultipleSelect } from '../../../componentes/input/MultipleSelect';
 
 export const EventoFields = (props) => {
-    const  eventos = {
-        name: "id_evento",
-        selected: props.fields.id_evento,
-    };
     return (
         <>
             <div className={`${props.class.col} relative visible v-padding`}>
                 <div className={
                     props.side
-                    ? "hidden"
-                    : "top-padding full-width overlay"
+                        ? "hidden"
+                        : "top-padding full-width overlay"
                 } />
                 <div className="bold light-danger full-width">
                     Eventos
@@ -32,7 +28,8 @@ export const EventoFields = (props) => {
                                 titulo="Selecciona los eventos"
                                 optionData={props.eventos.list}
                                 errors={props.errors.id_evento}
-                                changeSelect={props.change} {...eventos}/>
+                                changeSelect={props.change}
+                                selected={props.fields.id_evento}/>
             </div>
             {
                 props.class.type==='feriado'
