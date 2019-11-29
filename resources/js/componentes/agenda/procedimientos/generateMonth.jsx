@@ -3,18 +3,12 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-/**
- * constantes
- */
-import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
+import {
+    DAYS,
+    MONTHS
+} from '../../../constantes/DaysMonths';
 import {GenerateActions} from '../../../acciones/GenerateActions';
-/**
- * diccionario
- */
 import {AssignMonthByStatus} from './AssignByStatus';
-/**
- * funciones
- */
 import {getMonthLength} from '../../../utils/Helper';
 
 function evalFirstWeek (
@@ -24,7 +18,6 @@ function evalFirstWeek (
     let day = date.getDay(),
         evalDate = new Date(date),
         res = [];
-    //ver el primer dia de esta semana
     evalDate.setDate(evalDate.getDate()-day);
     while(evalDate.getMonth()!==date.getMonth()){
         res.push(

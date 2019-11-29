@@ -26,24 +26,24 @@ export default function generateEventosCard(
 ) {
     return Object.keys(eventos).map(
         e => {
-            const acciones = GenerateActions.eventos(
-                    e,
-                    actions
-                ),
-                promociones = Object.values(eventos[e].promociones.list),
-                [horarios,horariosLength] = assignHorarios(eventos[e].horarios.list),
-                linkParam={
-                    to:`/eventos/${e}`,
-                    params:{id:e},
-                    route:'eventos'
-                };
+            const   acciones = GenerateActions.eventos(
+                        e,
+                        actions
+                    ),
+                    promociones = Object.values(eventos[e].promociones.list),
+                    [horarios,horariosLength] = assignHorarios(eventos[e].horarios.list),
+                    linkParam={
+                        to:`/eventos/${e}`,
+                        params:{id:e},
+                        route:'eventos'
+                    };
             return {
                 content: () => (
                     <>
                         <div className="row">
                             <div className="col-md-8 no-padding">
                                 <CustomLink params={linkParam}>
-                                    <span className="text sub-title bold">
+                                    <span className="text mid-title">
                                         {eventos[e].nombre}
                                     </span>
                                 </CustomLink>
@@ -55,12 +55,16 @@ export default function generateEventosCard(
                         </div>
                         <div className="row v-padding">
                             <div className="col-md-6 no-padding">
-                                <div className="bold light-danger">Descripción</div>
+                                <div className="mid-font light-danger">
+                                    Descripción
+                                </div>
                                 <div>{eventos[e].descripcion}</div>
 
                             </div>
                             <div className="col-md-6 no-padding">
-                                <div className="bold light-danger">Horarios</div>
+                                <div className="mid-font light-danger">
+                                    Horarios
+                                </div>
                                 {
                                     (horariosLength > 0)
                                         ?
@@ -68,7 +72,9 @@ export default function generateEventosCard(
                                         :
                                             <div>No has asignado horarios a este evento</div>
                                 }
-                                <div className="bold light-danger top-padding">Promociones</div>
+                                <div className="mid-font light-danger top-padding">
+                                    Promociones
+                                </div>
                                 {
                                     (promociones.length > 0)
                                         ?

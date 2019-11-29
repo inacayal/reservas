@@ -28,7 +28,9 @@ export const ReservaDayByState = {
                     <div className="container no-padding">
                         <div className="row">
                             <div className="col-md-1">
-                                <span className="side-margin light-danger bold inline-block">{display}</span>
+                                <span className="side-margin light-danger bold inline-block">
+                                    {display}
+                                </span>
                             </div>
                             <div className="col-md-11">
                                 <CardList
@@ -56,7 +58,9 @@ export const ReservaDayByState = {
             data: (
                 <div>
                     <div className="inline-block half">
-                        <div className="line-v-middle light-danger bold side-margin inline-block">{display}</div>
+                        <div className="line-v-middle light-danger bold side-margin inline-block">
+                            {display}
+                        </div>
                     </div>
                     <div className="inline-block half smaller-text text-right border-bottom">
                         Sin reservas
@@ -82,7 +86,7 @@ export const ReservaMonthByState = {
     ) => ({
         content: (
             <>
-                <div className="c-title light-danger">{date.getDate()}</div>
+                <div className="mid-title light-danger">{date.getDate()}</div>
                 <i className="text-top fas fa-ellipsis-h highlight-title" style={{ marginTop: "-8px" }} />
                 <div>{renderActions}</div>
             </>
@@ -101,7 +105,7 @@ export const ReservaMonthByState = {
         isThisMonth
     ) => ({
         content:(
-            <div className="content c-title">
+            <div className="content mid-title">
                 {date.getDate()}
             </div>
         ),
@@ -126,12 +130,17 @@ export const ReservaWeekByState = {
     ) => ({
         content:() =>
             <>
-                <div className="v-align-center light-danger c-title">
+                <div className="v-align-center light-danger mid-title">
                     {dataIndex.getDate() + " "}
                 </div>
-                <div className="line-v-middle inline-block v-align-center">{DAYS[dataIndex.getDay()] + " "}</div>
+                <div className="line-v-middle inline-block v-align-center mid-font">
+                    {DAYS[dataIndex.getDay()] + " "}
+                </div>
+                <div className="line-v-middle v-align-center bold">
+                    <i className="fas fa-ellipsis-h" style={{color:"transparent"}}/>
+                </div>
             </>,
-            class: "box-padding text-center same-width highlight-hover pointer",
+            class: "box-padding text-center same-width highlight-hover pointer ",
             data: dataIndex.getDate()
     }),
     data: (
@@ -144,10 +153,15 @@ export const ReservaWeekByState = {
         return {
             content:() => (
                 <>
-                    <div className="v-align-center light-danger c-title">
+                    <div className="v-align-center light-danger mid-title">
                         {dataIndex.getDate() + " "}
                     </div>
-                    <div className="line-v-middle inline-block v-align-center">{DAYS[dataIndex.getDay()] + " "}</div>
+                    <div className="line-v-middle v-align-center mid-font">
+                        {DAYS[dataIndex.getDay()]}
+                    </div>
+                    <div className="line-v-middle v-align-center bold">
+                        <i className="highlight-title fas fa-ellipsis-h"/>
+                    </div>
                 </>
             ),
             class: "box-padding same-width text-center highlight-hover pointer",

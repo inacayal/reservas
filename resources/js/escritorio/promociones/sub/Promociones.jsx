@@ -14,13 +14,12 @@ export function Promociones (props) {
     );
     return (
         <>
-            <Titulo
-                title="Promociones"
-                links={props.nav.links} />
+            <Titulo title="Promociones"
+                    links={props.nav.links} />
             <div className="container">
                 <div className="row">
-                    <div className="bold top-padding">
-                    {"Mostrando " + promociones.length + " promociones encontradas"}
+                    <div className="mid-font top-padding">
+                    {`Mostrando ${promociones.length} promociones encontradas`}
                     </div>
                 </div>
                 <div className="row">
@@ -28,7 +27,10 @@ export function Promociones (props) {
                         {
                             promociones.map(
                                 (elem, index) =>
-                                    <li key={index} className={elem.class}><elem.content /></li>
+                                    <li key={index}
+                                        className={elem.class}>
+                                        <elem.content />
+                                    </li>
                             )
                         }
                     </ul>

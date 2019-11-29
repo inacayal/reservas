@@ -14,16 +14,13 @@ export default function generatePromocionesCard(
 ) {
     return Object.keys(promociones).map(
         e => {
-            const acciones = GenerateActions.promociones(
-                e,
-                actions
-                ),
-                eventos = Object.values(promociones[e].eventos.list),
-                linkParam = {
-                    to:`/promociones/${e}`,
-                    params:{id:e},
-                    route:'promociones'
-                };
+            const   acciones = GenerateActions.promociones(e,actions),
+                    eventos = Object.values(promociones[e].eventos.list),
+                    linkParam = {
+                        to:`/promociones/${e}`,
+                        params:{id:e},
+                        route:'promociones'
+                    };
             return {
                 content: () => (
                     <>
@@ -32,7 +29,9 @@ export default function generatePromocionesCard(
                                 <div className="col-md-8">
                                     <span className="sub-title text-super side-margin inline-block align-center bold">
                                         <CustomLink params={linkParam}>
-                                            <span className="text bold">{promociones[e].nombre}</span>
+                                            <span className="text mid-title">
+                                                {promociones[e].nombre}
+                                            </span>
                                         </CustomLink>
                                     </span>
                                     {acciones}
@@ -43,11 +42,15 @@ export default function generatePromocionesCard(
                             </div>
                             <div className="row h-padding">
                                 <div className="col-md-6">
-                                    <div className="bold light-danger">Descripción</div>
+                                    <div className="mid-font light-danger">
+                                        Descripción
+                                    </div>
                                     <div>{promociones[e].descripcion}</div>
                                 </div>
                                 <div className="col-md-6">
-                                    <div className="bold light-danger top-padding">Eventos</div>
+                                    <div className="mid-font light-danger top-padding">
+                                        Eventos
+                                    </div>
                                     <div>
                                         {
                                             (eventos.length > 0)
@@ -57,12 +60,19 @@ export default function generatePromocionesCard(
                                                     <div>No has asignado horarios a este evento</div>
                                         }
                                     </div>
-                                    <div>
-                                        <span className="bold light-danger top-padding">Descuento</span>
+                                    <div className="top-padding">
+                                        <span  className="mid-font light-danger ">
+                                            Descuento
+                                        </span>
                                         {
                                             promociones[e].descuento
                                             ?
-                                                <span className="side-margin">{promociones[e].descuento}<span className="bold side-margin">%</span></span>
+                                                <span className="side-margin">
+                                                    {promociones[e].descuento}
+                                                    <span className="bold side-margin">
+                                                        %
+                                                    </span>
+                                                </span>
                                             :
                                                 <span className="bold"> Sin descuento asignado </span>
                                         }

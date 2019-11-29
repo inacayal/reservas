@@ -66,7 +66,7 @@ export const SelectFields = (props) => {
                     <div className="sub-title light-danger full-width">
                         Reserva
                     </div>
-                    <div className="left-padding col-md-12 bold">
+                    <div className="left-padding col-md-12 mid-font">
                         Apertura
                     </div>
                     <div className="col-sm-5 h-padding text-left"
@@ -95,11 +95,10 @@ export const SelectFields = (props) => {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="left-padding col-md-12 bold">
+                    <div className="left-padding col-md-12 mid-font">
                         Cierre
                     </div>
-                    <div    className="col-sm-5 h-padding text-left"
-                            style={{ paddingLeft: "20px" }}>
+                    <div className="col-sm-5 h-padding text-left">
                         <Select titulo="Hora"
                                 changeSelect={props.change}
                                 errors={props.errors.cierre_reserva_hora}
@@ -127,11 +126,10 @@ export const SelectFields = (props) => {
                     <div className="sub-title light-danger full-width">
                         Atención
                     </div>
-                    <div className="left-padding col-md-12 bold">
+                    <div className="left-padding col-md-12 mid-font">
                         Apertura
                     </div>
-                    <div    className="col-sm-5 h-padding text-left left-padding"
-                            style={{ paddingLeft: "20px" }}>
+                    <div className="col-sm-5 h-padding text-left left-padding">
                         <Select titulo="Hora"
                                 changeSelect={props.change}
                                 errors={props.errors.apertura_atencion_hora}
@@ -156,7 +154,7 @@ export const SelectFields = (props) => {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="left-padding col-md-12 bold">
+                    <div className="left-padding col-md-12 mid-font">
                         Cierre
                     </div>
                     <div    className="col-sm-5 h-padding text-left"

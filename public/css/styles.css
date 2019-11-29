@@ -232,6 +232,12 @@ body::-webkit-scrollbar-thumb:hover {
 .sub-title{
     font-size:20px;
 }
+.mid-title{
+    font-size:24px;
+}
+.mid-font{
+    font-size:18px;
+}
 .no-top-padding{
     padding-top:0px;
 }
@@ -357,8 +363,7 @@ body::-webkit-scrollbar-thumb:hover {
     padding-left:10px;
 }
 .c-title{
-    font-size:24px;
-    font-weight: bold;
+    font-size:32px;
 }
 .light-danger{
     color:var(--light-danger);

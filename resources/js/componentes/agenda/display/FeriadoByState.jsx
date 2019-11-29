@@ -1,20 +1,16 @@
-/**
- * react basic
- */
-import React, { Component } from 'react';
+import React, {
+    Component
+} from 'react';
 import ReactDOM from 'react-dom';
-import { Link } from 'react-router-dom';
-/**
- * componentes
- */
 import CardList from '../../basic/CardList';
 import ButtonList from '../../basic/ButtonList';
 import {CommaList} from '../../basic/CommaList';
-/**
- * constantes
- */
-import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
+import {
+    DAYS,
+    MONTHS
+} from '../../../constantes/DaysMonths';
 import { CLASSBYSTATE } from '../../../constantes/CardObject';
+import CustomLink from '../../basic/CustomLink';
 
 export const FeriadoMonthByState = {
     laboral: (
@@ -26,7 +22,7 @@ export const FeriadoMonthByState = {
     ) => ({
         content:
             <>
-                <div className="c-title light-danger">{date.getDate()}</div>
+                <div className="mid-title light-danger">{date.getDate()}</div>
                 <i className="text-top fas fa-ellipsis-h highlight-title" style={{ marginTop: "-8px" }} />
                 <div>{renderActions}</div>
             </>
@@ -42,7 +38,7 @@ export const FeriadoMonthByState = {
     ) => ({
         content: (
             <>
-                <div className="c-title light-danger">{date.getDate()}</div>
+                <div className="mid-title light-danger">{date.getDate()}</div>
                 <i className="text-top fas fa-ellipsis-h highlight-title" style={{ marginTop: "-8px" }} />
                 <div className="flex-row">{renderActions}</div>
             </>
@@ -57,7 +53,7 @@ export const FeriadoMonthByState = {
         isThisMonth
     ) => ({
         content:(
-            <div className="content c-title">
+            <div className="content mid-title ">
                 {date.getDate()}
             </div>
         ),
@@ -76,47 +72,69 @@ export const FeriadoWeekByState = {
         dataIndex
     )=>
         {
-            const date = new Date(sectionData.fecha),
-                eventosLength = Object.values(sectionData.eventos.list).length;
+            const   date = new Date(sectionData.fecha),
+                    eventosLength = Object.values(sectionData.eventos.list).length,
+                    linkParam = {
+                        to:`/horarios/feriados/${sectionData.id}`,
+                        params:{id:sectionData.id},
+                        route:`horarios/feriados`
+                    };
             return {
                 content:() =>
                     <div className="container">
                         <div className="row">
-                            <div className="col-md-9 no-padding">
-                                <Link to={'/horarios/feriados/' + sectionData.id}>
-                                    <span className="subrayado margin-box inline-block v-align-center light-danger c-title">{date.getDate() + " "}</span>
-                                    <span className="text subrayado bold line-v-middle inline-block v-align-center">{DAYS[date.getDay()] + " "}</span>
-                                </Link>
-                                {renderActions}
-                            </div>
-                            <div className="col-md-3 border-bottom ">
-                                <p className="smaller-text no-margin text-right">{sectionData.nombre}</p>
-                            </div>
+                            <CustomLink params={linkParam}>
+                                <span className="mid-title light-danger">
+                                    {date.getDate() + " "}
+                                </span>
+                                <span className="sub-title side-margin bold" style={{color:'var(--text-color)'}}>
+                                    {DAYS[date.getDay()]}
+                                </span>
+                                <span   className="side-margin mid-font"
+                                        style={{color:"var(--text-color)"}}>
+                                    {sectionData.nombre}
+                                </span>
+                            </CustomLink>
+                            {renderActions}
                         </div>
                         <div className="row">
                             <div className="col-md-8">
-                                <div className="container">
+                                <div className="container no-padding">
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <div className="light-danger bold">Horarios</div>
-                                            <div style={{ paddingLeft: "10px" }}>
-                                                <div className="bold">Reservas:</div>
-                                                <div>{sectionData.apertura.reserva.hora + ":" + sectionData.apertura.reserva.minuto + "hs. - " + sectionData.cierre.reserva.hora + ":" + sectionData.apertura.reserva.minuto + "hs."}</div>
-                                                <div className="bold">Atencion:</div>
-                                                <div>{sectionData.apertura.atencion.hora + ":" + sectionData.apertura.atencion.minuto + "hs. - " + sectionData.cierre.atencion.hora + ":" + sectionData.cierre.atencion.minuto + "hs."}</div>
+                                            <div className="light-danger mid-font">
+                                                Horarios
+                                            </div>
+                                            <div >
+                                                <span style={{textDecoration:"underline"}}>
+                                                    Reservas:
+                                                </span>
+                                                {`${sectionData.apertura.reserva.hora}:${sectionData.apertura.reserva.minuto} hs. - ${sectionData.cierre.reserva.hora}:${sectionData.apertura.reserva.minuto}hs.`}
+                                            </div>
+                                            <div>
+                                                <span style={{textDecoration:"underline"}}>
+                                                    Atencion:
+                                                </span>
+                                                {` ${sectionData.apertura.atencion.hora}:${sectionData.apertura.atencion.minuto}hs. - ${sectionData.cierre.atencion.hora}:${sectionData.cierre.atencion.minuto}hs.`}
                                             </div>
                                         </div>
                                         <div className="col-md-6">
-                                            <div className="light-danger bold">Descripción:</div>
-                                            <div>{sectionData.descripcion.substring(0, 30) + "..."}</div>
+                                            <div className="light-danger mid-font">
+                                                Descripción:
+                                            </div>
+                                            <div>
+                                                {sectionData.descripcion.substring(0, 50) + "..."}
+                                            </div>
                                             <div className="border-top small-v-padding" />
-                                            <div className="smaller-text">mostrando sólo los primeros 30 caracteres</div>
+                                            <div className="smaller-text">
+                                                mostrando sólo los primeros 50 caracteres
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-4">
-                                <div className="light-danger bold">Eventos</div>
+                                <div className="light-danger mid-font">Eventos</div>
                                 {
                                     eventosLength > 0
                                     ?
@@ -138,35 +156,50 @@ export const FeriadoWeekByState = {
         dataIndex
     ) =>
         {
-            const date = new Date(sectionData.fecha);
+            const   date = new Date(sectionData.fecha),
+                    linkParam = {
+                        to:`/horarios/feriados/${sectionData.id}`,
+                        params:{id:sectionData.id},
+                        route:'horarios/feriados'
+                    };
             return {
                 content: () =>
-                    <div className="container">
+                    <div className="container v-padding">
                         <div className="row">
-                            <div className="col-md-9 no-padding">
-                                <Link to={'/horarios/feriados/'+sectionData.id} >
-                                    <span className="subrayado margin-box inline-block v-align-center light-danger c-title">{date.getDate() + " "}</span>
-                                    <span className="text subrayado bold line-v-middle inline-block v-align-center">{DAYS[date.getDay()] + " "}</span>
-                                </Link>
-                                {renderActions}
-                            </div>
-                            <div className="col-md-3">
-                                <p className="smaller-text no-margin text-right">{sectionData.nombre}</p>
-                            </div>
+                            <CustomLink params={linkParam}>
+                                <span className="light-danger mid-title side-margin">
+                                    {date.getDate() + " "}
+                                </span>
+                                <span   className="side-margin subrayado sub-title bold"
+                                        style={{color:"var(--text-color)"}}>
+                                    {DAYS[date.getDay()] + " "}
+                                </span>
+                                <span   className="mid-font"
+                                        style={{color:"var(--text-color)"}}>
+                                    {sectionData.nombre}
+                                </span>
+                            </CustomLink>
+                            {renderActions}
                         </div>
                         <div className="row">
-                            <div className="col-md-6 light-danger bold">
+                            <div className="col-md-6 light-danger mid-font">
                                 Sin apertura
+                            </div>
+                            <div className="col-md-6">
+                                <div className="light-danger mid-font">
+                                    Descripción:
                                 </div>
-                            <div className="col-md-6 ">
-                                <div className="light-danger bold">Descripción:</div>
-                                <div>{sectionData.descripcion.substring(0, 30) + "..."}</div>
+                                <div>
+                                    {`${sectionData.descripcion.substring(0, 50)} ...`}
+                                </div>
                                 <div className="border-top small-v-padding" />
-                                <div className="smaller-text">mostrando sólo los primeros 30 caracteres</div>
+                                <div className="smaller-text" style={{paddingBottom:"10px"}}>
+                                    mostrando sólo los primeros 30 caracteres
+                                </div>
                             </div>
                         </div>
                     </div>,
-                class: "box-padding full-width background-border"
+                class: "h-padding full-width background-border"
             }
         },
     no_data: (
@@ -180,12 +213,16 @@ export const FeriadoWeekByState = {
             content: () =>
                 <div className="container">
                     <div className="row">
-                        <div className="col-md-8 no-padding bold">
-                            <span className=" margin-box inline-block v-align-center light-danger c-title">{dataIndex.getDate() + " "}</span>
-                            <span className="line-v-middle inline-block v-align-center bold">{DAYS[dataIndex.getDay()] + " "}</span>
+                        <div className="col-md-8 no-padding">
+                            <span className="mid-title light-danger side-margin">
+                                {dataIndex.getDate()}
+                            </span>
+                            <span className="side-margin sub-title">
+                                {DAYS[dataIndex.getDay()]}
+                            </span>
                         </div>
-                        <div className="col-md-4 border-bottom text-right">
-                            <p className="smaller-text no-margin">No has designado este día como feriado</p>
+                        <div className="col-md-4 border-bottom text-right smaller-text">
+                            No has designado este día como feriado
                         </div>
                     </div>
                 </div>,

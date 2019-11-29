@@ -30,9 +30,9 @@ export const HorarioWeekByState = {
                 <>
                     <div className="full-width" >
                         <div className="seventy inline-block sub-title">
-                            <div className="inline-block side-margin text-top bold">
+                            <div className="inline-block side-margin text-top">
                                 <CustomLink params={linkParam}>
-                                    <span className="text bold subrayado">
+                                    <span className="mid-title subrayado" style={{color:'var(--light-danger)'}}>
                                         {DAYS[sectionData.diaSemana - 1]}
                                     </span>
                                 </CustomLink>
@@ -46,23 +46,23 @@ export const HorarioWeekByState = {
                     <div className="container">
                         <div className="row h-padding">
                             <div className="col-md-6 container">
-                                <div className="row bold light-danger">
+                                <div className="row sub-title">
                                     Horarios:
                                 </div>
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <div className="bold">Reservas:</div>
+                                        <div className="mid-font">Reservas:</div>
                                         <div>{sectionData.apertura.reserva.hora + ":" + sectionData.apertura.reserva.minuto + "hs. - " + sectionData.cierre.reserva.hora + ":" + sectionData.cierre.reserva.minuto + "hs."}</div>
                                     </div>
                                     <div className="col-md-6">
-                                        <div className="bold">Atención:</div>
+                                        <div className="mid-font">Atención:</div>
                                         <div>{sectionData.apertura.atencion.hora + ":" + sectionData.apertura.atencion.minuto + "hs. - " + sectionData.cierre.atencion.hora + ":" + sectionData.cierre.atencion.minuto + "hs."}</div>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <div className="full-width">
-                                    <div className="light-danger inline-block half bold">
+                                    <div className="inline-block half sub-title">
                                         Eventos
                                     </div>
                                     <div className="smaller-text inline-block half text-right">

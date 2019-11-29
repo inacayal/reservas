@@ -32,7 +32,7 @@ export function FeriadoFormulario (props) {
                     }
                     links={props.nav.links}
                     buttons={props.nav.buttons} />
-            <div className="bold">
+            <div className="sub-title">
                 {
                     props.editar
                         ? `${MONTHS[data.date.getMonth()]} de ${data.date.getFullYear()}`
@@ -41,7 +41,7 @@ export function FeriadoFormulario (props) {
             </div>
             <div className="container">
                 <div className="row v-padding">
-                    <div className="col-md-6">
+                    <div className="col-md-7">
                         <Calendario editar={props.editar}
                                     date={props.fields.fecha_feriado}
                                     data={data}
@@ -51,7 +51,7 @@ export function FeriadoFormulario (props) {
                             * Los días inhabilitados ya tienen feriados asignados
                         </div>
                     </div>
-                    <div className="col-lg-6">
+                    <div className="col-lg-5">
                         <div className="container">
                             <div className="row sub-title">
                                 {data.title}

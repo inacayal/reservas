@@ -34,14 +34,16 @@ export function Horarios (props) {
         <>
             <Titulo title="Horarios"
                     links={links}/>
-            <ul className="justify no-padding full-width flex-column nav-list h-center">
-                {
-                    week.map(
-                        (elem, index) =>
-                            <li key={index} className={elem.class}><elem.content /></li>
-                    )
-                }
-            </ul>
+            <div className="v-padding">
+                <ul className="v-padding justify no-padding full-width flex-column nav-list h-center">
+                    {
+                        week.map(
+                            (elem, index) =>
+                                <li key={index} className={elem.class}><elem.content /></li>
+                        )
+                    }
+                </ul>
+            </div>
         </>
     );
 }

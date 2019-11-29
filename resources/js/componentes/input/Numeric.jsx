@@ -9,14 +9,13 @@ import DisplaysErrors from '../../hocs/DisplaysErrors';
 import ReactDOM from 'react-dom';
 
 function noMemoNumeric(props) {
-    console.log('render')
     const   hasError = props.hasError;
     return (
         <div className="full-width">
             <h6 className={
                 props.description
-                ? "highlight bold no-margin"
-                : "highlight bold"}>
+                    ? "highlight mid-font no-margin"
+                    : "highlight mid-font"}>
                 {props.titulo}
             </h6>
             {props.description||""}

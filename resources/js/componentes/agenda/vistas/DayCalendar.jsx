@@ -10,49 +10,50 @@ import {WaitsLoading} from '../../../hocs/RouterTransition';
 
 const WeekDisplay = React.memo(
     (props) =>{
-        const
-            context = useContext(WaitsLoading),
-            [nDate, changeDate] = useState(new Date(props.date)),
-            week = generateWeek(
-                nDate,
-                props.data,
-                props.actions,
-                props.type
-            ),
-            changeIndex = (e) => {
-                e.preventDefault();
-                const offset = parseInt(e.currentTarget.getAttribute('data')),
-                    change = offset < 0
-                        ? {
-                            o: new Date(nDate),
-                            n: new Date(nDate.setDate(nDate.getDate() + offset + (6 - nDate.getDay()))),
-                            m: getMonthLength(nDate.getMonth() + 1, nDate.getFullYear())
-                        }
-                        : {
-                            o: new Date(nDate),
-                            n: new Date(nDate.setDate(nDate.getDate() + offset - nDate.getDay())),
-                            m: 1
-                        };
-
-                evaluateDateChange (
-                    change,
-                    context,
-                    (obj) => {changeDate(obj.date);},
-                    '/reservas',
-                    "3",
-                    'reservas'
-                );
-            },
-            classes = "no-padding full-width flex-row nav-list";
+        const   context = useContext(WaitsLoading),
+                [nDate, changeDate] = useState(new Date(props.date)),
+                week = generateWeek(
+                    nDate,
+                    props.data,
+                    props.actions,
+                    props.type
+                ),
+                changeIndex = (e) => {
+                    e.preventDefault();
+                    const   offset = parseInt(e.currentTarget.getAttribute('data')),
+                            change = offset < 0
+                                ? {
+                                    o: new Date(nDate),
+                                    n: new Date(nDate.setDate(nDate.getDate() + offset + (6 - nDate.getDay()))),
+                                    m: getMonthLength(nDate.getMonth() + 1, nDate.getFullYear())
+                                }
+                                : {
+                                    o: new Date(nDate),
+                                    n: new Date(nDate.setDate(nDate.getDate() + offset - nDate.getDay())),
+                                    m: 1
+                                };
+                    evaluateDateChange (
+                        change,
+                        context,
+                        (obj) => {changeDate(obj.date);},
+                        '/reservas',
+                        "3",
+                        'reservas'
+                    );
+                },
+                classes = "no-padding full-width flex-row nav-list";
         return (
             <>
                 <ul className={nDate.getDate() < 7 ? classes + " h-end" : classes}>
                     {
                         week.map(
                             (elem, index) =>
-                                <li
-                                    key={index}
-                                    className={elem.data == props.date.getDate() ? elem.class + " selected" : elem.class}
+                                <li key={index}
+                                    className={
+                                        elem.data == props.date.getDate()
+                                            ? `${elem.class} selected`
+                                            : elem.class
+                                    }
                                     data={elem.data}
                                     onClick={props.verDia}>
                                     <elem.content />
@@ -94,8 +95,8 @@ function DayCalendar(props) {
             );
             return (
                 <div className="container">
-                    <div className="row v-padding bold">
-                        {"Mostrando " + DAYS[props.date.getDay()] + " " + props.date.getDate() + " de " + MONTHS[props.date.getMonth()]}
+                    <div className="row v-padding sub-title">
+                        {`Mostrando ${DAYS[props.date.getDay()]} ${props.date.getDate()} de ${MONTHS[props.date.getMonth()]}`}
                     </div>
                     <div className="row">
                         <WeekDisplay
@@ -111,9 +112,9 @@ function DayCalendar(props) {
                         foundLength>0
                         ?
                             <>
-                                <div className="row v-padding justify-content-end bold">
-                                    <div className="col-md-6">
-                                        {foundLength + " reservaciones encontradas"}
+                                <div className="row v-padding justify-content-end">
+                                    <div className="col-md-6 sub-title">
+                                        {`${foundLength} reservaciones encontradas`}
                                     </div>
                                     <div className="col-md-6 text-right">
                                         <Toggle
@@ -146,8 +147,12 @@ function DayCalendar(props) {
     }
     return (
         <div className={"full-width"}>
-            <div className="bold">{"Mostrando "+DAYS[props.date.getDay()]+" "+props.date.getDate()+" de "+ MONTHS[props.date.getMonth()]}</div>
-            <div>Aun no has asignado los horarios de trabajo de tu local</div>
+            <div className="bold">
+                {`Mostrando ${DAYS[props.date.getDay()]} ${props.date.getDate()} de ${MONTHS[props.date.getMonth()]}`}
+            </div>
+            <div>
+                Aun no has asignado los horarios de trabajo de tu local
+            </div>
         </div>
     )
 }

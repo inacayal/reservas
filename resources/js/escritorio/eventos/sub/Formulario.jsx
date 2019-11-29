@@ -48,7 +48,7 @@ export function Formulario (props) {
                     </div>
                     <div className="col-md-6">
                         <div>
-                            <h6 className="highlight no-margin bold">
+                            <h6 className="highlight no-margin mid-font">
                                 Promociones
                             </h6>
                             <MultipleSelect fieldName="Promociones"
@@ -60,7 +60,7 @@ export function Formulario (props) {
                                             selected ={props.fields.promociones}/>
                         </div>
                         <div className="v-padding">
-                            <h6 className="highlight no-margin bold">
+                            <h6 className="highlight no-margin mid-font">
                                 Horarios
                             </h6>
                             <MultipleSelect fieldName="Días de semana"
@@ -72,7 +72,7 @@ export function Formulario (props) {
                                             selected ={props.fields.horarios}/>
                         </div>
                         <div className="v-padding">
-                            <h6 className="highlight no-margin bold">
+                            <h6 className="highlight no-margin mid-font">
                                 Feriados
                             </h6>
                             <MultipleSelect fieldName="Feriados"

@@ -21,7 +21,7 @@ export const EventoFields = (props) => {
                         ? "hidden"
                         : "top-padding full-width overlay"
                 } />
-                <div className="bold light-danger full-width">
+                <div className="mid-font light-danger full-width">
                     Eventos
                 </div>
                 <MultipleSelect fieldName={"Eventos"}

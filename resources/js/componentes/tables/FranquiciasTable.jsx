@@ -23,30 +23,30 @@ export default function FranquiciasTable(props){
             {
                 Header: "Nombre",
                 accessor: "nombre",
-                headerClassName: 'bold highlight-title text-left',
+                headerClassName: 'mid-font bold highlight-title text-left',
                 fixed: "left"
             },
             {
                 Header: "Teléfono",
                 accessor: "admTelefono",
-                headerClassName: 'bold highlight-title text-left'
+                headerClassName: 'mid-font bold highlight-title text-left'
             },
             {
                 Header: "Correo",
                 accessor: "admEmail",
-                headerClassName: 'bold highlight-title text-left'
+                headerClassName: 'mid-font bold highlight-title text-left'
             },
             {
                 Header: "Razón Social",
                 accessor: "razonSocial",
-                headerClassName: 'bold highlight-title text-left'
+                headerClassName: 'mid-font bold highlight-title text-left'
             },
             {
                 Header: "Acciones",
                 accessor: "acciones",
                 className: "text-right visible",
                 minWidth: 120,
-                headerClassName: 'bold highlight-title text-left',
+                headerClassName: 'mid-font bold highlight-title text-left',
                 fixed: "right"
             }
         ],

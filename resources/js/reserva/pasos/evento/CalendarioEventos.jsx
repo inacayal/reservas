@@ -46,26 +46,36 @@ export default function CalendarioEventos(props){
                 </div>
                 <div className="col-md-4 no-padding text-right">
                     <div>
-                        <span className="bold side-margin">atención:</span>
-                        <span className="side-margin">{`${horarioAtencion} horas`}</span>
+                        <span className="mid-font side-margin">
+                            atención:
+                        </span>
+                        <span className="side-margin">
+                            {`${horarioAtencion} horas`}
+                        </span>
                     </div>
                     <div>
-                        <span className="bold side-margin">reservas:</span>
+                        <span className="mid-font side-margin">
+                            reservas:
+                        </span>
                         <span className="side-margin">{`${horarioReserva} horas`}</span>
                     </div>
                 </div>
                 <div className="row justify-content-center v-padding">
-                    <div className="col-md-4 text-left">
-                        <Promociones data={hoverData.eventos.data}/>
-                    </div>
-                    <div className="col-md-8 no-padding">
-                        <Calendario showDate={props.showDate}
-                                    minDate={props.minDate}
-                                    data={props.data}
-                                    changeHover={changeHover}
-                                    fetch={props.fetch}
-                                    clickCallback={props.clickCallback}
-                                    change ={props.change} />
+                    <div className="container col-md-11">
+                        <div className="row">
+                            <div className="col-md-8 text-left">
+                                <Calendario showDate={props.showDate}
+                                            minDate={props.minDate}
+                                            data={props.data}
+                                            changeHover={changeHover}
+                                            fetch={props.fetch}
+                                            clickCallback={props.clickCallback}
+                                            change ={props.change} />
+                            </div>
+                            <div className="col-md-4 no-padding">
+                                <Promociones data={hoverData.eventos.data}/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -18,15 +18,18 @@ export default function generateYear(date,handler){
         currentIndex = monthIndex[date.getMonth()].split('');
     for(let row = 0; row<monthRows.length; row++){
         year.push(
-            <ButtonList
-                key={row}
-                container="thirty"
-                clickHandler={handler}
-                elems={monthRows[row]}
-                selected={row==currentIndex[0] ? date.getMonth()+1 : null}
-                selectedClass={"box-padding v-padding full-width highlight-nav highlight-border"}
-                displayList="flex-row no-margin nav-list full-width no-padding h-center"
-                elemClass="box-padding highlight-hover box-transparent full-width"/>
+            <ButtonList key={row}
+                        container="thirty"
+                        clickHandler={handler}
+                        elems={monthRows[row]}
+                        selected={
+                            row==currentIndex[0]
+                            ? date.getMonth()+1
+                            : null
+                        }
+                        selectedClass="box-padding v-padding full-width highlight-nav highlight-border mid-font"
+                        displayList="flex-row no-margin nav-list full-width no-padding h-center"
+                        elemClass="box-padding highlight-hover box-transparent full-width mid-font"/>
         );
     }
     return year;

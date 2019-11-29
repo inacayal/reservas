@@ -52,15 +52,14 @@ export class Feriados extends Component {
                 <Titulo title="Feriados"
                         links={nav} />
                 <div className="container">
-                    <Agenda
-                        show={data.show}
-                        date={data.date}
-                        type="feriados"
-                        actions={{eliminar:this.toggleModal}}
-                        controls={this.state.controls}
-                        fetchNewMonth={this.props.fetch}
-                        endpoint="horarios/feriados"
-                        data={data.data}/>
+                    <Agenda show={data.show}
+                            date={data.date}
+                            type="feriados"
+                            actions={{eliminar:this.toggleModal}}
+                            controls={this.state.controls}
+                            fetchNewMonth={this.props.fetch}
+                            endpoint="horarios/feriados"
+                            data={data.data}/>
                 </div>
             </>
         );

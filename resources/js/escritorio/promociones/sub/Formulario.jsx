@@ -44,7 +44,7 @@ export function Formulario (props) {
                     </div>
                     <div className="col-md-6 top-padding">
                         <div>
-                            <h6 className="highlight no-margin bold">
+                            <h6 className="highlight no-margin mid-font">
                                 Eventos
                             </h6>
                             <MultipleSelect fieldName={"Eventos"}

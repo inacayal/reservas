@@ -15,19 +15,21 @@ export function Eventos (props) {
     );
     return (
         <>
-            <Titulo
-                title="Eventos"
-                links={props.nav.links} />
+            <Titulo title="Eventos"
+                    links={props.nav.links} />
             <div className="container">
-                <div className="bold top-padding row">
-                    {"Mostrando " + eventos.length + " eventos encontrados"}
+                <div className="mid-font top-padding row">
+                    {`Mostrando ${eventos.length} eventos encontrados`}
                 </div>
                 <div className="row">
                     <ul className="nav-list no-padding">
                         {
                             eventos.map(
                                 (elem, index) =>
-                                    <li key={index} className={elem.class}><elem.content /></li>
+                                    <li key={index}
+                                        className={elem.class}>
+                                        <elem.content />
+                                    </li>
                             )
                         }
                     </ul>

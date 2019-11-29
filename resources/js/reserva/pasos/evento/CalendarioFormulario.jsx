@@ -6,7 +6,7 @@ import React, {
     useState,
     useEffect
 } from 'react';
-import { 
+import {
     DAYS,
     MONTHS
 } from '../../../constantes/DaysMonths';
@@ -53,10 +53,18 @@ export default function CalendarioFormulario(props) {
     return (
         <div className="container-fluid">
             <div className="row box-padding">
-                <h3 className={props.displayTitles ? "bold highlight-title align-center" : "hidden"}>datos de contacto</h3>
+                <h3 className={
+                    props.displayTitles
+                        ? "bold highlight-title align-center"
+                        : "hidden"
+                    }>
+                    datos de contacto
+                </h3>
             </div>
             <div className="row h-padding">
-                <h6 className="highlight bold no-margin">Hora de reserva</h6>
+                <h6 className="highlight mid-font no-margin">
+                    Hora de reserva
+                </h6>
                 <span   className="side-margin row smaller-text h-padding inline-block"
                         style={{verticalAlign:"bottom"}}>
                     {`${DAYS[props.date.getDay()]}, ${props.date.getDate()} de ${MONTHS[props.date.getMonth()]} del ${props.date.getFullYear()}`}
@@ -147,7 +155,7 @@ export default function CalendarioFormulario(props) {
                 <div className="col-md-9">
                     <div className="row">
                         <div className="col-md-6 text-left">
-                            <h6 className="highlight bold no-margin">
+                            <h6 className="highlight mid-font no-margin">
                                 Ubicación
                             </h6>
                             <Select changeSelect={props.change}
@@ -163,7 +171,7 @@ export default function CalendarioFormulario(props) {
                                 :
                                     "top-padding full-width overlay"}/>
                             <div className="full-width">
-                                <h6 className="highlight bold no-margin">
+                                <h6 className="highlight mid-font no-margin">
                                     Personas
                                 </h6>
                                 <Select changeSelect={props.change}
@@ -188,7 +196,7 @@ export default function CalendarioFormulario(props) {
                             <div className="container">
                                 <div className="row text-left">
                                     <div className="col-md-12">
-                                        <h6 className="highlight bold no-margin">
+                                        <h6 className="highlight mid-font no-margin">
                                             Ocasión
                                         </h6>
                                         <Select changeSelect={props.change}
