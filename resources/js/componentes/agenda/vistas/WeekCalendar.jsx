@@ -23,7 +23,7 @@ function WeekCalendar(props) {
         );
     return (
         <div className="container">
-            <div className="row sub-title">
+            <div className="row m-font">
                 {`Mostrando ${MONTHS[props.date.getMonth()]} de ${props.date.getFullYear()}`}
             </div>
             <div className="row">
@@ -31,7 +31,9 @@ function WeekCalendar(props) {
                     {
                         week.map(
                             (elem,index) =>
-                                <li key={index} className={elem.class}><elem.content/></li>
+                                <li key={index} className={elem.class}>
+                                    <elem.content/>
+                                </li>
                         )
                     }
                 </ul>

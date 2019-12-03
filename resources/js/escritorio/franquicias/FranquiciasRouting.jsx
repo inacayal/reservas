@@ -10,8 +10,10 @@ import {Route,Switch} from 'react-router-dom';
 import {Formulario} from './sub/Formulario';
 import {Franquicias} from './sub/Franquicias';
 import {VerFranquicia} from './sub/VerFranquicia';
-import {Navegacion,FormActions} from '../../acciones/ActionsByView';
+import {Navegacion} from '../../acciones/ActionsByView';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
+import Validator from '../../hocs/Validator';
+import validation from './validation';
 
 export default function FranquiciasRouting (props) {
     const   [open,toggle] = useState(false),
@@ -25,55 +27,79 @@ export default function FranquiciasRouting (props) {
             };
     return (
         <>
-            <ConfirmarModal
-                open={open}
-                closeModal={closeModal}
-                title={"Eliminar Franquicia"}
-                content={"¿estás seguro de eliminar este franquicia?"} />
-            <Route
-                path={props.match.url}
-                exact
-                render={
-                    (match) =>
-                        <Franquicias
-                            toggleModal={openModal}
-                            data={props.data}
-                            nav={Navegacion.listado('franquicias')} {...match}/>
-                } />
-            <Switch>
-                <Route
-                    path={`${props.match.url}/editar/:id`}
+            <ConfirmarModal open={open}
+                            closeModal={closeModal}
+                            title={"Eliminar Franquicia"}
+                            content={"¿estás seguro de eliminar este franquicia?"} />
+            <Route  path={props.match.url}
                     exact
                     render={
                         (match) =>
-                            <Formulario
-                                data={props.data}
-                                toggleModal={openModal}
-                                nav={Navegacion.formulario(()=>false,match.match.params.id,'franquicias')}
-                                formActions = {FormActions()}
-                                editar={true} {...match} />
+                            <Franquicias    toggleModal={openModal}
+                                            data={props.data}
+                                            nav={Navegacion.listado('franquicias')} {...match}/>
                     } />
-                <Route
-                    path={`${props.match.url}/agregar`}
-                    render={
-                        (match) =>
-                            <Formulario
-                                data={props.data}
-                                toggleModal={openModal}
-                                nav={Navegacion.agregar('franquicias')}
-                                formActions = {FormActions()}
-                                editar={false}
-                                {...match} />
-                    } />
-                <Route
-                    path={`${props.match.url}/:id`}
-                    render={
-                        (match) =>
-                            <VerFranquicia
-                                data={props.data}
-                                toggleModal={openModal}
-                                nav={Navegacion.singular(()=>false,match.match.params.id,'franquicias')} {...match} />
-                    } />
+            <Switch>
+                <Route  path={`${props.match.url}/editar/:id`}
+                        exact
+                        render={
+                            (match) => {
+                                const fields = {
+                                    id:props.data.id,
+                                    nombre:props.data.nombre,
+                                    correo:props.data.correoLocal||'',
+                                    telefono:props.data.telefonoLocal||'',
+                                    username: props.data.username||'',
+                                    email: props.data.email||'',
+                                    razon_social:props.data.razonSocial||'',
+                                    cuit_cuil:props.data.cuitCuil||''
+                                };
+                                return (
+                                    <Validator  form={fields}
+                                                validation={validation}>
+                                        <Formulario data={props.data}
+                                                    toggleModal={openModal}
+                                                    nav={Navegacion.formulario(()=>false,match.match.params.id,'franquicias')}
+                                                    editar={true} {...match} />
+                                    </Validator>
+
+                                )
+                            }
+                        } />
+                <Route  path={`${props.match.url}/agregar`}
+                        render={
+                            (match) => {
+                                const fields = {
+                                    id:'',
+                                    franquicia:'',
+                                    nombre:'',
+                                    correo:'',
+                                    telefono:'',
+                                    username: '',
+                                    email: '',
+                                    razon_social:'',
+                                    cuit_cuil:''
+                                };
+                                return (
+                                    <Validator  form={fields}
+                                                validation={validation}>
+                                        <Formulario data={props.data}
+                                                    toggleModal={openModal}
+                                                    nav={Navegacion.agregar('franquicias')}
+                                                    editar={false} {...match} />
+                                    </Validator>
+
+                                )
+                            }
+                        } />
+                <Route  path={`${props.match.url}/:id`}
+                        render={
+                            (match) =>
+                                <VerFranquicia
+                                    data={props.data}
+                                    toggleModal={openModal}
+                                    nav={Navegacion.singular(()=>false,match.match.params.id,'franquicias')} {...match} />
+                        } />
             </Switch>
         </>
     );

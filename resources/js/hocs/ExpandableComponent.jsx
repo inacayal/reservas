@@ -9,26 +9,26 @@ import ReactDOM from 'react-dom';
 import Actions from '../componentes/basic/Actions';
 
 export const ExpandableComponent = (props) => {
-    const [more,toggle] = useState(props.show),
-        title = more
-        ?
-            <div className="smaller-text text bold">
-                menos <i className="fas fa-minus-circle inline-box side-margin" />
-            </div>
-        :
-            <div className="smaller-text text bold">
-                más <i className="fas fa-plus-circle inline-box side-margin" />
-            </div>,
-        action = [{
-            title:title,
-            click: (e) =>{
-                e.preventDefault();
-                toggle(!more);
-            }
-        }];
+    const   [more,toggle] = useState(props.show),
+            title = more
+            ?
+                <div className="smaller-text text bold">
+                    menos <i className="fas fa-minus-circle inline-box side-margin" />
+                </div>
+            :
+                <div className="smaller-text text bold">
+                    más <i className="fas fa-plus-circle inline-box side-margin" />
+                </div>,
+            action = [{
+                title:title,
+                click: (e) =>{
+                    e.preventDefault();
+                    toggle(!more);
+                }
+            }];
     return (
         <div className="container no-padding ">
-            <div className="row sub-title bold top-padding">
+            <div className="row mid-title top-padding">
                 <div className="col-md-6 no-padding">
                     {props.title}
                 </div>

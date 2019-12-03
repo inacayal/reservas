@@ -41,30 +41,25 @@ export default function generateEventosCard(
                 content: () => (
                     <>
                         <div className="row">
-                            <div className="col-md-8 no-padding">
-                                <CustomLink params={linkParam}>
-                                    <span className="text mid-title">
-                                        {eventos[e].nombre}
-                                    </span>
-                                </CustomLink>
-                                {acciones}
-                            </div>
-                            <div className="col-md-4 border-bottom text-right no-margin no-padding">
-                                {eventos[e].estado}
-                            </div>
+                            <CustomLink params={linkParam}>
+                                <span className="text mid-title">
+                                    {eventos[e].nombre}
+                                </span>
+                            </CustomLink>
+                            {acciones}
                         </div>
-                        <div className="row v-padding">
-                            <div className="col-md-6 no-padding">
-                                <div className="mid-font light-danger">
-                                    Descripción
-                                </div>
-                                <div>{eventos[e].descripcion}</div>
-
-                            </div>
-                            <div className="col-md-6 no-padding">
-                                <div className="mid-font light-danger">
+                        <div className="row bold m-font justify-content-end">
+                            {eventos[e].estado}
+                        </div>
+                        <div className="row">
+                            <div className="col-md-6">
+                                <div className="m-font light-danger">
                                     Horarios
                                 </div>
+                                <div>
+                                    {`Evento asociado a ${horariosLength} días de la semana`}
+                                </div>
+                                <div className="top-padding">
                                 {
                                     (horariosLength > 0)
                                         ?
@@ -72,9 +67,14 @@ export default function generateEventosCard(
                                         :
                                             <div>No has asignado horarios a este evento</div>
                                 }
-                                <div className="mid-font light-danger top-padding">
+                                </div>
+                                <div className="m-font light-danger top-padding">
                                     Promociones
                                 </div>
+                                <div>
+                                    {`${promociones.length} promociones asociadas a este evento`}
+                                </div>
+                                <div className="top-padding">
                                 {
                                     (promociones.length > 0)
                                         ?
@@ -82,6 +82,15 @@ export default function generateEventosCard(
                                         :
                                             <div>No has asignado promociones a este evento</div>
                                 }
+                                </div>
+                            </div>
+                            <div className="col-md-6 no-padding">
+                                <div className="m-font light-danger">
+                                    Descripción
+                                </div>
+                                <div>
+                                    {eventos[e].descripcion}
+                                </div>
                             </div>
                         </div>
                     </>

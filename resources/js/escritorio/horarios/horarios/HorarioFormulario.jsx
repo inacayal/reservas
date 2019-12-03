@@ -14,6 +14,7 @@ import { EventoFields } from '../formularios/EventoFields';
 import Titulo from '../../../componentes/basic/Titulo';
 import { Toggle } from '../../../componentes/input/Toggle';
 import Actions from '../../../componentes/basic/Actions';
+import { Text } from '../../../componentes/input/Text';
 
 export function HorarioFormulario (props) {
     const   data = props.data,
@@ -43,26 +44,34 @@ export function HorarioFormulario (props) {
                                         fields={props.fields}
                                         change={props.change}
                                         errors={props.errors} />
+                        <div className="h-padding">
+                            <EventoFields   side={side}
+                                            editar={props.editar}
+                                            eventos={data.eventos}
+                                            class={{type:"horario",col:"col-md-12"}}
+                                            data={data.horarios}
+                                            fields={props.fields}
+                                            change={props.change}
+                                            errors={props.errors} />
+                        </div>
                     </div>
-                    <div className="col-lg-6">
-                        <div className="container">
-                            <div className="row justify-content-end">
-                                <Toggle rightTitle="Laboral"
-                                        leftTitle="No laboral"
-                                        name="estado"
-                                        side={side}
-                                        changeSide={toggle} />
-                            </div>
-                            <div className="row v-padding">
-                                <EventoFields   side={side}
-                                                editar={props.editar}
-                                                eventos={data.eventos}
-                                                class={{type:"horario",col:"col-md-12"}}
-                                                data={data.horarios}
-                                                fields={props.fields}
-                                                change={props.change}
-                                                errors={props.errors} />
-                            </div>
+                    <div className="col-lg-6 container">
+                        <div className="row justify-content-end">
+                            <Toggle rightTitle="Laboral"
+                                    leftTitle="No laboral"
+                                    name="estado"
+                                    side={side}
+                                    changeSide={toggle} />
+
+                        </div>
+                        <div className="h-padding row v-padding">
+                            <Text   rows={4}
+                                    titulo="Descripción"
+                                    holder="Descripción del día hasta 100 caracteres"
+                                    name="descripcion"
+                                    errors={props.errors.descripcion}
+                                    value={props.fields.descripcion}
+                                    changeHandler={props.change}/>
                         </div>
                     </div>
                 </div>

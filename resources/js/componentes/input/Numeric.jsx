@@ -14,8 +14,8 @@ function noMemoNumeric(props) {
         <div className="full-width">
             <h6 className={
                 props.description
-                    ? "highlight mid-font no-margin"
-                    : "highlight mid-font"}>
+                    ? "highlight m-font no-margin"
+                    : "highlight m-font"}>
                 {props.titulo}
             </h6>
             {props.description||""}

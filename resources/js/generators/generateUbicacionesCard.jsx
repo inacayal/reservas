@@ -41,13 +41,13 @@ export default function generateUbicacionesCard(
                                 </div>
                                 <div className="row v-padding">
                                     <div className="col-md-6">
-                                        <div className="mid-font light-danger">
+                                        <div className="m-font light-danger">
                                             Descripción
                                         </div>
                                         <div>
                                             {ubicaciones[e].descripcion}
                                         </div>
-                                        <div className="mid-font light-danger top-padding">
+                                        <div className="m-font light-danger top-padding">
                                             Capacidad máxima
                                         </div>
                                         <div>
@@ -60,7 +60,7 @@ export default function generateUbicacionesCard(
                                         </div>
                                     </div>
                                     <div className="col-md-6">
-                                        <div className="mid-font light-danger">
+                                        <div className="m-font light-danger">
                                             Máximo reservas
                                         </div>
                                         <span className="side-margin bold inline-block">

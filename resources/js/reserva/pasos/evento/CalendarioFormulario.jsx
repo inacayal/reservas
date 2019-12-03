@@ -62,7 +62,7 @@ export default function CalendarioFormulario(props) {
                 </h3>
             </div>
             <div className="row h-padding">
-                <h6 className="highlight mid-font no-margin">
+                <h6 className="highlight m-font no-margin">
                     Hora de reserva
                 </h6>
                 <span   className="side-margin row smaller-text h-padding inline-block"
@@ -155,7 +155,7 @@ export default function CalendarioFormulario(props) {
                 <div className="col-md-9">
                     <div className="row">
                         <div className="col-md-6 text-left">
-                            <h6 className="highlight mid-font no-margin">
+                            <h6 className="highlight m-font no-margin">
                                 Ubicación
                             </h6>
                             <Select changeSelect={props.change}
@@ -171,7 +171,7 @@ export default function CalendarioFormulario(props) {
                                 :
                                     "top-padding full-width overlay"}/>
                             <div className="full-width">
-                                <h6 className="highlight mid-font no-margin">
+                                <h6 className="highlight m-font no-margin">
                                     Personas
                                 </h6>
                                 <Select changeSelect={props.change}
@@ -196,7 +196,7 @@ export default function CalendarioFormulario(props) {
                             <div className="container">
                                 <div className="row text-left">
                                     <div className="col-md-12">
-                                        <h6 className="highlight mid-font no-margin">
+                                        <h6 className="highlight m-font no-margin">
                                             Ocasión
                                         </h6>
                                         <Select changeSelect={props.change}

@@ -15,7 +15,7 @@ const configurationCards = [
             <div className="container-fluid">
                 <div className="row v-padding">
                     <div className="col-md-4">
-                        <h6 className="full-width light-danger bold">
+                        <h6 className="full-width light-danger m-font">
                             Nombre
                         </h6>
                         <div>
@@ -23,7 +23,7 @@ const configurationCards = [
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <h6 className="full-width light-danger bold">
+                        <h6 className="full-width light-danger m-font">
                             Correo
                         </h6>
                         <div>
@@ -31,7 +31,7 @@ const configurationCards = [
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <h6 className="full-width light-danger bold">
+                        <h6 className="full-width light-danger m-font">
                             Teléfono
                     </h6>
                         <div>
@@ -41,7 +41,7 @@ const configurationCards = [
                 </div>
                 <div className="row v-padding">
                     <div className="col-md-6">
-                        <h6 className="full-width light-danger bold">
+                        <h6 className="full-width light-danger m-font">
                             Razón Social
                     </h6>
                         <div>
@@ -49,7 +49,7 @@ const configurationCards = [
                         </div>
                     </div>
                     <div className="col-md-6">
-                        <h6 className="full-width light-danger bold">
+                        <h6 className="full-width light-danger m-font">
                             CUIT / CUIL
                         </h6>
                         <div>
@@ -57,12 +57,12 @@ const configurationCards = [
                         </div>
                     </div>
                 </div>
-                <div className="row bold top-padding margin-box">
+                <div className="row sub-title top-padding margin-box">
                     Encargado
                 </div>
                 <div className="row v-padding margin-box">
                     <div className="col-md-4">
-                        <h6 className="full-width light-danger bold">
+                        <h6 className="full-width light-danger m-font">
                             Nombre
                         </h6>
                         <div>
@@ -70,7 +70,7 @@ const configurationCards = [
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <h6 className="full-width light-danger bold">
+                        <h6 className="full-width light-danger m-font">
                             Teléfono
                         </h6>
                         <div>
@@ -78,7 +78,7 @@ const configurationCards = [
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <h6 className="full-width light-danger bold">
+                        <h6 className="full-width light-danger m-font">
                             Correo
                         </h6>
                         <div>
@@ -86,12 +86,12 @@ const configurationCards = [
                         </div>
                     </div>
                 </div>
-                <div className="row bold top-padding margin-box">
+                <div className="row sub-title top-padding margin-box">
                     Ubicación
                 </div>
                 <div className="row v-padding margin-box">
                     <div className="col-md-6">
-                        <h6 className="full-width light-danger bold">
+                        <h6 className="full-width light-danger m-font">
                             Provincia
                         </h6>
                         <div>
@@ -99,7 +99,7 @@ const configurationCards = [
                         </div>
                     </div>
                     <div className="col-md-6">
-                        <h6 className="full-width light-danger bold">
+                        <h6 className="full-width light-danger m-font">
                             Dirección del local
                         </h6>
                         <div>
@@ -109,7 +109,7 @@ const configurationCards = [
                 </div>
             </div>
         ),
-        route: '/configuracion/establecimiento',
+        route: 'establecimiento',
         title: 'Mi establecimiento'
     },
     {
@@ -117,7 +117,7 @@ const configurationCards = [
             <div className="container full-width">
                 <div className="row">
                     <div className="col-md-4">
-                        <h6 className="full-width light-danger bold">
+                        <h6 className="full-width light-danger m-font">
                             Username
                         </h6>
                         <div>
@@ -125,7 +125,7 @@ const configurationCards = [
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <h6 className="full-width light-danger bold">
+                        <h6 className="full-width light-danger m-font">
                             Correo
                         </h6>
                         <div>
@@ -133,7 +133,7 @@ const configurationCards = [
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <h6 className="full-width light-danger bold">
+                        <h6 className="full-width light-danger m-font">
                             Contraseña de usuario
                     </h6>
                         <div>
@@ -143,7 +143,7 @@ const configurationCards = [
                 </div>
             </div>
         ),
-        route: '/configuracion/usuario',
+        route: 'usuario',
         title: 'Mi usuario'
     },
     {
@@ -151,7 +151,7 @@ const configurationCards = [
             <div className="container full-width">
                 <div className="row">
                     <div className="col-md-6">
-                        <h6 className="full-width light-danger bold">
+                        <h6 className="full-width light-danger m-font">
                             Intervalo de Reservas
                     </h6>
                         <div>
@@ -159,7 +159,7 @@ const configurationCards = [
                         </div>
                     </div>
                     <div className="col-md-6">
-                        <h6 className="full-width light-danger bold">
+                        <h6 className="full-width light-danger m-font">
                             Caída de la reserva
                     </h6>
                         <div>
@@ -169,7 +169,7 @@ const configurationCards = [
                 </div>
                 <div className="row v-padding">
                     <div className="col-md-6">
-                        <h6 className="full-width light-danger bold">
+                        <h6 className="full-width light-danger m-font">
                             Antelacion de Reservas
                         </h6>
                         <div>
@@ -180,10 +180,18 @@ const configurationCards = [
                             }
                         </div>
                     </div>
+                    <div className="col-md-6">
+                        <h6 className="full-width light-danger m-font">
+                            Disponibilidad de Reservas
+                        </h6>
+                        <div>
+                            3 días
+                        </div>
+                    </div>
                 </div>
             </div>
         ),
-        route: '/configuracion/reservas',
+        route: 'reservas',
         title: 'Reservas'
     }
 ];
@@ -202,8 +210,9 @@ export default function generateConfigurationCards (
                                 Editar
                             </div>
                         ),
-                        to: e.route,
-                        params:{}
+                        to: `/configuracion/${e.route}`,
+                        params:{},
+                        route:'configuracion'
                     }
                 ];
             return {

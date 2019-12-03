@@ -18,8 +18,9 @@ const links = (key) => [
                 Ver
             </div>
         ),
-        to: '/franquicias/' + key,
-        params:{id:key}
+        to: `/franquicias/${key}`,
+        params:{id:key},
+        route:'franquicias'
     },
     {
         title: (
@@ -28,8 +29,9 @@ const links = (key) => [
                 Editar
             </div>
         ),
-        to: '/franquicias/editar/' + key,
-        params:{id:key}
+        to: `/franquicias/editar/${key}`,
+        params:{id:key},
+        route:'franquicias'
     },
     ,
     {
@@ -38,7 +40,9 @@ const links = (key) => [
                 <i className="fas fa-plus-circle inline-box side-margin" /> Agregar Local
             </div>
         ),
-        to:"/locales/agregar"
+        to:"/locales/agregar",
+        params:{},
+        route:'locales'
     }
 ];
 

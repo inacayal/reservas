@@ -49,7 +49,7 @@ export function VerHorario (props) {
                         </div>
                         <div className="row">
                             <div className="col-md-5 no-padding">
-                                <span className="mid-font side-margin">
+                                <span className="mid-font side-margin bold">
                                     Apertura:
                                 </span>
                                 <span className="side-margin">
@@ -57,7 +57,7 @@ export function VerHorario (props) {
                                 </span>
                             </div>
                             <div className="col-md-6">
-                                <span className="mid-font side-margin">
+                                <span className="mid-font side-margin bold">
                                     Cierre:
                                 </span>
                                 <span className="side-margin">
@@ -72,7 +72,7 @@ export function VerHorario (props) {
                         </div>
                         <div className="row">
                             <div className="col-md-6 no-padding">
-                                <span className="mid-font side-margin">
+                                <span className="mid-font side-margin bold">
                                     Apertura:
                                 </span>
                                 <span className="side-margin">
@@ -80,7 +80,7 @@ export function VerHorario (props) {
                                 </span>
                             </div>
                             <div className="col-md-6">
-                                <span className="mid-font side-margin">
+                                <span className="mid-font side-margin bold">
                                     Cierre:
                                 </span>
                                 <span className="side-margin">

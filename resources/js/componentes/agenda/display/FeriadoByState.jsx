@@ -22,9 +22,14 @@ export const FeriadoMonthByState = {
     ) => ({
         content:
             <>
-                <div className="mid-title light-danger">{date.getDate()}</div>
-                <i className="text-top fas fa-ellipsis-h highlight-title" style={{ marginTop: "-8px" }} />
-                <div>{renderActions}</div>
+                <div className="mid-title light-danger">
+                    {date.getDate()}
+                </div>
+                    <i  className="text-top fas fa-ellipsis-h highlight-title"
+                        style={{ marginTop: "-8px" }} />
+                <div>
+                    {renderActions}
+                </div>
             </>
         ,
         class: "same-width text-center box-padding light-danger relative black-overlay"
@@ -38,9 +43,14 @@ export const FeriadoMonthByState = {
     ) => ({
         content: (
             <>
-                <div className="mid-title light-danger">{date.getDate()}</div>
-                <i className="text-top fas fa-ellipsis-h highlight-title" style={{ marginTop: "-8px" }} />
-                <div className="flex-row">{renderActions}</div>
+                <div className="mid-title light-danger">
+                {date.getDate()}
+                </div>
+                <i  className="text-top fas fa-ellipsis-h highlight-title"
+                    style={{ marginTop: "-8px" }} />
+                <div className="flex-row">
+                    {renderActions}
+                </div>
             </>
         ),
         class: "same-width text-center box-padding light-danger fix-heigh relative black-overlay"
@@ -81,7 +91,7 @@ export const FeriadoWeekByState = {
                     };
             return {
                 content:() =>
-                    <div className="container">
+                    <div className="container v-padding">
                         <div className="row">
                             <CustomLink params={linkParam}>
                                 <span className="mid-title light-danger">
@@ -90,51 +100,54 @@ export const FeriadoWeekByState = {
                                 <span className="sub-title side-margin bold" style={{color:'var(--text-color)'}}>
                                     {DAYS[date.getDay()]}
                                 </span>
-                                <span   className="side-margin mid-font"
+                                <span   className="side-margin m-font"
                                         style={{color:"var(--text-color)"}}>
                                     {sectionData.nombre}
                                 </span>
                             </CustomLink>
                             {renderActions}
                         </div>
-                        <div className="row">
-                            <div className="col-md-8">
-                                <div className="container no-padding">
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <div className="light-danger mid-font">
-                                                Horarios
-                                            </div>
-                                            <div >
-                                                <span style={{textDecoration:"underline"}}>
-                                                    Reservas:
-                                                </span>
-                                                {`${sectionData.apertura.reserva.hora}:${sectionData.apertura.reserva.minuto} hs. - ${sectionData.cierre.reserva.hora}:${sectionData.apertura.reserva.minuto}hs.`}
-                                            </div>
-                                            <div>
-                                                <span style={{textDecoration:"underline"}}>
-                                                    Atencion:
-                                                </span>
-                                                {` ${sectionData.apertura.atencion.hora}:${sectionData.apertura.atencion.minuto}hs. - ${sectionData.cierre.atencion.hora}:${sectionData.cierre.atencion.minuto}hs.`}
-                                            </div>
+                        <div className="row m-font justify-content-end bold">
+                            laboral
+                        </div>
+                        <div className="row top-padding">
+                            <div className="col-md-8 container">
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="light-danger m-font">
+                                            Horarios de atención
                                         </div>
-                                        <div className="col-md-6">
-                                            <div className="light-danger mid-font">
-                                                Descripción:
-                                            </div>
-                                            <div>
-                                                {sectionData.descripcion.substring(0, 50) + "..."}
-                                            </div>
-                                            <div className="border-top small-v-padding" />
-                                            <div className="smaller-text">
-                                                mostrando sólo los primeros 50 caracteres
-                                            </div>
+                                        <div >
+                                            <span className="bold">
+                                                Reservas:
+                                            </span>
+                                            {` ${sectionData.apertura.reserva.hora}:${sectionData.apertura.reserva.minuto} hs. - ${sectionData.cierre.reserva.hora}:${sectionData.apertura.reserva.minuto}hs.`}
+                                        </div>
+                                        <div>
+                                            <span className="bold">
+                                                Atencion:
+                                            </span>
+                                            {` ${sectionData.apertura.atencion.hora}:${sectionData.apertura.atencion.minuto}hs. - ${sectionData.cierre.atencion.hora}:${sectionData.cierre.atencion.minuto}hs.`}
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="light-danger m-font">
+                                            Descripción:
+                                        </div>
+                                        <div>
+                                            {sectionData.descripcion.substring(0, 50) + "..."}
+                                        </div>
+                                        <div className="border-top small-v-padding" />
+                                        <div className="smaller-text">
+                                            mostrando sólo los primeros 50 caracteres
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-4">
-                                <div className="light-danger mid-font">Eventos</div>
+                                <div className="light-danger m-font">
+                                    Eventos
+                                </div>
                                 {
                                     eventosLength > 0
                                     ?
@@ -181,6 +194,9 @@ export const FeriadoWeekByState = {
                             </CustomLink>
                             {renderActions}
                         </div>
+                        <div className="row m-font justify-content-end bold">
+                            no laboral
+                        </div>
                         <div className="row">
                             <div className="col-md-6 light-danger mid-font">
                                 Sin apertura
@@ -211,7 +227,7 @@ export const FeriadoWeekByState = {
     ) =>
         ({
             content: () =>
-                <div className="container">
+                <div className="container v-padding">
                     <div className="row">
                         <div className="col-md-8 no-padding">
                             <span className="mid-title light-danger side-margin">

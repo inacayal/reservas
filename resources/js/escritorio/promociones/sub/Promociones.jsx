@@ -18,7 +18,7 @@ export function Promociones (props) {
                     links={props.nav.links} />
             <div className="container">
                 <div className="row">
-                    <div className="mid-font top-padding">
+                    <div className="m-font top-padding">
                     {`Mostrando ${promociones.length} promociones encontradas`}
                     </div>
                 </div>

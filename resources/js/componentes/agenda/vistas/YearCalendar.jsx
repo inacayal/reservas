@@ -26,7 +26,7 @@ function YearCalendar(props){
         );
     return (
         <div className="row full-width h-padding">
-            <div className="box-padding row sub-title v-padding">
+            <div className="box-padding row m-font v-padding">
                 {`Mostrando ${props.date.getFullYear()}`}
             </div>
             <div className="box-padding full-width">

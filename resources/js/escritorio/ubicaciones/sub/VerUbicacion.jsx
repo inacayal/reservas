@@ -21,19 +21,19 @@ export function VerUbicacion (props) {
                     imagen de ubicacion
                 </div>
                 <div className="col-md-8 container">
-                    <div className="row mid-font highlight top-padding">
+                    <div className="row m-font highlight top-padding">
                         Descripcion:
                     </div>
                     <div className="row">
                         {data.descripcion}
                     </div>
-                    <div className="row v-padding mid-font highlight top-padding">
+                    <div className="row v-padding m-font highlight top-padding">
                         Máximo por mesa
                     </div>
                     <div className="row">
                         {data.maximo+" personas"}
                     </div>
-                    <div className="row mid-font highlight top-padding">
+                    <div className="row m-font highlight top-padding">
                         Capacidad máxima
                     </div>
                     <div className="row">

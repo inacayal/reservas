@@ -12,29 +12,29 @@ export const FormularioEstablecimiento = (props) => {
             <div className="row v-padding">
                 <div className="col-md-4">
                     <Text   rows={1}
-                            titulo="Nombre del local"
-                            name="nombre_local"
+                            titulo='Nombre'
+                            name="nombre"
                             holder="Nombre del local hasta 100 caracteres"
-                            errors={props.errors.nombre_local}
-                            value={props.fields.nombre_local}
+                            errors={props.errors.nombre}
+                            value={props.fields.nombre}
                             changeHandler={props.change}/>
                 </div>
                 <div className="col-md-4">
                     <Text   rows={1}
-                            titulo="Correo del local"
-                            name="correo_local"
+                            titulo='Correo'
+                            name="correo"
                             holder="Correo de contacto del local hasta 100 caracteres"
-                            errors={props.errors.correo_local}
-                            value={props.fields.correo_local}
+                            errors={props.errors.correo}
+                            value={props.fields.correo}
                             changeHandler={props.change}/>
                 </div>
                 <div className="col-md-4">
                     <Text   rows={1}
-                            titulo="Teléfono de contacto del local"
-                            name="telefono_local"
+                            titulo="Telefono"
+                            name="telefono"
                             holder="Teléfono de contacto del local hasta 100 caracteres"
-                            errors={props.errors.telefono_local}
-                            value={props.fields.telefono_local}
+                            errors={props.errors.telefono}
+                            value={props.fields.telefono}
                             changeHandler={props.change}/>
                 </div>
             </div>

@@ -16,6 +16,7 @@ import { Toggle } from '../../../componentes/input/Toggle';
 import Actions from '../../../componentes/basic/Actions';
 import {generateHoursFromInterval} from '../../../utils/Helper';
 import {WaitsLoading} from '../../../hocs/RouterTransition';
+import {Text} from '../../../componentes/input/Text'
 
 export function FeriadoFormulario (props) {
     const   context = useContext(WaitsLoading),
@@ -32,13 +33,6 @@ export function FeriadoFormulario (props) {
                     }
                     links={props.nav.links}
                     buttons={props.nav.buttons} />
-            <div className="sub-title">
-                {
-                    props.editar
-                        ? `${MONTHS[data.date.getMonth()]} de ${data.date.getFullYear()}`
-                        : ""
-                }
-            </div>
             <div className="container">
                 <div className="row v-padding">
                     <div className="col-md-7">
@@ -50,20 +44,35 @@ export function FeriadoFormulario (props) {
                         <div className="bold smaller-text v-padding margin-box">
                             * Los días inhabilitados ya tienen feriados asignados
                         </div>
+                        <div className="h-padding v-padding">
+                            <Text   rows={4}
+                                    titulo="Descripción"
+                                    holder="Descripción del día hasta 100 caracteres"
+                                    name="descripcion"
+                                    errors={props.errors.descripcion}
+                                    value={props.fields.descripcion}
+                                    changeHandler={props.change}/>
+                        </div>
                     </div>
                     <div className="col-lg-5">
                         <div className="container">
-                            <div className="row sub-title">
-                                {data.title}
-                            </div>
                             <div className="row justify-content-end">
-                                <Toggle rightTitle="Laboral"
-                                        leftTitle="No laboral"
-                                        name="estado"
-                                        side={side}
-                                        changeSide={toggle}/>
+                                <div className="sub-title seventy inline-block bold">
+                                    {
+                                        props.editar
+                                            ? `${data.date.getDate()} de ${MONTHS[data.date.getMonth()]} de ${data.date.getFullYear()}`
+                                            : ""
+                                    }
+                                </div>
+                                <div className="thirty inline-block text-right">
+                                    <Toggle rightTitle="Laboral"
+                                            leftTitle="No laboral"
+                                            name="estado"
+                                            side={side}
+                                            changeSide={toggle}/>
+                                </div>
                             </div>
-                            <div className="row relative visible">
+                            <div className="row relative visible top-padding">
                                 <div className={
                                     side
                                         ? "hidden"
@@ -74,20 +83,18 @@ export function FeriadoFormulario (props) {
                                                 minutos = {data.minutes}
                                                 fields={props.fields}
                                                 change={props.change}
-                                                errors={props.errors}/>
+                                                errors={props.errors}
+                                                type='feriado'/>
                             </div>
+                            <EventoFields   side={side}
+                                            editar = {props.editar}
+                                            eventos={data.eventos}
+                                            data={data.feriados}
+                                            fields={props.fields}
+                                            change={props.change}
+                                            errors={props.errors}/>
                         </div>
                     </div>
-                </div>
-                <div className="row v-padding">
-                    <EventoFields   side={side}
-                                    editar = {props.editar}
-                                    eventos={data.eventos}
-                                    class={{ type: "feriado", col: "col-md-4" }}
-                                    data={data.feriados}
-                                    fields={props.fields}
-                                    change={props.change}
-                                    errors={props.errors}/>
                 </div>
             </div>
         </>

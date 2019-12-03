@@ -64,7 +64,7 @@ export const FormularioReservas = (props)  => {
         <>
             <div className="row v-padding">
                 <div className="col-md-6">
-                    <h6 className="highlight no-margin bold">
+                    <h6 className="highlight no-margin m-font">
                         Antelación de la reserva
                     </h6>
                     <Select titulo="Selecciona la antelación de las reservas"
@@ -76,7 +76,7 @@ export const FormularioReservas = (props)  => {
                     </span>
                 </div>
                 <div className="col-md-6">
-                    <h6 className="highlight no-margin bold">
+                    <h6 className="highlight no-margin m-font">
                         Intervalo de la reserva
                     </h6>
                     <Select titulo="Selecciona la antelación de las reservas"
@@ -90,7 +90,7 @@ export const FormularioReservas = (props)  => {
             </div>
             <div className="row v-padding">
                 <div className="col-md-6">
-                    <h6 className="highlight no-margin bold">
+                    <h6 className="highlight no-margin m-font">
                         Caída de la reserva
                     </h6>
                     <Select titulo="Selecciona la antelación de las reservas"

@@ -9,14 +9,19 @@ function ButtonList(props) {
         <ul className={props.displayList}>
             {
                 props.elems.map((e, i) =>
-                    <li key={i} className ={(e.container) ? e.container : (props.container) ? props.container : ""}>
-                        <Button
-                            data={e.data}
-                            icon={e.icon}
-                            class={props.selected == e.data ? props.selectedClass : props.elemClass}
-                            click={(e.click) ? e.click : props.clickHandler}
-                            disabled={e.disabled}
-                            title={e.title} />
+                    <li key={i}
+                        className ={
+                            (e.container)
+                                ? e.container
+                                : (props.container)
+                                    ? props.container
+                                    : ""}>
+                        <Button data={e.data}
+                                icon={e.icon}
+                                class={props.selected == e.data ? props.selectedClass : props.elemClass}
+                                click={(e.click) ? e.click : props.clickHandler}
+                                disabled={e.disabled}
+                                title={e.title} />
                     </li>
                 )
             }

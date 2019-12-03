@@ -44,14 +44,14 @@ export function VerLocal (props) {
                     buttons ={props.nav.buttons}/>
             <div className="container">
                 <div className="v-padding row">
-                    <FranquiciasTable   data={[data.franquicia]} 
+                    <FranquiciasTable   data={[data.franquicia]}
                                         withPagination={false}/>
                 </div>
                 <ExpandableComponent    title = 'Información'
                                         show={true}>
                     <div className="row v-padding">
                         <div className="col-md-4">
-                            <h6 className="full-width light-danger bold">
+                            <h6 className="full-width light-danger m-font">
                                 Nombre
                             </h6>
                             <div>
@@ -59,7 +59,7 @@ export function VerLocal (props) {
                             </div>
                         </div>
                         <div className="col-md-4">
-                            <h6 className="full-width light-danger bold">
+                            <h6 className="full-width light-danger m-font">
                                 Correo
                             </h6>
                             <div>
@@ -67,7 +67,7 @@ export function VerLocal (props) {
                             </div>
                         </div>
                         <div className="col-md-4">
-                            <h6 className="full-width light-danger bold">
+                            <h6 className="full-width light-danger m-font">
                                 Teléfono
                             </h6>
                             <div>
@@ -77,7 +77,7 @@ export function VerLocal (props) {
                     </div>
                     <div className="row v-padding">
                         <div className="col-md-6">
-                            <h6 className="full-width light-danger bold">
+                            <h6 className="full-width light-danger m-font">
                                 Razón Social
                             </h6>
                             <div>
@@ -85,7 +85,7 @@ export function VerLocal (props) {
                             </div>
                         </div>
                         <div className="col-md-6">
-                            <h6 className="full-width light-danger bold">
+                            <h6 className="full-width light-danger m-font">
                                 CUIT / CUIL
                             </h6>
                             <div>
@@ -97,7 +97,7 @@ export function VerLocal (props) {
                 <ExpandableComponent title = 'Ubicación'>
                     <div className="row v-padding margin-box">
                         <div className="col-md-6">
-                            <h6 className="full-width light-danger bold">
+                            <h6 className="full-width light-danger m-font">
                                 Provincia
                             </h6>
                             <div>
@@ -105,7 +105,7 @@ export function VerLocal (props) {
                             </div>
                         </div>
                         <div className="col-md-6">
-                            <h6 className="full-width light-danger bold">
+                            <h6 className="full-width light-danger m-font">
                                 Dirección del local
                             </h6>
                             <div>
@@ -117,7 +117,7 @@ export function VerLocal (props) {
                 <ExpandableComponent title = 'Encargado'>
                     <div className="row v-padding margin-v">
                         <div className="col-md-4">
-                            <h6 className="full-width light-danger bold">
+                            <h6 className="full-width light-danger m-font">
                                 Nombre
                             </h6>
                             <div>
@@ -125,7 +125,7 @@ export function VerLocal (props) {
                             </div>
                         </div>
                         <div className="col-md-4">
-                            <h6 className="full-width light-danger bold">
+                            <h6 className="full-width light-danger m-font">
                                 Teléfono
                             </h6>
                             <div>
@@ -133,7 +133,7 @@ export function VerLocal (props) {
                             </div>
                         </div>
                         <div className="col-md-4">
-                            <h6 className="full-width light-danger bold">
+                            <h6 className="full-width light-danger m-font">
                                 Correo
                             </h6>
                             <div>
@@ -145,7 +145,7 @@ export function VerLocal (props) {
                 <ExpandableComponent title = 'Usuario'>
                     <div className="row v-padding">
                         <div className="col-md-4">
-                            <h6 className="full-width light-danger bold">
+                            <h6 className="full-width light-danger m-font">
                                 Username
                             </h6>
                             <div>
@@ -153,7 +153,7 @@ export function VerLocal (props) {
                             </div>
                         </div>
                         <div className="col-md-4">
-                            <h6 className="full-width light-danger bold">
+                            <h6 className="full-width light-danger m-font">
                                 Correo
                             </h6>
                             <div>
@@ -161,7 +161,7 @@ export function VerLocal (props) {
                             </div>
                         </div>
                         <div className="col-md-4">
-                            <h6 className="full-width light-danger bold">
+                            <h6 className="full-width light-danger m-font">
                                 Contraseña de usuario
                             </h6>
                         </div>

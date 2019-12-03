@@ -12,7 +12,7 @@ export const FormularioUsuario = (props) => {
     const data = props.data;
     return (
         <>
-            <div className="row sub-title bold">
+            <div className="row mid-title">
                 Información del Usuario
             </div>
             <div className="row v-padding">

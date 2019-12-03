@@ -18,7 +18,7 @@ export function Eventos (props) {
             <Titulo title="Eventos"
                     links={props.nav.links} />
             <div className="container">
-                <div className="mid-font top-padding row">
+                <div className="m-font top-padding row">
                     {`Mostrando ${eventos.length} eventos encontrados`}
                 </div>
                 <div className="row">

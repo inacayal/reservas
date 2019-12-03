@@ -32,7 +32,7 @@ function MonthCalendar(props) {
     );
     return (
         <div className="container">
-            <div className="row v-padding align-center sub-title">
+            <div className="row v-padding align-center m-font">
                 {`Mostrando ${MONTHS[month]} ${props.date.getFullYear()}`}
             </div>
             <div className="row">

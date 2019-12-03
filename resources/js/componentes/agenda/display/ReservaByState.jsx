@@ -128,20 +128,24 @@ export const ReservaWeekByState = {
         originalActions,
         dataIndex
     ) => ({
-        content:() =>
+        content:() => (
             <>
-                <div className="v-align-center light-danger mid-title">
-                    {dataIndex.getDate() + " "}
+                <div className="ninety inline-block" >
+                    <div className="light-danger mid-title inline-block side-margin"  >
+                        {dataIndex.getDate() + " "}
+                    </div>
+                    <div className="inline-block side-margin sub-title" >
+                        {DAYS[dataIndex.getDay()] + " "}
+                    </div>
                 </div>
-                <div className="line-v-middle inline-block v-align-center mid-font">
-                    {DAYS[dataIndex.getDay()] + " "}
+                <div className="ten inline-block highlight-title sub-title text-right">
+                    <div className="arrow-left"/>
                 </div>
-                <div className="line-v-middle v-align-center bold">
-                    <i className="fas fa-ellipsis-h" style={{color:"transparent"}}/>
-                </div>
-            </>,
-            class: "box-padding text-center same-width highlight-hover pointer ",
-            data: dataIndex.getDate()
+                <div className="v-padding"/>
+            </>
+        ),
+        class: "box-padding highlight-hover pointer ",
+        data: dataIndex.getDate()
     }),
     data: (
         renderActions,
@@ -152,19 +156,26 @@ export const ReservaWeekByState = {
     ) => {
         return {
             content:() => (
-                <>
-                    <div className="v-align-center light-danger mid-title">
-                        {dataIndex.getDate() + " "}
+                <div className="v-padding">
+                    <div className="ninety inline-block" >
+                        <div className="light-danger mid-title inline-block side-margin"  >
+                            {dataIndex.getDate() + " "}
+                        </div>
+                        <div className="inline-block side-margin sub-title" >
+                            {DAYS[dataIndex.getDay()] + " "}
+                        </div>
                     </div>
-                    <div className="line-v-middle v-align-center mid-font">
-                        {DAYS[dataIndex.getDay()]}
+                    <div className="ten inline-block highlight-title sub-title text-right">
+                        <div className="arrow-left"/>
                     </div>
-                    <div className="line-v-middle v-align-center bold">
-                        <i className="highlight-title fas fa-ellipsis-h"/>
+                    <div className="v-padding">
+                        <div className="half" style={{
+                            borderTop:'solid 2px var(--highlight-blue)'
+                        }}/>
                     </div>
-                </>
+                </div>
             ),
-            class: "box-padding same-width text-center highlight-hover pointer",
+            class: "box-padding highlight-hover pointer",
             data:dataIndex.getDate()
         }
     }

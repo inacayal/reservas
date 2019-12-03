@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import CustomLink from './CustomLink';
 
 function CommaListMemo(props) {
-    console.log(props.route)
     const   list = Object.keys(props.list).map(
                 (e,i) =>
                 <li key={i}

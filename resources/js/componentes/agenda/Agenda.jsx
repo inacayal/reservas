@@ -138,13 +138,12 @@ export default class Agenda extends Component {
         return(
             <>
                 <div className="row justify-content-end v-padding">
-                    <ButtonList
-                        selected = {this.state.show}
-                        selectedClass="blue-background highlight-border h-padding small-v-padding"
-                        clickHandler={this.changeView}
-                        displayList="flex-row h-center nav-list no-padding"
-                        elemClass="box-transparent highlight-hover h-padding small-v-padding bordered transparent-border"
-                        elems={Object.values(this.state.controls)} />
+                    <ButtonList selected = {this.state.show}
+                                selectedClass="blue-background highlight-border h-padding small-v-padding"
+                                clickHandler={this.changeView}
+                                displayList="flex-row h-center nav-list no-padding"
+                                elemClass="box-transparent highlight-hover h-padding small-v-padding bordered transparent-border"
+                                elems={Object.values(this.state.controls)} />
                 </div>
                 <div className="row">
                     {Elements[this.state.show](this)}

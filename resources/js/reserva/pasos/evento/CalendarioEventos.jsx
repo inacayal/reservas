@@ -46,7 +46,7 @@ export default function CalendarioEventos(props){
                 </div>
                 <div className="col-md-4 no-padding text-right">
                     <div>
-                        <span className="mid-font side-margin">
+                        <span className="m-font side-margin">
                             atención:
                         </span>
                         <span className="side-margin">
@@ -54,7 +54,7 @@ export default function CalendarioEventos(props){
                         </span>
                     </div>
                     <div>
-                        <span className="mid-font side-margin">
+                        <span className="m-font side-margin">
                             reservas:
                         </span>
                         <span className="side-margin">{`${horarioReserva} horas`}</span>

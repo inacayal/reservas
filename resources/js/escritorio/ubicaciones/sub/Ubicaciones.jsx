@@ -18,7 +18,7 @@ export function Ubicaciones (props) {
                 links={props.nav.links} />
             <div className="container-fluid">
                 <div className="row">
-                    <div className="mid-font">
+                    <div className="m-font">
                         {`Mostrando ${ubicaciones.length} ubicaciones encontradas`}
                     </div>
                     <ul className="full-width nav-list no-padding">

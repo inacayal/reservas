@@ -36,7 +36,7 @@ export const FormularioFranquicia = (props) => {
     return (
         <>
             <div className="row top-padding">
-                <h6 className="highlight no-margin bold">
+                <h6 className="highlight no-margin m-font">
                     Franquicia
                 </h6>
             </div>

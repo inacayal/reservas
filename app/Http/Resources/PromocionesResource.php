@@ -29,7 +29,7 @@ class PromocionesResource extends JsonResource
             'eventos'=>'all'
         ],
         'eventos.single'=>[
-            'estado'=>false 
+            'estado'=>false
         ],
         'horarios.single'=>[
             'estado'=>false
@@ -45,7 +45,8 @@ class PromocionesResource extends JsonResource
             'id'=>$this->id,
             'nombre'=>$this->nombre,
             'descripcion'=>$this->descripcion,
-            'descuento' => $this->descuento
+            'descuento' => $this->descuento,
+            'estado'=> $this->estado->descripcion
         ];
         $dependencies = self::getDependencies($request->route()->action['as']);
         $dependencyData = self::formatResults(

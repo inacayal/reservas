@@ -9,7 +9,7 @@ const noMemoText = (props) => {
     const hasError = props.hasError;
     return (
         <div className="full-width">
-            <h6 className="highlight mid-font">
+            <h6 className="highlight m-font">
                 {props.titulo}
             </h6>
             <div className={

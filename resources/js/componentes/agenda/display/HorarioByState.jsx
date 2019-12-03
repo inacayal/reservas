@@ -29,45 +29,44 @@ export const HorarioWeekByState = {
             content: () =>
                 <>
                     <div className="full-width" >
-                        <div className="seventy inline-block sub-title">
-                            <div className="inline-block side-margin text-top">
-                                <CustomLink params={linkParam}>
-                                    <span className="mid-title subrayado" style={{color:'var(--light-danger)'}}>
-                                        {DAYS[sectionData.diaSemana - 1]}
-                                    </span>
-                                </CustomLink>
-                                {renderActions}
-                            </div>
-                        </div>
-                        <div className="thirty inline-block text-right smaller-text border-bottom">
-                            Día laboral
+                        <div className="inline-block side-margin text-top">
+                            <CustomLink params={linkParam}>
+                                <span className="mid-title subrayado" style={{color:'var(--light-danger)'}}>
+                                    {DAYS[sectionData.diaSemana - 1]}
+                                </span>
+                            </CustomLink>
+                            {renderActions}
                         </div>
                     </div>
                     <div className="container">
+                        <div className="row justify-content-end bold m-font">
+                            Día laboral
+                        </div>
                         <div className="row h-padding">
                             <div className="col-md-6 container">
-                                <div className="row sub-title">
-                                    Horarios:
+                                <div className="row m-font">
+                                    Horarios de atención
                                 </div>
                                 <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="mid-font">Reservas:</div>
-                                        <div>{sectionData.apertura.reserva.hora + ":" + sectionData.apertura.reserva.minuto + "hs. - " + sectionData.cierre.reserva.hora + ":" + sectionData.cierre.reserva.minuto + "hs."}</div>
+                                    <div className="col-md-6 no-padding">
+                                        <div className="bold">
+                                            Reservas
+                                        </div>
+                                        <div>
+                                            {`${sectionData.apertura.reserva.hora}:${sectionData.apertura.reserva.minuto} horas - ${sectionData.cierre.reserva.hora}:${sectionData.cierre.reserva.minuto} horas`}
+                                        </div>
                                     </div>
                                     <div className="col-md-6">
-                                        <div className="mid-font">Atención:</div>
-                                        <div>{sectionData.apertura.atencion.hora + ":" + sectionData.apertura.atencion.minuto + "hs. - " + sectionData.cierre.atencion.hora + ":" + sectionData.cierre.atencion.minuto + "hs."}</div>
+                                        <div className="bold">
+                                            Atención
+                                        </div>
+                                        <div>{`${sectionData.apertura.atencion.hora}:${sectionData.apertura.atencion.minuto} horas - ${sectionData.cierre.atencion.hora}:${sectionData.cierre.atencion.minuto} horas`}</div>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-6">
-                                <div className="full-width">
-                                    <div className="inline-block half sub-title">
-                                        Eventos
-                                    </div>
-                                    <div className="smaller-text inline-block half text-right">
-                                        {eventoLength + " encontrados"}
-                                    </div>
+                                <div className="inline-block m-font">
+                                    {`${eventoLength} Eventos encontrados`}
                                 </div>
                                 <div className="v-padding ">
                                     {

@@ -46,9 +46,6 @@ export function VerFeriado (props) {
             <div className="container full-width v-padding">
                 <div className="row justify-content-end v-padding">
                     <div className="col-md-6">
-                        <div className="sub-title">
-                            {`${DAYS[date.getDay()]} ${date.getDate()} de ${MONTHS[date.getMonth()]} del ${date.getFullYear()}`}
-                        </div>
                         <Calendario editar={true}
                                     date={date}
                                     data={data.data}/>
@@ -57,7 +54,10 @@ export function VerFeriado (props) {
                         <div className="h-padding row bold justify-content-end sub-title full-width">
                             {`feriado ${estado}`}
                         </div>
-                        <div className="mid-font row light-danger">
+                        <div className="sub-title row v-padding">
+                            {`${DAYS[date.getDay()]} ${date.getDate()} de ${MONTHS[date.getMonth()]} del ${date.getFullYear()}`}
+                        </div>
+                        <div className="m-font row light-danger">
                             Horario de atención:
                         </div>
                         <div className="row">
@@ -78,7 +78,7 @@ export function VerFeriado (props) {
                                 </span>
                             </div>
                         </div>
-                        <div className="row mid-font light-danger top-padding">
+                        <div className="row m-font light-danger top-padding">
                             Horario de reservas:
                         </div>
                         <div className="row">
@@ -103,7 +103,7 @@ export function VerFeriado (props) {
                             </div>
                         </div>
                         <div className="row top-padding">
-                            <div className="mid-font light-danger">
+                            <div className="m-font light-danger">
                                 Descripción:
                             </div>
                             <div>
