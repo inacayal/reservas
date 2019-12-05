@@ -17,7 +17,7 @@ export function VerFeriado (props) {
     const   data = props.data,
             date= new Date(data.data.fecha),
             estado = data.data.estado.replace('_',' '),
-            eventos = Object.values(data.eventos.data).map(
+            eventos = Object.values(data.data.eventos.data).map(
                 e => ({
                     ...e,
                     nombre:(

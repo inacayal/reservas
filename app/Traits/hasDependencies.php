@@ -26,7 +26,7 @@ trait hasDependencies
         'administrador' => 'App\\User',
         'escritorio'    => 'App\\User'
     ];
-
+    
     public static function getFormatOptions (string $opt, string $model){
         return $model::$formatOptions[$opt];
     }

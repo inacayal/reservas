@@ -1,5 +1,5 @@
 const validation = {
-    nombre:{
+    id:{
         rules:{},
         fieldName:"Id"
     },
@@ -17,7 +17,7 @@ const validation = {
         },
         fieldName:"Descripción"
     },
-    capacidad_maxima:{
+    cantidad_maxima:{
         rules:{
             required:true,
             numeric:true,

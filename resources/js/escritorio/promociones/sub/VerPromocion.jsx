@@ -48,24 +48,24 @@ export function VerPromocion (props) {
                     links={props.nav.links}
                     buttons ={props.nav.buttons}/>
             <div className="container ">
-                <div className="h-padding row justify-content-end bold m-font">
-                    {data.estado}
-                </div>
                 <div className="row">
                     <div className="col-md-9">
-                        <div className="sub-title">
+                        <div className="mid-title">
                             Eventos
                         </div>
                         <EventosTable data={data.eventos}/>
                     </div>
                     <div className="col-md-3">
-                        <div className="light-danger mid-font">
+                        <div className="h-padding text-right bold sub-title">
+                            {data.estado}
+                        </div>
+                        <div className="light-danger m-font">
                             Descripción:
                         </div>
                         <div>
                             {data.descripcion}
                         </div>
-                        <h6 className="highlight no-margin mid-font top-padding">
+                        <h6 className="highlight no-margin m-font top-padding">
                             Descuento:
                         </h6>
                         <div>

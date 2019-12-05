@@ -85465,19 +85465,12 @@ var GenerateActions = {
   feriados: function feriados(data, actions, key, type, fullDate) {
     var index = data ? 'data' : 'no_data',
         acciones = _FeriadosActions__WEBPACK_IMPORTED_MODULE_4__["FeriadosActions"][type][index](key, actions);
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_2__["default"], {
-      overlay: type === 'month' ? true : false,
-      links: acciones.links,
-      buttons: acciones.buttons
-    });
+    return acciones;
   },
   horarios: function horarios(data, actions, key, type) {
     var index = data ? 'data' : 'no_data',
         acciones = _HorariosActions__WEBPACK_IMPORTED_MODULE_5__["HorariosActions"][index](key, actions);
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_2__["default"], {
-      links: acciones.links,
-      buttons: acciones.buttons
-    });
+    return acciones;
   },
   ubicaciones: function ubicaciones(key, actions) {
     var acciones = Object(_UbicacionesActions__WEBPACK_IMPORTED_MODULE_7__["UbicacionesActions"])(key, actions);
@@ -86228,6 +86221,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 /* harmony import */ var _constantes_CardObject__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../constantes/CardObject */ "./resources/js/constantes/CardObject.jsx");
 /* harmony import */ var _basic_CustomLink__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../basic/CustomLink */ "./resources/js/componentes/basic/CustomLink.jsx");
+/* harmony import */ var _hocs_ExpandableComponent__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../hocs/ExpandableComponent */ "./resources/js/hocs/ExpandableComponent.jsx");
+/* harmony import */ var _basic_Actions__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
+
+
 
 
 
@@ -86246,7 +86243,11 @@ var FeriadoMonthByState = {
         style: {
           marginTop: "-8px"
         }
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, renderActions)),
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_Actions__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        links: renderActions.links,
+        buttons: renderActions.buttons,
+        overlay: true
+      }))),
       "class": "same-width text-center box-padding light-danger relative black-overlay"
     };
   },
@@ -86261,8 +86262,12 @@ var FeriadoMonthByState = {
         }
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "flex-row"
-      }, renderActions)),
-      "class": "same-width text-center box-padding light-danger fix-heigh relative black-overlay"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_Actions__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        links: renderActions.links,
+        buttons: renderActions.buttons,
+        overlay: true
+      }))),
+      "class": "same-width text-center box-padding light-danger fix-height relative black-overlay background-border"
     };
   },
   no_data: function no_data(renderActions, sectionData, date, isSelectedDate, isThisMonth) {
@@ -86288,26 +86293,28 @@ var FeriadoWeekByState = {
     return {
       content: function content() {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "container v-padding"
+          className: "container"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_CustomLink__WEBPACK_IMPORTED_MODULE_7__["default"], {
-          params: linkParam
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "mid-title light-danger"
-        }, date.getDate() + " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "sub-title side-margin bold",
-          style: {
-            color: 'var(--text-color)'
-          }
-        }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__["DAYS"][date.getDay()]), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "side-margin m-font",
-          style: {
-            color: "var(--text-color)"
-          }
-        }, sectionData.nombre)), renderActions), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row m-font justify-content-end bold"
-        }, "laboral"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row col-md-12"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_ExpandableComponent__WEBPACK_IMPORTED_MODULE_8__["ExpandableComponent"], {
+          links: renderActions.links,
+          buttons: renderActions.buttons,
+          title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_CustomLink__WEBPACK_IMPORTED_MODULE_7__["default"], {
+            params: linkParam
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "mid-title light-danger"
+          }, date.getDate() + " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "sub-title side-margin bold",
+            style: {
+              color: 'var(--text-color)'
+            }
+          }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__["DAYS"][date.getDay()]), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "side-margin m-font",
+            style: {
+              color: "var(--text-color)"
+            }
+          }, sectionData.nombre))
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row top-padding"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "col-md-8 container"
@@ -86325,20 +86332,22 @@ var FeriadoWeekByState = {
           className: "col-md-6"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "light-danger m-font"
+        }, "Eventos"), eventosLength > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_CommaList__WEBPACK_IMPORTED_MODULE_4__["CommaList"], {
+          list: sectionData.eventos.list,
+          route: "eventos"
+        }) : "No hay eventos que mostrar."))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-4"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "text-right bold m-font"
+        }, "D\xEDa laboral"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "light-danger m-font"
         }, "Descripci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, sectionData.descripcion.substring(0, 50) + "..."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "border-top small-v-padding"
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "smaller-text"
-        }, "mostrando s\xF3lo los primeros 50 caracteres")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-4"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "light-danger m-font"
-        }, "Eventos"), eventosLength > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_CommaList__WEBPACK_IMPORTED_MODULE_4__["CommaList"], {
-          list: sectionData.eventos.list,
-          endpoint: "/eventos"
-        }) : "No hay eventos que mostrar.")));
+        }, "mostrando s\xF3lo los primeros 50 caracteres"))))));
       },
-      "class": "box-padding  box-transparent full-width relative"
+      "class": date.getDay() !== 6 ? "box-padding full-width relative border-bottom" : "box-padding full-width relative"
     };
   },
   no_laboral: function no_laboral(renderActions, sectionData, statusIndex, originalActions, dataIndex) {
@@ -86353,32 +86362,36 @@ var FeriadoWeekByState = {
     return {
       content: function content() {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "container v-padding"
+          className: "container"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_CustomLink__WEBPACK_IMPORTED_MODULE_7__["default"], {
-          params: linkParam
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "light-danger mid-title side-margin"
-        }, date.getDate() + " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "side-margin subrayado sub-title bold",
-          style: {
-            color: "var(--text-color)"
-          }
-        }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__["DAYS"][date.getDay()] + " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "mid-font",
-          style: {
-            color: "var(--text-color)"
-          }
-        }, sectionData.nombre)), renderActions), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row m-font justify-content-end bold"
-        }, "no laboral"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row col-md-12"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_ExpandableComponent__WEBPACK_IMPORTED_MODULE_8__["ExpandableComponent"], {
+          links: renderActions.links,
+          buttons: renderActions.buttons,
+          title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_CustomLink__WEBPACK_IMPORTED_MODULE_7__["default"], {
+            params: linkParam
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "light-danger mid-title side-margin"
+          }, date.getDate() + " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "side-margin subrayado sub-title bold",
+            style: {
+              color: "var(--text-color)"
+            }
+          }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__["DAYS"][date.getDay()] + " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "mid-font",
+            style: {
+              color: "var(--text-color)"
+            }
+          }, sectionData.nombre))
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "col-md-6 light-danger mid-font"
         }, "Sin apertura"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "col-md-6"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "text-right bold m-font"
+        }, "D\xEDa no laboral"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "light-danger mid-font"
         }, "Descripci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "".concat(sectionData.descripcion.substring(0, 50), " ...")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "border-top small-v-padding"
@@ -86387,9 +86400,9 @@ var FeriadoWeekByState = {
           style: {
             paddingBottom: "10px"
           }
-        }, "mostrando s\xF3lo los primeros 30 caracteres"))));
+        }, "mostrando s\xF3lo los primeros 50 caracteres"))))));
       },
-      "class": "h-padding full-width background-border"
+      "class": date.getDay() !== 6 ? "box-padding full-width relative border-bottom background-border" : "box-padding full-width relative background-border"
     };
   },
   no_data: function no_data(renderActions, sectionData, statusIndex, originalActions, dataIndex) {
@@ -86406,10 +86419,10 @@ var FeriadoWeekByState = {
         }, dataIndex.getDate()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "side-margin sub-title"
         }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__["DAYS"][dataIndex.getDay()])), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-4 border-bottom text-right smaller-text"
+          className: "col-md-4 text-right smaller-text"
         }, "No has designado este d\xEDa como feriado")));
       },
-      "class": "box-padding box-transparent full-width"
+      "class": dataIndex.getDay() !== 6 ? "box-padding full-width relative border-bottom" : "box-padding full-width relative"
     };
   }
 };
@@ -86435,9 +86448,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 /* harmony import */ var _constantes_CardObject__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../constantes/CardObject */ "./resources/js/constantes/CardObject.jsx");
 /* harmony import */ var _basic_CustomLink__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../basic/CustomLink */ "./resources/js/componentes/basic/CustomLink.jsx");
+/* harmony import */ var _hocs_ExpandableComponent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../hocs/ExpandableComponent */ "./resources/js/hocs/ExpandableComponent.jsx");
 /**
  * react basic
  */
+
 
 
 
@@ -86458,26 +86473,34 @@ var HorarioWeekByState = {
     };
     return {
       content: function content() {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "full-width"
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_ExpandableComponent__WEBPACK_IMPORTED_MODULE_7__["ExpandableComponent"], {
+          show: true,
+          links: renderActions.links,
+          buttons: renderActions.buttons,
+          title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_CustomLink__WEBPACK_IMPORTED_MODULE_6__["default"], {
+            params: linkParam
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "h-padding mid-title subrayado",
+            style: {
+              color: 'var(--light-danger)'
+            }
+          }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_4__["DAYS"][sectionData.diaSemana - 1]))
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "inline-block side-margin text-top"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_CustomLink__WEBPACK_IMPORTED_MODULE_6__["default"], {
-          params: linkParam
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "mid-title subrayado",
-          style: {
-            color: 'var(--light-danger)'
-          }
-        }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_4__["DAYS"][sectionData.diaSemana - 1])), renderActions)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "container"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row justify-content-end bold m-font"
-        }, "D\xEDa laboral"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row h-padding"
+          className: "row"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "col-md-6 container"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "inline-block m-font"
+        }, "".concat(eventoLength, " Eventos encontrados")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "v-padding "
+        }, eventoLength > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_CommaList__WEBPACK_IMPORTED_MODULE_3__["CommaList"], {
+          list: eventos,
+          route: "eventos"
+        }) : "No hay eventos que mostrar.")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-6"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "text-right bold m-font"
+        }, "D\xEDa laboral"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row m-font"
         }, "Horarios de atenci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row"
@@ -86489,20 +86512,9 @@ var HorarioWeekByState = {
           className: "col-md-6"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "bold"
-        }, "Atenci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "".concat(sectionData.apertura.atencion.hora, ":").concat(sectionData.apertura.atencion.minuto, " horas - ").concat(sectionData.cierre.atencion.hora, ":").concat(sectionData.cierre.atencion.minuto, " horas"))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-6"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "inline-block m-font"
-        }, "".concat(eventoLength, " Eventos encontrados")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "v-padding "
-        }, eventoLength > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-          className: "no-padding nav-list"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_CommaList__WEBPACK_IMPORTED_MODULE_3__["CommaList"], {
-          list: eventos,
-          endpoint: "/eventos"
-        })) : "No hay eventos que mostrar.")))));
+        }, "Atenci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "".concat(sectionData.apertura.atencion.hora, ":").concat(sectionData.apertura.atencion.minuto, " horas - ").concat(sectionData.cierre.atencion.hora, ":").concat(sectionData.cierre.atencion.minuto, " horas")))))));
       },
-      "class": null
+      "class": sectionData.diaSemana === 7 ? 'extra-v-padding extra-h-padding' : 'extra-v-padding extra-h-padding border-bottom'
     };
   },
   no_laboral: function no_laboral(renderActions, sectionData, statusIndex, originalActions, dataIndex) {
@@ -86515,59 +86527,58 @@ var HorarioWeekByState = {
     };
     return {
       content: function content() {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "full-width box-padding"
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "container"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "seventy inline-block sub-title"
+          className: "row col-md-12"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_ExpandableComponent__WEBPACK_IMPORTED_MODULE_7__["ExpandableComponent"], {
+          show: true,
+          links: renderActions.links,
+          buttons: renderActions.buttons,
+          title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_CustomLink__WEBPACK_IMPORTED_MODULE_6__["default"], {
+            params: linkParam
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "h-padding highlight mid-title subrayado"
+          }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_4__["DAYS"][sectionData.diaSemana - 1]))
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "bold inline-block side-margin text-top"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_CustomLink__WEBPACK_IMPORTED_MODULE_6__["default"], {
-          params: linkParam
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "text bold subrayado"
-        }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_4__["DAYS"][sectionData.diaSemana - 1])), renderActions)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "thirty inline-block text-right smaller-text border-bottom "
-        }, "D\xEDa no laboral")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "full-width "
+          className: "row"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "half box-padding inline-block"
+          className: "col-md-6"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "light-danger bold"
+          className: "m-font"
         }, "Sin apertura")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-6"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "text-right bold m-font"
+        }, "D\xEDa no laboral"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "half box-padding inline-block"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "light-danger bold"
-        }, "Descripci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, " " + sectionData.descripcion))));
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "highlight m-font"
+        }, "Descripci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, sectionData.descripcion || "sin descripcion")))))));
       },
-      "class": "box-padding background-border"
+      "class": "background-border bottom-border"
     };
   },
   no_data: function no_data(renderActions, sectionData, statusIndex, originalActions, dataIndex) {
     return {
       content: function content() {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "full-width  v-padding"
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_ExpandableComponent__WEBPACK_IMPORTED_MODULE_7__["ExpandableComponent"], {
+          show: true,
+          links: renderActions.links,
+          title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+            className: "h-padding highlight mid-title"
+          }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_4__["DAYS"][dataIndex - 1])
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "seventy sub-title inline-block "
+          className: "row m-font justify-content-end h-padding bold"
+        }, "Aun no has asignado un horario de reservas"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row v-padding"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "inline-block side-margin bold"
-        }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_4__["DAYS"][dataIndex - 1]), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "inline-block side-margin"
-        }, renderActions)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "thirty text-right inline-block smaller-text border-bottom"
-        }, "Aun no has asignado un horario de reservas")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "full-width "
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "half box-padding inline-block"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "light-danger bold"
-        }, "Sin horario")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "half box-padding inline-block"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "light-danger bold"
-        }, "Sin descripci\xF3n"))));
+          className: "col-md-6 highlight m-font"
+        }, "Sin horario"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-6 highlight m-font"
+        }, "Sin Eventos")));
       },
-      "class": "box-padding background-border"
+      "class": dataIndex === 7 ? "extra-v-padding extra-h-padding" : "extra-h-padding extra-v-padding border-bottom"
     };
   }
 };
@@ -88227,7 +88238,7 @@ function (_Component) {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: props.current == i ? "fat-border box-padding" : ""
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "half inline-block"
+          className: "half inline-block m-font"
         }, e.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "inline-block text-right half"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
@@ -89840,7 +89851,7 @@ var FormularioEstablecimiento = function FormularioEstablecimiento(props) {
     value: props.fields.cuit_cuil,
     changeHandler: props.change
   }))), props.isFranquicia ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row sub-title v-padding bold"
+    className: "row mid-title v-padding"
   }, "Informaci\xF3n del encargado"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row v-padding "
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -89874,7 +89885,7 @@ var FormularioEstablecimiento = function FormularioEstablecimiento(props) {
     value: props.fields.correo_encargado,
     changeHandler: props.change
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row sub-title top-padding bold"
+    className: "row mid-title top-padding"
   }, "Ubicaci\xF3n del local"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FormularioUbicacion__WEBPACK_IMPORTED_MODULE_3__["FormularioUbicacion"], {
     data: data,
     errors: props.errors,
@@ -90930,7 +90941,7 @@ function VerEvento(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-8"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "sub-title"
+    className: "mid-title"
   }, "Promociones"), promociones.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_tables_PromocionesTable__WEBPACK_IMPORTED_MODULE_6__["default"], {
     data: promociones
   }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -92117,7 +92128,7 @@ function VerFeriado(props) {
   var data = props.data,
       date = new Date(data.data.fecha),
       estado = data.data.estado.replace('_', ' '),
-      eventos = Object.values(data.eventos.data).map(function (e) {
+      eventos = Object.values(data.data.eventos.data).map(function (e) {
     return _objectSpread({}, e, {
       nombre: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CustomLink__WEBPACK_IMPORTED_MODULE_3__["default"], {
         params: {
@@ -94015,21 +94026,21 @@ function VerPromocion(props) {
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container "
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "h-padding row justify-content-end bold m-font"
-  }, data.estado), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-9"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "sub-title"
+    className: "mid-title"
   }, "Eventos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_tables_EventosTable__WEBPACK_IMPORTED_MODULE_6__["default"], {
     data: data.eventos
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "light-danger mid-font"
+    className: "h-padding text-right bold sub-title"
+  }, data.estado), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "light-danger m-font"
   }, "Descripci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.descripcion), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-    className: "highlight no-margin mid-font top-padding"
+    className: "highlight no-margin m-font top-padding"
   }, "Descuento:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.descuento ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, data.descuento, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
     className: "bold side-margin"
   }, "%")) : "Sin descuento")))));
@@ -94685,7 +94696,7 @@ var validation = _defineProperty({
       maxLen: 40,
       alpha_numeric: true
     },
-    fieldName: "Nombre"
+    fieldName: "Apellido"
   },
   email: {
     rules: {
@@ -94907,7 +94918,7 @@ function Formulario(props) {
     className: "row top-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_3__["Numeric"], {
     titulo: "Capacidad m\xE1xima",
-    name: "capacidad_maxima",
+    name: "cantidad_maxima",
     description: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
       className: "light-text smaller-text"
     }, "M\xE1ximo de personas en la ubicaci\xF3n"),
@@ -95059,42 +95070,42 @@ function VerUbicacion(props) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var _validation;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var validation = (_validation = {
-  nombre: {
+var validation = {
+  id: {
     rules: {},
     fieldName: "Id"
+  },
+  nombre: {
+    rules: {
+      required: true,
+      maxLen: 45,
+      alpha_numeric: true
+    },
+    fieldName: "Nombre"
+  },
+  descripcion: {
+    rules: {
+      maxLen: 50
+    },
+    fieldName: "Descripción"
+  },
+  cantidad_maxima: {
+    rules: {
+      required: true,
+      numeric: true,
+      minVal: 1
+    },
+    fieldName: "Capacidad máxima"
+  },
+  maximo_personas: {
+    rules: {
+      required: true,
+      numeric: true,
+      minVal: 1
+    },
+    fieldName: "Máximo Personas"
   }
-}, _defineProperty(_validation, "nombre", {
-  rules: {
-    required: true,
-    maxLen: 45,
-    alpha_numeric: true
-  },
-  fieldName: "Nombre"
-}), _defineProperty(_validation, "descripcion", {
-  rules: {
-    maxLen: 50
-  },
-  fieldName: "Descripción"
-}), _defineProperty(_validation, "capacidad_maxima", {
-  rules: {
-    required: true,
-    numeric: true,
-    minVal: 1
-  },
-  fieldName: "Capacidad máxima"
-}), _defineProperty(_validation, "maximo_personas", {
-  rules: {
-    required: true,
-    numeric: true,
-    minVal: 1
-  },
-  fieldName: "Máximo Personas"
-}), _validation);
+};
 /* harmony default export */ __webpack_exports__["default"] = (validation);
 
 /***/ }),
@@ -95335,8 +95346,6 @@ function generateEventosCard(eventos, actions) {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "text mid-title"
         }, eventos[e].nombre)), acciones), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row bold m-font justify-content-end"
-        }, eventos[e].estado), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "col-md-6"
@@ -95357,6 +95366,8 @@ function generateEventosCard(eventos, actions) {
         }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No has asignado promociones a este evento"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "col-md-6 no-padding"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "bold sub-title text-right"
+        }, eventos[e].estado), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "m-font light-danger"
         }, "Descripci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, eventos[e].descripcion))));
       },
@@ -95419,21 +95430,21 @@ function generatePromocionesCard(promociones, actions) {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "text mid-title"
         }, promociones[e].nombre))), acciones), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "h-padding row justify-content-end bold m-font"
-        }, promociones[e].estado), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row h-padding"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "col-md-6"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "m-font light-danger"
-        }, "Descripci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, promociones[e].descripcion)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-6"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "m-font light-danger top-padding"
         }, "Eventos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "asociada a ".concat(eventos.length, " eventos")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, eventos.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_3__["CommaList"], {
           list: promociones[e].eventos.list,
           route: "eventos"
-        }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No has asignado horarios a este evento")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No has asignado horarios a este evento"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-6"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "bold sub-title text-right"
+        }, promociones[e].estado), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "m-font light-danger"
+        }, "Descripci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, promociones[e].descripcion), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "top-padding"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "m-font light-danger "
@@ -96953,6 +96964,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var ExpandableComponent = function ExpandableComponent(props) {
+  var buttons = props.buttons || [];
+
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.show),
       _useState2 = _slicedToArray(_useState, 2),
       more = _useState2[0],
@@ -96974,17 +96987,22 @@ var ExpandableComponent = function ExpandableComponent(props) {
     }
   }];
 
+  if (buttons.length > 0) buttons = buttons.concat(action);else buttons = action;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "container no-padding "
+    className: "container v-padding",
+    style: {
+      paddingLeft: "0",
+      paddingRight: "0"
+    }
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row mid-title top-padding"
+    className: "row mid-title "
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-6 no-padding"
   }, props.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-6 text-right no-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_2__["default"], {
     links: props.links,
-    buttons: action
+    buttons: buttons
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: more ? "row" : "hidden"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {

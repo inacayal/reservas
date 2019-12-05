@@ -64,7 +64,7 @@ export const FormularioEstablecimiento = (props) => {
                     <></>
                 :
                     <>
-                        <div className="row sub-title v-padding bold">
+                        <div className="row mid-title v-padding">
                             Información del encargado
                         </div>
                         <div className="row v-padding ">
@@ -96,7 +96,7 @@ export const FormularioEstablecimiento = (props) => {
                                         changeHandler={props.change}/>
                             </div>
                         </div>
-                        <div className="row sub-title top-padding bold">
+                        <div className="row mid-title top-padding">
                             Ubicación del local
                         </div>
                         <FormularioUbicacion    data={data}

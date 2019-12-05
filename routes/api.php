@@ -57,8 +57,8 @@ Route::prefix('reservas')->name('reservas.')->group(function (){
         ->where('single','single')
         ->name('single');
 
-    Route::put('/update/{id}','ReservaController@update')->name('update');
-    Route::delete('/delete/{id}','ReservaController@delete')->name('delete');
+    Route::put('/update','ReservaController@update')->name('update');
+    Route::delete('/delete','ReservaController@delete')->name('delete');
     Route::post('/create','ReservaController@create')->name('create');
 });
 
@@ -75,8 +75,8 @@ Route::prefix('eventos')->name('eventos.')->group(function (){
         ->where('single','single')
         ->name('single');
 
-    Route::put('/update/{id}','EventoController@update')->name('update');
-    Route::delete('/delete/{id}','EventoController@delete')->name('delete');
+    Route::put('/update','EventoController@update')->name('update');
+    Route::delete('/delete','EventoController@delete')->name('delete');
     Route::post('/create','EventoController@create')->name('create');
 });
 
@@ -93,8 +93,8 @@ Route::prefix('promociones')->name('promociones.')->group(function (){
         ->where('single','single')
         ->name('single');
 
-    Route::put('/update/{id}','PromocionController@update')->name('update');
-    Route::delete('/delete/{id}','PromocionController@delete')->name('delete');
+    Route::put('/update','PromocionController@update')->name('update');
+    Route::delete('/delete','PromocionController@delete')->name('delete');
     Route::post('/create','PromocionController@create')->name('create');
 });
 
@@ -107,8 +107,8 @@ Route::prefix('ubicaciones')->name('ubicaciones.')->group(function (){
         ->where('single','single')
         ->name('single');
 
-    Route::put('/update/{id}','UbicacionController@update')->name('update');
-    Route::delete('/delete/{id}','UbicacionController@delete')->name('delete');
+    Route::put('/update','UbicacionController@update')->name('update');
+    Route::delete('/delete','UbicacionController@delete')->name('delete');
     Route::post('/create','UbicacionController@create')->name('create');
 });
 
@@ -125,7 +125,7 @@ Route::prefix('horarios')->name('horarios.')->group(function (){
         ->where('single','single')
         ->name('single');
 
-    Route::put('/update/{id}','HorarioController@update')->name('update');
+    Route::put('/update','HorarioController@update')->name('update');
     Route::delete('/delete/{id}','HorarioController@delete')->name('delete');
     Route::post('/create','HorarioController@create')->name('create');
 });

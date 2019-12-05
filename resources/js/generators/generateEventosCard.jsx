@@ -48,9 +48,6 @@ export default function generateEventosCard(
                             </CustomLink>
                             {acciones}
                         </div>
-                        <div className="row bold m-font justify-content-end">
-                            {eventos[e].estado}
-                        </div>
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="m-font light-danger">
@@ -85,6 +82,9 @@ export default function generateEventosCard(
                                 </div>
                             </div>
                             <div className="col-md-6 no-padding">
+                                <div className="bold sub-title text-right">
+                                    {eventos[e].estado}
+                                </div>
                                 <div className="m-font light-danger">
                                     Descripción
                                 </div>

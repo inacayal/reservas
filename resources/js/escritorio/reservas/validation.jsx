@@ -65,7 +65,7 @@ const validation = {
             maxLen:40,
             alpha_numeric:true
         },
-        fieldName:"Nombre"
+        fieldName:"Apellido"
     },
     email:{
         rules:{

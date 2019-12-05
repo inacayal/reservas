@@ -6,12 +6,14 @@ use Illuminate\Support\Collection;
 use App\Traits\hasDependencies;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Traits\ValidatesForm;
 
 class ReservaController extends Controller
 {
-    use hasDependencies;
+    use hasDependencies,
+        ValidatesForm;
 
-    protected static $model = '\\App\\Models\\Reserva';
+    protected $model = '\\App\\Models\\Reserva';
     /**
      * start trait information
      */
@@ -44,7 +46,7 @@ class ReservaController extends Controller
             'reservas.estado'    => false
         ]
     ];
-    
+
     public function __construct () {
         $this->middleware('length');
     }
@@ -70,7 +72,7 @@ class ReservaController extends Controller
         $user = User::with(
             $relations
         )->find($id);
-        
+
         $data = self::formatResults(
             $user,
             $dependencies
@@ -79,9 +81,9 @@ class ReservaController extends Controller
             'intervalo' => $user->intervalo,
             'antelacion' => $user->antelacion_reserva
         ];
-        return response(array_merge($data,$extra),200)->header('Content-Type','application/json'); 
+        return response(array_merge($data,$extra),200)->header('Content-Type','application/json');
     }
-    
+
     public function add(
         $route,
         $id,
@@ -103,7 +105,7 @@ class ReservaController extends Controller
         $user = User::with(
             $relations
         )->find($id);
-        
+
         $data = self::formatResults(
             $user,
             $dependencies
@@ -112,20 +114,20 @@ class ReservaController extends Controller
             'intervalo' => $user->intervalo,
             'antelacion' => $user->antelacion_reserva
         ];
-        return response(array_merge($data,$extra) ,200)->header('Content-Type','application/json'); 
+        return response(array_merge($data,$extra) ,200)->header('Content-Type','application/json');
     }
 
     public function single(
-        $route, 
+        $route,
         $userId,
         $id
-    ){ 
+    ){
         $dependencies = self::getDependencies($route);
         $relations = $this->getDependencyScopes(
             array_keys($dependencies),
             array('reservas' => (object)['id'=>$id,'scope'=>'searchId'])
         );
-        
+
         $user = User::with(
             $relations
         )->find($userId);
@@ -138,15 +140,37 @@ class ReservaController extends Controller
         return response($data,200)->header('Content-Type','application/json');
     }
 
-    public function create (){
-        return response(['respuesta'=>'create'],200)
-            ->header('Content-Type','application/json');
+
+    public function create (Request $request){
+        $method = $request->getMethod();
+        if ($method === 'POST'){
+            $store = $this->storeData($request->post(),$method,'Reserva');
+            return response($store,$store['status']);
+        } else
+            return response([
+                'type'=>'failure',
+                'title'=>'Método inváido',
+                'errors'=> [],
+                'status'=> 422,
+                'mensaje' => "El método usado es inválido"
+            ],422);
     }
 
-    public function update (){
-        return response(['respuesta'=>'update'],200)
-            ->header('Content-Type','application/json');
+    public function update (Request $request){
+        $method = $request->getMethod();
+        if ($method === 'PUT'){
+            $store = $this->storeData($request->post(),$method,'Reserva');
+            return response($store,$store['status']);
+        } else
+            return response([
+                'type'=>'failure',
+                'title'=>'Método inválido',
+                'errors'=> [],
+                'status'=> 422,
+                'mensaje' => "El método usado es inválido"
+            ],422);
     }
+
 
     public function delete (){
         return response(['respuesta'=>'delete'],200)

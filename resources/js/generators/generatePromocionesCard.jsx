@@ -36,18 +36,9 @@ export default function generatePromocionesCard(
                                 </span>
                                 {acciones}
                             </div>
-                            <div className="h-padding row justify-content-end bold m-font">
-                                {promociones[e].estado}
-                            </div>
                             <div className="row h-padding">
                                 <div className="col-md-6">
                                     <div className="m-font light-danger">
-                                        Descripción
-                                    </div>
-                                    <div>{promociones[e].descripcion}</div>
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="m-font light-danger top-padding">
                                         Eventos
                                     </div>
                                     <div>
@@ -61,6 +52,17 @@ export default function generatePromocionesCard(
                                                 :
                                                     <div>No has asignado horarios a este evento</div>
                                         }
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="bold sub-title text-right">
+                                        {promociones[e].estado}
+                                    </div>
+                                    <div className="m-font light-danger">
+                                        Descripción
+                                    </div>
+                                    <div>
+                                        {promociones[e].descripcion}
                                     </div>
                                     <div className="top-padding">
                                         <span  className="m-font light-danger ">

@@ -40,7 +40,7 @@ export function VerEvento (props) {
                     buttons ={props.nav.buttons}/>
             <div className="row justify-content-center">
                 <div className="col-md-8">
-                    <div className="sub-title">
+                    <div className="mid-title">
                         Promociones
                     </div>
                     {

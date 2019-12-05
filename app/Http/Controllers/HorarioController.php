@@ -6,13 +6,15 @@ use App\Http\Resources\HorarioResource as Resource;
 use App\Traits\hasDependencies;
 use Illuminate\Http\Request;
 use App\User;
+use App\Traits\ValidatesForm;
 
 class HorarioController extends Controller
 {
-    use hasDependencies;
+    use hasDependencies,
+        ValidatesForm;
 
     protected $model = '\\App\\Models\\Horario';
-    
+
     protected static $dependencies = [
         'list' => [
             'horarios'          =>	'key',
@@ -46,7 +48,7 @@ class HorarioController extends Controller
         $user = User::with(
             $relations
         )->find($id);
-        
+
         $data = self::formatResults(
             $user,
             $dependencies
@@ -71,7 +73,7 @@ class HorarioController extends Controller
         $user = User::with(
             $relations
         )->find($id);
-        
+
         $data = self::formatResults(
             $user,
             $dependencies
@@ -81,20 +83,20 @@ class HorarioController extends Controller
             'intervalo' => $user->intervalo->id
         ];
 
-        return response(array_merge($data,$extra),200)->header('Content-Type','application/json'); 
+        return response(array_merge($data,$extra),200)->header('Content-Type','application/json');
     }
 
     public function single(
-        $route, 
+        $route,
         $userId,
         $id
-    ){ 
+    ){
         $dependencies = self::getDependencies($route);
         $relations = $this->getDependencyScopes(
             array_keys($dependencies),
             array('horarios' => (object)['id'=>$id,'scope'=>'searchId'])
         );
-        
+
         $user = User::with(
             $relations
         )->find($userId);
@@ -103,7 +105,7 @@ class HorarioController extends Controller
             $user,
             $dependencies
         );
-        
+
         $extra = [
             'intervalo' => $user->intervalo->id
         ];
@@ -124,14 +126,37 @@ class HorarioController extends Controller
         return collect($res);
     }
 
-    public function create (){
-        return response(['respuesta'=>'create'],200)
-            ->header('Content-Type','application/json');
+
+    public function create (Request $request){
+        $method = $request->getMethod();
+        if ($method === 'POST'){
+            $store = $this->storeData($request->post(),$method,'Horario');
+            return response($store,$store['status']);
+        } else
+            return response([
+                'type'=>'failure',
+                'title'=>'Método inváido',
+                'errors'=> [],
+                'status'=> 422,
+                'mensaje' => "El método usado es inválido"
+            ],422);
     }
-    public function update (){
-        return response(['respuesta'=>'update'],200)
-            ->header('Content-Type','application/json');
+
+    public function update (Request $request){
+        $method = $request->getMethod();
+        if ($method === 'PUT'){
+            $store = $this->storeData($request->post(),$method,'Horario');
+            return response($store,$store['status']);
+        } else
+            return response([
+                'type'=>'failure',
+                'title'=>'Método inválido',
+                'errors'=> [],
+                'status'=> 422,
+                'mensaje' => "El método usado es inválido"
+            ],422);
     }
+
     public function delete (){
         return response(['respuesta'=>'delete'],200)
             ->header('Content-Type','application/json');

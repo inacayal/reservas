@@ -8,6 +8,7 @@ import {CommaList} from '../../basic/CommaList';
 import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
 import { CLASSBYSTATE } from '../../../constantes/CardObject';
 import CustomLink from '../../basic/CustomLink';
+import {ExpandableComponent} from '../../../hocs/ExpandableComponent';
 
 
 export const HorarioWeekByState = {
@@ -27,61 +28,61 @@ export const HorarioWeekByState = {
             };
         return {
             content: () =>
-                <>
-                    <div className="full-width" >
-                        <div className="inline-block side-margin text-top">
-                            <CustomLink params={linkParam}>
-                                <span className="mid-title subrayado" style={{color:'var(--light-danger)'}}>
-                                    {DAYS[sectionData.diaSemana - 1]}
-                                </span>
-                            </CustomLink>
-                            {renderActions}
-                        </div>
-                    </div>
-                    <div className="container">
-                        <div className="row justify-content-end bold m-font">
-                            Día laboral
-                        </div>
-                        <div className="row h-padding">
-                            <div className="col-md-6 container">
-                                <div className="row m-font">
-                                    Horarios de atención
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-6 no-padding">
-                                        <div className="bold">
-                                            Reservas
-                                        </div>
-                                        <div>
-                                            {`${sectionData.apertura.reserva.hora}:${sectionData.apertura.reserva.minuto} horas - ${sectionData.cierre.reserva.hora}:${sectionData.cierre.reserva.minuto} horas`}
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="bold">
-                                            Atención
-                                        </div>
-                                        <div>{`${sectionData.apertura.atencion.hora}:${sectionData.apertura.atencion.minuto} horas - ${sectionData.cierre.atencion.hora}:${sectionData.cierre.atencion.minuto} horas`}</div>
-                                    </div>
-                                </div>
+                <ExpandableComponent    show  = {true}
+                                        links = {renderActions.links}
+                                        buttons = {renderActions.buttons}
+                                        title = {
+                                            <CustomLink params={linkParam}>
+                                                <span className="h-padding mid-title subrayado" style={{color:'var(--light-danger)'}}>
+                                                    {DAYS[sectionData.diaSemana - 1]}
+                                                </span>
+                                            </CustomLink>
+                                        }>
+                    <div className="row">
+                        <div className="col-md-6 container">
+                            <div className="inline-block m-font">
+                                {`${eventoLength} Eventos encontrados`}
                             </div>
-                            <div className="col-md-6">
-                                <div className="inline-block m-font">
-                                    {`${eventoLength} Eventos encontrados`}
+                            <div className="v-padding ">
+                                {
+                                    eventoLength > 0
+                                    ?
+                                            <CommaList  list={eventos}
+                                                        route='eventos' />
+                                    :
+                                        "No hay eventos que mostrar."
+                                }
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="text-right bold m-font">
+                                Día laboral
+                            </div>
+                            <div className="row m-font">
+                                Horarios de atención
+                            </div>
+                            <div className="row">
+                                <div className="col-md-6 no-padding">
+                                    <div className="bold">
+                                        Reservas
+                                    </div>
+                                    <div>
+                                        {`${sectionData.apertura.reserva.hora}:${sectionData.apertura.reserva.minuto} horas - ${sectionData.cierre.reserva.hora}:${sectionData.cierre.reserva.minuto} horas`}
+                                    </div>
                                 </div>
-                                <div className="v-padding ">
-                                    {
-                                        eventoLength > 0
-                                        ?
-                                            <ul className="no-padding nav-list"><CommaList list={eventos} endpoint='/eventos' /></ul>
-                                        :
-                                            "No hay eventos que mostrar."
-                                    }
+                                <div className="col-md-6">
+                                    <div className="bold">
+                                        Atención
+                                    </div>
+                                    <div>{`${sectionData.apertura.atencion.hora}:${sectionData.apertura.atencion.minuto} horas - ${sectionData.cierre.atencion.hora}:${sectionData.cierre.atencion.minuto} horas`}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </>,
-            class: null
+                </ExpandableComponent>,
+            class: sectionData.diaSemana === 7
+                ? 'extra-v-padding extra-h-padding'
+                : 'extra-v-padding extra-h-padding border-bottom'
         };
     },
     no_laboral: (
@@ -100,35 +101,44 @@ export const HorarioWeekByState = {
             return {
                 content: () => {
                     return (
-                        <>
-                            <div className="full-width box-padding">
-                                <div className="seventy inline-block sub-title">
-                                    <div className="bold inline-block side-margin text-top">
-                                        <CustomLink params={linkParam}>
-                                            <span className="text bold subrayado">
-                                                {DAYS[sectionData.diaSemana - 1]}
-                                            </span>
-                                        </CustomLink>
-                                        {renderActions}
+                        <div className="container">
+                            <div className="row col-md-12">
+                                <ExpandableComponent    show  = {true}
+                                                        links = {renderActions.links}
+                                                        buttons = {renderActions.buttons}
+                                                        title = {
+                                                            <CustomLink params={linkParam}>
+                                                                <span className="h-padding highlight mid-title subrayado">
+                                                                    {DAYS[sectionData.diaSemana - 1]}
+                                                                </span>
+                                                            </CustomLink>
+                                                        }>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <div className="m-font">
+                                                Sin apertura
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="text-right bold m-font">
+                                                Día no laboral
+                                            </div>
+                                            <div className="half box-padding inline-block">
+                                                <div className="highlight m-font">
+                                                    Descripción
+                                                </div>
+                                                <div>
+                                                    {sectionData.descripcion||"sin descripcion"}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="thirty inline-block text-right smaller-text border-bottom ">
-                                    Día no laboral
-                                </div>
+                                </ExpandableComponent>
                             </div>
-                            <div className="full-width ">
-                                <div className="half box-padding inline-block">
-                                    <div className="light-danger bold">Sin apertura</div>
-                                </div>
-                                <div className="half box-padding inline-block">
-                                    <span className="light-danger bold">Descripción</span>
-                                    <span>{" " + sectionData.descripcion}</span>
-                                </div>
-                            </div>
-                        </>
+                        </div>
                     )
                 },
-                class: "box-padding background-border"
+                class: "background-border bottom-border"
             }
         },
     no_data: (
@@ -140,29 +150,27 @@ export const HorarioWeekByState = {
     ) =>
         ({
             content: () =>
-                <>
-                    <div className="full-width  v-padding">
-                        <div className="seventy sub-title inline-block ">
-                            <div className="inline-block side-margin bold">
-                                {DAYS[dataIndex - 1]}
-                            </div>
-                            <div className="inline-block side-margin">
-                                {renderActions}
-                            </div>
-                        </div>
-                        <div className="thirty text-right inline-block smaller-text border-bottom">
-                            Aun no has asignado un horario de reservas
-                            </div>
+                <ExpandableComponent    show  = {true}
+                                        links = {renderActions.links}
+                                        title = {
+                                            <div className="h-padding highlight mid-title">
+                                                {DAYS[dataIndex - 1]}
+                                            </div>
+                                        }>
+                    <div className="row m-font justify-content-end h-padding bold">
+                        Aun no has asignado un horario de reservas
                     </div>
-                    <div className="full-width ">
-                        <div className="half box-padding inline-block">
-                            <div className="light-danger bold">Sin horario</div>
+                    <div className="row v-padding">
+                        <div className="col-md-6 highlight m-font">
+                            Sin horario
                         </div>
-                        <div className="half box-padding inline-block">
-                            <span className="light-danger bold">Sin descripción</span>
+                        <div className="col-md-6 highlight m-font">
+                            Sin Eventos
                         </div>
                     </div>
-                </>,
-            class: "box-padding background-border"
+                </ExpandableComponent>,
+            class: dataIndex === 7
+                ? "extra-v-padding extra-h-padding"
+                : "extra-h-padding extra-v-padding border-bottom"
         })
 };

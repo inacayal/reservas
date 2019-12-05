@@ -38,7 +38,7 @@ export function Formulario (props) {
                         </div>
                         <div className="row top-padding">
                             <Numeric    titulo="Capacidad máxima"
-                                        name="capacidad_maxima"
+                                        name="cantidad_maxima"
                                         description={
                                             <span className="light-text smaller-text">
                                                 Máximo de personas en la ubicación

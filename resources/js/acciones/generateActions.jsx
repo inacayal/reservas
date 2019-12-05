@@ -54,12 +54,7 @@ export const GenerateActions = {
                 key,
                 actions
             );
-        return (
-            <Actions
-                overlay = {type==='month' ? true : false}
-                links={acciones.links}
-                buttons={acciones.buttons} />
-        );
+        return acciones;
     },
     horarios: (
         data,
@@ -72,11 +67,7 @@ export const GenerateActions = {
                 key,
                 actions
             );
-        return (
-            <Actions
-                links={acciones.links}
-                buttons={acciones.buttons}/>
-        );
+        return acciones;
     },
     ubicaciones: (
         key,

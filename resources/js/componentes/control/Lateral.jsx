@@ -39,37 +39,32 @@ export default class Lateral extends Component {
                             params:{}
                         }
                         return(
-                            <li
-                                className="full-width relative"
+                            <li className="full-width relative"
                                 key={i}
                                 onMouseOver ={()=>hoverToggle(i)}
                                 onMouseLeave ={()=>hoverToggle()}>
-                                <button
-                                    title={e.title}
-                                    data={i}
-                                    className={
-                                        props.current == i
-                                        ?
-                                        "selected bold full-width text-left bold no-border no-padding"
-                                        :
-                                        "box-transparent full-width text-left box-padding highlight-hover bold-hover"}>
+                                <button title={e.title}
+                                        data={i}
+                                        className={
+                                            props.current == i
+                                                ? "selected bold full-width text-left bold no-border no-padding"
+                                                : "box-transparent full-width text-left box-padding highlight-hover bold-hover"}>
                                     <CustomLink params={linkParam}>
-                                        <div className={props.current == i ? "fat-border box-padding" : ""}>
-                                            <span className="half inline-block">
+                                        <div className={
+                                            props.current == i
+                                                ? "fat-border box-padding"
+                                                : ""
+                                            }>
+                                            <span className="half inline-block m-font">
                                                 {e.title}
                                             </span>
                                             <span className="inline-block text-right half">
                                                 <i className={
                                                     props.current == i||hover === i
-                                                    ?
-
-                                                    "line-v-middle middle-font highlight fas fa-angle-right"
-                                                    :
-                                                    e.sub.length>0
-                                                    ?
-                                                    "line-v-middle middle-font border-font fas fa-angle-right"
-                                                    :
-                                                    "hidden"
+                                                        ? "line-v-middle middle-font highlight fas fa-angle-right"
+                                                        : e.sub.length>0
+                                                            ? "line-v-middle middle-font border-font fas fa-angle-right"
+                                                            : "hidden"
                                                 }/>
                                             </span>
                                         </div>
@@ -77,12 +72,11 @@ export default class Lateral extends Component {
                                     {
                                         (e.sub.length>0)
                                         ?
-                                            <SubElements
-                                                isCurrent={props.current == i}
-                                                isHover={hover===i}
-                                                index ={i}
-                                                sub={e.sub}
-                                                {...props}/>
+                                            <SubElements    isCurrent={props.current == i}
+                                                            isHover={hover===i}
+                                                            index ={i}
+                                                            sub={e.sub}
+                                                            {...props}/>
                                         :
                                             <div></div>
                                     }
@@ -122,8 +116,7 @@ const SubElements = (props) => {
                             params:{}
                         }
                         return(
-                            <li
-                                key={ind}
+                            <li key={ind}
                                 className={sub.class+" border-transparent bold-hover text"}
                                 onMouseOver ={()=>hoverToggle(ind)}
                                 onMouseLeave ={()=>hoverToggle()}>
