@@ -41,7 +41,7 @@ export const FormularioUbicacion = (props)  => {
     return (
         <div className="row v-padding">
             <div className="col-md-6">
-                <h6 className="highlight no-margin bold">
+                <h6 className="highlight no-margin m-font">
                     Provincia
                 </h6>
                 <Select titulo="Selecciona la provincia"

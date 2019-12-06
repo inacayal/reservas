@@ -25,7 +25,18 @@ trait ValidatesForm
         $user = isset($data['id_usuario'])
             ? $data['id_usuario']
             : null;
-        $validation = $model::validateData($user,$method);
+        $validation = $user
+            ? $model::validateData($user,$method)
+            : [
+                'rules' => [
+                    'id_usuario' => 'bail|required|exists:users,id'
+                ],
+                'messages' => [
+                    'id_usuario.required'   => 'No se ha indicado el usuario',
+                    'id_usuario.exists'     => 'El usuario debe existir'
+                ],
+            ];
+
         return Validator::make(
             $data,
             $validation['rules'],
@@ -42,11 +53,13 @@ trait ValidatesForm
         }
     }
 
-    public function storeData($data,$method,$model){
-        $validation = $this->validateForm($data,$this->model,$method);
+    public function storeData($data,$method){
         $message = null;
         $instance = null;
+        $model = $this->model;
+        $validation = $this->validateForm($data,$this->model,$method);
         $title = self::$verbos[$method];
+
         if ($validation->fails()){
             $verb = $title['inf'];
             $message = [
@@ -90,4 +103,8 @@ trait ValidatesForm
         return $message;
     }
 
+    public function applyValidation (Request $request){
+        $store = $this->storeData($request->post(),$request->getMethod());
+        return response($store,$store['status']);
+    }
 }

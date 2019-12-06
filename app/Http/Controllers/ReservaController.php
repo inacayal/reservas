@@ -142,35 +142,14 @@ class ReservaController extends Controller
 
 
     public function create (Request $request){
-        $method = $request->getMethod();
-        if ($method === 'POST'){
-            $store = $this->storeData($request->post(),$method,'Reserva');
-            return response($store,$store['status']);
-        } else
-            return response([
-                'type'=>'failure',
-                'title'=>'Método inváido',
-                'errors'=> [],
-                'status'=> 422,
-                'mensaje' => "El método usado es inválido"
-            ],422);
+        $request->request->add(['validationType' => 'Creacion']);
+        return $this->applyValidation($request);
     }
 
     public function update (Request $request){
-        $method = $request->getMethod();
-        if ($method === 'PUT'){
-            $store = $this->storeData($request->post(),$method,'Reserva');
-            return response($store,$store['status']);
-        } else
-            return response([
-                'type'=>'failure',
-                'title'=>'Método inválido',
-                'errors'=> [],
-                'status'=> 422,
-                'mensaje' => "El método usado es inválido"
-            ],422);
+        $request->request->add(['validationType' => 'Update']);
+        return $this->applyValidation($request);
     }
-
 
     public function delete (){
         return response(['respuesta'=>'delete'],200)

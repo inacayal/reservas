@@ -1,18 +1,22 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Traits\hasDependencies;
 use Illuminate\Support\Collection;
-use App\User;
 use App\Models\Query\Provincia;
 use App\Models\Query\Intervalo;
 use App\Http\Resources\UsuarioResource as Resource;
+use App\Traits\ValidatesForm;
+use App\User;
+
 
 class UserController extends Controller
 {
-    use hasDependencies;
+    use hasDependencies,
+        ValidatesForm;
 
     protected $model = '\\App\\User';
 
@@ -173,14 +177,35 @@ class UserController extends Controller
         return response($data,200)->header('Content-Type','application/json');
     }
 
-    public function create (){
-        return response(['respuesta'=>'create'],200)
-            ->header('Content-Type','application/json');
+    public function create (Request $request){
+        $request->request->add([
+            'validationType' => 'Creacion',
+            'validationTitle'=> 'Local'
+        ]);
+        return $this->applyValidation($request);
     }
-    public function update (){
-        return response(['respuesta'=>'update'],200)
-            ->header('Content-Type','application/json');
+
+    public function updateUsuario (Request $request){
+        $request->request->add([
+            'validationType' => 'Usuario',
+            'validationTitle'=> 'Local'
+        ]);
+        return $this->applyValidation($request);
     }
+
+    public function updateReservas (Request $request){
+        $request->request->add([
+            'validationType' => 'Usuario',
+            'validationTitle'=> 'Local'
+        ]);
+        return $this->applyValidation($request);
+    }
+
+    public function updateEstablecimiento (Request $request){
+        $request->request->add(['validationType' => 'Establecimiento']);
+        return $this->applyValidation($request);
+    }
+
     public function delete (){
         return response(['respuesta'=>'delete'],200)
             ->header('Content-Type','application/json');

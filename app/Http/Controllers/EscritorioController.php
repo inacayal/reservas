@@ -25,14 +25,14 @@ class EscritorioController extends Controller
      */
     public function index()
     {
-        $user = json_encode(['data'=>new UsuarioResource(User::where('id',27)->first())]);
+        $user = json_encode(['data'=>new UsuarioResource(User::where('id',5)->first())]);
         return view('escritorio',compact('user'));
     }
     /**
      * Mostrar formulario de reservas
      *
      * @return \Illuminate\Contracts\Support\Renderable
-     */
+     **/
     public function reservas()
     {
         return view('reserva');

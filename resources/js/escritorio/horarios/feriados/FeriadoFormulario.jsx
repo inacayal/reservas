@@ -35,7 +35,7 @@ export function FeriadoFormulario (props) {
                     buttons={props.nav.buttons} />
             <div className="container">
                 <div className="row v-padding">
-                    <div className="col-md-7">
+                    <div className="col-md-6">
                         <Calendario editar={props.editar}
                                     date={props.fields.fecha_feriado}
                                     data={data}
@@ -54,7 +54,7 @@ export function FeriadoFormulario (props) {
                                     changeHandler={props.change}/>
                         </div>
                     </div>
-                    <div className="col-lg-5">
+                    <div className="col-lg-6">
                         <div className="container">
                             <div className="row justify-content-end">
                                 <div className="sub-title seventy inline-block bold">

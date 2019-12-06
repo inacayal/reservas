@@ -29,14 +29,15 @@ export function Formulario (props) {
                                         fields={props.fields}
                                         errors={props.errors}
                                         change={props.change}/>
-                <div className="row sub-title bold top-padding">
+                <div className="row mid-title top-padding">
                     Información del local
                 </div>
                 <div className="v-padding">
                     <FormularioEstablecimiento  data={data}
                                                 fields={props.fields}
                                                 errors={props.errors}
-                                                change={props.change}/>
+                                                change={props.change}
+                                                isFranquicia/>
                 </div>
                 <div className="v-padding">
                     <FormularioUsuario  data={data}
@@ -48,3 +49,31 @@ export function Formulario (props) {
         </>
     );
 }
+
+/*
+if (props.editar)
+props.nav.buttons[0].click = props.toggleModal;
+const data = props.data;
+return (
+<>
+<Titulo title={
+props.editar
+? data.nombre
+: "Agregar franquicia"
+}
+links={props.nav.links}
+buttons={props.nav.buttons} />
+<div className="container">
+<FormularioEstablecimiento  data={data}
+isFranquicia
+fields={props.fields}
+errors={props.errors}
+change={props.change}/>
+<FormularioUsuario  data={data}
+fields={props.fields}
+errors={props.errors}
+change={props.change}/>
+</div>
+</>
+)
+*/

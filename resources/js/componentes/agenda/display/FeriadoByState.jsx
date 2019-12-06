@@ -48,7 +48,7 @@ export const FeriadoMonthByState = {
         content: (
             <>
                 <div className="mid-title light-danger">
-                {date.getDate()}
+                    {date.getDate()}
                 </div>
                 <i  className="text-top fas fa-ellipsis-h highlight-title"
                     style={{ marginTop: "-8px" }} />
@@ -203,7 +203,7 @@ export const FeriadoWeekByState = {
                                                                 style={{color:"var(--text-color)"}}>
                                                             {DAYS[date.getDay()] + " "}
                                                         </span>
-                                                        <span   className="mid-font"
+                                                        <span   className="m-font"
                                                                 style={{color:"var(--text-color)"}}>
                                                             {sectionData.nombre}
                                                         </span>

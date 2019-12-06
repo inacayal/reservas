@@ -86378,7 +86378,7 @@ var FeriadoWeekByState = {
               color: "var(--text-color)"
             }
           }, _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__["DAYS"][date.getDay()] + " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-            className: "mid-font",
+            className: "m-font",
             style: {
               color: "var(--text-color)"
             }
@@ -90079,7 +90079,7 @@ var FormularioUbicacion = function FormularioUbicacion(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-6"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-    className: "highlight no-margin bold"
+    className: "highlight no-margin m-font"
   }, "Provincia"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
     titulo: "Selecciona la provincia",
     changeSelect: props.change,
@@ -91908,7 +91908,7 @@ function FeriadoFormulario(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row v-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-7"
+    className: "col-md-6"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_formularios_Calendario__WEBPACK_IMPORTED_MODULE_3__["Calendario"], {
     editar: props.editar,
     date: props.fields.fecha_feriado,
@@ -91928,7 +91928,7 @@ function FeriadoFormulario(props) {
     value: props.fields.descripcion,
     changeHandler: props.change
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-lg-5"
+    className: "col-lg-6"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -93280,14 +93280,15 @@ function Formulario(props) {
     errors: props.errors,
     change: props.change
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row sub-title bold top-padding"
+    className: "row mid-title top-padding"
   }, "Informaci\xF3n del local"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "v-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_3__["FormularioEstablecimiento"], {
     data: data,
     fields: props.fields,
     errors: props.errors,
-    change: props.change
+    change: props.change,
+    isFranquicia: true
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "v-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_FormularioUsuario__WEBPACK_IMPORTED_MODULE_4__["FormularioUsuario"], {
@@ -93297,6 +93298,33 @@ function Formulario(props) {
     change: props.change
   }))));
 }
+/*
+if (props.editar)
+props.nav.buttons[0].click = props.toggleModal;
+const data = props.data;
+return (
+<>
+<Titulo title={
+props.editar
+? data.nombre
+: "Agregar franquicia"
+}
+links={props.nav.links}
+buttons={props.nav.buttons} />
+<div className="container">
+<FormularioEstablecimiento  data={data}
+isFranquicia
+fields={props.fields}
+errors={props.errors}
+change={props.change}/>
+<FormularioUsuario  data={data}
+fields={props.fields}
+errors={props.errors}
+change={props.change}/>
+</div>
+</>
+)
+*/
 
 /***/ }),
 
@@ -93604,23 +93632,6 @@ var validation = {
     },
     fieldName: "CUIT/CUIL del local"
   },
-  id_provincia: {
-    rules: {
-      required: true,
-      numeric: true,
-      minVal: 1,
-      maxVal: 24
-    },
-    fieldName: "Provincia"
-  },
-  direccion: {
-    rules: {
-      required: true,
-      alpha_numeric: true,
-      maxLen: 150
-    },
-    fieldName: "Máximo Personas"
-  },
   nombre_encargado: {
     rules: {
       required: true,
@@ -93628,23 +93639,6 @@ var validation = {
       maxLen: 100
     },
     fieldName: "Nombre del Encargado"
-  },
-  correo_encargado: {
-    rules: {
-      required: true,
-      alpha_numeric: true,
-      maxLen: 100,
-      email: true
-    },
-    fieldName: "Correo del encargado"
-  },
-  telefono_encargado: {
-    rules: {
-      required: true,
-      alpha_numeric: true,
-      maxLen: 20
-    },
-    fieldName: "Telefono del encargado"
   },
   password: {
     rules: {},
