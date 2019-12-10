@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
-import {GET} from '../../utils/api';
+import {
+    GET,
+    POST,
+    PUT
+} from '../../utils/api';
 
 export const ubicacionesHandlers = [
     {
@@ -105,3 +109,9 @@ const addFormHandler = (endpoint,location) => {
         });
     }
 }
+
+export function sendPostRequest () { }
+
+export function updateScope () { }
+
+export function sendPutRequest () { }

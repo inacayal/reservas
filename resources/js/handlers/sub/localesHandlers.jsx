@@ -1,35 +1,46 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
-import {GET} from '../../utils/api';
+import {
+    GET,
+    POST,
+    PUT
+} from '../../utils/api';
 
 
-export const localesHandlers = [
-    {
-        endpoint:'/locales',
-        match:/\/locales$/,
-        callback:(params) =>
-            listHandler(`/usuario/locales/${user.id}`,'/locales')
-    },
-    {
-        endpoint:'/locales/agregar',
-        match:/\/locales\/(agregar)$/,
-        callback:(params) =>
-            addFormHandler(`/usuario/add/${user.id}/1`,'/locales/agregar')
-    },
-    {
-        endpoint:'/locales/editar/:id',
-        match:/\/locales\/(editar\/\d+)$/,
-        callback:(params) =>
-            editFormHandler(`/usuario/local/${params.id}`,`/locales/editar/${params.id}`)
-    },
-    {
-        endpoint:'/locales/:id',
-        match: /\/locales\/(\d+)$/,
-        callback: (params) =>
-            singleHandler(`/usuario/local/${params.id}`,`/locales/${params.id}`)
+export const localesHandlers = {
+    list:[
+        {
+            endpoint:'/locales',
+            match:/\/locales$/,
+            callback:(params) =>
+                listHandler(`/usuario/locales/${user.id}`,'/locales')
+        },
+        {
+            endpoint:'/locales/agregar',
+            match:/\/locales\/(agregar)$/,
+            callback:(params) =>
+                addFormHandler(`/usuario/add/${user.id}/1`,'/locales/agregar')
+        },
+        {
+            endpoint:'/locales/editar/:id',
+            match:/\/locales\/(editar\/\d+)$/,
+            callback:(params) =>
+                editFormHandler(`/usuario/local/${params.id}`,`/locales/editar/${params.id}`)
+        },
+        {
+            endpoint:'/locales/:id',
+            match: /\/locales\/(\d+)$/,
+            callback: (params) =>
+                singleHandler(`/usuario/local/${params.id}`,`/locales/${params.id}`)
+        }
+    ],
+    form: {
+        add:sendPostRequest,
+        edit:sendPutRequest,
+        update:updateScope
     }
-];
+};
 
 const editFormHandler = (endpoint,location) => {
     return function (params) {
@@ -122,3 +133,9 @@ const singleHandler = (endpoint,location) => {
             .catch(this.displayErrors);
     }
 }
+
+export function sendPostRequest () { }
+
+export function updateScope () { }
+
+export function sendPutRequest () { }

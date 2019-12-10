@@ -1,36 +1,47 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
-import {GET} from '../../utils/api';
+import {
+    GET,
+    POST,
+    PUT
+} from '../../utils/api';
 import {generateHoursFromInterval} from '../../utils/Helper';
 import {DAYS} from '../../constantes/DaysMonths';
 
-export const horariosHandlers = [
-    {
-        endpoint:'/horarios',
-        match:/\/horarios$/,
-        callback:(params) =>
-            listHandler(`/horarios/list/${user.id}`,`/horarios`)
-    },
-    {
-        endpoint:'/horarios/agregar/:day',
-        match:/\/horarios\/(agregar\/\d+)$/,
-        callback:(params) =>
-            addFormHandler(`/horarios/add/${user.id}`,`/horarios/agregar/${params.day}`)
-    },
-    {
-        endpoint:'/horarios/editar/:id',
-        match:/\/horarios\/(editar\/\d+)$/,
-        callback:(params) =>
-            editFormHandler(`/horarios/single/${user.id}/${params.id}`,`/horarios/editar/${params.id}`)
-    },
-    {
-        endpoint:'/horarios/:id',
-        match: /\/horarios\/(\d+)$/,
-        callback: (params) =>
-            singleHandler(`/horarios/single/${user.id}/${params.id}`,`/horarios/${params.id}`)
+export const horariosHandlers = {
+    list:[
+        {
+            endpoint:'/horarios',
+            match:/\/horarios$/,
+            callback:(params) =>
+                listHandler(`/horarios/list/${user.id}`,`/horarios`)
+        },
+        {
+            endpoint:'/horarios/agregar/:day',
+            match:/\/horarios\/(agregar\/\d+)$/,
+            callback:(params) =>
+                addFormHandler(`/horarios/add/${user.id}`,`/horarios/agregar/${params.day}`)
+        },
+        {
+            endpoint:'/horarios/editar/:id',
+            match:/\/horarios\/(editar\/\d+)$/,
+            callback:(params) =>
+                editFormHandler(`/horarios/single/${user.id}/${params.id}`,`/horarios/editar/${params.id}`)
+        },
+        {
+            endpoint:'/horarios/:id',
+            match: /\/horarios\/(\d+)$/,
+            callback: (params) =>
+                singleHandler(`/horarios/single/${user.id}/${params.id}`,`/horarios/${params.id}`)
+        }
+    ],
+    form: {
+        add:sendPostRequest,
+        edit:sendPutRequest,
+        update:updateScope
     }
-];
+};
 
 const editFormHandler = (endpoint,location) => {
     return function (params) {
@@ -128,3 +139,9 @@ const singleHandler = (endpoint,location) => {
             .catch(this.displayErrors);
     }
 }
+
+export function sendPostRequest () { }
+
+export function updateScope () { }
+
+export function sendPutRequest () { }

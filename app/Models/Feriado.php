@@ -197,8 +197,8 @@ class Feriado extends Eloquent
 		return $this->belongsTo(\App\Models\Query\EstadoApertura::class, 'id_estado');
 	}
 
-	public function scope(){
-		return $this->belongsTo(\App\Models\Query\Scope::class, 'scope');
+	public function scopeName(){
+		return $this->belongsTo(\App\Models\Query\Scope::class,'scope');
 	}
 
 	public function user(){

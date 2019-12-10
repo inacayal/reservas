@@ -40,7 +40,7 @@ class EventosResource extends JsonResource
             'promociones'   => 'list'
         ],
         'eventos.single' => [
-            'feriados'      => 'list',
+            'feriados'      => 'key',
             'horarios'      => 'list',
             'promociones'   => 'all'
         ],
@@ -55,6 +55,7 @@ class EventosResource extends JsonResource
     {
         $data = [
             "id" => $this->id,
+            "id_usuario" => $this->id_usuario,
             "nombre" => $this->nombre,
             "descripcion" =>$this->descripcion,
             "estado" => $this->estado->descripcion

@@ -78,7 +78,7 @@ class Evento extends Eloquent
 		    'nombre'		=> 'required|max:45|string',
 			'requestType' 	=> 'required|in:POST,PUT',
             'id_usuario' 	=> 'required|exists:usuarios,id',
-			'id_estado' 	=> 'required|exists:estado_evento,id'
+			'scope' 	=> 'required|exists:scope,id'
 		];
 	}
 

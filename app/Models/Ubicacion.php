@@ -100,7 +100,7 @@ class Ubicacion extends Eloquent
 	}
 
 	public function estado(){
-		return $this->belongsTo(\App\Models\Query\Scope::class, 'id_estado');
+		return $this->belongsTo(\App\Models\Query\Scope::class, 'scope');
 	}
 
 	public function user(){

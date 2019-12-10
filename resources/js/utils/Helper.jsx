@@ -54,3 +54,12 @@ export const compareDates = (
             && cmp[m](d1.getMonth(), d2.getMonth())
             && cmp[y](d1.getFullYear(), d2.getFullYear());
 }
+
+
+export const createFeriadosList = (data) =>
+    Object.values(data).reduce(
+        (total,curr) => {
+            total[curr.id] = curr.nombre;
+            return total
+        }, {}
+    );

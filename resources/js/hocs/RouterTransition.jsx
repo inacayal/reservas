@@ -10,10 +10,37 @@ import {
     downloadHandler,
     LoadBar
 } from '../utils/LoadBar';
-import {
-    assignHandler,
-    awaitLoading
-} from './handlers/routerTransitionHandlers';
+import {searchHandler} from './MainFrame';
+import {handlers} from '../handlers/index';
+
+function assignHandler (
+    handlerArray,
+    location,
+    params
+){
+    let handler = searchHandler(handlerArray,location);
+    handler = handler.callback(params);
+    return handler.bind(this);
+}
+
+function awaitLoading (
+    location,
+    params,
+    match
+){
+    const handler = handlers[match].list,
+        fetchData = this.assignHandler(handler,location,params);
+    this.setState(
+        {
+            loading:0,
+            loadFinished:false,
+            fetchData:fetchData,
+            preventRedirect:false
+        },() => {
+            this.fetchHandler(params);
+        }
+    );
+}
 
 export const WaitsLoading = React.createContext({});
 

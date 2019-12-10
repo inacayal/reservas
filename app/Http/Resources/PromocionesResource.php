@@ -43,6 +43,7 @@ class PromocionesResource extends JsonResource
     {
         $data = [
             'id'=>$this->id,
+            "id_usuario" => $this->id_usuario,
             'nombre'=>$this->nombre,
             'descripcion'=>$this->descripcion,
             'descuento' => $this->descuento,

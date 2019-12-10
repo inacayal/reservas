@@ -36,6 +36,7 @@ class HorarioResource extends JsonResource
         $data = [
             "id"=>$this->id,
             "diaSemana"=>$this->id_dia_semana,
+            "id_usuario" => $this->id_usuario,
             "estado"=>$this->estado->descripcion,
             "apertura" => [
                 "reserva" => [
@@ -44,7 +45,7 @@ class HorarioResource extends JsonResource
                 ],
                 "atencion"=> [
                     "hora"=>$this->apertura_atencion->hora,
-                    "minuto"=> $this->apertura_atencion->minuto 
+                    "minuto"=> $this->apertura_atencion->minuto
                 ]
             ],
             "cierre" => [
@@ -66,4 +67,3 @@ class HorarioResource extends JsonResource
         return array_merge($data,$dependencyData);
     }
 }
-

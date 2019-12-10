@@ -17,6 +17,8 @@ import {VerEvento} from './sub/VerEvento';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 import Validator from '../../hocs/Validator';
 import validation from './validation';
+import {createFeriadosList} from '../../utils/Helper';
+
 
 export default function EventosRouting (props) {
     const   [open,toggle] = useState(false),
@@ -48,17 +50,22 @@ export default function EventosRouting (props) {
                         render={
                             (match) => {
                                 const   selected = props.data.selected,
+                                        feriados = createFeriadosList(selected.feriados.data),
                                         fields = {
                                             id:selected.id,
+                                            id_usuario:user.id,
                                             promociones:Object.keys(selected.promociones.list).join(','),
                                             horarios:Object.keys(selected.horarios.list).join(','),
-                                            feriados:Object.keys(selected.feriados.list).join(','),
+                                            feriados:Object.keys(feriados).join(','),
                                             descripcion:selected.descripcion,
-                                            nombre:selected.nombre
+                                            nombre:selected.nombre,
+                                            scope:selected.estado==="Activo" ? 1 : 2
                                         };
+                                        
                                 return (
                                     <Validator  form={fields}
-                                                validation={validation}>
+                                                validation={validation}
+                                                sendRequest={props.handlers.edit}>
                                         <Formulario data={props.data}
                                                     editar={true}
                                                     toggleModal={openModal}
@@ -73,15 +80,18 @@ export default function EventosRouting (props) {
                             (match) => {
                                 const fields = {
                                     id:'',
+                                    id_usuario:user.id,
                                     promociones:'',
                                     horarios:'',
                                     feriados:'',
                                     descripcion:'',
-                                    nombre:''
+                                    nombre:'',
+                                    scope:1
                                 };
                                 return (
                                     <Validator  form={fields}
-                                                validation={validation}>
+                                                validation={validation}
+                                                sendRequest={props.handlers.add}>
                                         <Formulario data={{all:props.data}}
                                                     toggleModal={openModal}
                                                     nav={Navegacion.agregar('eventos')}

@@ -36,7 +36,7 @@ class EventoController extends Controller
             'eventos.feriados'      => false,
             'eventos.horarios'      => false,
             'eventos.promociones'   => false,
-            'feriados'              => 'list',
+            'feriados'              => 'key',
             'horarios'              => 'list',
             'promociones'           => 'list',
         ],

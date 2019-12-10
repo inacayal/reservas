@@ -14,30 +14,44 @@ export const GET = (
     })
 
 export const POST = (
-    endpoint
-) => axios.create({
+    options
+) => axios({
         method: 'post',
-        url: endpoint,
+        url: options.endpoint,
         timeout: 1000,
-        baseURL: 'http://localhost/api/'
+        data:options.data,
+        onDownloadProgress:options.download,
+        onUploadProgress:options.upload,
+        baseURL: 'http://localhost/api/',
+        headers:{
+            'Content-type':'application/json'
+        }
     });
 
 export const DELETE = (
-    endpoint
-) => axios.create({
+    options
+) => axios({
         method: 'delete',
-        url: endpoint,
+        url: options.endpoint,
         timeout: 1000,
-        baseURL: 'http://localhost/api/'
+        onDownloadProgress:options.download,
+        onUploadProgress:options.upload,
+        baseURL: 'http://localhost/api/',
     });
 
 export const PUT = (
-    endpoint
-) => axios.create({
+    options
+) => axios({
         method: 'put',
-        url: endpoint,
+        url: options.endpoint,
+        data:options.data,
         timeout: 1000,
-        baseURL: 'http://localhost/api/'
+        onDownloadProgress:options.download,
+        onUploadProgress:options.upload,
+        baseURL: 'http://localhost/api/',
+        headers:{
+            'Content-type':'application/json'
+        }
     });
 
 let progress = {

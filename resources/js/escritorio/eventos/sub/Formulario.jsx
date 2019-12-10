@@ -10,15 +10,18 @@ import { assignHorarios } from '../../../generators/generateEventosCard';
 import { Text } from '../../../componentes/input/Text';
 import { MultipleSelect } from '../../../componentes/input/MultipleSelect';
 import {Toggle} from '../../../componentes/input/Toggle';
+import {createFeriadosList} from '../../../utils/Helper';
 
 export function Formulario (props) {
     const   data = props.data.all,
-            [estado,toggle] = useState((props.data.selected||{}).estado === 'Activo');
+            estado = props.fields.scope == 1,
+            feriadoList = createFeriadosList(data.feriados.data);
     if (props.editar)
         props.nav.buttons[0].click = props.toggleModal;
+
     return (
         <>
-            < Titulo    title={
+            <Titulo     title={
                             props.editar
                                 ? props.fields.nombre
                                 : "Agregar Evento"
@@ -26,12 +29,13 @@ export function Formulario (props) {
                         links={props.nav.links}
                         buttons={props.nav.buttons} />
             <div className="container col-md-11">
-                <div className="row bold m-font justify-content-end h-padding">
+                <div className="row bold justify-content-end h-padding">
                     <Toggle rightTitle="Activo"
                             leftTitle="Inactivo"
-                            name="estado"
+                            name="scope"
                             side={estado}
-                            changeSide={toggle}/>
+                            value={props.fields.scope}
+                            changeSide={props.change}/>
                 </div>
                 <div className="row relative visible top-padding">
                     <div className={
@@ -40,7 +44,6 @@ export function Formulario (props) {
                             : "top-padding full-width overlay"
                         }/>
                     <div className="col-md-6">
-
                         <div className="v-padding">
                             <h6 className="highlight m-font">
                                 Horarios
@@ -60,7 +63,7 @@ export function Formulario (props) {
                             <MultipleSelect fieldName="Feriados"
                                             name="feriados"
                                             titulo="Selecciona los feriados"
-                                            optionData={data.feriados.list}
+                                            optionData={feriadoList}
                                             errors={props.errors.feriados}
                                             changeSelect={props.change}
                                             selected ={props.fields.feriados}/>

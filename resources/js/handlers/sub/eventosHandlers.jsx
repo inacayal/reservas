@@ -1,35 +1,48 @@
-import React, { Component } from 'react';
+import React, {
+    Component
+} from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
-import {GET} from '../../utils/api';
+import {
+    GET,
+    POST,
+    PUT
+} from '../../utils/api';
 import { assignHorarios } from '../../generators/generateEventosCard';
 
-export const eventosHandlers = [
-    {
-        endpoint:'/eventos',
-        match:/\/eventos$/,
-        callback:(params) =>
-            listHandler(`/eventos/list/${user.id}`,`/eventos`)
-    },
-    {
-        endpoint:'/eventos/agregar',
-        match:/\/eventos\/(agregar)$/,
-        callback:(params) =>
-            addFormHandler(`/eventos/add/${user.id}`,`/eventos/agregar`)
-    },
-    {
-        endpoint:'/eventos/editar/:id',
-        match:/\/eventos\/(editar\/\d+)$/,
-        callback:(params) =>
-            editFormHandler(`eventos/single/${user.id}/${params.id}`,`/eventos/editar/${params.id}`)
-    },
-    {
-        endpoint:'/eventos/:id',
-        match: /\/eventos\/(\d+)$/,
-        callback: (params) =>
-            singleHandler(`/eventos/single/${user.id}/${params.id}`,`/eventos/${params.id}`)
+export const eventosHandlers = {
+    list: [
+        {
+            endpoint:'/eventos',
+            match:/\/eventos$/,
+            callback:(params) =>
+                listHandler(`/eventos/list/${user.id}`,`/eventos`)
+        },
+        {
+            endpoint:'/eventos/agregar',
+            match:/\/eventos\/(agregar)$/,
+            callback:(params) =>
+                addFormHandler(`/eventos/add/${user.id}`,`/eventos/agregar`)
+        },
+        {
+            endpoint:'/eventos/editar/:id',
+            match:/\/eventos\/(editar\/\d+)$/,
+            callback:(params) =>
+                editFormHandler(`eventos/single/${user.id}/${params.id}`,`/eventos/editar/${params.id}`)
+        },
+        {
+            endpoint:'/eventos/:id',
+            match: /\/eventos\/(\d+)$/,
+            callback: (params) =>
+                singleHandler(`/eventos/single/${user.id}/${params.id}`,`/eventos/${params.id}`)
+        }
+    ],
+    form: {
+        add:sendPostRequest,
+        edit:sendPutRequest,
+        update:updateScope
     }
-];
+};
 
 const editFormHandler = (endpoint,location) => {
     return function (params) {
@@ -106,7 +119,7 @@ const listHandler = (endpoint,location) => {
                     });
                 }
             )
-        .catch(this.displayErrors);
+            .catch(this.displayErrors);
     }
 }
 
@@ -131,4 +144,48 @@ const singleHandler = (endpoint,location) => {
             )
         .catch(this.displayErrors);
     }
+}
+
+export function sendPostRequest ($data) {
+    const request = POST({
+        endpoint: endpoint,
+        upload: this.downloadHandler
+    });
+
+    request
+        .then(
+            response => {
+                const data = response.data.eventos[0];
+                this.setState({
+                    data:data,
+                    nombre:data.nombre,
+                    loadFinished:true,
+                    redirect: <Redirect to={location}/>
+                });
+            }
+        )
+    .catch(this.displayErrors);
+}
+
+export function updateScope ($data) {
+
+}
+
+
+export function sendPutRequest (
+    data,
+    displayErrors
+) {
+    const request = PUT({
+        endpoint: 'eventos/update',
+        upload: this.downloadHandler,
+        data: JSON.stringify(data)
+    });
+    request
+        .then(
+            response => {
+                console.log(response.data)
+            }
+        )
+        .catch(displayErrors);
 }

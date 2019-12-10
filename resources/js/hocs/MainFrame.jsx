@@ -56,19 +56,17 @@ export default class MainFrame extends Component {
             match = matchPath(location.pathname,{path:handler.endpoint});
         return (
             <div className="row round-border" style={{height:'95%',overflow:'hidden'}}>
-                <Message
-                    hide={this.hideMessage}
-                    show={this.state.showMessage}
-                    message={this.state.message}/>
+                <Message    hide={this.hideMessage}
+                            show={this.state.showMessage}
+                            message={this.state.message}/>
                 <DisplaysMessages.Provider value={this.showMessage}>
-                    <RouterTransition
-                        message={this.state.showMessage}
-                        url={window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, '')}
-                        sidebarElem={props.current}
-                        route={match}
-                        location={location.pathname}
-                        handlerArray = {props.handlers}
-                        displayMessage={this.showMessage}>
+                    <RouterTransition   message={this.state.showMessage}
+                                        url={window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, '')}
+                                        sidebarElem={props.current}
+                                        route={match}
+                                        location={location.pathname}
+                                        handlerArray = {props.handlers}
+                                        displayMessage={this.showMessage}>
                         {props.children}
                     </RouterTransition>
                 </DisplaysMessages.Provider>

@@ -1,35 +1,51 @@
 export const validation = {
     id:{
         rules:{},
-        fieldName:"Id"
+        fieldName:"ID",
+        casting:"integer"
+    },
+    id_usuario:{
+        rules:{},
+        fieldName:"ID del usuario",
+        casting:"integer"
     },
     promociones:{
         rules:{},
-        fieldName:"Promociones"
+        fieldName:"Promociones",
+        casting:"array"
     },
     horarios:{
         rules:{
             required:true
         },
-        fieldName:"Horarios"
+        fieldName:"Horarios",
+        casting:"array"
     },
     feriados:{
         rules:{},
-        fieldName:"Feriados"
+        fieldName:"Feriados",
+        casting:"array"
     },
     descripcion:{
         rules:{
-            max:100,
+            maxLen:100,
             required:true
         },
         fieldName:"Descripción"
     },
     nombre:{
         rules:{
-            max:45,
+            maxLen:45,
             required:true
         },
         fieldName:"Nombre"
     },
+    scope:{
+        rules:{
+            required:true
+        },
+        fieldName:"Estado",
+        casting:"integer"
+    }
 };
 export default validation;

@@ -23,19 +23,22 @@ class FeriadosResource extends JsonResource
         'feriados.list'=>[
             'eventos' => 'list'
         ],
+        'eventos.single' => [],
         'feriados.single'=>[
             'eventos' => 'all'
         ]
     ];
-    
+
     public function toArray($request)
     {
         $d = $this->resource->getAttributes()['fecha_feriado'];
         $dI = strtotime($d);
         $data = [
             "id"=>$this->id,
+            "id_usuario" => $this->id_usuario,
             "nombre"=>$this->nombre,
             "estado"=>$this->estado->descripcion,
+            "scope"=>$this->scopeName->descripcion,
             "descripcion"=>$this->descripcion,
             "fecha" => date('Y-m-d H:i:s',$dI),
             "apertura" => [
@@ -45,7 +48,7 @@ class FeriadosResource extends JsonResource
                 ],
                 "atencion"=> [
                     "hora"=>$this->apertura_atencion->hora,
-                    "minuto"=> $this->apertura_atencion->minuto 
+                    "minuto"=> $this->apertura_atencion->minuto
                 ]
             ],
             "cierre" => [

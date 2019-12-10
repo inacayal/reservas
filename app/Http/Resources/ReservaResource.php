@@ -33,10 +33,11 @@ class ReservaResource extends JsonResource
     ];
 
     public function singleReserva($el) {
-        return [   
+        return [
             "id"=> $el->id,
             "email"=> $el->email,
             "nombre"=> $el->nombre,
+            "id_usuario" => $this->id_usuario,
             "apellido"=> $el->apellido,
             "telefono"=> $el->telefono,
             "ubicacion"=>$el->ubicacion,
@@ -68,7 +69,7 @@ class ReservaResource extends JsonResource
         }
         return $res->groupBy('hora_reserva');
     }
-    
+
     public function toArray($request)
     {
         if ($this->resource instanceof Collection){

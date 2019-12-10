@@ -3,14 +3,17 @@ import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
 import {GET} from '../../utils/api';
 
-export const escritorioHandlers = [
-    {
-        endpoint:'/',
-        match:/^\/$/,
-        callback:(params) =>
-            escritorioHandler(`usuario/local/${user.id}`,'/')
-    }
-];
+export const escritorioHandlers = {
+    list:[
+        {
+            endpoint:'/',
+            match:/^\/$/,
+            callback:(params) =>
+                escritorioHandler(`usuario/local/${user.id}`,'/')
+        }
+    ],
+    form:{}
+};
 
 
 const escritorioHandler = (endpoint,location) => {

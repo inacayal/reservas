@@ -17,6 +17,7 @@ class UbicacionesResource extends JsonResource
     {
         return [
             "id" => $this->id,
+            "id_usuario" => $this->id_usuario,
             "nombre" => $this->nombre,
             "descripcion" =>$this->descripcion,
             "capacidad" => $this->cantidad_maxima,

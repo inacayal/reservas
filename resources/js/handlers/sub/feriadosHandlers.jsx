@@ -1,35 +1,46 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
-import {GET} from '../../utils/api';
+import {
+    GET,
+    POST,
+    PUT
+} from '../../utils/api';
 import {generateHoursFromInterval} from '../../utils/Helper';
 
-export const feriadosHandlers = [
-    {
-        endpoint:`/horarios/feriados`,
-        match:/(\/horarios\/feriados)$/,
-        callback:(params) =>
-            listHandler(`/feriados/list/${user.id}/`,`/horarios/feriados`)
-    },
-    {
-        endpoint:`/horarios/feriados/agregar`,
-        match:/\/(horarios\/feriados\/agregar)$/,
-        callback:(params) =>
-            addFormHandler(`/feriados/add/${user.id}/`,`/horarios/feriados/agregar`)
-    },
-    {
-        endpoint:`/horarios/feriados/editar/:id`,
-        match:/\/horarios\/(feriados\/editar\/\d+)$/,
-        callback:(params) =>
-            editFormHandler(`/feriados/single/${user.id}/${params.id}`,`/horarios/feriados/editar/${params.id}`)
-    },
-    {
-        endpoint:`/horarios/feriados/:id`,
-        match: /\/horarios\/feriados\/(\d+)$/,
-        callback: (params) =>
-            singleHandler(`/feriados/single/${user.id}/${params.id}`,`/horarios/feriados/${params.id}`)
+export const feriadosHandlers = {
+    list:[
+        {
+            endpoint:`/horarios/feriados`,
+            match:/(\/horarios\/feriados)$/,
+            callback:(params) =>
+                listHandler(`/feriados/list/${user.id}/`,`/horarios/feriados`)
+        },
+        {
+            endpoint:`/horarios/feriados/agregar`,
+            match:/\/(horarios\/feriados\/agregar)$/,
+            callback:(params) =>
+                addFormHandler(`/feriados/add/${user.id}/`,`/horarios/feriados/agregar`)
+        },
+        {
+            endpoint:`/horarios/feriados/editar/:id`,
+            match:/\/horarios\/(feriados\/editar\/\d+)$/,
+            callback:(params) =>
+                editFormHandler(`/feriados/single/${user.id}/${params.id}`,`/horarios/feriados/editar/${params.id}`)
+        },
+        {
+            endpoint:`/horarios/feriados/:id`,
+            match: /\/horarios\/feriados\/(\d+)$/,
+            callback: (params) =>
+                singleHandler(`/feriados/single/${user.id}/${params.id}`,`/horarios/feriados/${params.id}`)
+        }
+    ],
+    form: {
+        add:sendPostRequest,
+        edit:sendPutRequest,
+        update:updateScope
     }
-];
+};
 
 const editFormHandler = (endpoint,location) => {
     return function (params){
@@ -143,3 +154,8 @@ const singleHandler = (endpoint,location) => {
 
     }
 }
+export function sendPostRequest () { }
+
+export function updateScope () { }
+
+export function sendPutRequest () { }

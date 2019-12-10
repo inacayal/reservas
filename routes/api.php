@@ -71,8 +71,6 @@ Route::prefix('eventos')->name('eventos.')->group(function (){
         ->where('single','single')->name('single');
     Route::put('/update','EventoController@update')
         ->name('update');
-    Route::put('/disable','EventoController@disable')
-        ->name('disable');
     Route::delete('/delete','EventoController@delete')
         ->name('delete');
     Route::post('/create','EventoController@create')

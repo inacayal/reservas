@@ -1,34 +1,45 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
-import {GET} from '../../utils/api';
+import {
+    GET,
+    POST,
+    PUT
+} from '../../utils/api';
 
-export const promocionesHandlers = [
-    {
-        endpoint:'/promociones',
-        match:/\/promociones$/,
-        callback:(params) =>
-            listHandler(`promociones/list/${user.id}`,`/promociones`)
-    },
-    {
-        endpoint:'/promociones/agregar',
-        match:/\/promociones\/(agregar)$/,
-        callback:(params) =>
-            addFormHandler(`promociones/add/${user.id}`,`/promociones/agregar`)
-    },
-    {
-        endpoint:'/promociones/editar/:id',
-        match:/\/promociones\/(editar\/\d+)$/,
-        callback:(params) =>
-            editFormHandler(`promociones/single/27/${params.id}`,`/promociones/editar/${params.id}`)
-    },
-    {
-        endpoint:'/promociones/:id',
-        match: /\/promociones\/(\d+)$/,
-        callback: (params) =>
-            singleHandler(`/promociones/single/${user.id}/${params.id}`,`/promociones/${params.id}`)
+export const promocionesHandlers = {
+    list: [
+        {
+            endpoint:'/promociones',
+            match:/\/promociones$/,
+            callback:(params) =>
+                listHandler(`promociones/list/${user.id}`,`/promociones`)
+        },
+        {
+            endpoint:'/promociones/agregar',
+            match:/\/promociones\/(agregar)$/,
+            callback:(params) =>
+                addFormHandler(`promociones/add/${user.id}`,`/promociones/agregar`)
+        },
+        {
+            endpoint:'/promociones/editar/:id',
+            match:/\/promociones\/(editar\/\d+)$/,
+            callback:(params) =>
+                editFormHandler(`promociones/single/27/${params.id}`,`/promociones/editar/${params.id}`)
+        },
+        {
+            endpoint:'/promociones/:id',
+            match: /\/promociones\/(\d+)$/,
+            callback: (params) =>
+                singleHandler(`/promociones/single/${user.id}/${params.id}`,`/promociones/${params.id}`)
+        }
+    ],
+    form: {
+        add:sendPostRequest,
+        edit:sendPutRequest,
+        update:updateScope
     }
-];
+};
 
 
 const singleHandler = (endpoint,location) => {
@@ -128,3 +139,9 @@ const addFormHandler = (endpoint,location) => {
         .catch(this.displayErrors);
     }
 }
+
+export function sendPostRequest () { }
+
+export function updateScope () { }
+
+export function sendPutRequest () { }

@@ -1,34 +1,45 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
-import {GET} from '../../utils/api';
+import {
+    GET,
+    POST,
+    PUT
+} from '../../utils/api';
 
-export const franquiciasHandlers = [
-    {
-        endpoint:'/franquicias',
-        match:/\/franquicias$/,
-        callback:(params) =>
-            listHandler(`/usuario/franquicias/${user.id}`,`/franquicias`)
-    },
-    {
-        endpoint:'/franquicias/agregar',
-        match:/\/franquicias\/(agregar)$/,
-        callback:(params) =>
-            addFormHandler(``,`/franquicias/agregar`)
-    },
-    {
-        endpoint:'/franquicias/editar/:id',
-        match:/\/franquicias\/(editar\/\d+)$/,
-        callback:(params) =>
-            editFormHandler(`/usuario/franquicia/${params.id}`,`/franquicias/editar/${params.id}`)
-    },
-    {
-        endpoint:'/franquicias/:id',
-        match: /\/franquicias\/(\d+)$/,
-        callback: (params) =>
-            singleHandler(`/usuario/franquicia/${params.id}`,`/franquicias/${params.id}`)
+export const franquiciasHandlers = {
+    list:[
+        {
+            endpoint:'/franquicias',
+            match:/\/franquicias$/,
+            callback:(params) =>
+                listHandler(`/usuario/franquicias/${user.id}`,`/franquicias`)
+        },
+        {
+            endpoint:'/franquicias/agregar',
+            match:/\/franquicias\/(agregar)$/,
+            callback:(params) =>
+                addFormHandler(``,`/franquicias/agregar`)
+        },
+        {
+            endpoint:'/franquicias/editar/:id',
+            match:/\/franquicias\/(editar\/\d+)$/,
+            callback:(params) =>
+                editFormHandler(`/usuario/franquicia/${params.id}`,`/franquicias/editar/${params.id}`)
+        },
+        {
+            endpoint:'/franquicias/:id',
+            match: /\/franquicias\/(\d+)$/,
+            callback: (params) =>
+                singleHandler(`/usuario/franquicia/${params.id}`,`/franquicias/${params.id}`)
+        }
+    ],
+    form: {
+        add:sendPostRequest,
+        edit:sendPutRequest,
+        update:updateScope
     }
-];
+};
 
 
 const editFormHandler = (endpoint,location) => {
@@ -106,3 +117,9 @@ const singleHandler = (endpoint,location) => {
             .catch(this.displayErrors);
     }
 }
+
+export function sendPostRequest () { }
+
+export function updateScope () { }
+
+export function sendPutRequest () { }

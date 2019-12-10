@@ -88881,14 +88881,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _basic_Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../basic/Button */ "./resources/js/componentes/basic/Button.jsx");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 /**
  * react basic
  */
@@ -88900,37 +88892,30 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 /**
- * props 
- * @param {*} props 
+ * props
+ * @param {*} props
  * component
  */
 
 function noMemoToggle(props) {
-  var _ref = props.side !== undefined ? [props.side, props.changeSide] : Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
-      _ref2 = _slicedToArray(_ref, 2),
-      side = _ref2[0],
-      changeSide = _ref2[1];
-
+  var side = props.value;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "inline-block"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "margin-box smaller-text"
-  }, side ? props.rightTitle : props.leftTitle), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "margin-box"
+  }, side == 1 ? props.rightTitle : props.leftTitle), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "inline-block"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_Button__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    container: side ? "inline-block toggle text-right" : "inline-block toggle text-left",
-    data: side ? 1 : 2,
-    "class": "circle",
-    click: function click(e) {
-      e.preventDefault();
-      changeSide(!side);
-    }
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    className: "hidden",
-    type: "checkbox",
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: side == 1 ? "inline-block toggle text-left" : "inline-block toggle text-right"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    className: "circle",
+    value: side == 1 ? 2 : 1,
     name: props.name,
-    value: side ? 1 : 2
-  })));
+    onClick: function onClick(e) {
+      e.preventDefault();
+      props.changeSide(e);
+    }
+  }))));
 }
 
 var Toggle = react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(noMemoToggle);
@@ -89216,11 +89201,11 @@ function LocalesTable(props) {
     fixed: "left"
   }, {
     Header: "Teléfono",
-    accessor: "telefonoLocal",
+    accessor: "telefonoContacto",
     headerClassName: 'bold highlight-title text-left'
   }, {
     Header: "Correo",
-    accessor: "correoLocal",
+    accessor: "correoContacto",
     headerClassName: 'bold highlight-title text-left'
   }, {
     Header: "Administrador",
@@ -89575,82 +89560,101 @@ function AppRouting(props) {
     exact: true,
     render: function render(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
-        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].escritorio,
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].escritorio.list,
         current: '0'
-      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_escritorio_EscritorioRouting__WEBPACK_IMPORTED_MODULE_14__["default"], match));
+      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_escritorio_EscritorioRouting__WEBPACK_IMPORTED_MODULE_14__["default"], _extends({
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].escritorio.form
+      }, match)));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/reservas",
-    component: function component(match) {
+    render: function render(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
         current: '1',
-        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].reservas
-      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_reservas_ReservasRouting__WEBPACK_IMPORTED_MODULE_7__["default"], match));
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].reservas.list
+      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_reservas_ReservasRouting__WEBPACK_IMPORTED_MODULE_7__["default"], _extends({
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].reservas.form
+      }, match)));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/horarios/feriados",
     render: function render(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
         current: '2',
-        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"]['horarios/feriados']
-      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_horarios_FeriadosRouting__WEBPACK_IMPORTED_MODULE_12__["default"], match));
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"]['horarios/feriados'].list
+      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_horarios_FeriadosRouting__WEBPACK_IMPORTED_MODULE_12__["default"], _extends({
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"]['horarios/feriados'].form
+      }, match)));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/horarios",
-    component: function component(match) {
+    render: function render(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
         current: '2',
-        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].horarios
-      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_horarios_HorariosRouting__WEBPACK_IMPORTED_MODULE_11__["default"], match));
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].horarios.list
+      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_horarios_HorariosRouting__WEBPACK_IMPORTED_MODULE_11__["default"], _extends({
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].horarios.form
+      }, match)));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/ubicaciones",
     render: function render(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
         current: '3',
-        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].ubicaciones
-      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ubicaciones_UbicacionesRouting__WEBPACK_IMPORTED_MODULE_8__["default"], match));
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].ubicaciones.list
+      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ubicaciones_UbicacionesRouting__WEBPACK_IMPORTED_MODULE_8__["default"], _extends({
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].ubicaciones.form
+      }, match)));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/eventos",
-    withRouter: true,
-    component: function component(match) {
+    render: function render(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
         current: '4',
-        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].eventos
-      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_eventos_EventosRouting__WEBPACK_IMPORTED_MODULE_10__["default"], match));
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].eventos.list
+      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_eventos_EventosRouting__WEBPACK_IMPORTED_MODULE_10__["default"], _extends({
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].eventos.form
+      }, match)));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/promociones",
-    component: function component(match) {
+    render: function render(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
         current: '5',
-        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].promociones
-      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_promociones_PromocionesRouting__WEBPACK_IMPORTED_MODULE_5__["default"], match));
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].promociones.list
+      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_promociones_PromocionesRouting__WEBPACK_IMPORTED_MODULE_5__["default"], _extends({
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].promociones.form
+      }, match)));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/locales",
     component: function component(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
         current: '6',
-        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].locales
-      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_locales_LocalesRouting__WEBPACK_IMPORTED_MODULE_6__["default"], match));
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].locales.list
+      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_locales_LocalesRouting__WEBPACK_IMPORTED_MODULE_6__["default"], _extends({
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].locales.form
+      }, match)));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/configuracion",
     render: function render(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
-        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].configuracion,
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].configuracion.list,
         current: '7'
-      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_ConfiguracionRouting__WEBPACK_IMPORTED_MODULE_13__["default"], match));
+      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_ConfiguracionRouting__WEBPACK_IMPORTED_MODULE_13__["default"], _extends({
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].configuracion.form
+      }, match)));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/franquicias",
     render: function render(match) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MainFrame__WEBPACK_IMPORTED_MODULE_2__["default"], _extends({
         current: '8',
-        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].franquicias
-      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_franquicias_FranquiciasRouting__WEBPACK_IMPORTED_MODULE_9__["default"], match));
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].franquicias.list
+      }, match), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_franquicias_FranquiciasRouting__WEBPACK_IMPORTED_MODULE_9__["default"], _extends({
+        handlers: _handlers_index__WEBPACK_IMPORTED_MODULE_15__["handlers"].franquicias.form
+      }, match)));
     }
   }))));
 }
@@ -89733,8 +89737,8 @@ function ConfiguracionRouting(props) {
         id: props.data.id,
         franquicia: props.data.franquicia.id || "",
         nombre_local: props.data.nombre,
-        correo_local: props.data.correoLocal,
-        telefono_local: props.data.telefonoLocal,
+        correo_contacto: props.data.correoContacto,
+        telefono_contacto: props.data.telefonoContacto,
         razon_social: props.data.razonSocial,
         cuit_cuil: props.data.cuitCuil,
         id_provincia: props.data.provincia.id,
@@ -89814,7 +89818,7 @@ var FormularioEstablecimiento = function FormularioEstablecimiento(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
     rows: 1,
     titulo: "Correo",
-    name: "correo",
+    name: "correo_contacto",
     holder: "Correo de contacto de ".concat(userType, " hasta 100 caracteres"),
     errors: props.errors.correo,
     value: props.fields.correo,
@@ -89824,7 +89828,7 @@ var FormularioEstablecimiento = function FormularioEstablecimiento(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
     rows: 1,
     titulo: "Telefono",
-    name: "telefono",
+    name: "telefono_contacto",
     holder: "Tel\xE9fono de contacto de ".concat(userType, " hasta 100 caracteres"),
     errors: props.errors.telefono,
     value: props.fields.telefono,
@@ -90338,29 +90342,29 @@ var validation = {
     rules: {},
     fieldName: "Franquicia"
   },
-  nombre_local: {
+  nombre: {
     rules: {
       required: true,
       maxLen: 100,
       alpha_numeric: true
     },
-    fieldName: "Nombre del local"
+    fieldName: "Nombre"
   },
-  correo_local: {
+  correo_contacto: {
     rules: {
       required: true,
       maxLen: 100,
       email: true
     },
-    fieldName: "Correo del local"
+    fieldName: "Correo de contacto"
   },
-  telefono_local: {
+  telefono_contacto: {
     rules: {
       required: true,
       maxLen: 20,
       phone: true
     },
-    fieldName: "Teléfono de local"
+    fieldName: "Teléfono de contacto"
   },
   username: {
     rules: {
@@ -90582,6 +90586,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
 /* harmony import */ var _hocs_Validator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../hocs/Validator */ "./resources/js/hocs/Validator.jsx");
 /* harmony import */ var _validation__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./validation */ "./resources/js/escritorio/eventos/validation.jsx");
+/* harmony import */ var _utils_Helper__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../utils/Helper */ "./resources/js/utils/Helper.jsx");
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
@@ -90595,6 +90600,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 /**
  * react basic
  */
+
 
 
 
@@ -90639,17 +90645,21 @@ function EventosRouting(props) {
     exact: true,
     render: function render(match) {
       var selected = props.data.selected,
+          feriados = Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_10__["createFeriadosList"])(selected.feriados.data),
           fields = {
         id: selected.id,
+        id_usuario: user.id,
         promociones: Object.keys(selected.promociones.list).join(','),
         horarios: Object.keys(selected.horarios.list).join(','),
-        feriados: Object.keys(selected.feriados.list).join(','),
+        feriados: Object.keys(feriados).join(','),
         descripcion: selected.descripcion,
-        nombre: selected.nombre
+        nombre: selected.nombre,
+        scope: selected.estado === "Activo" ? 1 : 2
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_8__["default"], {
         form: fields,
-        validation: _validation__WEBPACK_IMPORTED_MODULE_9__["default"]
+        validation: _validation__WEBPACK_IMPORTED_MODULE_9__["default"],
+        sendRequest: props.handlers.edit
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["Formulario"], _extends({
         data: props.data,
         editar: true,
@@ -90664,15 +90674,18 @@ function EventosRouting(props) {
     render: function render(match) {
       var fields = {
         id: '',
+        id_usuario: user.id,
         promociones: '',
         horarios: '',
         feriados: '',
         descripcion: '',
-        nombre: ''
+        nombre: '',
+        scope: 1
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_8__["default"], {
         form: fields,
-        validation: _validation__WEBPACK_IMPORTED_MODULE_9__["default"]
+        validation: _validation__WEBPACK_IMPORTED_MODULE_9__["default"],
+        sendRequest: props.handlers.add
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["Formulario"], _extends({
         data: {
           all: props.data
@@ -90768,13 +90781,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
 /* harmony import */ var _componentes_input_MultipleSelect__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/input/MultipleSelect */ "./resources/js/componentes/input/MultipleSelect.jsx");
 /* harmony import */ var _componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../componentes/input/Toggle */ "./resources/js/componentes/input/Toggle.jsx");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+/* harmony import */ var _utils_Helper__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../utils/Helper */ "./resources/js/utils/Helper.jsx");
 
 
 
@@ -90787,11 +90794,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function Formulario(props) {
   var data = props.data.all,
-      _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])((props.data.selected || {}).estado === 'Activo'),
-      _useState2 = _slicedToArray(_useState, 2),
-      estado = _useState2[0],
-      toggle = _useState2[1];
-
+      estado = props.fields.scope == 1,
+      feriadoList = Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_9__["createFeriadosList"])(data.feriados.data);
   if (props.editar) props.nav.buttons[0].click = props.toggleModal;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
     title: props.editar ? props.fields.nombre : "Agregar Evento",
@@ -90800,13 +90804,14 @@ function Formulario(props) {
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container col-md-11"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row bold m-font justify-content-end h-padding"
+    className: "row bold justify-content-end h-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_8__["Toggle"], {
     rightTitle: "Activo",
     leftTitle: "Inactivo",
-    name: "estado",
+    name: "scope",
     side: estado,
-    changeSide: toggle
+    value: props.fields.scope,
+    changeSide: props.change
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row relative visible top-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -90833,7 +90838,7 @@ function Formulario(props) {
     fieldName: "Feriados",
     name: "feriados",
     titulo: "Selecciona los feriados",
-    optionData: data.feriados.list,
+    optionData: feriadoList,
     errors: props.errors.feriados,
     changeSelect: props.change,
     selected: props.fields.feriados
@@ -90989,35 +90994,51 @@ __webpack_require__.r(__webpack_exports__);
 var validation = {
   id: {
     rules: {},
-    fieldName: "Id"
+    fieldName: "ID",
+    casting: "integer"
+  },
+  id_usuario: {
+    rules: {},
+    fieldName: "ID del usuario",
+    casting: "integer"
   },
   promociones: {
     rules: {},
-    fieldName: "Promociones"
+    fieldName: "Promociones",
+    casting: "array"
   },
   horarios: {
     rules: {
       required: true
     },
-    fieldName: "Horarios"
+    fieldName: "Horarios",
+    casting: "array"
   },
   feriados: {
     rules: {},
-    fieldName: "Feriados"
+    fieldName: "Feriados",
+    casting: "array"
   },
   descripcion: {
     rules: {
-      max: 100,
+      maxLen: 100,
       required: true
     },
     fieldName: "Descripción"
   },
   nombre: {
     rules: {
-      max: 45,
+      maxLen: 45,
       required: true
     },
     fieldName: "Nombre"
+  },
+  scope: {
+    rules: {
+      required: true
+    },
+    fieldName: "Estado",
+    casting: "integer"
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (validation);
@@ -91492,21 +91513,21 @@ var validation = {
     },
     fieldName: "Nombre de la franquicia"
   },
-  correo: {
+  correo_contacto: {
     rules: {
       required: true,
       maxLen: 100,
       email: true
     },
-    fieldName: "Correo de la franquicia"
+    fieldName: "Correo de contacto"
   },
-  telefono: {
+  telefono_contacto: {
     rules: {
       required: true,
       maxLen: 20,
       alpha_numeric: true
     },
-    fieldName: "Teléfono de la franquicia"
+    fieldName: "Teléfono de contacto"
   },
   username: {
     rules: {
@@ -93167,8 +93188,8 @@ function LocalesRouting(props) {
         id: props.data.id,
         franquicia: props.data.franquicia.id,
         nombre: props.data.nombre,
-        correo: props.data.correoLocal,
-        telefono: props.data.telefonoLocal,
+        correo_contacto: props.data.correoContacto,
+        telefono_contacto: props.data.telefonoContacto,
         username: props.data.username,
         email: props.data.email,
         razon_social: props.data.razonSocial,
@@ -93198,8 +93219,8 @@ function LocalesRouting(props) {
         id: "",
         franquicia: "",
         nombre: "",
-        correo: "",
-        telefono: "",
+        correo_contacto: "",
+        telefono_contacto: "",
         username: "",
         email: "",
         razon_social: "",
@@ -93586,21 +93607,21 @@ var validation = {
     },
     fieldName: "Nombre del local"
   },
-  correo: {
+  correo_contacto: {
     rules: {
       required: true,
       maxLen: 100,
       email: true
     },
-    fieldName: "Correo del local"
+    fieldName: "Correo de contacto"
   },
-  telefono: {
+  telefono_contacto: {
     rules: {
       required: true,
       maxLen: 20,
       alpha_numeric: true
     },
-    fieldName: "Teléfono de local"
+    fieldName: "Teléfono de contacto"
   },
   username: {
     rules: {
@@ -95591,12 +95612,15 @@ var handlers = {
 /*!*************************************************************!*\
   !*** ./resources/js/handlers/sub/configuracionHandlers.jsx ***!
   \*************************************************************/
-/*! exports provided: configuracionHandlers */
+/*! exports provided: configuracionHandlers, sendEstablecimientoPutRequest, sendReservasPutRequest, sendUsuarioPutRequest */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "configuracionHandlers", function() { return configuracionHandlers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendEstablecimientoPutRequest", function() { return sendEstablecimientoPutRequest; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendReservasPutRequest", function() { return sendReservasPutRequest; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendUsuarioPutRequest", function() { return sendUsuarioPutRequest; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -95607,31 +95631,38 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var configuracionHandlers = [{
-  endpoint: '/configuracion',
-  match: /\/configuracion$/,
-  callback: function callback(params) {
-    return configuracionHandler("usuario/local/".concat(user.id), '/configuracion');
+var configuracionHandlers = {
+  list: [{
+    endpoint: '/configuracion',
+    match: /\/configuracion$/,
+    callback: function callback(params) {
+      return configuracionHandler("usuario/local/".concat(user.id), '/configuracion');
+    }
+  }, {
+    endpoint: '/configuracion/usuario',
+    match: /\/configuracion\/(usuario)$/,
+    callback: function callback(params) {
+      return usuarioHandler("usuario/local/".concat(user.id), '/configuracion/usuario');
+    }
+  }, {
+    endpoint: '/configuracion/establecimiento',
+    match: /\/configuracion\/(establecimiento)$/,
+    callback: function callback(params) {
+      return establecimientoHandler("usuario/local/".concat(user.id), '/configuracion/establecimiento');
+    }
+  }, {
+    endpoint: '/configuracion/reservas',
+    match: /\/configuracion\/(reservas)$/,
+    callback: function callback(params) {
+      return reservaHandler("usuario/local/".concat(user.id), '/configuracion/reservas');
+    }
+  }],
+  form: {
+    establecimiento: sendEstablecimientoPutRequest,
+    reservas: sendReservasPutRequest,
+    usuario: sendUsuarioPutRequest
   }
-}, {
-  endpoint: '/configuracion/usuario',
-  match: /\/configuracion\/(usuario)$/,
-  callback: function callback(params) {
-    return usuarioHandler("usuario/local/".concat(user.id), '/configuracion/usuario');
-  }
-}, {
-  endpoint: '/configuracion/establecimiento',
-  match: /\/configuracion\/(establecimiento)$/,
-  callback: function callback(params) {
-    return establecimientoHandler("usuario/local/".concat(user.id), '/configuracion/establecimiento');
-  }
-}, {
-  endpoint: '/configuracion/reservas',
-  match: /\/configuracion\/(reservas)$/,
-  callback: function callback(params) {
-    return reservaHandler("usuario/local/".concat(user.id), '/configuracion/reservas');
-  }
-}];
+};
 
 var establecimientoHandler = function establecimientoHandler(endpoint, location) {
   return function (params) {
@@ -95713,6 +95744,10 @@ var usuarioHandler = function usuarioHandler(endpoint, location) {
   };
 };
 
+function sendEstablecimientoPutRequest() {}
+function sendReservasPutRequest() {}
+function sendUsuarioPutRequest() {}
+
 /***/ }),
 
 /***/ "./resources/js/handlers/sub/escritorioHandlers.jsx":
@@ -95735,13 +95770,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var escritorioHandlers = [{
-  endpoint: '/',
-  match: /^\/$/,
-  callback: function callback(params) {
-    return escritorioHandler("usuario/local/".concat(user.id), '/');
-  }
-}];
+var escritorioHandlers = {
+  list: [{
+    endpoint: '/',
+    match: /^\/$/,
+    callback: function callback(params) {
+      return escritorioHandler("usuario/local/".concat(user.id), '/');
+    }
+  }],
+  form: {}
+};
 
 var escritorioHandler = function escritorioHandler(endpoint, location) {
   return function (params) {
@@ -95769,12 +95807,15 @@ var escritorioHandler = function escritorioHandler(endpoint, location) {
 /*!*******************************************************!*\
   !*** ./resources/js/handlers/sub/eventosHandlers.jsx ***!
   \*******************************************************/
-/*! exports provided: eventosHandlers */
+/*! exports provided: eventosHandlers, sendPostRequest, updateScope, sendPutRequest */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "eventosHandlers", function() { return eventosHandlers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendPostRequest", function() { return sendPostRequest; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateScope", function() { return updateScope; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendPutRequest", function() { return sendPutRequest; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -95793,31 +95834,38 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-var eventosHandlers = [{
-  endpoint: '/eventos',
-  match: /\/eventos$/,
-  callback: function callback(params) {
-    return listHandler("/eventos/list/".concat(user.id), "/eventos");
+var eventosHandlers = {
+  list: [{
+    endpoint: '/eventos',
+    match: /\/eventos$/,
+    callback: function callback(params) {
+      return listHandler("/eventos/list/".concat(user.id), "/eventos");
+    }
+  }, {
+    endpoint: '/eventos/agregar',
+    match: /\/eventos\/(agregar)$/,
+    callback: function callback(params) {
+      return addFormHandler("/eventos/add/".concat(user.id), "/eventos/agregar");
+    }
+  }, {
+    endpoint: '/eventos/editar/:id',
+    match: /\/eventos\/(editar\/\d+)$/,
+    callback: function callback(params) {
+      return editFormHandler("eventos/single/".concat(user.id, "/").concat(params.id), "/eventos/editar/".concat(params.id));
+    }
+  }, {
+    endpoint: '/eventos/:id',
+    match: /\/eventos\/(\d+)$/,
+    callback: function callback(params) {
+      return singleHandler("/eventos/single/".concat(user.id, "/").concat(params.id), "/eventos/".concat(params.id));
+    }
+  }],
+  form: {
+    add: sendPostRequest,
+    edit: sendPutRequest,
+    update: updateScope
   }
-}, {
-  endpoint: '/eventos/agregar',
-  match: /\/eventos\/(agregar)$/,
-  callback: function callback(params) {
-    return addFormHandler("/eventos/add/".concat(user.id), "/eventos/agregar");
-  }
-}, {
-  endpoint: '/eventos/editar/:id',
-  match: /\/eventos\/(editar\/\d+)$/,
-  callback: function callback(params) {
-    return editFormHandler("eventos/single/".concat(user.id, "/").concat(params.id), "/eventos/editar/".concat(params.id));
-  }
-}, {
-  endpoint: '/eventos/:id',
-  match: /\/eventos\/(\d+)$/,
-  callback: function callback(params) {
-    return singleHandler("/eventos/single/".concat(user.id, "/").concat(params.id), "/eventos/".concat(params.id));
-  }
-}];
+};
 
 var editFormHandler = function editFormHandler(endpoint, location) {
   return function (params) {
@@ -95920,18 +95968,53 @@ var singleHandler = function singleHandler(endpoint, location) {
   };
 };
 
+function sendPostRequest($data) {
+  var _this5 = this;
+
+  var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["POST"])({
+    endpoint: endpoint,
+    upload: this.downloadHandler
+  });
+  request.then(function (response) {
+    var data = response.data.eventos[0];
+
+    _this5.setState({
+      data: data,
+      nombre: data.nombre,
+      loadFinished: true,
+      redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+        to: location
+      })
+    });
+  })["catch"](this.displayErrors);
+}
+function updateScope($data) {}
+function sendPutRequest(data, displayErrors) {
+  var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["PUT"])({
+    endpoint: 'eventos/update',
+    upload: this.downloadHandler,
+    data: JSON.stringify(data)
+  });
+  request.then(function (response) {
+    console.log(response.data);
+  })["catch"](displayErrors);
+}
+
 /***/ }),
 
 /***/ "./resources/js/handlers/sub/feriadosHandlers.jsx":
 /*!********************************************************!*\
   !*** ./resources/js/handlers/sub/feriadosHandlers.jsx ***!
   \********************************************************/
-/*! exports provided: feriadosHandlers */
+/*! exports provided: feriadosHandlers, sendPostRequest, updateScope, sendPutRequest */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "feriadosHandlers", function() { return feriadosHandlers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendPostRequest", function() { return sendPostRequest; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateScope", function() { return updateScope; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendPutRequest", function() { return sendPutRequest; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -95944,31 +96027,38 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var feriadosHandlers = [{
-  endpoint: "/horarios/feriados",
-  match: /(\/horarios\/feriados)$/,
-  callback: function callback(params) {
-    return listHandler("/feriados/list/".concat(user.id, "/"), "/horarios/feriados");
+var feriadosHandlers = {
+  list: [{
+    endpoint: "/horarios/feriados",
+    match: /(\/horarios\/feriados)$/,
+    callback: function callback(params) {
+      return listHandler("/feriados/list/".concat(user.id, "/"), "/horarios/feriados");
+    }
+  }, {
+    endpoint: "/horarios/feriados/agregar",
+    match: /\/(horarios\/feriados\/agregar)$/,
+    callback: function callback(params) {
+      return addFormHandler("/feriados/add/".concat(user.id, "/"), "/horarios/feriados/agregar");
+    }
+  }, {
+    endpoint: "/horarios/feriados/editar/:id",
+    match: /\/horarios\/(feriados\/editar\/\d+)$/,
+    callback: function callback(params) {
+      return editFormHandler("/feriados/single/".concat(user.id, "/").concat(params.id), "/horarios/feriados/editar/".concat(params.id));
+    }
+  }, {
+    endpoint: "/horarios/feriados/:id",
+    match: /\/horarios\/feriados\/(\d+)$/,
+    callback: function callback(params) {
+      return singleHandler("/feriados/single/".concat(user.id, "/").concat(params.id), "/horarios/feriados/".concat(params.id));
+    }
+  }],
+  form: {
+    add: sendPostRequest,
+    edit: sendPutRequest,
+    update: updateScope
   }
-}, {
-  endpoint: "/horarios/feriados/agregar",
-  match: /\/(horarios\/feriados\/agregar)$/,
-  callback: function callback(params) {
-    return addFormHandler("/feriados/add/".concat(user.id, "/"), "/horarios/feriados/agregar");
-  }
-}, {
-  endpoint: "/horarios/feriados/editar/:id",
-  match: /\/horarios\/(feriados\/editar\/\d+)$/,
-  callback: function callback(params) {
-    return editFormHandler("/feriados/single/".concat(user.id, "/").concat(params.id), "/horarios/feriados/editar/".concat(params.id));
-  }
-}, {
-  endpoint: "/horarios/feriados/:id",
-  match: /\/horarios\/feriados\/(\d+)$/,
-  callback: function callback(params) {
-    return singleHandler("/feriados/single/".concat(user.id, "/").concat(params.id), "/horarios/feriados/".concat(params.id));
-  }
-}];
+};
 
 var editFormHandler = function editFormHandler(endpoint, location) {
   return function (params) {
@@ -96081,18 +96171,25 @@ var singleHandler = function singleHandler(endpoint, location) {
   };
 };
 
+function sendPostRequest() {}
+function updateScope() {}
+function sendPutRequest() {}
+
 /***/ }),
 
 /***/ "./resources/js/handlers/sub/franquiciasHandlers.jsx":
 /*!***********************************************************!*\
   !*** ./resources/js/handlers/sub/franquiciasHandlers.jsx ***!
   \***********************************************************/
-/*! exports provided: franquiciasHandlers */
+/*! exports provided: franquiciasHandlers, sendPostRequest, updateScope, sendPutRequest */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "franquiciasHandlers", function() { return franquiciasHandlers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendPostRequest", function() { return sendPostRequest; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateScope", function() { return updateScope; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendPutRequest", function() { return sendPutRequest; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -96103,31 +96200,38 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var franquiciasHandlers = [{
-  endpoint: '/franquicias',
-  match: /\/franquicias$/,
-  callback: function callback(params) {
-    return listHandler("/usuario/franquicias/".concat(user.id), "/franquicias");
+var franquiciasHandlers = {
+  list: [{
+    endpoint: '/franquicias',
+    match: /\/franquicias$/,
+    callback: function callback(params) {
+      return listHandler("/usuario/franquicias/".concat(user.id), "/franquicias");
+    }
+  }, {
+    endpoint: '/franquicias/agregar',
+    match: /\/franquicias\/(agregar)$/,
+    callback: function callback(params) {
+      return addFormHandler("", "/franquicias/agregar");
+    }
+  }, {
+    endpoint: '/franquicias/editar/:id',
+    match: /\/franquicias\/(editar\/\d+)$/,
+    callback: function callback(params) {
+      return editFormHandler("/usuario/franquicia/".concat(params.id), "/franquicias/editar/".concat(params.id));
+    }
+  }, {
+    endpoint: '/franquicias/:id',
+    match: /\/franquicias\/(\d+)$/,
+    callback: function callback(params) {
+      return singleHandler("/usuario/franquicia/".concat(params.id), "/franquicias/".concat(params.id));
+    }
+  }],
+  form: {
+    add: sendPostRequest,
+    edit: sendPutRequest,
+    update: updateScope
   }
-}, {
-  endpoint: '/franquicias/agregar',
-  match: /\/franquicias\/(agregar)$/,
-  callback: function callback(params) {
-    return addFormHandler("", "/franquicias/agregar");
-  }
-}, {
-  endpoint: '/franquicias/editar/:id',
-  match: /\/franquicias\/(editar\/\d+)$/,
-  callback: function callback(params) {
-    return editFormHandler("/usuario/franquicia/".concat(params.id), "/franquicias/editar/".concat(params.id));
-  }
-}, {
-  endpoint: '/franquicias/:id',
-  match: /\/franquicias\/(\d+)$/,
-  callback: function callback(params) {
-    return singleHandler("/usuario/franquicia/".concat(params.id), "/franquicias/".concat(params.id));
-  }
-}];
+};
 
 var editFormHandler = function editFormHandler(endpoint, location) {
   return function (params) {
@@ -96207,18 +96311,25 @@ var singleHandler = function singleHandler(endpoint, location) {
   };
 };
 
+function sendPostRequest() {}
+function updateScope() {}
+function sendPutRequest() {}
+
 /***/ }),
 
 /***/ "./resources/js/handlers/sub/horariosHandlers.jsx":
 /*!********************************************************!*\
   !*** ./resources/js/handlers/sub/horariosHandlers.jsx ***!
   \********************************************************/
-/*! exports provided: horariosHandlers */
+/*! exports provided: horariosHandlers, sendPostRequest, updateScope, sendPutRequest */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "horariosHandlers", function() { return horariosHandlers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendPostRequest", function() { return sendPostRequest; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateScope", function() { return updateScope; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendPutRequest", function() { return sendPutRequest; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -96233,31 +96344,38 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var horariosHandlers = [{
-  endpoint: '/horarios',
-  match: /\/horarios$/,
-  callback: function callback(params) {
-    return listHandler("/horarios/list/".concat(user.id), "/horarios");
+var horariosHandlers = {
+  list: [{
+    endpoint: '/horarios',
+    match: /\/horarios$/,
+    callback: function callback(params) {
+      return listHandler("/horarios/list/".concat(user.id), "/horarios");
+    }
+  }, {
+    endpoint: '/horarios/agregar/:day',
+    match: /\/horarios\/(agregar\/\d+)$/,
+    callback: function callback(params) {
+      return addFormHandler("/horarios/add/".concat(user.id), "/horarios/agregar/".concat(params.day));
+    }
+  }, {
+    endpoint: '/horarios/editar/:id',
+    match: /\/horarios\/(editar\/\d+)$/,
+    callback: function callback(params) {
+      return editFormHandler("/horarios/single/".concat(user.id, "/").concat(params.id), "/horarios/editar/".concat(params.id));
+    }
+  }, {
+    endpoint: '/horarios/:id',
+    match: /\/horarios\/(\d+)$/,
+    callback: function callback(params) {
+      return singleHandler("/horarios/single/".concat(user.id, "/").concat(params.id), "/horarios/".concat(params.id));
+    }
+  }],
+  form: {
+    add: sendPostRequest,
+    edit: sendPutRequest,
+    update: updateScope
   }
-}, {
-  endpoint: '/horarios/agregar/:day',
-  match: /\/horarios\/(agregar\/\d+)$/,
-  callback: function callback(params) {
-    return addFormHandler("/horarios/add/".concat(user.id), "/horarios/agregar/".concat(params.day));
-  }
-}, {
-  endpoint: '/horarios/editar/:id',
-  match: /\/horarios\/(editar\/\d+)$/,
-  callback: function callback(params) {
-    return editFormHandler("/horarios/single/".concat(user.id, "/").concat(params.id), "/horarios/editar/".concat(params.id));
-  }
-}, {
-  endpoint: '/horarios/:id',
-  match: /\/horarios\/(\d+)$/,
-  callback: function callback(params) {
-    return singleHandler("/horarios/single/".concat(user.id, "/").concat(params.id), "/horarios/".concat(params.id));
-  }
-}];
+};
 
 var editFormHandler = function editFormHandler(endpoint, location) {
   return function (params) {
@@ -96356,18 +96474,25 @@ var singleHandler = function singleHandler(endpoint, location) {
   };
 };
 
+function sendPostRequest() {}
+function updateScope() {}
+function sendPutRequest() {}
+
 /***/ }),
 
 /***/ "./resources/js/handlers/sub/localesHandlers.jsx":
 /*!*******************************************************!*\
   !*** ./resources/js/handlers/sub/localesHandlers.jsx ***!
   \*******************************************************/
-/*! exports provided: localesHandlers */
+/*! exports provided: localesHandlers, sendPostRequest, updateScope, sendPutRequest */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "localesHandlers", function() { return localesHandlers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendPostRequest", function() { return sendPostRequest; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateScope", function() { return updateScope; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendPutRequest", function() { return sendPutRequest; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -96378,31 +96503,38 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var localesHandlers = [{
-  endpoint: '/locales',
-  match: /\/locales$/,
-  callback: function callback(params) {
-    return listHandler("/usuario/locales/".concat(user.id), '/locales');
+var localesHandlers = {
+  list: [{
+    endpoint: '/locales',
+    match: /\/locales$/,
+    callback: function callback(params) {
+      return listHandler("/usuario/locales/".concat(user.id), '/locales');
+    }
+  }, {
+    endpoint: '/locales/agregar',
+    match: /\/locales\/(agregar)$/,
+    callback: function callback(params) {
+      return addFormHandler("/usuario/add/".concat(user.id, "/1"), '/locales/agregar');
+    }
+  }, {
+    endpoint: '/locales/editar/:id',
+    match: /\/locales\/(editar\/\d+)$/,
+    callback: function callback(params) {
+      return editFormHandler("/usuario/local/".concat(params.id), "/locales/editar/".concat(params.id));
+    }
+  }, {
+    endpoint: '/locales/:id',
+    match: /\/locales\/(\d+)$/,
+    callback: function callback(params) {
+      return singleHandler("/usuario/local/".concat(params.id), "/locales/".concat(params.id));
+    }
+  }],
+  form: {
+    add: sendPostRequest,
+    edit: sendPutRequest,
+    update: updateScope
   }
-}, {
-  endpoint: '/locales/agregar',
-  match: /\/locales\/(agregar)$/,
-  callback: function callback(params) {
-    return addFormHandler("/usuario/add/".concat(user.id, "/1"), '/locales/agregar');
-  }
-}, {
-  endpoint: '/locales/editar/:id',
-  match: /\/locales\/(editar\/\d+)$/,
-  callback: function callback(params) {
-    return editFormHandler("/usuario/local/".concat(params.id), "/locales/editar/".concat(params.id));
-  }
-}, {
-  endpoint: '/locales/:id',
-  match: /\/locales\/(\d+)$/,
-  callback: function callback(params) {
-    return singleHandler("/usuario/local/".concat(params.id), "/locales/".concat(params.id));
-  }
-}];
+};
 
 var editFormHandler = function editFormHandler(endpoint, location) {
   return function (params) {
@@ -96492,18 +96624,25 @@ var singleHandler = function singleHandler(endpoint, location) {
   };
 };
 
+function sendPostRequest() {}
+function updateScope() {}
+function sendPutRequest() {}
+
 /***/ }),
 
 /***/ "./resources/js/handlers/sub/promocionesHandlers.jsx":
 /*!***********************************************************!*\
   !*** ./resources/js/handlers/sub/promocionesHandlers.jsx ***!
   \***********************************************************/
-/*! exports provided: promocionesHandlers */
+/*! exports provided: promocionesHandlers, sendPostRequest, updateScope, sendPutRequest */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "promocionesHandlers", function() { return promocionesHandlers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendPostRequest", function() { return sendPostRequest; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateScope", function() { return updateScope; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendPutRequest", function() { return sendPutRequest; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -96520,31 +96659,38 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-var promocionesHandlers = [{
-  endpoint: '/promociones',
-  match: /\/promociones$/,
-  callback: function callback(params) {
-    return listHandler("promociones/list/".concat(user.id), "/promociones");
+var promocionesHandlers = {
+  list: [{
+    endpoint: '/promociones',
+    match: /\/promociones$/,
+    callback: function callback(params) {
+      return listHandler("promociones/list/".concat(user.id), "/promociones");
+    }
+  }, {
+    endpoint: '/promociones/agregar',
+    match: /\/promociones\/(agregar)$/,
+    callback: function callback(params) {
+      return addFormHandler("promociones/add/".concat(user.id), "/promociones/agregar");
+    }
+  }, {
+    endpoint: '/promociones/editar/:id',
+    match: /\/promociones\/(editar\/\d+)$/,
+    callback: function callback(params) {
+      return editFormHandler("promociones/single/27/".concat(params.id), "/promociones/editar/".concat(params.id));
+    }
+  }, {
+    endpoint: '/promociones/:id',
+    match: /\/promociones\/(\d+)$/,
+    callback: function callback(params) {
+      return singleHandler("/promociones/single/".concat(user.id, "/").concat(params.id), "/promociones/".concat(params.id));
+    }
+  }],
+  form: {
+    add: sendPostRequest,
+    edit: sendPutRequest,
+    update: updateScope
   }
-}, {
-  endpoint: '/promociones/agregar',
-  match: /\/promociones\/(agregar)$/,
-  callback: function callback(params) {
-    return addFormHandler("promociones/add/".concat(user.id), "/promociones/agregar");
-  }
-}, {
-  endpoint: '/promociones/editar/:id',
-  match: /\/promociones\/(editar\/\d+)$/,
-  callback: function callback(params) {
-    return editFormHandler("promociones/single/27/".concat(params.id), "/promociones/editar/".concat(params.id));
-  }
-}, {
-  endpoint: '/promociones/:id',
-  match: /\/promociones\/(\d+)$/,
-  callback: function callback(params) {
-    return singleHandler("/promociones/single/".concat(user.id, "/").concat(params.id), "/promociones/".concat(params.id));
-  }
-}];
+};
 
 var singleHandler = function singleHandler(endpoint, location) {
   return function (params) {
@@ -96641,18 +96787,25 @@ var addFormHandler = function addFormHandler(endpoint, location) {
   };
 };
 
+function sendPostRequest() {}
+function updateScope() {}
+function sendPutRequest() {}
+
 /***/ }),
 
 /***/ "./resources/js/handlers/sub/reservasHandlers.jsx":
 /*!********************************************************!*\
   !*** ./resources/js/handlers/sub/reservasHandlers.jsx ***!
   \********************************************************/
-/*! exports provided: reservasHandlers */
+/*! exports provided: reservasHandlers, sendPostRequest, updateScope, sendPutRequest */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reservasHandlers", function() { return reservasHandlers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendPostRequest", function() { return sendPostRequest; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateScope", function() { return updateScope; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendPutRequest", function() { return sendPutRequest; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -96663,25 +96816,32 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var reservasHandlers = [{
-  endpoint: '/reservas',
-  match: /\/reservas$/,
-  callback: function callback(params) {
-    return listHandler("reservas/list/".concat(user.id, "/"), "/reservas");
+var reservasHandlers = {
+  list: [{
+    endpoint: '/reservas',
+    match: /\/reservas$/,
+    callback: function callback(params) {
+      return listHandler("reservas/list/".concat(user.id, "/"), "/reservas");
+    }
+  }, {
+    endpoint: '/reservas/agregar',
+    match: /\/reservas\/(agregar)$/,
+    callback: function callback(params) {
+      return formHandler("reservas/add/".concat(user.id, "/"), "/reservas/agregar");
+    }
+  }, {
+    endpoint: '/reservas/:id',
+    match: /\/reservas\/(\d+)$/,
+    callback: function callback(params) {
+      return singleHandler("/reservas/single/".concat(user.id, "/").concat(params.id), "/reservas/".concat(params.id));
+    }
+  }],
+  form: {
+    add: sendPostRequest,
+    edit: sendPutRequest,
+    update: updateScope
   }
-}, {
-  endpoint: '/reservas/agregar',
-  match: /\/reservas\/(agregar)$/,
-  callback: function callback(params) {
-    return formHandler("reservas/add/".concat(user.id, "/"), "/reservas/agregar");
-  }
-}, {
-  endpoint: '/reservas/:id',
-  match: /\/reservas\/(\d+)$/,
-  callback: function callback(params) {
-    return singleHandler("/reservas/single/".concat(user.id, "/").concat(params.id), "/reservas/".concat(params.id));
-  }
-}];
+};
 
 var listHandler = function listHandler(endpoint, location) {
   return function (params) {
@@ -96765,18 +96925,25 @@ var formHandler = function formHandler(endpoint, location) {
   };
 };
 
+function sendPostRequest() {}
+function updateScope() {}
+function sendPutRequest() {}
+
 /***/ }),
 
 /***/ "./resources/js/handlers/sub/ubicacionesHandlers.jsx":
 /*!***********************************************************!*\
   !*** ./resources/js/handlers/sub/ubicacionesHandlers.jsx ***!
   \***********************************************************/
-/*! exports provided: ubicacionesHandlers */
+/*! exports provided: ubicacionesHandlers, sendPostRequest, updateScope, sendPutRequest */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ubicacionesHandlers", function() { return ubicacionesHandlers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendPostRequest", function() { return sendPostRequest; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateScope", function() { return updateScope; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendPutRequest", function() { return sendPutRequest; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
@@ -96892,6 +97059,10 @@ var addFormHandler = function addFormHandler(endpoint, location) {
   };
 };
 
+function sendPostRequest() {}
+function updateScope() {}
+function sendPutRequest() {}
+
 /***/ }),
 
 /***/ "./resources/js/hocs/DisplaysErrors.jsx":
@@ -96921,7 +97092,7 @@ function DisplaysErrors(props) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
       key: i,
       className: "smaller-text error"
-    }, e.description);
+    }, e.description ? e.description : e);
   })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null));
 }
 
@@ -97167,7 +97338,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _componentes_control_BreadCrumb__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../componentes/control/BreadCrumb */ "./resources/js/componentes/control/BreadCrumb.jsx");
 /* harmony import */ var _componentes_control_Lateral__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../componentes/control/Lateral */ "./resources/js/componentes/control/Lateral.jsx");
 /* harmony import */ var _utils_LoadBar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/LoadBar */ "./resources/js/utils/LoadBar.jsx");
-/* harmony import */ var _handlers_routerTransitionHandlers__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./handlers/routerTransitionHandlers */ "./resources/js/hocs/handlers/routerTransitionHandlers.jsx");
+/* harmony import */ var _MainFrame__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./MainFrame */ "./resources/js/hocs/MainFrame.jsx");
+/* harmony import */ var _handlers_index__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../handlers/index */ "./resources/js/handlers/index.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -97196,6 +97368,29 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
+
+function assignHandler(handlerArray, location, params) {
+  var handler = Object(_MainFrame__WEBPACK_IMPORTED_MODULE_6__["searchHandler"])(handlerArray, location);
+  handler = handler.callback(params);
+  return handler.bind(this);
+}
+
+function awaitLoading(location, params, match) {
+  var _this = this;
+
+  var handler = _handlers_index__WEBPACK_IMPORTED_MODULE_7__["handlers"][match].list,
+      fetchData = this.assignHandler(handler, location, params);
+  this.setState({
+    loading: 0,
+    loadFinished: false,
+    fetchData: fetchData,
+    preventRedirect: false
+  }, function () {
+    _this.fetchHandler(params);
+  });
+}
+
 var WaitsLoading = react__WEBPACK_IMPORTED_MODULE_0___default.a.createContext({});
 var RouterTransition =
 /*#__PURE__*/
@@ -97203,25 +97398,25 @@ function (_Component) {
   _inherits(RouterTransition, _Component);
 
   function RouterTransition(props) {
-    var _this;
+    var _this2;
 
     _classCallCheck(this, RouterTransition);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(RouterTransition).call(this, props));
-    _this.assignHandler = _handlers_routerTransitionHandlers__WEBPACK_IMPORTED_MODULE_6__["assignHandler"].bind(_assertThisInitialized(_this));
-    _this.state = {
+    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(RouterTransition).call(this, props));
+    _this2.assignHandler = assignHandler.bind(_assertThisInitialized(_this2));
+    _this2.state = {
       data: null,
       loadFinished: false,
       loading: 0,
       preventRedirect: true,
       refresh: false,
-      fetchData: _this.assignHandler(_this.props.handlerArray, _this.props.location, _this.props.route.params)
+      fetchData: _this2.assignHandler(_this2.props.handlerArray, _this2.props.location, _this2.props.route.params)
     };
-    _this.downloadHandler = _utils_LoadBar__WEBPACK_IMPORTED_MODULE_5__["downloadHandler"].bind(_assertThisInitialized(_this));
-    _this.awaitLoading = _handlers_routerTransitionHandlers__WEBPACK_IMPORTED_MODULE_6__["awaitLoading"].bind(_assertThisInitialized(_this));
-    _this.fetchHandler = _this.fetchHandler.bind(_assertThisInitialized(_this));
-    _this.displayErrors = _this.displayErrors.bind(_assertThisInitialized(_this));
-    return _this;
+    _this2.downloadHandler = _utils_LoadBar__WEBPACK_IMPORTED_MODULE_5__["downloadHandler"].bind(_assertThisInitialized(_this2));
+    _this2.awaitLoading = awaitLoading.bind(_assertThisInitialized(_this2));
+    _this2.fetchHandler = _this2.fetchHandler.bind(_assertThisInitialized(_this2));
+    _this2.displayErrors = _this2.displayErrors.bind(_assertThisInitialized(_this2));
+    return _this2;
   }
 
   _createClass(RouterTransition, [{
@@ -97340,11 +97535,12 @@ function (_Component) {
 /*!*****************************************!*\
   !*** ./resources/js/hocs/Validator.jsx ***!
   \*****************************************/
-/*! exports provided: default */
+/*! exports provided: displayErrors, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "displayErrors", function() { return displayErrors; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Validator; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -97353,16 +97549,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _MainFrame__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MainFrame */ "./resources/js/hocs/MainFrame.jsx");
 /* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
 /* harmony import */ var _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../acciones/ActionsByView */ "./resources/js/acciones/ActionsByView.jsx");
-/* harmony import */ var _handlers_validatorHandlers__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./handlers/validatorHandlers */ "./resources/js/hocs/handlers/validatorHandlers.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -97382,202 +97569,6 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-/**
- * react basic
- */
-
-
-
-
-
-
-
-var Validator =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(Validator, _Component);
-
-  function Validator(props) {
-    var _this;
-
-    _classCallCheck(this, Validator);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Validator).call(this, props));
-    _this.enviarFormulario = _this.enviarFormulario.bind(_assertThisInitialized(_this));
-    _this.cancelarFormulario = _this.cancelarFormulario.bind(_assertThisInitialized(_this));
-    _this.sendPutRequest = _this.sendPutRequest.bind(_assertThisInitialized(_this));
-    _this.sendPostRequest = _this.sendPostRequest.bind(_assertThisInitialized(_this));
-    _this.changeFormField = _this.changeFormField.bind(_assertThisInitialized(_this));
-    _this.actions = Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_4__["FormActions"])(_this.enviarFormulario, _this.cancelarFormulario);
-    _this.state = {
-      form: {},
-      errors: {},
-      validation: {}
-    };
-    return _this;
-  }
-
-  _createClass(Validator, [{
-    key: "changeFormField",
-    value: function changeFormField(e) {
-      var input = e.currentTarget || e,
-          name = input.getAttribute('name'),
-          value = input.getAttribute('needsvalue') === '1' ? input.value : input.getAttribute('value'),
-          _assignValues = Object(_handlers_validatorHandlers__WEBPACK_IMPORTED_MODULE_5__["assignValues"])(value, name, this.state.form, this.state.validation, this.state.errors),
-          _assignValues2 = _slicedToArray(_assignValues, 2),
-          form = _assignValues2[0],
-          errors = _assignValues2[1];
-
-      this.setState({
-        form: form,
-        errors: errors
-      });
-    }
-  }, {
-    key: "enviarFormulario",
-    value: function enviarFormulario(e) {
-      var _this2 = this;
-
-      e.preventDefault();
-
-      var _searchErrors = Object(_handlers_validatorHandlers__WEBPACK_IMPORTED_MODULE_5__["searchErrors"])(this.state.errors, this.state.validation, this.state.form),
-          _searchErrors2 = _slicedToArray(_searchErrors, 2),
-          hasErrors = _searchErrors2[0],
-          errors = _searchErrors2[1];
-
-      if (hasErrors.length > 0) this.setState({
-        errors: errors
-      }, function () {
-        return _this2.context({
-          message: {
-            data: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-              className: "h-padding nav-list"
-            }, hasErrors),
-            title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-              className: "far fa-exclamation-triangle bold sub-title side-margin"
-            }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-              className: "side-margin"
-            }, "Errores")),
-            type: 'failure',
-            update: false
-          }
-        });
-      });else this.context({
-        message: {
-          data: 'no errors found',
-          type: 'success',
-          update: false
-        }
-      });
-    }
-  }, {
-    key: "cancelarFormulario",
-    value: function cancelarFormulario(e) {
-      e.preventDefault();
-      this.context({
-        message: {
-          data: 'cancelar from Ubicaciones form',
-          type: 'failure',
-          update: false
-        }
-      });
-    }
-  }, {
-    key: "sendPostRequest",
-    value: function sendPostRequest() {}
-  }, {
-    key: "sendPutRequest",
-    value: function sendPutRequest() {}
-  }, {
-    key: "render",
-    value: function render() {
-      var Form = react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(this.props.children, {
-        fields: this.state.form,
-        change: this.changeFormField,
-        errors: this.state.errors
-      });
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        className: "full-width"
-      }, Form, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row justify-content-end h-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        buttons: Object.values(this.actions)
-      })));
-    }
-  }], [{
-    key: "getDerivedStateFromProps",
-    value: function getDerivedStateFromProps(props) {
-      return {
-        form: props.form,
-        validation: props.validation
-      };
-    }
-  }]);
-
-  return Validator;
-}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
-
-_defineProperty(Validator, "contextType", _MainFrame__WEBPACK_IMPORTED_MODULE_2__["DisplaysMessages"]);
-
-
-
-/***/ }),
-
-/***/ "./resources/js/hocs/handlers/routerTransitionHandlers.jsx":
-/*!*****************************************************************!*\
-  !*** ./resources/js/hocs/handlers/routerTransitionHandlers.jsx ***!
-  \*****************************************************************/
-/*! exports provided: assignHandler, awaitLoading */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "assignHandler", function() { return assignHandler; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "awaitLoading", function() { return awaitLoading; });
-/* harmony import */ var _MainFrame__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../MainFrame */ "./resources/js/hocs/MainFrame.jsx");
-/* harmony import */ var _handlers_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../handlers/index */ "./resources/js/handlers/index.jsx");
-
-
-function assignHandler(handlerArray, location, params) {
-  var handler = Object(_MainFrame__WEBPACK_IMPORTED_MODULE_0__["searchHandler"])(handlerArray, location);
-  handler = handler.callback(params);
-  return handler.bind(this);
-}
-function awaitLoading(location, params, match) {
-  var _this = this;
-
-  var handler = _handlers_index__WEBPACK_IMPORTED_MODULE_1__["handlers"][match],
-      fetchData = this.assignHandler(handler, location, params);
-  this.setState({
-    loading: 0,
-    loadFinished: false,
-    fetchData: fetchData,
-    preventRedirect: false
-  }, function () {
-    _this.fetchHandler(params);
-  });
-}
-
-/***/ }),
-
-/***/ "./resources/js/hocs/handlers/validatorHandlers.jsx":
-/*!**********************************************************!*\
-  !*** ./resources/js/hocs/handlers/validatorHandlers.jsx ***!
-  \**********************************************************/
-/*! exports provided: validateValue, formatErrors, searchErrors, resetDependencies, assignValues */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validateValue", function() { return validateValue; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "formatErrors", function() { return formatErrors; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "searchErrors", function() { return searchErrors; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resetDependencies", function() { return resetDependencies; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "assignValues", function() { return assignValues; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -97585,6 +97576,9 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
 
 
 
@@ -97681,7 +97675,18 @@ var evaluateRule = {
     };
   }
 };
+var cast = {
+  array: function array($value) {
+    if ($value) return $value.split(',').map(function (e) {
+      return parseInt(e);
+    });else return [];
+  },
+  integer: function integer($value) {
+    return parseInt($value);
+  }
+};
 var extFields = ['maxLen', 'minVal', 'maxVal', 'minLen'];
+
 function validateValue(val, _ref10) {
   var rules = _ref10.rules,
       fieldName = _ref10.fieldName;
@@ -97700,20 +97705,20 @@ function validateValue(val, _ref10) {
     return t;
   }, []);
 }
+
 function formatErrors(errors, name, ind) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
     key: ind
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "bold smaller-text"
-  }, "En el campo ".concat(name)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
     className: "h-padding"
   }, errors.map(function (e, i) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
       key: i,
-      className: "smaller-text"
-    }, e.description);
+      className: "smaller-text small-v-padding"
+    }, e.description || e);
   })));
 }
+
 function searchErrors(errors, fields, form) {
   var frmtErrs = Object.keys(form).reduce(function (t, e, i) {
     var flds = (errors[e] || []).length > 0 ? errors[e] : validateValue(form[e], fields[e]),
@@ -97728,6 +97733,7 @@ function searchErrors(errors, fields, form) {
   }, []);
   return [frmtErrs, errors];
 }
+
 function resetDependencies(form, vali, err, name) {
   vali[name].dependencies.map(function (e) {
     form[e] = "";
@@ -97735,6 +97741,7 @@ function resetDependencies(form, vali, err, name) {
   });
   return [form, err];
 }
+
 function assignValues(value, name, form, validate, err) {
   if ((validate[name].dependencies || []).length > 0 && (value === "" || value === null)) {
     var _resetDependencies = resetDependencies(form, validate, err, name);
@@ -97749,6 +97756,161 @@ function assignValues(value, name, form, validate, err) {
   err[name] = validateValue(value, validate[name]);
   return [form, err];
 }
+
+;
+
+var castBeforeSending = function castBeforeSending(values, validation) {
+  return Object.keys(values).reduce(function (_final, current) {
+    var type = validation[current].casting;
+    _final[current] = type ? cast[type](values[current]) : values[current];
+    return _final;
+  }, {});
+};
+
+function displayErrors(_ref11) {
+  var _this = this;
+
+  var _ref12 = _slicedToArray(_ref11, 2),
+      hasErrors = _ref12[0],
+      errors = _ref12[1];
+
+  this.setState({
+    errors: errors
+  }, function () {
+    return _this.context({
+      message: {
+        data: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+          className: "h-padding nav-list"
+        }, hasErrors),
+        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "far fa-exclamation-triangle bold sub-title side-margin"
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "side-margin"
+        }, "Errores")),
+        type: 'failure',
+        update: false
+      }
+    });
+  });
+}
+
+var rewriteErrors = function rewriteErrors(errors) {
+  return Object.keys(errors).reduce(function (tot, cur) {
+    var ind = cur.match(/\./gi) ? cur.split('.')[0] : cur;
+    if (tot[ind]) tot[ind].push(errors[cur][0]);else tot[ind] = [errors[cur][0]];
+    return tot;
+  }, {});
+};
+
+var Validator =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Validator, _Component);
+
+  function Validator(props) {
+    var _this2;
+
+    _classCallCheck(this, Validator);
+
+    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(Validator).call(this, props));
+    _this2.enviarFormulario = _this2.enviarFormulario.bind(_assertThisInitialized(_this2));
+    _this2.cancelarFormulario = _this2.cancelarFormulario.bind(_assertThisInitialized(_this2));
+    _this2.changeFormField = _this2.changeFormField.bind(_assertThisInitialized(_this2));
+    _this2.displayErrors = displayErrors.bind(_assertThisInitialized(_this2));
+    _this2.actions = Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_4__["FormActions"])(_this2.enviarFormulario, _this2.cancelarFormulario);
+    _this2.requestHandler = _this2.props.sendRequest.bind(_assertThisInitialized(_this2));
+    _this2.displayBackendErrors = _this2.displayBackendErrors.bind(_assertThisInitialized(_this2));
+    _this2.state = {
+      form: {},
+      errors: {},
+      validation: {}
+    };
+    return _this2;
+  }
+
+  _createClass(Validator, [{
+    key: "changeFormField",
+    value: function changeFormField(e) {
+      var input = e.currentTarget || e,
+          name = input.getAttribute('name'),
+          value = input.getAttribute('needsvalue') === '1' ? input.value : input.getAttribute('value'),
+          _assignValues = assignValues(value, name, this.state.form, this.state.validation, this.state.errors),
+          _assignValues2 = _slicedToArray(_assignValues, 2),
+          form = _assignValues2[0],
+          errors = _assignValues2[1];
+
+      this.setState({
+        form: form,
+        errors: errors
+      });
+    }
+  }, {
+    key: "displayBackendErrors",
+    value: function displayBackendErrors(errors) {
+      var rewrittenErrors = rewriteErrors(errors.response.data.errors),
+          _searchErrors = searchErrors(rewrittenErrors, this.state.validation, this.state.form),
+          _searchErrors2 = _slicedToArray(_searchErrors, 2),
+          hasErrors = _searchErrors2[0],
+          err = _searchErrors2[1];
+
+      this.displayErrors([hasErrors, err]);
+    }
+  }, {
+    key: "enviarFormulario",
+    value: function enviarFormulario(e) {
+      e.preventDefault();
+
+      var _searchErrors3 = searchErrors(this.state.errors, this.state.validation, this.state.form),
+          _searchErrors4 = _slicedToArray(_searchErrors3, 2),
+          hasErrors = _searchErrors4[0],
+          errors = _searchErrors4[1];
+
+      if (hasErrors.length > 0) this.displayErrors([hasErrors, errors]);else this.requestHandler(castBeforeSending(this.state.form, this.state.validation), this.displayBackendErrors);
+    }
+  }, {
+    key: "cancelarFormulario",
+    value: function cancelarFormulario(e) {
+      e.preventDefault();
+      this.context({
+        message: {
+          data: 'cancelar from Ubicaciones form',
+          type: 'failure',
+          update: false
+        }
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var Form = react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(this.props.children, {
+        fields: this.state.form,
+        change: this.changeFormField,
+        errors: this.state.errors
+      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        className: "full-width"
+      }, Form, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row justify-content-end h-padding"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        buttons: Object.values(this.actions)
+      })));
+    }
+  }], [{
+    key: "getDerivedStateFromProps",
+    value: function getDerivedStateFromProps(props) {
+      return {
+        form: props.form,
+        validation: props.validation
+      };
+    }
+  }]);
+
+  return Validator;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+_defineProperty(Validator, "contextType", _MainFrame__WEBPACK_IMPORTED_MODULE_2__["DisplaysMessages"]);
+
+
 
 /***/ }),
 
@@ -98805,7 +98967,7 @@ function Promociones(props) {
 /*!***************************************!*\
   !*** ./resources/js/utils/Helper.jsx ***!
   \***************************************/
-/*! exports provided: evaluateDateChange, generateHoursFromInterval, getMonthLength, compareDates */
+/*! exports provided: evaluateDateChange, generateHoursFromInterval, getMonthLength, compareDates, createFeriadosList */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -98814,6 +98976,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "generateHoursFromInterval", function() { return generateHoursFromInterval; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getMonthLength", function() { return getMonthLength; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "compareDates", function() { return compareDates; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFeriadosList", function() { return createFeriadosList; });
 /* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 
 var evaluateDateChange = function evaluateDateChange(changeObject, fetchCallback, changeDate, path, view, section) {
@@ -98871,6 +99034,12 @@ var compareDates = function compareDates(d1, d2, _ref) {
       m = _ref.m,
       y = _ref.y;
   return cmp[d](d1.getDate(), d2.getDate()) && cmp[m](d1.getMonth(), d2.getMonth()) && cmp[y](d1.getFullYear(), d2.getFullYear());
+};
+var createFeriadosList = function createFeriadosList(data) {
+  return Object.values(data).reduce(function (total, curr) {
+    total[curr.id] = curr.nombre;
+    return total;
+  }, {});
 };
 
 /***/ }),
@@ -99028,28 +99197,42 @@ var GET = function GET(options) {
     onDownloadProgress: options.download
   });
 };
-var POST = function POST(endpoint) {
-  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
+var POST = function POST(options) {
+  return axios__WEBPACK_IMPORTED_MODULE_0___default()({
     method: 'post',
-    url: endpoint,
+    url: options.endpoint,
     timeout: 1000,
-    baseURL: 'http://localhost/api/'
+    data: options.data,
+    onDownloadProgress: options.download,
+    onUploadProgress: options.upload,
+    baseURL: 'http://localhost/api/',
+    headers: {
+      'Content-type': 'application/json'
+    }
   });
 };
-var DELETE = function DELETE(endpoint) {
-  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
+var DELETE = function DELETE(options) {
+  return axios__WEBPACK_IMPORTED_MODULE_0___default()({
     method: 'delete',
-    url: endpoint,
+    url: options.endpoint,
     timeout: 1000,
+    onDownloadProgress: options.download,
+    onUploadProgress: options.upload,
     baseURL: 'http://localhost/api/'
   });
 };
-var PUT = function PUT(endpoint) {
-  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
+var PUT = function PUT(options) {
+  return axios__WEBPACK_IMPORTED_MODULE_0___default()({
     method: 'put',
-    url: endpoint,
+    url: options.endpoint,
+    data: options.data,
     timeout: 1000,
-    baseURL: 'http://localhost/api/'
+    onDownloadProgress: options.download,
+    onUploadProgress: options.upload,
+    baseURL: 'http://localhost/api/',
+    headers: {
+      'Content-type': 'application/json'
+    }
   });
 };
 var progress = {
