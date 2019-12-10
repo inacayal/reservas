@@ -5,12 +5,15 @@ namespace App\Models;
 use Reliese\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
 use App\Traits\DataFormatting;
-use App\Traits\DependencyOptions;
+use App\Traits\ValidationMessages;
 use Illuminate\Validation\Rule;
 
 class Reserva extends Eloquent
 {
-	use DataFormatting;
+	use DataFormatting,
+		ValidationMessages;
+
+    protected $table = 'usuario_reservas';
 
 	protected $relationNames = [];
 
@@ -50,128 +53,55 @@ class Reserva extends Eloquent
 		'id_estado'
 	];
 
-	public static function setTimezone($date){
-		$tz = new \DateTimeZone("America/Argentina/Buenos_Aires");
-		date_timezone_set($date,$tz);
-		return $date;
-	}
-
-	public static function validateCreacion($request) {
-	  $date = self::setTimezone(date_create());
-	  $dateString = date_format($date,'Y-m-d H:i:s');
-	  $user = $request->post()['id_usuario'];
-	  $method = $request->getMethod();
-      return [
-          'rules' => [
-              'id_usuario' => 'bail|required|exists:users,id',
-			  'email' => 'email|required|max:100',
-              'nombre' => 'required|max:100',
-			  'apellido' => 'required|max:100',
-			  'dia_reserva' => 'required|date|after_or_equal:today',
-			  'telefono' => 'required|max:20',
-			  'hora_reserva' => 'required',
-			  'hora_reserva.hora' => 'required|max:23|min:1|int',
-			  'hora_reserva.minuto' => 'required|max:59|min:0|int',
-			  'descripcion_evento' => 'required',
-			  'cantidad_personas' => 'required|min:1',
-			  'id_promocion' => [
-                  'nullable',
-                  'int',
-                  Rule::exists('usuario_promociones','id')->where('id_usuario',$user)
-              ],
-			  'id_evento' => [
-                  'required',
-                  'int',
-                  Rule::exists('usuario_evento','id')->where('id_usuario',$user)
-              ],
-			  'id_ubicacion' => [
-                  'required',
-                  'int',
-                  Rule::exists('ubicaciones','id')->where('id_usuario',$user)
-              ],
-			  'id_estado' => 'required|int|exists:estado_reserva,id',
-              'requestType' => 'required|in:PUT,POST'
-          ],
-          'messages' => [
-			  'id_estado.required' => 'No se ha indicado el estado',
-			  'id_estado.exists' => 'El estado debe existir',
-			  'email.email' => 'El email tiene un formato incorrecto',
-			  'email.required' => 'Es necesario que indiques una dirección de correo',
-			  'email.max' => 'El correo no puede tener más de 100 caracteres',
-              'id_evento.int' => 'El Evento debe ser un número entero',
-              'id_evento.exists' => 'El evento no ha sido creado previamente',
-			  'id_evento.required' => 'Tienes que indicar el evento de la reserva',
-		      'id_promocion.exists' => 'La promoción no ha sido creado previamente',
-			  'id_promocion.int' => 'la promoción debe ser numérica',
-			  'id_ubicacion.exists' => 'La ubicación no ha sido creado previamente',
-			  'id_ubicacion.int' => 'la ubicación debe ser numérica',
-			  'id_estado.required' =>'Debes indicar el estado de la reserva',
-			  'id_estado.int' => 'el estado debe ser de tipo entero',
-			  'id_estado.exists' => 'El estado no ha sido creado previamente ',
-			  'descripcion.required' => 'Es necesario una breve descripción de la promoción',
-			  'descripcion.max' => 'La descripción no puede exceder los 50 caracteres',
-			  'nombre.max' => 'El nombre de la promoción no puede exceder los 50 caracteres',
-			  'nombre.required' => 'Es necesario el nombre de la promocion',
-			  'requestType.required'	=> "no se ha indicado el Tipo de operación",
-			  'requestType.in' => "El Tipo de operación no se encuentra entre los valores permitidos",
-			  'hora_reserva.required'=> "Debes especificar una hora de reserva",
-			  'hora_reserva.hora.required'=> "Debes especificar una hora de reserva",
-			  'hora_reserva.hora.max'=> "La hora de reserva no puede exceder las 23 horas",
-			  'hora_reserva.hora.min'=> "la hora de reserva no puede ser menor a 1",
-			  'hora_reserva.minuto.required'=> "Debes especificar un minuto de reserva",
-			  'hora_reserva.minuto.max'=> "Los minutos de la reserva deben ser menores a 59",
-			  'hora_reserva.minuto.min'=> "Los minutos de la reserva no pueden ser menores a 0",
-			  'dia_reserva.date'=> "el dia de reserva debe ser una fecha",
-			  'dia_reserva.after'=> "el dia de reserva debe ser luego de la fecha actual: $dateString",
-			  'dia_reserva.required'=> "Debes especificar un día de reserva",
-			  'cantidad_personas.required' => "Debes indicar la cantidad de personas de la reserva",
-			  'cantidad_personas.min' => "La reserva debete tener más de un participante"
-          ]
-      ];
+	public static function validateEditAdd($request) {
+		$date = self::setTimezone(date_create());
+		$dateString = date_format($date,'Y-m-d H:i:s');
+		$user = $request->post()['id_usuario'];
+		$method = $request->getMethod();
+		return [
+			'id_usuario' => 'bail|required|exists:usuarios,id',
+			'email' => 'email|required|max:100',
+			'nombre' => 'required|max:100',
+			'apellido' => 'required|max:100',
+			'dia_reserva' => 'required|date|after_or_equal:today',
+			'telefono' => 'required|max:20',
+			'hora_reserva' => 'required',
+			'hora_reserva.hora' => 'required|max:23|min:1|int',
+			'hora_reserva.minuto' => 'required|max:59|min:0|int',
+			'descripcion_evento' => 'required',
+			'cantidad_personas' => 'required|min:1',
+			'id_promocion' => [
+			  'nullable',
+			  'int',
+			  Rule::exists('usuario_promociones','id')->where('id_usuario',$user)
+			],
+			'id_evento' => [
+			  'required',
+			  'int',
+			  Rule::exists('usuario_eventos','id')->where('id_usuario',$user)
+			],
+			'id_ubicacion' => [
+			  'required',
+			  'int',
+			  Rule::exists('usuario_ubicaciones','id')->where('id_usuario',$user)
+			],
+			'id_estado' => 'required|int|exists:estado_reserva,id',
+			'requestType' => 'required|in:PUT,POST'
+		];
     }
 
-	public static function validateUpdate($request) {
+	public static function validateStatusUpdate($request) {
+		$user = $request->post()['id_usuario'];
 		return [
-			'rules' => [
-				'id_usuario' => 'bail|required|exists:users,id',
-				'id' => [
-					'required',
-					'int',
-					Rule::exists('reservas','id')->where('id_usuario',$request->post()['id_usuario'])
-				],
-				'id_estado' => 'required|exists:estado_usuario,id'
+			'id_usuario' => 'bail|required|exists:usuarios,id',
+			'id' => [
+				'required',
+				'int',
+				Rule::exists('usuario_reservas','id')->where('id_usuario',$user)
 			],
-			'messages' => [
-				'id.required'   => 'Es necesario el ID de la Reserva para modificarla',
-				'id.int'             => 'El ID de la Reserva debe ser numérica',
-				'id.exists'         => 'La Reserva debe ser creada previamente para modificarla',
-				'id_usuario.required'     => 'No se ha indicado el usuario',
-				'id_usuario.exists'     => 'El usuario debe existir',
-				'id_estado.required'     => 'No se ha indicado el estado',
-				'id_estado.exists'     => 'El estado debe existir',
-			]
+			'id_estado' => 'required|exists:estado_reserva,id'
 		];
 	}
-
-	public static function validateData($user,$method) {
-        $request = request();
-        $data = (object) $request->post();
-        return (isset($data->validationType))
-            ? call_user_func("self::validate$data->validationType",$request)
-            : [
-                "rules" => [
-                    "validationType" => "required|in:Update,Creacion"
-                ],
-                "messages" => [
-                    "validationType.required" => "Debes indicar un tipo de validacion",
-                    "validationType.in" => "El tipo de validacion debe estar entre los valores permitidos"
-                ]
-            ];
-    }
-
-    public function getRelationNames(){
-      return $this->relationNames;
-    }
 
 	public static function reservasQueryCallback($params){
 		return function ($query) use ($params) {

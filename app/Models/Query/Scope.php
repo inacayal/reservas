@@ -9,27 +9,22 @@ namespace App\Models\Query;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 /**
- * Class EstadoUsuario
- * 
+ * Class EstadoEvento
+ *
  * @property int $id
  * @property string $descripcion
- * 
- * @property \Illuminate\Database\Eloquent\Collection $users
+ *
+ * @property \Illuminate\Database\Eloquent\Collection $usuario_eventos
  *
  * @package App\Models
  */
-class EstadoUsuario extends Eloquent
+class Scope extends Eloquent
 {
 	//use CrudMethods;
 
-	protected $table = 'estado_usuario';
+	protected $table = 'scope';
 	public $timestamps = false;
 	protected $fillable = [
 		'descripcion'
 	];
-
-	public function users()
-	{
-		return $this->hasMany(\App\User::class, 'id_estado');
-	}
 }

@@ -74,17 +74,27 @@ class UbicacionController extends Controller
     }
 
     public function create (Request $request){
-        $request->request->add(['validationType' => 'Creacion']);
+        $request->request->add([
+            'validationType' => 'EditAdd',
+            'requestType' => 'POST',
+            'scope' => 1
+        ]);
         return $this->applyValidation($request);
     }
 
     public function update (Request $request){
-        $request->request->add(['validationType' => 'Creacion']);
+        $request->request->add([
+            'validationType' => 'EditAdd',
+            'requestType' => 'PUT'
+        ]);
         return $this->applyValidation($request);
     }
 
-    public function disable (Request $request) {
-        $request->request->add(['validationType' => 'Disable']);
+    public function modifyScope (Request $request) {
+        $request->request->add([
+            'validationType' => 'ScopeUpdate',
+            'requestType' => 'PUT'
+        ]);
         return $this->applyValidation($request);
     }
 

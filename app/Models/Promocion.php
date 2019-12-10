@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 use App\Traits\DataFormatting;
-use App\Traits\DependencyOptions;
+use App\Traits\ValidationMessages;
 use Illuminate\Validation\Rule;
 
 class Promocion extends Eloquent
 {
-    use DataFormatting;
+    use DataFormatting,
+        ValidationMessages;
 
     protected $relationNames = ['eventos'];
 
@@ -30,102 +31,49 @@ class Promocion extends Eloquent
         'nombre',
         'descripcion',
         'descuento',
-        'id_estado'
+        'scope'
     ];
 
-    public static function validateCreacion($request) {
+    public static function validateEditAdd($request) {
         $user = $request->post()['id_usuario'];
         $method = $request->getMethod();
         return [
-          'rules' => [
-              'id_usuario' => 'bail|required|exists:users,id',
-              'id' => [
-                  'required_if:requestType,PUT',
-                  function ($attribute, $value, $fail) use ($method) {
-                      if($method==='POST' && $value)
-                          $fail('ID inválido');
-                  },
-                  'int',
-                  Rule::exists('usuario_promociones','id')->where('id_usuario',$user)
-              ],
-              'eventos' => [
-                  'array',
-                  'required_if:requestType,POST',
-                  Rule::exists('usuario_evento','id')->where('id_usuario',$user)
-              ],
-              'eventos.*'        => 'int',
-              'descuento'        => 'nullable|min:0|max:100',
-              'descripcion'      => 'required|max:50',
-              'nombre'           => 'required|max:50',
-              'requestType' 	 => 'required|in:PUT,POST',
-              'id_estado' 	     => 'required|exists:estado_evento,id'
-          ],
-          'messages' => [
-              'id.required_if'   => 'Es necesario el ID de la promoción para modificarla',
-              'id.int'             => 'El ID de la promoción debe ser numérica',
-              'id.exists'         => 'La promoción debe ser creada previamente para modificarla',
-              'eventos.array'     => 'El formato de Eventos es inválido',
-              'eventos.required_if' => 'Es necesario que indiques algún Evento para crear la promoción',
-              'eventos.exists' => 'El Evento debe ser creado previamente para modificarlo',
-              'eventos.*' =>'El Evento debe ser de tipo numérico',
-              'descuento.min'        => 'El descuento no puede ser menor al 0%',
-              'descuento.max'        => 'El descuento no puede exceder el 100%',
-              'descripcion.required' => 'Es necesario una breve descripción de la promoción',
-              'descripcion.max'      => 'La descripción no puede exceder los 50 caracteres',
-              'nombre.max' => 'El nombre de la promoción no puede exceder los 50 caracteres',
-              'nombre.required' => 'Es necesario el nombre de la promocion',
-              'requestType.request'	=> "no se ha indicado el Tipo de operación",
-              'requestType.in'			=> "El Tipo de operación no se encuentra entre los valores permitidos",
-              'id_usuario.required'     => 'No se ha indicado el usuario',
-              'id_usuario.exists'     => 'El usuario debe existir',
-              'id_estado.required'     => 'No se ha indicado el estado',
-              'id_estado.exists'     => 'El estado debe existir'
-          ]
-        ];
-    }
-
-    public static function validateDisable($request) {
-        return [
-            'rules' => [
-                'id_usuario' => 'bail|required|exists:users,id',
-                'id' => [
-                    'required',
-                    'int',
-                    Rule::exists('usuario_evento','id')->where('id_usuario',$request->post()['id_usuario'])
-                ],
-                'id_estado' => 'required|exists:estado_usuario,id'
+            'id_usuario' => 'bail|required|exists:usuarios,id',
+            'id' => [
+              'required_if:requestType,PUT',
+              function ($attribute, $value, $fail) use ($method) {
+                  if($method==='POST' && $value)
+                      $fail('ID inválido');
+              },
+              'int',
+              Rule::exists('usuario_promociones','id')->where('id_usuario',$user)
             ],
-            'messages' => [
-                'id.required'   => 'Es necesario el ID del Evento para modificarla',
-                'id.int'             => 'El ID del Evento debe ser numérica',
-                'id.exists'         => 'El Evento debe ser creada previamente para modificarla',
-                'id_usuario.required'     => 'No se ha indicado el usuario',
-                'id_usuario.exists'     => 'El usuario debe existir',
-                'id_estado.required'     => 'No se ha indicado el estado',
-                'id_estado.exists'     => 'El estado debe existir',
-            ]
+            'eventos' => [
+              'array',
+              'required_if:requestType,POST',
+              Rule::exists('usuario_evento','id')->where('id_usuario',$user)
+            ],
+            'eventos.*'        => 'int',
+            'descuento'        => 'nullable|min:0|max:100',
+            'descripcion'      => 'required|max:50',
+            'nombre'           => 'required|max:50',
+            'requestType' 	 => 'required|in:PUT,POST',
+            'id_estado' 	     => 'required|exists:estado_evento,id'
         ];
     }
 
-    public static function validateData($user,$method) {
-        $request = request();
-        $data = (object) $request->post();
-        return (isset($data->validationType))
-            ? call_user_func("self::validate$data->validationType",$request)
-            : [
-                "rules" => [
-                    "validationType" => "required|in:Disable,Creacion"
-                ],
-                "messages" => [
-                    "validationType.required" => "Debes indicar un tipo de validacion",
-                    "validationType.in" => "El tipo de validacion debe estar entre los valores permitidos"
-                ]
-            ];
+    public static function validateScopeUpdate($request) {
+        return [
+            'id_usuario' => 'bail|required|exists:usuarios,id',
+            'id' => [
+                'required',
+                'int',
+                Rule::exists('usuario_promociones','id')->where('id_usuario',$request->post()['id_usuario'])
+            ],
+            'scope' => 'required|exists:scope,id'
+        ];
     }
 
-    public function getRelationNames(){
-      return $this->relationNames;
-    }
 
     public static function promocionesQueryCallback ($params) {
     	return function ($query) use ($params){
@@ -154,6 +102,6 @@ class Promocion extends Eloquent
     }
 
     public function estado(){
-        return $this->belongsTo(\App\Models\Query\EstadoEvento::class, 'id_estado');
+        return $this->belongsTo(\App\Models\Query\Scope::class, 'scope');
     }
 }

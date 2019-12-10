@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Http\Request;
 use App\Http\Resources\UsuarioResource;
 
 class EscritorioController extends Controller
@@ -25,7 +25,11 @@ class EscritorioController extends Controller
      */
     public function index()
     {
-        $user = json_encode(['data'=>new UsuarioResource(User::where('id',5)->first())]);
+        $user = json_encode([
+            'data'=> new UsuarioResource(
+                User::where('id',27)->first()
+            )
+        ]);
         return view('escritorio',compact('user'));
     }
     /**

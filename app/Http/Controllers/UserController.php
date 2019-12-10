@@ -11,6 +11,7 @@ use App\Models\Query\Intervalo;
 use App\Http\Resources\UsuarioResource as Resource;
 use App\Traits\ValidatesForm;
 use App\User;
+use Illuminate\Support\Facades\Hash;
 
 
 class UserController extends Controller
@@ -178,31 +179,56 @@ class UserController extends Controller
     }
 
     public function create (Request $request){
-        $request->request->add([
-            'validationType' => 'Creacion',
-            'validationTitle'=> 'Local'
-        ]);
+        $merge = [
+            'validationType' => 'EditAdd',
+            'validationTitle'=> 'Local',
+            'requestType' => 'POST',
+            'scope' => 1
+        ];
+        if ($data['password']){
+            $merge['password'] = Hash::make($data['password']);
+        }
+        $request->merge($merge);
         return $this->applyValidation($request);
     }
 
     public function updateUsuario (Request $request){
-        $request->request->add([
+        $data = $request->post();
+        $merge = [
             'validationType' => 'Usuario',
-            'validationTitle'=> 'Local'
-        ]);
+            'validationTitle'=> 'Local',
+            'requestType' => 'PUT',
+        ];
+        if ($data['password']){
+            $merge['password'] = Hash::make($data['password']);
+        }
+        $request->merge($merge);
         return $this->applyValidation($request);
     }
 
     public function updateReservas (Request $request){
         $request->request->add([
-            'validationType' => 'Usuario',
-            'validationTitle'=> 'Local'
+            'validationType' => 'Reservas',
+            'validationTitle'=> 'Local',
+            'requestType' => 'PUT',
         ]);
         return $this->applyValidation($request);
     }
 
     public function updateEstablecimiento (Request $request){
-        $request->request->add(['validationType' => 'Establecimiento']);
+        $request->request->add([
+            'validationType' => 'Establecimiento',
+            'validationTitle'=> 'Local',
+            'requestType' => 'PUT',
+        ]);
+        return $this->applyValidation($request);
+    }
+
+    public function modifyScope (Request $request) {
+        $request->request->add([
+            'validationType' => 'ScopeUpdate',
+            'requestType' => 'PUT',
+        ]);
         return $this->applyValidation($request);
     }
 

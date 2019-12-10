@@ -157,33 +157,28 @@ class FeriadoController extends Controller
     }
 
     public function create (Request $request){
-        $method = $request->getMethod();
-        if ($method === 'POST'){
-            $store = $this->storeData($request->post(),$method,'Feriado');
-            return response($store,$store['status']);
-        } else
-            return response([
-                'type'=>'failure',
-                'title'=>'Método inváido',
-                'errors'=> [],
-                'status'=> 422,
-                'mensaje' => "El método usado es inválido"
-            ],422);
+        $request->merge([
+            'validationType' => 'EditAdd',
+            'scope'=>1,
+            'requestType'=>'POST'
+        ]);
+        return $this->applyValidation($request);
     }
 
     public function update (Request $request){
-        $method = $request->getMethod();
-        if ($method === 'PUT'){
-            $store = $this->storeData($request->post(),$method,'Feriado');
-            return response($store,$store['status']);
-        } else
-            return response([
-                'type'=>'failure',
-                'title'=>'Método inválido',
-                'errors'=> [],
-                'status'=> 422,
-                'mensaje' => "El método usado es inválido"
-            ],422);
+        $request->merge([
+            'validationType' => 'EditAdd',
+            'requestType'=>'PUT'
+        ]);
+        return $this->applyValidation($request);
+    }
+
+    public function modifyScope (Request $request) {
+        $request-merge([
+            'validationType' => 'ScopeUpdate',
+            'requestType'=>'PUT'
+        ]);
+        return $this->applyValidation($request);
     }
 
     public function delete (){

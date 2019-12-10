@@ -6,7 +6,8 @@ import {Text} from '../../componentes/input/Text';
 import {FormularioUbicacion} from './FormularioUbicacion';
 
 export const FormularioEstablecimiento = (props) => {
-    const data = props.data;
+    const   data = props.data,
+            userType = props.userType;
     return (
         <>
             <div className="row v-padding">
@@ -14,7 +15,7 @@ export const FormularioEstablecimiento = (props) => {
                     <Text   rows={1}
                             titulo='Nombre'
                             name="nombre"
-                            holder="Nombre del local hasta 100 caracteres"
+                            holder={`Nombre de ${userType} hasta 100 caracteres`}
                             errors={props.errors.nombre}
                             value={props.fields.nombre}
                             changeHandler={props.change}/>
@@ -23,7 +24,7 @@ export const FormularioEstablecimiento = (props) => {
                     <Text   rows={1}
                             titulo='Correo'
                             name="correo"
-                            holder="Correo de contacto del local hasta 100 caracteres"
+                            holder={`Correo de contacto de ${userType} hasta 100 caracteres`}
                             errors={props.errors.correo}
                             value={props.fields.correo}
                             changeHandler={props.change}/>
@@ -32,7 +33,7 @@ export const FormularioEstablecimiento = (props) => {
                     <Text   rows={1}
                             titulo="Telefono"
                             name="telefono"
-                            holder="Teléfono de contacto del local hasta 100 caracteres"
+                            holder={`Teléfono de contacto de ${userType} hasta 100 caracteres`}
                             errors={props.errors.telefono}
                             value={props.fields.telefono}
                             changeHandler={props.change}/>
@@ -97,7 +98,7 @@ export const FormularioEstablecimiento = (props) => {
                             </div>
                         </div>
                         <div className="row mid-title top-padding">
-                            Ubicación del local
+                            {`Ubicación de ${userType}`}
                         </div>
                         <FormularioUbicacion    data={data}
                                                 errors={props.errors}

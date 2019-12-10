@@ -89795,7 +89795,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var FormularioEstablecimiento = function FormularioEstablecimiento(props) {
-  var data = props.data;
+  var data = props.data,
+      userType = props.userType;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row v-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -89804,7 +89805,7 @@ var FormularioEstablecimiento = function FormularioEstablecimiento(props) {
     rows: 1,
     titulo: "Nombre",
     name: "nombre",
-    holder: "Nombre del local hasta 100 caracteres",
+    holder: "Nombre de ".concat(userType, " hasta 100 caracteres"),
     errors: props.errors.nombre,
     value: props.fields.nombre,
     changeHandler: props.change
@@ -89814,7 +89815,7 @@ var FormularioEstablecimiento = function FormularioEstablecimiento(props) {
     rows: 1,
     titulo: "Correo",
     name: "correo",
-    holder: "Correo de contacto del local hasta 100 caracteres",
+    holder: "Correo de contacto de ".concat(userType, " hasta 100 caracteres"),
     errors: props.errors.correo,
     value: props.fields.correo,
     changeHandler: props.change
@@ -89824,7 +89825,7 @@ var FormularioEstablecimiento = function FormularioEstablecimiento(props) {
     rows: 1,
     titulo: "Telefono",
     name: "telefono",
-    holder: "Tel\xE9fono de contacto del local hasta 100 caracteres",
+    holder: "Tel\xE9fono de contacto de ".concat(userType, " hasta 100 caracteres"),
     errors: props.errors.telefono,
     value: props.fields.telefono,
     changeHandler: props.change
@@ -89886,7 +89887,7 @@ var FormularioEstablecimiento = function FormularioEstablecimiento(props) {
     changeHandler: props.change
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row mid-title top-padding"
-  }, "Ubicaci\xF3n del local"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FormularioUbicacion__WEBPACK_IMPORTED_MODULE_3__["FormularioUbicacion"], {
+  }, "Ubicaci\xF3n de ".concat(userType)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FormularioUbicacion__WEBPACK_IMPORTED_MODULE_3__["FormularioUbicacion"], {
     data: data,
     errors: props.errors,
     fields: props.fields,
@@ -91197,6 +91198,7 @@ function Formulario(props) {
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_4__["FormularioEstablecimiento"], {
+    userType: "Franquicia",
     data: data,
     isFranquicia: true,
     fields: props.fields,
@@ -93284,6 +93286,7 @@ function Formulario(props) {
   }, "Informaci\xF3n del local"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "v-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_3__["FormularioEstablecimiento"], {
+    userType: "Local",
     data: data,
     fields: props.fields,
     errors: props.errors,

@@ -20,7 +20,8 @@ export function Formulario (props) {
                     links={props.nav.links}
                     buttons={props.nav.buttons} />
             <div className="container">
-                <FormularioEstablecimiento  data={data}
+                <FormularioEstablecimiento  userType="Franquicia"
+                                            data={data}
                                             isFranquicia
                                             fields={props.fields}
                                             errors={props.errors}

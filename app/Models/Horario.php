@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 use App\Traits\DataFormatting;
-use App\Traits\DependencyOptions;
+use App\Traits\ValidationMessages;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 class Horario extends Eloquent
 {
-	use DataFormatting;
+	use DataFormatting,
+		ValidationMessages;
 
 	private static $dataKey = 'id_dia_semana';
 
@@ -20,7 +21,7 @@ class Horario extends Eloquent
 
 	protected $relationNames = ['eventos'];
 
-	protected $table = 'usuario_horario';
+	protected $table = 'usuario_horarios';
 
 	public $timestamps = false;
 
@@ -39,112 +40,64 @@ class Horario extends Eloquent
 		'id_estado'
 	];
 
-	public function getRelationNames(){
-      return $this->relationNames;
-    }
-
-	public static function validateData($user,$method) {
-		$data = request()->post();
+	public static function validateEditAdd($request) {
+		$data = $request->post();
+		$method = $request->getMethod();
+		$user = $data['id_usuario'];
 		return [
-			'rules' => [
-			    'id' => [
-					'required_if:requestType,PUT',
-					function ($attribute, $value, $fail) use ($method) {
-						if($method==='POST' && $value)
-							$fail('ID inválido');
-			        },
-					'int',
-					Rule::exists('usuario_evento','id')->where('id_usuario',$user)
-				],
-				'id_dia_semana' => [
-					'required',
-					'int',
-					'exists:dias_semana,id',
-					Rule::notIn(self::where('id_usuario',$user)->pluck('id_dia_semana'))
-				],
-				'eventos' => [
-					'required_if:id_estado,1',
-					'array',
-					Rule::exists('usuario_evento','id')->where('id_usuario',$user)
-				],
-				'apertura_reserva.minuto' => [
-					'required_if:id_estado,1',
-					'max:59',
-					'min:0',
-					'int',
-					function ($attribute, $value, $fail) use ($data) {
-						if ($value < $data['apertura_atencion']['minuto'] && $data['apertura_reserva']['hora'] === $data['apertura_atencion']['hora'])
-						$fail('Las reservas deben abrir después que el horario de atención');
-					}
-				],
-				'cierre_reserva.minuto' => [
-					'required_if:id_estado,1',
-					'max:59',
-					'min:0',
-					'int',
-					function ($attribute, $value, $fail) use ($data) {
-						if ($value > $data['cierre_atencion']['minuto'] && $data['cierre_reserva']['hora'] === $data['cierre_atencion']['hora'])
-						$fail('Las reservas deben cerrar antes que el horario de atención');
-					}
-				],
-				'apertura_reserva' => 'required_if:id_estado,1',
-				'apertura_reserva.hora' => 'required_if:id_estado,1|max:23|min:1|int|gte:apertura_atencion.hora',
-				'cierre_reserva' => 'required_if:id_estado,1',
-				'cierre_reserva.hora' => 'required_if:id_estado,1|max:23|min:1|int|lte:cierre_atencion.hora',
-				'apertura_atencion' => 'required_if:id_estado,1',
-				'apertura_atencion.hora' => 'required_if:id_estado,1|max:23|min:1|int',
-				'apertura_atencion.minuto' => 'required_if:id_estado,1|max:59|min:0|int',
-				'cierre_atencion.hora' => 'required_if:id_estado,1|max:23|min:1|int',
-				'cierre_atencion.minuto' => 'required_if:id_estado,1|max:59|min:0|int',
-				'cierre_atencion' => 'required_if:id_estado,1',
-				'requestType' => 'required|in:POST,PUT',
-                'id_usuario' => 'required|exists:users,id',
-				'id_estado' => 'required|exists:estado_apertura,id'
+		    'id' => [
+				'required_if:requestType,PUT',
+				function ($attribute, $value, $fail) use ($method) {
+					if($method==='POST' && $value)
+						$fail('ID inválido');
+		        },
+				'int',
+				Rule::exists('usuario_horarios','id')->where('id_usuario',$user)
 			],
-			'messages' => [
-				'id_dia_semana.required' => 'debes especificar a qué día de la semana pertenece el horario',
-				'id_dia_semana.exists' => 'El día de la semana debe estar entre lunes y domingo (1-7)',
-				'id_dia_semana.int' => 'Tipo de dato inválido',
-				'id_dia_semana.not_in' => 'Ya agregaste un horario a este día de la semana',
-				'id.required_if' => 'El ID del evento es requerido',
-				'id.exists' => 'El Evento no existe',
-				'id.int' => 'El ID debe ser un entero positivo',
-				'apertura_reserva.required'=> "Debes especificar una hora de apertura de reservas",
-				'apertura_reserva.hora.required'=> "Debes especificar una hora de apertura de reservas",
-				'apertura_reserva.hora.max'=> "La hora de apertura de reserva no puede exceder las 23 horas",
-				'apertura_reserva.hora.min'=> "la hora de apertura de reserva no puede ser menor a 1",
-				'apertura_reserva.hora.gte' => 'Las reservas deben abrir después que el horario de atención',
-				'apertura_reserva.minuto.required'=> "Debes especificar el minuto de apertura de reserva",
-				'apertura_reserva.minuto.max'=> "Los minutos de apertura de reserva deben ser menores a 59",
-				'apertura_reserva.minuto.min'=> "Los minutos de apertura de reserva no pueden ser menores a 0",
-				'cierre_reserva.required'=> "Debes especificar una hora de cierre de reserva",
-				'cierre_reserva.hora.required'=> "Debes especificar una hora de cierre de reserva",
-				'cierre_reserva.hora.lte' => 'Las reservas deben cerrar antes que el horario de atención',
-				'cierre_reserva.hora.max'=> "La hora de cierre de reserva no puede exceder las 23 horas",
-				'cierre_reserva.hora.min'=> "la hora de cierre de reserva no puede ser menor a 1",
-				'cierre_reserva.minuto.required'=> "Debes especificar el minuto de cierre de reserva",
-				'cierre_reserva.minuto.max'=> "Los minutos de cierre de reserva deben ser menores a 59",
-				'cierre_reserva.minuto.min'=> "Los minutos de cierre de reserva no pueden ser menores a 0",
-				'apertura_atencion.required'=> "Debes especificar una hora de apertura de atención",
-				'apertura_atencion.hora.required'=> "Debes especificar una hora de apertura de atención",
-				'apertura_atencion.hora.max'=> "La hora de apertura de atención no puede exceder las 23 horas",
-				'apertura_atencion.hora.min'=> "la hora de apertura de atención no puede ser menor a 1",
-				'apertura_atencion.minuto.required'=> "Debes especificar el minuto de apertura de atención",
-				'apertura_atencion.minuto.max'=> "Los minutos de apertura de atención deben ser menos que 59",
-				'apertura_atencion.minuto.min'=> "Los minutos de apertura de atención no pueden ser menores a 0",
-				'cierre_atencion.required'=> "Debes especificar una hora de cierre de atención",
-				'cierre_atencion.hora.required'=> "Debes especificar la hora de cierre de atención",
-				'cierre_atencion.hora.max'=> "La hora de cierre de atención no puede exceder las 23 horas",
-				'cierre_atencion.hora.min'=> "la hora de cierre de atención no puede ser menor a 1",
-				'cierre_atencion.minuto.required'=> "Debes especificar el minuto de cierre de atención",
-				'cierre_atencion.minuto.max'=> "Los minutos de cierre de atención deben ser menos que 59",
-				'cierre_atencion.minuto.min'=> "Los minutos de cierre de atención no pueden ser menores a 0",
-				'requestType.request' => "no se ha indicado el Tipo de operación",
-				'requestType.in' => "El Tipo de operación no se encuentra entre los valores permitidos",
-				'eventos.required_if' => 'Tienes que indicar algun evento si el horario es laboral',
-				'eventos.array' => 'Formato de eventos inválido',
-				'eventos.exists' => 'El evento no existe'
-			]
+			'id_dia_semana' => [
+				'required_if:requestType,POST',
+				'int',
+				'exists:dias_semana,id',
+				Rule::notIn(self::where('id_usuario',$user)->pluck('id_dia_semana'))
+			],
+			'eventos' => [
+				'required_if:id_estado,1',
+				'array',
+				Rule::exists('usuario_eventos','id')->where('id_usuario',$user)
+			],
+			'apertura_reserva.minuto' => [
+				'required_if:id_estado,1',
+				'max:59',
+				'min:0',
+				'int',
+				function ($attribute, $value, $fail) use ($data) {
+					if ($value < $data['apertura_atencion']['minuto'] && $data['apertura_reserva']['hora'] <= $data['apertura_atencion']['hora'])
+					$fail('Las reservas deben abrir después que el horario de atención');
+				}
+			],
+			'cierre_reserva.minuto' => [
+				'required_if:id_estado,1',
+				'max:59',
+				'min:0',
+				'int',
+				function ($attribute, $value, $fail) use ($data) {
+					if ($value > $data['cierre_atencion']['minuto'] && $data['cierre_reserva']['hora'] <= $data['cierre_atencion']['hora'])
+					$fail('Las reservas deben cerrar antes que el horario de atención');
+				}
+			],
+			'apertura_reserva' => 'required_if:id_estado,1',
+			'apertura_reserva.hora' => 'required_if:id_estado,1|max:23|min:1|int|gte:apertura_atencion.hora',
+			'cierre_reserva' => 'required_if:id_estado,1',
+			'cierre_reserva.hora' => 'required_if:id_estado,1|max:23|min:1|int|lte:cierre_atencion.hora',
+			'apertura_atencion' => 'required_if:id_estado,1',
+			'apertura_atencion.hora' => 'required_if:id_estado,1|max:23|min:1|int',
+			'apertura_atencion.minuto' => 'required_if:id_estado,1|max:59|min:0|int',
+			'cierre_atencion.hora' => 'required_if:id_estado,1|max:23|min:1|int',
+			'cierre_atencion.minuto' => 'required_if:id_estado,1|max:59|min:0|int',
+			'cierre_atencion' => 'required_if:id_estado,1',
+			'requestType' => 'required|in:POST,PUT',
+            'id_usuario' => 'required|exists:usuarios,id',
+			'id_estado' => 'required|exists:estado_apertura,id'
 		];
 	}
 

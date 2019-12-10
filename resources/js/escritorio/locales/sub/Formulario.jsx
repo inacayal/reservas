@@ -33,7 +33,8 @@ export function Formulario (props) {
                     Información del local
                 </div>
                 <div className="v-padding">
-                    <FormularioEstablecimiento  data={data}
+                    <FormularioEstablecimiento  userType="Local"
+                                                data={data}
                                                 fields={props.fields}
                                                 errors={props.errors}
                                                 change={props.change}

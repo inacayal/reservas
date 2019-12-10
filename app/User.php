@@ -13,6 +13,8 @@ class User extends Eloquent
 
 	private static $dataKey = "id";
 
+	protected $table = 'usuarios';
+
 	private static $valueKey = "nombre";
 
 	private static $dataResource = "\\App\\Http\\Resources\\UsuarioResource";
@@ -53,6 +55,8 @@ class User extends Eloquent
 		"id_estado",
 		"username",
 		"correo_local",
+		"antelacion_reserva",
+		"disponibilidad_reservas"
 	];
 
 	protected $relationNames = [];
@@ -60,12 +64,18 @@ class User extends Eloquent
 	public static function validateReservas($data) {
 		return [
 			"rules" => [
+				"id" => "required|exists:users,id",
+				"id_usuario" => 'required|exists:users,id',
 				"intervalo_reserva" => "required|int|max:60|min:1|exists:intervalos,id",
-				"antelacion_reserva" => "required|int|min:0",
-				"disponibilidad_reservas" => "required|min:0",
-				"caida_reserva" => "min:10|max:60|required"
+				"antelacion_reserva" => "required|int|min:0|int",
+				"disponibilidad_reservas" => "required|min:0|int",
+				"caida_reserva" => "min:10|max:60|required|int"
 			],
 			"messages" => [
+				"id.exists" => "El usuario debe existir para poder actualizarlo",
+				"id.required" => "Debes indicar el id del usuario que quieres modificar",
+				"id_usuario.required" => "requerido",
+				"id_usuario.exists" => "exists",
 				"caida_reserva.min" => "La caída de la reserva no puede ser menor a 10 minutos",
 				"caida_reserva.max" => "La caída de la reserva no puede exceder los 60 minutos",
 				"caida_reserva.required" => "Es necesario que indiques la Caída de la reserva",
@@ -86,18 +96,27 @@ class User extends Eloquent
 	public static function validateEstablecimiento($data) {
 		return [
 			"rules" => [
+				"id" => "required|exists:users,id",
+				"id_usuario" => 'required|exists:users,id',
 				"nombre" => "required|max:100|string",
-				"email" => "email|required|max:100",
+				"correo_local" => "required|email|max:100",
+				"telefono_local" => "required|max:20",
 				"razon_social" => "required|max:100",
 				"cuit_cuil" => "required|max:11",
-				"telefono_local" => "required|max:20",
 				"nombre_adm" => "required|max:100",
 				"telefono_adm" => "required|max:20",
 				"correo_adm" => "required|max:100|email",
-				"id_provincia" => "required|int|exists:provincia:id",
+				"id_provincia" => "required|int|exists:provincias,id",
 				"direccion_local" => "required|max:150"
 			],
 			"messages" => [
+				"id.exists" => "El usuario debe existir para poder actualizarlo",
+				"id.required" => "Debes indicar el id del usuario que quieres modificar",
+				"id_usuario.required" => "requreido",
+				"id_usuario.exists" => "exists",
+				"correo_local.required" => "Es necesario que indiques el correo de contacto de $data->validationTitle",
+				"correo_local.email" => "Es necesario que el correo de $data->validationTitle sea una direccion válida",
+				"correo_local.max" => "El correo de $data->validationTitle no puede exceder los 100 caracteres",
 				"nombre.required" => "El nombre del $data->validationTitle es requerido",
 				"nombre.max" => "El $data->validationTitle debe tener hasta 45 caracteres",
 				"nombre.string" => "El tipo del nombre es incorrecto",
@@ -117,20 +136,31 @@ class User extends Eloquent
 				"id_provincia.required" => "Es necesario que indiques una provincia",
 				"id_provincia.int" => "tipo de dato inválido",
 				"id_provincia.exists" => "La provincia no existe",
-				"direccion_local" => "Es necesario que indiques una dirección de local",
-				"direccion_local" => "La dirección de local no puede exceder los 150 caracteres"
+				"direccion_local.required" => "Es necesario que indiques una dirección de  $data->validationTitle",
+				"direccion_local.max" => "La dirección de $data->validationTitle no puede exceder los 150 caracteres"
 			]
 		];
 	}
 
 	public static function validateUsuario($data) {
+		$user = self::findOrFail($data->id);
  		return [
 			"rules" => [
-				"nombre" => "required|max:100|string",
-				"username"=>"required|max:100|unique:users",
-				"email" => "email|required|max:100"
+				"id" => "required|exists:users,id",
+				"id_usuario" => 'required|exists:users,id',
+				"username"=>[
+					"required",
+					"max:100",
+					Rule::unique('users')->ignore($user->username,'username')
+				],
+				"email" => "email|required|max:100",
+				"password" => "required|max:100|string"
 			],
 			"messages" => [
+				"id.exists" => "El usuario debe existir para poder actualizarlo",
+				"id.required" => "Debes indicar el id del usuario que quieres modificar",
+				"id_usuario.required" => "requreido",
+				"id_usuario.exists" => "exists",
 				"username.required" => "Es necesario que indiques un nombre de usuario para el $data->validationTitle",
 				"username.max" => "el nombre de usuario no puede exceder los 100 caracteres",
 				"username.unique" => "El username ya existe",
@@ -275,7 +305,7 @@ class User extends Eloquent
 	}
 
 	public function estado(){
-		return $this->belongsTo(\App\Models\Query\EstadoUsuario::class, "id_estado");
+		return $this->belongsTo(\App\Models\Query\Scope::class, "scope");
 	}
 
 	public function franquicia(){

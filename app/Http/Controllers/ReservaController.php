@@ -142,12 +142,18 @@ class ReservaController extends Controller
 
 
     public function create (Request $request){
-        $request->request->add(['validationType' => 'Creacion']);
+        $request->merge([
+            'validationType' => 'EditAdd',
+            'requestType' => 'POST'
+        ]);
         return $this->applyValidation($request);
     }
 
     public function update (Request $request){
-        $request->request->add(['validationType' => 'Update']);
+        $request->merge([
+            'validationType' => 'StatusUpdate',
+            'requestType' => 'PUT'
+        ]);
         return $this->applyValidation($request);
     }
 

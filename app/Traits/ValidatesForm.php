@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
  */
 trait ValidatesForm
 {
-    protected static $verbos = [
+    protected $verbos = [
         'POST' => [
             'inf'=>'crear',
             'ger'=>'creado'
@@ -21,21 +21,22 @@ trait ValidatesForm
         ]
     ];
 
-    public function validateForm($data,$model,$method) {
-        $user = isset($data['id_usuario'])
-            ? $data['id_usuario']
-            : null;
-        $validation = $user
-            ? $model::validateData($user,$method)
-            : [
-                'rules' => [
-                    'id_usuario' => 'bail|required|exists:users,id'
-                ],
-                'messages' => [
-                    'id_usuario.required'   => 'No se ha indicado el usuario',
-                    'id_usuario.exists'     => 'El usuario debe existir'
-                ],
-            ];
+    protected $noUser = [
+        'rules' => [
+            'id_usuario' => 'bail|required|exists:usuarios,id'
+        ],
+        'messages' => [
+            'id_usuario.required'   => 'No se ha indicado el usuario',
+            'id_usuario.exists'     => 'El usuario debe existir'
+        ],
+    ];
+
+    public function validateForm($request,$model) {
+        $data = $request->post();
+
+        $validation = isset($data['id_usuario'])
+            ? $model::validateData($request)
+            : $this->noUser;
 
         return Validator::make(
             $data,
@@ -48,17 +49,20 @@ trait ValidatesForm
         $relations = $model->getRelationNames();
         if (count($relations)>0) {
             foreach ($relations as $name) {
-                $model->{$name}()->sync($data[$name]);
+                if(isset($data[$name]))
+                    $model->{$name}()->sync($data[$name]);
             };
         }
     }
 
-    public function storeData($data,$method){
+    public function storeData($request){
         $message = null;
         $instance = null;
+        $method = $request->getMethod();
+        $data = $request->post();
         $model = $this->model;
-        $validation = $this->validateForm($data,$this->model,$method);
-        $title = self::$verbos[$method];
+        $validation = $this->validateForm($request,$this->model);
+        $title = $this->$verbos[$method];
 
         if ($validation->fails()){
             $verb = $title['inf'];
@@ -104,7 +108,7 @@ trait ValidatesForm
     }
 
     public function applyValidation (Request $request){
-        $store = $this->storeData($request->post(),$request->getMethod());
+        $store = $this->storeData($request);
         return response($store,$store['status']);
     }
 }

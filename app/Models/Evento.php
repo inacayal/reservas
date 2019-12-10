@@ -5,12 +5,14 @@ namespace App\Models;
 use Reliese\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
 use App\Traits\DataFormatting;
-use App\Traits\DependencyOptions;
+use App\Traits\ValidationMessages;
 use Illuminate\Validation\Rule;
+
 
 class Evento extends Eloquent
 {
-	use DataFormatting;
+	use DataFormatting,
+		ValidationMessages;
 
 	protected $relationNames = [
 		'feriados',
@@ -24,7 +26,7 @@ class Evento extends Eloquent
 
 	private static $dataResource = '\\App\\Http\\Resources\\EventosResource';
 
-	protected $table = 'usuario_evento';
+	protected $table = 'usuario_eventos';
 
 	public $timestamps = false;
 
@@ -38,123 +40,58 @@ class Evento extends Eloquent
 		'id_usuario',
 		'nombre',
 		'descripcion',
-		'id_estado'
+		'scope'
 	];
 
-	public static function validateCreacion($request) {
+	public static function validateEditAdd($request) {
 		$method = $request->getMethod();
 		$user = $request->post()['id_usuario'];
 		return [
-			'rules' => [
-			    'id' => [
-					'required_if:requestType,PUT',
-					function ($attribute, $value, $fail) use ($method) {
-						if($method==='POST' && $value)
-							$fail('ID inválido');
-			        },
-					'int',
-					Rule::exists('usuario_evento','id')->where('id_usuario',$user)
-				],
-			    'promociones' => [
-					'array',
-					'nullable',
-					Rule::exists('usuario_promociones','id')->where('id_usuario', $user)
-				],
-				'horarios' => [
-					'array',
-					'required_if:requestType,POST',
-					Rule::exists('usuario_horario','id')->where('id_usuario', $user)
-				],
-				'feriados' => [
-					'array',
-					'nullable',
-					Rule::exists('usuario_feriados','id')->where('id_usuario', $user)
-				],
-				'feriados.*' 	=> 'int',
-				'horarios.*' 	=> 'int',
-				'promociones.*' => 'int',
-			    'descripcion' 	=> 'required|max:100|string',
-			    'nombre'		=> 'required|max:45|string',
-				'requestType' 	=> 'required|in:POST,PUT',
-                'id_usuario' 	=> 'required|exists:users,id',
-				'id_estado' 	=> 'required|exists:estado_evento,id'
+		    'id' => [
+				'required_if:requestType,PUT',
+				function ($attribute, $value, $fail) use ($method) {
+					if($method==='POST' && $value)
+						$fail('ID inválido');
+		        },
+				'int',
+				Rule::exists('usuario_eventos','id')->where('id_usuario',$user)
 			],
-			'messages' => [
-				'id.required_if' 		=> 'El ID del evento es requerido',
-				'id.exists' 			=> 'El Evento no existe',
-				'id.int'				=> 'El ID debe ser un entero positivo',
-				'promociones.array' 	=> 'El tipo de las promociones es incorrecta',
-				'promociones.exists' 	=> 'Las Promociones deben ser creadas previamente',
-				'promociones.int'		=> 'Las ID de las promociones deben ser numéricos',
-				'feriados.array' 		=> 'El tipo de Feriados es incorrecto',
-				'feriados.exists' 		=> 'Los Feriados deben ser creadas previamente',
-				'horarios.array' 		=> 'El tipo de Horario es incorrecto',
-				'horarios.required_if' 	=> 'Es necesario que el Evento este asociado a al menos un Horario en el momento de la creación',
-				'horarios.exists' 		=> 'Los Horarios deben ser creados previamente',
-				'horarios.int'			=> 'Las ID de los horarios deben ser numéricos',
-				'feriados.array' 		=> 'El tipo de Feriados es incorrecto',
-				'feriados.exists' 		=> 'Los Feriados deben ser creados previamente',
-				'feriados.int'			=> 'Las ID de los feriados deben ser numéricos',
-				'descripcion.max' 		=> 'La Descripción no puede exceder los 100 caracteres',
-				'descripcion.required' 	=> 'Es necesario que incluyas una Descripción del evento',
-				'descripcion.string' 	=> 'El tipo de Descripción es incorrecto',
-				'nombre.required' 		=> 'El nombre del evento es requerido',
-				'nombre.max' 			=> 'El Evento debe tener hasta 45 caracteres',
-				'nombre.string' 		=> 'El tipo del nombre es incorrecto',
-                'id_usuario.exists' 	=> 'El usuario no existe',
-                'id_usuario.required' 	=> 'No se ha indicado usuario',
-				'id_estado.required'	=> 'Debes indicar el estado del Evento (1 activo, visible al momento de reservar. 2 inactivo, invisible al momento de reservar)',
-				'id_estado.exists' 		=> 'El estado indicado no es válido',
-				'feriados.*' 			=> 'Los ID de los feriados deben ser enteros',
-				'horarios.*' 			=> 'Los ID de los horarios deben ser enteros',
-				'promociones.*' 		=> 'Los ID de las promociones deben ser enteros',
-				'requestType.request'	=> "no se ha indicado el Tipo de operación",
-				'requestType.in'		=> "El Tipo de operación no se encuentra entre los valores permitidos",
-			]
+		    'promociones' => [
+				'array',
+				'nullable',
+				Rule::exists('usuario_promociones','id')->where('id_usuario', $user)
+			],
+			'horarios' => [
+				'array',
+				'required_if:requestType,POST',
+				Rule::exists('usuario_horarios','id')->where('id_usuario', $user)
+			],
+			'feriados' => [
+				'array',
+				'nullable',
+				Rule::exists('usuario_feriados','id')->where('id_usuario', $user)
+			],
+			'feriados.*' 	=> 'int',
+			'horarios.*' 	=> 'int',
+			'promociones.*' => 'int',
+		    'descripcion' 	=> 'required|max:100|string',
+		    'nombre'		=> 'required|max:45|string',
+			'requestType' 	=> 'required|in:POST,PUT',
+            'id_usuario' 	=> 'required|exists:usuarios,id',
+			'id_estado' 	=> 'required|exists:estado_evento,id'
 		];
 	}
 
-	public static function validateDisable($request) {
+	public static function validateScopeUpdate($request) {
 		return [
-			'rules' => [
-				'id_usuario' => 'bail|required|exists:users,id',
-				'id' => [
-					'required',
-					'int',
-					Rule::exists('usuario_evento','id')->where('id_usuario',$request->post()['id_usuario'])
-				],
-				'id_estado' => 'required|exists:estado_usuario,id'
+			'id_usuario' => 'bail|required|exists:usuarios,id',
+			'id' => [
+				'required',
+				'int',
+				Rule::exists('usuario_eventos','id')->where('id_usuario',$request->post()['id_usuario'])
 			],
-			'messages' => [
-				'id.required'   => 'Es necesario el ID del Evento para modificarla',
-				'id.int'             => 'El ID del Evento debe ser numérica',
-				'id.exists'         => 'El Evento debe ser creada previamente para modificarla',
-				'id_usuario.required'     => 'No se ha indicado el usuario',
-				'id_usuario.exists'     => 'El usuario debe existir',
-				'id_estado.required'     => 'No se ha indicado el estado',
-				'id_estado.exists'     => 'El estado debe existir',
-			]
+			'scope' => 'required|exists:scope,id'
 		];
-	}
-
-	public static function validateData($user,$method) {
-		$request = request();
-		$data = (object) $request->post();
-  		return (isset($data->validationType))
-			? call_user_func("self::validate$data->validationType",$request)
-			: [
-				"rules" => [
-					"validationType" => "required|in:Disable,Creacion"
-				],
-				"messages" => [
-					"validationType.required" => "Debes indicar un tipo de validacion",
-					"validationType.in" => "El tipo de validacion debe estar entre los valores permitidos"
-				]
-			];
-	}
-
-	public function getRelationNames(){
-		return $this->relationNames;
 	}
 
 	public static function eventosQueryCallback ($params) {
@@ -165,8 +102,8 @@ class Evento extends Eloquent
 
 	public function estado(){
 		return $this->belongsTo(
-			\App\Models\Query\EstadoEvento::class,
-			'id_estado'
+			\App\Models\Query\Scope::class,
+			'scope'
 		);
 	}
 
