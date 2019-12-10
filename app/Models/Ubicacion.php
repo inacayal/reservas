@@ -78,7 +78,14 @@ class Ubicacion extends Eloquent
 				'int',
 				Rule::exists('usuario_ubicaciones','id')->where('id_usuario',$request->post()['id_usuario'])
 			],
-			'id_estado' => 'required|exists:estado_usuario,id'
+			'scope' => [
+				'required',
+				'exists:scope,id',
+				function ($attribute, $value, $fail) use ($request) {
+                    if (count($request->post())>5)
+                        $fail('Solo esta permitido cambiar el estado de la ubicación.');
+                }
+			]
 		];
 	}
 

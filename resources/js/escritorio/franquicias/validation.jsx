@@ -11,21 +11,21 @@ const validation = {
         },
         fieldName:"Nombre de la franquicia"
     },
-    correo:{
+    correo_contacto:{
         rules:{
             required:true,
             maxLen:100,
             email:true
         },
-        fieldName:"Correo de la franquicia"
+        fieldName:"Correo de contacto"
     },
-    telefono:{
+    telefono_contacto:{
         rules:{
             required:true,
             maxLen:20,
             alpha_numeric:true
         },
-        fieldName:"Teléfono de la franquicia"
+        fieldName:"Teléfono de contacto"
     },
     username: {
         rules:{

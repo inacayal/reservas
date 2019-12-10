@@ -174,7 +174,7 @@ class FeriadoController extends Controller
     }
 
     public function modifyScope (Request $request) {
-        $request-merge([
+        $request->merge([
             'validationType' => 'ScopeUpdate',
             'requestType'=>'PUT'
         ]);

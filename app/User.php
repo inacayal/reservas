@@ -5,11 +5,13 @@ namespace App;
 use Reliese\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
 use App\Traits\DataFormatting;
+use App\Traits\ValidationMessages;
 use Illuminate\Validation\Rule;
 
 class User extends Eloquent
 {
-	use DataFormatting;
+	use DataFormatting,
+		ValidationMessages;
 
 	private static $dataKey = "id";
 
@@ -25,15 +27,18 @@ class User extends Eloquent
 		"id_franquicia" => "int",
 		"id_provincia" => "int",
 		"id_rol" => "int",
-		"id_estado" => "int"
+		"scope" => "int"
 	];
+
 	protected $dates = [
 		"email_verified_at"
 	];
+
 	protected $hidden = [
 		"password",
 		"remember_token"
 	];
+
 	protected $fillable = [
 		"nombre",
 		"razon_social",
@@ -51,10 +56,10 @@ class User extends Eloquent
 		"caida_reserva",
 		"cuit_cuil",
 		"direccion",
-		"telefono_local",
-		"id_estado",
+		"telefono_contacto",
+		"scope",
 		"username",
-		"correo_local",
+		"correo_contacto",
 		"antelacion_reserva",
 		"disponibilidad_reservas"
 	];
@@ -63,191 +68,75 @@ class User extends Eloquent
 
 	public static function validateReservas($data) {
 		return [
-			"rules" => [
-				"id" => "required|exists:users,id",
-				"id_usuario" => 'required|exists:users,id',
-				"intervalo_reserva" => "required|int|max:60|min:1|exists:intervalos,id",
-				"antelacion_reserva" => "required|int|min:0|int",
-				"disponibilidad_reservas" => "required|min:0|int",
-				"caida_reserva" => "min:10|max:60|required|int"
-			],
-			"messages" => [
-				"id.exists" => "El usuario debe existir para poder actualizarlo",
-				"id.required" => "Debes indicar el id del usuario que quieres modificar",
-				"id_usuario.required" => "requerido",
-				"id_usuario.exists" => "exists",
-				"caida_reserva.min" => "La caída de la reserva no puede ser menor a 10 minutos",
-				"caida_reserva.max" => "La caída de la reserva no puede exceder los 60 minutos",
-				"caida_reserva.required" => "Es necesario que indiques la Caída de la reserva",
-				"disponibilidad_reservas.required" => "Es necesario que indiques el período de disponibilidad de reservas",
-				"disponibilidad_reservas.min" => "El período de disponibilidad no puede ser negativo",
-				"intervalo_reserva.required" => "Debes seleccionar un intervalo de reserva",
-				"intervalo_reserva.int" => "El tipo de intervalo de reserva es inválido",
-				"intervalo_reserva.min" => "El intervalo de reserva no puede ser menor a 1",
-				"intervalo_reserva.max" => "El intervalo de reserva no puede ser mayor a 60",
-				"intervalo_reserva.exists" => "El intervalo de reserva no está entre los valores permitidos",
-				"antelacion_reserva.required" => "es necesario que indiques la Antelación de la Reserva",
-				"antelacion_reserva.int" => "La antelación de la reserva debe ser numérica y entero",
-				"antelacion_reserva.min" => "La antelación de la reserva no puede ser negativa"
-			]
+			"id" => "required|exists:usuarios,id",
+			"id_usuario" => 'required|exists:usuarios,id',
+			"intervalo_reserva" => "required|int|max:60|min:1|exists:intervalos,id",
+			"antelacion_reserva" => "required|int|min:0|int",
+			"disponibilidad_reservas" => "required|min:0|int",
+			"caida_reserva" => "min:10|max:60|required|int"
 		];
 	}
 
 	public static function validateEstablecimiento($data) {
 		return [
-			"rules" => [
-				"id" => "required|exists:users,id",
-				"id_usuario" => 'required|exists:users,id',
-				"nombre" => "required|max:100|string",
-				"correo_local" => "required|email|max:100",
-				"telefono_local" => "required|max:20",
-				"razon_social" => "required|max:100",
-				"cuit_cuil" => "required|max:11",
-				"nombre_adm" => "required|max:100",
-				"telefono_adm" => "required|max:20",
-				"correo_adm" => "required|max:100|email",
-				"id_provincia" => "required|int|exists:provincias,id",
-				"direccion_local" => "required|max:150"
-			],
-			"messages" => [
-				"id.exists" => "El usuario debe existir para poder actualizarlo",
-				"id.required" => "Debes indicar el id del usuario que quieres modificar",
-				"id_usuario.required" => "requreido",
-				"id_usuario.exists" => "exists",
-				"correo_local.required" => "Es necesario que indiques el correo de contacto de $data->validationTitle",
-				"correo_local.email" => "Es necesario que el correo de $data->validationTitle sea una direccion válida",
-				"correo_local.max" => "El correo de $data->validationTitle no puede exceder los 100 caracteres",
-				"nombre.required" => "El nombre del $data->validationTitle es requerido",
-				"nombre.max" => "El $data->validationTitle debe tener hasta 45 caracteres",
-				"nombre.string" => "El tipo del nombre es incorrecto",
-				"razon_social.required" => "Es necesario que indiques la Razón Social",
-				"razon_social.max" => "La Razón Social no puede exceder los 100 caracteres",
-				"cuit_cuil.required" => "Es necesario que indiques un CUIT/CUIL del $data->validationTitle",
-				"cuit_cuil.max" => " el CUIT/CUIL no puede exceder los 11 caracteres",
-				"telefono_local.required" => "Es necesario que indiques el teléfono de contacto del $data->validationTitle",
-				"telefono_local.max" => "El teléfono no puede exceder los 20 caracteres",
-				"nombre_adm.required" => "Es necesario que indiques el nombre del administrador",
-				"nombre_adm.max" => "El nombre del administrador no puede exceder los 100 caracteres",
-				"telefono_adm.max" => "El telefono del administrador no puede exceder los 100 caracteres",
-				"telefono_adm.required" => "Es necesario que indiques el teléfono del administrador",
-				"correo_adm.required" => "Es necesario que indiques el correo del administrador",
-				"correo_adm.max" => "Es necesario que el correo del administrador no exceda los 100 caracteres",
-				"correo_adm.email" => "El correo del administrador tiene que ser una dirección de correo válida",
-				"id_provincia.required" => "Es necesario que indiques una provincia",
-				"id_provincia.int" => "tipo de dato inválido",
-				"id_provincia.exists" => "La provincia no existe",
-				"direccion_local.required" => "Es necesario que indiques una dirección de  $data->validationTitle",
-				"direccion_local.max" => "La dirección de $data->validationTitle no puede exceder los 150 caracteres"
-			]
+			"id" => "required|exists:usuarios,id",
+			"id_usuario" => 'required|exists:usuarios,id',
+			"nombre" => "required|max:100|string",
+			"correo_contacto" => "required|email|max:100",
+			"telefono_contacto" => "required|max:20",
+			"razon_social" => "required|max:100",
+			"cuit_cuil" => "required|max:11",
+			"nombre_adm" => "required|max:100",
+			"telefono_adm" => "required|max:20",
+			"correo_adm" => "required|max:100|email",
+			"id_provincia" => "required|int|exists:provincias,id",
+			"direccion_local" => "required|max:150"
 		];
 	}
 
 	public static function validateUsuario($data) {
 		$user = self::findOrFail($data->id);
  		return [
-			"rules" => [
-				"id" => "required|exists:users,id",
-				"id_usuario" => 'required|exists:users,id',
-				"username"=>[
-					"required",
-					"max:100",
-					Rule::unique('users')->ignore($user->username,'username')
-				],
-				"email" => "email|required|max:100",
-				"password" => "required|max:100|string"
+			"id" => "required|exists:usuarios,id",
+			"id_usuario" => 'required|exists:usuarios,id',
+			"username"=>[
+				"required",
+				"max:100",
+				Rule::unique('usuarios')->ignore($user->username,'username')
 			],
-			"messages" => [
-				"id.exists" => "El usuario debe existir para poder actualizarlo",
-				"id.required" => "Debes indicar el id del usuario que quieres modificar",
-				"id_usuario.required" => "requreido",
-				"id_usuario.exists" => "exists",
-				"username.required" => "Es necesario que indiques un nombre de usuario para el $data->validationTitle",
-				"username.max" => "el nombre de usuario no puede exceder los 100 caracteres",
-				"username.unique" => "El username ya existe",
-				"email.email" => "El email tiene un formato incorrecto",
-				"email.required" => "Es necesario que indiques un correo del $data->validationTitle",
-				"email.max" => "El email no puede exceder los 100 caracteres",
-				"password" => "Es necesario que indiques una contraseña",
-				"password" => "La contraseña no puede exceder los 100 caracteres",
-			]
+			"email" => [
+				"email",
+				"required",
+				"max:100",
+				Rule::unique('usuarios')->ignore($user->email,'email')
+			],
+			"password" => "required|max:100|string"
 		];
 	}
 
-	public static function validateCreacion($data){
+	public static function validateEditAdd($data){
 		return [
-			"rules" => [
-				"nombre" => "required|max:100|string",
-				"username"=>"required|max:100|unique:users",
-				"email" => "email|required|max:100",
-				"password" => "required|max:191",
-				"correo_local" => "required|email|max:100",
-				"id_rol" => "required|exists:roles,id|int",
-				"razon_social" => "required|max:100",
-				"cuit_cuil" => "required|max:11",
-				"telefono_local" => "required|max:20",
-				"id_estado" => "required|int|exists:estado_usuario,id",
-				"id_administrador" => [
-					"required",
-					"int",
-					Rule::exists("users","id")->where("id_rol",1),//exists amongst admins
-				],
-				"id_franquicia" => [
-					"required_if:id_rol,3", // si creo un local necesito la franquicia,
-					"int",
-					Rule::exists("users","id")->where("id_rol",2), //exists amongst admins,
-				]
+			"nombre" => "required|max:100|string",
+			"username"=>"required|max:100|unique:usuarios",
+			"email" => "email|required|max:100|unique:usuarios",
+			"password" => "required|max:191",
+			"correo_contacto" => "required|email|max:100",
+			"id_rol" => "required|exists:roles,id|int",
+			"razon_social" => "required|max:100",
+			"cuit_cuil" => "required|max:11",
+			"telefono_contacto" => "required|max:20",
+			"scope" => "required|int|exists:scope,id",
+			"id_administrador" => [
+				"required",
+				"int",
+				Rule::exists("usuarios","id")->where("id_rol",1),//exists amongst admins
 			],
-			"messages" => [
-				"nombre.required" => "El nombre del $data->validationTitle es requerido",
-				"nombre.max" => "El $data->validationTitle debe tener hasta 45 caracteres",
-				"nombre.string" => "El tipo del nombre es incorrecto",
-				"username.required" => "Es necesario que indiques un nombre de usuario para el $data->validationTitle",
-				"username.max" => "el nombre de usuario no puede exceder los 100 caracteres",
-				"username.unique" => "El username ya existe",
-				"email.email" => "El email tiene un formato incorrecto",
-				"email.required" => "Es necesario que indiques un correo del $data->validationTitle",
-				"email.max" => "El email no puede exceder los 100 caracteres",
-				"password" => "Es necesario que indiques una contraseña",
-				"password" => "La contraseña no puede exceder los 100 caracteres",
-				"id_rol.required" => "Es necesario que indiques el rol del $data->validationTitle",
-				"id_rol.exists" => "El rol no existe",
-				"id_rol.int" => "El rol tiene un tipo de dato inválido",
-				"razon_social.required" => "Es necesario que indiques la Razón Social",
-				"razon_social.max" => "La Razón Social no puede exceder los 100 caracteres",
-				"cuit_cuil.required" => "Es necesario que indiques un CUIT/CUIL del $data->validationTitle",
-				"cuit_cuil.max" => " el CUIT/CUIL no puede exceder los 11 caracteres",
-				"telefono_local.required" => "Es necesario que indiques el teléfono de contacto del $data->validationTitle",
-				"telefono_local.max" => "El teléfono no puede exceder los 20 caracteres",
-				"id_estado.required" => "Es necesario que indiques el estado del usuario",
-				"id_estado.int" => "tipo de estado inválido",
-				"id_estado.exists " => "El estado no existe",
-				"id_administrador.required" => "debes indicar un administrador",
-				"id_administrador.int" => "El tipo de dato del administrador es inválido",
-				"id_administrador.exists" => "No se ha encontrado el administrador",
-				"id_franquicia.required_if"=> "debes indicar una franquicia", // si creo un local necesito la franquicia,
-				"id_franquicia.int" => "el tipo de dato de la franquicia es inválido",
-				"id_franquicia.exists" => "la franquicia no existe",
-				"correo_local.required" => "Es necesario que indiques el correo del local",
-				"correo_local.email" => "El correo del local no es una dirección válida",
-				"correo_local.max" => "El correo del local no puede exceder los 100 caracteres"
+			"id_franquicia" => [
+				"required_if:id_rol,3", // si creo un local necesito la franquicia,
+				"int",
+				Rule::exists("usuarios","id")->where("id_rol",2), //exists amongst admins,
 			]
 		];
-	}
-
-	public static function validateData($user,$method) {
-		$createdBy = self::find($user);
-		$data = (object) request()->post();
-  		return (isset($data->validationType))
-			? call_user_func("self::validate$data->validationType",$data)
-			: [
-				"rules" => [
-					"validationType" => "required|in:Reservas,Usuario,Establecimiento,Creacion"
-				],
-				"messages" => [
-					"validationType.required" => "Debes indicar un tipo de validacion",
-					"validationType.in" => "El tipo de validacion debe estar entre los valores permitidos"
-				]
-			];
 	}
 
     public function getRelationNames(){

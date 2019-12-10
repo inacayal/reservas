@@ -74,7 +74,7 @@ class UbicacionController extends Controller
     }
 
     public function create (Request $request){
-        $request->request->add([
+        $request->merge([
             'validationType' => 'EditAdd',
             'requestType' => 'POST',
             'scope' => 1
@@ -83,7 +83,7 @@ class UbicacionController extends Controller
     }
 
     public function update (Request $request){
-        $request->request->add([
+        $request->merge([
             'validationType' => 'EditAdd',
             'requestType' => 'PUT'
         ]);
@@ -91,7 +91,7 @@ class UbicacionController extends Controller
     }
 
     public function modifyScope (Request $request) {
-        $request->request->add([
+        $request->merge([
             'validationType' => 'ScopeUpdate',
             'requestType' => 'PUT'
         ]);

@@ -15,21 +15,21 @@ const validation = {
         },
         fieldName:"Nombre del local"
     },
-    correo:{
+    correo_contacto:{
         rules:{
             required:true,
             maxLen:100,
             email:true
         },
-        fieldName:"Correo del local"
+        fieldName:"Correo de contacto"
     },
-    telefono:{
+    telefono_contacto:{
         rules:{
             required:true,
             maxLen:20,
             alpha_numeric:true
         },
-        fieldName:"Teléfono de local"
+        fieldName:"Teléfono de contacto"
     },
     username: {
         rules:{

@@ -23,7 +23,7 @@ export const FormularioEstablecimiento = (props) => {
                 <div className="col-md-4">
                     <Text   rows={1}
                             titulo='Correo'
-                            name="correo"
+                            name="correo_contacto"
                             holder={`Correo de contacto de ${userType} hasta 100 caracteres`}
                             errors={props.errors.correo}
                             value={props.fields.correo}
@@ -32,7 +32,7 @@ export const FormularioEstablecimiento = (props) => {
                 <div className="col-md-4">
                     <Text   rows={1}
                             titulo="Telefono"
-                            name="telefono"
+                            name="telefono_contacto"
                             holder={`Teléfono de contacto de ${userType} hasta 100 caracteres`}
                             errors={props.errors.telefono}
                             value={props.fields.telefono}

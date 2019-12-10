@@ -62,7 +62,7 @@ trait ValidatesForm
         $data = $request->post();
         $model = $this->model;
         $validation = $this->validateForm($request,$this->model);
-        $title = $this->$verbos[$method];
+        $title = $this->verbos[$method];
 
         if ($validation->fails()){
             $verb = $title['inf'];

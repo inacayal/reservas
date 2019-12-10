@@ -135,7 +135,14 @@ class Feriado extends Eloquent
 				'int',
 				Rule::exists('usuario_feriados','id')->where('id_usuario',$request->post()['id_usuario'])
 			],
-			'scope' => 'required|exists:scope,id'
+			'scope' => [
+                'required',
+                'exists:scope,id',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (count($request->post())>5)
+                        $fail('Solo esta permitido cambiar el estado del feriado.');
+                }
+            ]
 		];
 	}
 

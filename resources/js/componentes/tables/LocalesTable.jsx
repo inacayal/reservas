@@ -28,12 +28,12 @@ export default function LocalesTable(props){
             },
             {
                 Header: "Teléfono",
-                accessor: "telefonoLocal",
+                accessor: "telefonoContacto",
                 headerClassName: 'bold highlight-title text-left'
             },
             {
                 Header: "Correo",
-                accessor: "correoLocal",
+                accessor: "correoContacto",
                 headerClassName: 'bold highlight-title text-left'
             },
             {

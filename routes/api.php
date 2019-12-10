@@ -117,7 +117,7 @@ Route::prefix('ubicaciones')->name('ubicaciones.')->group(function (){
         ->name('delete');
     Route::post('/create','UbicacionController@create')
         ->name('create');
-    Route::put('/scope','UbicacionController@modifyScope')
+    Route::put('/update/scope','UbicacionController@modifyScope')
         ->name('update.scope');
 
 });
@@ -155,5 +155,5 @@ Route::prefix('feriados')->name('feriados.')->group(function (){
         ->name('create');
     Route::put('/scope','FeriadoController@modifyScope')
         ->name('update.scope');
-        
+
 });

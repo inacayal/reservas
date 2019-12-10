@@ -7,29 +7,29 @@ const validation = {
         rules:{},
         fieldName:"Franquicia"
     },
-    nombre_local:{
+    nombre:{
         rules:{
             required:true,
             maxLen:100,
             alpha_numeric:true
         },
-        fieldName:"Nombre del local"
+        fieldName:"Nombre"
     },
-    correo_local:{
+    correo_contacto:{
         rules:{
             required:true,
             maxLen:100,
             email:true
         },
-        fieldName:"Correo del local"
+        fieldName:"Correo de contacto"
     },
-    telefono_local:{
+    telefono_contacto:{
         rules:{
             required:true,
             maxLen:20,
             phone:true
         },
-        fieldName:"Teléfono de local"
+        fieldName:"Teléfono de contacto"
     },
     username: {
         rules:{

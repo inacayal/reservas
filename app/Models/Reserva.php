@@ -99,7 +99,14 @@ class Reserva extends Eloquent
 				'int',
 				Rule::exists('usuario_reservas','id')->where('id_usuario',$user)
 			],
-			'id_estado' => 'required|exists:estado_reserva,id'
+			'id_estado' => [
+				'required',
+				'exists:estado_reserva,id',
+				function ($attribute, $value, $fail) use ($request) {
+                    if (count($request->post())>5)
+                        $fail('Solo esta permitido cambiar el estado de la reserva.');
+                }
+			]
 		];
 	}
 

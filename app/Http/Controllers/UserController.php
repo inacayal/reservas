@@ -185,6 +185,7 @@ class UserController extends Controller
             'requestType' => 'POST',
             'scope' => 1
         ];
+        $data = $request->post();
         if ($data['password']){
             $merge['password'] = Hash::make($data['password']);
         }
@@ -207,7 +208,7 @@ class UserController extends Controller
     }
 
     public function updateReservas (Request $request){
-        $request->request->add([
+        $request->merge([
             'validationType' => 'Reservas',
             'validationTitle'=> 'Local',
             'requestType' => 'PUT',
@@ -216,7 +217,7 @@ class UserController extends Controller
     }
 
     public function updateEstablecimiento (Request $request){
-        $request->request->add([
+        $request->merge([
             'validationType' => 'Establecimiento',
             'validationTitle'=> 'Local',
             'requestType' => 'PUT',
@@ -225,7 +226,7 @@ class UserController extends Controller
     }
 
     public function modifyScope (Request $request) {
-        $request->request->add([
+        $request->merge([
             'validationType' => 'ScopeUpdate',
             'requestType' => 'PUT',
         ]);

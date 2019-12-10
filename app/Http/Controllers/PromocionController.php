@@ -112,7 +112,7 @@ class PromocionController extends Controller
     }
 
     public function update (Request $request){
-        $request->request->add([
+        $request->merge([
             'validationType' => 'EditAdd',
             'requestType' => 'PUT'
         ]);
@@ -120,7 +120,7 @@ class PromocionController extends Controller
     }
 
     public function modifyScope (Request $request) {
-        $request->request->add([
+        $request->merge([
             'validationType' => 'ScopeUpdate',
             'requestType' => 'PUT'
         ]);
