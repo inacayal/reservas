@@ -15,6 +15,8 @@ class HorarioController extends Controller
 
     protected $model = '\\App\\Models\\Horario';
 
+    protected $redirect = 'horarios';
+
     protected static $dependencies = [
         'list' => [
             'horarios'          =>	'key',

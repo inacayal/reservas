@@ -39,8 +39,7 @@ export const eventosHandlers = {
     ],
     form: {
         add:sendPostRequest,
-        edit:sendPutRequest,
-        update:updateScope
+        edit:sendPutRequest
     }
 };
 
@@ -51,28 +50,29 @@ const editFormHandler = (endpoint,location) => {
             download: this.downloadHandler
         });
 
-        request
-            .then(
-                response => {
-                    let data =  {
-                        selected: response.data.eventos[0],
-                        all: {
-                            feriados: response.data.feriados,
-                            horarios: response.data.horarios,
-                            promociones: response.data.promociones
-                        }
-                    };
-                    data.selected.horarios.list = assignHorarios(data.selected.horarios.list)[0];
-                    data.all.horarios.list = assignHorarios(data.all.horarios.list)[0];
-                    this.setState({
-                        data: {...data},
-                        nombre:data.selected.nombre,
-                        loadFinished:true,
-                        redirect: <Redirect to={location}/>
-                    });
-                }
-            )
-        .catch(this.displayErrors);
+        return  request
+                .then(
+                    response => {
+                        let data =  {
+                            selected: response.data.eventos[0],
+                            all: {
+                                feriados: response.data.feriados,
+                                horarios: response.data.horarios,
+                                promociones: response.data.promociones
+                            }
+                        };
+                        data.selected.horarios.list = assignHorarios(data.selected.horarios.list)[0];
+                        data.all.horarios.list = assignHorarios(data.all.horarios.list)[0];
+                        this.setState({
+                            data: {...data},
+                            nombre:data.selected.nombre,
+                            loadFinished:true,
+                            redirect: <Redirect to={location}/>
+                        });
+                        return true;
+                    }
+                )
+                .catch((err) => err);
     }
 }
 
@@ -83,21 +83,22 @@ const addFormHandler = (endpoint,location) => {
             download: this.downloadHandler
         });
 
-        request
-            .then(
-                response => {
-                    let data = {};
-                    data = response.data;
-                    data.horarios.list = assignHorarios(data.horarios.list)[0];
-                    this.setState({
-                        data: {...data},
-                        nombre:null,
-                        loadFinished:true,
-                        redirect: <Redirect to={location}/>
-                    });
-                }
-            )
-        .catch(this.displayErrors);
+        return  request
+                .then(
+                    response => {
+                        let data = {};
+                        data = response.data;
+                        data.horarios.list = assignHorarios(data.horarios.list)[0];
+                        this.setState({
+                            data: {...data},
+                            nombre:null,
+                            loadFinished:true,
+                            redirect: <Redirect to={location}/>
+                        });
+                        return true;
+                    }
+                )
+                .catch((err) => err);
     }
 }
 
@@ -108,18 +109,19 @@ const listHandler = (endpoint,location) => {
             download: this.downloadHandler
         });
 
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: response.data.eventos.data,
-                        loadFinished:true,
-                        nombre:null,
-                        redirect: <Redirect to={location}/>
-                    });
-                }
-            )
-            .catch(this.displayErrors);
+        return  request
+                .then(
+                    response => {
+                        this.setState({
+                            data: response.data.eventos.data,
+                            loadFinished:true,
+                            nombre:null,
+                            redirect: <Redirect to={location}/>
+                        });
+                        return true;
+                    }
+                )
+                .catch((err) => err);
     }
 }
 
@@ -130,47 +132,33 @@ const singleHandler = (endpoint,location) => {
             download: this.downloadHandler
         });
 
-        request
-            .then(
-                response => {
-                    const data = response.data.eventos[0];
-                    this.setState({
-                        data:data,
-                        nombre:data.nombre,
-                        loadFinished:true,
-                        redirect: <Redirect to={location}/>
-                    });
-                }
-            )
-        .catch(this.displayErrors);
+        return  request
+                .then(
+                    response => {
+                        const data = response.data.eventos[0];
+                        this.setState({
+                            data:data,
+                            nombre:data.nombre,
+                            loadFinished:true,
+                            redirect: <Redirect to={location}/>
+                        });
+                        return true;
+                    }
+                )
+                .catch((err) => err);
     }
 }
 
-export function sendPostRequest ($data) {
+export function sendPostRequest (data) {
     const request = POST({
-        endpoint: endpoint,
-        upload: this.downloadHandler
+        endpoint: 'eventos/create',
+        data: JSON.stringify(data)
     });
 
     request
-        .then(
-            response => {
-                const data = response.data.eventos[0];
-                this.setState({
-                    data:data,
-                    nombre:data.nombre,
-                    loadFinished:true,
-                    redirect: <Redirect to={location}/>
-                });
-            }
-        )
-    .catch(this.displayErrors);
+        .then(this.dataSuccess)
+        .catch(this.displayBackendErrors)
 }
-
-export function updateScope ($data) {
-
-}
-
 
 export function sendPutRequest (
     data,
@@ -178,14 +166,9 @@ export function sendPutRequest (
 ) {
     const request = PUT({
         endpoint: 'eventos/update',
-        upload: this.downloadHandler,
         data: JSON.stringify(data)
     });
     request
-        .then(
-            response => {
-                console.log(response.data)
-            }
-        )
-        .catch(displayErrors);
+        .then(this.dataSuccess)
+        .catch(this.displayBackendErrors)
 }

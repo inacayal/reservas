@@ -16,6 +16,7 @@ export function Formulario (props) {
     const   data = props.data.all,
             estado = props.fields.scope == 1,
             feriadoList = createFeriadosList(data.feriados.data);
+
     if (props.editar)
         props.nav.buttons[0].click = props.toggleModal;
 

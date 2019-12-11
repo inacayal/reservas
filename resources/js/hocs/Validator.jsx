@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {DisplaysMessages} from './MainFrame';
 import Actions from '../componentes/basic/Actions';
-import {FormActions} from '../acciones/ActionsByView'
+import {FormActions} from '../acciones/ActionsByView';
+import {displayBackendErrors,displayFrontendErrors} from '../utils/errorHandling';
 
 const evaluateRule = {
     required:({val,name}) => {
@@ -82,7 +83,7 @@ const evaluateRule = {
     }
 }
 
-const cast = {
+const castValues = {
     array: ($value) => {
         if ($value)
             return $value.split(',').map(e => parseInt(e));
@@ -91,7 +92,7 @@ const cast = {
     integer: ($value) => parseInt($value)
 }
 
-const extFields = ['maxLen','minVal','maxVal','minLen'];
+const extFields =  ['maxLen','minVal','maxVal','minLen'];
 
 function validateValue (
     val,
@@ -135,7 +136,7 @@ function formatErrors (
     );
 }
 
-function searchErrors (
+export function searchErrors (
     errors,
     fields,
     form
@@ -201,49 +202,11 @@ const castBeforeSending = (values,validation) =>
         (final,current) => {
             const type = validation[current].casting;
             final[current] = type
-                ? cast[type](values[current])
+                ? castValues[type](values[current])
                 : values[current];
             return final;
         }
     ,{});
-
-export function displayErrors ([hasErrors,errors]){
-    this.setState(
-        {errors},
-        () =>
-            this.context({
-                message:{
-                    data:(
-                        <ul className="h-padding nav-list">
-                            {hasErrors}
-                        </ul>
-                    ),
-                    title:(
-                        <>
-                            <i className="far fa-exclamation-triangle bold sub-title side-margin" />
-                            <span className="side-margin">Errores</span>
-                        </>
-                    ),
-                    type:'failure',
-                    update:false
-                }
-            })
-    );
-}
-
-const rewriteErrors = (errors) => Object.keys(errors).reduce(
-    (tot,cur) => {
-        const ind = cur.match(/\./gi)
-            ? cur.split('.')[0]
-            : cur;
-        if (tot[ind])
-            tot[ind].push(errors[cur][0]);
-        else
-            tot[ind] = [errors[cur][0]]
-        return tot;
-    },
-    {}
-)
 
 export default class Validator extends Component{
     constructor(props){
@@ -252,15 +215,18 @@ export default class Validator extends Component{
         this.enviarFormulario = this.enviarFormulario.bind(this);
         this.cancelarFormulario = this.cancelarFormulario.bind(this);
         this.changeFormField = this.changeFormField.bind(this);
-        this.displayErrors = displayErrors.bind(this);
+        this.displayFrontendErrors = displayFrontendErrors.bind(this);
+        this.displayBackendErrors = displayBackendErrors.bind(this);
         this.actions = FormActions(this.enviarFormulario,this.cancelarFormulario);
         this.requestHandler = this.props.sendRequest.bind(this);
-        this.displayBackendErrors = this.displayBackendErrors.bind(this);
+        this.requestSent = this.requestSent.bind(this);
+        this.dataSuccess =  this.dataSuccess.bind(this);
 
         this.state = {
-            form:{},
+            form:this.props.form,
             errors:{},
-            validation:{}
+            validation:this.props.validation,
+            sent:false
         };
     }
 
@@ -282,33 +248,33 @@ export default class Validator extends Component{
         this.setState({form,errors});
     }
 
-    displayBackendErrors(errors){
-        const   rewrittenErrors = rewriteErrors(errors.response.data.errors),
-                [hasErrors,err] = searchErrors(
-                    rewrittenErrors,
-                    this.state.validation,
-                    this.state.form
-                );
-        this.displayErrors([hasErrors,err]);
+    requestSent(value,callback){
+        this.setState({
+            sent:value
+            },
+            () => callback
+        );
     }
 
     enviarFormulario(e){
         e.preventDefault();
-        const [hasErrors,errors] = searchErrors(
-                this.state.errors,
-                this.state.validation,
-                this.state.form
-            );
+        const   [hasErrors,errors] = searchErrors(
+                    this.state.errors,
+                    this.state.validation,
+                    this.state.form
+                );
         if (hasErrors.length>0)
-            this.displayErrors([hasErrors,errors]);
-        else
-            this.requestHandler(
-                castBeforeSending(this.state.form,this.state.validation),
-                this.displayBackendErrors
+            this.displayFrontendErrors([hasErrors,errors])
+        else {
+            this.requestSent(
+                true,
+                this.requestHandler(
+                    castBeforeSending(this.state.form,this.state.validation),
+                    this.displayBackendErrors
+                )
             );
+        }
     }
-
-
 
     cancelarFormulario(e){
         e.preventDefault();
@@ -321,11 +287,27 @@ export default class Validator extends Component{
         })
     }
 
-    static getDerivedStateFromProps (props){
-        return {
-            form:props.form,
-            validation:props.validation
-        }
+    dataSuccess(response){
+        const   data = response.data,
+                message = {
+                    message:{
+                        data:data.message,
+                        title:(
+                            <>
+                                <i className="fas fa-check-circle bold sub-title side-margin" />
+                                <span className="side-margin">{data.title}</span>
+                            </>
+                        ),
+                        type:data.type,
+                        update:true
+                    }
+                };
+        this.props.wait(
+            data.redirect,
+            data.parameters,
+            data.route,
+            message
+        );
     }
 
     render(){
@@ -338,12 +320,20 @@ export default class Validator extends Component{
             }
         );
         return (
-            <form className="full-width">
-                {Form}
-                <div className="row justify-content-end h-padding">
-                    <Actions buttons={Object.values(this.actions)}/>
+            <>
+                <div className="visible relative">
+                    <div    className={this.state.sent
+                                ? "top-padding full-width overlay"
+                                : "hidden"}
+                            style={{marginLeft:"-15px"}}/>
+                    <form className="full-width">
+                        {Form}
+                        <div className="row justify-content-end h-padding">
+                            <Actions buttons={Object.values(this.actions)}/>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </>
         )
     }
 }

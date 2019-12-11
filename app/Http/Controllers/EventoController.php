@@ -16,6 +16,8 @@ class EventoController extends Controller
 
     protected $model = '\\App\\Models\\Evento';
 
+    protected $redirect = 'eventos';
+
     public function __construct () {
         $this->middleware('length');
     }
@@ -27,7 +29,7 @@ class EventoController extends Controller
             'eventos.promociones'   => false
         ],
         'add' => [
-            'feriados'              => 'list',
+            'feriados'              => 'key',
             'promociones'           => 'list',
             'horarios'              => 'list'
         ],

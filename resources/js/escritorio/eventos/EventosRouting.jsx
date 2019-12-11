@@ -3,7 +3,8 @@
  */
 import React, {
     Component,
-    useState
+    useState,
+    useContext
 } from 'react';
 import {
     Route,
@@ -18,7 +19,7 @@ import {ConfirmarModal} from '../../componentes/modal/Modal';
 import Validator from '../../hocs/Validator';
 import validation from './validation';
 import {createFeriadosList} from '../../utils/Helper';
-
+import {WaitsLoading} from '../../hocs/RouterTransition';
 
 export default function EventosRouting (props) {
     const   [open,toggle] = useState(false),
@@ -29,7 +30,8 @@ export default function EventosRouting (props) {
             closeModal = (e) => {
                 e.preventDefault();
                 toggle(false);
-            };
+            },
+            wait = useContext(WaitsLoading);
     return (
         <>
             <ConfirmarModal open={open}
@@ -61,11 +63,11 @@ export default function EventosRouting (props) {
                                             nombre:selected.nombre,
                                             scope:selected.estado==="Activo" ? 1 : 2
                                         };
-                                        
                                 return (
                                     <Validator  form={fields}
                                                 validation={validation}
-                                                sendRequest={props.handlers.edit}>
+                                                sendRequest={props.handlers.edit}
+                                                wait={wait}>
                                         <Formulario data={props.data}
                                                     editar={true}
                                                     toggleModal={openModal}
@@ -79,7 +81,6 @@ export default function EventosRouting (props) {
                         render={
                             (match) => {
                                 const fields = {
-                                    id:'',
                                     id_usuario:user.id,
                                     promociones:'',
                                     horarios:'',
@@ -91,7 +92,8 @@ export default function EventosRouting (props) {
                                 return (
                                     <Validator  form={fields}
                                                 validation={validation}
-                                                sendRequest={props.handlers.add}>
+                                                sendRequest={props.handlers.add}
+                                                wait={wait}>
                                         <Formulario data={{all:props.data}}
                                                     toggleModal={openModal}
                                                     nav={Navegacion.agregar('eventos')}

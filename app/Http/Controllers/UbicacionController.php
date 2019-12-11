@@ -15,6 +15,8 @@ class UbicacionController extends Controller
 
     protected $model = '\\App\\Models\\Ubicacion';
 
+    protected $redirect = 'ubicaciones';
+
     protected static $dependencies = [
         'list' => [
             'ubicaciones'           => 'key',

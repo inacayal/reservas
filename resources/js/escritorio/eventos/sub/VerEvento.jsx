@@ -10,6 +10,7 @@ import Titulo from '../../../componentes/basic/Titulo';
 import { assignHorarios } from '../../../generators/generateEventosCard';
 import {CommaList} from '../../../componentes/basic/CommaList';
 import PromocionesTable from '../../../componentes/tables/PromocionesTable';
+import {createFeriadosList} from '../../../utils/Helper';
 
 
 export function VerEvento (props) {
@@ -32,7 +33,7 @@ export function VerEvento (props) {
                 })
             ),
             horarios = Object.values(data.horarios.list),
-            feriados = Object.values(data.feriados.list);
+            feriados = createFeriadosList(data.feriados.data);
     return (
         <>
             <Titulo title={data.nombre}
@@ -60,7 +61,7 @@ export function VerEvento (props) {
                     <div className="m-font highlight">
                         Descripción:
                     </div>
-                    <div>
+                    <div style={{wordBreak:"break-word"}}>
                         {data.descripcion}
                     </div>
                     <div>
@@ -82,10 +83,10 @@ export function VerEvento (props) {
                             Feriados
                         </h6>
                         {
-                            feriados.length>0
+                            Object.values(feriados).length>0
                             ?
                                 <ul className="nav-list no-padding">
-                                    <CommaList list={data.feriados.list} route='horarios/feriados'/>
+                                    <CommaList list={feriados} route='horarios/feriados'/>
                                 </ul>
                             :
                                 <div className="bold">

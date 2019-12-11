@@ -14,6 +14,8 @@ class ReservaController extends Controller
         ValidatesForm;
 
     protected $model = '\\App\\Models\\Reserva';
+
+    protected $redirect = 'reservas';
     /**
      * start trait information
      */

@@ -12,6 +12,7 @@ import {
 } from '../utils/LoadBar';
 import {searchHandler} from './MainFrame';
 import {handlers} from '../handlers/index';
+import {displayGetRequestErrors as displayErrors} from '../utils/errorHandling'
 
 function assignHandler (
     handlerArray,
@@ -26,19 +27,17 @@ function assignHandler (
 function awaitLoading (
     location,
     params,
-    match
+    match,
+    message
 ){
-    const handler = handlers[match].list,
-        fetchData = this.assignHandler(handler,location,params);
+    const fetchData = this.assignHandler(handlers[match].list,location,params);
     this.setState(
         {
             loading:0,
             loadFinished:false,
             fetchData:fetchData,
             preventRedirect:false
-        },() => {
-            this.fetchHandler(params);
-        }
+        }, () => this.fetchHandler(params,message)
     );
 }
 
@@ -59,37 +58,26 @@ export class RouterTransition extends Component {
         this.downloadHandler = downloadHandler.bind(this);
         this.awaitLoading = awaitLoading.bind(this);
         this.fetchHandler = this.fetchHandler.bind(this);
-        this.displayErrors = this.displayErrors.bind(this);
+        this.displayErrors = displayErrors.bind(this);
     }
 
-
-    fetchHandler(params){
-        this.state.fetchData(params);
-    }
-
-    displayErrors(error){
-        this.props.displayMessage({
-            message:{
-                data:(
-                    <div className="h-padding">
-                        <div className="inline-block ">
-                            <span className="side-margin bold">código</span>
-                            <span className="side-margin bold">{error.response.status}</span>
-                        </div>
-                        <div className="inline-block side-margin">
-                            {error.response.statusText}
-                        </div>
-                    </div>
-                ),
-                title:(
-                    <>
-                        <i className="far fa-exclamation-triangle bold sub-title side-margin" />
-                        <span className="side-margin">Errores</span>
-                    </>
-                ),
-                type:'failure'
-            }
-        });
+    fetchHandler(params,message){
+        new Promise (
+            function (resolve,reject){
+                this.state.fetchData(params)
+                    .then(
+                        res => {
+                            if (res instanceof Error)
+                                reject(res);
+                            else if (message)
+                                resolve(message);
+                            else return false;
+                        }
+                    )
+            }.bind(this)
+        )
+        .then (this.props.displayMessage)
+        .catch(this.displayErrors)
     }
 
     shouldComponentUpdate(np,ns){
@@ -147,7 +135,11 @@ export class RouterTransition extends Component {
                                     <div style={{padding:"10px 16px", height:"99%"}}
                                         className="main-container h-overflow-auto">
                                         <div className="visible relative">
-                                            <div className={this.state.loadFinished ? "hidden" : "top-padding full-width overlay"} style={{marginLeft:"-15px"}}/>
+                                            <div    className={this.state.loadFinished
+                                                        ? "hidden"
+                                                        : "top-padding full-width overlay"
+                                                    }
+                                                    style={{marginLeft:"-15px"}}/>
                                             {
                                                 this.state.loadFinished
                                                     && !this.state.preventRedirect

@@ -15,6 +15,8 @@ class FeriadoController extends Controller
 
     protected $model = '\\App\\Models\\Feriado';
 
+    protected $redirect = 'horarios/feriados';
+
     protected static $dependencies = [
         'list' => [
             'feriados'          =>	'key',

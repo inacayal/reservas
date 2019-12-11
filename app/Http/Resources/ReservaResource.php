@@ -37,7 +37,7 @@ class ReservaResource extends JsonResource
             "id"=> $el->id,
             "email"=> $el->email,
             "nombre"=> $el->nombre,
-            "id_usuario" => $this->id_usuario,
+            "id_usuario" => $el->id_usuario,
             "apellido"=> $el->apellido,
             "telefono"=> $el->telefono,
             "ubicacion"=>$el->ubicacion,

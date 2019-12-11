@@ -90587,6 +90587,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _hocs_Validator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../hocs/Validator */ "./resources/js/hocs/Validator.jsx");
 /* harmony import */ var _validation__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./validation */ "./resources/js/escritorio/eventos/validation.jsx");
 /* harmony import */ var _utils_Helper__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../utils/Helper */ "./resources/js/utils/Helper.jsx");
+/* harmony import */ var _hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../hocs/RouterTransition */ "./resources/js/hocs/RouterTransition.jsx");
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
@@ -90611,6 +90612,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 function EventosRouting(props) {
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -90623,7 +90625,8 @@ function EventosRouting(props) {
       closeModal = function closeModal(e) {
     e.preventDefault();
     toggle(false);
-  };
+  },
+      wait = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_hocs_RouterTransition__WEBPACK_IMPORTED_MODULE_11__["WaitsLoading"]);
 
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__["ConfirmarModal"], {
     open: open,
@@ -90659,7 +90662,8 @@ function EventosRouting(props) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_8__["default"], {
         form: fields,
         validation: _validation__WEBPACK_IMPORTED_MODULE_9__["default"],
-        sendRequest: props.handlers.edit
+        sendRequest: props.handlers.edit,
+        wait: wait
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["Formulario"], _extends({
         data: props.data,
         editar: true,
@@ -90673,7 +90677,6 @@ function EventosRouting(props) {
     path: "".concat(props.match.url, "/agregar"),
     render: function render(match) {
       var fields = {
-        id: '',
         id_usuario: user.id,
         promociones: '',
         horarios: '',
@@ -90685,7 +90688,8 @@ function EventosRouting(props) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_8__["default"], {
         form: fields,
         validation: _validation__WEBPACK_IMPORTED_MODULE_9__["default"],
-        sendRequest: props.handlers.add
+        sendRequest: props.handlers.add,
+        wait: wait
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["Formulario"], _extends({
         data: {
           all: props.data
@@ -90902,6 +90906,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _generators_generateEventosCard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../generators/generateEventosCard */ "./resources/js/generators/generateEventosCard.jsx");
 /* harmony import */ var _componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../componentes/basic/CommaList */ "./resources/js/componentes/basic/CommaList.jsx");
 /* harmony import */ var _componentes_tables_PromocionesTable__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/tables/PromocionesTable */ "./resources/js/componentes/tables/PromocionesTable.jsx");
+/* harmony import */ var _utils_Helper__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../utils/Helper */ "./resources/js/utils/Helper.jsx");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -90911,6 +90916,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /**
  * react basic
  */
+
 
 
 
@@ -90937,7 +90943,7 @@ function VerEvento(props) {
     });
   }),
       horarios = Object.values(data.horarios.list),
-      feriados = Object.values(data.feriados.list);
+      feriados = Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_7__["createFeriadosList"])(data.feriados.data);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
     title: data.nombre,
     links: props.nav.links,
@@ -90958,7 +90964,11 @@ function VerEvento(props) {
     className: "bold m-font text-right"
   }, data.estado), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "m-font highlight"
-  }, "Descripci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.descripcion), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+  }, "Descripci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    style: {
+      wordBreak: "break-word"
+    }
+  }, data.descripcion), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
     className: "highlight no-margin m-font v-padding"
   }, "Horarios"), horarios.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
     className: "nav-list no-padding"
@@ -90969,10 +90979,10 @@ function VerEvento(props) {
     className: "top-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
     className: "highlight m-font"
-  }, "Feriados"), feriados.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+  }, "Feriados"), Object.values(feriados).length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
     className: "nav-list no-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_5__["CommaList"], {
-    list: data.feriados.list,
+    list: feriados,
     route: "horarios/feriados"
   })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "bold"
@@ -95807,14 +95817,13 @@ var escritorioHandler = function escritorioHandler(endpoint, location) {
 /*!*******************************************************!*\
   !*** ./resources/js/handlers/sub/eventosHandlers.jsx ***!
   \*******************************************************/
-/*! exports provided: eventosHandlers, sendPostRequest, updateScope, sendPutRequest */
+/*! exports provided: eventosHandlers, sendPostRequest, sendPutRequest */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "eventosHandlers", function() { return eventosHandlers; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendPostRequest", function() { return sendPostRequest; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateScope", function() { return updateScope; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendPutRequest", function() { return sendPutRequest; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -95862,8 +95871,7 @@ var eventosHandlers = {
   }],
   form: {
     add: sendPostRequest,
-    edit: sendPutRequest,
-    update: updateScope
+    edit: sendPutRequest
   }
 };
 
@@ -95875,7 +95883,7 @@ var editFormHandler = function editFormHandler(endpoint, location) {
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       var data = {
         selected: response.data.eventos[0],
         all: {
@@ -95895,7 +95903,11 @@ var editFormHandler = function editFormHandler(endpoint, location) {
           to: location
         })
       });
-    })["catch"](this.displayErrors);
+
+      return true;
+    })["catch"](function (err) {
+      return err;
+    });
   };
 };
 
@@ -95907,7 +95919,7 @@ var addFormHandler = function addFormHandler(endpoint, location) {
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       var data = {};
       data = response.data;
       data.horarios.list = Object(_generators_generateEventosCard__WEBPACK_IMPORTED_MODULE_4__["assignHorarios"])(data.horarios.list)[0];
@@ -95920,7 +95932,11 @@ var addFormHandler = function addFormHandler(endpoint, location) {
           to: location
         })
       });
-    })["catch"](this.displayErrors);
+
+      return true;
+    })["catch"](function (err) {
+      return err;
+    });
   };
 };
 
@@ -95932,7 +95948,7 @@ var listHandler = function listHandler(endpoint, location) {
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       _this3.setState({
         data: response.data.eventos.data,
         loadFinished: true,
@@ -95941,7 +95957,11 @@ var listHandler = function listHandler(endpoint, location) {
           to: location
         })
       });
-    })["catch"](this.displayErrors);
+
+      return true;
+    })["catch"](function (err) {
+      return err;
+    });
   };
 };
 
@@ -95953,7 +95973,7 @@ var singleHandler = function singleHandler(endpoint, location) {
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       var data = response.data.eventos[0];
 
       _this4.setState({
@@ -95964,40 +95984,27 @@ var singleHandler = function singleHandler(endpoint, location) {
           to: location
         })
       });
-    })["catch"](this.displayErrors);
+
+      return true;
+    })["catch"](function (err) {
+      return err;
+    });
   };
 };
 
-function sendPostRequest($data) {
-  var _this5 = this;
-
+function sendPostRequest(data) {
   var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["POST"])({
-    endpoint: endpoint,
-    upload: this.downloadHandler
+    endpoint: 'eventos/create',
+    data: JSON.stringify(data)
   });
-  request.then(function (response) {
-    var data = response.data.eventos[0];
-
-    _this5.setState({
-      data: data,
-      nombre: data.nombre,
-      loadFinished: true,
-      redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-        to: location
-      })
-    });
-  })["catch"](this.displayErrors);
+  request.then(this.dataSuccess)["catch"](this.displayBackendErrors);
 }
-function updateScope($data) {}
 function sendPutRequest(data, displayErrors) {
   var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["PUT"])({
     endpoint: 'eventos/update',
-    upload: this.downloadHandler,
     data: JSON.stringify(data)
   });
-  request.then(function (response) {
-    console.log(response.data);
-  })["catch"](displayErrors);
+  request.then(this.dataSuccess)["catch"](this.displayBackendErrors);
 }
 
 /***/ }),
@@ -97340,6 +97347,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_LoadBar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/LoadBar */ "./resources/js/utils/LoadBar.jsx");
 /* harmony import */ var _MainFrame__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./MainFrame */ "./resources/js/hocs/MainFrame.jsx");
 /* harmony import */ var _handlers_index__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../handlers/index */ "./resources/js/handlers/index.jsx");
+/* harmony import */ var _utils_errorHandling__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/errorHandling */ "./resources/js/utils/errorHandling.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -97370,24 +97378,24 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 function assignHandler(handlerArray, location, params) {
   var handler = Object(_MainFrame__WEBPACK_IMPORTED_MODULE_6__["searchHandler"])(handlerArray, location);
   handler = handler.callback(params);
   return handler.bind(this);
 }
 
-function awaitLoading(location, params, match) {
+function awaitLoading(location, params, match, message) {
   var _this = this;
 
-  var handler = _handlers_index__WEBPACK_IMPORTED_MODULE_7__["handlers"][match].list,
-      fetchData = this.assignHandler(handler, location, params);
+  var fetchData = this.assignHandler(_handlers_index__WEBPACK_IMPORTED_MODULE_7__["handlers"][match].list, location, params);
   this.setState({
     loading: 0,
     loadFinished: false,
     fetchData: fetchData,
     preventRedirect: false
   }, function () {
-    _this.fetchHandler(params);
+    return _this.fetchHandler(params, message);
   });
 }
 
@@ -97415,39 +97423,18 @@ function (_Component) {
     _this2.downloadHandler = _utils_LoadBar__WEBPACK_IMPORTED_MODULE_5__["downloadHandler"].bind(_assertThisInitialized(_this2));
     _this2.awaitLoading = awaitLoading.bind(_assertThisInitialized(_this2));
     _this2.fetchHandler = _this2.fetchHandler.bind(_assertThisInitialized(_this2));
-    _this2.displayErrors = _this2.displayErrors.bind(_assertThisInitialized(_this2));
+    _this2.displayErrors = _utils_errorHandling__WEBPACK_IMPORTED_MODULE_8__["displayGetRequestErrors"].bind(_assertThisInitialized(_this2));
     return _this2;
   }
 
   _createClass(RouterTransition, [{
     key: "fetchHandler",
-    value: function fetchHandler(params) {
-      this.state.fetchData(params);
-    }
-  }, {
-    key: "displayErrors",
-    value: function displayErrors(error) {
-      this.props.displayMessage({
-        message: {
-          data: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-            className: "h-padding"
-          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-            className: "inline-block "
-          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-            className: "side-margin bold"
-          }, "c\xF3digo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-            className: "side-margin bold"
-          }, error.response.status)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-            className: "inline-block side-margin"
-          }, error.response.statusText)),
-          title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-            className: "far fa-exclamation-triangle bold sub-title side-margin"
-          }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-            className: "side-margin"
-          }, "Errores")),
-          type: 'failure'
-        }
-      });
+    value: function fetchHandler(params, message) {
+      new Promise(function (resolve, reject) {
+        this.state.fetchData(params).then(function (res) {
+          if (res instanceof Error) reject(res);else if (message) resolve(message);else return false;
+        });
+      }.bind(this)).then(this.props.displayMessage)["catch"](this.displayErrors);
     }
   }, {
     key: "shouldComponentUpdate",
@@ -97535,12 +97522,12 @@ function (_Component) {
 /*!*****************************************!*\
   !*** ./resources/js/hocs/Validator.jsx ***!
   \*****************************************/
-/*! exports provided: displayErrors, default */
+/*! exports provided: searchErrors, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "displayErrors", function() { return displayErrors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "searchErrors", function() { return searchErrors; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Validator; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -97549,6 +97536,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _MainFrame__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MainFrame */ "./resources/js/hocs/MainFrame.jsx");
 /* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
 /* harmony import */ var _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../acciones/ActionsByView */ "./resources/js/acciones/ActionsByView.jsx");
+/* harmony import */ var _utils_errorHandling__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/errorHandling */ "./resources/js/utils/errorHandling.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -97576,6 +97564,7 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -97675,7 +97664,7 @@ var evaluateRule = {
     };
   }
 };
-var cast = {
+var castValues = {
   array: function array($value) {
     if ($value) return $value.split(',').map(function (e) {
       return parseInt(e);
@@ -97762,43 +97751,8 @@ function assignValues(value, name, form, validate, err) {
 var castBeforeSending = function castBeforeSending(values, validation) {
   return Object.keys(values).reduce(function (_final, current) {
     var type = validation[current].casting;
-    _final[current] = type ? cast[type](values[current]) : values[current];
+    _final[current] = type ? castValues[type](values[current]) : values[current];
     return _final;
-  }, {});
-};
-
-function displayErrors(_ref11) {
-  var _this = this;
-
-  var _ref12 = _slicedToArray(_ref11, 2),
-      hasErrors = _ref12[0],
-      errors = _ref12[1];
-
-  this.setState({
-    errors: errors
-  }, function () {
-    return _this.context({
-      message: {
-        data: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-          className: "h-padding nav-list"
-        }, hasErrors),
-        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "far fa-exclamation-triangle bold sub-title side-margin"
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "side-margin"
-        }, "Errores")),
-        type: 'failure',
-        update: false
-      }
-    });
-  });
-}
-
-var rewriteErrors = function rewriteErrors(errors) {
-  return Object.keys(errors).reduce(function (tot, cur) {
-    var ind = cur.match(/\./gi) ? cur.split('.')[0] : cur;
-    if (tot[ind]) tot[ind].push(errors[cur][0]);else tot[ind] = [errors[cur][0]];
-    return tot;
   }, {});
 };
 
@@ -97808,24 +97762,27 @@ function (_Component) {
   _inherits(Validator, _Component);
 
   function Validator(props) {
-    var _this2;
+    var _this;
 
     _classCallCheck(this, Validator);
 
-    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(Validator).call(this, props));
-    _this2.enviarFormulario = _this2.enviarFormulario.bind(_assertThisInitialized(_this2));
-    _this2.cancelarFormulario = _this2.cancelarFormulario.bind(_assertThisInitialized(_this2));
-    _this2.changeFormField = _this2.changeFormField.bind(_assertThisInitialized(_this2));
-    _this2.displayErrors = displayErrors.bind(_assertThisInitialized(_this2));
-    _this2.actions = Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_4__["FormActions"])(_this2.enviarFormulario, _this2.cancelarFormulario);
-    _this2.requestHandler = _this2.props.sendRequest.bind(_assertThisInitialized(_this2));
-    _this2.displayBackendErrors = _this2.displayBackendErrors.bind(_assertThisInitialized(_this2));
-    _this2.state = {
-      form: {},
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Validator).call(this, props));
+    _this.enviarFormulario = _this.enviarFormulario.bind(_assertThisInitialized(_this));
+    _this.cancelarFormulario = _this.cancelarFormulario.bind(_assertThisInitialized(_this));
+    _this.changeFormField = _this.changeFormField.bind(_assertThisInitialized(_this));
+    _this.displayFrontendErrors = _utils_errorHandling__WEBPACK_IMPORTED_MODULE_5__["displayFrontendErrors"].bind(_assertThisInitialized(_this));
+    _this.displayBackendErrors = _utils_errorHandling__WEBPACK_IMPORTED_MODULE_5__["displayBackendErrors"].bind(_assertThisInitialized(_this));
+    _this.actions = Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_4__["FormActions"])(_this.enviarFormulario, _this.cancelarFormulario);
+    _this.requestHandler = _this.props.sendRequest.bind(_assertThisInitialized(_this));
+    _this.requestSent = _this.requestSent.bind(_assertThisInitialized(_this));
+    _this.dataSuccess = _this.dataSuccess.bind(_assertThisInitialized(_this));
+    _this.state = {
+      form: _this.props.form,
       errors: {},
-      validation: {}
+      validation: _this.props.validation,
+      sent: false
     };
-    return _this2;
+    return _this;
   }
 
   _createClass(Validator, [{
@@ -97845,27 +97802,27 @@ function (_Component) {
       });
     }
   }, {
-    key: "displayBackendErrors",
-    value: function displayBackendErrors(errors) {
-      var rewrittenErrors = rewriteErrors(errors.response.data.errors),
-          _searchErrors = searchErrors(rewrittenErrors, this.state.validation, this.state.form),
-          _searchErrors2 = _slicedToArray(_searchErrors, 2),
-          hasErrors = _searchErrors2[0],
-          err = _searchErrors2[1];
-
-      this.displayErrors([hasErrors, err]);
+    key: "requestSent",
+    value: function requestSent(value, callback) {
+      this.setState({
+        sent: value
+      }, function () {
+        return callback;
+      });
     }
   }, {
     key: "enviarFormulario",
     value: function enviarFormulario(e) {
       e.preventDefault();
 
-      var _searchErrors3 = searchErrors(this.state.errors, this.state.validation, this.state.form),
-          _searchErrors4 = _slicedToArray(_searchErrors3, 2),
-          hasErrors = _searchErrors4[0],
-          errors = _searchErrors4[1];
+      var _searchErrors = searchErrors(this.state.errors, this.state.validation, this.state.form),
+          _searchErrors2 = _slicedToArray(_searchErrors, 2),
+          hasErrors = _searchErrors2[0],
+          errors = _searchErrors2[1];
 
-      if (hasErrors.length > 0) this.displayErrors([hasErrors, errors]);else this.requestHandler(castBeforeSending(this.state.form, this.state.validation), this.displayBackendErrors);
+      if (hasErrors.length > 0) this.displayFrontendErrors([hasErrors, errors]);else {
+        this.requestSent(true, this.requestHandler(castBeforeSending(this.state.form, this.state.validation), this.displayBackendErrors));
+      }
     }
   }, {
     key: "cancelarFormulario",
@@ -97880,6 +97837,24 @@ function (_Component) {
       });
     }
   }, {
+    key: "dataSuccess",
+    value: function dataSuccess(response) {
+      var data = response.data,
+          message = {
+        message: {
+          data: data.message,
+          title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+            className: "fas fa-check-circle bold sub-title side-margin"
+          }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "side-margin"
+          }, data.title)),
+          type: data.type,
+          update: true
+        }
+      };
+      this.props.wait(data.redirect, data.parameters, data.route, message);
+    }
+  }, {
     key: "render",
     value: function render() {
       var Form = react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(this.props.children, {
@@ -97887,21 +97862,20 @@ function (_Component) {
         change: this.changeFormField,
         errors: this.state.errors
       });
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "visible relative"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: this.state.sent ? "top-padding full-width overlay" : "hidden",
+        style: {
+          marginLeft: "-15px"
+        }
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         className: "full-width"
       }, Form, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row justify-content-end h-padding"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_3__["default"], {
         buttons: Object.values(this.actions)
-      })));
-    }
-  }], [{
-    key: "getDerivedStateFromProps",
-    value: function getDerivedStateFromProps(props) {
-      return {
-        form: props.form,
-        validation: props.validation
-      };
+      })))));
     }
   }]);
 
@@ -99242,16 +99216,114 @@ var progress = {
 axios__WEBPACK_IMPORTED_MODULE_0___default.a.interceptors.request.use(function (config) {
   return config;
 }, function (error) {
-  // Do something with request error
   return Promise.reject(error);
-}); // Add a response interceptor
-
+});
 axios__WEBPACK_IMPORTED_MODULE_0___default.a.interceptors.response.use(function (config) {
   return config;
 }, function (error) {
-  // Do something with response error
   return Promise.reject(error);
 });
+
+/***/ }),
+
+/***/ "./resources/js/utils/errorHandling.jsx":
+/*!**********************************************!*\
+  !*** ./resources/js/utils/errorHandling.jsx ***!
+  \**********************************************/
+/*! exports provided: displayGetRequestErrors, displayFrontendErrors, displayBackendErrors */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "displayGetRequestErrors", function() { return displayGetRequestErrors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "displayFrontendErrors", function() { return displayFrontendErrors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "displayBackendErrors", function() { return displayBackendErrors; });
+/* harmony import */ var _hocs_Validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../hocs/Validator */ "./resources/js/hocs/Validator.jsx");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+function displayGetRequestErrors(error) {
+  var errorMessage = error.response ? error.response : error;
+  this.props.displayMessage({
+    message: {
+      data: React.createElement("div", {
+        className: "h-padding"
+      }, React.createElement("div", {
+        className: "inline-block "
+      }, React.createElement("span", {
+        className: "side-margin bold"
+      }, "c\xF3digo"), React.createElement("span", {
+        className: "side-margin bold"
+      }, (errorMessage || {}).status || 504)), React.createElement("div", {
+        className: "inline-block side-margin"
+      }, (errorMessage || {}).statusText || errorMessage + '')),
+      title: React.createElement(React.Fragment, null, React.createElement("i", {
+        className: "far fa-exclamation-triangle bold sub-title side-margin"
+      }), React.createElement("span", {
+        className: "side-margin"
+      }, "Errores")),
+      type: 'failure'
+    }
+  });
+}
+function displayFrontendErrors(_ref) {
+  var _this = this;
+
+  var _ref2 = _slicedToArray(_ref, 2),
+      hasErrors = _ref2[0],
+      errors = _ref2[1];
+
+  this.setState({
+    errors: errors
+  }, function () {
+    return _this.context({
+      message: {
+        data: React.createElement("ul", {
+          className: "h-padding nav-list"
+        }, hasErrors),
+        title: React.createElement(React.Fragment, null, React.createElement("i", {
+          className: "far fa-exclamation-triangle bold sub-title side-margin"
+        }), React.createElement("span", {
+          className: "side-margin"
+        }, "Errores")),
+        type: 'failure',
+        update: false
+      }
+    });
+  });
+}
+
+function rewriteErrors(errors) {
+  return Object.keys(errors).reduce(function (tot, cur) {
+    var ind = cur.match(/\./gi) ? cur.split('.')[0] : cur;
+    if (tot[ind]) tot[ind].push(errors[cur][0]);else tot[ind] = [errors[cur][0]];
+    return tot;
+  }, {});
+}
+
+function displayBackendErrors(errors) {
+  if (errors.response.data.errors) {
+    var rewrittenErrors = rewriteErrors(errors.response.data.errors),
+        _searchErrors = Object(_hocs_Validator__WEBPACK_IMPORTED_MODULE_0__["searchErrors"])(rewrittenErrors, this.state.validation, this.state.form),
+        _searchErrors2 = _slicedToArray(_searchErrors, 2),
+        hasErrors = _searchErrors2[0],
+        err = _searchErrors2[1];
+
+    this.requestSent(false, this.displayFrontendErrors([hasErrors, err]));
+  } else this.context({
+    message: {
+      data: errors.response.data,
+      type: 'failure',
+      update: false
+    }
+  });
+}
 
 /***/ }),
 

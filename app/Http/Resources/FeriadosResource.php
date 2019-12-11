@@ -24,6 +24,7 @@ class FeriadosResource extends JsonResource
             'eventos' => 'list'
         ],
         'eventos.single' => [],
+        'eventos.add' => [],
         'feriados.single'=>[
             'eventos' => 'all'
         ]

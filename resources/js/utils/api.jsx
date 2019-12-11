@@ -64,18 +64,15 @@ axios.interceptors.request.use(
         return config;
     },
     function (error) {
-        // Do something with request error
         return Promise.reject(error);
     }
 );
 
-// Add a response interceptor
 axios.interceptors.response.use(
     function (config) {
         return config;
     },
     function (error) {
-        // Do something with response error
         return Promise.reject(error);
     }
 );

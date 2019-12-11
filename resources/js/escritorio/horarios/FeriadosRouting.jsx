@@ -38,10 +38,9 @@ export default function FeriadosRouting (props) {
                     exact
                     render={
                         (match) =>
-                            <Feriados
-                                data={props.data}
-                                toggleModal={openModal}
-                                nav={Navegacion.listado('horarios/feriados')} {...match} />
+                            <Feriados   data={props.data}
+                                        toggleModal={openModal}
+                                        nav={Navegacion.listado('horarios/feriados')} {...match} />
                     } />
             <Switch>
                 <Route  path={`${props.match.url}/editar/:id`}

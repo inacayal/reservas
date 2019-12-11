@@ -94,10 +94,14 @@ trait ValidatesForm
                 if (is_null($message)){
                     $this->storeRelationData($data,$instance);
                     $verb = $title['ger'];
+                    $redirect = $this->getRedirect();
                     $message = [
                         'type'=>'success',
                         'title'=>'Éxito',
                         'status' => 200,
+                        'redirect'=>"/$redirect/$instance->id",
+                        'route'=>$redirect,
+                        'parameters'=>['id'=>$instance->id],
                         'errors'=> [],
                         'message' => "$model $verb exitosamente"
                     ];
@@ -105,6 +109,10 @@ trait ValidatesForm
             }
         }
         return $message;
+    }
+
+    public function getRedirect(){
+        return $this->redirect;
     }
 
     public function applyValidation (Request $request){

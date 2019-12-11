@@ -21,6 +21,8 @@ class UserController extends Controller
 
     protected $model = '\\App\\User';
 
+    protected $redirect = '';
+
     protected static $dependencies = [
         'list' => [],
         'add' => [

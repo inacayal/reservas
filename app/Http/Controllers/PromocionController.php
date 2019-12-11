@@ -16,6 +16,8 @@ class PromocionController extends Controller
 
     protected $model = '\\App\\Models\\Promocion';
 
+    protected $redirect = 'promociones';
+
     public function __construct () {
         $this->middleware('length');
     }
