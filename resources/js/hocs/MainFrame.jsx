@@ -66,7 +66,8 @@ export default class MainFrame extends Component {
                                         route={match}
                                         location={location.pathname}
                                         handlerArray = {props.handlers}
-                                        displayMessage={this.showMessage}>
+                                        displayMessage={this.showMessage}
+                                        history={this.props.history}>
                         {props.children}
                     </RouterTransition>
                 </DisplaysMessages.Provider>

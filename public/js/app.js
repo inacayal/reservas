@@ -95444,7 +95444,6 @@ function generatePromocionesCard(promociones, actions) {
       },
       route: 'promociones'
     };
-    console.log(promociones[e]);
     return {
       content: function content() {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -95898,10 +95897,7 @@ var editFormHandler = function editFormHandler(endpoint, location) {
       _this.setState({
         data: _objectSpread({}, data),
         nombre: data.selected.nombre,
-        loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        loadFinished: true
       });
 
       return true;
@@ -95927,10 +95923,7 @@ var addFormHandler = function addFormHandler(endpoint, location) {
       _this2.setState({
         data: _objectSpread({}, data),
         nombre: null,
-        loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        loadFinished: true
       });
 
       return true;
@@ -95952,10 +95945,7 @@ var listHandler = function listHandler(endpoint, location) {
       _this3.setState({
         data: response.data.eventos.data,
         loadFinished: true,
-        nombre: null,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        nombre: null
       });
 
       return true;
@@ -95979,10 +95969,7 @@ var singleHandler = function singleHandler(endpoint, location) {
       _this4.setState({
         data: data,
         nombre: data.nombre,
-        loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        loadFinished: true
       });
 
       return true;
@@ -96707,7 +96694,7 @@ var singleHandler = function singleHandler(endpoint, location) {
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       var data = response.data.promociones[0];
 
       _this.setState({
@@ -96730,7 +96717,7 @@ var listHandler = function listHandler(endpoint, location) {
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       _this2.setState({
         data: response.data.promociones.data,
         loadFinished: true,
@@ -96754,7 +96741,7 @@ var editFormHandler = function editFormHandler(endpoint, location) {
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       var data = response.data.promociones[0];
 
       _this3.setState({
@@ -96782,7 +96769,7 @@ var addFormHandler = function addFormHandler(endpoint, location) {
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       _this4.setState({
         data: _objectSpread({}, response.data),
         loadFinished: true,
@@ -97312,7 +97299,8 @@ function (_Component) {
         route: match,
         location: location.pathname,
         handlerArray: props.handlers,
-        displayMessage: this.showMessage
+        displayMessage: this.showMessage,
+        history: this.props.history
       }, props.children)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-2 hidden-sm white-background"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_Profile__WEBPACK_IMPORTED_MODULE_4__["default"], null)));
@@ -97393,9 +97381,9 @@ function awaitLoading(location, params, match, message) {
     loading: 0,
     loadFinished: false,
     fetchData: fetchData,
-    preventRedirect: false
+    location: location
   }, function () {
-    return _this.fetchHandler(params, message);
+    return _this.fetchHandler(location, params, message);
   });
 }
 
@@ -97416,8 +97404,7 @@ function (_Component) {
       data: null,
       loadFinished: false,
       loading: 0,
-      preventRedirect: true,
-      refresh: false,
+      location: _this2.props.location,
       fetchData: _this2.assignHandler(_this2.props.handlerArray, _this2.props.location, _this2.props.route.params)
     };
     _this2.downloadHandler = _utils_LoadBar__WEBPACK_IMPORTED_MODULE_5__["downloadHandler"].bind(_assertThisInitialized(_this2));
@@ -97429,38 +97416,38 @@ function (_Component) {
 
   _createClass(RouterTransition, [{
     key: "fetchHandler",
-    value: function fetchHandler(params, message) {
-      new Promise(function (resolve, reject) {
-        this.state.fetchData(params).then(function (res) {
-          if (res instanceof Error) reject(res);else if (message) resolve(message);else return false;
+    value: function fetchHandler(location, params, message) {
+      var _this3 = this;
+
+      var handlePromise = function handlePromise(resolve, reject) {
+        _this3.state.fetchData(params).then(function (res) {
+          if (res instanceof Error) reject(res);else {
+            _this3.props.history.push(location);
+
+            resolve(message);
+          }
         });
-      }.bind(this)).then(this.props.displayMessage)["catch"](this.displayErrors);
+      };
+
+      new Promise(handlePromise).then(function (res) {
+        if (res) _this3.props.displayMessage(res);
+      })["catch"](this.displayErrors);
     }
   }, {
     key: "shouldComponentUpdate",
     value: function shouldComponentUpdate(np, ns) {
-      if (np.message !== this.props.message) return false;else return np.location !== this.props.location || ns.loadFinished || this.state.loadFinished;
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(pp) {
-      if ((pp.location !== this.props.location || this.state.refresh) && this.state.loadFinished) {
-        this.setState({
-          refresh: false,
-          redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(this.props.children, {
-            data: this.state.data
-          })
-        });
-      }
+      if (np.message !== this.props.message) return false;else return this.state.loadFinished;
     }
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.fetchHandler({});
+      this.fetchHandler(this.props.location, this.props.route.params);
     }
   }, {
     key: "componentWillUnmount",
-    value: function componentWillUnmount() {}
+    value: function componentWillUnmount() {
+      console.log('unmount1');
+    }
   }, {
     key: "render",
     value: function render() {
@@ -97507,7 +97494,7 @@ function (_Component) {
         style: {
           marginLeft: "-15px"
         }
-      }), this.state.loadFinished && !this.state.preventRedirect ? this.state.redirect : react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(this.props.children, {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(this.props.children, {
         data: this.state.data
       }))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null)))));
     }
@@ -99238,7 +99225,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "displayGetRequestErrors", function() { return displayGetRequestErrors; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "displayFrontendErrors", function() { return displayFrontendErrors; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "displayBackendErrors", function() { return displayBackendErrors; });
-/* harmony import */ var _hocs_Validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../hocs/Validator */ "./resources/js/hocs/Validator.jsx");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _hocs_Validator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../hocs/Validator */ "./resources/js/hocs/Validator.jsx");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -99248,24 +99239,27 @@ function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) ||
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
+
+
 function displayGetRequestErrors(error) {
-  var errorMessage = error.response ? error.response : error;
+  var errorMessage = error.response ? error.response : error; //console.log(errorMessage)
+
   this.props.displayMessage({
     message: {
-      data: React.createElement("div", {
+      data: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "h-padding"
-      }, React.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "inline-block "
-      }, React.createElement("span", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "side-margin bold"
-      }, "c\xF3digo"), React.createElement("span", {
+      }, "c\xF3digo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "side-margin bold"
-      }, (errorMessage || {}).status || 504)), React.createElement("div", {
+      }, (errorMessage || {}).status || 504)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "inline-block side-margin"
       }, (errorMessage || {}).statusText || errorMessage + '')),
-      title: React.createElement(React.Fragment, null, React.createElement("i", {
+      title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "far fa-exclamation-triangle bold sub-title side-margin"
-      }), React.createElement("span", {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "side-margin"
       }, "Errores")),
       type: 'failure'
@@ -99284,12 +99278,12 @@ function displayFrontendErrors(_ref) {
   }, function () {
     return _this.context({
       message: {
-        data: React.createElement("ul", {
+        data: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
           className: "h-padding nav-list"
         }, hasErrors),
-        title: React.createElement(React.Fragment, null, React.createElement("i", {
+        title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "far fa-exclamation-triangle bold sub-title side-margin"
-        }), React.createElement("span", {
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "side-margin"
         }, "Errores")),
         type: 'failure',
@@ -99310,7 +99304,7 @@ function rewriteErrors(errors) {
 function displayBackendErrors(errors) {
   if (errors.response.data.errors) {
     var rewrittenErrors = rewriteErrors(errors.response.data.errors),
-        _searchErrors = Object(_hocs_Validator__WEBPACK_IMPORTED_MODULE_0__["searchErrors"])(rewrittenErrors, this.state.validation, this.state.form),
+        _searchErrors = Object(_hocs_Validator__WEBPACK_IMPORTED_MODULE_2__["searchErrors"])(rewrittenErrors, this.state.validation, this.state.form),
         _searchErrors2 = _slicedToArray(_searchErrors, 2),
         hasErrors = _searchErrors2[0],
         err = _searchErrors2[1];

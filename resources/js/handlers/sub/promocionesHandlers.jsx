@@ -48,19 +48,19 @@ const singleHandler = (endpoint,location) => {
             endpoint: endpoint,
             download: this.downloadHandler
         });
-        request
-            .then(
-                response => {
-                    const data = response.data.promociones[0];
-                    this.setState({
-                        data: data,
-                        nombre:data.nombre,
-                        loadFinished: true,
-                        redirect:<Redirect to={location}/>
-                    });
-                }
-            )
-            .catch(this.displayErrors);
+        return  request
+                .then(
+                    response => {
+                        const data = response.data.promociones[0];
+                        this.setState({
+                            data: data,
+                            nombre:data.nombre,
+                            loadFinished: true,
+                            redirect:<Redirect to={location}/>
+                        });
+                    }
+                )
+                .catch(this.displayErrors);
     }
 }
 
@@ -72,17 +72,17 @@ const listHandler = (endpoint,location) => {
             download: this.downloadHandler
         });
 
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: response.data.promociones.data,
-                        loadFinished: true,
-                        redirect:<Redirect to={location}/>
-                    });
-                }
-            )
-            .catch(this.displayErrors);
+        return  request
+                .then(
+                    response => {
+                        this.setState({
+                            data: response.data.promociones.data,
+                            loadFinished: true,
+                            redirect:<Redirect to={location}/>
+                        });
+                    }
+                )
+                .catch(this.displayErrors);
     }
 }
 
@@ -99,24 +99,24 @@ const editFormHandler = (endpoint,location) => {
             download: this.downloadHandler
         });
 
-        request
-        .then(
-            response => {
-                const data  = response.data.promociones[0];
-                this.setState({
-                    data: {
-                        selected: data,
-                        all: {
-                            eventos: response.data.eventos
-                        }
-                    },
-                    nombre:data.nombre,
-                    loadFinished: true,
-                    redirect:<Redirect to={location}/>
-                });
-            }
-        )
-        .catch(this.displayErrors);
+        return  request
+                .then(
+                    response => {
+                        const data  = response.data.promociones[0];
+                        this.setState({
+                            data: {
+                                selected: data,
+                                all: {
+                                    eventos: response.data.eventos
+                                }
+                            },
+                            nombre:data.nombre,
+                            loadFinished: true,
+                            redirect:<Redirect to={location}/>
+                        });
+                    }
+                )
+                .catch(this.displayErrors);
     }
 }
 
@@ -126,17 +126,17 @@ const addFormHandler = (endpoint,location) => {
             endpoint: endpoint,
             download: this.downloadHandler
         });
-        request
-        .then(
-            response => {
-                this.setState({
-                    data: { ...response.data },
-                    loadFinished: true,
-                    redirect:<Redirect to={location}/>
-                });
-            }
-        )
-        .catch(this.displayErrors);
+        return  request
+                .then(
+                    response => {
+                        this.setState({
+                            data: { ...response.data },
+                            loadFinished: true,
+                            redirect:<Redirect to={location}/>
+                        });
+                    }
+                )
+                .catch(this.displayErrors);
     }
 }
 

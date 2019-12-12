@@ -12,7 +12,7 @@ import {
 } from '../utils/LoadBar';
 import {searchHandler} from './MainFrame';
 import {handlers} from '../handlers/index';
-import {displayGetRequestErrors as displayErrors} from '../utils/errorHandling'
+import {displayGetRequestErrors as displayErrors} from '../utils/errorHandling';
 
 function assignHandler (
     handlerArray,
@@ -30,14 +30,19 @@ function awaitLoading (
     match,
     message
 ){
-    const fetchData = this.assignHandler(handlers[match].list,location,params);
+    const fetchData = this.assignHandler(
+        handlers[match].list,
+        location,params
+    );
     this.setState(
         {
             loading:0,
             loadFinished:false,
             fetchData:fetchData,
-            preventRedirect:false
-        }, () => this.fetchHandler(params,message)
+            location:location
+        },
+            () =>
+                this.fetchHandler(location,params,message)
     );
 }
 
@@ -51,8 +56,7 @@ export class RouterTransition extends Component {
             data:null,
             loadFinished:false,
             loading:0,
-            preventRedirect:true,
-            refresh:false,
+            location:this.props.location,
             fetchData:this.assignHandler(this.props.handlerArray,this.props.location,this.props.route.params)
         };
         this.downloadHandler = downloadHandler.bind(this);
@@ -61,53 +65,42 @@ export class RouterTransition extends Component {
         this.displayErrors = displayErrors.bind(this);
     }
 
-    fetchHandler(params,message){
-        new Promise (
-            function (resolve,reject){
-                this.state.fetchData(params)
-                    .then(
-                        res => {
-                            if (res instanceof Error)
-                                reject(res);
-                            else if (message)
-                                resolve(message);
-                            else return false;
+    fetchHandler(location,params,message){
+        const handlePromise = (resolve,reject) => {
+            this.state.fetchData(params)
+                .then(
+                    res => {
+                        if (res instanceof Error)
+                            reject(res);
+                        else {
+                            this.props.history.push(location);
+                            resolve(message);
                         }
-                    )
-            }.bind(this)
-        )
-        .then (this.props.displayMessage)
-        .catch(this.displayErrors)
+                    }
+                )
+        };
+
+        new Promise (handlePromise)
+            .then (res => {
+                if (res)
+                    this.props.displayMessage(res)
+            })
+            .catch(this.displayErrors)
     }
 
     shouldComponentUpdate(np,ns){
         if (np.message !== this.props.message)
             return false;
         else
-            return np.location !== this.props.location
-                || ns.loadFinished
-                || this.state.loadFinished;
-    }
-
-    componentDidUpdate(pp){
-        if ((pp.location !== this.props.location
-            || this.state.refresh)
-            && this.state.loadFinished){
-            this.setState({
-                refresh:false,
-                redirect:React.cloneElement(
-                    this.props.children,
-                    {data:this.state.data}
-                )
-            })
-        }
+            return this.state.loadFinished;
     }
 
     componentDidMount() {
-        this.fetchHandler({});
+        this.fetchHandler(this.props.location,this.props.route.params);
     }
 
     componentWillUnmount(){
+        console.log('unmount1')
     }
 
     render() {
@@ -135,24 +128,20 @@ export class RouterTransition extends Component {
                                     <div style={{padding:"10px 16px", height:"99%"}}
                                         className="main-container h-overflow-auto">
                                         <div className="visible relative">
-                                            <div    className={this.state.loadFinished
-                                                        ? "hidden"
-                                                        : "top-padding full-width overlay"
+                                            <div    className={
+                                                        this.state.loadFinished
+                                                            ? "hidden"
+                                                            : "top-padding full-width overlay"
                                                     }
                                                     style={{marginLeft:"-15px"}}/>
-                                            {
-                                                this.state.loadFinished
-                                                    && !this.state.preventRedirect
-                                                ?
-                                                    this.state.redirect
-                                                :
+                                                {
                                                     React.cloneElement(
                                                         this.props.children,
                                                         {
                                                             data:this.state.data
                                                         }
                                                     )
-                                            }
+                                                }
                                         </div>
                                     </div>
                                 :

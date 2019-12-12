@@ -21,7 +21,6 @@ export default function generatePromocionesCard(
                         params:{id:e},
                         route:'promociones'
                     };
-            console.log(promociones[e])
             return {
                 content: () => (
                     <>

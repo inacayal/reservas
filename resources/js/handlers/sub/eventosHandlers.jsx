@@ -67,7 +67,6 @@ const editFormHandler = (endpoint,location) => {
                             data: {...data},
                             nombre:data.selected.nombre,
                             loadFinished:true,
-                            redirect: <Redirect to={location}/>
                         });
                         return true;
                     }
@@ -93,7 +92,6 @@ const addFormHandler = (endpoint,location) => {
                             data: {...data},
                             nombre:null,
                             loadFinished:true,
-                            redirect: <Redirect to={location}/>
                         });
                         return true;
                     }
@@ -116,7 +114,6 @@ const listHandler = (endpoint,location) => {
                             data: response.data.eventos.data,
                             loadFinished:true,
                             nombre:null,
-                            redirect: <Redirect to={location}/>
                         });
                         return true;
                     }
@@ -140,7 +137,6 @@ const singleHandler = (endpoint,location) => {
                             data:data,
                             nombre:data.nombre,
                             loadFinished:true,
-                            redirect: <Redirect to={location}/>
                         });
                         return true;
                     }
