@@ -50,10 +50,10 @@ export default class MainFrame extends Component {
     }
 
     render(){
-        const props = this.props,
-            location = props.location,
-            handler =searchHandler(props.handlers,location.pathname),
-            match = matchPath(location.pathname,{path:handler.endpoint});
+        const   props = this.props,
+                location = props.location,
+                handler =searchHandler(props.handlers,location.pathname),
+                match = matchPath(location.pathname,{path:handler.endpoint});
         return (
             <div className="row round-border" style={{height:'95%',overflow:'hidden'}}>
                 <Message    hide={this.hideMessage}

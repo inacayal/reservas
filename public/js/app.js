@@ -97367,13 +97367,14 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 function assignHandler(handlerArray, location, params) {
   var handler = Object(_MainFrame__WEBPACK_IMPORTED_MODULE_6__["searchHandler"])(handlerArray, location);
   handler = handler.callback(params);
   return handler.bind(this);
 }
 
-function awaitLoading(location, params, match, message) {
+function awaitLoading(location, params, match, preventPush, message) {
   var _this = this;
 
   var fetchData = this.assignHandler(_handlers_index__WEBPACK_IMPORTED_MODULE_7__["handlers"][match].list, location, params);
@@ -97383,11 +97384,15 @@ function awaitLoading(location, params, match, message) {
     fetchData: fetchData,
     location: location
   }, function () {
-    return _this.fetchHandler(location, params, message);
+    return _this.fetchHandler(location, params, preventPush, message);
   });
 }
 
 var WaitsLoading = react__WEBPACK_IMPORTED_MODULE_0___default.a.createContext({});
+var Refresh = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["withRouter"])(function (props) {
+  console.log(props);
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null);
+});
 var RouterTransition =
 /*#__PURE__*/
 function (_Component) {
@@ -97416,14 +97421,13 @@ function (_Component) {
 
   _createClass(RouterTransition, [{
     key: "fetchHandler",
-    value: function fetchHandler(location, params, message) {
+    value: function fetchHandler(location, params, preventPush, message) {
       var _this3 = this;
 
       var handlePromise = function handlePromise(resolve, reject) {
         _this3.state.fetchData(params).then(function (res) {
           if (res instanceof Error) reject(res);else {
-            _this3.props.history.push(location);
-
+            if (!preventPush) _this3.props.history.push(location);
             resolve(message);
           }
         });
@@ -97451,6 +97455,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var data = this.props.history.action === 'POP' ? null : this.state.data;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(WaitsLoading.Provider, {
         value: this.awaitLoading
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_LoadBar__WEBPACK_IMPORTED_MODULE_5__["LoadBar"], {
@@ -97481,7 +97486,7 @@ function (_Component) {
         style: {
           height: '90%'
         }
-      }, this.state.data ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, data ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
           padding: "10px 16px",
           height: "99%"
@@ -97496,7 +97501,10 @@ function (_Component) {
         }
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(this.props.children, {
         data: this.state.data
-      }))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null)))));
+      }))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Refresh, {
+        location: this.props.location,
+        fetch: this.fetchHandler
+      })))));
     }
   }]);
 

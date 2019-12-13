@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
 import BreadCrumb from '../componentes/control/BreadCrumb';
 import Lateral from '../componentes/control/Lateral';
+import {withRouter} from 'react-router-dom';
 import {
     downloadHandler,
     LoadBar
@@ -28,12 +29,13 @@ function awaitLoading (
     location,
     params,
     match,
+    preventPush,
     message
 ){
-    const fetchData = this.assignHandler(
-        handlers[match].list,
-        location,params
-    );
+    const   fetchData = this.assignHandler(
+                handlers[match].list,
+                location,params
+            );
     this.setState(
         {
             loading:0,
@@ -42,11 +44,18 @@ function awaitLoading (
             location:location
         },
             () =>
-                this.fetchHandler(location,params,message)
+                this.fetchHandler(location,params,preventPush,message)
     );
 }
 
 export const WaitsLoading = React.createContext({});
+
+const Refresh = withRouter(
+    (props) => {
+        console.log(props)
+        return (<></>);
+    }
+)
 
 export class RouterTransition extends Component {
     constructor(props){
@@ -65,7 +74,7 @@ export class RouterTransition extends Component {
         this.displayErrors = displayErrors.bind(this);
     }
 
-    fetchHandler(location,params,message){
+    fetchHandler(location,params,preventPush,message){
         const handlePromise = (resolve,reject) => {
             this.state.fetchData(params)
                 .then(
@@ -73,7 +82,8 @@ export class RouterTransition extends Component {
                         if (res instanceof Error)
                             reject(res);
                         else {
-                            this.props.history.push(location);
+                            if (!preventPush)
+                                this.props.history.push(location);
                             resolve(message);
                         }
                     }
@@ -104,6 +114,9 @@ export class RouterTransition extends Component {
     }
 
     render() {
+        const   data = this.props.history.action === 'POP'
+                    ? null
+                    : this.state.data;
         return (
             <WaitsLoading.Provider value={this.awaitLoading}>
                 <LoadBar loaded={this.state.loading}/>
@@ -123,7 +136,7 @@ export class RouterTransition extends Component {
                         <div    className="col-md-12 container-fluid no-padding"
                                 style={{height:'90%'}}>
                             {
-                                (this.state.data)
+                                (data)
                                 ?
                                     <div style={{padding:"10px 16px", height:"99%"}}
                                         className="main-container h-overflow-auto">
@@ -145,7 +158,8 @@ export class RouterTransition extends Component {
                                         </div>
                                     </div>
                                 :
-                                    <></>
+                                    <Refresh   location={this.props.location}
+                                               fetch={this.fetchHandler}/>
                             }
                         </div>
                     </div>
