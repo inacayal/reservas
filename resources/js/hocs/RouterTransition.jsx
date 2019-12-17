@@ -1,61 +1,88 @@
 /**
  * react basic
  */
-import React, { Component } from 'react';
+import React, {
+    Component
+} from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
 import BreadCrumb from '../componentes/control/BreadCrumb';
 import Lateral from '../componentes/control/Lateral';
-import {withRouter} from 'react-router-dom';
+import {
+    withRouter,
+    matchPath
+} from 'react-router-dom';
 import {
     downloadHandler,
     LoadBar
 } from '../utils/LoadBar';
 import {searchHandler} from './MainFrame';
 import {handlers} from '../handlers/index';
-import {displayGetRequestErrors as displayErrors} from '../utils/errorHandling';
+import {
+    displayGetRequestErrors as displayErrors
+} from '../utils/errorHandling';
+
+const routeMap = [
+    'horarios',
+    'horarios/feriados',
+    'reservas',
+    'configuracion',
+    'eventos',
+    'promociones',
+    'locales',
+    'franquicias',
+    'ubicaciones'
+];
+
+const searchRoute = (path) => routeMap.filter(e => path.match(e)).pop();
 
 function assignHandler (
     handlerArray,
     location,
-    params
+    r
 ){
     let handler = searchHandler(handlerArray,location);
-    handler = handler.callback(params);
-    return handler.bind(this);
+    const parameters = matchPath(location,{path:handler.endpoint});
+    handler = handler.callback(parameters.params);
+    return [
+        handler.bind(this),
+        parameters.params
+    ];
 }
 
 function awaitLoading (
     location,
-    params,
     match,
-    preventPush,
-    message
+    message,
+    push=true,
 ){
-    const   fetchData = this.assignHandler(
-                handlers[match].list,
-                location,params
-            );
+    console.log(match)
+    const   [
+        fetchData,
+        parameters
+    ] = this.assignHandler(
+            handlers[match].list,
+            location,
+            null
+        );
+
     this.setState(
         {
             loading:0,
             loadFinished:false,
             fetchData:fetchData,
-            location:location
         },
             () =>
-                this.fetchHandler(location,params,preventPush,message)
+                this.fetchHandler(
+                    location,
+                    parameters,
+                    push,
+                    message
+                )
     );
 }
 
 export const WaitsLoading = React.createContext({});
-
-const Refresh = withRouter(
-    (props) => {
-        console.log(props)
-        return (<></>);
-    }
-)
 
 export class RouterTransition extends Component {
     constructor(props){
@@ -63,10 +90,10 @@ export class RouterTransition extends Component {
         this.assignHandler = assignHandler.bind(this);
         this.state = {
             data:null,
-            loadFinished:false,
+            loadFinished:true,
             loading:0,
-            location:this.props.location,
-            fetchData:this.assignHandler(this.props.handlerArray,this.props.location,this.props.route.params)
+            //location:this.props.location,
+            //fetchData:this.assignHandler(this.props.handlerArray,this.props.location,null)[0]
         };
         this.downloadHandler = downloadHandler.bind(this);
         this.awaitLoading = awaitLoading.bind(this);
@@ -74,7 +101,7 @@ export class RouterTransition extends Component {
         this.displayErrors = displayErrors.bind(this);
     }
 
-    fetchHandler(location,params,preventPush,message){
+    fetchHandler(location,params,push,message){
         const handlePromise = (resolve,reject) => {
             this.state.fetchData(params)
                 .then(
@@ -82,7 +109,7 @@ export class RouterTransition extends Component {
                         if (res instanceof Error)
                             reject(res);
                         else {
-                            if (!preventPush)
+                            if (push)
                                 this.props.history.push(location);
                             resolve(message);
                         }
@@ -105,8 +132,24 @@ export class RouterTransition extends Component {
             return this.state.loadFinished;
     }
 
+    componentDidUpdate(pp){
+        if (this.props.history.action === 'POP'){
+            this.awaitLoading(
+                this.props.location,
+                searchRoute(this.props.location),
+                null,
+                false
+            );
+        }
+    }
+
     componentDidMount() {
-        this.fetchHandler(this.props.location,this.props.route.params);
+        this.awaitLoading(
+            this.props.location,
+            searchRoute(this.props.location),
+            null,
+            true
+        );
     }
 
     componentWillUnmount(){
@@ -114,13 +157,10 @@ export class RouterTransition extends Component {
     }
 
     render() {
-        const   data = this.props.history.action === 'POP'
-                    ? null
-                    : this.state.data;
         return (
             <WaitsLoading.Provider value={this.awaitLoading}>
                 <LoadBar loaded={this.state.loading}/>
-                <div className="col-md-2 no-padding light-background">
+                <div    className="col-md-2 no-padding light-background">
                     <Lateral    current={this.props.sidebarElem}
                                 items={sidebar}/>
                 </div>
@@ -136,10 +176,10 @@ export class RouterTransition extends Component {
                         <div    className="col-md-12 container-fluid no-padding"
                                 style={{height:'90%'}}>
                             {
-                                (data)
+                                (this.state.data)
                                 ?
-                                    <div style={{padding:"10px 16px", height:"99%"}}
-                                        className="main-container h-overflow-auto">
+                                    <div    style={{padding:"10px 16px", height:"99%"}}
+                                            className="main-container h-overflow-auto">
                                         <div className="visible relative">
                                             <div    className={
                                                         this.state.loadFinished
@@ -150,16 +190,13 @@ export class RouterTransition extends Component {
                                                 {
                                                     React.cloneElement(
                                                         this.props.children,
-                                                        {
-                                                            data:this.state.data
-                                                        }
+                                                        {data:this.state.data}
                                                     )
                                                 }
                                         </div>
                                     </div>
                                 :
-                                    <Refresh   location={this.props.location}
-                                               fetch={this.fetchHandler}/>
+                                    <></>
                             }
                         </div>
                     </div>

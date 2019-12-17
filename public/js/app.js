@@ -87799,7 +87799,7 @@ var waitCallback = function waitCallback(ev, _ref, contextCallback) {
       params = _ref.params,
       route = _ref.route;
   ev.preventDefault();
-  contextCallback(to, params, route);
+  contextCallback(to, route);
 };
 
 function CustomLink(props) {
@@ -97354,6 +97354,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 /**
  * react basic
  */
@@ -97367,32 +97375,44 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+var routeMap = ['horarios', 'horarios/feriados', 'reservas', 'configuracion', 'eventos', 'promociones', 'locales', 'franquicias', 'ubicaciones'];
 
-function assignHandler(handlerArray, location, params) {
+var searchRoute = function searchRoute(path) {
+  return routeMap.filter(function (e) {
+    return path.match(e);
+  }).pop();
+};
+
+function assignHandler(handlerArray, location, r) {
   var handler = Object(_MainFrame__WEBPACK_IMPORTED_MODULE_6__["searchHandler"])(handlerArray, location);
-  handler = handler.callback(params);
-  return handler.bind(this);
+  var parameters = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["matchPath"])(location, {
+    path: handler.endpoint
+  });
+  handler = handler.callback(parameters.params);
+  return [handler.bind(this), parameters.params];
 }
 
-function awaitLoading(location, params, match, preventPush, message) {
+function awaitLoading(location, match, message) {
   var _this = this;
 
-  var fetchData = this.assignHandler(_handlers_index__WEBPACK_IMPORTED_MODULE_7__["handlers"][match].list, location, params);
+  var push = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+  console.log(match);
+
+  var _this$assignHandler = this.assignHandler(_handlers_index__WEBPACK_IMPORTED_MODULE_7__["handlers"][match].list, location, null),
+      _this$assignHandler2 = _slicedToArray(_this$assignHandler, 2),
+      fetchData = _this$assignHandler2[0],
+      parameters = _this$assignHandler2[1];
+
   this.setState({
     loading: 0,
     loadFinished: false,
-    fetchData: fetchData,
-    location: location
+    fetchData: fetchData
   }, function () {
-    return _this.fetchHandler(location, params, preventPush, message);
+    return _this.fetchHandler(location, parameters, push, message);
   });
 }
 
 var WaitsLoading = react__WEBPACK_IMPORTED_MODULE_0___default.a.createContext({});
-var Refresh = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["withRouter"])(function (props) {
-  console.log(props);
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null);
-});
 var RouterTransition =
 /*#__PURE__*/
 function (_Component) {
@@ -97407,10 +97427,10 @@ function (_Component) {
     _this2.assignHandler = assignHandler.bind(_assertThisInitialized(_this2));
     _this2.state = {
       data: null,
-      loadFinished: false,
-      loading: 0,
-      location: _this2.props.location,
-      fetchData: _this2.assignHandler(_this2.props.handlerArray, _this2.props.location, _this2.props.route.params)
+      loadFinished: true,
+      loading: 0 //location:this.props.location,
+      //fetchData:this.assignHandler(this.props.handlerArray,this.props.location,null)[0]
+
     };
     _this2.downloadHandler = _utils_LoadBar__WEBPACK_IMPORTED_MODULE_5__["downloadHandler"].bind(_assertThisInitialized(_this2));
     _this2.awaitLoading = awaitLoading.bind(_assertThisInitialized(_this2));
@@ -97421,13 +97441,13 @@ function (_Component) {
 
   _createClass(RouterTransition, [{
     key: "fetchHandler",
-    value: function fetchHandler(location, params, preventPush, message) {
+    value: function fetchHandler(location, params, push, message) {
       var _this3 = this;
 
       var handlePromise = function handlePromise(resolve, reject) {
         _this3.state.fetchData(params).then(function (res) {
           if (res instanceof Error) reject(res);else {
-            if (!preventPush) _this3.props.history.push(location);
+            if (push) _this3.props.history.push(location);
             resolve(message);
           }
         });
@@ -97443,9 +97463,16 @@ function (_Component) {
       if (np.message !== this.props.message) return false;else return this.state.loadFinished;
     }
   }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(pp) {
+      if (this.props.history.action === 'POP') {
+        this.awaitLoading(this.props.location, searchRoute(this.props.location), null, false);
+      }
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.fetchHandler(this.props.location, this.props.route.params);
+      this.awaitLoading(this.props.location, searchRoute(this.props.location), null, true);
     }
   }, {
     key: "componentWillUnmount",
@@ -97455,7 +97482,6 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var data = this.props.history.action === 'POP' ? null : this.state.data;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(WaitsLoading.Provider, {
         value: this.awaitLoading
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_LoadBar__WEBPACK_IMPORTED_MODULE_5__["LoadBar"], {
@@ -97486,7 +97512,7 @@ function (_Component) {
         style: {
           height: '90%'
         }
-      }, data ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, this.state.data ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
           padding: "10px 16px",
           height: "99%"
@@ -97501,10 +97527,7 @@ function (_Component) {
         }
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.cloneElement(this.props.children, {
         data: this.state.data
-      }))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Refresh, {
-        location: this.props.location,
-        fetch: this.fetchHandler
-      })))));
+      }))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null)))));
     }
   }]);
 

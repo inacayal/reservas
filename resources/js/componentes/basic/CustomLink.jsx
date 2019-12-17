@@ -9,7 +9,7 @@ const waitCallback = (
     contextCallback
 ) => {
     ev.preventDefault();
-    contextCallback(to,params,route);
+    contextCallback(to,route);
 }
 
 function CustomLink(props) {
