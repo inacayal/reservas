@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {DisplaysMessages} from './MainFrame';
+import {DisplaysMessages} from './MessageHandler';
 import Actions from '../componentes/basic/Actions';
 import {FormActions} from '../acciones/ActionsByView';
 import {displayBackendErrors,displayFrontendErrors} from '../utils/errorHandling';
@@ -223,7 +223,7 @@ export default class Validator extends Component{
         this.dataSuccess =  this.dataSuccess.bind(this);
 
         this.state = {
-            form:this.props.form,
+            form:this.props.formMaker(this.props.data),
             errors:{},
             validation:this.props.validation,
             sent:false
@@ -316,7 +316,8 @@ export default class Validator extends Component{
             {
                 fields:this.state.form,
                 change:this.changeFormField,
-                errors:this.state.errors
+                errors:this.state.errors,
+                data:this.props.data
             }
         );
         return (

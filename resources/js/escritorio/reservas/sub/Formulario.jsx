@@ -5,7 +5,7 @@ import React, { Component,useContext } from 'react';
 import ReactDOM from 'react-dom';
 import EventoFrame from '../../../reserva/pasos/evento/EventoFrame';
 import Titulo from '../../../componentes/basic/Titulo';
-import {WaitsLoading} from '../../../hocs/RouterTransition';
+import {WaitsLoading} from '../../../hocs/DataHandler';
 
 export function Formulario (props) {
     const context = useContext(WaitsLoading),

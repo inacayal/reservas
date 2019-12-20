@@ -4,6 +4,7 @@
 import React, {
     Component,
     useState,
+    useEffect,
     useContext
 } from 'react';
 import {
@@ -17,100 +18,108 @@ import {Eventos} from './sub/Eventos';
 import {VerEvento} from './sub/VerEvento';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 import Validator from '../../hocs/Validator';
-import validation from './validation';
-import {createFeriadosList} from '../../utils/Helper';
-import {WaitsLoading} from '../../hocs/RouterTransition';
+import {
+    validation,
+    addFormFields,
+    editFormFields
+} from './validation';
+import {WaitsLoading} from '../../hocs/DataHandler';
+import TransitionHandler from '../../hocs/TransitionHandler';
 
-export default function EventosRouting (props) {
+function EventosRouting (props){
     const   [open,toggle] = useState(false),
-            openModal = (e) => {
-                e.preventDefault();
-                toggle(true);
-            },
-            closeModal = (e) => {
-                e.preventDefault();
-                toggle(false);
-            },
-            wait = useContext(WaitsLoading);
+        openModal = (e) => {
+            e.preventDefault();
+            toggle(true);
+        },
+        closeModal = (e) => {
+            e.preventDefault();
+            toggle(false);
+        },
+        wait = () => false;
     return (
         <>
             <ConfirmarModal open={open}
                             closeModal={closeModal}
-                            title={"Eliminar Franquicia"}
-                            content={"¿estás seguro de eliminar este franquicia?"} />
+                            title="Eliminar Franquicia"
+                            content="¿estás seguro de eliminar este franquicia?" />
             <Route  path={props.match.url}
                     exact
                     render={
-                        (match) =>
-                            <Eventos    data={props.data}
-                                        toggleModal={openModal}
-                                        nav={Navegacion.listado('eventos')} {...match} />
+                        (match) => (
+                            <TransitionHandler  dataRendered ={props.location === match.location.pathname}
+                                                {...match}>
+                                <Eventos    data={props.data}
+                                            toggleModal={openModal}
+                                            nav={Navegacion.listado('eventos')}/>
+                            </TransitionHandler>
+                        )
                     } />
             <Switch>
                 <Route  path={`${props.match.url}/editar/:id`}
                         exact
                         render={
-                            (match) => {
-                                const   selected = props.data.selected,
-                                        feriados = createFeriadosList(selected.feriados.data),
-                                        fields = {
-                                            id:selected.id,
-                                            id_usuario:user.id,
-                                            promociones:Object.keys(selected.promociones.list).join(','),
-                                            horarios:Object.keys(selected.horarios.list).join(','),
-                                            feriados:Object.keys(feriados).join(','),
-                                            descripcion:selected.descripcion,
-                                            nombre:selected.nombre,
-                                            scope:selected.estado==="Activo" ? 1 : 2
-                                        };
-                                return (
-                                    <Validator  form={fields}
-                                                validation={validation}
+                            (match) => (
+                                <TransitionHandler  dataRendered ={props.location === match.location.pathname}
+                                                    {...match}>
+                                    <Validator  validation={validation}
+                                                formMaker = {editFormFields}
+                                                data={props.data}
                                                 sendRequest={props.handlers.edit}
                                                 wait={wait}>
-                                        <Formulario data={props.data}
-                                                    editar={true}
+                                        <Formulario editar={true}
                                                     toggleModal={openModal}
-                                                    nav={Navegacion.formulario(()=>false,match.match.params.id,'eventos')}
+                                                    nav={
+                                                        Navegacion.formulario(
+                                                            ()=>false,
+                                                            match.match.params.id,
+                                                            'eventos'
+                                                        )
+                                                    }
                                                     {...match} />
                                     </Validator>
-                                )
-                            }
+                                </TransitionHandler>
+                            )
                         } />
                 <Route  path={`${props.match.url}/agregar`}
                         render={
-                            (match) => {
-                                const fields = {
-                                    id_usuario:user.id,
-                                    promociones:'',
-                                    horarios:'',
-                                    feriados:'',
-                                    descripcion:'',
-                                    nombre:'',
-                                    scope:1
-                                };
-                                return (
-                                    <Validator  form={fields}
-                                                validation={validation}
+                            (match) => (
+                                <TransitionHandler  dataRendered ={props.location === match.location.pathname}
+                                                    {...match}>
+                                    <Validator  validation={validation}
                                                 sendRequest={props.handlers.add}
+                                                formMaker = {addFormFields}
+                                                data={{all:props.data}}
                                                 wait={wait}>
-                                        <Formulario data={{all:props.data}}
-                                                    toggleModal={openModal}
-                                                    nav={Navegacion.agregar('eventos')}
-                                                    editar={false} {...match} />
+                                        <Formulario toggleModal={openModal}
+                                                    nav={
+                                                        Navegacion.agregar('eventos')
+                                                    }
+                                                    editar={false}/>
                                     </Validator>
-                                )
-                            }
+                                </TransitionHandler>
+                            )
                     } />
                 <Route  path={`${props.match.url}/:id`}
                         render={
                             (match) => (
-                                <VerEvento  data={props.data}
-                                            toggleModal={openModal}
-                                            nav={Navegacion.singular(()=>false,match.match.params.id,'eventos')} {...match} />
-                                )
+                                <TransitionHandler  dataRendered ={props.location === match.location.pathname}
+                                                    {...match}>
+                                    <VerEvento  data={props.data}
+                                                toggleModal={openModal}
+                                                nav={
+                                                    Navegacion.singular(
+                                                        ()=>false,
+                                                        match.match.params.id,
+                                                        'eventos'
+                                                    )
+                                                }
+                                                {...match} />
+                                </TransitionHandler>
+                            )
                         }/>
             </Switch>
         </>
     );
 }
+export default React.memo(EventosRouting);

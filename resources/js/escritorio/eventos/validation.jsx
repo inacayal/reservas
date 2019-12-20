@@ -1,3 +1,5 @@
+import {createFeriadosList} from '../../utils/Helper';
+
 export const validation = {
     id:{
         rules:{},
@@ -48,4 +50,32 @@ export const validation = {
         casting:"integer"
     }
 };
-export default validation;
+
+export const addFormFields = (data) => {
+    console.log(data)
+    return {
+        id_usuario:user.id,
+        promociones:'',
+        horarios:'',
+        feriados:'',
+        descripcion:'',
+        nombre:'',
+        scope:1
+    };
+}
+
+export const editFormFields = (data) => {
+    console.log(data)
+    const   selected = data.selected,
+            feriados = createFeriadosList(selected.feriados.data);
+    return {
+        id:selected.id,
+        id_usuario:user.id,
+        promociones:Object.keys(selected.promociones.list).join(','),
+        horarios:Object.keys(selected.horarios.list).join(','),
+        feriados:Object.keys(feriados).join(','),
+        descripcion:selected.descripcion,
+        nombre:selected.nombre,
+        scope:selected.estado==="Activo" ? 1 : 2
+    };
+}

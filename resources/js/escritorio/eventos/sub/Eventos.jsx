@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import Titulo from '../../../componentes/basic/Titulo';
 import generateEventosCard from '../../../generators/generateEventosCard';
 
-export function Eventos (props) {
+function NoMemoEventos (props) {
     const eventos = generateEventosCard(
         props.data,
         {
@@ -38,3 +38,4 @@ export function Eventos (props) {
         </>
     );
 }
+export const Eventos = React.memo(NoMemoEventos);

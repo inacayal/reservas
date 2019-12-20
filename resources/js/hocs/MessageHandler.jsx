@@ -9,7 +9,7 @@ import Message from '../utils/Message';
  * navigation
  */
 import Profile from '../componentes/control/Profile';
-import {RouterTransition} from './RouterTransition';
+import {DataHandler} from './DataHandler';
 
 export const searchHandler = (handlerArray,path) => {
     const handler = handlerArray.filter((c,i) => {
@@ -21,7 +21,7 @@ export const searchHandler = (handlerArray,path) => {
 
 export const DisplaysMessages = React.createContext({});
 
-export default class MainFrame extends Component {
+export default class MessageHandler extends Component {
     constructor(props){
         super(props);
         this.state={
@@ -60,16 +60,17 @@ export default class MainFrame extends Component {
                             show={this.state.showMessage}
                             message={this.state.message}/>
                 <DisplaysMessages.Provider value={this.showMessage}>
-                    <RouterTransition   message={this.state.showMessage}
+                    <DataHandler   message={this.state.showMessage}
                                         url={window.location.href.replace(/((http:\/\/|https:\/\/)localhost\/|\/$)/gi, '')}
                                         sidebarElem={props.current}
                                         route={match}
                                         location={location.pathname}
-                                        handlerArray = {props.handlers}
+                                        handler={handler}
                                         displayMessage={this.showMessage}
-                                        history={this.props.history}>
+                                        history={this.props.history}
+                                        global={props.match}>
                         {props.children}
-                    </RouterTransition>
+                    </DataHandler>
                 </DisplaysMessages.Provider>
                 <div className="col-md-2 hidden-sm white-background">
                     <Profile />

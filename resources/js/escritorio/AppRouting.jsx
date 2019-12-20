@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import MainFrame from '../hocs/MainFrame';
+import MessageHandler from '../hocs/MessageHandler';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import BarraNavegacion from '../componentes/control/BarraNavegacion';
 //Routring
@@ -34,99 +34,96 @@ export default function AppRouting (props) {
                             exact
                             render={
                                 (match) =>
-                                    <MainFrame  handlers = {handlers.escritorio.list}
+                                    <MessageHandler  handlers = {handlers.escritorio.list}
                                                 current = {'0'}
                                                 {...match}>
-                                        <EscritorioRouting  handlers={handlers.escritorio.form}
-                                                            {...match}/>
-                                    </MainFrame>
+                                        <EscritorioRouting  handlers={handlers.escritorio.form}/>
+                                    </MessageHandler>
                             }/>
                     <Route  path='/reservas'
                             render={
                                 (match) =>
-                                    <MainFrame  current={'1'}
+                                    <MessageHandler  current={'1'}
                                                 handlers={handlers.reservas.list}
                                                 {...match}>
                                         <ReservasRouting handlers = {handlers.reservas.form}
                                                          {...match}/>
-                                    </MainFrame>
+                                    </MessageHandler>
                             } />
                     <Route  path='/horarios/feriados'
                             render={
                                 (match) =>(
-                                    <MainFrame  current={'2'}
+                                    <MessageHandler  current={'2'}
                                                 handlers={handlers['horarios/feriados'].list}
                                                 {...match}>
                                         <FeriadosRouting handlers = {handlers['horarios/feriados'].form}
                                                          {...match}/>
-                                    </MainFrame>
+                                    </MessageHandler>
                                 )
                             }/>
                     <Route  path='/horarios'
                             render={
                                 (match) => (
-                                    <MainFrame  current={'2'}
+                                    <MessageHandler  current={'2'}
                                                 handlers={handlers.horarios.list}{...match}>
                                         <HorariosRouting handlers = {handlers.horarios.form}
                                                          {...match}/>
-                                    </MainFrame>
+                                    </MessageHandler>
                                 )
                             }/>
                     <Route  path='/ubicaciones'
                             render={
                                 (match) =>
-                                    <MainFrame  current = {'3'}
+                                    <MessageHandler  current = {'3'}
                                                 handlers={handlers.ubicaciones.list}{...match}>
                                         <UbicacionesRouting  handlers = {handlers.ubicaciones.form}
                                                              {...match}/>
-                                    </MainFrame>
+                                    </MessageHandler>
                             } />
                     <Route  path='/eventos'
                             render={
                                 (match) =>
-                                    <MainFrame  current={'4'}
+                                    <MessageHandler  current={'4'}
                                                 handlers={handlers.eventos.list}
                                                 {...match}>
-                                        <EventosRouting handlers = {handlers.eventos.form}
-                                                        {...match}/>
-
-                                    </MainFrame>
+                                        <EventosRouting handlers = {handlers.eventos.form}/>
+                                    </MessageHandler>
                             } />
                     <Route  path='/promociones'
                             render={
                                 (match) =>
-                                    <MainFrame  current={'5'}
+                                    <MessageHandler  current={'5'}
                                                 handlers={handlers.promociones.list}{...match}>
                                         <PromocionesRouting handlers = {handlers.promociones.form}
                                                             {...match} />
-                                    </MainFrame>
+                                    </MessageHandler>
                             } />
                     <Route  path='/locales'
                             component={
                                 (match) =>
-                                    <MainFrame  current={'6'}
+                                    <MessageHandler  current={'6'}
                                                 handlers={handlers.locales.list}{...match}>
                                         <LocalesRouting handlers = {handlers.locales.form}
                                                         {...match} />
-                                    </MainFrame>
+                                    </MessageHandler>
                             } />
                     <Route  path='/configuracion'
                             render={
                                 (match) =>
-                                    <MainFrame  handlers={handlers.configuracion.list}
+                                    <MessageHandler  handlers={handlers.configuracion.list}
                                                 current={'7'}{...match}>
                                         <ConfiguracionRouting   handlers = {handlers.configuracion.form}
                                                                 {...match} />
-                                    </MainFrame>
+                                    </MessageHandler>
                             } />
                     <Route  path='/franquicias'
                             render={
                                 (match) =>
-                                    <MainFrame  current={'8'}
+                                    <MessageHandler  current={'8'}
                                                 handlers={handlers.franquicias.list}{...match}>
                                         <FranquiciasRouting handlers = {handlers.franquicias.form}
                                                             {...match} />
-                                    </MainFrame>
+                                    </MessageHandler>
                             }/>
                 </Switch>
             </div>

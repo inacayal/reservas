@@ -5,7 +5,7 @@ import ButtonList from '../basic/ButtonList';
 import {DAYS,MONTHS,monthRows,monthIndex} from '../../constantes/DaysMonths';
 import { getMonthLength} from '../../utils/Helper';
 import {evaluateDateChange} from '../../utils/Helper';
-import {WaitsLoading} from '../../hocs/RouterTransition';
+import {WaitsLoading} from '../../hocs/DataHandler';
 
 export default class Agenda extends Component {
     constructor(props){

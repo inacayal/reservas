@@ -16,7 +16,7 @@ import {
     downloadHandler,
     LoadBar
 } from '../utils/LoadBar';
-import {searchHandler} from './MainFrame';
+import {searchHandler} from './MessageHandler';
 import {handlers} from '../handlers/index';
 import {
     displayGetRequestErrors as displayErrors
@@ -41,9 +41,6 @@ function assignHandler (
     location,
     r
 ){
-    let handler = searchHandler(handlerArray,location);
-    const parameters = matchPath(location,{path:handler.endpoint});
-    handler = handler.callback(parameters.params);
     return [
         handler.bind(this),
         parameters.params
@@ -51,47 +48,45 @@ function assignHandler (
 }
 
 function awaitLoading (
-    location,
-    match,
-    message,
-    push=true,
+    {
+        handler,
+        route,
+        message,
+    }
 ){
-    console.log(match)
-    const   [
-        fetchData,
-        parameters
-    ] = this.assignHandler(
-            handlers[match].list,
-            location,
-            null
-        );
-
     this.setState(
         {
             loading:0,
             loadFinished:false,
-            fetchData:fetchData,
+            fetchData:handler.callback(route.params).bind(this),
         },
             () =>
-                this.fetchHandler(
-                    location,
-                    parameters,
-                    push,
-                    message
+                new Promise (
+                    (resolve,reject) => {
+                        if (!this.state.loadFinished)
+                            resolve();
+                    }
+                )
+                .then (
+                    () =>
+                        this.fetchHandler({
+                            component:this.props.children,
+                            message:message
+                        })
                 )
     );
 }
 
 export const WaitsLoading = React.createContext({});
 
-export class RouterTransition extends Component {
+export class DataHandler extends Component {
     constructor(props){
         super(props);
         this.assignHandler = assignHandler.bind(this);
         this.state = {
             data:null,
             loadFinished:true,
-            loading:0,
+            loading:0
             //location:this.props.location,
             //fetchData:this.assignHandler(this.props.handlerArray,this.props.location,null)[0]
         };
@@ -101,62 +96,63 @@ export class RouterTransition extends Component {
         this.displayErrors = displayErrors.bind(this);
     }
 
-    fetchHandler(location,params,push,message){
+    fetchHandler({component,message}){
+        //console.log(this.state.loadFinished)
         const handlePromise = (resolve,reject) => {
-            this.state.fetchData(params)
+            this.state.fetchData(component)
                 .then(
                     res => {
+                        //console.log(res)
                         if (res instanceof Error)
                             reject(res);
-                        else {
-                            if (push)
-                                this.props.history.push(location);
+                        else
                             resolve(message);
-                        }
                     }
                 )
         };
-
         new Promise (handlePromise)
             .then (res => {
                 if (res)
-                    this.props.displayMessage(res)
+                    this.props.displayMessage(res);
             })
             .catch(this.displayErrors)
     }
 
     shouldComponentUpdate(np,ns){
+        //console.log('parent')
+        //console.log((ns.loadFinished !== this.state.loadFinished) && ns.loadFinished)
+        //console.log(ns.loadFinished !== this.state.loadFinished)
+        //console.log(np.location !== this.props.location)
         if (np.message !== this.props.message)
             return false;
-        else
-            return this.state.loadFinished;
+        return  np.location !== this.props.location || ns.loadFinished !== this.state.loadFinished;
     }
 
-    componentDidUpdate(pp){
-        if (this.props.history.action === 'POP'){
-            this.awaitLoading(
-                this.props.location,
-                searchRoute(this.props.location),
-                null,
-                false
-            );
+    componentDidUpdate(pp,ps){
+        //console.log('culo')
+        if(pp.location !== this.props.location){
+            this.awaitLoading({
+                handler:this.props.handler,
+                route:this.props.route,
+                message:null
+            });
         }
     }
 
     componentDidMount() {
-        this.awaitLoading(
-            this.props.location,
-            searchRoute(this.props.location),
-            null,
-            true
-        );
+        this.awaitLoading({
+            handler:this.props.handler,
+            route:this.props.route,
+            message:null,
+        });
     }
 
     componentWillUnmount(){
-        console.log('unmount1')
+        //console.log('unmount1')
     }
 
     render() {
+        //console.log(this.state.location)
         return (
             <WaitsLoading.Provider value={this.awaitLoading}>
                 <LoadBar loaded={this.state.loading}/>
@@ -190,7 +186,11 @@ export class RouterTransition extends Component {
                                                 {
                                                     React.cloneElement(
                                                         this.props.children,
-                                                        {data:this.state.data}
+                                                        {
+                                                            data:this.state.data,
+                                                            match:this.props.global,
+                                                            location:this.state.location
+                                                        }
                                                     )
                                                 }
                                         </div>

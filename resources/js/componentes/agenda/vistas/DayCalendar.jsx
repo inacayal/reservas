@@ -11,7 +11,7 @@ import {CardList} from '../../basic/CardList';
 import {Toggle} from '../../input/Toggle';import {DAYS,MONTHS} from '../../../constantes/DaysMonths';
 import {getMonthLength} from '../../../utils/Helper';
 import { evaluateDateChange } from '../../../utils/Helper';
-import {WaitsLoading} from '../../../hocs/RouterTransition';
+import {WaitsLoading} from '../../../hocs/DataHandler';
 
 const WeekDisplay = React.memo(
     (props) =>{

@@ -15,7 +15,7 @@ import Titulo from '../../../componentes/basic/Titulo';
 import { Toggle } from '../../../componentes/input/Toggle';
 import Actions from '../../../componentes/basic/Actions';
 import {generateHoursFromInterval} from '../../../utils/Helper';
-import {WaitsLoading} from '../../../hocs/RouterTransition';
+import {WaitsLoading} from '../../../hocs/DataHandler';
 import {Text} from '../../../componentes/input/Text'
 
 export function FeriadoFormulario (props) {

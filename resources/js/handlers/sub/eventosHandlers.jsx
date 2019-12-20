@@ -16,25 +16,25 @@ export const eventosHandlers = {
             endpoint:'/eventos',
             match:/\/eventos$/,
             callback:(params) =>
-                listHandler(`/eventos/list/${user.id}`,`/eventos`)
+                listHandler(`/eventos/list/${user.id}`,`/eventos`,params)
         },
         {
             endpoint:'/eventos/agregar',
             match:/\/eventos\/(agregar)$/,
             callback:(params) =>
-                addFormHandler(`/eventos/add/${user.id}`,`/eventos/agregar`)
+                addFormHandler(`/eventos/add/${user.id}`,`/eventos/agregar`,params)
         },
         {
             endpoint:'/eventos/editar/:id',
             match:/\/eventos\/(editar\/\d+)$/,
             callback:(params) =>
-                editFormHandler(`eventos/single/${user.id}/${params.id}`,`/eventos/editar/${params.id}`)
+                editFormHandler(`eventos/single/${user.id}/${params.id}`,`/eventos/editar/${params.id}`,params)
         },
         {
             endpoint:'/eventos/:id',
             match: /\/eventos\/(\d+)$/,
             callback: (params) =>
-                singleHandler(`/eventos/single/${user.id}/${params.id}`,`/eventos/${params.id}`)
+                singleHandler(`/eventos/single/${user.id}/${params.id}`,`/eventos/${params.id}`,params)
         }
     ],
     form: {
@@ -43,13 +43,12 @@ export const eventosHandlers = {
     }
 };
 
-const editFormHandler = (endpoint,location) => {
-    return function (params) {
+const editFormHandler = (endpoint,location,params) => {
+    return function (component) {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
         });
-
         return  request
                 .then(
                     response => {
@@ -67,6 +66,7 @@ const editFormHandler = (endpoint,location) => {
                             data: {...data},
                             nombre:data.selected.nombre,
                             loadFinished:true,
+                            location:this.props.location
                         });
                         return true;
                     }
@@ -76,7 +76,7 @@ const editFormHandler = (endpoint,location) => {
 }
 
 const addFormHandler = (endpoint,location) => {
-    return function (params) {
+    return function (component) {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -85,13 +85,13 @@ const addFormHandler = (endpoint,location) => {
         return  request
                 .then(
                     response => {
-                        let data = {};
-                        data = response.data;
+                        let data = response.data;
                         data.horarios.list = assignHorarios(data.horarios.list)[0];
                         this.setState({
                             data: {...data},
                             nombre:null,
                             loadFinished:true,
+                            location:this.props.location
                         });
                         return true;
                     }
@@ -101,7 +101,7 @@ const addFormHandler = (endpoint,location) => {
 }
 
 const listHandler = (endpoint,location) => {
-    return function (params) {
+    return function (component) {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -114,6 +114,7 @@ const listHandler = (endpoint,location) => {
                             data: response.data.eventos.data,
                             loadFinished:true,
                             nombre:null,
+                            location:this.props.location
                         });
                         return true;
                     }
@@ -123,7 +124,7 @@ const listHandler = (endpoint,location) => {
 }
 
 const singleHandler = (endpoint,location) => {
-    return function (params) {
+    return function (component) {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -137,6 +138,7 @@ const singleHandler = (endpoint,location) => {
                             data:data,
                             nombre:data.nombre,
                             loadFinished:true,
+                            location:this.props.location
                         });
                         return true;
                     }
