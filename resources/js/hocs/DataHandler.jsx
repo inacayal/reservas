@@ -16,35 +16,15 @@ import {
     downloadHandler,
     LoadBar
 } from '../utils/LoadBar';
-import {searchHandler} from './MessageHandler';
-import {handlers} from '../handlers/index';
+import {handlerArray} from '../handlers/index';
 import {
     displayGetRequestErrors as displayErrors
 } from '../utils/errorHandling';
 
-const routeMap = [
-    'horarios',
-    'horarios/feriados',
-    'reservas',
-    'configuracion',
-    'eventos',
-    'promociones',
-    'locales',
-    'franquicias',
-    'ubicaciones'
-];
-
-const searchRoute = (path) => routeMap.filter(e => path.match(e)).pop();
-
-function assignHandler (
-    handlerArray,
-    location,
-    r
-){
-    return [
-        handler.bind(this),
-        parameters.params
-    ];
+const searchHandler = (path) => {
+    return handlerArray.filter(
+        c => path.match(c.match)
+    ).pop();
 }
 
 function awaitLoading (
@@ -77,27 +57,38 @@ function awaitLoading (
     );
 }
 
+const assignRoute =
+    (location) => {
+        const handler = searchHandler(location);
+        return {
+            handler,
+            route:matchPath(location,{path:handler.endpoint})
+        };
+    };
+
 export const WaitsLoading = React.createContext({});
 
-export class DataHandler extends Component {
+class DataHandler extends Component {
     constructor(props){
         super(props);
-        this.assignHandler = assignHandler.bind(this);
         this.state = {
             data:null,
-            loadFinished:true,
-            loading:0
-            //location:this.props.location,
-            //fetchData:this.assignHandler(this.props.handlerArray,this.props.location,null)[0]
+            loading:0,
+            message:null
         };
         this.downloadHandler = downloadHandler.bind(this);
         this.awaitLoading = awaitLoading.bind(this);
         this.fetchHandler = this.fetchHandler.bind(this);
         this.displayErrors = displayErrors.bind(this);
+        this.routeChange = this.routeChange.bind(this);
+    }
+
+    routeChange (location,message) {
+        const config = assignRoute(location.pathname);
+        this.awaitLoading({...config,message})
     }
 
     fetchHandler({component,message}){
-        //console.log(this.state.loadFinished)
         const handlePromise = (resolve,reject) => {
             this.state.fetchData(component)
                 .then(
@@ -119,40 +110,32 @@ export class DataHandler extends Component {
     }
 
     shouldComponentUpdate(np,ns){
-        //console.log('parent')
-        //console.log((ns.loadFinished !== this.state.loadFinished) && ns.loadFinished)
-        //console.log(ns.loadFinished !== this.state.loadFinished)
-        //console.log(np.location !== this.props.location)
-        if (np.message !== this.props.message)
-            return false;
-        return  np.location !== this.props.location || ns.loadFinished !== this.state.loadFinished;
+        return  np.location !== this.props.location
+                || ns.loadFinished !== this.state.loadFinished
+                || np.loading!==0;
     }
 
     componentDidUpdate(pp,ps){
-        //console.log('culo')
         if(pp.location !== this.props.location){
-            this.awaitLoading({
-                handler:this.props.handler,
-                route:this.props.route,
-                message:null
-            });
+            this.routeChange(this.props.location,{message:null})
         }
     }
 
     componentDidMount() {
-        this.awaitLoading({
-            handler:this.props.handler,
-            route:this.props.route,
-            message:null,
-        });
+        window.addEventListener(
+            'onhashchange',
+            e => {
+                e.preventDefault();
+                console.log('culo')
+            });
+        this.routeChange(this.props.location,{message:null})
     }
 
-    componentWillUnmount(){
-        //console.log('unmount1')
+    componentWillUnmount() {
     }
 
     render() {
-        //console.log(this.state.location)
+        const location = `escritorio${this.props.location.pathname}`;
         return (
             <WaitsLoading.Provider value={this.awaitLoading}>
                 <LoadBar loaded={this.state.loading}/>
@@ -163,8 +146,7 @@ export class DataHandler extends Component {
                 <div    className="col-md-8 container-fluid"
                         style={{height:'100%'}}>
                     <div className="row">
-                        <BreadCrumb items={this.props.url.split('/')}
-                                    url={this.props.url}
+                        <BreadCrumb url={location}
                                     nombre={this.state.nombre}/>
                     </div>
                     <div    className="row white-background"
@@ -184,14 +166,16 @@ export class DataHandler extends Component {
                                                     }
                                                     style={{marginLeft:"-15px"}}/>
                                                 {
-                                                    React.cloneElement(
-                                                        this.props.children,
-                                                        {
-                                                            data:this.state.data,
-                                                            match:this.props.global,
-                                                            location:this.state.location
-                                                        }
-                                                    )
+                                                    (this.state.location.pathname === this.props.location.pathname)
+                                                        ? React.cloneElement(
+                                                            this.props.children,
+                                                            {
+                                                                data:this.state.data,
+                                                                match:this.props.global,
+                                                                location:this.state.location
+                                                            }
+                                                        )
+                                                        : <></>
                                                 }
                                         </div>
                                     </div>
@@ -205,3 +189,4 @@ export class DataHandler extends Component {
         );
     }
 }
+export default withRouter(DataHandler);

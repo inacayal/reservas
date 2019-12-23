@@ -223,7 +223,7 @@ export default class Validator extends Component{
         this.dataSuccess =  this.dataSuccess.bind(this);
 
         this.state = {
-            form:this.props.formMaker(this.props.data),
+            form:this.props.form,
             errors:{},
             validation:this.props.validation,
             sent:false
@@ -316,8 +316,7 @@ export default class Validator extends Component{
             {
                 fields:this.state.form,
                 change:this.changeFormField,
-                errors:this.state.errors,
-                data:this.props.data
+                errors:this.state.errors
             }
         );
         return (

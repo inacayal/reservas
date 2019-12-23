@@ -6,7 +6,7 @@ import {searchErrors} from '../hocs/Validator';
 export function displayGetRequestErrors(error){
     const errorMessage = error.response ? error.response : error;
     //console.log(errorMessage)
-    this.props.displayMessage({
+    this.setState({
         message:{
             data:(
                 <div className="h-padding">

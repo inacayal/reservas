@@ -1,4 +1,4 @@
-import {createFeriadosList} from '../../utils/Helper';
+
 
 export const validation = {
     id:{
@@ -66,16 +66,5 @@ export const addFormFields = (data) => {
 
 export const editFormFields = (data) => {
     console.log(data)
-    const   selected = data.selected,
-            feriados = createFeriadosList(selected.feriados.data);
-    return {
-        id:selected.id,
-        id_usuario:user.id,
-        promociones:Object.keys(selected.promociones.list).join(','),
-        horarios:Object.keys(selected.horarios.list).join(','),
-        feriados:Object.keys(feriados).join(','),
-        descripcion:selected.descripcion,
-        nombre:selected.nombre,
-        scope:selected.estado==="Activo" ? 1 : 2
-    };
+
 }

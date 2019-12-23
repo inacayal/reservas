@@ -7,33 +7,36 @@ import {
     PUT
 } from '../../utils/api';
 
-export const ubicacionesHandlers = [
-    {
-        endpoint:'/ubicaciones',
-        match:/\/ubicaciones$/,
-        callback:(params) =>
-            listHandler(`ubicaciones/list/${user.id}`,`/ubicaciones`)
-    },
-    {
-        endpoint:'/ubicaciones/agregar',
-        match:/\/ubicaciones\/(agregar)$/,
-        callback:(params) =>
-            addFormHandler(`ubicaciones/single/${user.id}/${params.id}`,`/ubicaciones/agregar`)
-    },
-    {
-        endpoint:'/ubicaciones/editar/:id',
-        match:/\/ubicaciones\/(editar\/\d+)$/,
-        callback:(params) =>
-            editFormHandler(`ubicaciones/single/${user.id}/${params.id}`,`/ubicaciones/editar/${params.id}`)
-    },
-    {
-        endpoint:'/ubicaciones/:id',
-        match: /\/ubicaciones\/(\d+)$/,
-        callback: (params) =>
-            singleHandler(`/ubicaciones/single/${user.id}/${params.id}`,`/ubicaciones/${params.id}`)
+export const ubicacionesHandlers = {
+    list: [
+        {
+            endpoint:'/ubicaciones',
+            match:/\/ubicaciones$/,
+            callback:(params) =>
+                listHandler(`ubicaciones/list/${user.id}`,`/ubicaciones`)
+        },
+        {
+            endpoint:'/ubicaciones/agregar',
+            match:/\/ubicaciones\/(agregar)$/,
+            callback:(params) =>
+                addFormHandler(`ubicaciones/single/${user.id}/${params.id}`,`/ubicaciones/agregar`)
+        },
+        {
+            endpoint:'/ubicaciones/editar/:id',
+            match:/\/ubicaciones\/(editar\/\d+)$/,
+            callback:(params) =>
+                editFormHandler(`ubicaciones/single/${user.id}/${params.id}`,`/ubicaciones/editar/${params.id}`)
+        },
+        {
+            endpoint:'/ubicaciones/:id',
+            match: /\/ubicaciones\/(\d+)$/,
+            callback: (params) =>
+                singleHandler(`/ubicaciones/single/${user.id}/${params.id}`,`/ubicaciones/${params.id}`)
 
-    }
-];
+        }
+    ],
+    form:[]
+};
 
 const singleHandler  = (endpoint,location) => {
     return function (params) {

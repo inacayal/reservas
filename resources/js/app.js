@@ -13,4 +13,4 @@ require('./bootstrap');
  */
 
 require('./reserva/Main');
-require('./escritorio/AppRouting');
+require('./escritorio/Mainframe');

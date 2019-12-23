@@ -21,3 +21,5 @@ export const handlers = {
     'horarios/feriados':feriadosHandlers,
     configuracion:configuracionHandlers,
 };
+
+export const handlerArray = Object.values(handlers).reduce((t,e) => t.concat(e.list),[])

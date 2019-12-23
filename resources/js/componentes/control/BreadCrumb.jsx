@@ -111,12 +111,13 @@ export default class BreadCrumb extends Component {
     render (){
         let stored = '',
             display = null;
-        const props = this.props;
+        const   props = this.props,
+                items = this.props.url.split('/');
         return (
             <>
                 <ul className="flex-row top-padding nav-list white-background full-width h-padding">
                     {
-                        props.items.map(
+                        items.map(
                             (e,i) => {
                                 stored = e==='escritorio' ? '' : `${stored}/${e}`;
                                 display = map[e] ? map[e](props.nombre): map.ver(props.nombre);
@@ -125,12 +126,12 @@ export default class BreadCrumb extends Component {
                                     params:{},
                                     route:e
                                 };
-                                if (props.items[i-1] === 'editar')
+                                if (items[i-1] === 'editar')
                                     display = '';
                                 return (
                                     <li key={i} className="margin-box ">
                                         {
-                                            i === props.items.length-1 || e === 'editar' || e === 'agregar'
+                                            i === items.length-1 || e === 'editar' || e === 'agregar'
                                             ?
                                                 <div className="inline-block line-v-middle smaller-text margin-box">{display}</div>
                                             :
