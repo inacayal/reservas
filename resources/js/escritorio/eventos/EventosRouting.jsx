@@ -18,11 +18,7 @@ import {Eventos} from './sub/Eventos';
 import {VerEvento} from './sub/VerEvento';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 import Validator from '../../hocs/Validator';
-import {
-    validation,
-    addFormFields,
-    editFormFields
-} from './validation';
+import {validation} from './validation';
 import {WaitsLoading} from '../../hocs/DataHandler';
 import TransitionHandler from '../../hocs/TransitionHandler';
 import {createFeriadosList} from '../../utils/Helper';
@@ -38,7 +34,6 @@ function EventosRouting (props){
             toggle(false);
         },
         wait = () => false;
-    //console.log(props.data)
     return (
         <>
             <ConfirmarModal open={open}

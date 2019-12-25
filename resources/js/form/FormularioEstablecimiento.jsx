@@ -2,7 +2,7 @@ import React, {
     Component
 } from 'react';
 import ReactDOM from 'react-dom';
-import {Text} from '../../componentes/input/Text';
+import {Text} from '../componentes/input/Text';
 import {FormularioUbicacion} from './FormularioUbicacion';
 
 export const FormularioEstablecimiento = (props) => {

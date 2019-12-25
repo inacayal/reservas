@@ -5,7 +5,7 @@ import React, {
     Component
 } from 'react';
 import ReactDOM from 'react-dom';
-import { FormularioEstablecimiento } from '../FormularioEstablecimiento';
+import { FormularioEstablecimiento } from '../../../form/FormularioEstablecimiento';
 import Titulo from '../../../componentes/basic/Titulo';
 import Actions from '../../../componentes/basic/Actions';
 

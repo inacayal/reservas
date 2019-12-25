@@ -15,12 +15,12 @@ import {
     Switch
 } from 'react-router-dom';
 import ReactDOM from 'react-dom';
-import {HorarioFormulario} from './horarios/HorarioFormulario';
-import {Horarios} from './horarios/Horarios';
-import {VerHorario} from './horarios/VerHorario';
+import {Formulario} from './sub/Formulario';
+import {Horarios} from './sub/Horarios';
+import {VerHorario} from './sub/VerHorario';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 import Validator from '../../hocs/Validator';
-import {horariosValidation as validation} from './validation'
+import {validation} from './validation'
 
 export default function HorariosRouting (props) {
     const   [open,toggle] = useState(false),
@@ -66,11 +66,12 @@ export default function HorariosRouting (props) {
                                 };
                                 return (
                                     <Validator  form={form}
+                                                sendRequest={()=> false}
                                                 validation={validation}>
-                                        <HorarioFormulario  editar={false}
-                                                            data={props.data}
-                                                            nav={Navegacion.agregar('horarios')}
-                                                            formActions={FormActions()} {...match} />
+                                        <Formulario editar={false}
+                                                    data={props.data}
+                                                    nav={Navegacion.agregar('horarios')}
+                                                    formActions={FormActions()} {...match} />
                                     </Validator>
                                 )
                             }
@@ -96,12 +97,13 @@ export default function HorariosRouting (props) {
                                         };
                                 return (
                                     <Validator  form={form}
+                                                sendRequest={()=> false}
                                                 validation={validation}>
-                                        <HorarioFormulario  data={props.data}
-                                                            toggleModal={openModal}
-                                                            nav={Navegacion.formulario(()=>false,match.match.params.id,'horarios')}
-                                                            formActions={FormActions()}
-                                                            editar={true} {...match} />
+                                        <Formulario data={props.data}
+                                                    toggleModal={openModal}
+                                                    nav={Navegacion.formulario(()=>false,match.match.params.id,'horarios')}
+                                                    formActions={FormActions()}
+                                                    editar={true}/>
                                     </Validator>
                                 )
                             }

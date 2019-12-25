@@ -10,10 +10,10 @@ import {
     DAYS,
     MONTHS,
     HOURS
-} from '../../../constantes/DaysMonths';
+} from '../constantes/DaysMonths';
 import ReactDOM from 'react-dom';
-import {Select} from '../../../componentes/input/Select';
-import {Text} from '../../../componentes/input/Text';
+import {Select} from '../componentes/input/Select';
+import {Text} from '../componentes/input/Text';
 
 export const SelectFields = (props) => {
     const   fields = props.fields,

@@ -56,6 +56,7 @@ export default function FranquiciasRouting (props) {
                                 };
                                 return (
                                     <Validator  form={fields}
+                                                sendRequest={()=> false}
                                                 validation={validation}>
                                         <Formulario data={props.data}
                                                     toggleModal={openModal}
@@ -82,6 +83,7 @@ export default function FranquiciasRouting (props) {
                                 };
                                 return (
                                     <Validator  form={fields}
+                                                sendRequest={()=> false}
                                                 validation={validation}>
                                         <Formulario data={props.data}
                                                     toggleModal={openModal}

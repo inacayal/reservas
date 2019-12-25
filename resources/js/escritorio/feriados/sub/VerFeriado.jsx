@@ -8,7 +8,7 @@ import {
 import ReactDOM from 'react-dom';
 import CustomLink from '../../../componentes/basic/CustomLink';
 import Titulo from '../../../componentes/basic/Titulo';
-import {Calendario} from '../formularios/Calendario';
+import {Calendario} from '../../../form/Calendario';
 import {CommaList} from '../../../componentes/basic/CommaList';
 import EventosTable from '../../../componentes/tables/EventosTable';
 

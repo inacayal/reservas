@@ -56,7 +56,7 @@ const editFormHandler = (endpoint,location) => {
                         data:data,
                         nombre:data.nombre,
                         loadFinished:true,
-                        redirect:<Redirect to={location}/>
+                        location:this.props.location,
                     });
                 }
             )
@@ -77,7 +77,7 @@ const addFormHandler = (endpoint,location) => {
                     this.setState({
                         data:data,
                         loadFinished:true,
-                        redirect:<Redirect to={location}/>
+                        location:this.props.location,
                     });
                 }
             )
@@ -101,7 +101,7 @@ const listHandler = (endpoint,location) => {
                     this.setState({
                         data: response.data.locales.data,
                         loadFinished: true,
-                        redirect:<Redirect to={location}/>
+                        location:this.props.location,
                     });
                 }
             )
@@ -125,7 +125,7 @@ const singleHandler = (endpoint,location) => {
                         data: response.data.data,
                         loadFinished:true,
                         nombre:data.nombre,
-                        redirect:<Redirect to={location}/>
+                        location:this.props.location,
                     });
 
                 }

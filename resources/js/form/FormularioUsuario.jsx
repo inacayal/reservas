@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 /**
  * input elem
  */
-import { Text } from '../../componentes/input/Text';
+import { Text } from '../componentes/input/Text';
 
 export const FormularioUsuario = (props) => {
     const data = props.data;

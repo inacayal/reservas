@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import ReactDOM from 'react-dom';
 import Titulo from '../../../componentes/basic/Titulo';
-import { FormularioUsuario } from '../FormularioUsuario';
+import { FormularioUsuario } from '../../../form/FormularioUsuario';
 
 export function Usuario (props) {
     return (

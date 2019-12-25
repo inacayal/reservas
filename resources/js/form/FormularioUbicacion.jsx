@@ -2,8 +2,8 @@ import React, {
     Component
 } from 'react';
 import ReactDOM from 'react-dom';
-import { Text } from '../../componentes/input/Text';
-import { Select } from '../../componentes/input/Select';
+import { Text } from '../componentes/input/Text';
+import { Select } from '../componentes/input/Select';
 
 const provincias = {
     1: "Provincia de Buenos Aires",

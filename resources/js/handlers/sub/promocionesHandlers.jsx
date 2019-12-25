@@ -56,7 +56,7 @@ const singleHandler = (endpoint,location) => {
                             data: data,
                             nombre:data.nombre,
                             loadFinished: true,
-                            redirect:<Redirect to={location}/>
+                            location:this.props.location,
                         });
                     }
                 )
@@ -78,7 +78,7 @@ const listHandler = (endpoint,location) => {
                         this.setState({
                             data: response.data.promociones.data,
                             loadFinished: true,
-                            redirect:<Redirect to={location}/>
+                            location:this.props.location,
                         });
                     }
                 )
@@ -112,7 +112,7 @@ const editFormHandler = (endpoint,location) => {
                             },
                             nombre:data.nombre,
                             loadFinished: true,
-                            redirect:<Redirect to={location}/>
+                            location:this.props.location,
                         });
                     }
                 )
@@ -132,7 +132,7 @@ const addFormHandler = (endpoint,location) => {
                         this.setState({
                             data: { ...response.data },
                             loadFinished: true,
-                            redirect:<Redirect to={location}/>
+                            location:this.props.location,
                         });
                     }
                 )

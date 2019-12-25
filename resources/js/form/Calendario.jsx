@@ -7,7 +7,7 @@ import React, {
 import {
     DAYS,
     MONTHS
-} from '../../../constantes/DaysMonths';
+} from '../constantes/DaysMonths';
 import ReactDOM from 'react-dom';
 import Calendar from 'react-calendar';
 

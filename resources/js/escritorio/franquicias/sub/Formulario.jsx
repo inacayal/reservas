@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Titulo from '../../../componentes/basic/Titulo';
 import Actions from '../../../componentes/basic/Actions';
-import { FormularioEstablecimiento } from '../../configuracion/FormularioEstablecimiento';
-import { FormularioUsuario } from '../../configuracion/FormularioUsuario';
+import { FormularioEstablecimiento } from '../../../form/FormularioEstablecimiento';
+import { FormularioUsuario } from '../../../form/FormularioUsuario';
 
 export function Formulario (props) {
     if (props.editar)

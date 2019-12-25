@@ -2,7 +2,7 @@ import React, {
     Component
 } from 'react';
 import ReactDOM from 'react-dom';
-import {FormularioReservas} from '../FormularioReservas';
+import {FormularioReservas} from '../../../form/FormularioReservas';
 import Titulo from '../../../componentes/basic/Titulo';
 
 export function Reservas (props) {

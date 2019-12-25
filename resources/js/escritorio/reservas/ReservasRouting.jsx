@@ -40,7 +40,9 @@ const ReservasRouting = (props) => (
                                 descripcion_evento:""
                             };
                             return (
-                                <Validator form={form} validation={validation}>
+                                <Validator  form={form} 
+                                            sendRequest={()=> false}
+                                            validation={validation}>
                                     <Formulario data={props.data}
                                                 nav={Navegacion.agregar('reservas')} {...match}/>
                                 </Validator>

@@ -38,77 +38,76 @@ export const ubicacionesHandlers = {
     form:[]
 };
 
-const singleHandler  = (endpoint,location) => {
-    return function (params) {
+const singleHandler  = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
         });
-        request
-            .then(
-                response => {
-                    const data = response.data.ubicaciones[0];
-                    this.setState({
-                        data: data,
-                        nombre:data.nombre,
-                        loadFinished:true,
-                        redirect:<Redirect to={location}/>
-                    });
-                }
-            )
-            .catch(this.displayErrors);
+        return  request
+                .then(
+                    response => {
+                        const data = response.data.ubicaciones[0];
+                        this.setState({
+                            data: data,
+                            nombre:data.nombre,
+                            loadFinished:true,
+                            location:this.props.location
+                        });
+                    }
+                )
+                .catch(this.displayErrors);
     }
 }
 
-const listHandler = (endpoint,location) => {
-    return function (params) {
+const listHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
         });
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: response.data.ubicaciones.data,
-                        loadFinished:true,
-                        redirect:<Redirect to={location}/>
-                    });
-                }
-            )
-            .catch(this.displayErrors);
+        return  request
+                .then(
+                    response => {
+                        this.setState({
+                            data: response.data.ubicaciones.data,
+                            loadFinished:true,
+                            location:this.props.location
+                        });
+                    }
+                )
+                .catch((err) => console.log(err));
     }
 }
 
-const editFormHandler = (endpoint,location) => {
-    return function (params) {
+const editFormHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
         });
-        request
-            .then(
-                response => {
-                    const data = response.data.ubicaciones[0];
-                    this.setState({
-                        data: data,
-                        nombre:data.nombre,
-                        loadFinished: true,
-                        redirect:<Redirect to={location}/>
-                    });
-                }
-            )
-            .catch(this.displayErrors);
+        return  request
+                .then(
+                    response => {
+                        const data = response.data.ubicaciones[0];
+                        this.setState({
+                            data: data,
+                            nombre:data.nombre,
+                            loadFinished: true,
+                            location:this.props.location
+                        });
+                    }
+                )
+                .catch(this.displayErrors);
     }
 }
 
-const addFormHandler = (endpoint,location) => {
-    return function (params) {
+const addFormHandler = (endpoint) => {
+    return function () {
         this.setState({
             data: true,
-            loading: 100,
             loadFinished:true,
-            redirect:<Redirect to={location}/>
+            location:this.props.location
         });
     }
 }

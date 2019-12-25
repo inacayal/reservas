@@ -56,8 +56,7 @@ const listHandler = (endpoint,location) => {
                             date:date,
                             show:params.show||"1"
                         },
-                        refresh:params.refresh||false,
-                        redirect:<Redirect to={location}/>,//?v=${params.show}&d=${date.getDate()}&m=${date.getMonth()+1}&y=${date.getFullYear()}`}/>,
+                        location:this.props.location,
                         loadFinished:true
                     });
                 }
@@ -81,7 +80,7 @@ const singleHandler = (endpoint,location) => {
                         data: data,
                         nombre:`Reserva de ${data.nombre} ${data.apellido}`,
                         loadFinished:true,
-                        redirect:<Redirect to={location}/>
+                        location:this.props.location,
                     });
                 }
             )
@@ -107,8 +106,7 @@ const formHandler = (endpoint,location) => {
                             date:date
                         },
                         loadFinished:true,
-                        refresh:params.refresh||false,
-                        redirect:<Redirect to={location}/>,
+                        location:this.props.location,
                     });
                 }
             )

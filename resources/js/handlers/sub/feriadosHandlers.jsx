@@ -11,26 +11,26 @@ import {generateHoursFromInterval} from '../../utils/Helper';
 export const feriadosHandlers = {
     list:[
         {
-            endpoint:`/horarios/feriados`,
-            match:/(\/horarios\/feriados)$/,
+            endpoint:`/feriados`,
+            match:/(\/feriados)$/,
             callback:(params) =>
                 listHandler(`/feriados/list/${user.id}/`,`/horarios/feriados`)
         },
         {
-            endpoint:`/horarios/feriados/agregar`,
-            match:/\/(horarios\/feriados\/agregar)$/,
+            endpoint:`/feriados/agregar`,
+            match:/(\/feriados\/agregar)$/,
             callback:(params) =>
                 addFormHandler(`/feriados/add/${user.id}/`,`/horarios/feriados/agregar`)
         },
         {
-            endpoint:`/horarios/feriados/editar/:id`,
-            match:/\/horarios\/(feriados\/editar\/\d+)$/,
+            endpoint:`/feriados/editar/:id`,
+            match:/\/(feriados\/editar\/\d+)$/,
             callback:(params) =>
                 editFormHandler(`/feriados/single/${user.id}/${params.id}`,`/horarios/feriados/editar/${params.id}`)
         },
         {
-            endpoint:`/horarios/feriados/:id`,
-            match: /\/horarios\/feriados\/(\d+)$/,
+            endpoint:`/feriados/:id`,
+            match: /\/feriados\/(\d+)$/,
             callback: (params) =>
                 singleHandler(`/feriados/single/${user.id}/${params.id}`,`/horarios/feriados/${params.id}`)
         }
@@ -62,8 +62,7 @@ const editFormHandler = (endpoint,location) => {
                         },
                         nombre:data.nombre,
                         loadFinished: true,
-                        redirect:<Redirect to={location}/>,
-                        refresh:true
+                        location:this.props.location
                     });
                 }
             )
@@ -89,8 +88,7 @@ const addFormHandler = (endpoint,location) => {
                             minutes: generateHoursFromInterval(response.data.intervalo),
                         },
                         loadFinished: true,
-                        redirect:<Redirect to={location}/>,
-                        refresh:true
+                        location:this.props.location
                     });
                 }
             )
@@ -116,9 +114,7 @@ const listHandler = (endpoint,location) => {
                             show: params.show||"2"
                         },
                         loadFinished:true,
-                        redirect:<Redirect to={location}/>,
-                        refresh:true
-
+                        location:this.props.location
                     });
                 }
             )
@@ -145,8 +141,8 @@ const singleHandler = (endpoint,location) => {
                             intervalo:response.data.intervalo
                         },
                         nombre:data.nombre,
-                        loadFinished:true,
-                        redirect:<Redirect to={location}/>
+                        location:this.props.location,
+                        loadFinished:true
                     });
                 }
             )

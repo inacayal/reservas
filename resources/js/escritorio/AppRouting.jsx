@@ -13,7 +13,7 @@ import UbicacionesRouting from './ubicaciones/UbicacionesRouting';
 import FranquiciasRouting from './franquicias/FranquiciasRouting';
 import EventosRouting from './eventos/EventosRouting';
 import HorariosRouting from './horarios/HorariosRouting';
-import FeriadosRouting from './horarios/FeriadosRouting';
+import FeriadosRouting from './feriados/FeriadosRouting';
 import ConfiguracionRouting from './configuracion/ConfiguracionRouting';
 import EscritorioRouting from './escritorio/EscritorioRouting';
 import MessageHandler from '../hocs/MessageHandler';
@@ -31,7 +31,7 @@ export default function AppRouting (props) {
                         render={
                             (match) => <ReservasRouting data={props.data} {...match}/>
                         } />
-                <Route  path='/horarios/feriados'
+                <Route  path='/feriados'
                         render={
                             (match) => <FeriadosRouting data={props.data} {...match}/>
                         }/>

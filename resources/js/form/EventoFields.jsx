@@ -7,9 +7,9 @@ import {
     DAYS,
     MONTHS,
     HOURS
-} from '../../../constantes/DaysMonths';
+} from '../constantes/DaysMonths';
 import ReactDOM from 'react-dom';
-import { MultipleSelect } from '../../../componentes/input/MultipleSelect';
+import { MultipleSelect } from '../componentes/input/MultipleSelect';
 
 export const EventoFields = (props) => {
     return (

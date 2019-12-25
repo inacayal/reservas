@@ -43,8 +43,8 @@ export const eventosHandlers = {
     }
 };
 
-const editFormHandler = (endpoint,location,params) => {
-    return function (component) {
+const editFormHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -75,8 +75,8 @@ const editFormHandler = (endpoint,location,params) => {
     }
 }
 
-const addFormHandler = (endpoint,location) => {
-    return function (component) {
+const addFormHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -100,7 +100,7 @@ const addFormHandler = (endpoint,location) => {
     }
 }
 
-const listHandler = (endpoint,location) => {
+const listHandler = (endpoint) => {
     return function (component) {
         const request = GET({
             endpoint: endpoint,
@@ -123,8 +123,8 @@ const listHandler = (endpoint,location) => {
     }
 }
 
-const singleHandler = (endpoint,location) => {
-    return function (component) {
+const singleHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler

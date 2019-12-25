@@ -37,7 +37,7 @@ export default function PromocionesRouting (props) {
                         (match) =>
                             <Promociones    data={props.data}
                                             toggleModal={openModal}
-                                            nav={Navegacion.listado('promociones')} {...match} />
+                                            nav={Navegacion.listado('promociones')}/>
                     }/>
             <Switch>
                 <Route  path={`${props.match.url}/editar/:id`}
@@ -54,6 +54,7 @@ export default function PromocionesRouting (props) {
                                         }
                                 return (
                                     <Validator  form={fields}
+                                                sendRequest={()=> false}
                                                 validation={validation}>
                                         <Formulario data={props.data}
                                                     editar={true}
@@ -75,6 +76,7 @@ export default function PromocionesRouting (props) {
                                 };
                                 return (
                                     <Validator  form={fields}
+                                                sendRequest={()=> false}
                                                 validation={validation}>
                                         <Formulario data={{all:props.data}}
                                                     editar={false}

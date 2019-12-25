@@ -63,6 +63,7 @@ export default function LocalesRouting (props) {
                                 };
                                 return (
                                     <Validator  form={fields}
+                                                sendRequest={()=> false}
                                                 validation={validation}>
                                         <Formulario editar={true}
                                                     data={props.data}
@@ -95,6 +96,7 @@ export default function LocalesRouting (props) {
                                 };
                                 return (
                                     <Validator  form={fields}
+                                                sendRequest={()=> false}
                                                 validation={validation}>
                                         <Formulario editar={false}
                                                     data={props.data}

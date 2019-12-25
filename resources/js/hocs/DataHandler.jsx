@@ -45,6 +45,7 @@ function awaitLoading (
                     (resolve,reject) => {
                         if (!this.state.loadFinished)
                             resolve();
+
                     }
                 )
                 .then (
@@ -93,7 +94,6 @@ class DataHandler extends Component {
             this.state.fetchData(component)
                 .then(
                     res => {
-                        //console.log(res)
                         if (res instanceof Error)
                             reject(res);
                         else
@@ -111,8 +111,7 @@ class DataHandler extends Component {
 
     shouldComponentUpdate(np,ns){
         return  np.location !== this.props.location
-                || ns.loadFinished !== this.state.loadFinished
-                || np.loading!==0;
+                || ns.loadFinished !== this.state.loadFinished;
     }
 
     componentDidUpdate(pp,ps){
@@ -122,12 +121,6 @@ class DataHandler extends Component {
     }
 
     componentDidMount() {
-        window.addEventListener(
-            'onhashchange',
-            e => {
-                e.preventDefault();
-                console.log('culo')
-            });
         this.routeChange(this.props.location,{message:null})
     }
 
@@ -135,7 +128,10 @@ class DataHandler extends Component {
     }
 
     render() {
-        const location = `escritorio${this.props.location.pathname}`;
+        const   location = this.state.location
+                        ? `escritorio${this.state.location.pathname}`
+                        : `escritorio`;
+        console.log('render')
         return (
             <WaitsLoading.Provider value={this.awaitLoading}>
                 <LoadBar loaded={this.state.loading}/>

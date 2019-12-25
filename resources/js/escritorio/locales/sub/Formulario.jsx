@@ -3,9 +3,9 @@ import React, {
 } from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
-import { FormularioEstablecimiento } from '../../configuracion/FormularioEstablecimiento';
-import { FormularioUsuario } from '../../configuracion/FormularioUsuario';
-import { FormularioFranquicia } from '../FormularioFranquicia';
+import { FormularioEstablecimiento } from '../../../form/FormularioEstablecimiento';
+import { FormularioUsuario } from '../../../form/FormularioUsuario';
+import { FormularioFranquicia } from '../../../form/FormularioFranquicia';
 import Actions from '../../../componentes/basic/Actions';
 import Titulo from '../../../componentes/basic/Titulo';
 import { Navegacion } from '../../../acciones/ActionsByView';

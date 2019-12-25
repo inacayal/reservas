@@ -21,18 +21,17 @@
                 ],
                 [
                     'data'=> "2",
-                    'disabled'=> false,
                     'title'=> "Horarios",
+                    'disabled'=> false,
                     'route'=> 'horarios',
-                    'sub'=> [
-                        [
-                            'title'=> 'Feriados',
-                            'to' => '/horarios/feriados',
-                            'route'=> 'horarios/feriados',
-                            'data'=> "0",
-                            'class'=> "medium-left-padding box-transparent box-padding bold-hover full-width text-left"
-                        ]
-                    ]
+                    'sub'=> []
+                ],
+                [
+                    'title'=> 'Feriados',
+                    'route'=> 'feriados',
+                    'data'=> "3",
+                    'disabled'=> false,
+                    'sub'=>[]
                 ],
                 [
                     'data'=> "3",

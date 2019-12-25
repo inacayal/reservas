@@ -1,19 +1,22 @@
 export const validation = {
-    id:{
-        rules:{},
-        fieldName:"Id"
-    },
-    id_dia_semana:{
-        rules:{
-            required:true
-        },
-        fieldName:"Día Semana"
-    },
     id_evento:{
         rules:{
             required:true
         },
         fieldName:"Eventos"
+    },
+    fecha_feriado : {
+        rules:{
+            required:true
+        },
+        fieldName:"Fecha"
+    },
+    nombre:{
+        rules:{
+            maxLen:50,
+            required:true
+        },
+        fieldName:"Nombre"
     },
     apertura_reserva_hora: {
         rules:{
@@ -65,7 +68,8 @@ export const validation = {
     },
     descripcion:{
         rules:{
-            maxLen:100
+            maxLen:100,
+            required:true
         },
         fieldName:"Descripción"
     },

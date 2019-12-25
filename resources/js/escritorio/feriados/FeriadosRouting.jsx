@@ -11,12 +11,12 @@ import {
     FormActions
 } from '../../acciones/ActionsByView';
 import ReactDOM from 'react-dom';
-import {FeriadoFormulario} from './feriados/FeriadoFormulario';
-import {Feriados} from './feriados/Feriados';
-import {VerFeriado} from './feriados/VerFeriado';
+import {Formulario} from './sub/Formulario';
+import {Feriados} from './sub/Feriados';
+import {VerFeriado} from './sub/VerFeriado';
 import {ConfirmarModal} from '../../componentes/modal/Modal';
 import Validator from '../../hocs/Validator';
-import {feriadoValidation as validation} from './validation';
+import {validation} from './validation';
 
 export default function FeriadosRouting (props) {
     const   [open,toggle] = useState(false),
@@ -40,7 +40,7 @@ export default function FeriadosRouting (props) {
                         (match) =>
                             <Feriados   data={props.data}
                                         toggleModal={openModal}
-                                        nav={Navegacion.listado('horarios/feriados')} {...match} />
+                                        nav={Navegacion.listado('/feriados')} {...match} />
                     } />
             <Switch>
                 <Route  path={`${props.match.url}/editar/:id`}
@@ -65,12 +65,13 @@ export default function FeriadosRouting (props) {
                                         };
                                 return (
                                     <Validator  form={form}
+                                                sendRequest={()=> false}
                                                 validation={validation}>
-                                        <FeriadoFormulario  data={props.data}
-                                                            toggleModal={openModal}
-                                                            nav={Navegacion.formulario(()=>false,match.match.params.id,'horarios/feriados')}
-                                                            formActions={FormActions()}
-                                                            editar={true} {...match} />
+                                        <Formulario data={props.data}
+                                                    toggleModal={openModal}
+                                                    nav={Navegacion.formulario(()=>false,match.match.params.id,'horarios/feriados')}
+                                                    formActions={FormActions()}
+                                                    editar={true} {...match} />
                                     </Validator>
                                 )
                             }
@@ -95,12 +96,12 @@ export default function FeriadosRouting (props) {
                                 };
                                 return (
                                     <Validator  form={form}
+                                                sendRequest={()=> false}
                                                 validation={validation}>
-                                        <FeriadoFormulario
-                                            data={props.data}
-                                            toggleModal={openModal}
-                                            nav={Navegacion.agregar('horarios/feriados')}
-                                            editar={false} {...match} />
+                                        <Formulario data={props.data}
+                                                    toggleModal={openModal}
+                                                    nav={Navegacion.agregar('/feriados')}
+                                                    editar={false} {...match} />
                                     </Validator>
                                 )
                             }
@@ -110,7 +111,7 @@ export default function FeriadosRouting (props) {
                             (match) =>
                                 <VerFeriado data={props.data}
                                             toggleModal={openModal}
-                                            nav={Navegacion.singular(()=>false,match.match.params.id,'horarios/feriados')} {...props} />
+                                            nav={Navegacion.singular(()=>false,match.match.params.id,'/feriados')} {...props} />
                         } />
             </Switch>
         </>

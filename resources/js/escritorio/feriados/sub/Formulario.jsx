@@ -8,9 +8,9 @@ import {
     DAYS,
     MONTHS
 } from '../../../constantes/DaysMonths';
-import {Calendario} from '../formularios/Calendario';
-import { SelectFields } from '../formularios/SelectFields';
-import { EventoFields } from '../formularios/EventoFields';
+import {Calendario} from '../../../form/Calendario';
+import { SelectFields } from '../../../form/SelectFields';
+import { EventoFields } from '../../../form/EventoFields';
 import Titulo from '../../../componentes/basic/Titulo';
 import { Toggle } from '../../../componentes/input/Toggle';
 import Actions from '../../../componentes/basic/Actions';
@@ -18,7 +18,7 @@ import {generateHoursFromInterval} from '../../../utils/Helper';
 import {WaitsLoading} from '../../../hocs/DataHandler';
 import {Text} from '../../../componentes/input/Text'
 
-export function FeriadoFormulario (props) {
+export function Formulario (props) {
     const   context = useContext(WaitsLoading),
             [side,toggle] = useState(props.fields.id_estado),
             data = props.data;

@@ -69,7 +69,7 @@ const addFormHandler = (endpoint,location) => {
         this.setState({
             data:true,
             loadFinished:true,
-            redirect: <Redirect to={location}/>
+            location:this.props.location,
         })
     }
 }
@@ -87,7 +87,7 @@ const listHandler = (endpoint,location) => {
                     this.setState({
                         data: response.data.usuarios.data,
                         loadFinished:true,
-                        redirect: <Redirect to={location}/>
+                        location:this.props.location,
                     });
                 }
             )
@@ -110,7 +110,7 @@ const singleHandler = (endpoint,location) => {
                         data: data,
                         nombre:data.nombre,
                         loadFinished:true,
-                        redirect: <Redirect to={location}/>
+                        location:this.props.location,
                     });
                 }
             )

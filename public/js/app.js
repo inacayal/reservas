@@ -36723,7 +36723,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(global) {/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
- * @version 1.15.0
+ * @version 1.16.0
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
  *
@@ -36745,16 +36745,17 @@ __webpack_require__.r(__webpack_exports__);
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
+var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined' && typeof navigator !== 'undefined';
 
-var longerTimeoutBrowsers = ['Edge', 'Trident', 'Firefox'];
-var timeoutDuration = 0;
-for (var i = 0; i < longerTimeoutBrowsers.length; i += 1) {
-  if (isBrowser && navigator.userAgent.indexOf(longerTimeoutBrowsers[i]) >= 0) {
-    timeoutDuration = 1;
-    break;
+var timeoutDuration = function () {
+  var longerTimeoutBrowsers = ['Edge', 'Trident', 'Firefox'];
+  for (var i = 0; i < longerTimeoutBrowsers.length; i += 1) {
+    if (isBrowser && navigator.userAgent.indexOf(longerTimeoutBrowsers[i]) >= 0) {
+      return 1;
+    }
   }
-}
+  return 0;
+}();
 
 function microtaskDebounce(fn) {
   var called = false;
@@ -36872,6 +36873,17 @@ function getScrollParent(element) {
   }
 
   return getScrollParent(getParentNode(element));
+}
+
+/**
+ * Returns the reference node of the reference object, or the reference object itself.
+ * @method
+ * @memberof Popper.Utils
+ * @param {Element|Object} reference - the reference element (the popper will be relative to this)
+ * @returns {Element} parent
+ */
+function getReferenceNode(reference) {
+  return reference && reference.referenceNode ? reference.referenceNode : reference;
 }
 
 var isIE11 = isBrowser && !!(window.MSInputMethodContext && document.documentMode);
@@ -37182,8 +37194,8 @@ function getBoundingClientRect(element) {
 
   // subtract scrollbar size from sizes
   var sizes = element.nodeName === 'HTML' ? getWindowSizes(element.ownerDocument) : {};
-  var width = sizes.width || element.clientWidth || result.right - result.left;
-  var height = sizes.height || element.clientHeight || result.bottom - result.top;
+  var width = sizes.width || element.clientWidth || result.width;
+  var height = sizes.height || element.clientHeight || result.height;
 
   var horizScrollbar = element.offsetWidth - width;
   var vertScrollbar = element.offsetHeight - height;
@@ -37335,7 +37347,7 @@ function getBoundaries(popper, reference, padding, boundariesElement) {
   // NOTE: 1 DOM access here
 
   var boundaries = { top: 0, left: 0 };
-  var offsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, reference);
+  var offsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, getReferenceNode(reference));
 
   // Handle viewport case
   if (boundariesElement === 'viewport') {
@@ -37463,7 +37475,7 @@ function computeAutoPlacement(placement, refRect, popper, reference, boundariesE
 function getReferenceOffsets(state, popper, reference) {
   var fixedPosition = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
-  var commonOffsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, reference);
+  var commonOffsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, getReferenceNode(reference));
   return getOffsetRectRelativeToArbitraryNode(reference, commonOffsetParent, fixedPosition);
 }
 
@@ -37725,7 +37737,7 @@ function destroy() {
 
   this.disableEventListeners();
 
-  // remove the popper if user explicity asked for the deletion on destroy
+  // remove the popper if user explicitly asked for the deletion on destroy
   // do not use `remove` because IE11 doesn't support it
   if (this.options.removeOnDestroy) {
     this.popper.parentNode.removeChild(this.popper);
@@ -44820,7 +44832,7 @@ exports.getTileClasses = getTileClasses;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.10.2
+/** @license React v16.12.0
  * react-dom.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -44844,16 +44856,8 @@ var checkPropTypes = __webpack_require__(/*! prop-types/checkPropTypes */ "./nod
 var tracing = __webpack_require__(/*! scheduler/tracing */ "./node_modules/scheduler/tracing.js");
 
 // Do not require this module directly! Use normal `invariant` calls with
-// template literal strings. The messages will be converted to ReactError during
-// build, and in production they will be minified.
-
-// Do not require this module directly! Use normal `invariant` calls with
-// template literal strings. The messages will be converted to ReactError during
-// build, and in production they will be minified.
-function ReactError(error) {
-  error.name = 'Invariant Violation';
-  return error;
-}
+// template literal strings. The messages will be replaced with error codes
+// during build.
 
 /**
  * Use invariant() to assert state which your program assumes to be true.
@@ -44866,13 +44870,11 @@ function ReactError(error) {
  * will remain to ensure logic does not differ in production.
  */
 
-(function () {
-  if (!React) {
-    {
-      throw ReactError(Error("ReactDOM was loaded before React. Make sure you load the React package before loading ReactDOM."));
-    }
+if (!React) {
+  {
+    throw Error("ReactDOM was loaded before React. Make sure you load the React package before loading ReactDOM.");
   }
-})();
+}
 
 /**
  * Injectable ordering of event plugins.
@@ -44899,37 +44901,31 @@ function recomputePluginOrdering() {
     var pluginModule = namesToPlugins[pluginName];
     var pluginIndex = eventPluginOrder.indexOf(pluginName);
 
-    (function () {
-      if (!(pluginIndex > -1)) {
-        {
-          throw ReactError(Error("EventPluginRegistry: Cannot inject event plugins that do not exist in the plugin ordering, `" + pluginName + "`."));
-        }
+    if (!(pluginIndex > -1)) {
+      {
+        throw Error("EventPluginRegistry: Cannot inject event plugins that do not exist in the plugin ordering, `" + pluginName + "`.");
       }
-    })();
+    }
 
     if (plugins[pluginIndex]) {
       continue;
     }
 
-    (function () {
-      if (!pluginModule.extractEvents) {
-        {
-          throw ReactError(Error("EventPluginRegistry: Event plugins must implement an `extractEvents` method, but `" + pluginName + "` does not."));
-        }
+    if (!pluginModule.extractEvents) {
+      {
+        throw Error("EventPluginRegistry: Event plugins must implement an `extractEvents` method, but `" + pluginName + "` does not.");
       }
-    })();
+    }
 
     plugins[pluginIndex] = pluginModule;
     var publishedEvents = pluginModule.eventTypes;
 
     for (var eventName in publishedEvents) {
-      (function () {
-        if (!publishEventForPlugin(publishedEvents[eventName], pluginModule, eventName)) {
-          {
-            throw ReactError(Error("EventPluginRegistry: Failed to publish event `" + eventName + "` for plugin `" + pluginName + "`."));
-          }
+      if (!publishEventForPlugin(publishedEvents[eventName], pluginModule, eventName)) {
+        {
+          throw Error("EventPluginRegistry: Failed to publish event `" + eventName + "` for plugin `" + pluginName + "`.");
         }
-      })();
+      }
     }
   }
 }
@@ -44944,13 +44940,11 @@ function recomputePluginOrdering() {
 
 
 function publishEventForPlugin(dispatchConfig, pluginModule, eventName) {
-  (function () {
-    if (!!eventNameDispatchConfigs.hasOwnProperty(eventName)) {
-      {
-        throw ReactError(Error("EventPluginHub: More than one plugin attempted to publish the same event name, `" + eventName + "`."));
-      }
+  if (!!eventNameDispatchConfigs.hasOwnProperty(eventName)) {
+    {
+      throw Error("EventPluginHub: More than one plugin attempted to publish the same event name, `" + eventName + "`.");
     }
-  })();
+  }
 
   eventNameDispatchConfigs[eventName] = dispatchConfig;
   var phasedRegistrationNames = dispatchConfig.phasedRegistrationNames;
@@ -44981,13 +44975,11 @@ function publishEventForPlugin(dispatchConfig, pluginModule, eventName) {
 
 
 function publishRegistrationName(registrationName, pluginModule, eventName) {
-  (function () {
-    if (!!registrationNameModules[registrationName]) {
-      {
-        throw ReactError(Error("EventPluginHub: More than one plugin attempted to publish the same registration name, `" + registrationName + "`."));
-      }
+  if (!!registrationNameModules[registrationName]) {
+    {
+      throw Error("EventPluginHub: More than one plugin attempted to publish the same registration name, `" + registrationName + "`.");
     }
-  })();
+  }
 
   registrationNameModules[registrationName] = pluginModule;
   registrationNameDependencies[registrationName] = pluginModule.eventTypes[eventName].dependencies;
@@ -45048,13 +45040,11 @@ var possibleRegistrationNames = {}; // Trust the developer to only use possibleR
  */
 
 function injectEventPluginOrder(injectedEventPluginOrder) {
-  (function () {
-    if (!!eventPluginOrder) {
-      {
-        throw ReactError(Error("EventPluginRegistry: Cannot inject event plugin ordering more than once. You are likely trying to load more than one copy of React."));
-      }
+  if (!!eventPluginOrder) {
+    {
+      throw Error("EventPluginRegistry: Cannot inject event plugin ordering more than once. You are likely trying to load more than one copy of React.");
     }
-  })(); // Clone the ordering so it cannot be dynamically mutated.
+  } // Clone the ordering so it cannot be dynamically mutated.
 
 
   eventPluginOrder = Array.prototype.slice.call(injectedEventPluginOrder);
@@ -45082,13 +45072,11 @@ function injectEventPluginsByName(injectedNamesToPlugins) {
     var pluginModule = injectedNamesToPlugins[pluginName];
 
     if (!namesToPlugins.hasOwnProperty(pluginName) || namesToPlugins[pluginName] !== pluginModule) {
-      (function () {
-        if (!!namesToPlugins[pluginName]) {
-          {
-            throw ReactError(Error("EventPluginRegistry: Cannot inject two different event plugins using the same name, `" + pluginName + "`."));
-          }
+      if (!!namesToPlugins[pluginName]) {
+        {
+          throw Error("EventPluginRegistry: Cannot inject two different event plugins using the same name, `" + pluginName + "`.");
         }
-      })();
+      }
 
       namesToPlugins[pluginName] = pluginModule;
       isOrderingDirty = true;
@@ -45139,13 +45127,11 @@ var invokeGuardedCallbackImpl = function (name, func, context, a, b, c, d, e, f)
       // when we call document.createEvent(). However this can cause confusing
       // errors: https://github.com/facebookincubator/create-react-app/issues/3482
       // So we preemptively throw with a better message instead.
-      (function () {
-        if (!(typeof document !== 'undefined')) {
-          {
-            throw ReactError(Error("The `document` global was defined when React was initialized, but is not defined anymore. This can happen in a test environment if a component schedules an update from an asynchronous callback, but the test has already finished running. To solve this, you can either unmount the component at the end of your test (and ensure that any asynchronous operations get canceled in `componentWillUnmount`), or you can change the test itself to be asynchronous."));
-          }
+      if (!(typeof document !== 'undefined')) {
+        {
+          throw Error("The `document` global was defined when React was initialized, but is not defined anymore. This can happen in a test environment if a component schedules an update from an asynchronous callback, but the test has already finished running. To solve this, you can either unmount the component at the end of your test (and ensure that any asynchronous operations get canceled in `componentWillUnmount`), or you can change the test itself to be asynchronous.");
         }
-      })();
+      }
 
       var evt = document.createEvent('Event'); // Keeps track of whether the user-provided callback threw an error. We
       // set this to true at the beginning, then set it to false right after
@@ -45333,13 +45319,11 @@ function clearCaughtError() {
     caughtError = null;
     return error;
   } else {
-    (function () {
+    {
       {
-        {
-          throw ReactError(Error("clearCaughtError was called but no error was captured. This error is likely caused by a bug in React. Please file an issue."));
-        }
+        throw Error("clearCaughtError was called but no error was captured. This error is likely caused by a bug in React. Please file an issue.");
       }
-    })();
+    }
   }
 }
 
@@ -45498,13 +45482,11 @@ function executeDispatchesInOrder(event) {
  */
 
 function accumulateInto(current, next) {
-  (function () {
-    if (!(next != null)) {
-      {
-        throw ReactError(Error("accumulateInto(...): Accumulated items must not be null or undefined."));
-      }
+  if (!(next != null)) {
+    {
+      throw Error("accumulateInto(...): Accumulated items must not be null or undefined.");
     }
-  })();
+  }
 
   if (current == null) {
     return next;
@@ -45590,13 +45572,11 @@ function runEventsInBatch(events) {
 
   forEachAccumulated(processingEventQueue, executeDispatchesAndReleaseTopLevel);
 
-  (function () {
-    if (!!eventQueue) {
-      {
-        throw ReactError(Error("processEventQueue(): Additional events were enqueued while processing an event queue. Support for this has not yet been implemented."));
-      }
+  if (!!eventQueue) {
+    {
+      throw Error("processEventQueue(): Additional events were enqueued while processing an event queue. Support for this has not yet been implemented.");
     }
-  })(); // This would be a good time to rethrow if any of the event handlers threw.
+  } // This would be a good time to rethrow if any of the event handlers threw.
 
 
   rethrowCaughtError();
@@ -45694,13 +45674,11 @@ function getListener(inst, registrationName) {
     return null;
   }
 
-  (function () {
-    if (!(!listener || typeof listener === 'function')) {
-      {
-        throw ReactError(Error("Expected `" + registrationName + "` listener to be a function, instead got a value of `" + typeof listener + "` type."));
-      }
+  if (!(!listener || typeof listener === 'function')) {
+    {
+      throw Error("Expected `" + registrationName + "` listener to be a function, instead got a value of `" + typeof listener + "` type.");
     }
-  })();
+  }
 
   return listener;
 }
@@ -46103,13 +46081,11 @@ function restoreStateOfTarget(target) {
     return;
   }
 
-  (function () {
-    if (!(typeof restoreImpl === 'function')) {
-      {
-        throw ReactError(Error("setRestoreImplementation() needs to be called to handle a target for controlled events. This error is likely caused by a bug in React. Please file an issue."));
-      }
+  if (!(typeof restoreImpl === 'function')) {
+    {
+      throw Error("setRestoreImplementation() needs to be called to handle a target for controlled events. This error is likely caused by a bug in React. Please file an issue.");
     }
-  })();
+  }
 
   var props = getFiberCurrentPropsFromNode(internalInstance.stateNode);
   restoreImpl(internalInstance.stateNode, internalInstance.type, props);
@@ -46150,12 +46126,8 @@ function restoreStateIfNeeded() {
   }
 }
 
-var enableUserTimingAPI = true; // Helps identify side effects in begin-phase lifecycle hooks and setState reducers:
-
-var debugRenderPhaseSideEffects = false; // In some cases, StrictMode should also double-render lifecycles.
-// This can be confusing for tests though,
-// And it can be bad for performance in production.
-// This feature flag can be used to control the behavior:
+var enableUserTimingAPI = true; // Helps identify side effects in render-phase lifecycle hooks and setState
+// reducers by double invoking them in Strict Mode.
 
 var debugRenderPhaseSideEffectsForStrictMode = true; // To preserve the "Pause on caught exceptions" behavior of the debugger, we
 // replay the begin phase of a failed component inside invokeGuardedCallback.
@@ -46166,10 +46138,9 @@ var warnAboutDeprecatedLifecycles = true; // Gather advanced timing metrics for 
 
 var enableProfilerTimer = true; // Trace which interactions trigger each commit.
 
-var enableSchedulerTracing = true; // Only used in www builds.
+var enableSchedulerTracing = true; // SSR experiments
 
-var enableSuspenseServerRenderer = false; // TODO: true? Here it might just be false.
-
+var enableSuspenseServerRenderer = false;
 var enableSelectiveHydration = false; // Only used in www builds.
 
  // Only used in www builds.
@@ -46182,11 +46153,8 @@ var disableJavaScriptURLs = false; // React Fire: prevent the value and checked 
 var disableInputAttributeSyncing = false; // These APIs will no longer be "unstable" in the upcoming 16.7 release,
 // Control this behavior with a flag to support 16.6 minor releases in the meanwhile.
 
-var enableStableConcurrentModeAPIs = false;
-var warnAboutShorthandPropertyCollision = false; // See https://github.com/react-native-community/discussions-and-proposals/issues/72 for more information
-// This is a flag so we can fix warnings in RN core before turning it on
-
- // Experimental React Flare event system and event components support.
+var exposeConcurrentModeAPIs = false;
+var warnAboutShorthandPropertyCollision = false; // Experimental React Flare event system and event components support.
 
 var enableFlareAPI = false; // Experimental Host Component support.
 
@@ -46195,16 +46163,12 @@ var enableFundamentalAPI = false; // Experimental Scope support.
 var enableScopeAPI = false; // New API for JSX transforms to target - https://github.com/reactjs/rfcs/pull/107
 
  // We will enforce mocking scheduler with scheduler/unstable_mock at some point. (v17?)
-// Till then, we warn about the missing mock, but still fallback to a sync mode compatible version
+// Till then, we warn about the missing mock, but still fallback to a legacy mode compatible version
 
 var warnAboutUnmockedScheduler = false; // For tests, we flush suspense fallbacks in an act scope;
 // *except* in some of our own tests, where we test incremental loading states.
 
-var flushSuspenseFallbacksInTests = true; // Changes priority of some events like mousemove to user-blocking priority,
-// but without making them discrete. The flag exists in case it causes
-// starvation problems.
-
-var enableUserBlockingEvents = false; // Add a callback property to suspense to notify which promises are currently
+var flushSuspenseFallbacksInTests = true; // Add a callback property to suspense to notify which promises are currently
 // in the update queue. This allows reporting and tracing of what is causing
 // the user to see a loading state.
 // Also allows hydration callbacks to fire when a dehydrated boundary gets
@@ -46218,7 +46182,7 @@ var warnAboutDefaultPropsOnFunctionComponents = false;
 var warnAboutStringRefs = false;
 var disableLegacyContext = false;
 var disableSchedulerTimeoutBasedOnReactExpirationTime = false;
-var enableTrustedTypesIntegration = false;
+var enableTrustedTypesIntegration = false; // Flag to turn event.target and event.currentTarget in ReactNative from a reactTag to a component instance
 
 // the renderer. Such as when we're dispatching events or if third party
 // libraries need to call batchedUpdates. Eventually, this API will go away when
@@ -46352,14 +46316,11 @@ var listenToResponderEventTypesImpl;
 function setListenToResponderEventTypes(_listenToResponderEventTypesImpl) {
   listenToResponderEventTypesImpl = _listenToResponderEventTypesImpl;
 }
-var activeTimeouts = new Map();
 var rootEventTypesToEventResponderInstances = new Map();
 var DoNotPropagateToNextResponder = 0;
 var PropagateToNextResponder = 1;
 var currentTimeStamp = 0;
-var currentTimers = new Map();
 var currentInstance = null;
-var currentTimerIDCounter = 0;
 var currentDocument = null;
 var currentPropagationBehavior = DoNotPropagateToNextResponder;
 var eventResponderContext = {
@@ -46379,14 +46340,9 @@ var eventResponderContext = {
 
       case UserBlockingEvent:
         {
-          if (enableUserBlockingEvents) {
-            runWithPriority(UserBlockingPriority, function () {
-              return executeUserEventHandler(eventListener, eventValue);
-            });
-          } else {
-            executeUserEventHandler(eventListener, eventValue);
-          }
-
+          runWithPriority(UserBlockingPriority, function () {
+            return executeUserEventHandler(eventListener, eventValue);
+          });
           break;
         }
 
@@ -46489,50 +46445,6 @@ var eventResponderContext = {
       }
     }
   },
-  setTimeout: function (func, delay) {
-    validateResponderContext();
-
-    if (currentTimers === null) {
-      currentTimers = new Map();
-    }
-
-    var timeout = currentTimers.get(delay);
-    var timerId = currentTimerIDCounter++;
-
-    if (timeout === undefined) {
-      var timers = new Map();
-      var id = setTimeout(function () {
-        processTimers(timers, delay);
-      }, delay);
-      timeout = {
-        id: id,
-        timers: timers
-      };
-      currentTimers.set(delay, timeout);
-    }
-
-    timeout.timers.set(timerId, {
-      instance: currentInstance,
-      func: func,
-      id: timerId,
-      timeStamp: currentTimeStamp
-    });
-    activeTimeouts.set(timerId, timeout);
-    return timerId;
-  },
-  clearTimeout: function (timerId) {
-    validateResponderContext();
-    var timeout = activeTimeouts.get(timerId);
-
-    if (timeout !== undefined) {
-      var timers = timeout.timers;
-      timers.delete(timerId);
-
-      if (timers.size === 0) {
-        clearTimeout(timeout.id);
-      }
-    }
-  },
   getActiveDocument: getActiveDocument,
   objectAssign: _assign,
   getTimeStamp: function () {
@@ -46628,36 +46540,6 @@ function doesFiberHaveResponder(fiber, responder) {
 
 function getActiveDocument() {
   return currentDocument;
-}
-
-function processTimers(timers, delay) {
-  var timersArr = Array.from(timers.values());
-  var previousInstance = currentInstance;
-  var previousTimers = currentTimers;
-
-  try {
-    batchedEventUpdates(function () {
-      for (var i = 0; i < timersArr.length; i++) {
-        var _timersArr$i = timersArr[i],
-            instance = _timersArr$i.instance,
-            func = _timersArr$i.func,
-            id = _timersArr$i.id,
-            timeStamp = _timersArr$i.timeStamp;
-        currentInstance = instance;
-        currentTimeStamp = timeStamp + delay;
-
-        try {
-          func();
-        } finally {
-          activeTimeouts.delete(id);
-        }
-      }
-    });
-  } finally {
-    currentTimers = previousTimers;
-    currentInstance = previousInstance;
-    currentTimeStamp = 0;
-  }
 }
 
 function createDOMResponderEvent(topLevelType, nativeEvent, nativeEventTarget, passive, passiveSupported) {
@@ -46785,7 +46667,6 @@ function mountEventResponder(responder, responderInstance, props, state) {
 
   if (onMount !== null) {
     var previousInstance = currentInstance;
-    var previousTimers = currentTimers;
     currentInstance = responderInstance;
 
     try {
@@ -46794,7 +46675,6 @@ function mountEventResponder(responder, responderInstance, props, state) {
       });
     } finally {
       currentInstance = previousInstance;
-      currentTimers = previousTimers;
     }
   }
 }
@@ -46806,7 +46686,6 @@ function unmountEventResponder(responderInstance) {
     var props = responderInstance.props,
         state = responderInstance.state;
     var previousInstance = currentInstance;
-    var previousTimers = currentTimers;
     currentInstance = responderInstance;
 
     try {
@@ -46815,7 +46694,6 @@ function unmountEventResponder(responderInstance) {
       });
     } finally {
       currentInstance = previousInstance;
-      currentTimers = previousTimers;
     }
   }
 
@@ -46836,24 +46714,20 @@ function unmountEventResponder(responderInstance) {
 }
 
 function validateResponderContext() {
-  (function () {
-    if (!(currentInstance !== null)) {
-      {
-        throw ReactError(Error("An event responder context was used outside of an event cycle. Use context.setTimeout() to use asynchronous responder context outside of event cycle ."));
-      }
+  if (!(currentInstance !== null)) {
+    {
+      throw Error("An event responder context was used outside of an event cycle.");
     }
-  })();
+  }
 }
 
 function dispatchEventForResponderEventSystem(topLevelType, targetFiber, nativeEvent, nativeEventTarget, eventSystemFlags) {
   if (enableFlareAPI) {
     var previousInstance = currentInstance;
-    var previousTimers = currentTimers;
     var previousTimeStamp = currentTimeStamp;
     var previousDocument = currentDocument;
     var previousPropagationBehavior = currentPropagationBehavior;
-    currentPropagationBehavior = DoNotPropagateToNextResponder;
-    currentTimers = null; // nodeType 9 is DOCUMENT_NODE
+    currentPropagationBehavior = DoNotPropagateToNextResponder; // nodeType 9 is DOCUMENT_NODE
 
     currentDocument = nativeEventTarget.nodeType === 9 ? nativeEventTarget : nativeEventTarget.ownerDocument; // We might want to control timeStamp another way here
 
@@ -46864,7 +46738,6 @@ function dispatchEventForResponderEventSystem(topLevelType, targetFiber, nativeE
         traverseAndHandleEventResponderInstances(topLevelType, targetFiber, nativeEvent, nativeEventTarget, eventSystemFlags);
       });
     } finally {
-      currentTimers = previousTimers;
       currentInstance = previousInstance;
       currentTimeStamp = previousTimeStamp;
       currentDocument = previousDocument;
@@ -46893,13 +46766,11 @@ function registerRootEventType(rootEventType, eventResponderInstance) {
     rootEventTypesSet = eventResponderInstance.rootEventTypes = new Set();
   }
 
-  (function () {
-    if (!!rootEventTypesSet.has(rootEventType)) {
-      {
-        throw ReactError(Error("addRootEventTypes() found a duplicate root event type of \"" + rootEventType + "\". This might be because the event type exists in the event responder \"rootEventTypes\" array or because of a previous addRootEventTypes() using this root event type."));
-      }
+  if (!!rootEventTypesSet.has(rootEventType)) {
+    {
+      throw Error("addRootEventTypes() found a duplicate root event type of \"" + rootEventType + "\". This might be because the event type exists in the event responder \"rootEventTypes\" array or because of a previous addRootEventTypes() using this root event type.");
     }
-  })();
+  }
 
   rootEventTypesSet.add(rootEventType);
   rootEventResponderInstances.add(eventResponderInstance);
@@ -47211,13 +47082,11 @@ var didWarn = false;
 
 function sanitizeURL(url) {
   if (disableJavaScriptURLs) {
-    (function () {
-      if (!!isJavaScriptProtocol.test(url)) {
-        {
-          throw ReactError(Error("React has blocked a javascript: URL as a security precaution." + (ReactDebugCurrentFrame$1.getStackAddendum())));
-        }
+    if (!!isJavaScriptProtocol.test(url)) {
+      {
+        throw Error("React has blocked a javascript: URL as a security precaution." + (ReactDebugCurrentFrame$1.getStackAddendum()));
       }
-    })();
+    }
   } else if ( true && !didWarn && isJavaScriptProtocol.test(url)) {
     didWarn = true;
     warning$1(false, 'A future version of React will block javascript: URLs as a security precaution. ' + 'Use event handlers instead if you can. If you need to generate unsafe HTML try ' + 'using dangerouslySetInnerHTML instead. React was passed %s.', JSON.stringify(url));
@@ -47256,16 +47125,10 @@ function getToStringValue(value) {
 var toStringOrTrustedType = toString;
 
 if (enableTrustedTypesIntegration && typeof trustedTypes !== 'undefined') {
-  var isHTML = trustedTypes.isHTML;
-  var isScript = trustedTypes.isScript;
-  var isScriptURL = trustedTypes.isScriptURL; // TrustedURLs are deprecated and will be removed soon: https://github.com/WICG/trusted-types/pull/204
-
-  var isURL = trustedTypes.isURL ? trustedTypes.isURL : function (value) {
-    return false;
-  };
-
   toStringOrTrustedType = function (value) {
-    if (typeof value === 'object' && (isHTML(value) || isScript(value) || isScriptURL(value) || isURL(value))) {
+    if (typeof value === 'object' && (trustedTypes.isHTML(value) || trustedTypes.isScript(value) || trustedTypes.isScriptURL(value) ||
+    /* TrustedURLs are deprecated and will be removed soon: https://github.com/WICG/trusted-types/pull/204 */
+    trustedTypes.isURL && trustedTypes.isURL(value))) {
       // Pass Trusted Types through.
       return value;
     }
@@ -47906,13 +47769,11 @@ function updateNamedCousins(rootNode, props) {
 
       var otherProps = getFiberCurrentPropsFromNode$1(otherNode);
 
-      (function () {
-        if (!otherProps) {
-          {
-            throw ReactError(Error("ReactDOMInput: Mixing React and non-React radio inputs with the same `name` is not supported."));
-          }
+      if (!otherProps) {
+        {
+          throw Error("ReactDOMInput: Mixing React and non-React radio inputs with the same `name` is not supported.");
         }
-      })(); // We need update the tracked value on the named cousin since the value
+      } // We need update the tracked value on the named cousin since the value
       // was changed but the input saw no event or value set
 
 
@@ -48215,13 +48076,11 @@ var didWarnValDefaultVal = false;
 function getHostProps$3(element, props) {
   var node = element;
 
-  (function () {
-    if (!(props.dangerouslySetInnerHTML == null)) {
-      {
-        throw ReactError(Error("`dangerouslySetInnerHTML` does not make sense on <textarea>."));
-      }
+  if (!(props.dangerouslySetInnerHTML == null)) {
+    {
+      throw Error("`dangerouslySetInnerHTML` does not make sense on <textarea>.");
     }
-  })(); // Always set children to the same thing. In IE9, the selection range will
+  } // Always set children to the same thing. In IE9, the selection range will
   // get reset if `textContent` is mutated.  We could add a check in setTextContent
   // to only set the value if/when the value differs from the node value (which would
   // completely solve this IE9 bug), but Sebastian+Sophie seemed to like this
@@ -48261,22 +48120,18 @@ function initWrapperState$2(element, props) {
         warning$1(false, 'Use the `defaultValue` or `value` props instead of setting ' + 'children on <textarea>.');
       }
 
-      (function () {
-        if (!(defaultValue == null)) {
-          {
-            throw ReactError(Error("If you supply `defaultValue` on a <textarea>, do not pass children."));
-          }
+      if (!(defaultValue == null)) {
+        {
+          throw Error("If you supply `defaultValue` on a <textarea>, do not pass children.");
         }
-      })();
+      }
 
       if (Array.isArray(children)) {
-        (function () {
-          if (!(children.length <= 1)) {
-            {
-              throw ReactError(Error("<textarea> can only have at most one child."));
-            }
+        if (!(children.length <= 1)) {
+          {
+            throw Error("<textarea> can only have at most one child.");
           }
-        })();
+        }
 
         children = children[0];
       }
@@ -48656,9 +48511,447 @@ function getRawEventName(topLevelType) {
   return unsafeCastDOMTopLevelTypeToString(topLevelType);
 }
 
+/**
+ * `ReactInstanceMap` maintains a mapping from a public facing stateful
+ * instance (key) and the internal representation (value). This allows public
+ * methods to accept the user facing instance as an argument and map them back
+ * to internal methods.
+ *
+ * Note that this module is currently shared and assumed to be stateless.
+ * If this becomes an actual Map, that will break.
+ */
+
+/**
+ * This API should be called `delete` but we'd have to make sure to always
+ * transform these to strings for IE support. When this transform is fully
+ * supported we can rename it.
+ */
+
+function get(key) {
+  return key._reactInternalFiber;
+}
+function has(key) {
+  return key._reactInternalFiber !== undefined;
+}
+function set(key, value) {
+  key._reactInternalFiber = value;
+}
+
+// Don't change these two values. They're used by React Dev Tools.
+var NoEffect =
+/*              */
+0;
+var PerformedWork =
+/*         */
+1; // You can change the rest (and add more).
+
+var Placement =
+/*             */
+2;
+var Update =
+/*                */
+4;
+var PlacementAndUpdate =
+/*    */
+6;
+var Deletion =
+/*              */
+8;
+var ContentReset =
+/*          */
+16;
+var Callback =
+/*              */
+32;
+var DidCapture =
+/*            */
+64;
+var Ref =
+/*                   */
+128;
+var Snapshot =
+/*              */
+256;
+var Passive =
+/*               */
+512;
+var Hydrating =
+/*             */
+1024;
+var HydratingAndUpdate =
+/*    */
+1028; // Passive & Update & Callback & Ref & Snapshot
+
+var LifecycleEffectMask =
+/*   */
+932; // Union of all host effects
+
+var HostEffectMask =
+/*        */
+2047;
+var Incomplete =
+/*            */
+2048;
+var ShouldCapture =
+/*         */
+4096;
+
+var ReactCurrentOwner = ReactSharedInternals.ReactCurrentOwner;
+function getNearestMountedFiber(fiber) {
+  var node = fiber;
+  var nearestMounted = fiber;
+
+  if (!fiber.alternate) {
+    // If there is no alternate, this might be a new tree that isn't inserted
+    // yet. If it is, then it will have a pending insertion effect on it.
+    var nextNode = node;
+
+    do {
+      node = nextNode;
+
+      if ((node.effectTag & (Placement | Hydrating)) !== NoEffect) {
+        // This is an insertion or in-progress hydration. The nearest possible
+        // mounted fiber is the parent but we need to continue to figure out
+        // if that one is still mounted.
+        nearestMounted = node.return;
+      }
+
+      nextNode = node.return;
+    } while (nextNode);
+  } else {
+    while (node.return) {
+      node = node.return;
+    }
+  }
+
+  if (node.tag === HostRoot) {
+    // TODO: Check if this was a nested HostRoot when used with
+    // renderContainerIntoSubtree.
+    return nearestMounted;
+  } // If we didn't hit the root, that means that we're in an disconnected tree
+  // that has been unmounted.
+
+
+  return null;
+}
+function getSuspenseInstanceFromFiber(fiber) {
+  if (fiber.tag === SuspenseComponent) {
+    var suspenseState = fiber.memoizedState;
+
+    if (suspenseState === null) {
+      var current = fiber.alternate;
+
+      if (current !== null) {
+        suspenseState = current.memoizedState;
+      }
+    }
+
+    if (suspenseState !== null) {
+      return suspenseState.dehydrated;
+    }
+  }
+
+  return null;
+}
+function getContainerFromFiber(fiber) {
+  return fiber.tag === HostRoot ? fiber.stateNode.containerInfo : null;
+}
+function isFiberMounted(fiber) {
+  return getNearestMountedFiber(fiber) === fiber;
+}
+function isMounted(component) {
+  {
+    var owner = ReactCurrentOwner.current;
+
+    if (owner !== null && owner.tag === ClassComponent) {
+      var ownerFiber = owner;
+      var instance = ownerFiber.stateNode;
+      !instance._warnedAboutRefsInRender ? warningWithoutStack$1(false, '%s is accessing isMounted inside its render() function. ' + 'render() should be a pure function of props and state. It should ' + 'never access something that requires stale data from the previous ' + 'render, such as refs. Move this logic to componentDidMount and ' + 'componentDidUpdate instead.', getComponentName(ownerFiber.type) || 'A component') : void 0;
+      instance._warnedAboutRefsInRender = true;
+    }
+  }
+
+  var fiber = get(component);
+
+  if (!fiber) {
+    return false;
+  }
+
+  return getNearestMountedFiber(fiber) === fiber;
+}
+
+function assertIsMounted(fiber) {
+  if (!(getNearestMountedFiber(fiber) === fiber)) {
+    {
+      throw Error("Unable to find node on an unmounted component.");
+    }
+  }
+}
+
+function findCurrentFiberUsingSlowPath(fiber) {
+  var alternate = fiber.alternate;
+
+  if (!alternate) {
+    // If there is no alternate, then we only need to check if it is mounted.
+    var nearestMounted = getNearestMountedFiber(fiber);
+
+    if (!(nearestMounted !== null)) {
+      {
+        throw Error("Unable to find node on an unmounted component.");
+      }
+    }
+
+    if (nearestMounted !== fiber) {
+      return null;
+    }
+
+    return fiber;
+  } // If we have two possible branches, we'll walk backwards up to the root
+  // to see what path the root points to. On the way we may hit one of the
+  // special cases and we'll deal with them.
+
+
+  var a = fiber;
+  var b = alternate;
+
+  while (true) {
+    var parentA = a.return;
+
+    if (parentA === null) {
+      // We're at the root.
+      break;
+    }
+
+    var parentB = parentA.alternate;
+
+    if (parentB === null) {
+      // There is no alternate. This is an unusual case. Currently, it only
+      // happens when a Suspense component is hidden. An extra fragment fiber
+      // is inserted in between the Suspense fiber and its children. Skip
+      // over this extra fragment fiber and proceed to the next parent.
+      var nextParent = parentA.return;
+
+      if (nextParent !== null) {
+        a = b = nextParent;
+        continue;
+      } // If there's no parent, we're at the root.
+
+
+      break;
+    } // If both copies of the parent fiber point to the same child, we can
+    // assume that the child is current. This happens when we bailout on low
+    // priority: the bailed out fiber's child reuses the current child.
+
+
+    if (parentA.child === parentB.child) {
+      var child = parentA.child;
+
+      while (child) {
+        if (child === a) {
+          // We've determined that A is the current branch.
+          assertIsMounted(parentA);
+          return fiber;
+        }
+
+        if (child === b) {
+          // We've determined that B is the current branch.
+          assertIsMounted(parentA);
+          return alternate;
+        }
+
+        child = child.sibling;
+      } // We should never have an alternate for any mounting node. So the only
+      // way this could possibly happen is if this was unmounted, if at all.
+
+
+      {
+        {
+          throw Error("Unable to find node on an unmounted component.");
+        }
+      }
+    }
+
+    if (a.return !== b.return) {
+      // The return pointer of A and the return pointer of B point to different
+      // fibers. We assume that return pointers never criss-cross, so A must
+      // belong to the child set of A.return, and B must belong to the child
+      // set of B.return.
+      a = parentA;
+      b = parentB;
+    } else {
+      // The return pointers point to the same fiber. We'll have to use the
+      // default, slow path: scan the child sets of each parent alternate to see
+      // which child belongs to which set.
+      //
+      // Search parent A's child set
+      var didFindChild = false;
+      var _child = parentA.child;
+
+      while (_child) {
+        if (_child === a) {
+          didFindChild = true;
+          a = parentA;
+          b = parentB;
+          break;
+        }
+
+        if (_child === b) {
+          didFindChild = true;
+          b = parentA;
+          a = parentB;
+          break;
+        }
+
+        _child = _child.sibling;
+      }
+
+      if (!didFindChild) {
+        // Search parent B's child set
+        _child = parentB.child;
+
+        while (_child) {
+          if (_child === a) {
+            didFindChild = true;
+            a = parentB;
+            b = parentA;
+            break;
+          }
+
+          if (_child === b) {
+            didFindChild = true;
+            b = parentB;
+            a = parentA;
+            break;
+          }
+
+          _child = _child.sibling;
+        }
+
+        if (!didFindChild) {
+          {
+            throw Error("Child was not found in either parent set. This indicates a bug in React related to the return pointer. Please file an issue.");
+          }
+        }
+      }
+    }
+
+    if (!(a.alternate === b)) {
+      {
+        throw Error("Return fibers should always be each others' alternates. This error is likely caused by a bug in React. Please file an issue.");
+      }
+    }
+  } // If the root is not a host container, we're in a disconnected tree. I.e.
+  // unmounted.
+
+
+  if (!(a.tag === HostRoot)) {
+    {
+      throw Error("Unable to find node on an unmounted component.");
+    }
+  }
+
+  if (a.stateNode.current === a) {
+    // We've determined that A is the current branch.
+    return fiber;
+  } // Otherwise B has to be current branch.
+
+
+  return alternate;
+}
+function findCurrentHostFiber(parent) {
+  var currentParent = findCurrentFiberUsingSlowPath(parent);
+
+  if (!currentParent) {
+    return null;
+  } // Next we'll drill down this component to find the first HostComponent/Text.
+
+
+  var node = currentParent;
+
+  while (true) {
+    if (node.tag === HostComponent || node.tag === HostText) {
+      return node;
+    } else if (node.child) {
+      node.child.return = node;
+      node = node.child;
+      continue;
+    }
+
+    if (node === currentParent) {
+      return null;
+    }
+
+    while (!node.sibling) {
+      if (!node.return || node.return === currentParent) {
+        return null;
+      }
+
+      node = node.return;
+    }
+
+    node.sibling.return = node.return;
+    node = node.sibling;
+  } // Flow needs the return null here, but ESLint complains about it.
+  // eslint-disable-next-line no-unreachable
+
+
+  return null;
+}
+function findCurrentHostFiberWithNoPortals(parent) {
+  var currentParent = findCurrentFiberUsingSlowPath(parent);
+
+  if (!currentParent) {
+    return null;
+  } // Next we'll drill down this component to find the first HostComponent/Text.
+
+
+  var node = currentParent;
+
+  while (true) {
+    if (node.tag === HostComponent || node.tag === HostText || enableFundamentalAPI && node.tag === FundamentalComponent) {
+      return node;
+    } else if (node.child && node.tag !== HostPortal) {
+      node.child.return = node;
+      node = node.child;
+      continue;
+    }
+
+    if (node === currentParent) {
+      return null;
+    }
+
+    while (!node.sibling) {
+      if (!node.return || node.return === currentParent) {
+        return null;
+      }
+
+      node = node.return;
+    }
+
+    node.sibling.return = node.return;
+    node = node.sibling;
+  } // Flow needs the return null here, but ESLint complains about it.
+  // eslint-disable-next-line no-unreachable
+
+
+  return null;
+}
+
 var attemptSynchronousHydration;
 function setAttemptSynchronousHydration(fn) {
   attemptSynchronousHydration = fn;
+}
+var attemptUserBlockingHydration;
+function setAttemptUserBlockingHydration(fn) {
+  attemptUserBlockingHydration = fn;
+}
+var attemptContinuousHydration;
+function setAttemptContinuousHydration(fn) {
+  attemptContinuousHydration = fn;
+}
+var attemptHydrationAtCurrentPriority;
+function setAttemptHydrationAtCurrentPriority(fn) {
+  attemptHydrationAtCurrentPriority = fn;
 } // TODO: Upgrade this definition once we're on a newer version of Flow that
 // has this definition built-in.
 
@@ -48675,6 +48968,7 @@ var queuedMouse = null; // For pointer events there can be one latest event per 
 var queuedPointers = new Map();
 var queuedPointerCaptures = new Map(); // We could consider replaying selectionchange and touchmoves too.
 
+var queuedExplicitHydrationTargets = [];
 function hasQueuedDiscreteEvents() {
   return queuedDiscreteEvents.length > 0;
 }
@@ -48801,9 +49095,20 @@ function clearIfContinuousEvent(topLevelType, nativeEvent) {
   }
 }
 
-function accumulateOrCreateQueuedReplayableEvent(existingQueuedEvent, blockedOn, topLevelType, eventSystemFlags, nativeEvent) {
+function accumulateOrCreateContinuousQueuedReplayableEvent(existingQueuedEvent, blockedOn, topLevelType, eventSystemFlags, nativeEvent) {
   if (existingQueuedEvent === null || existingQueuedEvent.nativeEvent !== nativeEvent) {
-    return createQueuedReplayableEvent(blockedOn, topLevelType, eventSystemFlags, nativeEvent);
+    var queuedEvent = createQueuedReplayableEvent(blockedOn, topLevelType, eventSystemFlags, nativeEvent);
+
+    if (blockedOn !== null) {
+      var _fiber2 = getInstanceFromNode$1(blockedOn);
+
+      if (_fiber2 !== null) {
+        // Attempt to increase the priority of this target.
+        attemptContinuousHydration(_fiber2);
+      }
+    }
+
+    return queuedEvent;
   } // If we have already queued this exact event, then it's because
   // the different event systems have different DOM event listeners.
   // We can accumulate the flags and store a single event to be
@@ -48822,21 +49127,21 @@ function queueIfContinuousEvent(blockedOn, topLevelType, eventSystemFlags, nativ
     case TOP_FOCUS:
       {
         var focusEvent = nativeEvent;
-        queuedFocus = accumulateOrCreateQueuedReplayableEvent(queuedFocus, blockedOn, topLevelType, eventSystemFlags, focusEvent);
+        queuedFocus = accumulateOrCreateContinuousQueuedReplayableEvent(queuedFocus, blockedOn, topLevelType, eventSystemFlags, focusEvent);
         return true;
       }
 
     case TOP_DRAG_ENTER:
       {
         var dragEvent = nativeEvent;
-        queuedDrag = accumulateOrCreateQueuedReplayableEvent(queuedDrag, blockedOn, topLevelType, eventSystemFlags, dragEvent);
+        queuedDrag = accumulateOrCreateContinuousQueuedReplayableEvent(queuedDrag, blockedOn, topLevelType, eventSystemFlags, dragEvent);
         return true;
       }
 
     case TOP_MOUSE_OVER:
       {
         var mouseEvent = nativeEvent;
-        queuedMouse = accumulateOrCreateQueuedReplayableEvent(queuedMouse, blockedOn, topLevelType, eventSystemFlags, mouseEvent);
+        queuedMouse = accumulateOrCreateContinuousQueuedReplayableEvent(queuedMouse, blockedOn, topLevelType, eventSystemFlags, mouseEvent);
         return true;
       }
 
@@ -48844,7 +49149,7 @@ function queueIfContinuousEvent(blockedOn, topLevelType, eventSystemFlags, nativ
       {
         var pointerEvent = nativeEvent;
         var pointerId = pointerEvent.pointerId;
-        queuedPointers.set(pointerId, accumulateOrCreateQueuedReplayableEvent(queuedPointers.get(pointerId) || null, blockedOn, topLevelType, eventSystemFlags, pointerEvent));
+        queuedPointers.set(pointerId, accumulateOrCreateContinuousQueuedReplayableEvent(queuedPointers.get(pointerId) || null, blockedOn, topLevelType, eventSystemFlags, pointerEvent));
         return true;
       }
 
@@ -48852,15 +49157,79 @@ function queueIfContinuousEvent(blockedOn, topLevelType, eventSystemFlags, nativ
       {
         var _pointerEvent = nativeEvent;
         var _pointerId2 = _pointerEvent.pointerId;
-        queuedPointerCaptures.set(_pointerId2, accumulateOrCreateQueuedReplayableEvent(queuedPointerCaptures.get(_pointerId2) || null, blockedOn, topLevelType, eventSystemFlags, _pointerEvent));
+        queuedPointerCaptures.set(_pointerId2, accumulateOrCreateContinuousQueuedReplayableEvent(queuedPointerCaptures.get(_pointerId2) || null, blockedOn, topLevelType, eventSystemFlags, _pointerEvent));
         return true;
       }
   }
 
   return false;
+} // Check if this target is unblocked. Returns true if it's unblocked.
+
+function attemptExplicitHydrationTarget(queuedTarget) {
+  // TODO: This function shares a lot of logic with attemptToDispatchEvent.
+  // Try to unify them. It's a bit tricky since it would require two return
+  // values.
+  var targetInst = getClosestInstanceFromNode(queuedTarget.target);
+
+  if (targetInst !== null) {
+    var nearestMounted = getNearestMountedFiber(targetInst);
+
+    if (nearestMounted !== null) {
+      var tag = nearestMounted.tag;
+
+      if (tag === SuspenseComponent) {
+        var instance = getSuspenseInstanceFromFiber(nearestMounted);
+
+        if (instance !== null) {
+          // We're blocked on hydrating this boundary.
+          // Increase its priority.
+          queuedTarget.blockedOn = instance;
+          Scheduler.unstable_runWithPriority(queuedTarget.priority, function () {
+            attemptHydrationAtCurrentPriority(nearestMounted);
+          });
+          return;
+        }
+      } else if (tag === HostRoot) {
+        var root = nearestMounted.stateNode;
+
+        if (root.hydrate) {
+          queuedTarget.blockedOn = getContainerFromFiber(nearestMounted); // We don't currently have a way to increase the priority of
+          // a root other than sync.
+
+          return;
+        }
+      }
+    }
+  }
+
+  queuedTarget.blockedOn = null;
 }
 
-function attemptReplayQueuedEvent(queuedEvent) {
+function queueExplicitHydrationTarget(target) {
+  if (enableSelectiveHydration) {
+    var priority = Scheduler.unstable_getCurrentPriorityLevel();
+    var queuedTarget = {
+      blockedOn: null,
+      target: target,
+      priority: priority
+    };
+    var i = 0;
+
+    for (; i < queuedExplicitHydrationTargets.length; i++) {
+      if (priority <= queuedExplicitHydrationTargets[i].priority) {
+        break;
+      }
+    }
+
+    queuedExplicitHydrationTargets.splice(i, 0, queuedTarget);
+
+    if (i === 0) {
+      attemptExplicitHydrationTarget(queuedTarget);
+    }
+  }
+}
+
+function attemptReplayContinuousQueuedEvent(queuedEvent) {
   if (queuedEvent.blockedOn !== null) {
     return false;
   }
@@ -48869,6 +49238,12 @@ function attemptReplayQueuedEvent(queuedEvent) {
 
   if (nextBlockedOn !== null) {
     // We're still blocked. Try again later.
+    var _fiber3 = getInstanceFromNode$1(nextBlockedOn);
+
+    if (_fiber3 !== null) {
+      attemptContinuousHydration(_fiber3);
+    }
+
     queuedEvent.blockedOn = nextBlockedOn;
     return false;
   }
@@ -48876,8 +49251,8 @@ function attemptReplayQueuedEvent(queuedEvent) {
   return true;
 }
 
-function attemptReplayQueuedEventInMap(queuedEvent, key, map) {
-  if (attemptReplayQueuedEvent(queuedEvent)) {
+function attemptReplayContinuousQueuedEventInMap(queuedEvent, key, map) {
+  if (attemptReplayContinuousQueuedEvent(queuedEvent)) {
     map.delete(key);
   }
 }
@@ -48890,6 +49265,14 @@ function replayUnblockedEvents() {
 
     if (nextDiscreteEvent.blockedOn !== null) {
       // We're still blocked.
+      // Increase the priority of this boundary to unblock
+      // the next discrete event.
+      var _fiber4 = getInstanceFromNode$1(nextDiscreteEvent.blockedOn);
+
+      if (_fiber4 !== null) {
+        attemptUserBlockingHydration(_fiber4);
+      }
+
       break;
     }
 
@@ -48905,20 +49288,20 @@ function replayUnblockedEvents() {
   } // Next replay any continuous events.
 
 
-  if (queuedFocus !== null && attemptReplayQueuedEvent(queuedFocus)) {
+  if (queuedFocus !== null && attemptReplayContinuousQueuedEvent(queuedFocus)) {
     queuedFocus = null;
   }
 
-  if (queuedDrag !== null && attemptReplayQueuedEvent(queuedDrag)) {
+  if (queuedDrag !== null && attemptReplayContinuousQueuedEvent(queuedDrag)) {
     queuedDrag = null;
   }
 
-  if (queuedMouse !== null && attemptReplayQueuedEvent(queuedMouse)) {
+  if (queuedMouse !== null && attemptReplayContinuousQueuedEvent(queuedMouse)) {
     queuedMouse = null;
   }
 
-  queuedPointers.forEach(attemptReplayQueuedEventInMap);
-  queuedPointerCaptures.forEach(attemptReplayQueuedEventInMap);
+  queuedPointers.forEach(attemptReplayContinuousQueuedEventInMap);
+  queuedPointerCaptures.forEach(attemptReplayContinuousQueuedEventInMap);
 }
 
 function scheduleCallbackIfUnblocked(queuedEvent, unblocked) {
@@ -48970,444 +49353,30 @@ function retryIfBlockedOn(unblocked) {
 
   queuedPointers.forEach(unblock);
   queuedPointerCaptures.forEach(unblock);
-}
 
-/**
- * `ReactInstanceMap` maintains a mapping from a public facing stateful
- * instance (key) and the internal representation (value). This allows public
- * methods to accept the user facing instance as an argument and map them back
- * to internal methods.
- *
- * Note that this module is currently shared and assumed to be stateless.
- * If this becomes an actual Map, that will break.
- */
+  for (var _i = 0; _i < queuedExplicitHydrationTargets.length; _i++) {
+    var queuedTarget = queuedExplicitHydrationTargets[_i];
 
-/**
- * This API should be called `delete` but we'd have to make sure to always
- * transform these to strings for IE support. When this transform is fully
- * supported we can rename it.
- */
-
-function get(key) {
-  return key._reactInternalFiber;
-}
-function has(key) {
-  return key._reactInternalFiber !== undefined;
-}
-function set(key, value) {
-  key._reactInternalFiber = value;
-}
-
-// Don't change these two values. They're used by React Dev Tools.
-var NoEffect =
-/*              */
-0;
-var PerformedWork =
-/*         */
-1; // You can change the rest (and add more).
-
-var Placement =
-/*             */
-2;
-var Update =
-/*                */
-4;
-var PlacementAndUpdate =
-/*    */
-6;
-var Deletion =
-/*              */
-8;
-var ContentReset =
-/*          */
-16;
-var Callback =
-/*              */
-32;
-var DidCapture =
-/*            */
-64;
-var Ref =
-/*                   */
-128;
-var Snapshot =
-/*              */
-256;
-var Passive =
-/*               */
-512;
-var Hydrating =
-/*             */
-1024;
-var HydratingAndUpdate =
-/*    */
-1028; // Passive & Update & Callback & Ref & Snapshot
-
-var LifecycleEffectMask =
-/*   */
-932; // Union of all host effects
-
-var HostEffectMask =
-/*        */
-2047;
-var Incomplete =
-/*            */
-2048;
-var ShouldCapture =
-/*         */
-4096;
-
-var ReactCurrentOwner$1 = ReactSharedInternals.ReactCurrentOwner;
-function getNearestMountedFiber(fiber) {
-  var node = fiber;
-  var nearestMounted = fiber;
-
-  if (!fiber.alternate) {
-    // If there is no alternate, this might be a new tree that isn't inserted
-    // yet. If it is, then it will have a pending insertion effect on it.
-    var nextNode = node;
-
-    do {
-      node = nextNode;
-
-      if ((node.effectTag & (Placement | Hydrating)) !== NoEffect) {
-        // This is an insertion or in-progress hydration. The nearest possible
-        // mounted fiber is the parent but we need to continue to figure out
-        // if that one is still mounted.
-        nearestMounted = node.return;
-      }
-
-      nextNode = node.return;
-    } while (nextNode);
-  } else {
-    while (node.return) {
-      node = node.return;
+    if (queuedTarget.blockedOn === unblocked) {
+      queuedTarget.blockedOn = null;
     }
   }
 
-  if (node.tag === HostRoot) {
-    // TODO: Check if this was a nested HostRoot when used with
-    // renderContainerIntoSubtree.
-    return nearestMounted;
-  } // If we didn't hit the root, that means that we're in an disconnected tree
-  // that has been unmounted.
+  while (queuedExplicitHydrationTargets.length > 0) {
+    var nextExplicitTarget = queuedExplicitHydrationTargets[0];
 
-
-  return null;
-}
-function getSuspenseInstanceFromFiber(fiber) {
-  if (fiber.tag === SuspenseComponent) {
-    var suspenseState = fiber.memoizedState;
-
-    if (suspenseState === null) {
-      var current = fiber.alternate;
-
-      if (current !== null) {
-        suspenseState = current.memoizedState;
-      }
-    }
-
-    if (suspenseState !== null) {
-      return suspenseState.dehydrated;
-    }
-  }
-
-  return null;
-}
-function getContainerFromFiber(fiber) {
-  return fiber.tag === HostRoot ? fiber.stateNode.containerInfo : null;
-}
-function isFiberMounted(fiber) {
-  return getNearestMountedFiber(fiber) === fiber;
-}
-function isMounted(component) {
-  {
-    var owner = ReactCurrentOwner$1.current;
-
-    if (owner !== null && owner.tag === ClassComponent) {
-      var ownerFiber = owner;
-      var instance = ownerFiber.stateNode;
-      !instance._warnedAboutRefsInRender ? warningWithoutStack$1(false, '%s is accessing isMounted inside its render() function. ' + 'render() should be a pure function of props and state. It should ' + 'never access something that requires stale data from the previous ' + 'render, such as refs. Move this logic to componentDidMount and ' + 'componentDidUpdate instead.', getComponentName(ownerFiber.type) || 'A component') : void 0;
-      instance._warnedAboutRefsInRender = true;
-    }
-  }
-
-  var fiber = get(component);
-
-  if (!fiber) {
-    return false;
-  }
-
-  return getNearestMountedFiber(fiber) === fiber;
-}
-
-function assertIsMounted(fiber) {
-  (function () {
-    if (!(getNearestMountedFiber(fiber) === fiber)) {
-      {
-        throw ReactError(Error("Unable to find node on an unmounted component."));
-      }
-    }
-  })();
-}
-
-function findCurrentFiberUsingSlowPath(fiber) {
-  var alternate = fiber.alternate;
-
-  if (!alternate) {
-    // If there is no alternate, then we only need to check if it is mounted.
-    var nearestMounted = getNearestMountedFiber(fiber);
-
-    (function () {
-      if (!(nearestMounted !== null)) {
-        {
-          throw ReactError(Error("Unable to find node on an unmounted component."));
-        }
-      }
-    })();
-
-    if (nearestMounted !== fiber) {
-      return null;
-    }
-
-    return fiber;
-  } // If we have two possible branches, we'll walk backwards up to the root
-  // to see what path the root points to. On the way we may hit one of the
-  // special cases and we'll deal with them.
-
-
-  var a = fiber;
-  var b = alternate;
-
-  while (true) {
-    var parentA = a.return;
-
-    if (parentA === null) {
-      // We're at the root.
+    if (nextExplicitTarget.blockedOn !== null) {
+      // We're still blocked.
       break;
-    }
-
-    var parentB = parentA.alternate;
-
-    if (parentB === null) {
-      // There is no alternate. This is an unusual case. Currently, it only
-      // happens when a Suspense component is hidden. An extra fragment fiber
-      // is inserted in between the Suspense fiber and its children. Skip
-      // over this extra fragment fiber and proceed to the next parent.
-      var nextParent = parentA.return;
-
-      if (nextParent !== null) {
-        a = b = nextParent;
-        continue;
-      } // If there's no parent, we're at the root.
-
-
-      break;
-    } // If both copies of the parent fiber point to the same child, we can
-    // assume that the child is current. This happens when we bailout on low
-    // priority: the bailed out fiber's child reuses the current child.
-
-
-    if (parentA.child === parentB.child) {
-      var child = parentA.child;
-
-      while (child) {
-        if (child === a) {
-          // We've determined that A is the current branch.
-          assertIsMounted(parentA);
-          return fiber;
-        }
-
-        if (child === b) {
-          // We've determined that B is the current branch.
-          assertIsMounted(parentA);
-          return alternate;
-        }
-
-        child = child.sibling;
-      } // We should never have an alternate for any mounting node. So the only
-      // way this could possibly happen is if this was unmounted, if at all.
-
-
-      (function () {
-        {
-          {
-            throw ReactError(Error("Unable to find node on an unmounted component."));
-          }
-        }
-      })();
-    }
-
-    if (a.return !== b.return) {
-      // The return pointer of A and the return pointer of B point to different
-      // fibers. We assume that return pointers never criss-cross, so A must
-      // belong to the child set of A.return, and B must belong to the child
-      // set of B.return.
-      a = parentA;
-      b = parentB;
     } else {
-      // The return pointers point to the same fiber. We'll have to use the
-      // default, slow path: scan the child sets of each parent alternate to see
-      // which child belongs to which set.
-      //
-      // Search parent A's child set
-      var didFindChild = false;
-      var _child = parentA.child;
+      attemptExplicitHydrationTarget(nextExplicitTarget);
 
-      while (_child) {
-        if (_child === a) {
-          didFindChild = true;
-          a = parentA;
-          b = parentB;
-          break;
-        }
-
-        if (_child === b) {
-          didFindChild = true;
-          b = parentA;
-          a = parentB;
-          break;
-        }
-
-        _child = _child.sibling;
-      }
-
-      if (!didFindChild) {
-        // Search parent B's child set
-        _child = parentB.child;
-
-        while (_child) {
-          if (_child === a) {
-            didFindChild = true;
-            a = parentB;
-            b = parentA;
-            break;
-          }
-
-          if (_child === b) {
-            didFindChild = true;
-            b = parentB;
-            a = parentA;
-            break;
-          }
-
-          _child = _child.sibling;
-        }
-
-        (function () {
-          if (!didFindChild) {
-            {
-              throw ReactError(Error("Child was not found in either parent set. This indicates a bug in React related to the return pointer. Please file an issue."));
-            }
-          }
-        })();
+      if (nextExplicitTarget.blockedOn === null) {
+        // We're unblocked.
+        queuedExplicitHydrationTargets.shift();
       }
     }
-
-    (function () {
-      if (!(a.alternate === b)) {
-        {
-          throw ReactError(Error("Return fibers should always be each others' alternates. This error is likely caused by a bug in React. Please file an issue."));
-        }
-      }
-    })();
-  } // If the root is not a host container, we're in a disconnected tree. I.e.
-  // unmounted.
-
-
-  (function () {
-    if (!(a.tag === HostRoot)) {
-      {
-        throw ReactError(Error("Unable to find node on an unmounted component."));
-      }
-    }
-  })();
-
-  if (a.stateNode.current === a) {
-    // We've determined that A is the current branch.
-    return fiber;
-  } // Otherwise B has to be current branch.
-
-
-  return alternate;
-}
-function findCurrentHostFiber(parent) {
-  var currentParent = findCurrentFiberUsingSlowPath(parent);
-
-  if (!currentParent) {
-    return null;
-  } // Next we'll drill down this component to find the first HostComponent/Text.
-
-
-  var node = currentParent;
-
-  while (true) {
-    if (node.tag === HostComponent || node.tag === HostText) {
-      return node;
-    } else if (node.child) {
-      node.child.return = node;
-      node = node.child;
-      continue;
-    }
-
-    if (node === currentParent) {
-      return null;
-    }
-
-    while (!node.sibling) {
-      if (!node.return || node.return === currentParent) {
-        return null;
-      }
-
-      node = node.return;
-    }
-
-    node.sibling.return = node.return;
-    node = node.sibling;
-  } // Flow needs the return null here, but ESLint complains about it.
-  // eslint-disable-next-line no-unreachable
-
-
-  return null;
-}
-function findCurrentHostFiberWithNoPortals(parent) {
-  var currentParent = findCurrentFiberUsingSlowPath(parent);
-
-  if (!currentParent) {
-    return null;
-  } // Next we'll drill down this component to find the first HostComponent/Text.
-
-
-  var node = currentParent;
-
-  while (true) {
-    if (node.tag === HostComponent || node.tag === HostText || enableFundamentalAPI && node.tag === FundamentalComponent) {
-      return node;
-    } else if (node.child && node.tag !== HostPortal) {
-      node.child.return = node;
-      node = node.child;
-      continue;
-    }
-
-    if (node === currentParent) {
-      return null;
-    }
-
-    while (!node.sibling) {
-      if (!node.return || node.return === currentParent) {
-        return null;
-      }
-
-      node = node.return;
-    }
-
-    node.sibling.return = node.return;
-    node = node.sibling;
-  } // Flow needs the return null here, but ESLint complains about it.
-  // eslint-disable-next-line no-unreachable
-
-
-  return null;
+  }
 }
 
 function addEventBubbleListener(element, eventType, listener) {
@@ -49954,13 +49923,11 @@ function getPooledEvent(dispatchConfig, targetInst, nativeEvent, nativeInst) {
 function releasePooledEvent(event) {
   var EventConstructor = this;
 
-  (function () {
-    if (!(event instanceof EventConstructor)) {
-      {
-        throw ReactError(Error("Trying to release an event instance into a pool of a different type."));
-      }
+  if (!(event instanceof EventConstructor)) {
+    {
+      throw Error("Trying to release an event instance into a pool of a different type.");
     }
-  })();
+  }
 
   event.destructor();
 
@@ -50749,11 +50716,7 @@ function dispatchDiscreteEvent(topLevelType, eventSystemFlags, nativeEvent) {
 }
 
 function dispatchUserBlockingUpdate(topLevelType, eventSystemFlags, nativeEvent) {
-  if (enableUserBlockingEvents) {
-    runWithPriority$1(UserBlockingPriority$1, dispatchEvent.bind(null, topLevelType, eventSystemFlags, nativeEvent));
-  } else {
-    dispatchEvent(topLevelType, eventSystemFlags, nativeEvent);
-  }
+  runWithPriority$1(UserBlockingPriority$1, dispatchEvent.bind(null, topLevelType, eventSystemFlags, nativeEvent));
 }
 
 function dispatchEventForPluginEventSystem(topLevelType, eventSystemFlags, nativeEvent, targetInst) {
@@ -51531,44 +51494,36 @@ function assertValidProps(tag, props) {
 
 
   if (voidElementTags[tag]) {
-    (function () {
-      if (!(props.children == null && props.dangerouslySetInnerHTML == null)) {
-        {
-          throw ReactError(Error(tag + " is a void element tag and must neither have `children` nor use `dangerouslySetInnerHTML`." + (ReactDebugCurrentFrame$3.getStackAddendum())));
-        }
+    if (!(props.children == null && props.dangerouslySetInnerHTML == null)) {
+      {
+        throw Error(tag + " is a void element tag and must neither have `children` nor use `dangerouslySetInnerHTML`." + (ReactDebugCurrentFrame$3.getStackAddendum()));
       }
-    })();
+    }
   }
 
   if (props.dangerouslySetInnerHTML != null) {
-    (function () {
-      if (!(props.children == null)) {
-        {
-          throw ReactError(Error("Can only set one of `children` or `props.dangerouslySetInnerHTML`."));
-        }
+    if (!(props.children == null)) {
+      {
+        throw Error("Can only set one of `children` or `props.dangerouslySetInnerHTML`.");
       }
-    })();
+    }
 
-    (function () {
-      if (!(typeof props.dangerouslySetInnerHTML === 'object' && HTML$1 in props.dangerouslySetInnerHTML)) {
-        {
-          throw ReactError(Error("`props.dangerouslySetInnerHTML` must be in the form `{__html: ...}`. Please visit https://fb.me/react-invariant-dangerously-set-inner-html for more information."));
-        }
+    if (!(typeof props.dangerouslySetInnerHTML === 'object' && HTML$1 in props.dangerouslySetInnerHTML)) {
+      {
+        throw Error("`props.dangerouslySetInnerHTML` must be in the form `{__html: ...}`. Please visit https://fb.me/react-invariant-dangerously-set-inner-html for more information.");
       }
-    })();
+    }
   }
 
   {
     !(props.suppressContentEditableWarning || !props.contentEditable || props.children == null) ? warning$1(false, 'A component is `contentEditable` and contains `children` managed by ' + 'React. It is now your responsibility to guarantee that none of ' + 'those nodes are unexpectedly modified or duplicated. This is ' + 'probably not intentional.') : void 0;
   }
 
-  (function () {
-    if (!(props.style == null || typeof props.style === 'object')) {
-      {
-        throw ReactError(Error("The `style` prop expects a mapping from style properties to values, not a string. For example, style={{marginRight: spacing + 'em'}} when using JSX." + (ReactDebugCurrentFrame$3.getStackAddendum())));
-      }
+  if (!(props.style == null || typeof props.style === 'object')) {
+    {
+      throw Error("The `style` prop expects a mapping from style properties to values, not a string. For example, style={{marginRight: spacing + 'em'}} when using JSX." + (ReactDebugCurrentFrame$3.getStackAddendum()));
     }
-  })();
+  }
 }
 
 function isCustomComponent(tagName, props) {
@@ -54220,13 +54175,11 @@ var updatedAncestorInfo = function () {};
 // can re-export everything from this module.
 
 function shim() {
-  (function () {
+  {
     {
-      {
-        throw ReactError(Error("The current renderer does not support persistence. This error is likely caused by a bug in React. Please file an issue."));
-      }
+      throw Error("The current renderer does not support persistence. This error is likely caused by a bug in React. Please file an issue.");
     }
-  })();
+  }
 } // Persistence (when unsupported)
 
 
@@ -54462,14 +54415,31 @@ function insertInContainerBefore(container, child, beforeChild) {
   } else {
     container.insertBefore(child, beforeChild);
   }
+} // This is a specific event for the React Flare
+// event system, so event responders can act
+// accordingly to a DOM node being unmounted that
+// previously had active document focus.
+
+function dispatchDetachedVisibleNodeEvent(child) {
+  if (enableFlareAPI && selectionInformation && child === selectionInformation.focusedElem) {
+    var targetFiber = getClosestInstanceFromNode(child); // Simlulate a blur event to the React Flare responder system.
+
+    dispatchEventForResponderEventSystem('detachedvisiblenode', targetFiber, {
+      target: child,
+      timeStamp: Date.now()
+    }, child, RESPONDER_EVENT_SYSTEM | IS_PASSIVE);
+  }
 }
+
 function removeChild(parentInstance, child) {
+  dispatchDetachedVisibleNodeEvent(child);
   parentInstance.removeChild(child);
 }
 function removeChildFromContainer(container, child) {
   if (container.nodeType === COMMENT_NODE) {
     container.parentNode.removeChild(child);
   } else {
+    dispatchDetachedVisibleNodeEvent(child);
     container.removeChild(child);
   }
 }
@@ -54848,6 +54818,9 @@ function unmountFundamentalComponent(fundamentalInstance) {
     }
   }
 }
+function getInstanceFromNode$2(node) {
+  return getClosestInstanceFromNode(node) || null;
+}
 
 var randomKey = Math.random().toString(36).slice(2);
 var internalInstanceKey = '__reactInternalInstance$' + randomKey;
@@ -54858,11 +54831,17 @@ function precacheFiberNode(hostInst, node) {
 }
 function markContainerAsRoot(hostRoot, node) {
   node[internalContainerInstanceKey] = hostRoot;
+}
+function unmarkContainerAsRoot(node) {
+  node[internalContainerInstanceKey] = null;
+}
+function isContainerMarkedAsRoot(node) {
+  return !!node[internalContainerInstanceKey];
 } // Given a DOM node, return the closest HostComponent or HostText fiber ancestor.
 // If the target node is part of a hydrated or not yet rendered subtree, then
 // this may also return a SuspenseComponent or HostRoot to indicate that.
 // Conceptually the HostRoot fiber is a child of the Container node. So if you
-// pass the Container node as the targetNode, you wiill not actually get the
+// pass the Container node as the targetNode, you will not actually get the
 // HostRoot back. To get to the HostRoot, you need to pass a child of it.
 // The same thing applies to Suspense boundaries.
 
@@ -54976,13 +54955,11 @@ function getNodeFromInstance$1(inst) {
   // invariant for a missing parent, which is super confusing.
 
 
-  (function () {
+  {
     {
-      {
-        throw ReactError(Error("getNodeFromInstance: Invalid argument."));
-      }
+      throw Error("getNodeFromInstance: Invalid argument.");
     }
-  })();
+  }
 }
 function getFiberCurrentPropsFromNode$1(node) {
   return node[internalEventHandlersKey] || null;
@@ -55787,7 +55764,12 @@ var eventTypes$3 = {
     registrationName: 'onPointerLeave',
     dependencies: [TOP_POINTER_OUT, TOP_POINTER_OVER]
   }
-};
+}; // We track the lastNativeEvent to ensure that when we encounter
+// cases where we process the same nativeEvent multiple times,
+// which can happen when have multiple ancestors, that we don't
+// duplicate enter
+
+var lastNativeEvent;
 var EnterLeaveEventPlugin = {
   eventTypes: eventTypes$3,
 
@@ -55882,6 +55864,13 @@ var EnterLeaveEventPlugin = {
     enter.target = toNode;
     enter.relatedTarget = fromNode;
     accumulateEnterLeaveDispatches(leave, enter, from, to);
+
+    if (nativeEvent === lastNativeEvent) {
+      lastNativeEvent = null;
+      return [leave];
+    }
+
+    lastNativeEvent = nativeEvent;
     return [leave, enter];
   }
 };
@@ -56717,13 +56706,11 @@ function pushTopLevelContextObject(fiber, context, didChange) {
   if (disableLegacyContext) {
     return;
   } else {
-    (function () {
-      if (!(contextStackCursor.current === emptyContextObject)) {
-        {
-          throw ReactError(Error("Unexpected context found on stack. This error is likely caused by a bug in React. Please file an issue."));
-        }
+    if (!(contextStackCursor.current === emptyContextObject)) {
+      {
+        throw Error("Unexpected context found on stack. This error is likely caused by a bug in React. Please file an issue.");
       }
-    })();
+    }
 
     push(contextStackCursor, context, fiber);
     push(didPerformWorkStackCursor, didChange, fiber);
@@ -56766,13 +56753,11 @@ function processChildContext(fiber, type, parentContext) {
     }
 
     for (var contextKey in childContext) {
-      (function () {
-        if (!(contextKey in childContextTypes)) {
-          {
-            throw ReactError(Error((getComponentName(type) || 'Unknown') + ".getChildContext(): key \"" + contextKey + "\" is not defined in childContextTypes."));
-          }
+      if (!(contextKey in childContextTypes)) {
+        {
+          throw Error((getComponentName(type) || 'Unknown') + ".getChildContext(): key \"" + contextKey + "\" is not defined in childContextTypes.");
         }
-      })();
+      }
     }
 
     {
@@ -56813,13 +56798,11 @@ function invalidateContextProvider(workInProgress, type, didChange) {
   } else {
     var instance = workInProgress.stateNode;
 
-    (function () {
-      if (!instance) {
-        {
-          throw ReactError(Error("Expected to have an instance by this point. This error is likely caused by a bug in React. Please file an issue."));
-        }
+    if (!instance) {
+      {
+        throw Error("Expected to have an instance by this point. This error is likely caused by a bug in React. Please file an issue.");
       }
-    })();
+    }
 
     if (didChange) {
       // Merge parent and own context.
@@ -56847,13 +56830,11 @@ function findCurrentUnmaskedContext(fiber) {
   } else {
     // Currently this is only used with renderSubtreeIntoContainer; not sure if it
     // makes sense elsewhere
-    (function () {
-      if (!(isFiberMounted(fiber) && fiber.tag === ClassComponent)) {
-        {
-          throw ReactError(Error("Expected subtree parent to be a mounted class component. This error is likely caused by a bug in React. Please file an issue."));
-        }
+    if (!(isFiberMounted(fiber) && fiber.tag === ClassComponent)) {
+      {
+        throw Error("Expected subtree parent to be a mounted class component. This error is likely caused by a bug in React. Please file an issue.");
       }
-    })();
+    }
 
     var node = fiber;
 
@@ -56877,18 +56858,16 @@ function findCurrentUnmaskedContext(fiber) {
       node = node.return;
     } while (node !== null);
 
-    (function () {
+    {
       {
-        {
-          throw ReactError(Error("Found unexpected detached subtree parent. This error is likely caused by a bug in React. Please file an issue."));
-        }
+        throw Error("Found unexpected detached subtree parent. This error is likely caused by a bug in React. Please file an issue.");
       }
-    })();
+    }
   }
 }
 
 var LegacyRoot = 0;
-var BatchedRoot = 1;
+var BlockingRoot = 1;
 var ConcurrentRoot = 2;
 
 // Intentionally not named imports because Rollup would use dynamic dispatch for
@@ -56910,13 +56889,11 @@ if (enableSchedulerTracing) {
   // Provide explicit error message when production+profiling bundle of e.g.
   // react-dom is used with production (non-profiling) bundle of
   // scheduler/tracing
-  (function () {
-    if (!(tracing.__interactionsRef != null && tracing.__interactionsRef.current != null)) {
-      {
-        throw ReactError(Error("It is not supported to run the profiling version of a renderer (for example, `react-dom/profiling`) without also replacing the `scheduler/tracing` module with `scheduler/tracing-profiling`. Your bundler might have a setting for aliasing both modules. Learn more at http://fb.me/react-profiling"));
-      }
+  if (!(tracing.__interactionsRef != null && tracing.__interactionsRef.current != null)) {
+    {
+      throw Error("It is not supported to run the profiling version of a renderer (for example, `react-dom/profiling`) without also replacing the `scheduler/tracing` module with `scheduler/tracing-profiling`. Your bundler might have a setting for aliasing both modules. Learn more at http://fb.me/react-profiling");
     }
-  })();
+  }
 }
 
 var fakeCallbackNode = {}; // Except for NoPriority, these correspond to Scheduler priorities. We use
@@ -56965,13 +56942,11 @@ function getCurrentPriorityLevel() {
       return IdlePriority;
 
     default:
-      (function () {
+      {
         {
-          {
-            throw ReactError(Error("Unknown priority level."));
-          }
+          throw Error("Unknown priority level.");
         }
-      })();
+      }
 
   }
 }
@@ -56994,13 +56969,11 @@ function reactPriorityToSchedulerPriority(reactPriorityLevel) {
       return Scheduler_IdlePriority;
 
     default:
-      (function () {
+      {
         {
-          {
-            throw ReactError(Error("Unknown priority level."));
-          }
+          throw Error("Unknown priority level.");
         }
-      })();
+      }
 
   }
 }
@@ -57078,10 +57051,10 @@ function flushSyncCallbackQueueImpl() {
 }
 
 var NoMode = 0;
-var StrictMode = 1; // TODO: Remove BatchedMode and ConcurrentMode by reading from the root
+var StrictMode = 1; // TODO: Remove BlockingMode and ConcurrentMode by reading from the root
 // tag instead
 
-var BatchedMode = 2;
+var BlockingMode = 2;
 var ConcurrentMode = 4;
 var ProfileMode = 8;
 
@@ -57101,7 +57074,11 @@ var NoWork = 0; // TODO: Think of a better name for Never. The key difference wi
 var Never = 1; // Idle is slightly higher priority than Never. It must completely finish in
 // order to be consistent.
 
-var Idle = 2;
+var Idle = 2; // Continuous Hydration is a moving priority. It is slightly higher than Idle
+// and is used to increase priority of hover targets. It is increasing with
+// each usage so that last always wins.
+
+var ContinuousHydration = 3;
 var Sync = MAX_SIGNED_31_BIT_INT;
 var Batched = Sync - 1;
 var UNIT_SIZE = 10;
@@ -57149,6 +57126,12 @@ var HIGH_PRIORITY_EXPIRATION = 500;
 var HIGH_PRIORITY_BATCH_SIZE = 100;
 function computeInteractiveExpiration(currentTime) {
   return computeExpirationBucket(currentTime, HIGH_PRIORITY_EXPIRATION, HIGH_PRIORITY_BATCH_SIZE);
+}
+function computeContinuousHydrationExpiration(currentTime) {
+  // Each time we ask for a new one of these we increase the priority.
+  // This ensures that the last one always wins since we can't deprioritize
+  // once we've scheduled work already.
+  return ContinuousHydration++;
 }
 function inferPriorityFromExpirationTime(currentTime, expirationTime) {
   if (expirationTime === Sync) {
@@ -57653,7 +57636,9 @@ var scheduleRoot = function (root, element) {
     }
 
     flushPassiveEffects();
-    updateContainerAtExpirationTime(element, root, null, Sync, null);
+    syncUpdates(function () {
+      updateContainer(element, root, null, null);
+    });
   }
 };
 
@@ -58055,13 +58040,11 @@ function propagateContextChange(workInProgress, context, changedBits, renderExpi
       // mark it as having updates.
       var parentSuspense = fiber.return;
 
-      (function () {
-        if (!(parentSuspense !== null)) {
-          {
-            throw ReactError(Error("We just came from a parent so we must have had a parent. This is a bug in React."));
-          }
+      if (!(parentSuspense !== null)) {
+        {
+          throw Error("We just came from a parent so we must have had a parent. This is a bug in React.");
         }
-      })();
+      }
 
       if (parentSuspense.expirationTime < renderExpirationTime) {
         parentSuspense.expirationTime = renderExpirationTime;
@@ -58162,13 +58145,11 @@ function readContext(context, observedBits) {
     };
 
     if (lastContextDependency === null) {
-      (function () {
-        if (!(currentlyRenderingFiber !== null)) {
-          {
-            throw ReactError(Error("Context can only be read while React is rendering. In classes, you can read it in the render method or getDerivedStateFromProps. In function components, you can read it directly in the function body, but not inside Hooks like useReducer() or useMemo()."));
-          }
+      if (!(currentlyRenderingFiber !== null)) {
+        {
+          throw Error("Context can only be read while React is rendering. In classes, you can read it in the render method or getDerivedStateFromProps. In function components, you can read it directly in the function body, but not inside Hooks like useReducer() or useMemo().");
         }
-      })(); // This is the first dependency for this component. Create a new list.
+      } // This is the first dependency for this component. Create a new list.
 
 
       lastContextDependency = contextItem;
@@ -58455,7 +58436,7 @@ function getStateFromUpdate(workInProgress, queue, update, prevState, nextProps,
           {
             enterDisallowedContextReadInDEV();
 
-            if (debugRenderPhaseSideEffects || debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
+            if (debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
               payload.call(instance, prevState, nextProps);
             }
           }
@@ -58489,7 +58470,7 @@ function getStateFromUpdate(workInProgress, queue, update, prevState, nextProps,
           {
             enterDisallowedContextReadInDEV();
 
-            if (debugRenderPhaseSideEffects || debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
+            if (debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
               _payload.call(instance, prevState, nextProps);
             }
           }
@@ -58673,13 +58654,11 @@ function processUpdateQueue(workInProgress, queue, props, instance, renderExpira
 }
 
 function callCallback(callback, context) {
-  (function () {
-    if (!(typeof callback === 'function')) {
-      {
-        throw ReactError(Error("Invalid argument passed as callback. Expected a function. Instead received: " + callback));
-      }
+  if (!(typeof callback === 'function')) {
+    {
+      throw Error("Invalid argument passed as callback. Expected a function. Instead received: " + callback);
     }
-  })();
+  }
 
   callback.call(context);
 }
@@ -58790,13 +58769,11 @@ var didWarnAboutInvalidateContextType;
   Object.defineProperty(fakeInternalInstance, '_processChildContext', {
     enumerable: false,
     value: function () {
-      (function () {
+      {
         {
-          {
-            throw ReactError(Error("_processChildContext is not available in React 16+. This likely means you have multiple copies of React and are attempting to nest a React 15 tree inside a React 16 tree using unstable_renderSubtreeIntoContainer, which isn't supported. Try to make sure you have only one copy of React (and ideally, switch to ReactDOM.createPortal)."));
-          }
+          throw Error("_processChildContext is not available in React 16+. This likely means you have multiple copies of React and are attempting to nest a React 15 tree inside a React 16 tree using unstable_renderSubtreeIntoContainer, which isn't supported. Try to make sure you have only one copy of React (and ideally, switch to ReactDOM.createPortal).");
         }
-      })();
+      }
     }
   });
   Object.freeze(fakeInternalInstance);
@@ -58806,7 +58783,7 @@ function applyDerivedStateFromProps(workInProgress, ctor, getDerivedStateFromPro
   var prevState = workInProgress.memoizedState;
 
   {
-    if (debugRenderPhaseSideEffects || debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
+    if (debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
       // Invoke the function an extra time to help detect side-effects.
       getDerivedStateFromProps(nextProps, prevState);
     }
@@ -58833,7 +58810,7 @@ var classComponentUpdater = {
   isMounted: isMounted,
   enqueueSetState: function (inst, payload, callback) {
     var fiber = get(inst);
-    var currentTime = requestCurrentTime();
+    var currentTime = requestCurrentTimeForUpdate();
     var suspenseConfig = requestCurrentSuspenseConfig();
     var expirationTime = computeExpirationForFiber(currentTime, fiber, suspenseConfig);
     var update = createUpdate(expirationTime, suspenseConfig);
@@ -58852,7 +58829,7 @@ var classComponentUpdater = {
   },
   enqueueReplaceState: function (inst, payload, callback) {
     var fiber = get(inst);
-    var currentTime = requestCurrentTime();
+    var currentTime = requestCurrentTimeForUpdate();
     var suspenseConfig = requestCurrentSuspenseConfig();
     var expirationTime = computeExpirationForFiber(currentTime, fiber, suspenseConfig);
     var update = createUpdate(expirationTime, suspenseConfig);
@@ -58872,7 +58849,7 @@ var classComponentUpdater = {
   },
   enqueueForceUpdate: function (inst, callback) {
     var fiber = get(inst);
-    var currentTime = requestCurrentTime();
+    var currentTime = requestCurrentTimeForUpdate();
     var suspenseConfig = requestCurrentSuspenseConfig();
     var expirationTime = computeExpirationForFiber(currentTime, fiber, suspenseConfig);
     var update = createUpdate(expirationTime, suspenseConfig);
@@ -59053,7 +59030,7 @@ function constructClassInstance(workInProgress, ctor, props, renderExpirationTim
 
 
   {
-    if (debugRenderPhaseSideEffects || debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
+    if (debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
       new ctor(props, context); // eslint-disable-line no-new
     }
   }
@@ -59487,13 +59464,11 @@ var warnForMissingKey = function (child) {};
       return;
     }
 
-    (function () {
-      if (!(typeof child._store === 'object')) {
-        {
-          throw ReactError(Error("React Component in warnForMissingKey should have a _store. This error is likely caused by a bug in React. Please file an issue."));
-        }
+    if (!(typeof child._store === 'object')) {
+      {
+        throw Error("React Component in warnForMissingKey should have a _store. This error is likely caused by a bug in React. Please file an issue.");
       }
-    })();
+    }
 
     child._store.validated = true;
     var currentComponentErrorInfo = 'Each child in a list should have a unique ' + '"key" prop. See https://fb.me/react-warning-keys for ' + 'more information.' + getCurrentFiberStackInDev();
@@ -59538,24 +59513,20 @@ function coerceRef(returnFiber, current$$1, element) {
       if (owner) {
         var ownerFiber = owner;
 
-        (function () {
-          if (!(ownerFiber.tag === ClassComponent)) {
-            {
-              throw ReactError(Error("Function components cannot have refs. Did you mean to use React.forwardRef()?"));
-            }
+        if (!(ownerFiber.tag === ClassComponent)) {
+          {
+            throw Error("Function components cannot have refs. Did you mean to use React.forwardRef()?");
           }
-        })();
+        }
 
         inst = ownerFiber.stateNode;
       }
 
-      (function () {
-        if (!inst) {
-          {
-            throw ReactError(Error("Missing owner for string ref " + mixedRef + ". This error is likely caused by a bug in React. Please file an issue."));
-          }
+      if (!inst) {
+        {
+          throw Error("Missing owner for string ref " + mixedRef + ". This error is likely caused by a bug in React. Please file an issue.");
         }
-      })();
+      }
 
       var stringRef = '' + mixedRef; // Check if previous string ref matches new string ref
 
@@ -59581,21 +59552,17 @@ function coerceRef(returnFiber, current$$1, element) {
       ref._stringRef = stringRef;
       return ref;
     } else {
-      (function () {
-        if (!(typeof mixedRef === 'string')) {
-          {
-            throw ReactError(Error("Expected ref to be a function, a string, an object returned by React.createRef(), or null."));
-          }
+      if (!(typeof mixedRef === 'string')) {
+        {
+          throw Error("Expected ref to be a function, a string, an object returned by React.createRef(), or null.");
         }
-      })();
+      }
 
-      (function () {
-        if (!element._owner) {
-          {
-            throw ReactError(Error("Element ref was specified as a string (" + mixedRef + ") but no owner was set. This could happen for one of the following reasons:\n1. You may be adding a ref to a function component\n2. You may be adding a ref to a component that was not created inside a component's render method\n3. You have multiple copies of React loaded\nSee https://fb.me/react-refs-must-have-owner for more information."));
-          }
+      if (!element._owner) {
+        {
+          throw Error("Element ref was specified as a string (" + mixedRef + ") but no owner was set. This could happen for one of the following reasons:\n1. You may be adding a ref to a function component\n2. You may be adding a ref to a component that was not created inside a component's render method\n3. You have multiple copies of React loaded\nSee https://fb.me/react-refs-must-have-owner for more information.");
         }
-      })();
+      }
     }
   }
 
@@ -59610,13 +59577,11 @@ function throwOnInvalidObjectType(returnFiber, newChild) {
       addendum = ' If you meant to render a collection of children, use an array ' + 'instead.' + getCurrentFiberStackInDev();
     }
 
-    (function () {
+    {
       {
-        {
-          throw ReactError(Error("Objects are not valid as a React child (found: " + (Object.prototype.toString.call(newChild) === '[object Object]' ? 'object with keys {' + Object.keys(newChild).join(', ') + '}' : newChild) + ")." + addendum));
-        }
+        throw Error("Objects are not valid as a React child (found: " + (Object.prototype.toString.call(newChild) === '[object Object]' ? 'object with keys {' + Object.keys(newChild).join(', ') + '}' : newChild) + ")." + addendum);
       }
-    })();
+    }
   }
 }
 
@@ -60164,13 +60129,11 @@ function ChildReconciler(shouldTrackSideEffects) {
     // but using the iterator instead.
     var iteratorFn = getIteratorFn(newChildrenIterable);
 
-    (function () {
-      if (!(typeof iteratorFn === 'function')) {
-        {
-          throw ReactError(Error("An object is not an iterable. This error is likely caused by a bug in React. Please file an issue."));
-        }
+    if (!(typeof iteratorFn === 'function')) {
+      {
+        throw Error("An object is not an iterable. This error is likely caused by a bug in React. Please file an issue.");
       }
-    })();
+    }
 
     {
       // We don't support rendering Generators because it's a mutation.
@@ -60205,13 +60168,11 @@ function ChildReconciler(shouldTrackSideEffects) {
 
     var newChildren = iteratorFn.call(newChildrenIterable);
 
-    (function () {
-      if (!(newChildren != null)) {
-        {
-          throw ReactError(Error("An iterable object provided no iterator."));
-        }
+    if (!(newChildren != null)) {
+      {
+        throw Error("An iterable object provided no iterator.");
       }
-    })();
+    }
 
     var resultingFirstChild = null;
     var previousNewFiber = null;
@@ -60509,13 +60470,11 @@ function ChildReconciler(shouldTrackSideEffects) {
           {
             var Component = returnFiber.type;
 
-            (function () {
+            {
               {
-                {
-                  throw ReactError(Error((Component.displayName || Component.name || 'Component') + "(...): Nothing was returned from render. This usually means a return statement is missing. Or, to render nothing, return null."));
-                }
+                throw Error((Component.displayName || Component.name || 'Component') + "(...): Nothing was returned from render. This usually means a return statement is missing. Or, to render nothing, return null.");
               }
-            })();
+            }
           }
       }
     } // Remaining cases are all treated as empty.
@@ -60530,13 +60489,11 @@ function ChildReconciler(shouldTrackSideEffects) {
 var reconcileChildFibers = ChildReconciler(true);
 var mountChildFibers = ChildReconciler(false);
 function cloneChildFibers(current$$1, workInProgress) {
-  (function () {
-    if (!(current$$1 === null || workInProgress.child === current$$1.child)) {
-      {
-        throw ReactError(Error("Resuming work not yet implemented."));
-      }
+  if (!(current$$1 === null || workInProgress.child === current$$1.child)) {
+    {
+      throw Error("Resuming work not yet implemented.");
     }
-  })();
+  }
 
   if (workInProgress.child === null) {
     return;
@@ -60571,13 +60528,11 @@ var contextFiberStackCursor = createCursor(NO_CONTEXT);
 var rootInstanceStackCursor = createCursor(NO_CONTEXT);
 
 function requiredContext(c) {
-  (function () {
-    if (!(c !== NO_CONTEXT)) {
-      {
-        throw ReactError(Error("Expected host context to exist. This error is likely caused by a bug in React. Please file an issue."));
-      }
+  if (!(c !== NO_CONTEXT)) {
+    {
+      throw Error("Expected host context to exist. This error is likely caused by a bug in React. Please file an issue.");
     }
-  })();
+  }
 
   return c;
 }
@@ -60815,13 +60770,11 @@ function updateEventListener(listener, fiber, visistedResponders, respondersMap,
     props = listener.props;
   }
 
-  (function () {
-    if (!(responder && responder.$$typeof === REACT_RESPONDER_TYPE)) {
-      {
-        throw ReactError(Error("An invalid value was used as an event listener. Expect one or many event listeners created via React.unstable_useResponder()."));
-      }
+  if (!(responder && responder.$$typeof === REACT_RESPONDER_TYPE)) {
+    {
+      throw Error("An invalid value was used as an event listener. Expect one or many event listeners created via React.unstable_useResponder().");
     }
-  })();
+  }
 
   var listenerProps = props;
 
@@ -60936,6 +60889,7 @@ var UnmountPassive =
 128;
 
 var ReactCurrentDispatcher$1 = ReactSharedInternals.ReactCurrentDispatcher;
+var ReactCurrentBatchConfig$1 = ReactSharedInternals.ReactCurrentBatchConfig;
 var didWarnAboutMismatchedHooksForComponent;
 
 {
@@ -61053,13 +61007,11 @@ function warnOnHookMismatchInDev(currentHookName) {
 }
 
 function throwInvalidHookError() {
-  (function () {
+  {
     {
-      {
-        throw ReactError(Error("Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:\n1. You might have mismatching versions of React and the renderer (such as React DOM)\n2. You might be breaking the Rules of Hooks\n3. You might have more than one copy of React in the same app\nSee https://fb.me/react-invalid-hook-call for tips about how to debug and fix this problem."));
-      }
+      throw Error("Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:\n1. You might have mismatching versions of React and the renderer (such as React DOM)\n2. You might be breaking the Rules of Hooks\n3. You might have more than one copy of React in the same app\nSee https://fb.me/react-invalid-hook-call for tips about how to debug and fix this problem.");
     }
-  })();
+  }
 }
 
 function areHookInputsEqual(nextDeps, prevDeps) {
@@ -61209,13 +61161,11 @@ function renderWithHooks(current, workInProgress, Component, props, refOrContext
   // renderPhaseUpdates = null;
   // numberOfReRenders = 0;
 
-  (function () {
-    if (!!didRenderTooFewHooks) {
-      {
-        throw ReactError(Error("Rendered fewer hooks than expected. This may be caused by an accidental early return statement."));
-      }
+  if (!!didRenderTooFewHooks) {
+    {
+      throw Error("Rendered fewer hooks than expected. This may be caused by an accidental early return statement.");
     }
-  })();
+  }
 
   return children;
 }
@@ -61290,13 +61240,11 @@ function updateWorkInProgressHook() {
     nextCurrentHook = currentHook !== null ? currentHook.next : null;
   } else {
     // Clone from the current hook.
-    (function () {
-      if (!(nextCurrentHook !== null)) {
-        {
-          throw ReactError(Error("Rendered more hooks than during the previous render."));
-        }
+    if (!(nextCurrentHook !== null)) {
+      {
+        throw Error("Rendered more hooks than during the previous render.");
       }
-    })();
+    }
 
     currentHook = nextCurrentHook;
     var newHook = {
@@ -61357,13 +61305,11 @@ function updateReducer(reducer, initialArg, init) {
   var hook = updateWorkInProgressHook();
   var queue = hook.queue;
 
-  (function () {
-    if (!(queue !== null)) {
-      {
-        throw ReactError(Error("Should have a queue. This is likely a bug in React. Please file an issue."));
-      }
+  if (!(queue !== null)) {
+    {
+      throw Error("Should have a queue. This is likely a bug in React. Please file an issue.");
     }
-  })();
+  }
 
   queue.lastRenderedReducer = reducer;
 
@@ -61744,14 +61690,96 @@ function updateMemo(nextCreate, deps) {
   return nextValue;
 }
 
-function dispatchAction(fiber, queue, action) {
-  (function () {
-    if (!(numberOfReRenders < RE_RENDER_LIMIT)) {
-      {
-        throw ReactError(Error("Too many re-renders. React limits the number of renders to prevent an infinite loop."));
+function mountDeferredValue(value, config) {
+  var _mountState = mountState(value),
+      prevValue = _mountState[0],
+      setValue = _mountState[1];
+
+  mountEffect(function () {
+    Scheduler.unstable_next(function () {
+      var previousConfig = ReactCurrentBatchConfig$1.suspense;
+      ReactCurrentBatchConfig$1.suspense = config === undefined ? null : config;
+
+      try {
+        setValue(value);
+      } finally {
+        ReactCurrentBatchConfig$1.suspense = previousConfig;
       }
+    });
+  }, [value, config]);
+  return prevValue;
+}
+
+function updateDeferredValue(value, config) {
+  var _updateState = updateState(value),
+      prevValue = _updateState[0],
+      setValue = _updateState[1];
+
+  updateEffect(function () {
+    Scheduler.unstable_next(function () {
+      var previousConfig = ReactCurrentBatchConfig$1.suspense;
+      ReactCurrentBatchConfig$1.suspense = config === undefined ? null : config;
+
+      try {
+        setValue(value);
+      } finally {
+        ReactCurrentBatchConfig$1.suspense = previousConfig;
+      }
+    });
+  }, [value, config]);
+  return prevValue;
+}
+
+function mountTransition(config) {
+  var _mountState2 = mountState(false),
+      isPending = _mountState2[0],
+      setPending = _mountState2[1];
+
+  var startTransition = mountCallback(function (callback) {
+    setPending(true);
+    Scheduler.unstable_next(function () {
+      var previousConfig = ReactCurrentBatchConfig$1.suspense;
+      ReactCurrentBatchConfig$1.suspense = config === undefined ? null : config;
+
+      try {
+        setPending(false);
+        callback();
+      } finally {
+        ReactCurrentBatchConfig$1.suspense = previousConfig;
+      }
+    });
+  }, [config, isPending]);
+  return [startTransition, isPending];
+}
+
+function updateTransition(config) {
+  var _updateState2 = updateState(false),
+      isPending = _updateState2[0],
+      setPending = _updateState2[1];
+
+  var startTransition = updateCallback(function (callback) {
+    setPending(true);
+    Scheduler.unstable_next(function () {
+      var previousConfig = ReactCurrentBatchConfig$1.suspense;
+      ReactCurrentBatchConfig$1.suspense = config === undefined ? null : config;
+
+      try {
+        setPending(false);
+        callback();
+      } finally {
+        ReactCurrentBatchConfig$1.suspense = previousConfig;
+      }
+    });
+  }, [config, isPending]);
+  return [startTransition, isPending];
+}
+
+function dispatchAction(fiber, queue, action) {
+  if (!(numberOfReRenders < RE_RENDER_LIMIT)) {
+    {
+      throw Error("Too many re-renders. React limits the number of renders to prevent an infinite loop.");
     }
-  })();
+  }
 
   {
     !(typeof arguments[3] !== 'function') ? warning$1(false, "State updates from the useState() and useReducer() Hooks don't support the " + 'second callback argument. To execute a side effect after ' + 'rendering, declare it in the component body with useEffect().') : void 0;
@@ -61796,7 +61824,7 @@ function dispatchAction(fiber, queue, action) {
       lastRenderPhaseUpdate.next = update;
     }
   } else {
-    var currentTime = requestCurrentTime();
+    var currentTime = requestCurrentTimeForUpdate();
     var suspenseConfig = requestCurrentSuspenseConfig();
     var expirationTime = computeExpirationForFiber(currentTime, fiber, suspenseConfig);
     var _update2 = {
@@ -61895,7 +61923,9 @@ var ContextOnlyDispatcher = {
   useRef: throwInvalidHookError,
   useState: throwInvalidHookError,
   useDebugValue: throwInvalidHookError,
-  useResponder: throwInvalidHookError
+  useResponder: throwInvalidHookError,
+  useDeferredValue: throwInvalidHookError,
+  useTransition: throwInvalidHookError
 };
 var HooksDispatcherOnMountInDEV = null;
 var HooksDispatcherOnMountWithHookTypesInDEV = null;
@@ -61996,6 +62026,16 @@ var InvalidNestedHooksDispatcherOnUpdateInDEV = null;
       currentHookNameInDev = 'useResponder';
       mountHookTypesDev();
       return createResponderListener(responder, props);
+    },
+    useDeferredValue: function (value, config) {
+      currentHookNameInDev = 'useDeferredValue';
+      mountHookTypesDev();
+      return mountDeferredValue(value, config);
+    },
+    useTransition: function (config) {
+      currentHookNameInDev = 'useTransition';
+      mountHookTypesDev();
+      return mountTransition(config);
     }
   };
   HooksDispatcherOnMountWithHookTypesInDEV = {
@@ -62077,6 +62117,16 @@ var InvalidNestedHooksDispatcherOnUpdateInDEV = null;
       currentHookNameInDev = 'useResponder';
       updateHookTypesDev();
       return createResponderListener(responder, props);
+    },
+    useDeferredValue: function (value, config) {
+      currentHookNameInDev = 'useDeferredValue';
+      updateHookTypesDev();
+      return mountDeferredValue(value, config);
+    },
+    useTransition: function (config) {
+      currentHookNameInDev = 'useTransition';
+      updateHookTypesDev();
+      return mountTransition(config);
     }
   };
   HooksDispatcherOnUpdateInDEV = {
@@ -62158,6 +62208,16 @@ var InvalidNestedHooksDispatcherOnUpdateInDEV = null;
       currentHookNameInDev = 'useResponder';
       updateHookTypesDev();
       return createResponderListener(responder, props);
+    },
+    useDeferredValue: function (value, config) {
+      currentHookNameInDev = 'useDeferredValue';
+      updateHookTypesDev();
+      return updateDeferredValue(value, config);
+    },
+    useTransition: function (config) {
+      currentHookNameInDev = 'useTransition';
+      updateHookTypesDev();
+      return updateTransition(config);
     }
   };
   InvalidNestedHooksDispatcherOnMountInDEV = {
@@ -62251,6 +62311,18 @@ var InvalidNestedHooksDispatcherOnUpdateInDEV = null;
       warnInvalidHookAccess();
       mountHookTypesDev();
       return createResponderListener(responder, props);
+    },
+    useDeferredValue: function (value, config) {
+      currentHookNameInDev = 'useDeferredValue';
+      warnInvalidHookAccess();
+      mountHookTypesDev();
+      return mountDeferredValue(value, config);
+    },
+    useTransition: function (config) {
+      currentHookNameInDev = 'useTransition';
+      warnInvalidHookAccess();
+      mountHookTypesDev();
+      return mountTransition(config);
     }
   };
   InvalidNestedHooksDispatcherOnUpdateInDEV = {
@@ -62344,6 +62416,18 @@ var InvalidNestedHooksDispatcherOnUpdateInDEV = null;
       warnInvalidHookAccess();
       updateHookTypesDev();
       return createResponderListener(responder, props);
+    },
+    useDeferredValue: function (value, config) {
+      currentHookNameInDev = 'useDeferredValue';
+      warnInvalidHookAccess();
+      updateHookTypesDev();
+      return updateDeferredValue(value, config);
+    },
+    useTransition: function (config) {
+      currentHookNameInDev = 'useTransition';
+      warnInvalidHookAccess();
+      updateHookTypesDev();
+      return updateTransition(config);
     }
   };
 }
@@ -62632,13 +62716,11 @@ function tryToClaimNextHydratableInstance(fiber) {
 
 function prepareToHydrateHostInstance(fiber, rootContainerInstance, hostContext) {
   if (!supportsHydration) {
-    (function () {
+    {
       {
-        {
-          throw ReactError(Error("Expected prepareToHydrateHostInstance() to never be called. This error is likely caused by a bug in React. Please file an issue."));
-        }
+        throw Error("Expected prepareToHydrateHostInstance() to never be called. This error is likely caused by a bug in React. Please file an issue.");
       }
-    })();
+    }
   }
 
   var instance = fiber.stateNode;
@@ -62656,13 +62738,11 @@ function prepareToHydrateHostInstance(fiber, rootContainerInstance, hostContext)
 
 function prepareToHydrateHostTextInstance(fiber) {
   if (!supportsHydration) {
-    (function () {
+    {
       {
-        {
-          throw ReactError(Error("Expected prepareToHydrateHostTextInstance() to never be called. This error is likely caused by a bug in React. Please file an issue."));
-        }
+        throw Error("Expected prepareToHydrateHostTextInstance() to never be called. This error is likely caused by a bug in React. Please file an issue.");
       }
-    })();
+    }
   }
 
   var textInstance = fiber.stateNode;
@@ -62702,46 +62782,41 @@ function prepareToHydrateHostTextInstance(fiber) {
 
 function prepareToHydrateHostSuspenseInstance(fiber) {
   if (!supportsHydration) {
-    (function () {
+    {
       {
-        {
-          throw ReactError(Error("Expected prepareToHydrateHostSuspenseInstance() to never be called. This error is likely caused by a bug in React. Please file an issue."));
-        }
+        throw Error("Expected prepareToHydrateHostSuspenseInstance() to never be called. This error is likely caused by a bug in React. Please file an issue.");
       }
-    })();
+    }
   }
 
   var suspenseState = fiber.memoizedState;
   var suspenseInstance = suspenseState !== null ? suspenseState.dehydrated : null;
 
-  (function () {
-    if (!suspenseInstance) {
-      {
-        throw ReactError(Error("Expected to have a hydrated suspense instance. This error is likely caused by a bug in React. Please file an issue."));
-      }
+  if (!suspenseInstance) {
+    {
+      throw Error("Expected to have a hydrated suspense instance. This error is likely caused by a bug in React. Please file an issue.");
     }
-  })();
+  }
 
   hydrateSuspenseInstance(suspenseInstance, fiber);
 }
 
 function skipPastDehydratedSuspenseInstance(fiber) {
   if (!supportsHydration) {
-    (function () {
+    {
       {
-        {
-          throw ReactError(Error("Expected skipPastDehydratedSuspenseInstance() to never be called. This error is likely caused by a bug in React. Please file an issue."));
-        }
+        throw Error("Expected skipPastDehydratedSuspenseInstance() to never be called. This error is likely caused by a bug in React. Please file an issue.");
       }
-    })();
+    }
   }
 
   var suspenseState = fiber.memoizedState;
   var suspenseInstance = suspenseState !== null ? suspenseState.dehydrated : null;
 
-  if (suspenseInstance === null) {
-    // This Suspense boundary was hydrated without a match.
-    return nextHydratableInstance;
+  if (!suspenseInstance) {
+    {
+      throw Error("Expected to have a hydrated suspense instance. This error is likely caused by a bug in React. Please file an issue.");
+    }
   }
 
   return getNextHydratableInstanceAfterSuspenseInstance(suspenseInstance);
@@ -62901,7 +62976,7 @@ function updateForwardRef(current$$1, workInProgress, Component, nextProps, rend
     setCurrentPhase('render');
     nextChildren = renderWithHooks(current$$1, workInProgress, render, nextProps, ref, renderExpirationTime);
 
-    if (debugRenderPhaseSideEffects || debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
+    if (debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
       // Only double-render components with Hooks
       if (workInProgress.memoizedState !== null) {
         nextChildren = renderWithHooks(current$$1, workInProgress, render, nextProps, ref, renderExpirationTime);
@@ -63105,7 +63180,7 @@ function updateFunctionComponent(current$$1, workInProgress, Component, nextProp
     setCurrentPhase('render');
     nextChildren = renderWithHooks(current$$1, workInProgress, Component, nextProps, context, renderExpirationTime);
 
-    if (debugRenderPhaseSideEffects || debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
+    if (debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
       // Only double-render components with Hooks
       if (workInProgress.memoizedState !== null) {
         nextChildren = renderWithHooks(current$$1, workInProgress, Component, nextProps, context, renderExpirationTime);
@@ -63228,7 +63303,7 @@ function finishClassComponent(current$$1, workInProgress, Component, shouldUpdat
       setCurrentPhase('render');
       nextChildren = instance.render();
 
-      if (debugRenderPhaseSideEffects || debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
+      if (debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
         instance.render();
       }
 
@@ -63277,13 +63352,11 @@ function updateHostRoot(current$$1, workInProgress, renderExpirationTime) {
   pushHostRootContext(workInProgress);
   var updateQueue = workInProgress.updateQueue;
 
-  (function () {
-    if (!(updateQueue !== null)) {
-      {
-        throw ReactError(Error("If the root does not have an updateQueue, we should have already bailed out. This error is likely caused by a bug in React. Please file an issue."));
-      }
+  if (!(updateQueue !== null)) {
+    {
+      throw Error("If the root does not have an updateQueue, we should have already bailed out. This error is likely caused by a bug in React. Please file an issue.");
     }
-  })();
+  }
 
   var nextProps = workInProgress.pendingProps;
   var prevState = workInProgress.memoizedState;
@@ -63470,13 +63543,11 @@ function mountLazyComponent(_current, workInProgress, elementType, updateExpirat
         // implementation detail.
 
 
-        (function () {
+        {
           {
-            {
-              throw ReactError(Error("Element type is invalid. Received a promise that resolves to: " + Component + ". Lazy element type must resolve to a class or function." + hint));
-            }
+            throw Error("Element type is invalid. Received a promise that resolves to: " + Component + ". Lazy element type must resolve to a class or function." + hint);
           }
-        })();
+        }
       }
   }
 
@@ -63605,7 +63676,7 @@ function mountIndeterminateComponent(_current, workInProgress, Component, render
         warningWithoutStack$1(false, '%s uses the legacy contextTypes API which is no longer supported. ' + 'Use React.createContext() with React.useContext() instead.', getComponentName(Component) || 'Unknown');
       }
 
-      if (debugRenderPhaseSideEffects || debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
+      if (debugRenderPhaseSideEffectsForStrictMode && workInProgress.mode & StrictMode) {
         // Only double-render components with Hooks
         if (workInProgress.memoizedState !== null) {
           value = renderWithHooks(null, workInProgress, Component, props, context, renderExpirationTime);
@@ -63679,7 +63750,7 @@ function validateFunctionComponentInDev(workInProgress, Component) {
 
 var SUSPENDED_MARKER = {
   dehydrated: null,
-  retryTime: Never
+  retryTime: NoWork
 };
 
 function shouldRemainOnFallback(suspenseContext, current$$1, workInProgress) {
@@ -63755,12 +63826,12 @@ function updateSuspenseComponent(current$$1, workInProgress, renderExpirationTim
 
 
   if (current$$1 === null) {
-    if (enableSuspenseServerRenderer) {
-      // If we're currently hydrating, try to hydrate this boundary.
-      // But only if this has a fallback.
-      if (nextProps.fallback !== undefined) {
-        tryToClaimNextHydratableInstance(workInProgress); // This could've been a dehydrated suspense component.
+    // If we're currently hydrating, try to hydrate this boundary.
+    // But only if this has a fallback.
+    if (nextProps.fallback !== undefined) {
+      tryToClaimNextHydratableInstance(workInProgress); // This could've been a dehydrated suspense component.
 
+      if (enableSuspenseServerRenderer) {
         var suspenseState = workInProgress.memoizedState;
 
         if (suspenseState !== null) {
@@ -63781,8 +63852,8 @@ function updateSuspenseComponent(current$$1, workInProgress, renderExpirationTim
       var primaryChildFragment = createFiberFromFragment(null, mode, NoWork, null);
       primaryChildFragment.return = workInProgress;
 
-      if ((workInProgress.mode & BatchedMode) === NoMode) {
-        // Outside of batched mode, we commit the effects from the
+      if ((workInProgress.mode & BlockingMode) === NoMode) {
+        // Outside of blocking mode, we commit the effects from the
         // partially completed, timed-out tree, too.
         var progressedState = workInProgress.memoizedState;
         var progressedPrimaryChild = progressedState !== null ? workInProgress.child.child : workInProgress.child;
@@ -63845,8 +63916,8 @@ function updateSuspenseComponent(current$$1, workInProgress, renderExpirationTim
 
             _primaryChildFragment.child = null;
 
-            if ((workInProgress.mode & BatchedMode) === NoMode) {
-              // Outside of batched mode, we commit the effects from the
+            if ((workInProgress.mode & BlockingMode) === NoMode) {
+              // Outside of blocking mode, we commit the effects from the
               // partially completed, timed-out tree, too.
               var _progressedChild = _primaryChildFragment.child = workInProgress.child;
 
@@ -63905,8 +63976,8 @@ function updateSuspenseComponent(current$$1, workInProgress, renderExpirationTim
 
         _primaryChildFragment2.return = workInProgress;
 
-        if ((workInProgress.mode & BatchedMode) === NoMode) {
-          // Outside of batched mode, we commit the effects from the
+        if ((workInProgress.mode & BlockingMode) === NoMode) {
+          // Outside of blocking mode, we commit the effects from the
           // partially completed, timed-out tree, too.
           var _progressedState = workInProgress.memoizedState;
 
@@ -63990,8 +64061,8 @@ function updateSuspenseComponent(current$$1, workInProgress, renderExpirationTim
         // primaryChildFragment.effectTag |= Placement;
 
 
-        if ((workInProgress.mode & BatchedMode) === NoMode) {
-          // Outside of batched mode, we commit the effects from the
+        if ((workInProgress.mode & BlockingMode) === NoMode) {
+          // Outside of blocking mode, we commit the effects from the
           // partially completed, timed-out tree, too.
           var _progressedState2 = workInProgress.memoizedState;
 
@@ -64060,9 +64131,9 @@ function retrySuspenseComponentWithoutHydrating(current$$1, workInProgress, rend
 function mountDehydratedSuspenseComponent(workInProgress, suspenseInstance, renderExpirationTime) {
   // During the first pass, we'll bail out and not drill into the children.
   // Instead, we'll leave the content in place and try to hydrate it later.
-  if ((workInProgress.mode & BatchedMode) === NoMode) {
+  if ((workInProgress.mode & BlockingMode) === NoMode) {
     {
-      warning$1(false, 'Cannot hydrate Suspense in legacy mode. Switch from ' + 'ReactDOM.hydrate(element, container) to ' + 'ReactDOM.unstable_createSyncRoot(container, { hydrate: true })' + '.render(element) or remove the Suspense components from ' + 'the server rendered components.');
+      warning$1(false, 'Cannot hydrate Suspense in legacy mode. Switch from ' + 'ReactDOM.hydrate(element, container) to ' + 'ReactDOM.createBlockingRoot(container, { hydrate: true })' + '.render(element) or remove the Suspense components from ' + 'the server rendered components.');
     }
 
     workInProgress.expirationTime = Sync;
@@ -64077,7 +64148,7 @@ function mountDehydratedSuspenseComponent(workInProgress, suspenseInstance, rend
     // a protocol to transfer that time, we'll just estimate it by using the current
     // time. This will mean that Suspense timeouts are slightly shifted to later than
     // they should be.
-    var serverDisplayTime = requestCurrentTime(); // Schedule a normal pri update to render this content.
+    var serverDisplayTime = requestCurrentTimeForUpdate(); // Schedule a normal pri update to render this content.
 
     var newExpirationTime = computeAsyncExpiration(serverDisplayTime);
 
@@ -64104,7 +64175,7 @@ function updateDehydratedSuspenseComponent(current$$1, workInProgress, suspenseI
   // but after we've already committed once.
   warnIfHydrating();
 
-  if ((workInProgress.mode & BatchedMode) === NoMode) {
+  if ((workInProgress.mode & BlockingMode) === NoMode) {
     return retrySuspenseComponentWithoutHydrating(current$$1, workInProgress, renderExpirationTime);
   }
 
@@ -64186,6 +64257,20 @@ function updateDehydratedSuspenseComponent(current$$1, workInProgress, suspenseI
   }
 }
 
+function scheduleWorkOnFiber(fiber, renderExpirationTime) {
+  if (fiber.expirationTime < renderExpirationTime) {
+    fiber.expirationTime = renderExpirationTime;
+  }
+
+  var alternate = fiber.alternate;
+
+  if (alternate !== null && alternate.expirationTime < renderExpirationTime) {
+    alternate.expirationTime = renderExpirationTime;
+  }
+
+  scheduleWorkOnParentPath(fiber.return, renderExpirationTime);
+}
+
 function propagateSuspenseContextChange(workInProgress, firstChild, renderExpirationTime) {
   // Mark any Suspense boundaries with fallbacks as having work to do.
   // If they were previously forced into fallbacks, they may now be able
@@ -64197,18 +64282,15 @@ function propagateSuspenseContextChange(workInProgress, firstChild, renderExpira
       var state = node.memoizedState;
 
       if (state !== null) {
-        if (node.expirationTime < renderExpirationTime) {
-          node.expirationTime = renderExpirationTime;
-        }
-
-        var alternate = node.alternate;
-
-        if (alternate !== null && alternate.expirationTime < renderExpirationTime) {
-          alternate.expirationTime = renderExpirationTime;
-        }
-
-        scheduleWorkOnParentPath(node.return, renderExpirationTime);
+        scheduleWorkOnFiber(node, renderExpirationTime);
       }
+    } else if (node.tag === SuspenseListComponent) {
+      // If the tail is hidden there might not be an Suspense boundaries
+      // to schedule work on. In this case we have to schedule it on the
+      // list itself.
+      // We don't have to traverse to the children of the list since
+      // the list will propagate the change when it rerenders.
+      scheduleWorkOnFiber(node, renderExpirationTime);
     } else if (node.child !== null) {
       node.child.return = node;
       node = node.child;
@@ -64353,7 +64435,7 @@ function validateSuspenseListChildren(children, revealOrder) {
   }
 }
 
-function initSuspenseListRenderState(workInProgress, isBackwards, tail, lastContentRow, tailMode) {
+function initSuspenseListRenderState(workInProgress, isBackwards, tail, lastContentRow, tailMode, lastEffectBeforeRendering) {
   var renderState = workInProgress.memoizedState;
 
   if (renderState === null) {
@@ -64363,7 +64445,8 @@ function initSuspenseListRenderState(workInProgress, isBackwards, tail, lastCont
       last: lastContentRow,
       tail: tail,
       tailExpiration: 0,
-      tailMode: tailMode
+      tailMode: tailMode,
+      lastEffect: lastEffectBeforeRendering
     };
   } else {
     // We can reuse the existing object from previous renders.
@@ -64373,6 +64456,7 @@ function initSuspenseListRenderState(workInProgress, isBackwards, tail, lastCont
     renderState.tail = tail;
     renderState.tailExpiration = 0;
     renderState.tailMode = tailMode;
+    renderState.lastEffect = lastEffectBeforeRendering;
   }
 } // This can end up rendering this component multiple passes.
 // The first pass splits the children fibers into two sets. A head and tail.
@@ -64413,8 +64497,8 @@ function updateSuspenseListComponent(current$$1, workInProgress, renderExpiratio
 
   pushSuspenseContext(workInProgress, suspenseContext);
 
-  if ((workInProgress.mode & BatchedMode) === NoMode) {
-    // Outside of batched mode, SuspenseList doesn't work so we just
+  if ((workInProgress.mode & BlockingMode) === NoMode) {
+    // Outside of blocking mode, SuspenseList doesn't work so we just
     // use make it a noop by treating it as the default revealOrder.
     workInProgress.memoizedState = null;
   } else {
@@ -64437,7 +64521,7 @@ function updateSuspenseListComponent(current$$1, workInProgress, renderExpiratio
           }
 
           initSuspenseListRenderState(workInProgress, false, // isBackwards
-          tail, lastContentRow, tailMode);
+          tail, lastContentRow, tailMode, workInProgress.lastEffect);
           break;
         }
 
@@ -64469,7 +64553,7 @@ function updateSuspenseListComponent(current$$1, workInProgress, renderExpiratio
 
           initSuspenseListRenderState(workInProgress, true, // isBackwards
           _tail, null, // last
-          tailMode);
+          tailMode, workInProgress.lastEffect);
           break;
         }
 
@@ -64478,7 +64562,7 @@ function updateSuspenseListComponent(current$$1, workInProgress, renderExpiratio
           initSuspenseListRenderState(workInProgress, false, // isBackwards
           null, // tail
           null, // last
-          undefined);
+          undefined, workInProgress.lastEffect);
           break;
         }
 
@@ -64786,7 +64870,12 @@ function beginWork$1(current$$1, workInProgress, renderExpirationTime) {
 
         case Profiler:
           if (enableProfilerTimer) {
-            workInProgress.effectTag |= Update;
+            // Profiler should only call onRender when one of its descendants actually rendered.
+            var hasChildWork = workInProgress.childExpirationTime >= renderExpirationTime;
+
+            if (hasChildWork) {
+              workInProgress.effectTag |= Update;
+            }
           }
 
           break;
@@ -64842,10 +64931,11 @@ function beginWork$1(current$$1, workInProgress, renderExpirationTime) {
         case SuspenseListComponent:
           {
             var didSuspendBefore = (current$$1.effectTag & DidCapture) !== NoEffect;
-            var hasChildWork = workInProgress.childExpirationTime >= renderExpirationTime;
+
+            var _hasChildWork = workInProgress.childExpirationTime >= renderExpirationTime;
 
             if (didSuspendBefore) {
-              if (hasChildWork) {
+              if (_hasChildWork) {
                 // If something was in fallback state last time, and we have all the
                 // same children then we're still in progressive loading state.
                 // Something might get unblocked by state updates or retries in the
@@ -64874,7 +64964,7 @@ function beginWork$1(current$$1, workInProgress, renderExpirationTime) {
 
             pushSuspenseContext(workInProgress, suspenseStackCursor.current);
 
-            if (hasChildWork) {
+            if (_hasChildWork) {
               break;
             } else {
               // If none of the children had any work, that means that none of
@@ -65031,13 +65121,11 @@ function beginWork$1(current$$1, workInProgress, renderExpirationTime) {
       }
   }
 
-  (function () {
+  {
     {
-      {
-        throw ReactError(Error("Unknown unit of work tag (" + workInProgress.tag + "). This error is likely caused by a bug in React. Please file an issue."));
-      }
+      throw Error("Unknown unit of work tag (" + workInProgress.tag + "). This error is likely caused by a bug in React. Please file an issue.");
     }
-  })();
+  }
 }
 
 function createFundamentalStateInstance(currentFiber, props, impl, state) {
@@ -65059,14 +65147,19 @@ function getSuspenseFallbackChild(fiber) {
   return fiber.child.sibling.child;
 }
 
+var emptyObject$1 = {};
+
 function collectScopedNodes(node, fn, scopedNodes) {
   if (enableScopeAPI) {
     if (node.tag === HostComponent) {
       var _type = node.type,
-          memoizedProps = node.memoizedProps;
+          memoizedProps = node.memoizedProps,
+          stateNode = node.stateNode;
 
-      if (fn(_type, memoizedProps) === true) {
-        scopedNodes.push(getPublicInstance(node.stateNode));
+      var _instance = getPublicInstance(stateNode);
+
+      if (_instance !== null && fn(_type, memoizedProps || emptyObject$1, _instance) === true) {
+        scopedNodes.push(_instance);
       }
     }
 
@@ -65082,6 +65175,34 @@ function collectScopedNodes(node, fn, scopedNodes) {
   }
 }
 
+function collectFirstScopedNode(node, fn) {
+  if (enableScopeAPI) {
+    if (node.tag === HostComponent) {
+      var _type2 = node.type,
+          memoizedProps = node.memoizedProps,
+          stateNode = node.stateNode;
+
+      var _instance2 = getPublicInstance(stateNode);
+
+      if (_instance2 !== null && fn(_type2, memoizedProps, _instance2) === true) {
+        return _instance2;
+      }
+    }
+
+    var child = node.child;
+
+    if (isFiberSuspenseAndTimedOut(node)) {
+      child = getSuspenseFallbackChild(node);
+    }
+
+    if (child !== null) {
+      return collectFirstScopedNodeFromChildren(child, fn);
+    }
+  }
+
+  return null;
+}
+
 function collectScopedNodesFromChildren(startingChild, fn, scopedNodes) {
   var child = startingChild;
 
@@ -65089,6 +65210,22 @@ function collectScopedNodesFromChildren(startingChild, fn, scopedNodes) {
     collectScopedNodes(child, fn, scopedNodes);
     child = child.sibling;
   }
+}
+
+function collectFirstScopedNodeFromChildren(startingChild, fn) {
+  var child = startingChild;
+
+  while (child !== null) {
+    var scopedNode = collectFirstScopedNode(child, fn);
+
+    if (scopedNode !== null) {
+      return scopedNode;
+    }
+
+    child = child.sibling;
+  }
+
+  return null;
 }
 
 function collectNearestScopeMethods(node, scope, childrenScopes) {
@@ -65117,11 +65254,10 @@ function collectNearestChildScopeMethods(startingChild, scope, childrenScopes) {
 }
 
 function isValidScopeNode(node, scope) {
-  return node.tag === ScopeComponent && node.type === scope;
+  return node.tag === ScopeComponent && node.type === scope && node.stateNode !== null;
 }
 
 function createScopeMethods(scope, instance) {
-  var fn = scope.fn;
   return {
     getChildren: function () {
       var currentFiber = instance.fiber;
@@ -65173,7 +65309,7 @@ function createScopeMethods(scope, instance) {
       var currentFiber = instance.fiber;
       return currentFiber.memoizedProps;
     },
-    getScopedNodes: function () {
+    queryAllNodes: function (fn) {
       var currentFiber = instance.fiber;
       var child = currentFiber.child;
       var scopedNodes = [];
@@ -65183,6 +65319,29 @@ function createScopeMethods(scope, instance) {
       }
 
       return scopedNodes.length === 0 ? null : scopedNodes;
+    },
+    queryFirstNode: function (fn) {
+      var currentFiber = instance.fiber;
+      var child = currentFiber.child;
+
+      if (child !== null) {
+        return collectFirstScopedNodeFromChildren(child, fn);
+      }
+
+      return null;
+    },
+    containsNode: function (node) {
+      var fiber = getInstanceFromNode$2(node);
+
+      while (fiber !== null) {
+        if (fiber.tag === ScopeComponent && fiber.type === scope && fiber.stateNode === instance) {
+          return true;
+        }
+
+        fiber = fiber.return;
+      }
+
+      return false;
     }
   };
 }
@@ -65717,13 +65876,11 @@ function completeWork(current, workInProgress, renderExpirationTime) {
           }
         } else {
           if (!newProps) {
-            (function () {
-              if (!(workInProgress.stateNode !== null)) {
-                {
-                  throw ReactError(Error("We must have new props for new mounts. This error is likely caused by a bug in React. Please file an issue."));
-                }
+            if (!(workInProgress.stateNode !== null)) {
+              {
+                throw Error("We must have new props for new mounts. This error is likely caused by a bug in React. Please file an issue.");
               }
-            })(); // This can happen when we abort work.
+            } // This can happen when we abort work.
 
 
             break;
@@ -65794,13 +65951,11 @@ function completeWork(current, workInProgress, renderExpirationTime) {
           updateHostText$1(current, workInProgress, oldText, newText);
         } else {
           if (typeof newText !== 'string') {
-            (function () {
-              if (!(workInProgress.stateNode !== null)) {
-                {
-                  throw ReactError(Error("We must have new props for new mounts. This error is likely caused by a bug in React. Please file an issue."));
-                }
+            if (!(workInProgress.stateNode !== null)) {
+              {
+                throw Error("We must have new props for new mounts. This error is likely caused by a bug in React. Please file an issue.");
               }
-            })(); // This can happen when we abort work.
+            } // This can happen when we abort work.
 
           }
 
@@ -65835,13 +65990,11 @@ function completeWork(current, workInProgress, renderExpirationTime) {
             if (current === null) {
               var _wasHydrated3 = popHydrationState(workInProgress);
 
-              (function () {
-                if (!_wasHydrated3) {
-                  {
-                    throw ReactError(Error("A dehydrated suspense component was completed without a hydrated node. This is probably a bug in React."));
-                  }
+              if (!_wasHydrated3) {
+                {
+                  throw Error("A dehydrated suspense component was completed without a hydrated node. This is probably a bug in React.");
                 }
-              })();
+              }
 
               prepareToHydrateHostSuspenseInstance(workInProgress);
 
@@ -65884,10 +66037,9 @@ function completeWork(current, workInProgress, renderExpirationTime) {
         var prevDidTimeout = false;
 
         if (current === null) {
-          // In cases where we didn't find a suitable hydration boundary we never
-          // put this in dehydrated mode, but we still need to pop the hydration
-          // state since we might be inside the insertion tree.
-          popHydrationState(workInProgress);
+          if (workInProgress.memoizedProps.fallback !== undefined) {
+            popHydrationState(workInProgress);
+          }
         } else {
           var prevState = current.memoizedState;
           prevDidTimeout = prevState !== null;
@@ -65917,12 +66069,12 @@ function completeWork(current, workInProgress, renderExpirationTime) {
         }
 
         if (nextDidTimeout && !prevDidTimeout) {
-          // If this subtreee is running in batched mode we can suspend,
+          // If this subtreee is running in blocking mode we can suspend,
           // otherwise we won't suspend.
           // TODO: This will still suspend a synchronous tree if anything
           // in the concurrent tree already suspended during this render.
           // This is a known bug.
-          if ((workInProgress.mode & BatchedMode) !== NoMode) {
+          if ((workInProgress.mode & BlockingMode) !== NoMode) {
             // TODO: Move this back to throwException because this is too late
             // if this is a large tree which is common for initial loads. We
             // don't know if we should restart a render or not until we get
@@ -66072,7 +66224,11 @@ function completeWork(current, workInProgress, renderExpirationTime) {
                   // Reset the effect list before doing the second pass since that's now invalid.
 
 
-                  workInProgress.firstEffect = workInProgress.lastEffect = null; // Reset the child fibers to their original state.
+                  if (renderState.lastEffect === null) {
+                    workInProgress.firstEffect = null;
+                  }
+
+                  workInProgress.lastEffect = renderState.lastEffect; // Reset the child fibers to their original state.
 
                   resetChildFibers(workInProgress, renderExpirationTime); // Set up the Suspense Context to force suspense and immediately
                   // rerender the children.
@@ -66095,21 +66251,22 @@ function completeWork(current, workInProgress, renderExpirationTime) {
 
             if (_suspended !== null) {
               workInProgress.effectTag |= DidCapture;
-              didSuspendAlready = true;
+              didSuspendAlready = true; // Ensure we transfer the update queue to the parent so that it doesn't
+              // get lost if this row ends up dropped during a second pass.
+
+              var _newThennables = _suspended.updateQueue;
+
+              if (_newThennables !== null) {
+                workInProgress.updateQueue = _newThennables;
+                workInProgress.effectTag |= Update;
+              }
+
               cutOffTailIfNeeded(renderState, true); // This might have been modified.
 
-              if (renderState.tail === null && renderState.tailMode === 'hidden') {
+              if (renderState.tail === null && renderState.tailMode === 'hidden' && !renderedTail.alternate) {
                 // We need to delete the row we just rendered.
-                // Ensure we transfer the update queue to the parent.
-                var _newThennables = _suspended.updateQueue;
-
-                if (_newThennables !== null) {
-                  workInProgress.updateQueue = _newThennables;
-                  workInProgress.effectTag |= Update;
-                } // Reset the effect list to what it w as before we rendered this
+                // Reset the effect list to what it was before we rendered this
                 // child. The nested children have already appended themselves.
-
-
                 var lastEffect = workInProgress.lastEffect = renderState.lastEffect; // Remove any effects that were appended after this point.
 
                 if (lastEffect !== null) {
@@ -66296,13 +66453,11 @@ function completeWork(current, workInProgress, renderExpirationTime) {
       }
 
     default:
-      (function () {
+      {
         {
-          {
-            throw ReactError(Error("Unknown unit of work tag (" + workInProgress.tag + "). This error is likely caused by a bug in React. Please file an issue."));
-          }
+          throw Error("Unknown unit of work tag (" + workInProgress.tag + "). This error is likely caused by a bug in React. Please file an issue.");
         }
-      })();
+      }
 
   }
 
@@ -66335,13 +66490,11 @@ function unwindWork(workInProgress, renderExpirationTime) {
         popTopLevelContextObject(workInProgress);
         var _effectTag = workInProgress.effectTag;
 
-        (function () {
-          if (!((_effectTag & DidCapture) === NoEffect)) {
-            {
-              throw ReactError(Error("The root failed to unmount after an error. This is likely a bug in React. Please file an issue."));
-            }
+        if (!((_effectTag & DidCapture) === NoEffect)) {
+          {
+            throw Error("The root failed to unmount after an error. This is likely a bug in React. Please file an issue.");
           }
-        })();
+        }
 
         workInProgress.effectTag = _effectTag & ~ShouldCapture | DidCapture;
         return workInProgress;
@@ -66362,13 +66515,11 @@ function unwindWork(workInProgress, renderExpirationTime) {
           var suspenseState = workInProgress.memoizedState;
 
           if (suspenseState !== null && suspenseState.dehydrated !== null) {
-            (function () {
-              if (!(workInProgress.alternate !== null)) {
-                {
-                  throw ReactError(Error("Threw in newly mounted dehydrated component. This is likely a bug in React. Please file an issue."));
-                }
+            if (!(workInProgress.alternate !== null)) {
+              {
+                throw Error("Threw in newly mounted dehydrated component. This is likely a bug in React. Please file an issue.");
               }
-            })();
+            }
 
             resetHydrationState();
           }
@@ -66679,13 +66830,11 @@ function commitBeforeMutationLifeCycles(current$$1, finishedWork) {
 
     default:
       {
-        (function () {
+        {
           {
-            {
-              throw ReactError(Error("This unit of work tag should not have side-effects. This error is likely caused by a bug in React. Please file an issue."));
-            }
+            throw Error("This unit of work tag should not have side-effects. This error is likely caused by a bug in React. Please file an issue.");
           }
-        })();
+        }
       }
   }
 }
@@ -66907,13 +67056,11 @@ function commitLifeCycles(finishedRoot, current$$1, finishedWork, committedExpir
 
     default:
       {
-        (function () {
+        {
           {
-            {
-              throw ReactError(Error("This unit of work tag should not have side-effects. This error is likely caused by a bug in React. Please file an issue."));
-            }
+            throw Error("This unit of work tag should not have side-effects. This error is likely caused by a bug in React. Please file an issue.");
           }
-        })();
+        }
       }
   }
 }
@@ -67258,13 +67405,11 @@ function commitContainer(finishedWork) {
 
     default:
       {
-        (function () {
+        {
           {
-            {
-              throw ReactError(Error("This unit of work tag should not have side-effects. This error is likely caused by a bug in React. Please file an issue."));
-            }
+            throw Error("This unit of work tag should not have side-effects. This error is likely caused by a bug in React. Please file an issue.");
           }
-        })();
+        }
       }
   }
 }
@@ -67280,13 +67425,11 @@ function getHostParentFiber(fiber) {
     parent = parent.return;
   }
 
-  (function () {
+  {
     {
-      {
-        throw ReactError(Error("Expected to find a host parent. This error is likely caused by a bug in React. Please file an issue."));
-      }
+      throw Error("Expected to find a host parent. This error is likely caused by a bug in React. Please file an issue.");
     }
-  })();
+  }
 }
 
 function isHostParent(fiber) {
@@ -67378,13 +67521,11 @@ function commitPlacement(finishedWork) {
     // eslint-disable-next-line-no-fallthrough
 
     default:
-      (function () {
+      {
         {
-          {
-            throw ReactError(Error("Invalid host parent fiber. This error is likely caused by a bug in React. Please file an issue."));
-          }
+          throw Error("Invalid host parent fiber. This error is likely caused by a bug in React. Please file an issue.");
         }
-      })();
+      }
 
   }
 
@@ -67461,13 +67602,11 @@ function unmountHostComponents(finishedRoot, current$$1, renderPriorityLevel) {
       var parent = node.return;
 
       findParent: while (true) {
-        (function () {
-          if (!(parent !== null)) {
-            {
-              throw ReactError(Error("Expected to find a host parent. This error is likely caused by a bug in React. Please file an issue."));
-            }
+        if (!(parent !== null)) {
+          {
+            throw Error("Expected to find a host parent. This error is likely caused by a bug in React. Please file an issue.");
           }
-        })();
+        }
 
         var parentStateNode = parent.stateNode;
 
@@ -67701,13 +67840,11 @@ function commitWork(current$$1, finishedWork) {
 
     case HostText:
       {
-        (function () {
-          if (!(finishedWork.stateNode !== null)) {
-            {
-              throw ReactError(Error("This should have a text node initialized. This error is likely caused by a bug in React. Please file an issue."));
-            }
+        if (!(finishedWork.stateNode !== null)) {
+          {
+            throw Error("This should have a text node initialized. This error is likely caused by a bug in React. Please file an issue.");
           }
-        })();
+        }
 
         var textInstance = finishedWork.stateNode;
         var newText = finishedWork.memoizedProps; // For hydration we reuse the update path but we treat the oldProps
@@ -67792,13 +67929,11 @@ function commitWork(current$$1, finishedWork) {
 
     default:
       {
-        (function () {
+        {
           {
-            {
-              throw ReactError(Error("This unit of work tag should not have side-effects. This error is likely caused by a bug in React. Please file an issue."));
-            }
+            throw Error("This unit of work tag should not have side-effects. This error is likely caused by a bug in React. Please file an issue.");
           }
-        })();
+        }
       }
   }
 }
@@ -68046,17 +68181,17 @@ function throwException(root, returnFiber, sourceFiber, value, renderExpirationT
           _workInProgress.updateQueue = updateQueue;
         } else {
           thenables.add(thenable);
-        } // If the boundary is outside of batched mode, we should *not*
+        } // If the boundary is outside of blocking mode, we should *not*
         // suspend the commit. Pretend as if the suspended component rendered
         // null and keep rendering. In the commit phase, we'll schedule a
         // subsequent synchronous update to re-render the Suspense.
         //
         // Note: It doesn't matter whether the component that suspended was
-        // inside a batched mode tree. If the Suspense is outside of it, we
+        // inside a blocking mode tree. If the Suspense is outside of it, we
         // should *not* suspend the commit.
 
 
-        if ((_workInProgress.mode & BatchedMode) === NoMode) {
+        if ((_workInProgress.mode & BlockingMode) === NoMode) {
           _workInProgress.effectTag |= DidCapture; // We're going to commit this fiber even though it didn't complete.
           // But we shouldn't call any lifecycle methods or callbacks. Remove
           // all lifecycle effect tags.
@@ -68222,7 +68357,6 @@ var RootErrored = 2;
 var RootSuspended = 3;
 var RootSuspendedWithDelay = 4;
 var RootCompleted = 5;
-var RootLocked = 6;
 // Describes where we are in the React execution stack
 var executionContext = NoContext; // The root we're working on
 
@@ -68282,7 +68416,7 @@ var spawnedWorkDuringRender = null; // Expiration times are computed by adding t
 // receive the same expiration time. Otherwise we get tearing.
 
 var currentEventTime = NoWork;
-function requestCurrentTime() {
+function requestCurrentTimeForUpdate() {
   if ((executionContext & (RenderContext | CommitContext)) !== NoContext) {
     // We're inside React, so it's fine to read the actual time.
     return msToExpirationTime(now());
@@ -68298,10 +68432,13 @@ function requestCurrentTime() {
   currentEventTime = msToExpirationTime(now());
   return currentEventTime;
 }
+function getCurrentTime() {
+  return msToExpirationTime(now());
+}
 function computeExpirationForFiber(currentTime, fiber, suspenseConfig) {
   var mode = fiber.mode;
 
-  if ((mode & BatchedMode) === NoMode) {
+  if ((mode & BlockingMode) === NoMode) {
     return Sync;
   }
 
@@ -68346,13 +68483,11 @@ function computeExpirationForFiber(currentTime, fiber, suspenseConfig) {
         break;
 
       default:
-        (function () {
+        {
           {
-            {
-              throw ReactError(Error("Expected a valid priority level"));
-            }
+            throw Error("Expected a valid priority level");
           }
-        })();
+        }
 
     }
   } // If we're in the middle of rendering a tree, do not update at the same
@@ -68368,21 +68503,6 @@ function computeExpirationForFiber(currentTime, fiber, suspenseConfig) {
   }
 
   return expirationTime;
-}
-var lastUniqueAsyncExpiration = NoWork;
-function computeUniqueAsyncExpiration() {
-  var currentTime = requestCurrentTime();
-  var result = computeAsyncExpiration(currentTime);
-
-  if (result <= lastUniqueAsyncExpiration) {
-    // Since we assume the current time monotonically increases, we only hit
-    // this branch when computeUniqueAsyncExpiration is fired multiple times
-    // within a 200ms window (or whatever the async bucket size is).
-    result -= 1;
-  }
-
-  lastUniqueAsyncExpiration = result;
-  return result;
 }
 function scheduleUpdateOnFiber(fiber, expirationTime) {
   checkForNestedUpdates();
@@ -68419,7 +68539,7 @@ function scheduleUpdateOnFiber(fiber, expirationTime) {
         // a batch. This is intentionally inside scheduleUpdateOnFiber instead of
         // scheduleCallbackForFiber to preserve the ability to schedule a callback
         // without immediately flushing it. We only do this for user-initiated
-        // updates, to preserve historical behavior of sync mode.
+        // updates, to preserve historical behavior of legacy mode.
         flushSyncCallbackQueue();
       }
     }
@@ -68580,7 +68700,7 @@ function ensureRootIsScheduled(root) {
   // time as an argument.
 
 
-  var currentTime = requestCurrentTime();
+  var currentTime = requestCurrentTimeForUpdate();
   var priorityLevel = inferPriorityFromExpirationTime(currentTime, expirationTime); // If there's an existing render task, confirm it has the correct priority and
   // expiration time. Otherwise, we'll cancel it and schedule a new one.
 
@@ -68631,7 +68751,7 @@ function performConcurrentWorkOnRoot(root, didTimeout) {
   if (didTimeout) {
     // The render task took too long to complete. Mark the current time as
     // expired to synchronously render all expired work in a single batch.
-    var currentTime = requestCurrentTime();
+    var currentTime = requestCurrentTimeForUpdate();
     markRootExpiredAtTime(root, currentTime); // This will schedule a synchronous callback.
 
     ensureRootIsScheduled(root);
@@ -68645,13 +68765,11 @@ function performConcurrentWorkOnRoot(root, didTimeout) {
   if (expirationTime !== NoWork) {
     var originalCallbackNode = root.callbackNode;
 
-    (function () {
-      if (!((executionContext & (RenderContext | CommitContext)) === NoContext)) {
-        {
-          throw ReactError(Error("Should not already be working."));
-        }
+    if (!((executionContext & (RenderContext | CommitContext)) === NoContext)) {
+      {
+        throw Error("Should not already be working.");
       }
-    })();
+    }
 
     flushPassiveEffects(); // If the root or expiration time have changed, throw out the existing stack
     // and prepare a fresh one. Otherwise we'll continue where we left off.
@@ -68705,7 +68823,6 @@ function performConcurrentWorkOnRoot(root, didTimeout) {
         stopFinishedWorkLoopTimer();
         var finishedWork = root.finishedWork = root.current.alternate;
         root.finishedExpirationTime = expirationTime;
-        resolveLocksOnRoot(root, expirationTime);
         finishConcurrentRender(root, finishedWork, workInProgressRootExitStatus, expirationTime);
       }
 
@@ -68730,13 +68847,11 @@ function finishConcurrentRender(root, finishedWork, exitStatus, expirationTime) 
     case RootIncomplete:
     case RootFatalErrored:
       {
-        (function () {
+        {
           {
-            {
-              throw ReactError(Error("Root did not complete. This is a bug in React."));
-            }
+            throw Error("Root did not complete. This is a bug in React.");
           }
-        })();
+        }
       }
     // Flow knows about invariant, so it complains if I add a break
     // statement, but eslint doesn't know about invariant, so it complains
@@ -68744,18 +68859,16 @@ function finishConcurrentRender(root, finishedWork, exitStatus, expirationTime) 
 
     case RootErrored:
       {
-        if (expirationTime !== Idle) {
-          // If this was an async render, the error may have happened due to
-          // a mutation in a concurrent event. Try rendering one more time,
-          // synchronously, to see if the error goes away. If there are
-          // lower priority updates, let's include those, too, in case they
-          // fix the inconsistency. Render at Idle to include all updates.
-          markRootExpiredAtTime(root, Idle);
-          break;
-        } // Commit the root in its errored state.
+        // If this was an async render, the error may have happened due to
+        // a mutation in a concurrent event. Try rendering one more time,
+        // synchronously, to see if the error goes away. If there are
+        // lower priority updates, let's include those, too, in case they
+        // fix the inconsistency. Render at Idle to include all updates.
+        // If it was Idle or Never or some not-yet-invented time, render
+        // at that time.
+        markRootExpiredAtTime(root, expirationTime > Idle ? Idle : expirationTime); // We assume that this second render pass will be synchronous
+        // and therefore not hit this path again.
 
-
-        commitRoot(root);
         break;
       }
 
@@ -68939,24 +69052,13 @@ function finishConcurrentRender(root, finishedWork, exitStatus, expirationTime) 
         break;
       }
 
-    case RootLocked:
-      {
-        // This root has a lock that prevents it from committing. Exit. If
-        // we begin work on the root again, without any intervening updates,
-        // it will finish without doing additional work.
-        markRootSuspendedAtTime(root, expirationTime);
-        break;
-      }
-
     default:
       {
-        (function () {
+        {
           {
-            {
-              throw ReactError(Error("Unknown root exit status."));
-            }
+            throw Error("Unknown root exit status.");
           }
-        })();
+        }
       }
   }
 } // This is the entry point for synchronous tasks that don't go
@@ -68974,13 +69076,11 @@ function performSyncWorkOnRoot(root) {
     // batch.commit() API.
     commitRoot(root);
   } else {
-    (function () {
-      if (!((executionContext & (RenderContext | CommitContext)) === NoContext)) {
-        {
-          throw ReactError(Error("Should not already be working."));
-        }
+    if (!((executionContext & (RenderContext | CommitContext)) === NoContext)) {
+      {
+        throw Error("Should not already be working.");
       }
-    })();
+    }
 
     flushPassiveEffects(); // If the root or expiration time have changed, throw out the existing stack
     // and prepare a fresh one. Otherwise we'll continue where we left off.
@@ -69027,21 +69127,17 @@ function performSyncWorkOnRoot(root) {
 
       if (workInProgress !== null) {
         // This is a sync render, so we should have finished the whole tree.
-        (function () {
+        {
           {
-            {
-              throw ReactError(Error("Cannot commit an incomplete root. This error is likely caused by a bug in React. Please file an issue."));
-            }
+            throw Error("Cannot commit an incomplete root. This error is likely caused by a bug in React. Please file an issue.");
           }
-        })();
+        }
       } else {
         // We now have a consistent tree. Because this is a sync render, we
-        // will commit it even if something suspended. The only exception is
-        // if the root is locked (using the unstable_createBatch API).
+        // will commit it even if something suspended.
         stopFinishedWorkLoopTimer();
         root.finishedWork = root.current.alternate;
         root.finishedExpirationTime = expirationTime;
-        resolveLocksOnRoot(root, expirationTime);
         finishSyncRender(root, workInProgressRootExitStatus, expirationTime);
       } // Before exiting, make sure there's a callback scheduled for the next
       // pending level.
@@ -69055,39 +69151,25 @@ function performSyncWorkOnRoot(root) {
 }
 
 function finishSyncRender(root, exitStatus, expirationTime) {
-  if (exitStatus === RootLocked) {
-    // This root has a lock that prevents it from committing. Exit. If we
-    // begin work on the root again, without any intervening updates, it
-    // will finish without doing additional work.
-    markRootSuspendedAtTime(root, expirationTime);
-  } else {
-    // Set this to null to indicate there's no in-progress render.
-    workInProgressRoot = null;
+  // Set this to null to indicate there's no in-progress render.
+  workInProgressRoot = null;
 
-    {
-      if (exitStatus === RootSuspended || exitStatus === RootSuspendedWithDelay) {
-        flushSuspensePriorityWarningInDEV();
-      }
+  {
+    if (exitStatus === RootSuspended || exitStatus === RootSuspendedWithDelay) {
+      flushSuspensePriorityWarningInDEV();
     }
-
-    commitRoot(root);
   }
+
+  commitRoot(root);
 }
 
 function flushRoot(root, expirationTime) {
-  if ((executionContext & (RenderContext | CommitContext)) !== NoContext) {
-    (function () {
-      {
-        {
-          throw ReactError(Error("work.commit(): Cannot commit while already rendering. This likely means you attempted to commit from inside a lifecycle method."));
-        }
-      }
-    })();
-  }
-
   markRootExpiredAtTime(root, expirationTime);
   ensureRootIsScheduled(root);
-  flushSyncCallbackQueue();
+
+  if ((executionContext & (RenderContext | CommitContext)) === NoContext) {
+    flushSyncCallbackQueue();
+  }
 }
 function flushDiscreteUpdates() {
   // TODO: Should be able to flush inside batchedUpdates, but not inside `act`.
@@ -69111,21 +69193,9 @@ function flushDiscreteUpdates() {
   flushPassiveEffects();
 }
 
-function resolveLocksOnRoot(root, expirationTime) {
-  var firstBatch = root.firstBatch;
-
-  if (firstBatch !== null && firstBatch._defer && firstBatch._expirationTime >= expirationTime) {
-    scheduleCallback(NormalPriority, function () {
-      firstBatch._onComplete();
-
-      return null;
-    });
-    workInProgressRootExitStatus = RootLocked;
-  }
+function syncUpdates(fn, a, b, c) {
+  return runWithPriority$2(ImmediatePriority, fn.bind(null, a, b, c));
 }
-
-
-
 
 function flushPendingDiscreteUpdates() {
   if (rootsWithPendingDiscreteUpdates !== null) {
@@ -69206,13 +69276,11 @@ function unbatchedUpdates(fn, a) {
 }
 function flushSync(fn, a) {
   if ((executionContext & (RenderContext | CommitContext)) !== NoContext) {
-    (function () {
+    {
       {
-        {
-          throw ReactError(Error("flushSync was called from inside a lifecycle method. It cannot be called when React is already rendering."));
-        }
+        throw Error("flushSync was called from inside a lifecycle method. It cannot be called when React is already rendering.");
       }
-    })();
+    }
   }
 
   var prevExecutionContext = executionContext;
@@ -69293,6 +69361,7 @@ function handleError(root, thrownValue) {
       // Reset module-level state that was set during the render phase.
       resetContextDependencies();
       resetHooks();
+      resetCurrentFiber();
 
       if (workInProgress === null || workInProgress.return === null) {
         // Expected to be working on a non-root fiber. This is a fatal error
@@ -69689,16 +69758,23 @@ function commitRoot(root) {
 }
 
 function commitRootImpl(root, renderPriorityLevel) {
-  flushPassiveEffects();
+  do {
+    // `flushPassiveEffects` will call `flushSyncUpdateQueue` at the end, which
+    // means `flushPassiveEffects` will sometimes result in additional
+    // passive effects. So we need to keep flushing in a loop until there are
+    // no more pending effects.
+    // TODO: Might be better if `flushPassiveEffects` did not automatically
+    // flush synchronous work at the end, to avoid factoring hazards like this.
+    flushPassiveEffects();
+  } while (rootWithPendingPassiveEffects !== null);
+
   flushRenderPhaseStrictModeWarningsInDEV();
 
-  (function () {
-    if (!((executionContext & (RenderContext | CommitContext)) === NoContext)) {
-      {
-        throw ReactError(Error("Should not already be working."));
-      }
+  if (!((executionContext & (RenderContext | CommitContext)) === NoContext)) {
+    {
+      throw Error("Should not already be working.");
     }
-  })();
+  }
 
   var finishedWork = root.finishedWork;
   var expirationTime = root.finishedExpirationTime;
@@ -69710,13 +69786,11 @@ function commitRootImpl(root, renderPriorityLevel) {
   root.finishedWork = null;
   root.finishedExpirationTime = NoWork;
 
-  (function () {
-    if (!(finishedWork !== root.current)) {
-      {
-        throw ReactError(Error("Cannot commit the same tree as before. This error is likely caused by a bug in React. Please file an issue."));
-      }
+  if (!(finishedWork !== root.current)) {
+    {
+      throw Error("Cannot commit the same tree as before. This error is likely caused by a bug in React. Please file an issue.");
     }
-  })(); // commitRoot never returns a continuation; it always finishes synchronously.
+  } // commitRoot never returns a continuation; it always finishes synchronously.
   // So we can clear these now to allow a new callback to be scheduled.
 
 
@@ -69780,13 +69854,11 @@ function commitRootImpl(root, renderPriorityLevel) {
         invokeGuardedCallback(null, commitBeforeMutationEffects, null);
 
         if (hasCaughtError()) {
-          (function () {
-            if (!(nextEffect !== null)) {
-              {
-                throw ReactError(Error("Should be working on an effect."));
-              }
+          if (!(nextEffect !== null)) {
+            {
+              throw Error("Should be working on an effect.");
             }
-          })();
+          }
 
           var error = clearCaughtError();
           captureCommitPhaseError(nextEffect, error);
@@ -69812,13 +69884,11 @@ function commitRootImpl(root, renderPriorityLevel) {
         invokeGuardedCallback(null, commitMutationEffects, null, root, renderPriorityLevel);
 
         if (hasCaughtError()) {
-          (function () {
-            if (!(nextEffect !== null)) {
-              {
-                throw ReactError(Error("Should be working on an effect."));
-              }
+          if (!(nextEffect !== null)) {
+            {
+              throw Error("Should be working on an effect.");
             }
-          })();
+          }
 
           var _error = clearCaughtError();
 
@@ -69846,13 +69916,11 @@ function commitRootImpl(root, renderPriorityLevel) {
         invokeGuardedCallback(null, commitLayoutEffects, null, root, expirationTime);
 
         if (hasCaughtError()) {
-          (function () {
-            if (!(nextEffect !== null)) {
-              {
-                throw ReactError(Error("Should be working on an effect."));
-              }
+          if (!(nextEffect !== null)) {
+            {
+              throw Error("Should be working on an effect.");
             }
-          })();
+          }
 
           var _error2 = clearCaughtError();
 
@@ -70138,13 +70206,11 @@ function flushPassiveEffectsImpl() {
   rootWithPendingPassiveEffects = null;
   pendingPassiveEffectsExpirationTime = NoWork;
 
-  (function () {
-    if (!((executionContext & (RenderContext | CommitContext)) === NoContext)) {
-      {
-        throw ReactError(Error("Cannot flush passive effects while already rendering."));
-      }
+  if (!((executionContext & (RenderContext | CommitContext)) === NoContext)) {
+    {
+      throw Error("Cannot flush passive effects while already rendering.");
     }
-  })();
+  }
 
   var prevExecutionContext = executionContext;
   executionContext |= CommitContext;
@@ -70160,13 +70226,11 @@ function flushPassiveEffectsImpl() {
       invokeGuardedCallback(null, commitPassiveHookEffects, null, effect);
 
       if (hasCaughtError()) {
-        (function () {
-          if (!(effect !== null)) {
-            {
-              throw ReactError(Error("Should be working on an effect."));
-            }
+        if (!(effect !== null)) {
+          {
+            throw Error("Should be working on an effect.");
           }
-        })();
+        }
 
         var error = clearCaughtError();
         captureCommitPhaseError(effect, error);
@@ -70327,10 +70391,10 @@ function retryTimedOutBoundary(boundaryFiber, retryTime) {
   // previously was rendered in its fallback state. One of the promises that
   // suspended it has resolved, which means at least part of the tree was
   // likely unblocked. Try rendering again, at a new expiration time.
-  if (retryTime === Never) {
+  if (retryTime === NoWork) {
     var suspenseConfig = null; // Retries don't carry over the already committed update.
 
-    var currentTime = requestCurrentTime();
+    var currentTime = requestCurrentTimeForUpdate();
     retryTime = computeExpirationForFiber(currentTime, boundaryFiber, suspenseConfig);
   } // TODO: Special case idle priority?
 
@@ -70345,7 +70409,7 @@ function retryTimedOutBoundary(boundaryFiber, retryTime) {
 
 function retryDehydratedSuspenseBoundary(boundaryFiber) {
   var suspenseState = boundaryFiber.memoizedState;
-  var retryTime = Never;
+  var retryTime = NoWork;
 
   if (suspenseState !== null) {
     retryTime = suspenseState.retryTime;
@@ -70354,7 +70418,7 @@ function retryDehydratedSuspenseBoundary(boundaryFiber) {
   retryTimedOutBoundary(boundaryFiber, retryTime);
 }
 function resolveRetryThenable(boundaryFiber, thenable) {
-  var retryTime = Never; // Default
+  var retryTime = NoWork; // Default
 
   var retryCache;
 
@@ -70375,13 +70439,11 @@ function resolveRetryThenable(boundaryFiber, thenable) {
         break;
 
       default:
-        (function () {
+        {
           {
-            {
-              throw ReactError(Error("Pinged unknown suspense boundary type. This is probably a bug in React."));
-            }
+            throw Error("Pinged unknown suspense boundary type. This is probably a bug in React.");
           }
-        })();
+        }
 
     }
   } else {
@@ -70438,13 +70500,11 @@ function checkForNestedUpdates() {
     nestedUpdateCount = 0;
     rootWithNestedUpdates = null;
 
-    (function () {
+    {
       {
-        {
-          throw ReactError(Error("Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops."));
-        }
+        throw Error("Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.");
       }
-    })();
+    }
   }
 
   {
@@ -70532,12 +70592,14 @@ if ( true && replayFailedUnitOfWorkWithInvokeGuardedCallback) {
       if (originalError !== null && typeof originalError === 'object' && typeof originalError.then === 'function') {
         // Don't replay promises. Treat everything else like an error.
         throw originalError;
-      } // Keep this code in sync with renderRoot; any changes here must have
+      } // Keep this code in sync with handleError; any changes here must have
       // corresponding changes there.
 
 
       resetContextDependencies();
-      resetHooks(); // Unwind the failed stack frame
+      resetHooks(); // Don't reset current debug fiber, since we're about to work on the
+      // same fiber again.
+      // Unwind the failed stack frame
 
       unwindInterruptedWork(unitOfWork); // Restore the original properties of the fiber.
 
@@ -70632,7 +70694,7 @@ var didWarnAboutUnmockedScheduler = false; // TODO Before we release concurrent 
 function warnIfUnmockedScheduler(fiber) {
   {
     if (didWarnAboutUnmockedScheduler === false && Scheduler.unstable_flushAllWithoutAsserting === undefined) {
-      if (fiber.mode & BatchedMode || fiber.mode & ConcurrentMode) {
+      if (fiber.mode & BlockingMode || fiber.mode & ConcurrentMode) {
         didWarnAboutUnmockedScheduler = true;
         warningWithoutStack$1(false, 'In Concurrent or Sync modes, the "scheduler" module needs to be mocked ' + 'to guarantee consistent behaviour across tests and browsers. ' + 'For example, with jest: \n' + "jest.mock('scheduler', () => require('scheduler/unstable_mock'));\n\n" + 'For more info, visit https://fb.me/react-mock-scheduler');
       } else if (warnAboutUnmockedScheduler === true) {
@@ -70736,7 +70798,7 @@ function flushSuspensePriorityWarningInDEV() {
       componentsThatTriggeredHighPriSuspend = null;
 
       if (componentNames.length > 0) {
-        warningWithoutStack$1(false, '%s triggered a user-blocking update that suspended.' + '\n\n' + 'The fix is to split the update into multiple parts: a user-blocking ' + 'update to provide immediate feedback, and another update that ' + 'triggers the bulk of the changes.' + '\n\n' + 'Refer to the documentation for useSuspenseTransition to learn how ' + 'to implement this pattern.', // TODO: Add link to React docs with more information, once it exists
+        warningWithoutStack$1(false, '%s triggered a user-blocking update that suspended.' + '\n\n' + 'The fix is to split the update into multiple parts: a user-blocking ' + 'update to provide immediate feedback, and another update that ' + 'triggers the bulk of the changes.' + '\n\n' + 'Refer to the documentation for useTransition to learn how ' + 'to implement this pattern.', // TODO: Add link to React docs with more information, once it exists
         componentNames.sort().join(', '));
       }
     }
@@ -70823,10 +70885,10 @@ function startWorkOnPendingInteractions(root, expirationTime) {
       });
     }
   }); // Store the current set of interactions on the FiberRoot for a few reasons:
-  // We can re-use it in hot functions like renderRoot() without having to
-  // recalculate it. We will also use it in commitWork() to pass to any Profiler
-  // onRender() hooks. This also provides DevTools with a way to access it when
-  // the onCommitRoot() hook is called.
+  // We can re-use it in hot functions like performConcurrentWorkOnRoot()
+  // without having to recalculate it. We will also use it in commitWork() to
+  // pass to any Profiler onRender() hooks. This also provides DevTools with a
+  // way to access it when the onCommitRoot() hook is called.
 
   root.memoizedInteractions = interactions;
 
@@ -70934,7 +70996,7 @@ function injectInternals(internals) {
         var didError = (root.current.effectTag & DidCapture) === DidCapture;
 
         if (enableProfilerTimer) {
-          var currentTime = requestCurrentTime();
+          var currentTime = getCurrentTime();
           var priorityLevel = inferPriorityFromExpirationTime(currentTime, expirationTime);
           hook.onCommitFiberRoot(rendererID, root, priorityLevel, didError);
         } else {
@@ -71275,9 +71337,9 @@ function createHostRootFiber(tag) {
   var mode;
 
   if (tag === ConcurrentRoot) {
-    mode = ConcurrentMode | BatchedMode | StrictMode;
-  } else if (tag === BatchedRoot) {
-    mode = BatchedMode | StrictMode;
+    mode = ConcurrentMode | BlockingMode | StrictMode;
+  } else if (tag === BlockingRoot) {
+    mode = BlockingMode | StrictMode;
   } else {
     mode = NoMode;
   }
@@ -71319,7 +71381,7 @@ key, pendingProps, owner, mode, expirationTime) {
 
       case REACT_CONCURRENT_MODE_TYPE:
         fiberTag = Mode;
-        mode |= ConcurrentMode | BatchedMode | StrictMode;
+        mode |= ConcurrentMode | BlockingMode | StrictMode;
         break;
 
       case REACT_STRICT_MODE_TYPE:
@@ -71396,13 +71458,11 @@ key, pendingProps, owner, mode, expirationTime) {
             }
           }
 
-          (function () {
+          {
             {
-              {
-                throw ReactError(Error("Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: " + (type == null ? type : typeof type) + "." + info));
-              }
+              throw Error("Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: " + (type == null ? type : typeof type) + "." + info);
             }
-          })();
+          }
         }
     }
   }
@@ -71586,7 +71646,6 @@ function FiberRootNode(containerInfo, tag, hydrate) {
   this.context = null;
   this.pendingContext = null;
   this.hydrate = hydrate;
-  this.firstBatch = null;
   this.callbackNode = null;
   this.callbackPriority = NoPriority;
   this.firstPendingTime = NoWork;
@@ -71742,79 +71801,22 @@ function getContextForSubtree(parentComponent) {
   return parentContext;
 }
 
-function scheduleRootUpdate(current$$1, element, expirationTime, suspenseConfig, callback) {
-  {
-    if (phase === 'render' && current !== null && !didWarnAboutNestedUpdates) {
-      didWarnAboutNestedUpdates = true;
-      warningWithoutStack$1(false, 'Render methods should be a pure function of props and state; ' + 'triggering nested component updates from render is not allowed. ' + 'If necessary, trigger nested updates in componentDidUpdate.\n\n' + 'Check the render method of %s.', getComponentName(current.type) || 'Unknown');
-    }
-  }
-
-  var update = createUpdate(expirationTime, suspenseConfig); // Caution: React DevTools currently depends on this property
-  // being called "element".
-
-  update.payload = {
-    element: element
-  };
-  callback = callback === undefined ? null : callback;
-
-  if (callback !== null) {
-    !(typeof callback === 'function') ? warningWithoutStack$1(false, 'render(...): Expected the last optional `callback` argument to be a ' + 'function. Instead received: %s.', callback) : void 0;
-    update.callback = callback;
-  }
-
-  enqueueUpdate(current$$1, update);
-  scheduleWork(current$$1, expirationTime);
-  return expirationTime;
-}
-
-function updateContainerAtExpirationTime(element, container, parentComponent, expirationTime, suspenseConfig, callback) {
-  // TODO: If this is a nested container, this won't be the root.
-  var current$$1 = container.current;
-
-  {
-    if (ReactFiberInstrumentation_1.debugTool) {
-      if (current$$1.alternate === null) {
-        ReactFiberInstrumentation_1.debugTool.onMountContainer(container);
-      } else if (element === null) {
-        ReactFiberInstrumentation_1.debugTool.onUnmountContainer(container);
-      } else {
-        ReactFiberInstrumentation_1.debugTool.onUpdateContainer(container);
-      }
-    }
-  }
-
-  var context = getContextForSubtree(parentComponent);
-
-  if (container.context === null) {
-    container.context = context;
-  } else {
-    container.pendingContext = context;
-  }
-
-  return scheduleRootUpdate(current$$1, element, expirationTime, suspenseConfig, callback);
-}
-
 function findHostInstance(component) {
   var fiber = get(component);
 
   if (fiber === undefined) {
     if (typeof component.render === 'function') {
-      (function () {
+      {
         {
-          {
-            throw ReactError(Error("Unable to find node on an unmounted component."));
-          }
+          throw Error("Unable to find node on an unmounted component.");
         }
-      })();
+      }
     } else {
-      (function () {
+      {
         {
-          {
-            throw ReactError(Error("Argument appears to not be a ReactComponent. Keys: " + Object.keys(component)));
-          }
+          throw Error("Argument appears to not be a ReactComponent. Keys: " + Object.keys(component));
         }
-      })();
+      }
     }
   }
 
@@ -71833,21 +71835,17 @@ function findHostInstanceWithWarning(component, methodName) {
 
     if (fiber === undefined) {
       if (typeof component.render === 'function') {
-        (function () {
+        {
           {
-            {
-              throw ReactError(Error("Unable to find node on an unmounted component."));
-            }
+            throw Error("Unable to find node on an unmounted component.");
           }
-        })();
+        }
       } else {
-        (function () {
+        {
           {
-            {
-              throw ReactError(Error("Argument appears to not be a ReactComponent. Keys: " + Object.keys(component)));
-            }
+            throw Error("Argument appears to not be a ReactComponent. Keys: " + Object.keys(component));
           }
-        })();
+        }
       }
     }
 
@@ -71882,7 +71880,7 @@ function createContainer(containerInfo, tag, hydrate, hydrationCallbacks) {
 }
 function updateContainer(element, container, parentComponent, callback) {
   var current$$1 = container.current;
-  var currentTime = requestCurrentTime();
+  var currentTime = requestCurrentTimeForUpdate();
 
   {
     // $FlowExpectedError - jest isn't a global, and isn't recognized outside of tests
@@ -71894,7 +71892,50 @@ function updateContainer(element, container, parentComponent, callback) {
 
   var suspenseConfig = requestCurrentSuspenseConfig();
   var expirationTime = computeExpirationForFiber(currentTime, current$$1, suspenseConfig);
-  return updateContainerAtExpirationTime(element, container, parentComponent, expirationTime, suspenseConfig, callback);
+
+  {
+    if (ReactFiberInstrumentation_1.debugTool) {
+      if (current$$1.alternate === null) {
+        ReactFiberInstrumentation_1.debugTool.onMountContainer(container);
+      } else if (element === null) {
+        ReactFiberInstrumentation_1.debugTool.onUnmountContainer(container);
+      } else {
+        ReactFiberInstrumentation_1.debugTool.onUpdateContainer(container);
+      }
+    }
+  }
+
+  var context = getContextForSubtree(parentComponent);
+
+  if (container.context === null) {
+    container.context = context;
+  } else {
+    container.pendingContext = context;
+  }
+
+  {
+    if (phase === 'render' && current !== null && !didWarnAboutNestedUpdates) {
+      didWarnAboutNestedUpdates = true;
+      warningWithoutStack$1(false, 'Render methods should be a pure function of props and state; ' + 'triggering nested component updates from render is not allowed. ' + 'If necessary, trigger nested updates in componentDidUpdate.\n\n' + 'Check the render method of %s.', getComponentName(current.type) || 'Unknown');
+    }
+  }
+
+  var update = createUpdate(expirationTime, suspenseConfig); // Caution: React DevTools currently depends on this property
+  // being called "element".
+
+  update.payload = {
+    element: element
+  };
+  callback = callback === undefined ? null : callback;
+
+  if (callback !== null) {
+    !(typeof callback === 'function') ? warningWithoutStack$1(false, 'render(...): Expected the last optional `callback` argument to be a ' + 'function. Instead received: %s.', callback) : void 0;
+    update.callback = callback;
+  }
+
+  enqueueUpdate(current$$1, update);
+  scheduleWork(current$$1, expirationTime);
+  return expirationTime;
 }
 function getPublicRootInstance(container) {
   var containerFiber = container.current;
@@ -71926,9 +71967,73 @@ function attemptSynchronousHydration$1(fiber) {
     case SuspenseComponent:
       flushSync(function () {
         return scheduleWork(fiber, Sync);
-      });
+      }); // If we're still blocked after this, we need to increase
+      // the priority of any promises resolving within this
+      // boundary so that they next attempt also has higher pri.
+
+      var retryExpTime = computeInteractiveExpiration(requestCurrentTimeForUpdate());
+      markRetryTimeIfNotHydrated(fiber, retryExpTime);
       break;
   }
+}
+
+function markRetryTimeImpl(fiber, retryTime) {
+  var suspenseState = fiber.memoizedState;
+
+  if (suspenseState !== null && suspenseState.dehydrated !== null) {
+    if (suspenseState.retryTime < retryTime) {
+      suspenseState.retryTime = retryTime;
+    }
+  }
+} // Increases the priority of thennables when they resolve within this boundary.
+
+
+function markRetryTimeIfNotHydrated(fiber, retryTime) {
+  markRetryTimeImpl(fiber, retryTime);
+  var alternate = fiber.alternate;
+
+  if (alternate) {
+    markRetryTimeImpl(alternate, retryTime);
+  }
+}
+
+function attemptUserBlockingHydration$1(fiber) {
+  if (fiber.tag !== SuspenseComponent) {
+    // We ignore HostRoots here because we can't increase
+    // their priority and they should not suspend on I/O,
+    // since you have to wrap anything that might suspend in
+    // Suspense.
+    return;
+  }
+
+  var expTime = computeInteractiveExpiration(requestCurrentTimeForUpdate());
+  scheduleWork(fiber, expTime);
+  markRetryTimeIfNotHydrated(fiber, expTime);
+}
+function attemptContinuousHydration$1(fiber) {
+  if (fiber.tag !== SuspenseComponent) {
+    // We ignore HostRoots here because we can't increase
+    // their priority and they should not suspend on I/O,
+    // since you have to wrap anything that might suspend in
+    // Suspense.
+    return;
+  }
+
+  var expTime = computeContinuousHydrationExpiration(requestCurrentTimeForUpdate());
+  scheduleWork(fiber, expTime);
+  markRetryTimeIfNotHydrated(fiber, expTime);
+}
+function attemptHydrationAtCurrentPriority$1(fiber) {
+  if (fiber.tag !== SuspenseComponent) {
+    // We ignore HostRoots here because we can't increase
+    // their priority other than synchronously flush it.
+    return;
+  }
+
+  var currentTime = requestCurrentTimeForUpdate();
+  var expTime = computeExpirationForFiber(currentTime, fiber, null);
+  scheduleWork(fiber, expTime);
+  markRetryTimeIfNotHydrated(fiber, expTime);
 }
 function findHostInstanceWithNoPortals(fiber) {
   var hostFiber = findCurrentHostFiberWithNoPortals(fiber);
@@ -72059,249 +72164,43 @@ function injectIntoDevTools(devToolsConfig) {
 // This file intentionally does *not* have the Flow annotation.
 // Don't add it. See `./inline-typed.js` for an explanation.
 
-function createPortal$1(children, containerInfo, // TODO: figure out the API for cross-renderer implementation.
-implementation) {
-  var key = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-  return {
-    // This tag allow us to uniquely identify this as a React Portal
-    $$typeof: REACT_PORTAL_TYPE,
-    key: key == null ? null : '' + key,
-    children: children,
-    containerInfo: containerInfo,
-    implementation: implementation
-  };
-}
-
-// TODO: this is special because it gets imported during build.
-
-var ReactVersion = '16.10.2';
-
 // TODO: This type is shared between the reconciler and ReactDOM, but will
 // eventually be lifted out to the renderer.
-setAttemptSynchronousHydration(attemptSynchronousHydration$1);
-var ReactCurrentOwner = ReactSharedInternals.ReactCurrentOwner;
-var topLevelUpdateWarnings;
-var warnOnInvalidCallback;
-var didWarnAboutUnstableCreatePortal = false;
-
-{
-  if (typeof Map !== 'function' || // $FlowIssue Flow incorrectly thinks Map has no prototype
-  Map.prototype == null || typeof Map.prototype.forEach !== 'function' || typeof Set !== 'function' || // $FlowIssue Flow incorrectly thinks Set has no prototype
-  Set.prototype == null || typeof Set.prototype.clear !== 'function' || typeof Set.prototype.forEach !== 'function') {
-    warningWithoutStack$1(false, 'React depends on Map and Set built-in types. Make sure that you load a ' + 'polyfill in older browsers. https://fb.me/react-polyfills');
-  }
-
-  topLevelUpdateWarnings = function (container) {
-    if (container._reactRootContainer && container.nodeType !== COMMENT_NODE) {
-      var hostInstance = findHostInstanceWithNoPortals(container._reactRootContainer._internalRoot.current);
-
-      if (hostInstance) {
-        !(hostInstance.parentNode === container) ? warningWithoutStack$1(false, 'render(...): It looks like the React-rendered content of this ' + 'container was removed without using React. This is not ' + 'supported and will cause errors. Instead, call ' + 'ReactDOM.unmountComponentAtNode to empty a container.') : void 0;
-      }
-    }
-
-    var isRootRenderedBySomeReact = !!container._reactRootContainer;
-    var rootEl = getReactRootElementInContainer(container);
-    var hasNonRootReactChild = !!(rootEl && getInstanceFromNode$1(rootEl));
-    !(!hasNonRootReactChild || isRootRenderedBySomeReact) ? warningWithoutStack$1(false, 'render(...): Replacing React-rendered children with a new root ' + 'component. If you intended to update the children of this node, ' + 'you should instead have the existing children update their state ' + 'and render the new components instead of calling ReactDOM.render.') : void 0;
-    !(container.nodeType !== ELEMENT_NODE || !container.tagName || container.tagName.toUpperCase() !== 'BODY') ? warningWithoutStack$1(false, 'render(): Rendering components directly into document.body is ' + 'discouraged, since its children are often manipulated by third-party ' + 'scripts and browser extensions. This may lead to subtle ' + 'reconciliation issues. Try rendering into a container element created ' + 'for your app.') : void 0;
-  };
-
-  warnOnInvalidCallback = function (callback, callerName) {
-    !(callback === null || typeof callback === 'function') ? warningWithoutStack$1(false, '%s(...): Expected the last optional `callback` argument to be a ' + 'function. Instead received: %s.', callerName, callback) : void 0;
-  };
+function ReactDOMRoot(container, options) {
+  this._internalRoot = createRootImpl(container, ConcurrentRoot, options);
 }
 
-setRestoreImplementation(restoreControlledState$$1);
-
-function ReactBatch(root) {
-  var expirationTime = computeUniqueAsyncExpiration();
-  this._expirationTime = expirationTime;
-  this._root = root;
-  this._next = null;
-  this._callbacks = null;
-  this._didComplete = false;
-  this._hasChildren = false;
-  this._children = null;
-  this._defer = true;
+function ReactDOMBlockingRoot(container, tag, options) {
+  this._internalRoot = createRootImpl(container, tag, options);
 }
 
-ReactBatch.prototype.render = function (children) {
-  var _this = this;
+ReactDOMRoot.prototype.render = ReactDOMBlockingRoot.prototype.render = function (children, callback) {
+  var root = this._internalRoot;
+  var cb = callback === undefined ? null : callback;
 
-  (function () {
-    if (!_this._defer) {
-      {
-        throw ReactError(Error("batch.render: Cannot render a batch that already committed."));
-      }
+  {
+    warnOnInvalidCallback(cb, 'render');
+  }
+
+  updateContainer(children, root, null, cb);
+};
+
+ReactDOMRoot.prototype.unmount = ReactDOMBlockingRoot.prototype.unmount = function (callback) {
+  var root = this._internalRoot;
+  var cb = callback === undefined ? null : callback;
+
+  {
+    warnOnInvalidCallback(cb, 'render');
+  }
+
+  var container = root.containerInfo;
+  updateContainer(null, root, null, function () {
+    unmarkContainerAsRoot(container);
+
+    if (cb !== null) {
+      cb();
     }
-  })();
-
-  this._hasChildren = true;
-  this._children = children;
-  var internalRoot = this._root._internalRoot;
-  var expirationTime = this._expirationTime;
-  var work = new ReactWork();
-  updateContainerAtExpirationTime(children, internalRoot, null, expirationTime, null, work._onCommit);
-  return work;
-};
-
-ReactBatch.prototype.then = function (onComplete) {
-  if (this._didComplete) {
-    onComplete();
-    return;
-  }
-
-  var callbacks = this._callbacks;
-
-  if (callbacks === null) {
-    callbacks = this._callbacks = [];
-  }
-
-  callbacks.push(onComplete);
-};
-
-ReactBatch.prototype.commit = function () {
-  var _this2 = this;
-
-  var internalRoot = this._root._internalRoot;
-  var firstBatch = internalRoot.firstBatch;
-
-  (function () {
-    if (!(_this2._defer && firstBatch !== null)) {
-      {
-        throw ReactError(Error("batch.commit: Cannot commit a batch multiple times."));
-      }
-    }
-  })();
-
-  if (!this._hasChildren) {
-    // This batch is empty. Return.
-    this._next = null;
-    this._defer = false;
-    return;
-  }
-
-  var expirationTime = this._expirationTime; // Ensure this is the first batch in the list.
-
-  if (firstBatch !== this) {
-    // This batch is not the earliest batch. We need to move it to the front.
-    // Update its expiration time to be the expiration time of the earliest
-    // batch, so that we can flush it without flushing the other batches.
-    if (this._hasChildren) {
-      expirationTime = this._expirationTime = firstBatch._expirationTime; // Rendering this batch again ensures its children will be the final state
-      // when we flush (updates are processed in insertion order: last
-      // update wins).
-      // TODO: This forces a restart. Should we print a warning?
-
-      this.render(this._children);
-    } // Remove the batch from the list.
-
-
-    var previous = null;
-    var batch = firstBatch;
-
-    while (batch !== this) {
-      previous = batch;
-      batch = batch._next;
-    }
-
-    (function () {
-      if (!(previous !== null)) {
-        {
-          throw ReactError(Error("batch.commit: Cannot commit a batch multiple times."));
-        }
-      }
-    })();
-
-    previous._next = batch._next; // Add it to the front.
-
-    this._next = firstBatch;
-    firstBatch = internalRoot.firstBatch = this;
-  } // Synchronously flush all the work up to this batch's expiration time.
-
-
-  this._defer = false;
-  flushRoot(internalRoot, expirationTime); // Pop the batch from the list.
-
-  var next = this._next;
-  this._next = null;
-  firstBatch = internalRoot.firstBatch = next; // Append the next earliest batch's children to the update queue.
-
-  if (firstBatch !== null && firstBatch._hasChildren) {
-    firstBatch.render(firstBatch._children);
-  }
-};
-
-ReactBatch.prototype._onComplete = function () {
-  if (this._didComplete) {
-    return;
-  }
-
-  this._didComplete = true;
-  var callbacks = this._callbacks;
-
-  if (callbacks === null) {
-    return;
-  } // TODO: Error handling.
-
-
-  for (var i = 0; i < callbacks.length; i++) {
-    var _callback = callbacks[i];
-
-    _callback();
-  }
-};
-
-function ReactWork() {
-  this._callbacks = null;
-  this._didCommit = false; // TODO: Avoid need to bind by replacing callbacks in the update queue with
-  // list of Work objects.
-
-  this._onCommit = this._onCommit.bind(this);
-}
-
-ReactWork.prototype.then = function (onCommit) {
-  if (this._didCommit) {
-    onCommit();
-    return;
-  }
-
-  var callbacks = this._callbacks;
-
-  if (callbacks === null) {
-    callbacks = this._callbacks = [];
-  }
-
-  callbacks.push(onCommit);
-};
-
-ReactWork.prototype._onCommit = function () {
-  if (this._didCommit) {
-    return;
-  }
-
-  this._didCommit = true;
-  var callbacks = this._callbacks;
-
-  if (callbacks === null) {
-    return;
-  } // TODO: Error handling.
-
-
-  for (var i = 0; i < callbacks.length; i++) {
-    var _callback2 = callbacks[i];
-
-    (function () {
-      if (!(typeof _callback2 === 'function')) {
-        {
-          throw ReactError(Error("Invalid argument passed as callback. Expected a function. Instead received: " + _callback2));
-        }
-      }
-    })();
-
-    _callback2();
-  }
+  });
 };
 
 function createRootImpl(container, tag, options) {
@@ -72319,88 +72218,70 @@ function createRootImpl(container, tag, options) {
   return root;
 }
 
-function ReactSyncRoot(container, tag, options) {
-  this._internalRoot = createRootImpl(container, tag, options);
-}
-
-function ReactRoot(container, options) {
-  this._internalRoot = createRootImpl(container, ConcurrentRoot, options);
-}
-
-ReactRoot.prototype.render = ReactSyncRoot.prototype.render = function (children, callback) {
-  var root = this._internalRoot;
-  var work = new ReactWork();
-  callback = callback === undefined ? null : callback;
-
-  {
-    warnOnInvalidCallback(callback, 'render');
-  }
-
-  if (callback !== null) {
-    work.then(callback);
-  }
-
-  updateContainer(children, root, null, work._onCommit);
-  return work;
-};
-
-ReactRoot.prototype.unmount = ReactSyncRoot.prototype.unmount = function (callback) {
-  var root = this._internalRoot;
-  var work = new ReactWork();
-  callback = callback === undefined ? null : callback;
-
-  {
-    warnOnInvalidCallback(callback, 'render');
-  }
-
-  if (callback !== null) {
-    work.then(callback);
-  }
-
-  updateContainer(null, root, null, work._onCommit);
-  return work;
-}; // Sync roots cannot create batches. Only concurrent ones.
-
-
-ReactRoot.prototype.createBatch = function () {
-  var batch = new ReactBatch(this);
-  var expirationTime = batch._expirationTime;
-  var internalRoot = this._internalRoot;
-  var firstBatch = internalRoot.firstBatch;
-
-  if (firstBatch === null) {
-    internalRoot.firstBatch = batch;
-    batch._next = null;
-  } else {
-    // Insert sorted by expiration time then insertion order
-    var insertAfter = null;
-    var insertBefore = firstBatch;
-
-    while (insertBefore !== null && insertBefore._expirationTime >= expirationTime) {
-      insertAfter = insertBefore;
-      insertBefore = insertBefore._next;
-    }
-
-    batch._next = insertBefore;
-
-    if (insertAfter !== null) {
-      insertAfter._next = batch;
+function createRoot(container, options) {
+  if (!isValidContainer(container)) {
+    {
+      throw Error("createRoot(...): Target container is not a DOM element.");
     }
   }
 
-  return batch;
-};
-/**
- * True if the supplied DOM node is a valid node element.
- *
- * @param {?DOMElement} node The candidate DOM node.
- * @return {boolean} True if the DOM is a valid DOM node.
- * @internal
- */
+  warnIfReactDOMContainerInDEV(container);
+  return new ReactDOMRoot(container, options);
+}
+function createBlockingRoot(container, options) {
+  if (!isValidContainer(container)) {
+    {
+      throw Error("createRoot(...): Target container is not a DOM element.");
+    }
+  }
 
-
+  warnIfReactDOMContainerInDEV(container);
+  return new ReactDOMBlockingRoot(container, BlockingRoot, options);
+}
+function createLegacyRoot(container, options) {
+  return new ReactDOMBlockingRoot(container, LegacyRoot, options);
+}
 function isValidContainer(node) {
   return !!(node && (node.nodeType === ELEMENT_NODE || node.nodeType === DOCUMENT_NODE || node.nodeType === DOCUMENT_FRAGMENT_NODE || node.nodeType === COMMENT_NODE && node.nodeValue === ' react-mount-point-unstable '));
+}
+function warnOnInvalidCallback(callback, callerName) {
+  {
+    !(callback === null || typeof callback === 'function') ? warningWithoutStack$1(false, '%s(...): Expected the last optional `callback` argument to be a ' + 'function. Instead received: %s.', callerName, callback) : void 0;
+  }
+}
+
+function warnIfReactDOMContainerInDEV(container) {
+  {
+    if (isContainerMarkedAsRoot(container)) {
+      if (container._reactRootContainer) {
+        warningWithoutStack$1(false, 'You are calling ReactDOM.createRoot() on a container that was previously ' + 'passed to ReactDOM.render(). This is not supported.');
+      } else {
+        warningWithoutStack$1(false, 'You are calling ReactDOM.createRoot() on a container that ' + 'has already been passed to createRoot() before. Instead, call ' + 'root.render() on the existing root instead if you want to update it.');
+      }
+    }
+  }
+}
+
+var ReactCurrentOwner$1 = ReactSharedInternals.ReactCurrentOwner;
+var topLevelUpdateWarnings;
+var warnedAboutHydrateAPI = false;
+
+{
+  topLevelUpdateWarnings = function (container) {
+    if (container._reactRootContainer && container.nodeType !== COMMENT_NODE) {
+      var hostInstance = findHostInstanceWithNoPortals(container._reactRootContainer._internalRoot.current);
+
+      if (hostInstance) {
+        !(hostInstance.parentNode === container) ? warningWithoutStack$1(false, 'render(...): It looks like the React-rendered content of this ' + 'container was removed without using React. This is not ' + 'supported and will cause errors. Instead, call ' + 'ReactDOM.unmountComponentAtNode to empty a container.') : void 0;
+      }
+    }
+
+    var isRootRenderedBySomeReact = !!container._reactRootContainer;
+    var rootEl = getReactRootElementInContainer(container);
+    var hasNonRootReactChild = !!(rootEl && getInstanceFromNode$1(rootEl));
+    !(!hasNonRootReactChild || isRootRenderedBySomeReact) ? warningWithoutStack$1(false, 'render(...): Replacing React-rendered children with a new root ' + 'component. If you intended to update the children of this node, ' + 'you should instead have the existing children update their state ' + 'and render the new components instead of calling ReactDOM.render.') : void 0;
+    !(container.nodeType !== ELEMENT_NODE || !container.tagName || container.tagName.toUpperCase() !== 'BODY') ? warningWithoutStack$1(false, 'render(): Rendering components directly into document.body is ' + 'discouraged, since its children are often manipulated by third-party ' + 'scripts and browser extensions. This may lead to subtle ' + 'reconciliation issues. Try rendering into a container element created ' + 'for your app.') : void 0;
+  };
 }
 
 function getReactRootElementInContainer(container) {
@@ -72419,9 +72300,6 @@ function shouldHydrateDueToLegacyHeuristic(container) {
   var rootElement = getReactRootElementInContainer(container);
   return !!(rootElement && rootElement.nodeType === ELEMENT_NODE && rootElement.hasAttribute(ROOT_ATTRIBUTE_NAME));
 }
-
-setBatchingImplementation(batchedUpdates$1, discreteUpdates$1, flushDiscreteUpdates, batchedEventUpdates$1);
-var warnedAboutHydrateAPI = false;
 
 function legacyCreateRootFromDOMContainer(container, forceHydrate) {
   var shouldHydrate = forceHydrate || shouldHydrateDueToLegacyHeuristic(container); // First clear any existing content.
@@ -72447,10 +72325,9 @@ function legacyCreateRootFromDOMContainer(container, forceHydrate) {
       warnedAboutHydrateAPI = true;
       lowPriorityWarningWithoutStack$1(false, 'render(): Calling ReactDOM.render() to hydrate server-rendered markup ' + 'will stop working in React v17. Replace the ReactDOM.render() call ' + 'with ReactDOM.hydrate() if you want React to attach to the server HTML.');
     }
-  } // Legacy roots are not batched.
+  }
 
-
-  return new ReactSyncRoot(container, LegacyRoot, shouldHydrate ? {
+  return createLegacyRoot(container, shouldHydrate ? {
     hydrate: true
   } : undefined);
 }
@@ -72504,16 +72381,169 @@ function legacyRenderSubtreeIntoContainer(parentComponent, children, container, 
   return getPublicRootInstance(fiberRoot);
 }
 
+function findDOMNode(componentOrElement) {
+  {
+    var owner = ReactCurrentOwner$1.current;
+
+    if (owner !== null && owner.stateNode !== null) {
+      var warnedAboutRefsInRender = owner.stateNode._warnedAboutRefsInRender;
+      !warnedAboutRefsInRender ? warningWithoutStack$1(false, '%s is accessing findDOMNode inside its render(). ' + 'render() should be a pure function of props and state. It should ' + 'never access something that requires stale data from the previous ' + 'render, such as refs. Move this logic to componentDidMount and ' + 'componentDidUpdate instead.', getComponentName(owner.type) || 'A component') : void 0;
+      owner.stateNode._warnedAboutRefsInRender = true;
+    }
+  }
+
+  if (componentOrElement == null) {
+    return null;
+  }
+
+  if (componentOrElement.nodeType === ELEMENT_NODE) {
+    return componentOrElement;
+  }
+
+  {
+    return findHostInstanceWithWarning(componentOrElement, 'findDOMNode');
+  }
+
+  return findHostInstance(componentOrElement);
+}
+function hydrate(element, container, callback) {
+  if (!isValidContainer(container)) {
+    {
+      throw Error("Target container is not a DOM element.");
+    }
+  }
+
+  {
+    var isModernRoot = isContainerMarkedAsRoot(container) && container._reactRootContainer === undefined;
+
+    if (isModernRoot) {
+      warningWithoutStack$1(false, 'You are calling ReactDOM.hydrate() on a container that was previously ' + 'passed to ReactDOM.createRoot(). This is not supported. ' + 'Did you mean to call createRoot(container, {hydrate: true}).render(element)?');
+    }
+  } // TODO: throw or warn if we couldn't hydrate?
+
+
+  return legacyRenderSubtreeIntoContainer(null, element, container, true, callback);
+}
+function render(element, container, callback) {
+  if (!isValidContainer(container)) {
+    {
+      throw Error("Target container is not a DOM element.");
+    }
+  }
+
+  {
+    var isModernRoot = isContainerMarkedAsRoot(container) && container._reactRootContainer === undefined;
+
+    if (isModernRoot) {
+      warningWithoutStack$1(false, 'You are calling ReactDOM.render() on a container that was previously ' + 'passed to ReactDOM.createRoot(). This is not supported. ' + 'Did you mean to call root.render(element)?');
+    }
+  }
+
+  return legacyRenderSubtreeIntoContainer(null, element, container, false, callback);
+}
+function unstable_renderSubtreeIntoContainer(parentComponent, element, containerNode, callback) {
+  if (!isValidContainer(containerNode)) {
+    {
+      throw Error("Target container is not a DOM element.");
+    }
+  }
+
+  if (!(parentComponent != null && has(parentComponent))) {
+    {
+      throw Error("parentComponent must be a valid React Component");
+    }
+  }
+
+  return legacyRenderSubtreeIntoContainer(parentComponent, element, containerNode, false, callback);
+}
+function unmountComponentAtNode(container) {
+  if (!isValidContainer(container)) {
+    {
+      throw Error("unmountComponentAtNode(...): Target container is not a DOM element.");
+    }
+  }
+
+  {
+    var isModernRoot = isContainerMarkedAsRoot(container) && container._reactRootContainer === undefined;
+
+    if (isModernRoot) {
+      warningWithoutStack$1(false, 'You are calling ReactDOM.unmountComponentAtNode() on a container that was previously ' + 'passed to ReactDOM.createRoot(). This is not supported. Did you mean to call root.unmount()?');
+    }
+  }
+
+  if (container._reactRootContainer) {
+    {
+      var rootEl = getReactRootElementInContainer(container);
+      var renderedByDifferentReact = rootEl && !getInstanceFromNode$1(rootEl);
+      !!renderedByDifferentReact ? warningWithoutStack$1(false, "unmountComponentAtNode(): The node you're attempting to unmount " + 'was rendered by another copy of React.') : void 0;
+    } // Unmount should not be batched.
+
+
+    unbatchedUpdates(function () {
+      legacyRenderSubtreeIntoContainer(null, null, container, false, function () {
+        container._reactRootContainer = null;
+        unmarkContainerAsRoot(container);
+      });
+    }); // If you call unmountComponentAtNode twice in quick succession, you'll
+    // get `true` twice. That's probably fine?
+
+    return true;
+  } else {
+    {
+      var _rootEl = getReactRootElementInContainer(container);
+
+      var hasNonRootReactChild = !!(_rootEl && getInstanceFromNode$1(_rootEl)); // Check if the container itself is a React root node.
+
+      var isContainerReactRoot = container.nodeType === ELEMENT_NODE && isValidContainer(container.parentNode) && !!container.parentNode._reactRootContainer;
+      !!hasNonRootReactChild ? warningWithoutStack$1(false, "unmountComponentAtNode(): The node you're attempting to unmount " + 'was rendered by React and is not a top-level container. %s', isContainerReactRoot ? 'You may have accidentally passed in a React root node instead ' + 'of its container.' : 'Instead, have the parent component update its state and ' + 'rerender in order to remove this component.') : void 0;
+    }
+
+    return false;
+  }
+}
+
+function createPortal$1(children, containerInfo, // TODO: figure out the API for cross-renderer implementation.
+implementation) {
+  var key = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+  return {
+    // This tag allow us to uniquely identify this as a React Portal
+    $$typeof: REACT_PORTAL_TYPE,
+    key: key == null ? null : '' + key,
+    children: children,
+    containerInfo: containerInfo,
+    implementation: implementation
+  };
+}
+
+// TODO: this is special because it gets imported during build.
+
+var ReactVersion = '16.12.0';
+
+setAttemptSynchronousHydration(attemptSynchronousHydration$1);
+setAttemptUserBlockingHydration(attemptUserBlockingHydration$1);
+setAttemptContinuousHydration(attemptContinuousHydration$1);
+setAttemptHydrationAtCurrentPriority(attemptHydrationAtCurrentPriority$1);
+var didWarnAboutUnstableCreatePortal = false;
+
+{
+  if (typeof Map !== 'function' || // $FlowIssue Flow incorrectly thinks Map has no prototype
+  Map.prototype == null || typeof Map.prototype.forEach !== 'function' || typeof Set !== 'function' || // $FlowIssue Flow incorrectly thinks Set has no prototype
+  Set.prototype == null || typeof Set.prototype.clear !== 'function' || typeof Set.prototype.forEach !== 'function') {
+    warningWithoutStack$1(false, 'React depends on Map and Set built-in types. Make sure that you load a ' + 'polyfill in older browsers. https://fb.me/react-polyfills');
+  }
+}
+
+setRestoreImplementation(restoreControlledState$$1);
+setBatchingImplementation(batchedUpdates$1, discreteUpdates$1, flushDiscreteUpdates, batchedEventUpdates$1);
+
 function createPortal$$1(children, container) {
   var key = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
-  (function () {
-    if (!isValidContainer(container)) {
-      {
-        throw ReactError(Error("Target container is not a DOM element."));
-      }
+  if (!isValidContainer(container)) {
+    {
+      throw Error("Target container is not a DOM element.");
     }
-  })(); // TODO: pass ReactDOM portal implementation as third argument
+  } // TODO: pass ReactDOM portal implementation as third argument
 
 
   return createPortal$1(children, container, null, key);
@@ -72521,123 +72551,12 @@ function createPortal$$1(children, container) {
 
 var ReactDOM = {
   createPortal: createPortal$$1,
-  findDOMNode: function (componentOrElement) {
-    {
-      var owner = ReactCurrentOwner.current;
-
-      if (owner !== null && owner.stateNode !== null) {
-        var warnedAboutRefsInRender = owner.stateNode._warnedAboutRefsInRender;
-        !warnedAboutRefsInRender ? warningWithoutStack$1(false, '%s is accessing findDOMNode inside its render(). ' + 'render() should be a pure function of props and state. It should ' + 'never access something that requires stale data from the previous ' + 'render, such as refs. Move this logic to componentDidMount and ' + 'componentDidUpdate instead.', getComponentName(owner.type) || 'A component') : void 0;
-        owner.stateNode._warnedAboutRefsInRender = true;
-      }
-    }
-
-    if (componentOrElement == null) {
-      return null;
-    }
-
-    if (componentOrElement.nodeType === ELEMENT_NODE) {
-      return componentOrElement;
-    }
-
-    {
-      return findHostInstanceWithWarning(componentOrElement, 'findDOMNode');
-    }
-
-    return findHostInstance(componentOrElement);
-  },
-  hydrate: function (element, container, callback) {
-    (function () {
-      if (!isValidContainer(container)) {
-        {
-          throw ReactError(Error("Target container is not a DOM element."));
-        }
-      }
-    })();
-
-    {
-      !!container._reactHasBeenPassedToCreateRootDEV ? warningWithoutStack$1(false, 'You are calling ReactDOM.hydrate() on a container that was previously ' + 'passed to ReactDOM.%s(). This is not supported. ' + 'Did you mean to call createRoot(container, {hydrate: true}).render(element)?', enableStableConcurrentModeAPIs ? 'createRoot' : 'unstable_createRoot') : void 0;
-    } // TODO: throw or warn if we couldn't hydrate?
-
-
-    return legacyRenderSubtreeIntoContainer(null, element, container, true, callback);
-  },
-  render: function (element, container, callback) {
-    (function () {
-      if (!isValidContainer(container)) {
-        {
-          throw ReactError(Error("Target container is not a DOM element."));
-        }
-      }
-    })();
-
-    {
-      !!container._reactHasBeenPassedToCreateRootDEV ? warningWithoutStack$1(false, 'You are calling ReactDOM.render() on a container that was previously ' + 'passed to ReactDOM.%s(). This is not supported. ' + 'Did you mean to call root.render(element)?', enableStableConcurrentModeAPIs ? 'createRoot' : 'unstable_createRoot') : void 0;
-    }
-
-    return legacyRenderSubtreeIntoContainer(null, element, container, false, callback);
-  },
-  unstable_renderSubtreeIntoContainer: function (parentComponent, element, containerNode, callback) {
-    (function () {
-      if (!isValidContainer(containerNode)) {
-        {
-          throw ReactError(Error("Target container is not a DOM element."));
-        }
-      }
-    })();
-
-    (function () {
-      if (!(parentComponent != null && has(parentComponent))) {
-        {
-          throw ReactError(Error("parentComponent must be a valid React Component"));
-        }
-      }
-    })();
-
-    return legacyRenderSubtreeIntoContainer(parentComponent, element, containerNode, false, callback);
-  },
-  unmountComponentAtNode: function (container) {
-    (function () {
-      if (!isValidContainer(container)) {
-        {
-          throw ReactError(Error("unmountComponentAtNode(...): Target container is not a DOM element."));
-        }
-      }
-    })();
-
-    {
-      !!container._reactHasBeenPassedToCreateRootDEV ? warningWithoutStack$1(false, 'You are calling ReactDOM.unmountComponentAtNode() on a container that was previously ' + 'passed to ReactDOM.%s(). This is not supported. Did you mean to call root.unmount()?', enableStableConcurrentModeAPIs ? 'createRoot' : 'unstable_createRoot') : void 0;
-    }
-
-    if (container._reactRootContainer) {
-      {
-        var rootEl = getReactRootElementInContainer(container);
-        var renderedByDifferentReact = rootEl && !getInstanceFromNode$1(rootEl);
-        !!renderedByDifferentReact ? warningWithoutStack$1(false, "unmountComponentAtNode(): The node you're attempting to unmount " + 'was rendered by another copy of React.') : void 0;
-      } // Unmount should not be batched.
-
-
-      unbatchedUpdates(function () {
-        legacyRenderSubtreeIntoContainer(null, null, container, false, function () {
-          container._reactRootContainer = null;
-        });
-      }); // If you call unmountComponentAtNode twice in quick succession, you'll
-      // get `true` twice. That's probably fine?
-
-      return true;
-    } else {
-      {
-        var _rootEl = getReactRootElementInContainer(container);
-
-        var hasNonRootReactChild = !!(_rootEl && getInstanceFromNode$1(_rootEl)); // Check if the container itself is a React root node.
-
-        var isContainerReactRoot = container.nodeType === ELEMENT_NODE && isValidContainer(container.parentNode) && !!container.parentNode._reactRootContainer;
-        !!hasNonRootReactChild ? warningWithoutStack$1(false, "unmountComponentAtNode(): The node you're attempting to unmount " + 'was rendered by React and is not a top-level container. %s', isContainerReactRoot ? 'You may have accidentally passed in a React root node instead ' + 'of its container.' : 'Instead, have the parent component update its state and ' + 'rerender in order to remove this component.') : void 0;
-      }
-
-      return false;
-    }
-  },
+  // Legacy
+  findDOMNode: findDOMNode,
+  hydrate: hydrate,
+  render: render,
+  unstable_renderSubtreeIntoContainer: unstable_renderSubtreeIntoContainer,
+  unmountComponentAtNode: unmountComponentAtNode,
   // Temporary alias since we already shipped React 16 RC with it.
   // TODO: remove in React 17.
   unstable_createPortal: function () {
@@ -72649,17 +72568,7 @@ var ReactDOM = {
     return createPortal$$1.apply(void 0, arguments);
   },
   unstable_batchedUpdates: batchedUpdates$1,
-  // TODO remove this legacy method, unstable_discreteUpdates replaces it
-  unstable_interactiveUpdates: function (fn, a, b, c) {
-    flushDiscreteUpdates();
-    return discreteUpdates$1(fn, a, b, c);
-  },
-  unstable_discreteUpdates: discreteUpdates$1,
-  unstable_flushDiscreteUpdates: flushDiscreteUpdates,
   flushSync: flushSync,
-  unstable_createRoot: createRoot,
-  unstable_createSyncRoot: createSyncRoot,
-  unstable_flushControlled: flushControlled,
   __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {
     // Keep in sync with ReactDOMUnstableNativeDependencies.js
     // ReactTestUtils.js, and ReactTestUtilsAct.js. This is an array for better minification.
@@ -72667,46 +72576,18 @@ var ReactDOM = {
   }
 };
 
-function createRoot(container, options) {
-  var functionName = enableStableConcurrentModeAPIs ? 'createRoot' : 'unstable_createRoot';
-
-  (function () {
-    if (!isValidContainer(container)) {
-      {
-        throw ReactError(Error(functionName + "(...): Target container is not a DOM element."));
-      }
-    }
-  })();
-
-  warnIfReactDOMContainerInDEV(container);
-  return new ReactRoot(container, options);
-}
-
-function createSyncRoot(container, options) {
-  var functionName = enableStableConcurrentModeAPIs ? 'createRoot' : 'unstable_createRoot';
-
-  (function () {
-    if (!isValidContainer(container)) {
-      {
-        throw ReactError(Error(functionName + "(...): Target container is not a DOM element."));
-      }
-    }
-  })();
-
-  warnIfReactDOMContainerInDEV(container);
-  return new ReactSyncRoot(container, BatchedRoot, options);
-}
-
-function warnIfReactDOMContainerInDEV(container) {
-  {
-    !!container._reactRootContainer ? warningWithoutStack$1(false, 'You are calling ReactDOM.%s() on a container that was previously ' + 'passed to ReactDOM.render(). This is not supported.', enableStableConcurrentModeAPIs ? 'createRoot' : 'unstable_createRoot') : void 0;
-    container._reactHasBeenPassedToCreateRootDEV = true;
-  }
-}
-
-if (enableStableConcurrentModeAPIs) {
+if (exposeConcurrentModeAPIs) {
   ReactDOM.createRoot = createRoot;
-  ReactDOM.createSyncRoot = createSyncRoot;
+  ReactDOM.createBlockingRoot = createBlockingRoot;
+  ReactDOM.unstable_discreteUpdates = discreteUpdates$1;
+  ReactDOM.unstable_flushDiscreteUpdates = flushDiscreteUpdates;
+  ReactDOM.unstable_flushControlled = flushControlled;
+
+  ReactDOM.unstable_scheduleHydration = function (target) {
+    if (target) {
+      queueExplicitHydrationTarget(target);
+    }
+  };
 }
 
 var foundDevTools = injectIntoDevTools({
@@ -76401,6 +76282,8 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_mod
 
 var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
 
+var _reactTable = __webpack_require__(/*! react-table */ "./node_modules/react-table/es/index.js");
+
 var _uniqid = _interopRequireDefault(__webpack_require__(/*! uniqid */ "./node_modules/uniqid/index.js"));
 
 var _classnames = _interopRequireDefault(__webpack_require__(/*! classnames */ "./node_modules/classnames/index.js"));
@@ -76464,6 +76347,7 @@ var _default = function _default(ReactTable) {
 
       _this.getColumnsWithFixed = function (columns, parentIsfixed, parentIsLastFixed, parentIsFirstFixed) {
         return columns.map(function (column, index) {
+          var defaultColumn = _this.props.column;
           var fixed = column.fixed || parentIsfixed || false;
           var nextColumn = (0, _helpers.findNextColumnNotHidden)(columns, index);
 
@@ -76478,12 +76362,12 @@ var _default = function _default(ReactTable) {
 
           var output = _objectSpread({}, column, {
             fixed: fixed,
-            className: (0, _classnames.default)(column.className, fixed && 'rthfc-td-fixed', (0, _helpers.isLeftFixed)({
+            className: (0, _classnames.default)(defaultColumn.className, column.className, fixed && 'rthfc-td-fixed', (0, _helpers.isLeftFixed)({
               fixed: fixed
             }) && 'rthfc-td-fixed-left', (0, _helpers.isRightFixed)({
               fixed: fixed
             }) && 'rthfc-td-fixed-right', isLastFixed && 'rthfc-td-fixed-left-last', isFirstFixed && 'rthfc-td-fixed-right-first'),
-            headerClassName: (0, _classnames.default)(column.headerClassName, fixed && 'rthfc-th-fixed', (0, _helpers.isLeftFixed)({
+            headerClassName: (0, _classnames.default)(defaultColumn.headerClassName, column.headerClassName, fixed && 'rthfc-th-fixed', (0, _helpers.isLeftFixed)({
               fixed: fixed
             }) && 'rthfc-th-fixed-left', (0, _helpers.isRightFixed)({
               fixed: fixed
@@ -76590,13 +76474,15 @@ var _default = function _default(ReactTable) {
     getProps: _propTypes.default.func,
     innerRef: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
     className: _propTypes.default.string,
-    uniqClassName: _propTypes.default.string
+    uniqClassName: _propTypes.default.string,
+    column: _propTypes.default.object
   };
   ReactTableFixedColumns.defaultProps = {
     getProps: null,
     innerRef: null,
     className: null,
-    uniqClassName: null
+    uniqClassName: null,
+    column: _reactTable.ReactTableDefaults.column
   };
   return ReactTableFixedColumns;
 };
@@ -76623,6 +76509,8 @@ exports.default = void 0;
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
+
+var _reactTable = __webpack_require__(/*! react-table */ "./node_modules/react-table/es/index.js");
 
 var _uniqid = _interopRequireDefault(__webpack_require__(/*! uniqid */ "./node_modules/uniqid/index.js"));
 
@@ -76755,6 +76643,7 @@ var _default = function _default(ReactTable) {
       value: function getColumnsWithFixed(columns, parentIsfixed, parentIsLastFixed, parentIsFirstFixed) {
         var _this2 = this;
 
+        var defaultColumn = this.props.column;
         return columns.map(function (column, index) {
           var fixed = column.fixed || parentIsfixed || false;
           var nextColumn = (0, _helpers.findNextColumnNotHidden)(columns, index);
@@ -76780,13 +76669,13 @@ var _default = function _default(ReactTable) {
 
           var output = _objectSpread({}, column, {
             fixed: fixed,
-            className: (0, _classnames.default)(column.className, fixed && 'rthfc-td-fixed', columnIsLeftFixed && 'rthfc-td-fixed-left', columnIsRightFixed && 'rthfc-td-fixed-right', isLastFixed && 'rthfc-td-fixed-left-last', isFirstFixed && 'rthfc-td-fixed-right-first'),
-            style: _objectSpread({}, column.style, {
+            className: (0, _classnames.default)(defaultColumn.className, column.className, fixed && 'rthfc-td-fixed', columnIsLeftFixed && 'rthfc-td-fixed-left', columnIsRightFixed && 'rthfc-td-fixed-right', isLastFixed && 'rthfc-td-fixed-left-last', isFirstFixed && 'rthfc-td-fixed-right-first'),
+            style: _objectSpread({}, defaultColumn.style, column.style, {
               left: left,
               right: right
             }),
-            headerClassName: (0, _classnames.default)(column.headerClassName, fixed && 'rthfc-th-fixed', columnIsLeftFixed && 'rthfc-th-fixed-left', columnIsRightFixed && 'rthfc-th-fixed-right', (_parentIsLastFixed || parentIsLastFixed && isLastFixed) && 'rthfc-th-fixed-left-last', (_parentIsFirstFixed || parentIsFirstFixed && isFirstFixed) && 'rthfc-th-fixed-right-first'),
-            headerStyle: _objectSpread({}, column.headerStyle, {
+            headerClassName: (0, _classnames.default)(defaultColumn.headerClassName, column.headerClassName, fixed && 'rthfc-th-fixed', columnIsLeftFixed && 'rthfc-th-fixed-left', columnIsRightFixed && 'rthfc-th-fixed-right', (_parentIsLastFixed || parentIsLastFixed && isLastFixed) && 'rthfc-th-fixed-left-last', (_parentIsFirstFixed || parentIsFirstFixed && isFirstFixed) && 'rthfc-th-fixed-right-first'),
+            headerStyle: _objectSpread({}, defaultColumn.headerStyle, column.headerStyle, {
               left: left,
               right: right
             })
@@ -76832,13 +76721,15 @@ var _default = function _default(ReactTable) {
     innerRef: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
     className: _propTypes.default.string,
     onResizedChange: _propTypes.default.func,
-    uniqClassName: _propTypes.default.string
+    uniqClassName: _propTypes.default.string,
+    column: _propTypes.default.object
   };
   ReactTableFixedColumns.defaultProps = {
     innerRef: null,
     className: null,
     onResizedChange: null,
-    uniqClassName: null
+    uniqClassName: null,
+    column: _reactTable.ReactTableDefaults.column
   };
   return ReactTableFixedColumns;
 };
@@ -80379,7 +80270,7 @@ exports.classNamesShape = classNamesShape;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.10.2
+/** @license React v16.12.0
  * react.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -80401,7 +80292,7 @@ var checkPropTypes = __webpack_require__(/*! prop-types/checkPropTypes */ "./nod
 
 // TODO: this is special because it gets imported during build.
 
-var ReactVersion = '16.10.2';
+var ReactVersion = '16.12.0';
 
 // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
 // nor polyfill, then a plain number is used for performance.
@@ -80442,16 +80333,8 @@ function getIteratorFn(maybeIterable) {
 }
 
 // Do not require this module directly! Use normal `invariant` calls with
-// template literal strings. The messages will be converted to ReactError during
-// build, and in production they will be minified.
-
-// Do not require this module directly! Use normal `invariant` calls with
-// template literal strings. The messages will be converted to ReactError during
-// build, and in production they will be minified.
-function ReactError(error) {
-  error.name = 'Invariant Violation';
-  return error;
-}
+// template literal strings. The messages will be replaced with error codes
+// during build.
 
 /**
  * Use invariant() to assert state which your program assumes to be true.
@@ -80705,13 +80588,11 @@ Component.prototype.isReactComponent = {};
  */
 
 Component.prototype.setState = function (partialState, callback) {
-  (function () {
-    if (!(typeof partialState === 'object' || typeof partialState === 'function' || partialState == null)) {
-      {
-        throw ReactError(Error("setState(...): takes an object of state variables to update or a function which returns an object of state variables."));
-      }
+  if (!(typeof partialState === 'object' || typeof partialState === 'function' || partialState == null)) {
+    {
+      throw Error("setState(...): takes an object of state variables to update or a function which returns an object of state variables.");
     }
-  })();
+  }
 
   this.updater.enqueueSetState(this, partialState, callback, 'setState');
 };
@@ -81101,8 +80982,8 @@ function defineRefPropWarningGetter(props, displayName) {
 }
 /**
  * Factory method to create a new React element. This no longer adheres to
- * the class pattern, so do not use new to call it. Also, no instanceof check
- * will work. Instead test $$typeof field against Symbol.for('react.element') to check
+ * the class pattern, so do not use new to call it. Also, instanceof check
+ * will not work. Instead test $$typeof field against Symbol.for('react.element') to check
  * if something is a React Element.
  *
  * @param {*} type
@@ -81344,13 +81225,11 @@ function cloneAndReplaceKey(oldElement, newKey) {
  */
 
 function cloneElement(element, config, children) {
-  (function () {
-    if (!!(element === null || element === undefined)) {
-      {
-        throw ReactError(Error("React.cloneElement(...): The argument must be a React element, but you passed " + element + "."));
-      }
+  if (!!(element === null || element === undefined)) {
+    {
+      throw Error("React.cloneElement(...): The argument must be a React element, but you passed " + element + ".");
     }
-  })();
+  }
 
   var propName; // Original props are copied
 
@@ -81583,13 +81462,11 @@ function traverseAllChildrenImpl(children, nameSoFar, callback, traverseContext)
 
       var childrenString = '' + children;
 
-      (function () {
+      {
         {
-          {
-            throw ReactError(Error("Objects are not valid as a React child (found: " + (childrenString === '[object Object]' ? 'object with keys {' + Object.keys(children).join(', ') + '}' : childrenString) + ")." + addendum));
-          }
+          throw Error("Objects are not valid as a React child (found: " + (childrenString === '[object Object]' ? 'object with keys {' + Object.keys(children).join(', ') + '}' : childrenString) + ")." + addendum);
         }
-      })();
+      }
     }
   }
 
@@ -81775,13 +81652,11 @@ function toArray(children) {
 
 
 function onlyChild(children) {
-  (function () {
-    if (!isValidElement(children)) {
-      {
-        throw ReactError(Error("React.Children.only expected to receive a single React element child."));
-      }
+  if (!isValidElement(children)) {
+    {
+      throw Error("React.Children.only expected to receive a single React element child.");
     }
-  })();
+  }
 
   return children;
 }
@@ -81982,13 +81857,11 @@ function memo(type, compare) {
 function resolveDispatcher() {
   var dispatcher = ReactCurrentDispatcher.current;
 
-  (function () {
-    if (!(dispatcher !== null)) {
-      {
-        throw ReactError(Error("Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:\n1. You might have mismatching versions of React and the renderer (such as React DOM)\n2. You might be breaking the Rules of Hooks\n3. You might have more than one copy of React in the same app\nSee https://fb.me/react-invalid-hook-call for tips about how to debug and fix this problem."));
-      }
+  if (!(dispatcher !== null)) {
+    {
+      throw Error("Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:\n1. You might have mismatching versions of React and the renderer (such as React DOM)\n2. You might be breaking the Rules of Hooks\n3. You might have more than one copy of React in the same app\nSee https://fb.me/react-invalid-hook-call for tips about how to debug and fix this problem.");
     }
-  })();
+  }
 
   return dispatcher;
 }
@@ -82063,6 +81936,14 @@ function useResponder(responder, listenerProps) {
   }
 
   return dispatcher.useResponder(responder, listenerProps || emptyObject$1);
+}
+function useTransition(config) {
+  var dispatcher = resolveDispatcher();
+  return dispatcher.useTransition(config);
+}
+function useDeferredValue(value, config) {
+  var dispatcher = resolveDispatcher();
+  return dispatcher.useDeferredValue(value, config);
 }
 
 function withSuspenseConfig(scope, config) {
@@ -82553,10 +82434,9 @@ function createEventResponder(displayName, responderConfig) {
   return eventResponder;
 }
 
-function createScope(fn) {
+function createScope() {
   var scopeComponent = {
-    $$typeof: REACT_SCOPE_TYPE,
-    fn: fn
+    $$typeof: REACT_SCOPE_TYPE
   };
 
   {
@@ -82566,12 +82446,8 @@ function createScope(fn) {
   return scopeComponent;
 }
 
-// Helps identify side effects in begin-phase lifecycle hooks and setState reducers:
-
- // In some cases, StrictMode should also double-render lifecycles.
-// This can be confusing for tests though,
-// And it can be bad for performance in production.
-// This feature flag can be used to control the behavior:
+// Helps identify side effects in render-phase lifecycle hooks and setState
+// reducers by double invoking them in Strict Mode.
 
  // To preserve the "Pause on caught exceptions" behavior of the debugger, we
 // replay the begin phase of a failed component inside invokeGuardedCallback.
@@ -82582,9 +82458,8 @@ function createScope(fn) {
 
  // Trace which interactions trigger each commit.
 
- // Only used in www builds.
+ // SSR experiments
 
- // TODO: true? Here it might just be false.
 
  // Only used in www builds.
 
@@ -82598,10 +82473,7 @@ function createScope(fn) {
  // These APIs will no longer be "unstable" in the upcoming 16.7 release,
 // Control this behavior with a flag to support 16.6 minor releases in the meanwhile.
 
-
- // See https://github.com/react-native-community/discussions-and-proposals/issues/72 for more information
-// This is a flag so we can fix warnings in RN core before turning it on
-
+var exposeConcurrentModeAPIs = false;
  // Experimental React Flare event system and event components support.
 
 var enableFlareAPI = false; // Experimental Host Component support.
@@ -82611,14 +82483,10 @@ var enableFundamentalAPI = false; // Experimental Scope support.
 var enableScopeAPI = false; // New API for JSX transforms to target - https://github.com/reactjs/rfcs/pull/107
 
 var enableJSXTransformAPI = false; // We will enforce mocking scheduler with scheduler/unstable_mock at some point. (v17?)
-// Till then, we warn about the missing mock, but still fallback to a sync mode compatible version
+// Till then, we warn about the missing mock, but still fallback to a legacy mode compatible version
 
  // For tests, we flush suspense fallbacks in an act scope;
 // *except* in some of our own tests, where we test incremental loading states.
-
- // Changes priority of some events like mousemove to user-blocking priority,
-// but without making them discrete. The flag exists in case it causes
-// starvation problems.
 
  // Add a callback property to suspense to notify which promises are currently
 // in the update queue. This allows reporting and tracing of what is causing
@@ -82629,6 +82497,12 @@ var enableJSXTransformAPI = false; // We will enforce mocking scheduler with sch
  // Part of the simplification of React.createElement so we can eventually move
 // from React.createElement to React.jsx
 // https://github.com/reactjs/rfcs/blob/createlement-rfc/text/0000-create-element-changes.md
+
+
+
+
+
+ // Flag to turn event.target and event.currentTarget in ReactNative from a reactTag to a component instance
 
 var React = {
   Children: {
@@ -82659,15 +82533,20 @@ var React = {
   Profiler: REACT_PROFILER_TYPE,
   StrictMode: REACT_STRICT_MODE_TYPE,
   Suspense: REACT_SUSPENSE_TYPE,
-  unstable_SuspenseList: REACT_SUSPENSE_LIST_TYPE,
   createElement: createElementWithValidation,
   cloneElement: cloneElementWithValidation,
   createFactory: createFactoryWithValidation,
   isValidElement: isValidElement,
   version: ReactVersion,
-  unstable_withSuspenseConfig: withSuspenseConfig,
   __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: ReactSharedInternals
 };
+
+if (exposeConcurrentModeAPIs) {
+  React.useTransition = useTransition;
+  React.useDeferredValue = useDeferredValue;
+  React.SuspenseList = REACT_SUSPENSE_LIST_TYPE;
+  React.unstable_withSuspenseConfig = withSuspenseConfig;
+}
 
 if (enableFlareAPI) {
   React.unstable_useResponder = useResponder;
@@ -82828,7 +82707,7 @@ function resolvePathname(to, from) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v0.16.2
+/** @license React v0.18.0
  * scheduler-tracing.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -82847,12 +82726,8 @@ if (true) {
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-// Helps identify side effects in begin-phase lifecycle hooks and setState reducers:
-
- // In some cases, StrictMode should also double-render lifecycles.
-// This can be confusing for tests though,
-// And it can be bad for performance in production.
-// This feature flag can be used to control the behavior:
+// Helps identify side effects in render-phase lifecycle hooks and setState
+// reducers by double invoking them in Strict Mode.
 
  // To preserve the "Pause on caught exceptions" behavior of the debugger, we
 // replay the begin phase of a failed component inside invokeGuardedCallback.
@@ -82863,9 +82738,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
  // Trace which interactions trigger each commit.
 
-var enableSchedulerTracing = true; // Only used in www builds.
+var enableSchedulerTracing = true; // SSR experiments
 
- // TODO: true? Here it might just be false.
 
  // Only used in www builds.
 
@@ -82880,9 +82754,6 @@ var enableSchedulerTracing = true; // Only used in www builds.
 // Control this behavior with a flag to support 16.6 minor releases in the meanwhile.
 
 
- // See https://github.com/react-native-community/discussions-and-proposals/issues/72 for more information
-// This is a flag so we can fix warnings in RN core before turning it on
-
  // Experimental React Flare event system and event components support.
 
  // Experimental Host Component support.
@@ -82892,14 +82763,10 @@ var enableSchedulerTracing = true; // Only used in www builds.
  // New API for JSX transforms to target - https://github.com/reactjs/rfcs/pull/107
 
  // We will enforce mocking scheduler with scheduler/unstable_mock at some point. (v17?)
-// Till then, we warn about the missing mock, but still fallback to a sync mode compatible version
+// Till then, we warn about the missing mock, but still fallback to a legacy mode compatible version
 
  // For tests, we flush suspense fallbacks in an act scope;
 // *except* in some of our own tests, where we test incremental loading states.
-
- // Changes priority of some events like mousemove to user-blocking priority,
-// but without making them discrete. The flag exists in case it causes
-// starvation problems.
 
  // Add a callback property to suspense to notify which promises are currently
 // in the update queue. This allows reporting and tracing of what is causing
@@ -82910,6 +82777,12 @@ var enableSchedulerTracing = true; // Only used in www builds.
  // Part of the simplification of React.createElement so we can eventually move
 // from React.createElement to React.jsx
 // https://github.com/reactjs/rfcs/blob/createlement-rfc/text/0000-create-element-changes.md
+
+
+
+
+
+ // Flag to turn event.target and event.currentTarget in ReactNative from a reactTag to a component instance
 
 var DEFAULT_THREAD_ID = 0; // Counters used to generate unique IDs.
 
@@ -83269,7 +83142,7 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v0.16.2
+/** @license React v0.18.0
  * scheduler.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -83290,15 +83163,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var enableSchedulerDebugging = false;
 var enableIsInputPending = false;
-var enableMessageLoopImplementation = true;
 var enableProfiling = true;
-
-// works by scheduling a requestAnimationFrame, storing the time for the start
-// of the frame, then scheduling a postMessage which gets scheduled after paint.
-// Within the postMessage handler do as much work as possible until time + frame
-// rate. By separating the idle call into a separate event tick we ensure that
-// layout, paint and other browser work is counted against the available time.
-// The frame rate is dynamically adjusted.
 
 var requestHostCallback;
 
@@ -83369,11 +83234,14 @@ typeof MessageChannel !== 'function') {
   var _Date = window.Date;
   var _setTimeout = window.setTimeout;
   var _clearTimeout = window.clearTimeout;
-  var requestAnimationFrame = window.requestAnimationFrame;
-  var cancelAnimationFrame = window.cancelAnimationFrame;
 
   if (typeof console !== 'undefined') {
-    // TODO: Remove fb.me link
+    // TODO: Scheduler no longer requires these methods to be polyfilled. But
+    // maybe we want to continue warning if they don't exist, to preserve the
+    // option to rely on it in the future?
+    var requestAnimationFrame = window.requestAnimationFrame;
+    var cancelAnimationFrame = window.cancelAnimationFrame; // TODO: Remove fb.me link
+
     if (typeof requestAnimationFrame !== 'function') {
       console.error("This browser doesn't support requestAnimationFrame. " + 'Make sure that you load a ' + 'polyfill in older browsers. https://fb.me/react-polyfills');
     }
@@ -83395,26 +83263,18 @@ typeof MessageChannel !== 'function') {
     };
   }
 
-  var isRAFLoopRunning = false;
   var isMessageLoopRunning = false;
   var scheduledHostCallback = null;
-  var rAFTimeoutID = -1;
-  var taskTimeoutID = -1;
-  var frameLength = enableMessageLoopImplementation ? // We won't attempt to align with the vsync. Instead we'll yield multiple
-  // times per frame, often enough to keep it responsive even at really
-  // high frame rates > 120.
-  5 : // Use a heuristic to measure the frame rate and yield at the end of the
-  // frame. We start out assuming that we run at 30fps but then the
-  // heuristic tracking will adjust this value to a faster fps if we get
-  // more frequent animation frames.
-  33.33;
-  var prevRAFTime = -1;
-  var prevRAFInterval = -1;
-  var frameDeadline = 0;
-  var fpsLocked = false; // TODO: Make this configurable
+  var taskTimeoutID = -1; // Scheduler periodically yields in case there is other work on the main
+  // thread, like user events. By default, it yields multiple times per frame.
+  // It does not attempt to align with frame boundaries, since most tasks don't
+  // need to be frame aligned; for those that do, use requestAnimationFrame.
+
+  var yieldInterval = 5;
+  var deadline = 0; // TODO: Make this configurable
   // TODO: Adjust this based on priority?
 
-  var maxFrameLength = 300;
+  var maxYieldInterval = 300;
   var needsPaint = false;
 
   if (enableIsInputPending && navigator !== undefined && navigator.scheduling !== undefined && navigator.scheduling.isInputPending !== undefined) {
@@ -83423,23 +83283,23 @@ typeof MessageChannel !== 'function') {
     shouldYieldToHost = function () {
       var currentTime = exports.unstable_now();
 
-      if (currentTime >= frameDeadline) {
-        // There's no time left in the frame. We may want to yield control of
-        // the main thread, so the browser can perform high priority tasks. The
-        // main ones are painting and user input. If there's a pending paint or
-        // a pending input, then we should yield. But if there's neither, then
-        // we can yield less often while remaining responsive. We'll eventually
-        // yield regardless, since there could be a pending paint that wasn't
+      if (currentTime >= deadline) {
+        // There's no time left. We may want to yield control of the main
+        // thread, so the browser can perform high priority tasks. The main ones
+        // are painting and user input. If there's a pending paint or a pending
+        // input, then we should yield. But if there's neither, then we can
+        // yield less often while remaining responsive. We'll eventually yield
+        // regardless, since there could be a pending paint that wasn't
         // accompanied by a call to `requestPaint`, or other main thread tasks
         // like network events.
         if (needsPaint || scheduling.isInputPending()) {
           // There is either a pending paint or a pending input.
           return true;
         } // There's no pending input. Only yield if we've reached the max
-        // frame length.
+        // yield interval.
 
 
-        return currentTime >= frameDeadline + maxFrameLength;
+        return currentTime >= maxYieldInterval;
       } else {
         // There's still time left in the frame.
         return false;
@@ -83453,7 +83313,7 @@ typeof MessageChannel !== 'function') {
     // `isInputPending` is not available. Since we have no way of knowing if
     // there's pending input, always yield at the end of the frame.
     shouldYieldToHost = function () {
-      return exports.unstable_now() >= frameDeadline;
+      return exports.unstable_now() >= deadline;
     }; // Since we yield every frame regardless, `requestPaint` has no effect.
 
 
@@ -83467,166 +83327,58 @@ typeof MessageChannel !== 'function') {
     }
 
     if (fps > 0) {
-      frameLength = Math.floor(1000 / fps);
-      fpsLocked = true;
+      yieldInterval = Math.floor(1000 / fps);
     } else {
       // reset the framerate
-      frameLength = 33.33;
-      fpsLocked = false;
+      yieldInterval = 5;
     }
   };
 
   var performWorkUntilDeadline = function () {
-    if (enableMessageLoopImplementation) {
-      if (scheduledHostCallback !== null) {
-        var currentTime = exports.unstable_now(); // Yield after `frameLength` ms, regardless of where we are in the vsync
-        // cycle. This means there's always time remaining at the beginning of
-        // the message event.
+    if (scheduledHostCallback !== null) {
+      var currentTime = exports.unstable_now(); // Yield after `yieldInterval` ms, regardless of where we are in the vsync
+      // cycle. This means there's always time remaining at the beginning of
+      // the message event.
 
-        frameDeadline = currentTime + frameLength;
-        var hasTimeRemaining = true;
+      deadline = currentTime + yieldInterval;
+      var hasTimeRemaining = true;
 
-        try {
-          var hasMoreWork = scheduledHostCallback(hasTimeRemaining, currentTime);
+      try {
+        var hasMoreWork = scheduledHostCallback(hasTimeRemaining, currentTime);
 
-          if (!hasMoreWork) {
-            isMessageLoopRunning = false;
-            scheduledHostCallback = null;
-          } else {
-            // If there's more work, schedule the next message event at the end
-            // of the preceding one.
-            port.postMessage(null);
-          }
-        } catch (error) {
-          // If a scheduler task throws, exit the current browser task so the
-          // error can be observed.
+        if (!hasMoreWork) {
+          isMessageLoopRunning = false;
+          scheduledHostCallback = null;
+        } else {
+          // If there's more work, schedule the next message event at the end
+          // of the preceding one.
           port.postMessage(null);
-          throw error;
         }
-      } else {
-        isMessageLoopRunning = false;
-      } // Yielding to the browser will give it a chance to paint, so we can
-      // reset this.
-
-
-      needsPaint = false;
+      } catch (error) {
+        // If a scheduler task throws, exit the current browser task so the
+        // error can be observed.
+        port.postMessage(null);
+        throw error;
+      }
     } else {
-      if (scheduledHostCallback !== null) {
-        var _currentTime = exports.unstable_now();
-
-        var _hasTimeRemaining = frameDeadline - _currentTime > 0;
-
-        try {
-          var _hasMoreWork = scheduledHostCallback(_hasTimeRemaining, _currentTime);
-
-          if (!_hasMoreWork) {
-            scheduledHostCallback = null;
-          }
-        } catch (error) {
-          // If a scheduler task throws, exit the current browser task so the
-          // error can be observed, and post a new task as soon as possible
-          // so we can continue where we left off.
-          port.postMessage(null);
-          throw error;
-        }
-      } // Yielding to the browser will give it a chance to paint, so we can
-      // reset this.
+      isMessageLoopRunning = false;
+    } // Yielding to the browser will give it a chance to paint, so we can
+    // reset this.
 
 
-      needsPaint = false;
-    }
+    needsPaint = false;
   };
 
   var channel = new MessageChannel();
   var port = channel.port2;
   channel.port1.onmessage = performWorkUntilDeadline;
 
-  var onAnimationFrame = function (rAFTime) {
-    if (scheduledHostCallback === null) {
-      // No scheduled work. Exit.
-      prevRAFTime = -1;
-      prevRAFInterval = -1;
-      isRAFLoopRunning = false;
-      return;
-    } // Eagerly schedule the next animation callback at the beginning of the
-    // frame. If the scheduler queue is not empty at the end of the frame, it
-    // will continue flushing inside that callback. If the queue *is* empty,
-    // then it will exit immediately. Posting the callback at the start of the
-    // frame ensures it's fired within the earliest possible frame. If we
-    // waited until the end of the frame to post the callback, we risk the
-    // browser skipping a frame and not firing the callback until the frame
-    // after that.
-
-
-    isRAFLoopRunning = true;
-    requestAnimationFrame(function (nextRAFTime) {
-      _clearTimeout(rAFTimeoutID);
-
-      onAnimationFrame(nextRAFTime);
-    }); // requestAnimationFrame is throttled when the tab is backgrounded. We
-    // don't want to stop working entirely. So we'll fallback to a timeout loop.
-    // TODO: Need a better heuristic for backgrounded work.
-
-    var onTimeout = function () {
-      frameDeadline = exports.unstable_now() + frameLength / 2;
-      performWorkUntilDeadline();
-      rAFTimeoutID = _setTimeout(onTimeout, frameLength * 3);
-    };
-
-    rAFTimeoutID = _setTimeout(onTimeout, frameLength * 3);
-
-    if (prevRAFTime !== -1 && // Make sure this rAF time is different from the previous one. This check
-    // could fail if two rAFs fire in the same frame.
-    rAFTime - prevRAFTime > 0.1) {
-      var rAFInterval = rAFTime - prevRAFTime;
-
-      if (!fpsLocked && prevRAFInterval !== -1) {
-        // We've observed two consecutive frame intervals. We'll use this to
-        // dynamically adjust the frame rate.
-        //
-        // If one frame goes long, then the next one can be short to catch up.
-        // If two frames are short in a row, then that's an indication that we
-        // actually have a higher frame rate than what we're currently
-        // optimizing. For example, if we're running on 120hz display or 90hz VR
-        // display. Take the max of the two in case one of them was an anomaly
-        // due to missed frame deadlines.
-        if (rAFInterval < frameLength && prevRAFInterval < frameLength) {
-          frameLength = rAFInterval < prevRAFInterval ? prevRAFInterval : rAFInterval;
-
-          if (frameLength < 8.33) {
-            // Defensive coding. We don't support higher frame rates than 120hz.
-            // If the calculated frame length gets lower than 8, it is probably
-            // a bug.
-            frameLength = 8.33;
-          }
-        }
-      }
-
-      prevRAFInterval = rAFInterval;
-    }
-
-    prevRAFTime = rAFTime;
-    frameDeadline = rAFTime + frameLength; // We use the postMessage trick to defer idle work until after the repaint.
-
-    port.postMessage(null);
-  };
-
   requestHostCallback = function (callback) {
     scheduledHostCallback = callback;
 
-    if (enableMessageLoopImplementation) {
-      if (!isMessageLoopRunning) {
-        isMessageLoopRunning = true;
-        port.postMessage(null);
-      }
-    } else {
-      if (!isRAFLoopRunning) {
-        // Start a rAF loop.
-        isRAFLoopRunning = true;
-        requestAnimationFrame(function (rAFTime) {
-          onAnimationFrame(rAFTime);
-        });
-      }
+    if (!isMessageLoopRunning) {
+      isMessageLoopRunning = true;
+      port.postMessage(null);
     }
   };
 
@@ -83810,47 +83562,50 @@ function stopLoggingProfilingEvents() {
   eventLogIndex = 0;
   return buffer;
 }
-function markTaskStart(task, time) {
+function markTaskStart(task, ms) {
   if (enableProfiling) {
     profilingState[QUEUE_SIZE]++;
 
     if (eventLog !== null) {
-      logEvent([TaskStartEvent, time, task.id, task.priorityLevel]);
+      // performance.now returns a float, representing milliseconds. When the
+      // event is logged, it's coerced to an int. Convert to microseconds to
+      // maintain extra degrees of precision.
+      logEvent([TaskStartEvent, ms * 1000, task.id, task.priorityLevel]);
     }
   }
 }
-function markTaskCompleted(task, time) {
+function markTaskCompleted(task, ms) {
   if (enableProfiling) {
     profilingState[PRIORITY] = NoPriority;
     profilingState[CURRENT_TASK_ID] = 0;
     profilingState[QUEUE_SIZE]--;
 
     if (eventLog !== null) {
-      logEvent([TaskCompleteEvent, time, task.id]);
+      logEvent([TaskCompleteEvent, ms * 1000, task.id]);
     }
   }
 }
-function markTaskCanceled(task, time) {
+function markTaskCanceled(task, ms) {
   if (enableProfiling) {
     profilingState[QUEUE_SIZE]--;
 
     if (eventLog !== null) {
-      logEvent([TaskCancelEvent, time, task.id]);
+      logEvent([TaskCancelEvent, ms * 1000, task.id]);
     }
   }
 }
-function markTaskErrored(task, time) {
+function markTaskErrored(task, ms) {
   if (enableProfiling) {
     profilingState[PRIORITY] = NoPriority;
     profilingState[CURRENT_TASK_ID] = 0;
     profilingState[QUEUE_SIZE]--;
 
     if (eventLog !== null) {
-      logEvent([TaskErrorEvent, time, task.id]);
+      logEvent([TaskErrorEvent, ms * 1000, task.id]);
     }
   }
 }
-function markTaskRun(task, time) {
+function markTaskRun(task, ms) {
   if (enableProfiling) {
     runIdCounter++;
     profilingState[PRIORITY] = task.priorityLevel;
@@ -83858,34 +83613,34 @@ function markTaskRun(task, time) {
     profilingState[CURRENT_RUN_ID] = runIdCounter;
 
     if (eventLog !== null) {
-      logEvent([TaskRunEvent, time, task.id, runIdCounter]);
+      logEvent([TaskRunEvent, ms * 1000, task.id, runIdCounter]);
     }
   }
 }
-function markTaskYield(task, time) {
+function markTaskYield(task, ms) {
   if (enableProfiling) {
     profilingState[PRIORITY] = NoPriority;
     profilingState[CURRENT_TASK_ID] = 0;
     profilingState[CURRENT_RUN_ID] = 0;
 
     if (eventLog !== null) {
-      logEvent([TaskYieldEvent, time, task.id, runIdCounter]);
+      logEvent([TaskYieldEvent, ms * 1000, task.id, runIdCounter]);
     }
   }
 }
-function markSchedulerSuspended(time) {
+function markSchedulerSuspended(ms) {
   if (enableProfiling) {
     mainThreadIdCounter++;
 
     if (eventLog !== null) {
-      logEvent([SchedulerSuspendEvent, time, mainThreadIdCounter]);
+      logEvent([SchedulerSuspendEvent, ms * 1000, mainThreadIdCounter]);
     }
   }
 }
-function markSchedulerUnsuspended(time) {
+function markSchedulerUnsuspended(ms) {
   if (enableProfiling) {
     if (eventLog !== null) {
-      logEvent([SchedulerResumeEvent, time, mainThreadIdCounter]);
+      logEvent([SchedulerResumeEvent, ms * 1000, mainThreadIdCounter]);
     }
   }
 }
@@ -84908,7 +84663,7 @@ function warning(condition, message) {
 
 /* WEBPACK VAR INJECTION */(function(process) {/* 
 (The MIT License)
-Copyright (c) 2014 Halász Ádám <mail@adamhalasz.com>
+Copyright (c) 2014-2019 Halász Ádám <mail@adamhalasz.com>
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
@@ -84925,9 +84680,9 @@ if(false){ var i, mac, networkInterfaces; }
 
 //  Exports
 // ================================================
-module.exports = module.exports.default = function(prefix){ return (prefix || '') + address + pid + now().toString(36); }
-module.exports.process = function(prefix){ return (prefix || '') + pid + now().toString(36); }
-module.exports.time    = function(prefix){ return (prefix || '') + now().toString(36); }
+module.exports = module.exports.default = function(prefix = '', suffix = ''){ return prefix + address + pid + now().toString(36) + suffix; }
+module.exports.process = function(prefix = '', suffix = ''){ return prefix + pid + now().toString(36) + suffix; }
+module.exports.time    = function(prefix = '', suffix = ''){ return prefix + now().toString(36) + suffix; }
 
 //  Helpers
 // ================================================
@@ -89509,7 +89264,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _franquicias_FranquiciasRouting__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./franquicias/FranquiciasRouting */ "./resources/js/escritorio/franquicias/FranquiciasRouting.jsx");
 /* harmony import */ var _eventos_EventosRouting__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./eventos/EventosRouting */ "./resources/js/escritorio/eventos/EventosRouting.jsx");
 /* harmony import */ var _horarios_HorariosRouting__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./horarios/HorariosRouting */ "./resources/js/escritorio/horarios/HorariosRouting.jsx");
-/* harmony import */ var _horarios_FeriadosRouting__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./horarios/FeriadosRouting */ "./resources/js/escritorio/horarios/FeriadosRouting.jsx");
+/* harmony import */ var _feriados_FeriadosRouting__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./feriados/FeriadosRouting */ "./resources/js/escritorio/feriados/FeriadosRouting.jsx");
 /* harmony import */ var _configuracion_ConfiguracionRouting__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./configuracion/ConfiguracionRouting */ "./resources/js/escritorio/configuracion/ConfiguracionRouting.jsx");
 /* harmony import */ var _escritorio_EscritorioRouting__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./escritorio/EscritorioRouting */ "./resources/js/escritorio/escritorio/EscritorioRouting.jsx");
 /* harmony import */ var _hocs_MessageHandler__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../hocs/MessageHandler */ "./resources/js/hocs/MessageHandler.jsx");
@@ -89551,9 +89306,9 @@ function AppRouting(props) {
       }, match));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    path: "/horarios/feriados",
+    path: "/feriados",
     render: function render(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_horarios_FeriadosRouting__WEBPACK_IMPORTED_MODULE_11__["default"], _extends({
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_feriados_FeriadosRouting__WEBPACK_IMPORTED_MODULE_11__["default"], _extends({
         data: props.data
       }, match));
     }
@@ -89801,400 +89556,6 @@ function ConfiguracionRouting(props) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/configuracion/FormularioEstablecimiento.jsx":
-/*!*****************************************************************************!*\
-  !*** ./resources/js/escritorio/configuracion/FormularioEstablecimiento.jsx ***!
-  \*****************************************************************************/
-/*! exports provided: FormularioEstablecimiento */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormularioEstablecimiento", function() { return FormularioEstablecimiento; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
-/* harmony import */ var _FormularioUbicacion__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./FormularioUbicacion */ "./resources/js/escritorio/configuracion/FormularioUbicacion.jsx");
-
-
-
-
-var FormularioEstablecimiento = function FormularioEstablecimiento(props) {
-  var data = props.data,
-      userType = props.userType;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row v-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
-    rows: 1,
-    titulo: "Nombre",
-    name: "nombre",
-    holder: "Nombre de ".concat(userType, " hasta 100 caracteres"),
-    errors: props.errors.nombre,
-    value: props.fields.nombre,
-    changeHandler: props.change
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
-    rows: 1,
-    titulo: "Correo",
-    name: "correo_contacto",
-    holder: "Correo de contacto de ".concat(userType, " hasta 100 caracteres"),
-    errors: props.errors.correo,
-    value: props.fields.correo,
-    changeHandler: props.change
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
-    rows: 1,
-    titulo: "Telefono",
-    name: "telefono_contacto",
-    holder: "Tel\xE9fono de contacto de ".concat(userType, " hasta 100 caracteres"),
-    errors: props.errors.telefono,
-    value: props.fields.telefono,
-    changeHandler: props.change
-  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row v-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
-    rows: 1,
-    titulo: "Raz\xF3n Social",
-    name: "razon_social",
-    holder: "Raz\xF3n social hasta 100 caracteres",
-    errors: props.errors.razon_social,
-    value: props.fields.razon_social,
-    changeHandler: props.change
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
-    rows: 1,
-    titulo: "CUIT / CUIL",
-    name: "cuit_cuil",
-    holder: "CUIT / CUIL hasta 11 caracteres",
-    errors: props.errors.cuit_cuil,
-    value: props.fields.cuit_cuil,
-    changeHandler: props.change
-  }))), props.isFranquicia ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row mid-title v-padding"
-  }, "Informaci\xF3n del encargado"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row v-padding "
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
-    rows: 1,
-    titulo: "Nombre del encargado",
-    name: "nombre_encargado",
-    holder: "Nombre del encargado hasta 100 caracteres",
-    errors: props.errors.nombre_encargado,
-    value: props.fields.nombre_encargado,
-    changeHandler: props.change
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
-    rows: 1,
-    titulo: "Tel\xE9fono del encargado",
-    name: "telefono_encargado",
-    holder: "Tel\xE9fono del encargado hasta 20 caracteres",
-    errors: props.errors.telefono_encargado,
-    value: props.fields.telefono_encargado,
-    changeHandler: props.change
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
-    rows: 1,
-    titulo: "Correo del encargado",
-    name: "correo_encargado",
-    holder: "Correo del encargado hasta 100 caracteres",
-    errors: props.errors.correo_encargado,
-    value: props.fields.correo_encargado,
-    changeHandler: props.change
-  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row mid-title top-padding"
-  }, "Ubicaci\xF3n de ".concat(userType)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FormularioUbicacion__WEBPACK_IMPORTED_MODULE_3__["FormularioUbicacion"], {
-    data: data,
-    errors: props.errors,
-    fields: props.fields,
-    change: props.change
-  })));
-};
-
-/***/ }),
-
-/***/ "./resources/js/escritorio/configuracion/FormularioReservas.jsx":
-/*!**********************************************************************!*\
-  !*** ./resources/js/escritorio/configuracion/FormularioReservas.jsx ***!
-  \**********************************************************************/
-/*! exports provided: FormularioReservas */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormularioReservas", function() { return FormularioReservas; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
-/* harmony import */ var _componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../componentes/input/Numeric */ "./resources/js/componentes/input/Numeric.jsx");
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-
-
-
-
-var minutos = {
-  1: "1 minuto",
-  2: "2 minutos",
-  3: "3 minutos",
-  5: "5 minutos",
-  4: "4 minutos",
-  6: "6 minutos",
-  10: "10 minutos",
-  12: "12 minutos",
-  15: "15 minutos",
-  20: "20 minutos",
-  30: "30 minutos"
-},
-    caida = {
-  10: "10 minutos",
-  20: "20 minutos",
-  30: "30 minutos",
-  40: "40 minutos",
-  50: "50 minutos"
-},
-    antelacion = {
-  1: "1 horas",
-  2: "2 horas",
-  3: "3 horas",
-  4: "4 horas",
-  5: "5 horas",
-  6: "6 horas",
-  7: "7 horas",
-  8: "8 horas",
-  9: "9 horas",
-  12: "12 horas",
-  24: "24 horas",
-  36: "36 horas"
-};
-var FormularioReservas = function FormularioReservas(props) {
-  var select = {
-    intervalo: {
-      name: "intervalo_reserva",
-      selected: props.fields.intervalo_reserva,
-      list: minutos
-    },
-    caida: {
-      name: "caida_reserva",
-      selected: props.fields.caida_reserva,
-      list: caida
-    },
-    antelacion: {
-      name: "antelacion_reserva",
-      selected: props.fields.antelacion_reserva,
-      list: antelacion
-    }
-  };
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row v-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-    className: "highlight no-margin m-font"
-  }, "Antelaci\xF3n de la reserva"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__["Select"], _extends({
-    titulo: "Selecciona la antelaci\xF3n de las reservas",
-    changeSelect: props.change,
-    errors: props.errors.antelacion_reserva
-  }, select.antelacion)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "smaller-text"
-  }, "El m\xEDnimo de horas que el usuario debe esperar antes de hacer la reservaci\xF3n (si la suma de esta y la hora actual excede el cierre de reservas actual, el usuario tendr\xE1 que reservar el pr\xF3ximo d\xEDa)")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-    className: "highlight no-margin m-font"
-  }, "Intervalo de la reserva"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__["Select"], _extends({
-    titulo: "Selecciona la antelaci\xF3n de las reservas",
-    changeSelect: props.change,
-    errors: props.errors.intervalo_reserva
-  }, select.intervalo)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "smaller-text"
-  }, "El espacio temporal entre los minutos disponibles para hacer la reserva en una hora."))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row v-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-    className: "highlight no-margin m-font"
-  }, "Ca\xEDda de la reserva"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__["Select"], _extends({
-    titulo: "Selecciona la antelaci\xF3n de las reservas",
-    changeSelect: props.change,
-    errors: props.errors.caida_reserva
-  }, select.caida)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "smaller-text"
-  }, "La cantidad de minutos que pasar\xE1n desde la hora de la reserva para que se considere como inv\xE1lida")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_3__["Numeric"], {
-    titulo: "Disponibilidad de reservas",
-    name: "disponibilidad_reserva",
-    holder: "Puedes elegir hasta 60 d\xEDas como m\xE1ximo",
-    value: props.fields.disponibilidad_reserva,
-    changeHandler: props.change,
-    errors: props.errors.disponibilidad_reserva
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "smaller-text"
-  }, "La cantidad de d\xEDas a partir de la fecha actual, disponibles para hacer la reserva."))));
-};
-
-/***/ }),
-
-/***/ "./resources/js/escritorio/configuracion/FormularioUbicacion.jsx":
-/*!***********************************************************************!*\
-  !*** ./resources/js/escritorio/configuracion/FormularioUbicacion.jsx ***!
-  \***********************************************************************/
-/*! exports provided: FormularioUbicacion */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormularioUbicacion", function() { return FormularioUbicacion; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
-/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-
-
-
-
-var provincias = {
-  1: "Provincia de Buenos Aires",
-  2: "Capital Federal",
-  3: "Catamarca",
-  4: "Chaco",
-  5: "Chubut",
-  6: "Córdoba",
-  7: "Corrientes",
-  8: "Entre Ríos",
-  9: "Formosa",
-  10: "Jujuy",
-  11: "La Pampa",
-  12: "La Rioja",
-  13: "Mendoza",
-  14: "Misiones",
-  15: "Neuquén",
-  16: "Río Negro",
-  17: "Salta",
-  18: "San Juan",
-  19: "San Luis",
-  20: "Santa Cruz",
-  21: "Santa Fé",
-  22: "Santiago del Estero",
-  23: "Tierra del Fuego",
-  24: "Tucumán"
-};
-var FormularioUbicacion = function FormularioUbicacion(props) {
-  var provincia = {
-    name: "id_provincia",
-    selected: props.fields.id_provincia,
-    list: provincias
-  };
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row v-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-    className: "highlight no-margin m-font"
-  }, "Provincia"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
-    titulo: "Selecciona la provincia",
-    changeSelect: props.change,
-    errors: props.errors.id_provincia
-  }, provincia))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
-    rows: 4,
-    titulo: "Direcci\xF3n del local",
-    name: "direccion",
-    holder: "Direcci\xF3n hasta 150 caracteres",
-    errors: props.errors.direccion,
-    value: props.fields.direccion,
-    changeHandler: props.change
-  })));
-};
-
-/***/ }),
-
-/***/ "./resources/js/escritorio/configuracion/FormularioUsuario.jsx":
-/*!*********************************************************************!*\
-  !*** ./resources/js/escritorio/configuracion/FormularioUsuario.jsx ***!
-  \*********************************************************************/
-/*! exports provided: FormularioUsuario */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormularioUsuario", function() { return FormularioUsuario; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
-/**
- * react basic
- */
-
-
-/**
- * input elem
- */
-
-
-var FormularioUsuario = function FormularioUsuario(props) {
-  var data = props.data;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row mid-title"
-  }, "Informaci\xF3n del Usuario"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row v-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
-    rows: 1,
-    titulo: "Username",
-    name: "username",
-    holder: "Nombre de Usuario hasta 100 caracteres",
-    errors: props.errors.username,
-    value: props.fields.username,
-    changeHandler: props.change
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
-    rows: 1,
-    titulo: "Email de usuario",
-    name: "email",
-    holder: "Email de Usuario hasta 100 caracteres",
-    errors: props.errors.email,
-    value: props.fields.email,
-    changeHandler: props.change
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
-    rows: 1,
-    titulo: "Contrase\xF1a",
-    name: "password",
-    holder: "Nueva contrase\xF1a",
-    errors: props.errors.password,
-    value: props.fields.password,
-    changeHandler: props.change
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "smaller-text"
-  }, "Ingresa un nuevo valor para cambiarla"))));
-};
-
-/***/ }),
-
 /***/ "./resources/js/escritorio/configuracion/sub/Configuracion.jsx":
 /*!*********************************************************************!*\
   !*** ./resources/js/escritorio/configuracion/sub/Configuracion.jsx ***!
@@ -90245,7 +89606,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../FormularioEstablecimiento */ "./resources/js/escritorio/configuracion/FormularioEstablecimiento.jsx");
+/* harmony import */ var _form_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../form/FormularioEstablecimiento */ "./resources/js/form/FormularioEstablecimiento.jsx");
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
 /* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
 /**
@@ -90262,7 +89623,7 @@ function Establecimiento(props) {
     links: props.nav.links
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_2__["FormularioEstablecimiento"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_2__["FormularioEstablecimiento"], {
     data: props.data,
     fields: props.fields,
     errors: props.errors,
@@ -90286,7 +89647,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _FormularioReservas__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../FormularioReservas */ "./resources/js/escritorio/configuracion/FormularioReservas.jsx");
+/* harmony import */ var _form_FormularioReservas__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../form/FormularioReservas */ "./resources/js/form/FormularioReservas.jsx");
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
 
 
@@ -90298,7 +89659,7 @@ function Reservas(props) {
     links: props.nav.links
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FormularioReservas__WEBPACK_IMPORTED_MODULE_2__["FormularioReservas"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_FormularioReservas__WEBPACK_IMPORTED_MODULE_2__["FormularioReservas"], {
     data: props.data,
     fields: props.fields,
     errors: props.errors,
@@ -90323,7 +89684,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _FormularioUsuario__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../FormularioUsuario */ "./resources/js/escritorio/configuracion/FormularioUsuario.jsx");
+/* harmony import */ var _form_FormularioUsuario__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../form/FormularioUsuario */ "./resources/js/form/FormularioUsuario.jsx");
 /**
  * react basic
  */
@@ -90337,7 +89698,7 @@ function Usuario(props) {
     links: props.nav.links
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FormularioUsuario__WEBPACK_IMPORTED_MODULE_3__["FormularioUsuario"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_FormularioUsuario__WEBPACK_IMPORTED_MODULE_3__["FormularioUsuario"], {
     data: props.data,
     fields: props.fields,
     errors: props.errors,
@@ -90653,8 +90014,7 @@ function EventosRouting(props) {
   },
       wait = function wait() {
     return false;
-  }; //console.log(props.data)
-
+  };
 
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__["ConfirmarModal"], {
     open: open,
@@ -91109,6 +90469,624 @@ var editFormFields = function editFormFields(data) {
 
 /***/ }),
 
+/***/ "./resources/js/escritorio/feriados/FeriadosRouting.jsx":
+/*!**************************************************************!*\
+  !*** ./resources/js/escritorio/feriados/FeriadosRouting.jsx ***!
+  \**************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return FeriadosRouting; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../acciones/ActionsByView */ "./resources/js/acciones/ActionsByView.jsx");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _sub_Formulario__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sub/Formulario */ "./resources/js/escritorio/feriados/sub/Formulario.jsx");
+/* harmony import */ var _sub_Feriados__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sub/Feriados */ "./resources/js/escritorio/feriados/sub/Feriados.jsx");
+/* harmony import */ var _sub_VerFeriado__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./sub/VerFeriado */ "./resources/js/escritorio/feriados/sub/VerFeriado.jsx");
+/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
+/* harmony import */ var _hocs_Validator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../hocs/Validator */ "./resources/js/hocs/Validator.jsx");
+/* harmony import */ var _validation__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./validation */ "./resources/js/escritorio/feriados/validation.jsx");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+
+
+function FeriadosRouting(props) {
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      open = _useState2[0],
+      toggle = _useState2[1],
+      openModal = function openModal(e) {
+    e.preventDefault();
+    toggle(true);
+  },
+      closeModal = function closeModal(e) {
+    e.preventDefault();
+    toggle(false);
+  };
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__["ConfirmarModal"], {
+    open: open,
+    closeModal: closeModal,
+    title: "Eliminar Feriado",
+    content: "¿estás seguro de eliminar este feriado?"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
+    path: props.match.url,
+    exact: true,
+    render: function render(match) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Feriados__WEBPACK_IMPORTED_MODULE_5__["Feriados"], _extends({
+        data: props.data,
+        toggleModal: openModal,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_2__["Navegacion"].listado('/feriados')
+      }, match));
+    }
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
+    path: "".concat(props.match.url, "/editar/:id"),
+    exact: true,
+    render: function render(match) {
+      var feriado = props.data.feriados,
+          form = {
+        nombre: feriado.nombre,
+        fecha_feriado: props.data.date,
+        id_evento: Object.keys(props.data.eventos.list).join(','),
+        apertura_reserva_hora: feriado.apertura.reserva.hora,
+        apertura_reserva_minuto: feriado.apertura.reserva.minuto,
+        cierre_reserva_hora: feriado.cierre.reserva.hora,
+        cierre_reserva_minuto: feriado.cierre.reserva.minuto,
+        apertura_atencion_hora: feriado.apertura.atencion.hora,
+        apertura_atencion_minuto: feriado.apertura.atencion.minuto,
+        cierre_atencion_hora: feriado.cierre.atencion.hora,
+        cierre_atencion_minuto: feriado.cierre.atencion.minuto,
+        descripcion: props.data.descripcion || "",
+        id_estado: feriado.estado === 'laboral'
+      };
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        form: form,
+        sendRequest: function sendRequest() {
+          return false;
+        },
+        validation: _validation__WEBPACK_IMPORTED_MODULE_9__["validation"]
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["Formulario"], _extends({
+        data: props.data,
+        toggleModal: openModal,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_2__["Navegacion"].formulario(function () {
+          return false;
+        }, match.match.params.id, 'horarios/feriados'),
+        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_2__["FormActions"])(),
+        editar: true
+      }, match)));
+    }
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
+    path: "".concat(props.match.url, "/agregar"),
+    component: function component(match) {
+      var form = {
+        fecha_feriado: new Date(props.data.date),
+        nombre: "",
+        id_evento: "",
+        apertura_reserva_hora: "",
+        apertura_reserva_minuto: "",
+        cierre_reserva_hora: "",
+        cierre_reserva_minuto: "",
+        apertura_atencion_hora: "",
+        apertura_atencion_minuto: "",
+        cierre_atencion_hora: "",
+        cierre_atencion_minuto: "",
+        descripcion: "",
+        id_estado: true
+      };
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        form: form,
+        sendRequest: function sendRequest() {
+          return false;
+        },
+        validation: _validation__WEBPACK_IMPORTED_MODULE_9__["validation"]
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["Formulario"], _extends({
+        data: props.data,
+        toggleModal: openModal,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_2__["Navegacion"].agregar('/feriados'),
+        editar: false
+      }, match)));
+    }
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
+    path: "".concat(props.match.url, "/:id"),
+    component: function component(match) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerFeriado__WEBPACK_IMPORTED_MODULE_6__["VerFeriado"], _extends({
+        data: props.data,
+        toggleModal: openModal,
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_2__["Navegacion"].singular(function () {
+          return false;
+        }, match.match.params.id, '/feriados')
+      }, props));
+    }
+  })));
+}
+
+/***/ }),
+
+/***/ "./resources/js/escritorio/feriados/sub/Feriados.jsx":
+/*!***********************************************************!*\
+  !*** ./resources/js/escritorio/feriados/sub/Feriados.jsx ***!
+  \***********************************************************/
+/*! exports provided: Feriados */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Feriados", function() { return Feriados; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _componentes_agenda_Agenda__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/agenda/Agenda */ "./resources/js/componentes/agenda/Agenda.jsx");
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../constantes/CalendarControls */ "./resources/js/constantes/CalendarControls.jsx");
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * react basic
+ */
+
+
+
+
+
+
+var links = [{
+  title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "smaller-text text bold"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-calendar-week inline-box side-margin"
+  }), "Horarios"),
+  to: "/horarios",
+  params: {},
+  route: "horarios"
+}];
+var Feriados =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Feriados, _Component);
+
+  function Feriados(props) {
+    var _this;
+
+    _classCallCheck(this, Feriados);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Feriados).call(this, props));
+    _this.state = {
+      show: "2",
+      controls: _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_4__["NO_DAY_CONTROL"]
+    };
+    return _this;
+  }
+
+  _createClass(Feriados, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {}
+  }, {
+    key: "verFeriado",
+    value: function verFeriado(e) {
+      e.preventDefault();
+      var dateString = parseInt(e.currentTarget.getAttribute('data'));
+      this.setState({
+        show: "2",
+        date: new Date(dateString)
+      });
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      console.log('feriadosUnmount');
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var data = this.props.data,
+          nav = this.props.nav.links.concat(links);
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        title: "Feriados",
+        links: nav
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_agenda_Agenda__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        show: data.show,
+        date: data.date,
+        type: "feriados",
+        actions: {
+          eliminar: this.toggleModal
+        },
+        controls: this.state.controls,
+        fetchNewMonth: this.props.fetch,
+        endpoint: "horarios/feriados",
+        data: data.data
+      })));
+    }
+  }]);
+
+  return Feriados;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+/***/ }),
+
+/***/ "./resources/js/escritorio/feriados/sub/Formulario.jsx":
+/*!*************************************************************!*\
+  !*** ./resources/js/escritorio/feriados/sub/Formulario.jsx ***!
+  \*************************************************************/
+/*! exports provided: Formulario */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Formulario", function() { return Formulario; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var _form_Calendario__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../form/Calendario */ "./resources/js/form/Calendario.jsx");
+/* harmony import */ var _form_SelectFields__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../form/SelectFields */ "./resources/js/form/SelectFields.jsx");
+/* harmony import */ var _form_EventoFields__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../form/EventoFields */ "./resources/js/form/EventoFields.jsx");
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/input/Toggle */ "./resources/js/componentes/input/Toggle.jsx");
+/* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
+/* harmony import */ var _utils_Helper__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../utils/Helper */ "./resources/js/utils/Helper.jsx");
+/* harmony import */ var _hocs_DataHandler__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../hocs/DataHandler */ "./resources/js/hocs/DataHandler.jsx");
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+function Formulario(props) {
+  var context = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_hocs_DataHandler__WEBPACK_IMPORTED_MODULE_10__["WaitsLoading"]),
+      _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.fields.id_estado),
+      _useState2 = _slicedToArray(_useState, 2),
+      side = _useState2[0],
+      toggle = _useState2[1],
+      data = props.data;
+
+  if (props.editar) props.nav.buttons[0].click = toggle;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    title: props.editar ? props.fields.nombre : "Agregar Feriado",
+    links: props.nav.links,
+    buttons: props.nav.buttons
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_Calendario__WEBPACK_IMPORTED_MODULE_3__["Calendario"], {
+    editar: props.editar,
+    date: props.fields.fecha_feriado,
+    data: data,
+    change: props.change,
+    fetch: context
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "bold smaller-text v-padding margin-box"
+  }, "* Los d\xEDas inhabilitados ya tienen feriados asignados"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "h-padding v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_11__["Text"], {
+    rows: 4,
+    titulo: "Descripci\xF3n",
+    holder: "Descripci\xF3n del d\xEDa hasta 100 caracteres",
+    name: "descripcion",
+    errors: props.errors.descripcion,
+    value: props.fields.descripcion,
+    changeHandler: props.change
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-lg-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row justify-content-end"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "sub-title seventy inline-block bold"
+  }, props.editar ? "".concat(data.date.getDate(), " de ").concat(_constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_2__["MONTHS"][data.date.getMonth()], " de ").concat(data.date.getFullYear()) : ""), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "thirty inline-block text-right"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_7__["Toggle"], {
+    rightTitle: "Laboral",
+    leftTitle: "No laboral",
+    name: "estado",
+    side: side,
+    changeSide: toggle
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row relative visible top-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: side ? "hidden" : "top-padding full-width overlay"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_SelectFields__WEBPACK_IMPORTED_MODULE_4__["SelectFields"], {
+    editar: props.editar,
+    data: data.feriados,
+    minutos: data.minutes,
+    fields: props.fields,
+    change: props.change,
+    errors: props.errors,
+    type: "feriado"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_EventoFields__WEBPACK_IMPORTED_MODULE_5__["EventoFields"], {
+    side: side,
+    editar: props.editar,
+    eventos: data.eventos,
+    data: data.feriados,
+    fields: props.fields,
+    change: props.change,
+    errors: props.errors
+  }))))));
+}
+
+/***/ }),
+
+/***/ "./resources/js/escritorio/feriados/sub/VerFeriado.jsx":
+/*!*************************************************************!*\
+  !*** ./resources/js/escritorio/feriados/sub/VerFeriado.jsx ***!
+  \*************************************************************/
+/*! exports provided: VerFeriado */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VerFeriado", function() { return VerFeriado; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _componentes_basic_CustomLink__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/CustomLink */ "./resources/js/componentes/basic/CustomLink.jsx");
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _form_Calendario__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../form/Calendario */ "./resources/js/form/Calendario.jsx");
+/* harmony import */ var _componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/CommaList */ "./resources/js/componentes/basic/CommaList.jsx");
+/* harmony import */ var _componentes_tables_EventosTable__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/tables/EventosTable */ "./resources/js/componentes/tables/EventosTable.jsx");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+
+
+
+function VerFeriado(props) {
+  props.nav.buttons[0].click = props.toggleModal;
+  var data = props.data,
+      date = new Date(data.data.fecha),
+      estado = data.data.estado.replace('_', ' '),
+      eventos = Object.values(data.data.eventos.data).map(function (e) {
+    return _objectSpread({}, e, {
+      nombre: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CustomLink__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        params: {
+          to: "/eventos/".concat(e.id),
+          params: {
+            id: e.id
+          },
+          route: 'eventos'
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "text"
+      }, e.nombre)),
+      promociones: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_6__["CommaList"], {
+        list: e.promociones.list,
+        route: "promociones"
+      })
+    });
+  });
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    title: data.data.nombre,
+    links: props.nav.links,
+    buttons: props.nav.buttons
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container full-width v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row justify-content-end v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_Calendario__WEBPACK_IMPORTED_MODULE_5__["Calendario"], {
+    editar: true,
+    date: date,
+    data: data.data
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6 container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "h-padding row bold justify-content-end sub-title full-width"
+  }, "feriado ".concat(estado)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "sub-title row v-padding"
+  }, "".concat(_constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__["DAYS"][date.getDay()], " ").concat(date.getDate(), " de ").concat(_constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__["MONTHS"][date.getMonth()], " del ").concat(date.getFullYear())), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "m-font row light-danger"
+  }, "Horario de atenci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "bold side-margin"
+  }, "Apertura:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "side-margin"
+  }, "".concat(data.data.apertura.atencion.hora, ":").concat(data.data.apertura.atencion.minuto, " hs"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "bold side-margin"
+  }, "Cierre:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "side-margin"
+  }, "".concat(data.data.cierre.atencion.hora, ":").concat(data.data.cierre.atencion.minuto, " hs")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row m-font light-danger top-padding"
+  }, "Horario de reservas:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "bold side-margin"
+  }, "Apertura:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "side-margin"
+  }, data.data.apertura.reserva.hora + ":" + data.data.apertura.reserva.minuto + "hs")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "bold side-margin"
+  }, "Cierre:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "side-margin"
+  }, "".concat(data.data.cierre.reserva.hora, ":").concat(data.data.cierre.reserva.minuto, " hs")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row top-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "m-font light-danger"
+  }, "Descripci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.data.descripcion)))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row h-padding sub-title"
+  }, "Eventos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row justify-content-center"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-12"
+  }, eventos.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_tables_EventosTable__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    data: eventos,
+    showPromociones: true
+  }) : "No hay eventos asociados"))));
+}
+
+/***/ }),
+
+/***/ "./resources/js/escritorio/feriados/validation.jsx":
+/*!*********************************************************!*\
+  !*** ./resources/js/escritorio/feriados/validation.jsx ***!
+  \*********************************************************/
+/*! exports provided: validation */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validation", function() { return validation; });
+var validation = {
+  id_evento: {
+    rules: {
+      required: true
+    },
+    fieldName: "Eventos"
+  },
+  fecha_feriado: {
+    rules: {
+      required: true
+    },
+    fieldName: "Fecha"
+  },
+  nombre: {
+    rules: {
+      maxLen: 50,
+      required: true
+    },
+    fieldName: "Nombre"
+  },
+  apertura_reserva_hora: {
+    rules: {
+      required: true
+    },
+    fieldName: "Hora apertura de reserva"
+  },
+  apertura_reserva_minuto: {
+    rules: {
+      required: true
+    },
+    fieldName: "Minuto apertura de reserva"
+  },
+  cierre_reserva_hora: {
+    rules: {
+      required: true
+    },
+    fieldName: "Hora cierre de reserva"
+  },
+  cierre_reserva_minuto: {
+    rules: {
+      required: true
+    },
+    fieldName: "Minuto cierre de reserva"
+  },
+  apertura_atencion_hora: {
+    rules: {
+      required: true
+    },
+    fieldName: "Hora apertura atención"
+  },
+  apertura_atencion_minuto: {
+    rules: {
+      required: true
+    },
+    fieldName: "Minuto apertura atención"
+  },
+  cierre_atencion_hora: {
+    rules: {
+      required: true
+    },
+    fieldName: "Hora cierre atención"
+  },
+  cierre_atencion_minuto: {
+    rules: {
+      required: true
+    },
+    fieldName: "Minuto cierre atención"
+  },
+  descripcion: {
+    rules: {
+      maxLen: 100,
+      required: true
+    },
+    fieldName: "Descripción"
+  },
+  id_estado: {
+    rules: {},
+    fieldName: "Estado"
+  }
+};
+
+/***/ }),
+
 /***/ "./resources/js/escritorio/franquicias/FranquiciasRouting.jsx":
 /*!********************************************************************!*\
   !*** ./resources/js/escritorio/franquicias/FranquiciasRouting.jsx ***!
@@ -91199,6 +91177,9 @@ function FranquiciasRouting(props) {
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_8__["default"], {
         form: fields,
+        sendRequest: function sendRequest() {
+          return false;
+        },
         validation: _validation__WEBPACK_IMPORTED_MODULE_9__["default"]
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], _extends({
         data: props.data,
@@ -91225,6 +91206,9 @@ function FranquiciasRouting(props) {
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_8__["default"], {
         form: fields,
+        sendRequest: function sendRequest() {
+          return false;
+        },
         validation: _validation__WEBPACK_IMPORTED_MODULE_9__["default"]
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], _extends({
         data: props.data,
@@ -91265,8 +91249,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
 /* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
-/* harmony import */ var _configuracion_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../configuracion/FormularioEstablecimiento */ "./resources/js/escritorio/configuracion/FormularioEstablecimiento.jsx");
-/* harmony import */ var _configuracion_FormularioUsuario__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../configuracion/FormularioUsuario */ "./resources/js/escritorio/configuracion/FormularioUsuario.jsx");
+/* harmony import */ var _form_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../form/FormularioEstablecimiento */ "./resources/js/form/FormularioEstablecimiento.jsx");
+/* harmony import */ var _form_FormularioUsuario__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../form/FormularioUsuario */ "./resources/js/form/FormularioUsuario.jsx");
 
 
 
@@ -91282,14 +91266,14 @@ function Formulario(props) {
     buttons: props.nav.buttons
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_4__["FormularioEstablecimiento"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_4__["FormularioEstablecimiento"], {
     userType: "Franquicia",
     data: data,
     isFranquicia: true,
     fields: props.fields,
     errors: props.errors,
     change: props.change
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_FormularioUsuario__WEBPACK_IMPORTED_MODULE_5__["FormularioUsuario"], {
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_FormularioUsuario__WEBPACK_IMPORTED_MODULE_5__["FormularioUsuario"], {
     data: data,
     fields: props.fields,
     errors: props.errors,
@@ -91635,154 +91619,6 @@ var validation = {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/horarios/FeriadosRouting.jsx":
-/*!**************************************************************!*\
-  !*** ./resources/js/escritorio/horarios/FeriadosRouting.jsx ***!
-  \**************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return FeriadosRouting; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../acciones/ActionsByView */ "./resources/js/acciones/ActionsByView.jsx");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _feriados_FeriadoFormulario__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./feriados/FeriadoFormulario */ "./resources/js/escritorio/horarios/feriados/FeriadoFormulario.jsx");
-/* harmony import */ var _feriados_Feriados__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./feriados/Feriados */ "./resources/js/escritorio/horarios/feriados/Feriados.jsx");
-/* harmony import */ var _feriados_VerFeriado__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./feriados/VerFeriado */ "./resources/js/escritorio/horarios/feriados/VerFeriado.jsx");
-/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
-/* harmony import */ var _hocs_Validator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../hocs/Validator */ "./resources/js/hocs/Validator.jsx");
-/* harmony import */ var _validation__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./validation */ "./resources/js/escritorio/horarios/validation.jsx");
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-
-
-
-
-
-function FeriadosRouting(props) {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      open = _useState2[0],
-      toggle = _useState2[1],
-      openModal = function openModal(e) {
-    e.preventDefault();
-    toggle(true);
-  },
-      closeModal = function closeModal(e) {
-    e.preventDefault();
-    toggle(false);
-  };
-
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__["ConfirmarModal"], {
-    open: open,
-    closeModal: closeModal,
-    title: "Eliminar Feriado",
-    content: "¿estás seguro de eliminar este feriado?"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
-    path: props.match.url,
-    exact: true,
-    render: function render(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_feriados_Feriados__WEBPACK_IMPORTED_MODULE_5__["Feriados"], _extends({
-        data: props.data,
-        toggleModal: openModal,
-        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_2__["Navegacion"].listado('horarios/feriados')
-      }, match));
-    }
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
-    path: "".concat(props.match.url, "/editar/:id"),
-    exact: true,
-    render: function render(match) {
-      var feriado = props.data.feriados,
-          form = {
-        nombre: feriado.nombre,
-        fecha_feriado: props.data.date,
-        id_evento: Object.keys(props.data.eventos.list).join(','),
-        apertura_reserva_hora: feriado.apertura.reserva.hora,
-        apertura_reserva_minuto: feriado.apertura.reserva.minuto,
-        cierre_reserva_hora: feriado.cierre.reserva.hora,
-        cierre_reserva_minuto: feriado.cierre.reserva.minuto,
-        apertura_atencion_hora: feriado.apertura.atencion.hora,
-        apertura_atencion_minuto: feriado.apertura.atencion.minuto,
-        cierre_atencion_hora: feriado.cierre.atencion.hora,
-        cierre_atencion_minuto: feriado.cierre.atencion.minuto,
-        descripcion: props.data.descripcion || "",
-        id_estado: feriado.estado === 'laboral'
-      };
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        form: form,
-        validation: _validation__WEBPACK_IMPORTED_MODULE_9__["feriadoValidation"]
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_feriados_FeriadoFormulario__WEBPACK_IMPORTED_MODULE_4__["FeriadoFormulario"], _extends({
-        data: props.data,
-        toggleModal: openModal,
-        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_2__["Navegacion"].formulario(function () {
-          return false;
-        }, match.match.params.id, 'horarios/feriados'),
-        formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_2__["FormActions"])(),
-        editar: true
-      }, match)));
-    }
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
-    path: "".concat(props.match.url, "/agregar"),
-    component: function component(match) {
-      var form = {
-        fecha_feriado: new Date(props.data.date),
-        nombre: "",
-        id_evento: "",
-        apertura_reserva_hora: "",
-        apertura_reserva_minuto: "",
-        cierre_reserva_hora: "",
-        cierre_reserva_minuto: "",
-        apertura_atencion_hora: "",
-        apertura_atencion_minuto: "",
-        cierre_atencion_hora: "",
-        cierre_atencion_minuto: "",
-        descripcion: "",
-        id_estado: true
-      };
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        form: form,
-        validation: _validation__WEBPACK_IMPORTED_MODULE_9__["feriadoValidation"]
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_feriados_FeriadoFormulario__WEBPACK_IMPORTED_MODULE_4__["FeriadoFormulario"], _extends({
-        data: props.data,
-        toggleModal: openModal,
-        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_2__["Navegacion"].agregar('horarios/feriados'),
-        editar: false
-      }, match)));
-    }
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
-    path: "".concat(props.match.url, "/:id"),
-    component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_feriados_VerFeriado__WEBPACK_IMPORTED_MODULE_6__["VerFeriado"], _extends({
-        data: props.data,
-        toggleModal: openModal,
-        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_2__["Navegacion"].singular(function () {
-          return false;
-        }, match.match.params.id, 'horarios/feriados')
-      }, props));
-    }
-  })));
-}
-
-/***/ }),
-
 /***/ "./resources/js/escritorio/horarios/HorariosRouting.jsx":
 /*!**************************************************************!*\
   !*** ./resources/js/escritorio/horarios/HorariosRouting.jsx ***!
@@ -91799,9 +91635,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _horarios_HorarioFormulario__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./horarios/HorarioFormulario */ "./resources/js/escritorio/horarios/horarios/HorarioFormulario.jsx");
-/* harmony import */ var _horarios_Horarios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./horarios/Horarios */ "./resources/js/escritorio/horarios/horarios/Horarios.jsx");
-/* harmony import */ var _horarios_VerHorario__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./horarios/VerHorario */ "./resources/js/escritorio/horarios/horarios/VerHorario.jsx");
+/* harmony import */ var _sub_Formulario__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sub/Formulario */ "./resources/js/escritorio/horarios/sub/Formulario.jsx");
+/* harmony import */ var _sub_Horarios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sub/Horarios */ "./resources/js/escritorio/horarios/sub/Horarios.jsx");
+/* harmony import */ var _sub_VerHorario__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./sub/VerHorario */ "./resources/js/escritorio/horarios/sub/VerHorario.jsx");
 /* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
 /* harmony import */ var _hocs_Validator__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../hocs/Validator */ "./resources/js/hocs/Validator.jsx");
 /* harmony import */ var _validation__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./validation */ "./resources/js/escritorio/horarios/validation.jsx");
@@ -91851,7 +91687,7 @@ function HorariosRouting(props) {
     path: props.match.url,
     exact: true,
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_horarios_Horarios__WEBPACK_IMPORTED_MODULE_5__["Horarios"], _extends({
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Horarios__WEBPACK_IMPORTED_MODULE_5__["Horarios"], _extends({
         data: props.data,
         toggleModal: openModal
       }, match));
@@ -91876,8 +91712,11 @@ function HorariosRouting(props) {
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_8__["default"], {
         form: form,
-        validation: _validation__WEBPACK_IMPORTED_MODULE_9__["horariosValidation"]
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_horarios_HorarioFormulario__WEBPACK_IMPORTED_MODULE_4__["HorarioFormulario"], _extends({
+        sendRequest: function sendRequest() {
+          return false;
+        },
+        validation: _validation__WEBPACK_IMPORTED_MODULE_9__["validation"]
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["Formulario"], _extends({
         editar: false,
         data: props.data,
         nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_1__["Navegacion"].agregar('horarios'),
@@ -91905,8 +91744,11 @@ function HorariosRouting(props) {
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_8__["default"], {
         form: form,
-        validation: _validation__WEBPACK_IMPORTED_MODULE_9__["horariosValidation"]
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_horarios_HorarioFormulario__WEBPACK_IMPORTED_MODULE_4__["HorarioFormulario"], _extends({
+        sendRequest: function sendRequest() {
+          return false;
+        },
+        validation: _validation__WEBPACK_IMPORTED_MODULE_9__["validation"]
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["Formulario"], {
         data: props.data,
         toggleModal: openModal,
         nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_1__["Navegacion"].formulario(function () {
@@ -91914,12 +91756,12 @@ function HorariosRouting(props) {
         }, match.match.params.id, 'horarios'),
         formActions: Object(_acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_1__["FormActions"])(),
         editar: true
-      }, match)));
+      }));
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "".concat(props.match.url, "/:id"),
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_horarios_VerHorario__WEBPACK_IMPORTED_MODULE_6__["VerHorario"], _extends({
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerHorario__WEBPACK_IMPORTED_MODULE_6__["VerHorario"], _extends({
         data: props.data,
         toggleModal: openModal,
         nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_1__["Navegacion"].singular(function () {
@@ -91933,745 +91775,24 @@ function HorariosRouting(props) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/horarios/feriados/FeriadoFormulario.jsx":
-/*!*************************************************************************!*\
-  !*** ./resources/js/escritorio/horarios/feriados/FeriadoFormulario.jsx ***!
-  \*************************************************************************/
-/*! exports provided: FeriadoFormulario */
+/***/ "./resources/js/escritorio/horarios/sub/Formulario.jsx":
+/*!*************************************************************!*\
+  !*** ./resources/js/escritorio/horarios/sub/Formulario.jsx ***!
+  \*************************************************************/
+/*! exports provided: Formulario */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FeriadoFormulario", function() { return FeriadoFormulario; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
-/* harmony import */ var _formularios_Calendario__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../formularios/Calendario */ "./resources/js/escritorio/horarios/formularios/Calendario.jsx");
-/* harmony import */ var _formularios_SelectFields__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../formularios/SelectFields */ "./resources/js/escritorio/horarios/formularios/SelectFields.jsx");
-/* harmony import */ var _formularios_EventoFields__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../formularios/EventoFields */ "./resources/js/escritorio/horarios/formularios/EventoFields.jsx");
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/input/Toggle */ "./resources/js/componentes/input/Toggle.jsx");
-/* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
-/* harmony import */ var _utils_Helper__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../utils/Helper */ "./resources/js/utils/Helper.jsx");
-/* harmony import */ var _hocs_DataHandler__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../hocs/DataHandler */ "./resources/js/hocs/DataHandler.jsx");
-/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-function FeriadoFormulario(props) {
-  var context = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_hocs_DataHandler__WEBPACK_IMPORTED_MODULE_10__["WaitsLoading"]),
-      _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.fields.id_estado),
-      _useState2 = _slicedToArray(_useState, 2),
-      side = _useState2[0],
-      toggle = _useState2[1],
-      data = props.data;
-
-  if (props.editar) props.nav.buttons[0].click = toggle;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    title: props.editar ? props.fields.nombre : "Agregar Feriado",
-    links: props.nav.links,
-    buttons: props.nav.buttons
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "container"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row v-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_formularios_Calendario__WEBPACK_IMPORTED_MODULE_3__["Calendario"], {
-    editar: props.editar,
-    date: props.fields.fecha_feriado,
-    data: data,
-    change: props.change,
-    fetch: context
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "bold smaller-text v-padding margin-box"
-  }, "* Los d\xEDas inhabilitados ya tienen feriados asignados"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "h-padding v-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_11__["Text"], {
-    rows: 4,
-    titulo: "Descripci\xF3n",
-    holder: "Descripci\xF3n del d\xEDa hasta 100 caracteres",
-    name: "descripcion",
-    errors: props.errors.descripcion,
-    value: props.fields.descripcion,
-    changeHandler: props.change
-  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-lg-6"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "container"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row justify-content-end"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "sub-title seventy inline-block bold"
-  }, props.editar ? "".concat(data.date.getDate(), " de ").concat(_constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_2__["MONTHS"][data.date.getMonth()], " de ").concat(data.date.getFullYear()) : ""), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "thirty inline-block text-right"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_7__["Toggle"], {
-    rightTitle: "Laboral",
-    leftTitle: "No laboral",
-    name: "estado",
-    side: side,
-    changeSide: toggle
-  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row relative visible top-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: side ? "hidden" : "top-padding full-width overlay"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_formularios_SelectFields__WEBPACK_IMPORTED_MODULE_4__["SelectFields"], {
-    editar: props.editar,
-    data: data.feriados,
-    minutos: data.minutes,
-    fields: props.fields,
-    change: props.change,
-    errors: props.errors,
-    type: "feriado"
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_formularios_EventoFields__WEBPACK_IMPORTED_MODULE_5__["EventoFields"], {
-    side: side,
-    editar: props.editar,
-    eventos: data.eventos,
-    data: data.feriados,
-    fields: props.fields,
-    change: props.change,
-    errors: props.errors
-  }))))));
-}
-
-/***/ }),
-
-/***/ "./resources/js/escritorio/horarios/feriados/Feriados.jsx":
-/*!****************************************************************!*\
-  !*** ./resources/js/escritorio/horarios/feriados/Feriados.jsx ***!
-  \****************************************************************/
-/*! exports provided: Feriados */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Feriados", function() { return Feriados; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_agenda_Agenda__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/agenda/Agenda */ "./resources/js/componentes/agenda/Agenda.jsx");
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../constantes/CalendarControls */ "./resources/js/constantes/CalendarControls.jsx");
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-/**
- * react basic
- */
-
-
-
-
-
-
-var links = [{
-  title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "smaller-text text bold"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "fas fa-calendar-week inline-box side-margin"
-  }), "Horarios"),
-  to: "/horarios",
-  params: {},
-  route: "horarios"
-}];
-var Feriados =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(Feriados, _Component);
-
-  function Feriados(props) {
-    var _this;
-
-    _classCallCheck(this, Feriados);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Feriados).call(this, props));
-    _this.state = {
-      show: "2",
-      controls: _constantes_CalendarControls__WEBPACK_IMPORTED_MODULE_4__["NO_DAY_CONTROL"]
-    };
-    return _this;
-  }
-
-  _createClass(Feriados, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {}
-  }, {
-    key: "verFeriado",
-    value: function verFeriado(e) {
-      e.preventDefault();
-      var dateString = parseInt(e.currentTarget.getAttribute('data'));
-      this.setState({
-        show: "2",
-        date: new Date(dateString)
-      });
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      console.log('feriadosUnmount');
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var data = this.props.data,
-          nav = this.props.nav.links.concat(links);
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        title: "Feriados",
-        links: nav
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_agenda_Agenda__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        show: data.show,
-        date: data.date,
-        type: "feriados",
-        actions: {
-          eliminar: this.toggleModal
-        },
-        controls: this.state.controls,
-        fetchNewMonth: this.props.fetch,
-        endpoint: "horarios/feriados",
-        data: data.data
-      })));
-    }
-  }]);
-
-  return Feriados;
-}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
-
-/***/ }),
-
-/***/ "./resources/js/escritorio/horarios/feriados/VerFeriado.jsx":
-/*!******************************************************************!*\
-  !*** ./resources/js/escritorio/horarios/feriados/VerFeriado.jsx ***!
-  \******************************************************************/
-/*! exports provided: VerFeriado */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VerFeriado", function() { return VerFeriado; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Formulario", function() { return Formulario; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _componentes_basic_CustomLink__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/CustomLink */ "./resources/js/componentes/basic/CustomLink.jsx");
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _formularios_Calendario__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../formularios/Calendario */ "./resources/js/escritorio/horarios/formularios/Calendario.jsx");
-/* harmony import */ var _componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/CommaList */ "./resources/js/componentes/basic/CommaList.jsx");
-/* harmony import */ var _componentes_tables_EventosTable__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/tables/EventosTable */ "./resources/js/componentes/tables/EventosTable.jsx");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-
-
-
-function VerFeriado(props) {
-  props.nav.buttons[0].click = props.toggleModal;
-  var data = props.data,
-      date = new Date(data.data.fecha),
-      estado = data.data.estado.replace('_', ' '),
-      eventos = Object.values(data.data.eventos.data).map(function (e) {
-    return _objectSpread({}, e, {
-      nombre: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CustomLink__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        params: {
-          to: "/eventos/".concat(e.id),
-          params: {
-            id: e.id
-          },
-          route: 'eventos'
-        }
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "text"
-      }, e.nombre)),
-      promociones: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_CommaList__WEBPACK_IMPORTED_MODULE_6__["CommaList"], {
-        list: e.promociones.list,
-        route: "promociones"
-      })
-    });
-  });
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    title: data.data.nombre,
-    links: props.nav.links,
-    buttons: props.nav.buttons
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "container full-width v-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row justify-content-end v-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_formularios_Calendario__WEBPACK_IMPORTED_MODULE_5__["Calendario"], {
-    editar: true,
-    date: date,
-    data: data.data
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6 container"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "h-padding row bold justify-content-end sub-title full-width"
-  }, "feriado ".concat(estado)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "sub-title row v-padding"
-  }, "".concat(_constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__["DAYS"][date.getDay()], " ").concat(date.getDate(), " de ").concat(_constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__["MONTHS"][date.getMonth()], " del ").concat(date.getFullYear())), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "m-font row light-danger"
-  }, "Horario de atenci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "bold side-margin"
-  }, "Apertura:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "side-margin"
-  }, "".concat(data.data.apertura.atencion.hora, ":").concat(data.data.apertura.atencion.minuto, " hs"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "bold side-margin"
-  }, "Cierre:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "side-margin"
-  }, "".concat(data.data.cierre.atencion.hora, ":").concat(data.data.cierre.atencion.minuto, " hs")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row m-font light-danger top-padding"
-  }, "Horario de reservas:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "bold side-margin"
-  }, "Apertura:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "side-margin"
-  }, data.data.apertura.reserva.hora + ":" + data.data.apertura.reserva.minuto + "hs")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "bold side-margin"
-  }, "Cierre:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "side-margin"
-  }, "".concat(data.data.cierre.reserva.hora, ":").concat(data.data.cierre.reserva.minuto, " hs")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row top-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "m-font light-danger"
-  }, "Descripci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.data.descripcion)))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row h-padding sub-title"
-  }, "Eventos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row justify-content-center"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-12"
-  }, eventos.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_tables_EventosTable__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    data: eventos,
-    showPromociones: true
-  }) : "No hay eventos asociados"))));
-}
-
-/***/ }),
-
-/***/ "./resources/js/escritorio/horarios/formularios/Calendario.jsx":
-/*!*********************************************************************!*\
-  !*** ./resources/js/escritorio/horarios/formularios/Calendario.jsx ***!
-  \*********************************************************************/
-/*! exports provided: Calendario */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Calendario", function() { return Calendario; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-calendar */ "./node_modules/react-calendar/dist/entry.js");
-/* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_calendar__WEBPACK_IMPORTED_MODULE_3__);
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-function CalendarioMemo(props) {
-  var today = new Date(props.date),
-      _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({
-    event: null,
-    dt: today
-  }),
-      _useState2 = _slicedToArray(_useState, 2),
-      dateEvent = _useState2[0],
-      changeDate = _useState2[1],
-      frst = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(true),
-      inputRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null),
-      changeDay = function changeDay(date) {
-    changeDate({
-      event: new Event('change', {
-        bubbles: true
-      }),
-      dt: date
-    });
-  },
-      tileDisabled = function tileDisabled(_ref) {
-    var activeStartDate = _ref.activeStartDate,
-        date = _ref.date,
-        view = _ref.view;
-    var disableByDate = false;
-    if (props.editar) disableByDate = today.getDate() < date.getDate() || today.getDate() > date.getDate();else disableByDate = view === 'month' ? props.data.feriados[date.getDate()] : date.getMonth() < activeStartDate.getMonth() || date.getFullYear() < activeStartDate.getFullYear();
-    return disableByDate;
-  },
-      monthChange = function monthChange(date) {
-    props.fetch('/horarios/feriados/agregar', {
-      date: date,
-      refresh: true
-    }, 'horarios/feriados');
-  },
-      navChange = function navChange(_ref2) {
-    var activeStartDate = _ref2.activeStartDate,
-        view = _ref2.view;
-    props.fetch('/horarios/feriados/agregar', {
-      date: activeStartDate,
-      refresh: true
-    }, 'horarios/feriados');
-  };
-
-  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-    if (!frst.current) inputRef.current.dispatchEvent(dateEvent.event);else frst.current = false;
-  }, [dateEvent]);
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    readOnly: true,
-    type: "date",
-    value: dateEvent.dt,
-    onChange: props.change,
-    name: "fecha_feriado",
-    ref: inputRef,
-    className: "hidden"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_calendar__WEBPACK_IMPORTED_MODULE_3___default.a, {
-    showNavigation: !props.editar,
-    tileClassName: "relative",
-    showNeighboringMonth: false,
-    value: props.editar ? today : dateEvent.dt,
-    minDate: new Date(),
-    onClickDay: props.editar ? function () {
-      return false;
-    } : function (date) {
-      return changeDay(new Date(date));
-    },
-    onClickMonth: monthChange,
-    tileDisabled: tileDisabled,
-    onActiveDateChange: navChange
-  }));
-}
-
-var Calendario = react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(CalendarioMemo);
-
-/***/ }),
-
-/***/ "./resources/js/escritorio/horarios/formularios/EventoFields.jsx":
-/*!***********************************************************************!*\
-  !*** ./resources/js/escritorio/horarios/formularios/EventoFields.jsx ***!
-  \***********************************************************************/
-/*! exports provided: EventoFields */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EventoFields", function() { return EventoFields; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _componentes_input_MultipleSelect__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/input/MultipleSelect */ "./resources/js/componentes/input/MultipleSelect.jsx");
-
-
-
-
-var EventoFields = function EventoFields(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row relative visible v-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: props.side ? "hidden" : "top-padding full-width overlay"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "m-font light-danger full-width"
-  }, "Eventos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-12 no-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_MultipleSelect__WEBPACK_IMPORTED_MODULE_3__["MultipleSelect"], {
-    fieldName: "Eventos",
-    name: "id_evento",
-    titulo: "Selecciona los eventos",
-    optionData: props.eventos.list,
-    errors: props.errors.id_evento,
-    changeSelect: props.change,
-    selected: props.fields.id_evento
-  }))));
-};
-
-/***/ }),
-
-/***/ "./resources/js/escritorio/horarios/formularios/SelectFields.jsx":
-/*!***********************************************************************!*\
-  !*** ./resources/js/escritorio/horarios/formularios/SelectFields.jsx ***!
-  \***********************************************************************/
-/*! exports provided: SelectFields */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SelectFields", function() { return SelectFields; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
-/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-/**
- * react basic
- */
-
-
-
-
-
-var SelectFields = function SelectFields(props) {
-  var fields = props.fields,
-      select = {
-    apertura_reserva_hora: {
-      name: "apertura_reserva_hora",
-      selected: fields.apertura_reserva_hora,
-      list: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__["HOURS"]
-    },
-    apertura_reserva_minuto: {
-      name: "apertura_reserva_minuto",
-      selected: fields.apertura_reserva_minuto,
-      list: props.minutos
-    },
-    cierre_reserva_hora: {
-      name: "cierre_reserva_hora",
-      selected: fields.cierre_reserva_hora,
-      list: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__["HOURS"]
-    },
-    cierre_reserva_minuto: {
-      name: "cierre_reserva_minuto",
-      selected: fields.cierre_reserva_minuto,
-      list: props.minutos
-    },
-    apertura_atencion_hora: {
-      name: "apertura_atencion_hora",
-      selected: fields.apertura_atencion_hora,
-      list: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__["HOURS"]
-    },
-    apertura_atencion_minuto: {
-      name: "apertura_atencion_minuto",
-      selected: fields.apertura_atencion_minuto,
-      list: props.minutos
-    },
-    cierre_atencion_hora: {
-      name: "cierre_atencion_hora",
-      selected: fields.cierre_atencion_hora,
-      list: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__["HOURS"]
-    },
-    cierre_atencion_minuto: {
-      name: "cierre_atencion_minuto",
-      selected: fields.cierre_atencion_minuto,
-      list: props.minutos
-    }
-  };
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, props.type === 'feriado' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-12 no-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_4__["Text"], {
-    rows: 1,
-    titulo: "Nombre",
-    name: "nombre",
-    holder: "Nombre del feriado hasta 50 caracteres",
-    errors: props.errors.nombre,
-    value: props.fields.nombre,
-    changeHandler: props.change
-  })) : "", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-12 container top-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "m-font light-danger full-width row"
-  }, "Horario de Reserva"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-12 container no-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6 container"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-12"
-  }, "Apertura"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-sm-5 text-left"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
-    titulo: "Hora",
-    changeSelect: props.change,
-    errors: props.errors.apertura_reserva_hora
-  }, select.apertura_reserva_hora))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-sm-2 text-center v-align-center h-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-    className: "c-title",
-    style: {
-      color: "#bfbfbf"
-    }
-  }, ":")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-sm-5 text-left relative visible"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
-    titulo: "Minuto",
-    changeSelect: props.change,
-    errors: props.errors.apertura_reserva_minuto
-  }, select.apertura_reserva_minuto))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6 container"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-12"
-  }, "Cierre"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-sm-5 text-left"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
-    titulo: "Hora",
-    changeSelect: props.change,
-    errors: props.errors.cierre_reserva_hora
-  }, select.cierre_reserva_hora))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-sm-2 text-center v-align-center"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-    className: "c-title",
-    style: {
-      color: "#bfbfbf"
-    }
-  }, ":")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-5 text-left relative visible"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
-    titulo: "Minutos",
-    changeSelect: props.change,
-    errors: props.errors.cierre_reserva_minuto
-  }, select.cierre_reserva_minuto)))))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row v-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "m-font light-danger full-width"
-  }, "Horario de Atenci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-12 container no-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6 container"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-12 "
-  }, "Apertura"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-sm-5 text-left"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
-    titulo: "Hora",
-    changeSelect: props.change,
-    errors: props.errors.apertura_atencion_hora
-  }, select.apertura_atencion_hora))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-sm-2 text-center v-align-center h-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-    className: "c-title",
-    style: {
-      color: "#bfbfbf"
-    }
-  }, ":")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-sm-5 text-left"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
-    titulo: "Minutos",
-    changeSelect: props.change,
-    errors: props.errors.apertura_atencion_minuto
-  }, select.apertura_atencion_minuto))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-6 container"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-12"
-  }, "Cierre"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-sm-5 text-left"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
-    titulo: "Horas",
-    changeSelect: props.change,
-    errors: props.errors.cierre_atencion_hora
-  }, select.cierre_atencion_hora))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-sm-2 text-center v-align-center h-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-    className: "c-title",
-    style: {
-      color: "#bfbfbf"
-    }
-  }, ":")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-sm-5 text-left relative visible"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
-    titulo: "Minutos",
-    changeSelect: props.change,
-    errors: props.errors.cierre_atencion_minuto
-  }, select.cierre_atencion_minuto))))))))));
-};
-
-/***/ }),
-
-/***/ "./resources/js/escritorio/horarios/horarios/HorarioFormulario.jsx":
-/*!*************************************************************************!*\
-  !*** ./resources/js/escritorio/horarios/horarios/HorarioFormulario.jsx ***!
-  \*************************************************************************/
-/*! exports provided: HorarioFormulario */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HorarioFormulario", function() { return HorarioFormulario; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _formularios_Calendario__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../formularios/Calendario */ "./resources/js/escritorio/horarios/formularios/Calendario.jsx");
-/* harmony import */ var _formularios_SelectFields__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../formularios/SelectFields */ "./resources/js/escritorio/horarios/formularios/SelectFields.jsx");
-/* harmony import */ var _formularios_EventoFields__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../formularios/EventoFields */ "./resources/js/escritorio/horarios/formularios/EventoFields.jsx");
+/* harmony import */ var _form_Calendario__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../form/Calendario */ "./resources/js/form/Calendario.jsx");
+/* harmony import */ var _form_SelectFields__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../form/SelectFields */ "./resources/js/form/SelectFields.jsx");
+/* harmony import */ var _form_EventoFields__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../form/EventoFields */ "./resources/js/form/EventoFields.jsx");
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
 /* harmony import */ var _componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/input/Toggle */ "./resources/js/componentes/input/Toggle.jsx");
 /* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
@@ -92694,7 +91815,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-function HorarioFormulario(props) {
+function Formulario(props) {
   var data = props.data,
       _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.fields.id_estado),
       _useState2 = _slicedToArray(_useState, 2),
@@ -92714,7 +91835,7 @@ function HorarioFormulario(props) {
     className: "col-lg-6 relative visible"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: side ? "hidden" : "top-padding full-width overlay"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_formularios_SelectFields__WEBPACK_IMPORTED_MODULE_4__["SelectFields"], {
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_SelectFields__WEBPACK_IMPORTED_MODULE_4__["SelectFields"], {
     editar: props.editar,
     data: data.horarios,
     minutos: data.minutes,
@@ -92723,7 +91844,7 @@ function HorarioFormulario(props) {
     errors: props.errors
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "h-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_formularios_EventoFields__WEBPACK_IMPORTED_MODULE_5__["EventoFields"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_EventoFields__WEBPACK_IMPORTED_MODULE_5__["EventoFields"], {
     side: side,
     editar: props.editar,
     eventos: data.eventos,
@@ -92760,10 +91881,10 @@ function HorarioFormulario(props) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/horarios/horarios/Horarios.jsx":
-/*!****************************************************************!*\
-  !*** ./resources/js/escritorio/horarios/horarios/Horarios.jsx ***!
-  \****************************************************************/
+/***/ "./resources/js/escritorio/horarios/sub/Horarios.jsx":
+/*!***********************************************************!*\
+  !*** ./resources/js/escritorio/horarios/sub/Horarios.jsx ***!
+  \***********************************************************/
 /*! exports provided: Horarios */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -92813,10 +91934,10 @@ function Horarios(props) {
 
 /***/ }),
 
-/***/ "./resources/js/escritorio/horarios/horarios/VerHorario.jsx":
-/*!******************************************************************!*\
-  !*** ./resources/js/escritorio/horarios/horarios/VerHorario.jsx ***!
-  \******************************************************************/
+/***/ "./resources/js/escritorio/horarios/sub/VerHorario.jsx":
+/*!*************************************************************!*\
+  !*** ./resources/js/escritorio/horarios/sub/VerHorario.jsx ***!
+  \*************************************************************/
 /*! exports provided: VerHorario */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -92932,14 +92053,13 @@ function VerHorario(props) {
 /*!*********************************************************!*\
   !*** ./resources/js/escritorio/horarios/validation.jsx ***!
   \*********************************************************/
-/*! exports provided: horariosValidation, feriadoValidation */
+/*! exports provided: validation */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "horariosValidation", function() { return horariosValidation; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "feriadoValidation", function() { return feriadoValidation; });
-var horariosValidation = {
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validation", function() { return validation; });
+var validation = {
   id: {
     rules: {},
     fieldName: "Id"
@@ -93014,158 +92134,6 @@ var horariosValidation = {
     rules: {},
     fieldName: "Estado"
   }
-};
-var feriadoValidation = {
-  id_evento: {
-    rules: {
-      required: true
-    },
-    fieldName: "Eventos"
-  },
-  fecha_feriado: {
-    rules: {
-      required: true
-    },
-    fieldName: "Fecha"
-  },
-  nombre: {
-    rules: {
-      maxLen: 50,
-      required: true
-    },
-    fieldName: "Nombre"
-  },
-  apertura_reserva_hora: {
-    rules: {
-      required: true
-    },
-    fieldName: "Hora apertura de reserva"
-  },
-  apertura_reserva_minuto: {
-    rules: {
-      required: true
-    },
-    fieldName: "Minuto apertura de reserva"
-  },
-  cierre_reserva_hora: {
-    rules: {
-      required: true
-    },
-    fieldName: "Hora cierre de reserva"
-  },
-  cierre_reserva_minuto: {
-    rules: {
-      required: true
-    },
-    fieldName: "Minuto cierre de reserva"
-  },
-  apertura_atencion_hora: {
-    rules: {
-      required: true
-    },
-    fieldName: "Hora apertura atención"
-  },
-  apertura_atencion_minuto: {
-    rules: {
-      required: true
-    },
-    fieldName: "Minuto apertura atención"
-  },
-  cierre_atencion_hora: {
-    rules: {
-      required: true
-    },
-    fieldName: "Hora cierre atención"
-  },
-  cierre_atencion_minuto: {
-    rules: {
-      required: true
-    },
-    fieldName: "Minuto cierre atención"
-  },
-  descripcion: {
-    rules: {
-      maxLen: 100,
-      required: true
-    },
-    fieldName: "Descripción"
-  },
-  id_estado: {
-    rules: {},
-    fieldName: "Estado"
-  }
-};
-
-/***/ }),
-
-/***/ "./resources/js/escritorio/locales/FormularioFranquicia.jsx":
-/*!******************************************************************!*\
-  !*** ./resources/js/escritorio/locales/FormularioFranquicia.jsx ***!
-  \******************************************************************/
-/*! exports provided: FormularioFranquicia */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormularioFranquicia", function() { return FormularioFranquicia; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
-/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
-/* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-
-
-
-
-
-
-var assignList = function assignList(fr, nm) {
-  var list = {};
-  list[fr] = nm;
-  return list;
-};
-
-var FormularioFranquicia = function FormularioFranquicia(props) {
-  var franquicia = {
-    name: "franquicia",
-    selected: props.fields.franquicia,
-    list: props.agregarLocal ? props.data : assignList(props.fields.franquicia, props.data.franquicia.nombre)
-  },
-      agregar = [{
-    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "smaller-text text bold"
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-      className: "fas fa-plus-circle inline-box side-margin"
-    }), "Agregar"),
-    to: '/franquicias/agregar',
-    route: 'franquicias',
-    params: {}
-  }];
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row top-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
-    className: "highlight no-margin m-font"
-  }, "Franquicia")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row top-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-12 text-left relative visible h-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: props.agregarLocal ? "hidden" : "top-padding full-width overlay"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
-    titulo: "Nombre de la franquicia",
-    changeSelect: props.change,
-    errors: props.errors.franquicia
-  }, franquicia)))), props.agregarLocal ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row v-padding justify-content-end"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-    className: "smaller-text"
-  }, "si no existe"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    links: agregar
-  })) : "");
 };
 
 /***/ }),
@@ -93266,6 +92234,9 @@ function LocalesRouting(props) {
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_9__["default"], {
         form: fields,
+        sendRequest: function sendRequest() {
+          return false;
+        },
         validation: _validation__WEBPACK_IMPORTED_MODULE_8__["default"]
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["Formulario"], _extends({
         editar: true,
@@ -93297,6 +92268,9 @@ function LocalesRouting(props) {
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_9__["default"], {
         form: fields,
+        sendRequest: function sendRequest() {
+          return false;
+        },
         validation: _validation__WEBPACK_IMPORTED_MODULE_8__["default"]
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["Formulario"], _extends({
         editar: false,
@@ -93336,9 +92310,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var _configuracion_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../configuracion/FormularioEstablecimiento */ "./resources/js/escritorio/configuracion/FormularioEstablecimiento.jsx");
-/* harmony import */ var _configuracion_FormularioUsuario__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../configuracion/FormularioUsuario */ "./resources/js/escritorio/configuracion/FormularioUsuario.jsx");
-/* harmony import */ var _FormularioFranquicia__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../FormularioFranquicia */ "./resources/js/escritorio/locales/FormularioFranquicia.jsx");
+/* harmony import */ var _form_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../form/FormularioEstablecimiento */ "./resources/js/form/FormularioEstablecimiento.jsx");
+/* harmony import */ var _form_FormularioUsuario__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../form/FormularioUsuario */ "./resources/js/form/FormularioUsuario.jsx");
+/* harmony import */ var _form_FormularioFranquicia__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../form/FormularioFranquicia */ "./resources/js/form/FormularioFranquicia.jsx");
 /* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
 /* harmony import */ var _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../acciones/ActionsByView */ "./resources/js/acciones/ActionsByView.jsx");
@@ -93360,7 +92334,7 @@ function Formulario(props) {
     buttons: props.nav.buttons
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FormularioFranquicia__WEBPACK_IMPORTED_MODULE_5__["FormularioFranquicia"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_FormularioFranquicia__WEBPACK_IMPORTED_MODULE_5__["FormularioFranquicia"], {
     data: data,
     agregarLocal: !props.editar,
     fields: props.fields,
@@ -93370,7 +92344,7 @@ function Formulario(props) {
     className: "row mid-title top-padding"
   }, "Informaci\xF3n del local"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "v-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_3__["FormularioEstablecimiento"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_3__["FormularioEstablecimiento"], {
     userType: "Local",
     data: data,
     fields: props.fields,
@@ -93379,7 +92353,7 @@ function Formulario(props) {
     isFranquicia: true
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "v-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_configuracion_FormularioUsuario__WEBPACK_IMPORTED_MODULE_4__["FormularioUsuario"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_FormularioUsuario__WEBPACK_IMPORTED_MODULE_4__["FormularioUsuario"], {
     data: data,
     fields: props.fields,
     errors: props.errors,
@@ -93805,11 +92779,11 @@ function PromocionesRouting(props) {
     path: props.match.url,
     exact: true,
     component: function component(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Promociones__WEBPACK_IMPORTED_MODULE_4__["Promociones"], _extends({
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Promociones__WEBPACK_IMPORTED_MODULE_4__["Promociones"], {
         data: props.data,
         toggleModal: openModal,
         nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_1__["Navegacion"].listado('promociones')
-      }, match));
+      });
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["Route"], {
     path: "".concat(props.match.url, "/editar/:id"),
@@ -93825,6 +92799,9 @@ function PromocionesRouting(props) {
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_8__["default"], {
         form: fields,
+        sendRequest: function sendRequest() {
+          return false;
+        },
         validation: _validation__WEBPACK_IMPORTED_MODULE_9__["default"]
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], _extends({
         data: props.data,
@@ -93847,6 +92824,9 @@ function PromocionesRouting(props) {
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_8__["default"], {
         form: fields,
+        sendRequest: function sendRequest() {
+          return false;
+        },
         validation: _validation__WEBPACK_IMPORTED_MODULE_9__["default"]
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], _extends({
         data: {
@@ -94235,6 +93215,9 @@ var ReservasRouting = function ReservasRouting(props) {
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_7__["default"], {
         form: form,
+        sendRequest: function sendRequest() {
+          return false;
+        },
         validation: _validation__WEBPACK_IMPORTED_MODULE_8__["default"]
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], _extends({
         data: props.data,
@@ -94459,7 +93442,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _componentes_basic_CustomLink__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../componentes/basic/CustomLink */ "./resources/js/componentes/basic/CustomLink.jsx");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _horarios_formularios_Calendario__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../horarios/formularios/Calendario */ "./resources/js/escritorio/horarios/formularios/Calendario.jsx");
+/* harmony import */ var _form_Calendario__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../form/Calendario */ "./resources/js/form/Calendario.jsx");
 /* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
 /* harmony import */ var _acciones_ReservasActions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../acciones/ReservasActions */ "./resources/js/acciones/ReservasActions.jsx");
@@ -94619,7 +93602,7 @@ function (_Component) {
         className: "col-md-6 container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_horarios_formularios_Calendario__WEBPACK_IMPORTED_MODULE_4__["Calendario"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_Calendario__WEBPACK_IMPORTED_MODULE_4__["Calendario"], {
         editar: true,
         date: date,
         data: data
@@ -94898,6 +93881,9 @@ function UbicacionesRouting(props) {
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_7__["default"], {
         form: form,
+        sendRequest: function sendRequest() {
+          return false;
+        },
         validation: _validation__WEBPACK_IMPORTED_MODULE_9__["default"]
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], _extends({
         editar: true,
@@ -94920,6 +93906,9 @@ function UbicacionesRouting(props) {
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_Validator__WEBPACK_IMPORTED_MODULE_7__["default"], {
         form: form,
+        sendRequest: function sendRequest() {
+          return false;
+        },
         validation: _validation__WEBPACK_IMPORTED_MODULE_9__["default"]
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["Formulario"], _extends({
         editar: false,
@@ -95189,6 +94178,822 @@ var validation = {
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (validation);
+
+/***/ }),
+
+/***/ "./resources/js/form/Calendario.jsx":
+/*!******************************************!*\
+  !*** ./resources/js/form/Calendario.jsx ***!
+  \******************************************/
+/*! exports provided: Calendario */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Calendario", function() { return Calendario; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-calendar */ "./node_modules/react-calendar/dist/entry.js");
+/* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_calendar__WEBPACK_IMPORTED_MODULE_3__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+function CalendarioMemo(props) {
+  var today = new Date(props.date),
+      _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({
+    event: null,
+    dt: today
+  }),
+      _useState2 = _slicedToArray(_useState, 2),
+      dateEvent = _useState2[0],
+      changeDate = _useState2[1],
+      frst = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(true),
+      inputRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null),
+      changeDay = function changeDay(date) {
+    changeDate({
+      event: new Event('change', {
+        bubbles: true
+      }),
+      dt: date
+    });
+  },
+      tileDisabled = function tileDisabled(_ref) {
+    var activeStartDate = _ref.activeStartDate,
+        date = _ref.date,
+        view = _ref.view;
+    var disableByDate = false;
+    if (props.editar) disableByDate = today.getDate() < date.getDate() || today.getDate() > date.getDate();else disableByDate = view === 'month' ? props.data.feriados[date.getDate()] : date.getMonth() < activeStartDate.getMonth() || date.getFullYear() < activeStartDate.getFullYear();
+    return disableByDate;
+  },
+      monthChange = function monthChange(date) {
+    props.fetch('/horarios/feriados/agregar', {
+      date: date,
+      refresh: true
+    }, 'horarios/feriados');
+  },
+      navChange = function navChange(_ref2) {
+    var activeStartDate = _ref2.activeStartDate,
+        view = _ref2.view;
+    props.fetch('/horarios/feriados/agregar', {
+      date: activeStartDate,
+      refresh: true
+    }, 'horarios/feriados');
+  };
+
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    if (!frst.current) inputRef.current.dispatchEvent(dateEvent.event);else frst.current = false;
+  }, [dateEvent]);
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    readOnly: true,
+    type: "date",
+    value: dateEvent.dt,
+    onChange: props.change,
+    name: "fecha_feriado",
+    ref: inputRef,
+    className: "hidden"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_calendar__WEBPACK_IMPORTED_MODULE_3___default.a, {
+    showNavigation: !props.editar,
+    tileClassName: "relative",
+    showNeighboringMonth: false,
+    value: props.editar ? today : dateEvent.dt,
+    minDate: new Date(),
+    onClickDay: props.editar ? function () {
+      return false;
+    } : function (date) {
+      return changeDay(new Date(date));
+    },
+    onClickMonth: monthChange,
+    tileDisabled: tileDisabled,
+    onActiveDateChange: navChange
+  }));
+}
+
+var Calendario = react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(CalendarioMemo);
+
+/***/ }),
+
+/***/ "./resources/js/form/EventoFields.jsx":
+/*!********************************************!*\
+  !*** ./resources/js/form/EventoFields.jsx ***!
+  \********************************************/
+/*! exports provided: EventoFields */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EventoFields", function() { return EventoFields; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _componentes_input_MultipleSelect__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../componentes/input/MultipleSelect */ "./resources/js/componentes/input/MultipleSelect.jsx");
+
+
+
+
+var EventoFields = function EventoFields(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row relative visible v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: props.side ? "hidden" : "top-padding full-width overlay"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "m-font light-danger full-width"
+  }, "Eventos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-12 no-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_MultipleSelect__WEBPACK_IMPORTED_MODULE_3__["MultipleSelect"], {
+    fieldName: "Eventos",
+    name: "id_evento",
+    titulo: "Selecciona los eventos",
+    optionData: props.eventos.list,
+    errors: props.errors.id_evento,
+    changeSelect: props.change,
+    selected: props.fields.id_evento
+  }))));
+};
+
+/***/ }),
+
+/***/ "./resources/js/form/FormularioEstablecimiento.jsx":
+/*!*********************************************************!*\
+  !*** ./resources/js/form/FormularioEstablecimiento.jsx ***!
+  \*********************************************************/
+/*! exports provided: FormularioEstablecimiento */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormularioEstablecimiento", function() { return FormularioEstablecimiento; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var _FormularioUbicacion__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./FormularioUbicacion */ "./resources/js/form/FormularioUbicacion.jsx");
+
+
+
+
+var FormularioEstablecimiento = function FormularioEstablecimiento(props) {
+  var data = props.data,
+      userType = props.userType;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
+    rows: 1,
+    titulo: "Nombre",
+    name: "nombre",
+    holder: "Nombre de ".concat(userType, " hasta 100 caracteres"),
+    errors: props.errors.nombre,
+    value: props.fields.nombre,
+    changeHandler: props.change
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
+    rows: 1,
+    titulo: "Correo",
+    name: "correo_contacto",
+    holder: "Correo de contacto de ".concat(userType, " hasta 100 caracteres"),
+    errors: props.errors.correo,
+    value: props.fields.correo,
+    changeHandler: props.change
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
+    rows: 1,
+    titulo: "Telefono",
+    name: "telefono_contacto",
+    holder: "Tel\xE9fono de contacto de ".concat(userType, " hasta 100 caracteres"),
+    errors: props.errors.telefono,
+    value: props.fields.telefono,
+    changeHandler: props.change
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
+    rows: 1,
+    titulo: "Raz\xF3n Social",
+    name: "razon_social",
+    holder: "Raz\xF3n social hasta 100 caracteres",
+    errors: props.errors.razon_social,
+    value: props.fields.razon_social,
+    changeHandler: props.change
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
+    rows: 1,
+    titulo: "CUIT / CUIL",
+    name: "cuit_cuil",
+    holder: "CUIT / CUIL hasta 11 caracteres",
+    errors: props.errors.cuit_cuil,
+    value: props.fields.cuit_cuil,
+    changeHandler: props.change
+  }))), props.isFranquicia ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row mid-title v-padding"
+  }, "Informaci\xF3n del encargado"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row v-padding "
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
+    rows: 1,
+    titulo: "Nombre del encargado",
+    name: "nombre_encargado",
+    holder: "Nombre del encargado hasta 100 caracteres",
+    errors: props.errors.nombre_encargado,
+    value: props.fields.nombre_encargado,
+    changeHandler: props.change
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
+    rows: 1,
+    titulo: "Tel\xE9fono del encargado",
+    name: "telefono_encargado",
+    holder: "Tel\xE9fono del encargado hasta 20 caracteres",
+    errors: props.errors.telefono_encargado,
+    value: props.fields.telefono_encargado,
+    changeHandler: props.change
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
+    rows: 1,
+    titulo: "Correo del encargado",
+    name: "correo_encargado",
+    holder: "Correo del encargado hasta 100 caracteres",
+    errors: props.errors.correo_encargado,
+    value: props.fields.correo_encargado,
+    changeHandler: props.change
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row mid-title top-padding"
+  }, "Ubicaci\xF3n de ".concat(userType)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FormularioUbicacion__WEBPACK_IMPORTED_MODULE_3__["FormularioUbicacion"], {
+    data: data,
+    errors: props.errors,
+    fields: props.fields,
+    change: props.change
+  })));
+};
+
+/***/ }),
+
+/***/ "./resources/js/form/FormularioFranquicia.jsx":
+/*!****************************************************!*\
+  !*** ./resources/js/form/FormularioFranquicia.jsx ***!
+  \****************************************************/
+/*! exports provided: FormularioFranquicia */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormularioFranquicia", function() { return FormularioFranquicia; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
+/* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+
+
+
+
+
+var assignList = function assignList(fr, nm) {
+  var list = {};
+  list[fr] = nm;
+  return list;
+};
+
+var FormularioFranquicia = function FormularioFranquicia(props) {
+  var franquicia = {
+    name: "franquicia",
+    selected: props.fields.franquicia,
+    list: props.agregarLocal ? props.data : assignList(props.fields.franquicia, props.data.franquicia.nombre)
+  },
+      agregar = [{
+    title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "smaller-text text bold"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fas fa-plus-circle inline-box side-margin"
+    }), "Agregar"),
+    to: '/franquicias/agregar',
+    route: 'franquicias',
+    params: {}
+  }];
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row top-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "highlight no-margin m-font"
+  }, "Franquicia")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row top-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-12 text-left relative visible h-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: props.agregarLocal ? "hidden" : "top-padding full-width overlay"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
+    titulo: "Nombre de la franquicia",
+    changeSelect: props.change,
+    errors: props.errors.franquicia
+  }, franquicia)))), props.agregarLocal ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row v-padding justify-content-end"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "smaller-text"
+  }, "si no existe"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    links: agregar
+  })) : "");
+};
+
+/***/ }),
+
+/***/ "./resources/js/form/FormularioReservas.jsx":
+/*!**************************************************!*\
+  !*** ./resources/js/form/FormularioReservas.jsx ***!
+  \**************************************************/
+/*! exports provided: FormularioReservas */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormularioReservas", function() { return FormularioReservas; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
+/* harmony import */ var _componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../componentes/input/Numeric */ "./resources/js/componentes/input/Numeric.jsx");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+
+
+
+var minutos = {
+  1: "1 minuto",
+  2: "2 minutos",
+  3: "3 minutos",
+  5: "5 minutos",
+  4: "4 minutos",
+  6: "6 minutos",
+  10: "10 minutos",
+  12: "12 minutos",
+  15: "15 minutos",
+  20: "20 minutos",
+  30: "30 minutos"
+},
+    caida = {
+  10: "10 minutos",
+  20: "20 minutos",
+  30: "30 minutos",
+  40: "40 minutos",
+  50: "50 minutos"
+},
+    antelacion = {
+  1: "1 horas",
+  2: "2 horas",
+  3: "3 horas",
+  4: "4 horas",
+  5: "5 horas",
+  6: "6 horas",
+  7: "7 horas",
+  8: "8 horas",
+  9: "9 horas",
+  12: "12 horas",
+  24: "24 horas",
+  36: "36 horas"
+};
+var FormularioReservas = function FormularioReservas(props) {
+  var select = {
+    intervalo: {
+      name: "intervalo_reserva",
+      selected: props.fields.intervalo_reserva,
+      list: minutos
+    },
+    caida: {
+      name: "caida_reserva",
+      selected: props.fields.caida_reserva,
+      list: caida
+    },
+    antelacion: {
+      name: "antelacion_reserva",
+      selected: props.fields.antelacion_reserva,
+      list: antelacion
+    }
+  };
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "highlight no-margin m-font"
+  }, "Antelaci\xF3n de la reserva"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__["Select"], _extends({
+    titulo: "Selecciona la antelaci\xF3n de las reservas",
+    changeSelect: props.change,
+    errors: props.errors.antelacion_reserva
+  }, select.antelacion)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "smaller-text"
+  }, "El m\xEDnimo de horas que el usuario debe esperar antes de hacer la reservaci\xF3n (si la suma de esta y la hora actual excede el cierre de reservas actual, el usuario tendr\xE1 que reservar el pr\xF3ximo d\xEDa)")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "highlight no-margin m-font"
+  }, "Intervalo de la reserva"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__["Select"], _extends({
+    titulo: "Selecciona la antelaci\xF3n de las reservas",
+    changeSelect: props.change,
+    errors: props.errors.intervalo_reserva
+  }, select.intervalo)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "smaller-text"
+  }, "El espacio temporal entre los minutos disponibles para hacer la reserva en una hora."))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "highlight no-margin m-font"
+  }, "Ca\xEDda de la reserva"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_2__["Select"], _extends({
+    titulo: "Selecciona la antelaci\xF3n de las reservas",
+    changeSelect: props.change,
+    errors: props.errors.caida_reserva
+  }, select.caida)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "smaller-text"
+  }, "La cantidad de minutos que pasar\xE1n desde la hora de la reserva para que se considere como inv\xE1lida")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Numeric__WEBPACK_IMPORTED_MODULE_3__["Numeric"], {
+    titulo: "Disponibilidad de reservas",
+    name: "disponibilidad_reserva",
+    holder: "Puedes elegir hasta 60 d\xEDas como m\xE1ximo",
+    value: props.fields.disponibilidad_reserva,
+    changeHandler: props.change,
+    errors: props.errors.disponibilidad_reserva
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "smaller-text"
+  }, "La cantidad de d\xEDas a partir de la fecha actual, disponibles para hacer la reserva."))));
+};
+
+/***/ }),
+
+/***/ "./resources/js/form/FormularioUbicacion.jsx":
+/*!***************************************************!*\
+  !*** ./resources/js/form/FormularioUbicacion.jsx ***!
+  \***************************************************/
+/*! exports provided: FormularioUbicacion */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormularioUbicacion", function() { return FormularioUbicacion; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+
+
+
+var provincias = {
+  1: "Provincia de Buenos Aires",
+  2: "Capital Federal",
+  3: "Catamarca",
+  4: "Chaco",
+  5: "Chubut",
+  6: "Córdoba",
+  7: "Corrientes",
+  8: "Entre Ríos",
+  9: "Formosa",
+  10: "Jujuy",
+  11: "La Pampa",
+  12: "La Rioja",
+  13: "Mendoza",
+  14: "Misiones",
+  15: "Neuquén",
+  16: "Río Negro",
+  17: "Salta",
+  18: "San Juan",
+  19: "San Luis",
+  20: "Santa Cruz",
+  21: "Santa Fé",
+  22: "Santiago del Estero",
+  23: "Tierra del Fuego",
+  24: "Tucumán"
+};
+var FormularioUbicacion = function FormularioUbicacion(props) {
+  var provincia = {
+    name: "id_provincia",
+    selected: props.fields.id_provincia,
+    list: provincias
+  };
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "highlight no-margin m-font"
+  }, "Provincia"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
+    titulo: "Selecciona la provincia",
+    changeSelect: props.change,
+    errors: props.errors.id_provincia
+  }, provincia))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
+    rows: 4,
+    titulo: "Direcci\xF3n del local",
+    name: "direccion",
+    holder: "Direcci\xF3n hasta 150 caracteres",
+    errors: props.errors.direccion,
+    value: props.fields.direccion,
+    changeHandler: props.change
+  })));
+};
+
+/***/ }),
+
+/***/ "./resources/js/form/FormularioUsuario.jsx":
+/*!*************************************************!*\
+  !*** ./resources/js/form/FormularioUsuario.jsx ***!
+  \*************************************************/
+/*! exports provided: FormularioUsuario */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormularioUsuario", function() { return FormularioUsuario; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+/**
+ * react basic
+ */
+
+
+/**
+ * input elem
+ */
+
+
+var FormularioUsuario = function FormularioUsuario(props) {
+  var data = props.data;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row mid-title"
+  }, "Informaci\xF3n del Usuario"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
+    rows: 1,
+    titulo: "Username",
+    name: "username",
+    holder: "Nombre de Usuario hasta 100 caracteres",
+    errors: props.errors.username,
+    value: props.fields.username,
+    changeHandler: props.change
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
+    rows: 1,
+    titulo: "Email de usuario",
+    name: "email",
+    holder: "Email de Usuario hasta 100 caracteres",
+    errors: props.errors.email,
+    value: props.fields.email,
+    changeHandler: props.change
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_2__["Text"], {
+    rows: 1,
+    titulo: "Contrase\xF1a",
+    name: "password",
+    holder: "Nueva contrase\xF1a",
+    errors: props.errors.password,
+    value: props.fields.password,
+    changeHandler: props.change
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "smaller-text"
+  }, "Ingresa un nuevo valor para cambiarla"))));
+};
+
+/***/ }),
+
+/***/ "./resources/js/form/SelectFields.jsx":
+/*!********************************************!*\
+  !*** ./resources/js/form/SelectFields.jsx ***!
+  \********************************************/
+/*! exports provided: SelectFields */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SelectFields", function() { return SelectFields; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../componentes/input/Select */ "./resources/js/componentes/input/Select.jsx");
+/* harmony import */ var _componentes_input_Text__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../componentes/input/Text */ "./resources/js/componentes/input/Text.jsx");
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+/**
+ * react basic
+ */
+
+
+
+
+
+var SelectFields = function SelectFields(props) {
+  var fields = props.fields,
+      select = {
+    apertura_reserva_hora: {
+      name: "apertura_reserva_hora",
+      selected: fields.apertura_reserva_hora,
+      list: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__["HOURS"]
+    },
+    apertura_reserva_minuto: {
+      name: "apertura_reserva_minuto",
+      selected: fields.apertura_reserva_minuto,
+      list: props.minutos
+    },
+    cierre_reserva_hora: {
+      name: "cierre_reserva_hora",
+      selected: fields.cierre_reserva_hora,
+      list: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__["HOURS"]
+    },
+    cierre_reserva_minuto: {
+      name: "cierre_reserva_minuto",
+      selected: fields.cierre_reserva_minuto,
+      list: props.minutos
+    },
+    apertura_atencion_hora: {
+      name: "apertura_atencion_hora",
+      selected: fields.apertura_atencion_hora,
+      list: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__["HOURS"]
+    },
+    apertura_atencion_minuto: {
+      name: "apertura_atencion_minuto",
+      selected: fields.apertura_atencion_minuto,
+      list: props.minutos
+    },
+    cierre_atencion_hora: {
+      name: "cierre_atencion_hora",
+      selected: fields.cierre_atencion_hora,
+      list: _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_1__["HOURS"]
+    },
+    cierre_atencion_minuto: {
+      name: "cierre_atencion_minuto",
+      selected: fields.cierre_atencion_minuto,
+      list: props.minutos
+    }
+  };
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, props.type === 'feriado' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-12 no-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Text__WEBPACK_IMPORTED_MODULE_4__["Text"], {
+    rows: 1,
+    titulo: "Nombre",
+    name: "nombre",
+    holder: "Nombre del feriado hasta 50 caracteres",
+    errors: props.errors.nombre,
+    value: props.fields.nombre,
+    changeHandler: props.change
+  })) : "", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-12 container top-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "m-font light-danger full-width row"
+  }, "Horario de Reserva"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-12 container no-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6 container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-12"
+  }, "Apertura"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-5 text-left"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
+    titulo: "Hora",
+    changeSelect: props.change,
+    errors: props.errors.apertura_reserva_hora
+  }, select.apertura_reserva_hora))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-2 text-center v-align-center h-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "c-title",
+    style: {
+      color: "#bfbfbf"
+    }
+  }, ":")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-5 text-left relative visible"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
+    titulo: "Minuto",
+    changeSelect: props.change,
+    errors: props.errors.apertura_reserva_minuto
+  }, select.apertura_reserva_minuto))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6 container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-12"
+  }, "Cierre"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-5 text-left"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
+    titulo: "Hora",
+    changeSelect: props.change,
+    errors: props.errors.cierre_reserva_hora
+  }, select.cierre_reserva_hora))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-2 text-center v-align-center"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "c-title",
+    style: {
+      color: "#bfbfbf"
+    }
+  }, ":")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-5 text-left relative visible"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
+    titulo: "Minutos",
+    changeSelect: props.change,
+    errors: props.errors.cierre_reserva_minuto
+  }, select.cierre_reserva_minuto)))))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row v-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "m-font light-danger full-width"
+  }, "Horario de Atenci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-12 container no-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6 container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-12 "
+  }, "Apertura"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-5 text-left"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
+    titulo: "Hora",
+    changeSelect: props.change,
+    errors: props.errors.apertura_atencion_hora
+  }, select.apertura_atencion_hora))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-2 text-center v-align-center h-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "c-title",
+    style: {
+      color: "#bfbfbf"
+    }
+  }, ":")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-5 text-left"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
+    titulo: "Minutos",
+    changeSelect: props.change,
+    errors: props.errors.apertura_atencion_minuto
+  }, select.apertura_atencion_minuto))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-6 container"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-12"
+  }, "Cierre"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-5 text-left"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
+    titulo: "Horas",
+    changeSelect: props.change,
+    errors: props.errors.cierre_atencion_hora
+  }, select.cierre_atencion_hora))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-2 text-center v-align-center h-padding"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    className: "c-title",
+    style: {
+      color: "#bfbfbf"
+    }
+  }, ":")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-5 text-left relative visible"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
+    titulo: "Minutos",
+    changeSelect: props.change,
+    errors: props.errors.cierre_atencion_minuto
+  }, select.cierre_atencion_minuto))))))))));
+};
 
 /***/ }),
 
@@ -95666,7 +95471,7 @@ var handlers = {
   franquicias: _sub_franquiciasHandlers__WEBPACK_IMPORTED_MODULE_5__["franquiciasHandlers"],
   eventos: _sub_eventosHandlers__WEBPACK_IMPORTED_MODULE_6__["eventosHandlers"],
   horarios: _sub_horariosHandlers__WEBPACK_IMPORTED_MODULE_7__["horariosHandlers"],
-  'horarios/feriados': _sub_feriadosHandlers__WEBPACK_IMPORTED_MODULE_8__["feriadosHandlers"],
+  feriados: _sub_feriadosHandlers__WEBPACK_IMPORTED_MODULE_8__["feriadosHandlers"],
   configuracion: _sub_configuracionHandlers__WEBPACK_IMPORTED_MODULE_9__["configuracionHandlers"]
 };
 var handlerArray = Object.values(handlers).reduce(function (t, e) {
@@ -95932,8 +95737,8 @@ var eventosHandlers = {
   }
 };
 
-var editFormHandler = function editFormHandler(endpoint, location, params) {
-  return function (component) {
+var editFormHandler = function editFormHandler(endpoint) {
+  return function () {
     var _this = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
@@ -95966,8 +95771,8 @@ var editFormHandler = function editFormHandler(endpoint, location, params) {
   };
 };
 
-var addFormHandler = function addFormHandler(endpoint, location) {
-  return function (component) {
+var addFormHandler = function addFormHandler(endpoint) {
+  return function () {
     var _this2 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
@@ -95992,7 +95797,7 @@ var addFormHandler = function addFormHandler(endpoint, location) {
   };
 };
 
-var listHandler = function listHandler(endpoint, location) {
+var listHandler = function listHandler(endpoint) {
   return function (component) {
     var _this3 = this;
 
@@ -96015,8 +95820,8 @@ var listHandler = function listHandler(endpoint, location) {
   };
 };
 
-var singleHandler = function singleHandler(endpoint, location) {
-  return function (component) {
+var singleHandler = function singleHandler(endpoint) {
+  return function () {
     var _this4 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
@@ -96084,26 +95889,26 @@ __webpack_require__.r(__webpack_exports__);
 
 var feriadosHandlers = {
   list: [{
-    endpoint: "/horarios/feriados",
-    match: /(\/horarios\/feriados)$/,
+    endpoint: "/feriados",
+    match: /(\/feriados)$/,
     callback: function callback(params) {
       return listHandler("/feriados/list/".concat(user.id, "/"), "/horarios/feriados");
     }
   }, {
-    endpoint: "/horarios/feriados/agregar",
-    match: /\/(horarios\/feriados\/agregar)$/,
+    endpoint: "/feriados/agregar",
+    match: /(\/feriados\/agregar)$/,
     callback: function callback(params) {
       return addFormHandler("/feriados/add/".concat(user.id, "/"), "/horarios/feriados/agregar");
     }
   }, {
-    endpoint: "/horarios/feriados/editar/:id",
-    match: /\/horarios\/(feriados\/editar\/\d+)$/,
+    endpoint: "/feriados/editar/:id",
+    match: /\/(feriados\/editar\/\d+)$/,
     callback: function callback(params) {
       return editFormHandler("/feriados/single/".concat(user.id, "/").concat(params.id), "/horarios/feriados/editar/".concat(params.id));
     }
   }, {
-    endpoint: "/horarios/feriados/:id",
-    match: /\/horarios\/feriados\/(\d+)$/,
+    endpoint: "/feriados/:id",
+    match: /\/feriados\/(\d+)$/,
     callback: function callback(params) {
       return singleHandler("/feriados/single/".concat(user.id, "/").concat(params.id), "/horarios/feriados/".concat(params.id));
     }
@@ -96136,10 +95941,7 @@ var editFormHandler = function editFormHandler(endpoint, location) {
         },
         nombre: data.nombre,
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        }),
-        refresh: true
+        location: _this.props.location
       });
     })["catch"](this.displayErrors);
   };
@@ -96163,10 +95965,7 @@ var addFormHandler = function addFormHandler(endpoint, location) {
           minutes: Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_4__["generateHoursFromInterval"])(response.data.intervalo)
         },
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        }),
-        refresh: true
+        location: _this2.props.location
       });
     })["catch"](this.displayErrors);
   };
@@ -96190,10 +95989,7 @@ var listHandler = function listHandler(endpoint, location) {
           show: params.show || "2"
         },
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        }),
-        refresh: true
+        location: _this3.props.location
       });
     })["catch"](this.displayErrors);
   };
@@ -96217,10 +96013,8 @@ var singleHandler = function singleHandler(endpoint, location) {
           intervalo: response.data.intervalo
         },
         nombre: data.nombre,
-        loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this4.props.location,
+        loadFinished: true
       });
     })["catch"](this.displayErrors);
   };
@@ -96316,9 +96110,7 @@ var addFormHandler = function addFormHandler(endpoint, location) {
     this.setState({
       data: true,
       loadFinished: true,
-      redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-        to: location
-      })
+      location: this.props.location
     });
   };
 };
@@ -96335,9 +96127,7 @@ var listHandler = function listHandler(endpoint, location) {
       _this2.setState({
         data: response.data.usuarios.data,
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this2.props.location
       });
     })["catch"](this.displayErrors);
   };
@@ -96358,9 +96148,7 @@ var singleHandler = function singleHandler(endpoint, location) {
         data: data,
         nombre: data.nombre,
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this3.props.location
       });
     })["catch"](this.displayErrors);
   };
@@ -96452,9 +96240,7 @@ var editFormHandler = function editFormHandler(endpoint, location) {
           side: response.data.horarios[0].estado === 'laboral'
         },
         nombre: "Horario del ".concat(nombre),
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        }),
+        location: _this.props.location,
         loadFinished: true
       });
     })["catch"](this.displayErrors);
@@ -96476,9 +96262,7 @@ var addFormHandler = function addFormHandler(endpoint, location) {
           eventos: response.data.eventos,
           minutes: Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_4__["generateHoursFromInterval"])(response.data.intervalo)
         },
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        }),
+        location: _this2.props.location,
         loadFinished: true
       });
     })["catch"](this.displayErrors);
@@ -96496,9 +96280,7 @@ var listHandler = function listHandler(endpoint, location) {
     request.then(function (response) {
       _this3.setState({
         data: response.data.horarios.data,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        }),
+        location: _this3.props.location,
         loadFinished: true
       });
     })["catch"](this.displayErrors);
@@ -96520,9 +96302,7 @@ var singleHandler = function singleHandler(endpoint, location) {
       _this4.setState({
         data: data,
         nombre: "Horario del ".concat(nombre),
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        }),
+        location: _this4.props.location,
         loadFinished: true
       });
     })["catch"](this.displayErrors);
@@ -96606,9 +96386,7 @@ var editFormHandler = function editFormHandler(endpoint, location) {
         data: data,
         nombre: data.nombre,
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this.props.location
       });
     })["catch"](this.displayErrors);
   };
@@ -96628,9 +96406,7 @@ var addFormHandler = function addFormHandler(endpoint, location) {
       _this2.setState({
         data: data,
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this2.props.location
       });
     })["catch"](this.displayErrors);
   };
@@ -96648,9 +96424,7 @@ var listHandler = function listHandler(endpoint, location) {
       _this3.setState({
         data: response.data.locales.data,
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this3.props.location
       });
     })["catch"](this.displayErrors);
   };
@@ -96671,9 +96445,7 @@ var singleHandler = function singleHandler(endpoint, location) {
         data: response.data.data,
         loadFinished: true,
         nombre: data.nombre,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this4.props.location
       });
     })["catch"](this.displayErrors);
   };
@@ -96762,9 +96534,7 @@ var singleHandler = function singleHandler(endpoint, location) {
         data: data,
         nombre: data.nombre,
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this.props.location
       });
     })["catch"](this.displayErrors);
   };
@@ -96782,9 +96552,7 @@ var listHandler = function listHandler(endpoint, location) {
       _this2.setState({
         data: response.data.promociones.data,
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this2.props.location
       });
     })["catch"](this.displayErrors);
   };
@@ -96814,9 +96582,7 @@ var editFormHandler = function editFormHandler(endpoint, location) {
         },
         nombre: data.nombre,
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this3.props.location
       });
     })["catch"](this.displayErrors);
   };
@@ -96834,9 +96600,7 @@ var addFormHandler = function addFormHandler(endpoint, location) {
       _this4.setState({
         data: _objectSpread({}, response.data),
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this4.props.location
       });
     })["catch"](this.displayErrors);
   };
@@ -96919,11 +96683,7 @@ var listHandler = function listHandler(endpoint, location) {
           date: date,
           show: params.show || "1"
         },
-        refresh: params.refresh || false,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        }),
-        //?v=${params.show}&d=${date.getDate()}&m=${date.getMonth()+1}&y=${date.getFullYear()}`}/>,
+        location: _this.props.location,
         loadFinished: true
       });
     })["catch"](this.displayErrors);
@@ -96945,9 +96705,7 @@ var singleHandler = function singleHandler(endpoint, location) {
         data: data,
         nombre: "Reserva de ".concat(data.nombre, " ").concat(data.apellido),
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this2.props.location
       });
     })["catch"](this.displayErrors);
   };
@@ -96971,10 +96729,7 @@ var formHandler = function formHandler(endpoint, location) {
           date: date
         },
         loadFinished: true,
-        refresh: params.refresh || false,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this3.props.location
       });
     })["catch"](this.displayErrors);
   };
@@ -97038,81 +96793,74 @@ var ubicacionesHandlers = {
   form: []
 };
 
-var singleHandler = function singleHandler(endpoint, location) {
-  return function (params) {
+var singleHandler = function singleHandler(endpoint) {
+  return function () {
     var _this = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       var data = response.data.ubicaciones[0];
 
       _this.setState({
         data: data,
         nombre: data.nombre,
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this.props.location
       });
     })["catch"](this.displayErrors);
   };
 };
 
-var listHandler = function listHandler(endpoint, location) {
-  return function (params) {
+var listHandler = function listHandler(endpoint) {
+  return function () {
     var _this2 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       _this2.setState({
         data: response.data.ubicaciones.data,
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this2.props.location
       });
-    })["catch"](this.displayErrors);
+    })["catch"](function (err) {
+      return console.log(err);
+    });
   };
 };
 
-var editFormHandler = function editFormHandler(endpoint, location) {
-  return function (params) {
+var editFormHandler = function editFormHandler(endpoint) {
+  return function () {
     var _this3 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       var data = response.data.ubicaciones[0];
 
       _this3.setState({
         data: data,
         nombre: data.nombre,
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this3.props.location
       });
     })["catch"](this.displayErrors);
   };
 };
 
-var addFormHandler = function addFormHandler(endpoint, location) {
-  return function (params) {
+var addFormHandler = function addFormHandler(endpoint) {
+  return function () {
     this.setState({
       data: true,
-      loading: 100,
       loadFinished: true,
-      redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-        to: location
-      })
+      location: this.props.location
     });
   };
 };
@@ -97262,7 +97010,6 @@ function (_Component) {
 
       var handlePromise = function handlePromise(resolve, reject) {
         _this3.state.fetchData(component).then(function (res) {
-          //console.log(res)
           if (res instanceof Error) reject(res);else resolve(message);
         });
       };
@@ -97274,7 +97021,7 @@ function (_Component) {
   }, {
     key: "shouldComponentUpdate",
     value: function shouldComponentUpdate(np, ns) {
-      return np.location !== this.props.location || ns.loadFinished !== this.state.loadFinished || np.loading !== 0;
+      return np.location !== this.props.location || ns.loadFinished !== this.state.loadFinished;
     }
   }, {
     key: "componentDidUpdate",
@@ -97288,10 +97035,6 @@ function (_Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      window.addEventListener('onhashchange', function (e) {
-        e.preventDefault();
-        console.log('culo');
-      });
       this.routeChange(this.props.location, {
         message: null
       });
@@ -97302,7 +97045,8 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var location = "escritorio".concat(this.props.location.pathname);
+      var location = this.state.location ? "escritorio".concat(this.state.location.pathname) : "escritorio";
+      console.log('render');
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(WaitsLoading.Provider, {
         value: this.awaitLoading
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_LoadBar__WEBPACK_IMPORTED_MODULE_5__["LoadBar"], {
@@ -99441,8 +99185,8 @@ function displayBackendErrors(errors) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Proyectos\Reservas\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Proyectos\Reservas\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\laravel\reservas\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\laravel\reservas\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

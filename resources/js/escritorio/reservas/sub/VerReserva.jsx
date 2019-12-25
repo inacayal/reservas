@@ -7,7 +7,7 @@ import React, {
 import {Redirect} from 'react-router-dom';
 import CustomLink from '../../../componentes/basic/CustomLink';
 import ReactDOM from 'react-dom';
-import {Calendario} from '../../horarios/formularios/Calendario';
+import {Calendario} from '../../../form/Calendario';
 import {MONTHS} from '../../../constantes/DaysMonths';
 import Titulo from '../../../componentes/basic/Titulo';
 import {ReservasActions} from '../../../acciones/ReservasActions';

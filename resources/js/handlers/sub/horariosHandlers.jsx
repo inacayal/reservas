@@ -62,7 +62,7 @@ const editFormHandler = (endpoint,location) => {
                             side: response.data.horarios[0].estado === 'laboral'
                         },
                         nombre:`Horario del ${nombre}`,
-                        redirect:<Redirect to={location}/>,
+                        location:this.props.location,
                         loadFinished: true
                     });
                 }
@@ -86,7 +86,7 @@ const addFormHandler = (endpoint,location) => {
                             eventos: response.data.eventos,
                             minutes: generateHoursFromInterval(response.data.intervalo)
                         },
-                        redirect:<Redirect to={location}/>,
+                        location:this.props.location,
                         loadFinished: true
                     });
                 }
@@ -107,7 +107,7 @@ const listHandler = (endpoint,location) => {
                 response => {
                     this.setState({
                         data: response.data.horarios.data,
-                        redirect:<Redirect to={location}/>,
+                        location:this.props.location,
                         loadFinished:true
                     });
                 }
@@ -131,7 +131,7 @@ const singleHandler = (endpoint,location) => {
                     this.setState({
                         data: data,
                         nombre:`Horario del ${nombre}`,
-                        redirect:<Redirect to={location}/>,
+                        location:this.props.location,
                         loadFinished:true
                     });
                 }

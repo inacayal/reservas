@@ -2,8 +2,8 @@ import React, {
     Component
 } from 'react';
 import ReactDOM from 'react-dom';
-import { Select } from '../../componentes/input/Select';
-import {Numeric} from '../../componentes/input/Numeric';
+import { Select } from '../componentes/input/Select';
+import {Numeric} from '../componentes/input/Numeric';
 
 const   minutos = {
             1: "1 minuto",
