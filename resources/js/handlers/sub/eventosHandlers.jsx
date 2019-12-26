@@ -70,8 +70,7 @@ const editFormHandler = (endpoint) => {
                         });
                         return true;
                     }
-                )
-                .catch((err) => err);
+                );
     }
 }
 
@@ -96,7 +95,6 @@ const addFormHandler = (endpoint) => {
                         return true;
                     }
                 )
-                .catch((err) => err);
     }
 }
 
@@ -119,7 +117,6 @@ const listHandler = (endpoint) => {
                         return true;
                     }
                 )
-                .catch((err) => err);
     }
 }
 
@@ -143,30 +140,19 @@ const singleHandler = (endpoint) => {
                         return true;
                     }
                 )
-                .catch((err) => err);
     }
 }
 
 export function sendPostRequest (data) {
-    const request = POST({
+    return POST({
         endpoint: 'eventos/create',
         data: JSON.stringify(data)
     });
-
-    request
-        .then(this.dataSuccess)
-        .catch(this.displayBackendErrors)
 }
 
-export function sendPutRequest (
-    data,
-    displayErrors
-) {
-    const request = PUT({
+export function sendPutRequest (data) {
+    return PUT({
         endpoint: 'eventos/update',
         data: JSON.stringify(data)
     });
-    request
-        .then(this.dataSuccess)
-        .catch(this.displayBackendErrors)
 }

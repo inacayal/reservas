@@ -7,12 +7,12 @@ import React, {
 } from 'react';
 import {Navegacion} from '../../acciones/ActionsByView';
 import ReactDOM from 'react-dom';
-import {Formulario} from './sub/Formulario';
-import {Promociones} from './sub/Promociones';
-import {VerPromocion} from './sub/VerPromocion';
-import {ConfirmarModal} from '../../componentes/modal/Modal';
+import Formulario from './sub/Formulario';
+import Promociones from './sub/Promociones';
+import VerPromocion from './sub/VerPromocion';
+import ConfirmarModal from '../../componentes/modal/Modal';
 import { Route, Switch } from 'react-router-dom';
-import Validator from '../../hocs/Validator';
+import ValidationHandler from '../../hocs/ValidationHandler';
 import validation from './validation';
 
 export default function PromocionesRouting (props) {
@@ -53,14 +53,14 @@ export default function PromocionesRouting (props) {
                                             nombre:selected.nombre
                                         }
                                 return (
-                                    <Validator  form={fields}
-                                                sendRequest={()=> false}
-                                                validation={validation}>
+                                    <ValidationHandler  form={fields}
+                                                        sendRequest={()=> false}
+                                                        validation={validation}>
                                         <Formulario data={props.data}
                                                     editar={true}
                                                     toggleModal={openModal}
                                                     nav={Navegacion.formulario(()=>false,match.match.params.id,'promociones')} {...match} />
-                                    </Validator>
+                                    </ValidationHandler>
                                 )
                             }
                         }/>
@@ -75,14 +75,14 @@ export default function PromocionesRouting (props) {
                                     nombre:''
                                 };
                                 return (
-                                    <Validator  form={fields}
-                                                sendRequest={()=> false}
-                                                validation={validation}>
+                                    <ValidationHandler  form={fields}
+                                                        sendRequest={()=> false}
+                                                        validation={validation}>
                                         <Formulario data={{all:props.data}}
                                                     editar={false}
                                                     toggleModal={openModal}
                                                     nav={Navegacion.agregar('promociones')} {...match} />
-                                    </Validator>
+                                    </ValidationHandler>
                                 )
                             }
                         }/>

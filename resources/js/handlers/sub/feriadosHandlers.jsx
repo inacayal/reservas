@@ -66,7 +66,6 @@ const editFormHandler = (endpoint,location) => {
                     });
                 }
             )
-        .catch(this.displayErrors);
     }
 }
 
@@ -92,7 +91,6 @@ const addFormHandler = (endpoint,location) => {
                     });
                 }
             )
-            .catch(this.displayErrors);
     }
 }
 
@@ -118,7 +116,6 @@ const listHandler = (endpoint,location) => {
                     });
                 }
             )
-            .catch(this.displayErrors);
     }
 }
 
@@ -146,7 +143,6 @@ const singleHandler = (endpoint,location) => {
                     });
                 }
             )
-            .catch(this.displayErrors);
 
     }
 }

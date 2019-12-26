@@ -4,12 +4,12 @@
 import React, {Component,useState} from 'react';
 import ReactDOM from 'react-dom';
 import {Route,Switch} from 'react-router-dom';
-import {Formulario} from './sub/Formulario';
-import {Ubicaciones} from './sub/Ubicaciones';
-import {VerUbicacion} from './sub/VerUbicacion';
+import Formulario from './sub/Formulario';
+import Ubicaciones from './sub/Ubicaciones';
+import VerUbicacion from './sub/VerUbicacion';
 import {Navegacion} from '../../acciones/ActionsByView';
-import Validator from '../../hocs/Validator';
-import {ConfirmarModal} from '../../componentes/modal/Modal';
+import ValidationHandler from '../../hocs/ValidationHandler';
+
 import validation from './validation';
 
 export default function UbicacionesRouting (props) {
@@ -50,14 +50,14 @@ export default function UbicacionesRouting (props) {
                                     maximo_personas:props.data.maximo
                                 };
                                 return (
-                                    <Validator  form={form}
-                                                sendRequest={()=> false}
-                                                validation={validation}>
+                                    <ValidationHandler  form={form}
+                                                        sendRequest={()=> false}
+                                                        validation={validation}>
                                         <Formulario editar={true}
                                                     data={props.data}
                                                     toggleModal={openModal}
                                                     nav={Navegacion.formulario(()=>false,match.match.params.id,'ubicaciones')}{...match} />
-                                    </Validator>
+                                    </ValidationHandler>
                                 )
                             }
                 } />
@@ -72,14 +72,14 @@ export default function UbicacionesRouting (props) {
                                     maximo_personas:""
                                 };
                                 return (
-                                    <Validator  form={form}
-                                                sendRequest={()=> false}
-                                                validation={validation}>
+                                    <ValidationHandler  form={form}
+                                                        sendRequest={()=> false}
+                                                        validation={validation}>
                                         <Formulario editar={false}
                                                     data={props.data}
                                                     toggleModal={openModal}
                                                     nav={Navegacion.agregar('ubicaciones')} {...match} />
-                                    </Validator>
+                                    </ValidationHandler>
                                 )
                             }
                     } />

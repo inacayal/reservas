@@ -61,7 +61,6 @@ const listHandler = (endpoint,location) => {
                     });
                 }
             )
-            .catch(this.displayErrors);
     }
 }
 
@@ -84,7 +83,6 @@ const singleHandler = (endpoint,location) => {
                     });
                 }
             )
-            .catch(this.displayErrors);
     }
 }
 
@@ -110,7 +108,6 @@ const formHandler = (endpoint,location) => {
                     });
                 }
             )
-            .catch(this.displayErrors);
     }
 }
 

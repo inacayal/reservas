@@ -6,9 +6,8 @@ import ReactDOM from 'react-dom';
 import Titulo from '../../../componentes/basic/Titulo';
 import {Numeric} from '../../../componentes/input/Numeric';
 import {Text} from '../../../componentes/input/Text';
-import Validator from '../../../hocs/Validator';
 
-export function Formulario (props) {
+export default function Formulario (props) {
     if (props.editar)
         props.nav.buttons[0].click = props.toggleModal;
     const data = props.data||{};

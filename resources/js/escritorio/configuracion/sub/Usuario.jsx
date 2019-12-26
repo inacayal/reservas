@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom';
 import Titulo from '../../../componentes/basic/Titulo';
 import { FormularioUsuario } from '../../../form/FormularioUsuario';
 
-export function Usuario (props) {
+export default function Usuario (props) {
     return (
         <>
             <Titulo title="Configurar Usuario"

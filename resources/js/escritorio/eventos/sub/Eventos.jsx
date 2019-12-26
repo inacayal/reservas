@@ -38,4 +38,4 @@ function NoMemoEventos (props) {
         </>
     );
 }
-export const Eventos = React.memo(NoMemoEventos);
+export default React.memo(NoMemoEventos);

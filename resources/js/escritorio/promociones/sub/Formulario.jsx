@@ -9,7 +9,7 @@ import { Numeric } from '../../../componentes/input/Numeric';
 import { Text } from '../../../componentes/input/Text';
 import {Toggle} from '../../../componentes/input/Toggle'
 
-export function Formulario (props) {
+export default function Formulario (props) {
     const [estado,toggle] = useState((props.data.selected||{}).estado === 'Activo');
     if (props.editar)
         props.nav.buttons[0].click = props.toggleModal;

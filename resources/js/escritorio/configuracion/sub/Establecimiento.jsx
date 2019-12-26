@@ -9,7 +9,7 @@ import { FormularioEstablecimiento } from '../../../form/FormularioEstablecimien
 import Titulo from '../../../componentes/basic/Titulo';
 import Actions from '../../../componentes/basic/Actions';
 
-export function Establecimiento (props) {
+export default function Establecimiento (props) {
     return (
         <>
             <Titulo title="Configurar Establecimiento"

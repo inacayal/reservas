@@ -38,7 +38,7 @@ function links(key) {
     ];
 }
 
-export function VerFranquicia (props) {
+export default function VerFranquicia (props) {
     props.nav.buttons[0].click = props.toggleModal;
     const   data = props.data,
             localesData = Object.values(data.locales.data).map(

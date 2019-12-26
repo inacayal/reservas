@@ -1,6 +1,5 @@
 
-
-export const validation = {
+export default  {
     id:{
         rules:{},
         fieldName:"ID",

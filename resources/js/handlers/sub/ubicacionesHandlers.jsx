@@ -56,7 +56,6 @@ const singleHandler  = (endpoint) => {
                         });
                     }
                 )
-                .catch(this.displayErrors);
     }
 }
 
@@ -76,7 +75,6 @@ const listHandler = (endpoint) => {
                         });
                     }
                 )
-                .catch((err) => console.log(err));
     }
 }
 
@@ -98,7 +96,6 @@ const editFormHandler = (endpoint) => {
                         });
                     }
                 )
-                .catch(this.displayErrors);
     }
 }
 

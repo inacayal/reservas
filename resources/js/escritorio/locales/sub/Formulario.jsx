@@ -10,7 +10,7 @@ import Actions from '../../../componentes/basic/Actions';
 import Titulo from '../../../componentes/basic/Titulo';
 import { Navegacion } from '../../../acciones/ActionsByView';
 
-export function Formulario (props) {
+export default function Formulario (props) {
     const data = props.data;
     if (props.editar)
         props.nav.buttons[0].click = props.toggleModal;

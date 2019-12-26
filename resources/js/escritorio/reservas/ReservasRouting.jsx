@@ -5,11 +5,11 @@ import React,
 } from 'react';
 import ReactDOM from 'react-dom';
 import {Route,Switch} from 'react-router-dom';
-import {Formulario} from './sub/Formulario';
-import {Calendario} from './sub/Calendario';
-import {VerReserva} from './sub/VerReserva';
 import{Navegacion} from '../../acciones/ActionsByView';
-import Validator from '../../hocs/Validator';
+import Formulario from './sub/Formulario';
+import Calendario from './sub/Calendario';
+import VerReserva from './sub/VerReserva';
+import ValidationHandler from '../../hocs/ValidationHandler';
 import validation from './validation';
 
 const ReservasRouting = (props) => (
@@ -40,12 +40,12 @@ const ReservasRouting = (props) => (
                                 descripcion_evento:""
                             };
                             return (
-                                <Validator  form={form} 
-                                            sendRequest={()=> false}
-                                            validation={validation}>
+                                <ValidationHandler  form={form}
+                                                    sendRequest={()=> false}
+                                                    validation={validation}>
                                     <Formulario data={props.data}
                                                 nav={Navegacion.agregar('reservas')} {...match}/>
-                                </Validator>
+                                </ValidationHandler>
                             );
                         }
                 } />

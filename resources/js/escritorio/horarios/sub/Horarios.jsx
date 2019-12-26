@@ -23,7 +23,7 @@ const links = [
     }
 ];
 
-export function Horarios (props) {
+export default function Horarios (props) {
     const week = generateWeek(
             null,
             props.data,

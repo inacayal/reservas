@@ -34,11 +34,11 @@ const links = (key) =>
         }
     ];
 
-export function Locales (props) {
+export default function Locales (props) {
     const data = Object.values(props.data).map(
             e => ({
                 ...e,
-                acciones: <Actions  links={links(e.id)} 
+                acciones: <Actions  links={links(e.id)}
                                     buttons={[]}/>
             })
         );

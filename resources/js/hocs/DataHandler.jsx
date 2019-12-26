@@ -15,12 +15,8 @@ import {
 import {
     downloadHandler,
     LoadBar
-} from '../utils/LoadBar';
+} from '../componentes/control/LoadBar';
 import {handlerArray} from '../handlers/index';
-import {
-    displayGetRequestErrors as displayErrors
-} from '../utils/errorHandling';
-
 const searchHandler = (path) => {
     return handlerArray.filter(
         c => path.match(c.match)
@@ -30,8 +26,7 @@ const searchHandler = (path) => {
 function awaitLoading (
     {
         handler,
-        route,
-        message,
+        route
     }
 ){
     this.setState(
@@ -40,23 +35,10 @@ function awaitLoading (
             loadFinished:false,
             fetchData:handler.callback(route.params).bind(this),
         },
-            () =>
-                new Promise (
-                    (resolve,reject) => {
-                        if (!this.state.loadFinished)
-                            resolve();
-
-                    }
-                )
-                .then (
-                    () =>
-                        this.fetchHandler({
-                            component:this.props.children,
-                            message:message
-                        })
-                )
+        () => this.fetchHandler()
     );
 }
+
 
 const assignRoute =
     (location) => {
@@ -69,44 +51,29 @@ const assignRoute =
 
 export const WaitsLoading = React.createContext({});
 
-class DataHandler extends Component {
+export default class DataHandler extends Component {
     constructor(props){
         super(props);
         this.state = {
             data:null,
             loading:0,
-            message:null
         };
         this.downloadHandler = downloadHandler.bind(this);
         this.awaitLoading = awaitLoading.bind(this);
         this.fetchHandler = this.fetchHandler.bind(this);
-        this.displayErrors = displayErrors.bind(this);
         this.routeChange = this.routeChange.bind(this);
     }
 
-    routeChange (location,message) {
+    routeChange (location) {
         const config = assignRoute(location.pathname);
-        this.awaitLoading({...config,message})
+        this.awaitLoading({...config})
     }
 
-    fetchHandler({component,message}){
-        const handlePromise = (resolve,reject) => {
-            this.state.fetchData(component)
-                .then(
-                    res => {
-                        if (res instanceof Error)
-                            reject(res);
-                        else
-                            resolve(message);
-                    }
-                )
-        };
-        new Promise (handlePromise)
-            .then (res => {
-                if (res)
-                    this.props.displayMessage(res);
-            })
-            .catch(this.displayErrors)
+    fetchHandler(){
+        this.state.fetchData()
+            .catch(
+                err => {console.log(err);this.setState({message:err})}
+            )
     }
 
     shouldComponentUpdate(np,ns){
@@ -116,12 +83,12 @@ class DataHandler extends Component {
 
     componentDidUpdate(pp,ps){
         if(pp.location !== this.props.location){
-            this.routeChange(this.props.location,{message:null})
+            this.routeChange(this.props.location)
         }
     }
 
     componentDidMount() {
-        this.routeChange(this.props.location,{message:null})
+        this.routeChange(this.props.location)
     }
 
     componentWillUnmount() {
@@ -131,11 +98,10 @@ class DataHandler extends Component {
         const   location = this.state.location
                         ? `escritorio${this.state.location.pathname}`
                         : `escritorio`;
-        console.log('render')
         return (
             <WaitsLoading.Provider value={this.awaitLoading}>
                 <LoadBar loaded={this.state.loading}/>
-                <div    className="col-md-2 no-padding light-background">
+                <div    className="col-md-2 no-padding white-background">
                     <Lateral    current={this.props.sidebarElem}
                                 items={sidebar}/>
                 </div>
@@ -168,7 +134,8 @@ class DataHandler extends Component {
                                                             {
                                                                 data:this.state.data,
                                                                 match:this.props.global,
-                                                                location:this.state.location
+                                                                location:this.state.location,
+                                                                message:this.state.message
                                                             }
                                                         )
                                                         : <></>
@@ -185,4 +152,3 @@ class DataHandler extends Component {
         );
     }
 }
-export default withRouter(DataHandler);

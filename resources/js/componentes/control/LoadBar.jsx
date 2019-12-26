@@ -3,16 +3,26 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import {progress} from '../../utils/api';
 
-function LoadBar(props) {
-    const style = {
-        width:props.loaded+'%',
-        height:'5px'
-    };
-    return (
-        <div className="full-width">
-            <div className="background-border" style={style}></div>
-        </div>
-    );
+export function downloadHandler(pEvent) {
+    let
+        loading = Math.round((pEvent.loaded * 100) / pEvent.total),
+        state = loading !== 100 ?
+            { loading, loadFinished: false }
+            : { loading };
+    this.setState(state);
 }
-export default LoadBar;
+export function LoadBar (progress){
+    return (
+        <div className="col-md-12 no-padding no-margin">
+            <div style={
+                {
+                    width:`${progress.loaded}%`,
+                    backgroundColor:"var(--highlight-blue)",
+                    height:"6px"
+                }
+            }/>
+        </div>
+    )
+}

@@ -3,9 +3,7 @@
  */
 import React, {
     Component,
-    useState,
-    useEffect,
-    useContext
+    useState
 } from 'react';
 import {
     Route,
@@ -13,27 +11,25 @@ import {
 } from 'react-router-dom';
 import {Navegacion} from '../../acciones/ActionsByView'
 import ReactDOM from 'react-dom';
-import {Formulario} from './sub/Formulario';
-import {Eventos} from './sub/Eventos';
-import {VerEvento} from './sub/VerEvento';
-import {ConfirmarModal} from '../../componentes/modal/Modal';
-import Validator from '../../hocs/Validator';
-import {validation} from './validation';
-import {WaitsLoading} from '../../hocs/DataHandler';
-import TransitionHandler from '../../hocs/TransitionHandler';
+import Formulario from './sub/Formulario';
+import Eventos from './sub/Eventos';
+import VerEvento from './sub/VerEvento';
+import ConfirmarModal from '../../componentes/modal/Modal';
+import ValidationHandler from '../../hocs/ValidationHandler';
+import validation from './validation';
 import {createFeriadosList} from '../../utils/Helper';
+import {eventosHandlers} from '../../handlers/sub/eventosHandlers';
 
 function EventosRouting (props){
     const   [open,toggle] = useState(false),
-        openModal = (e) => {
-            e.preventDefault();
-            toggle(true);
-        },
-        closeModal = (e) => {
-            e.preventDefault();
-            toggle(false);
-        },
-        wait = () => false;
+            openModal = (e) => {
+                e.preventDefault();
+                toggle(true);
+            },
+            closeModal = (e) => {
+                e.preventDefault();
+                toggle(false);
+            };
     return (
         <>
             <ConfirmarModal open={open}
@@ -68,10 +64,9 @@ function EventosRouting (props){
                                             scope:selected.estado==="Activo" ? 1 : 2
                                         };
                                 return (
-                                        <Validator  form={form}
-                                                    validation={validation}
-                                                    sendRequest={()=> false}
-                                                    wait={wait}>
+                                        <ValidationHandler  form={form}
+                                                            validation={validation}
+                                                            sendRequest={eventosHandlers.form.edit}>
                                             <Formulario editar={true}
                                                         data={props.data}
                                                         toggleModal={openModal}
@@ -83,7 +78,7 @@ function EventosRouting (props){
                                                             )
                                                         }
                                                         {...match} />
-                                        </Validator>
+                                        </ValidationHandler>
                                 )
                             }
                         } />
@@ -100,15 +95,14 @@ function EventosRouting (props){
                                     scope:1
                                 };
                                 return (
-                                    <Validator  form={form}
-                                                validation={validation}
-                                                sendRequest={()=> false}
-                                                wait={wait}>
+                                    <ValidationHandler  form={form}
+                                                        validation={validation}
+                                                        sendRequest={eventosHandlers.form.add}>
                                         <Formulario toggleModal={openModal}
                                                     data={{all:props.data}}
                                                     nav={Navegacion.agregar('eventos')}
                                                     editar={false}/>
-                                    </Validator>
+                                    </ValidationHandler>
                                 )
                             }
                     } />

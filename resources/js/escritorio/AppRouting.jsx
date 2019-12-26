@@ -16,55 +16,52 @@ import HorariosRouting from './horarios/HorariosRouting';
 import FeriadosRouting from './feriados/FeriadosRouting';
 import ConfiguracionRouting from './configuracion/ConfiguracionRouting';
 import EscritorioRouting from './escritorio/EscritorioRouting';
-import MessageHandler from '../hocs/MessageHandler';
 
 export default function AppRouting (props) {
     return (
-        <MessageHandler {...props}>
-            <Switch >
-                <Route  path='/'
-                        exact
-                        render={
-                            (match) => <EscritorioRouting   data={props.data} {...match}/>
-                        }/>
-                <Route  path='/reservas'
-                        render={
-                            (match) => <ReservasRouting data={props.data} {...match}/>
-                        } />
-                <Route  path='/feriados'
-                        render={
-                            (match) => <FeriadosRouting data={props.data} {...match}/>
-                        }/>
-                <Route  path='/horarios'
-                        render={
-                            (match) => <HorariosRouting data={props.data} {...match}/>
-                        }/>
-                <Route  path='/ubicaciones'
-                        render={
-                            (match) => <UbicacionesRouting  data={props.data} {...match}/>
-                        } />
-                <Route  path='/eventos'
-                        render={
-                            (match) => <EventosRouting data={props.data} {...match}/>
+        <Switch>
+            <Route  path='/'
+                    exact
+                    render={
+                        (match) => <EscritorioRouting   data={props.data} {...match}/>
+                    }/>
+            <Route  path='/reservas'
+                    render={
+                        (match) => <ReservasRouting data={props.data} {...match}/>
+                    } />
+            <Route  path='/feriados'
+                    render={
+                        (match) => <FeriadosRouting data={props.data} {...match}/>
+                    }/>
+            <Route  path='/horarios'
+                    render={
+                        (match) => <HorariosRouting data={props.data} {...match}/>
+                    }/>
+            <Route  path='/ubicaciones'
+                    render={
+                        (match) => <UbicacionesRouting  data={props.data} {...match}/>
+                    } />
+            <Route  path='/eventos'
+                    render={
+                        (match) => <EventosRouting data={props.data} {...match}/>
 
-                        } />
-                <Route  path='/promociones'
-                        render={
-                            (match) => <PromocionesRouting data={props.data} {...match} />
-                        } />
-                <Route  path='/locales'
-                        component={
-                            (match) => <LocalesRouting data={props.data} {...match} />
-                        } />
-                <Route  path='/configuracion'
-                        render={
-                            (match) => <ConfiguracionRouting data={props.data}{...match} />
-                        } />
-                <Route  path='/franquicias'
-                        render={
-                            (match) => <FranquiciasRouting data={props.data} {...match} />
-                        }/>
-            </Switch>
-        </MessageHandler>
+                    } />
+            <Route  path='/promociones'
+                    render={
+                        (match) => <PromocionesRouting data={props.data} {...match} />
+                    } />
+            <Route  path='/locales'
+                    component={
+                        (match) => <LocalesRouting data={props.data} {...match} />
+                    } />
+            <Route  path='/configuracion'
+                    render={
+                        (match) => <ConfiguracionRouting data={props.data}{...match} />
+                    } />
+            <Route  path='/franquicias'
+                    render={
+                        (match) => <FranquiciasRouting data={props.data} {...match} />
+                    }/>
+        </Switch>
     )
 }

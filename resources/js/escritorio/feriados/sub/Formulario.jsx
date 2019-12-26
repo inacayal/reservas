@@ -18,7 +18,7 @@ import {generateHoursFromInterval} from '../../../utils/Helper';
 import {WaitsLoading} from '../../../hocs/DataHandler';
 import {Text} from '../../../componentes/input/Text'
 
-export function Formulario (props) {
+export default function Formulario (props) {
     const   context = useContext(WaitsLoading),
             [side,toggle] = useState(props.fields.id_estado),
             data = props.data;

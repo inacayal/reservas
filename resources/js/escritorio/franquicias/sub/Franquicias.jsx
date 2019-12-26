@@ -46,7 +46,7 @@ const links = (key) => [
     }
 ];
 
-export function Franquicias (props) {
+export default function Franquicias (props) {
     const data = Object.keys(props.data).map(
         e => ({
             ...props.data[e],

@@ -6,12 +6,12 @@ import React, {
     Component
 } from 'react';
 import ReactDOM from 'react-dom';
-import {Establecimiento} from './sub/Establecimiento';
-import {Usuario} from './sub/Usuario';
-import {Reservas} from './sub/Reservas';
-import {Configuracion} from './sub/Configuracion';
+import Establecimiento from './sub/Establecimiento';
+import Usuario from './sub/Usuario';
+import Reservas from './sub/Reservas';
+import Configuracion from './sub/Configuracion';
 import {Navegacion} from '../../acciones/ActionsByView';
-import Validator from '../../hocs/Validator';
+import ValidationHandler from '../../hocs/ValidationHandler';
 import validation from './validation';
 
 export default function ConfiguracionRouting (props) {
@@ -37,12 +37,12 @@ export default function ConfiguracionRouting (props) {
                                 password:""
                             }
                             return (
-                                <Validator  form = {fields}
-                                            validation = {validation}>
+                                <ValidationHandler  form = {fields}
+                                                    validation = {validation}>
                                     <Usuario    data={props.data}
                                                 nav={nav}
                                                 {...match}/>
-                                </Validator>
+                                </ValidationHandler>
                             );
                         }
                     } />
@@ -64,12 +64,12 @@ export default function ConfiguracionRouting (props) {
                                 telefono_encargado:props.data.admTelefono
                             };
                             return (
-                                <Validator  form = {fields}
-                                            validation = {validation}>
+                                <ValidationHandler  form = {fields}
+                                                    validation = {validation}>
                                     <Establecimiento    data={props.data}
                                                         nav={nav}
                                                         {...match}/>
-                                </Validator>
+                                </ValidationHandler>
                             )
                         }
                     }/>
@@ -83,12 +83,12 @@ export default function ConfiguracionRouting (props) {
                                 disponibilidad_reserva:"" //por hacer
                             };
                             return (
-                                <Validator  form = {fields}
-                                            validation = {validation}>
+                                <ValidationHandler  form = {fields}
+                                                    validation = {validation}>
                                     <Reservas   data={props.data}
                                                 nav={nav}
                                                 {...match}/>
-                                </Validator>
+                                </ValidationHandler>
                             )
                         }
                     } />

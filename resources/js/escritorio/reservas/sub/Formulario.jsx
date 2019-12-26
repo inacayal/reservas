@@ -7,7 +7,7 @@ import EventoFrame from '../../../reserva/pasos/evento/EventoFrame';
 import Titulo from '../../../componentes/basic/Titulo';
 import {WaitsLoading} from '../../../hocs/DataHandler';
 
-export function Formulario (props) {
+export default function Formulario (props) {
     const context = useContext(WaitsLoading),
         data = props.data;
     return (

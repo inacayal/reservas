@@ -11,12 +11,12 @@ import {
     FormActions
 } from '../../acciones/ActionsByView';
 import ReactDOM from 'react-dom';
-import {Formulario} from './sub/Formulario';
-import {Feriados} from './sub/Feriados';
-import {VerFeriado} from './sub/VerFeriado';
-import {ConfirmarModal} from '../../componentes/modal/Modal';
-import Validator from '../../hocs/Validator';
-import {validation} from './validation';
+import Formulario from './sub/Formulario';
+import Feriados from './sub/Feriados';
+import VerFeriado from './sub/VerFeriado';
+import ConfirmarModal from '../../componentes/modal/Modal';
+import ValidationHandler from '../../hocs/ValidationHandler';
+import validation from './validation';
 
 export default function FeriadosRouting (props) {
     const   [open,toggle] = useState(false),

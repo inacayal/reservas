@@ -22,7 +22,7 @@ const links = [
     }
 ];
 
-export class Feriados extends Component {
+export default class Feriados extends Component {
     constructor(props){
         super(props);
         this.state= {

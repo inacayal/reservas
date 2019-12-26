@@ -12,8 +12,7 @@ import {CommaList} from '../../../componentes/basic/CommaList';
 import PromocionesTable from '../../../componentes/tables/PromocionesTable';
 import {createFeriadosList} from '../../../utils/Helper';
 
-
-export function VerEvento (props) {
+export default function VerEvento (props) {
     props.nav.buttons[0].click = props.toggleModal;
     const   data = props.data,
             promociones = Object.values(data.promociones.data).map(

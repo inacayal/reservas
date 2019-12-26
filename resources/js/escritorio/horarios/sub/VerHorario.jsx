@@ -8,7 +8,7 @@ import {DAYS} from '../../../constantes/DaysMonths';
 import {CommaList} from '../../../componentes/basic/CommaList';
 import EventosTable from '../../../componentes/tables/EventosTable';
 
-export function VerHorario (props) {
+export default function VerHorario (props) {
     props.nav.buttons[0].click = props.toggleModal;
     const   data = props.data,
             estado = data.estado.replace('_',' '),

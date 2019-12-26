@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import {FormularioReservas} from '../../../form/FormularioReservas';
 import Titulo from '../../../componentes/basic/Titulo';
 
-export function Reservas (props) {
+export default function Reservas (props) {
     return (
         <>
             <Titulo title="Configurar Reservas"

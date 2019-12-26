@@ -37,7 +37,7 @@ const generateList = (list) => {
     );
     return eventos;
 };
-export function VerPromocion (props) {
+export default function VerPromocion (props) {
     props.nav.buttons[0].click = props.toggleModal;
     const   eventos = generateList(props.data.eventos.data),
             data = {...props.data,eventos};

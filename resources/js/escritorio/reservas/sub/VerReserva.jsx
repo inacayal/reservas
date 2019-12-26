@@ -12,7 +12,7 @@ import {MONTHS} from '../../../constantes/DaysMonths';
 import Titulo from '../../../componentes/basic/Titulo';
 import {ReservasActions} from '../../../acciones/ReservasActions';
 
-export class VerReserva extends Component {
+export default class VerReserva extends Component {
     constructor(props){
         super(props);
         this.actions = {

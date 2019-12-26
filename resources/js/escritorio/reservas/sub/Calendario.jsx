@@ -8,7 +8,7 @@ import Agenda from '../../../componentes/agenda/Agenda';
 import Titulo from '../../../componentes/basic/Titulo';
 import { NO_WEEK_CONTROLS } from '../../../constantes/CalendarControls';
 
-export class Calendario extends Component {
+export default class Calendario extends Component {
     constructor(props){
         super(props);
         this.state = {

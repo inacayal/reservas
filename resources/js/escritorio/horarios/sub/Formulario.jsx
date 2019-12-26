@@ -16,7 +16,7 @@ import { Toggle } from '../../../componentes/input/Toggle';
 import Actions from '../../../componentes/basic/Actions';
 import { Text } from '../../../componentes/input/Text';
 
-export function Formulario (props) {
+export default function Formulario (props) {
     const   data = props.data,
             [side,toggle] = useState(props.fields.id_estado);
     if(props.editar)

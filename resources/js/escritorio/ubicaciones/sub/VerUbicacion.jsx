@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom';
  */
 import Titulo from '../../../componentes/basic/Titulo';
 
-export function VerUbicacion (props) {
+export default function VerUbicacion (props) {
     props.nav.buttons[0].click = props.toggleModal;
     const data = props.data;
     return (

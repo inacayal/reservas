@@ -1,10 +1,10 @@
 
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import {withRouter} from 'react-router-dom';
 import {DisplaysMessages} from './MessageHandler';
 import Actions from '../componentes/basic/Actions';
 import {FormActions} from '../acciones/ActionsByView';
-import {displayBackendErrors,displayFrontendErrors} from '../utils/errorHandling';
 
 const evaluateRule = {
     required:({val,name}) => {
@@ -154,11 +154,11 @@ export function searchErrors (
                             )
                             : null;
                 errors[e] = flds;
-                if (err){
+                if (err)
                     t.push(err);
-                }
                 return t;
-            }, []
+            },
+            []
         );
     return [frmtErrs,errors];
 }
@@ -208,19 +208,16 @@ const castBeforeSending = (values,validation) =>
         }
     ,{});
 
-export default class Validator extends Component{
+class ValidationHandler extends Component{
     constructor(props){
         super(props);
 
         this.enviarFormulario = this.enviarFormulario.bind(this);
         this.cancelarFormulario = this.cancelarFormulario.bind(this);
         this.changeFormField = this.changeFormField.bind(this);
-        this.displayFrontendErrors = displayFrontendErrors.bind(this);
-        this.displayBackendErrors = displayBackendErrors.bind(this);
         this.actions = FormActions(this.enviarFormulario,this.cancelarFormulario);
         this.requestHandler = this.props.sendRequest.bind(this);
         this.requestSent = this.requestSent.bind(this);
-        this.dataSuccess =  this.dataSuccess.bind(this);
 
         this.state = {
             form:this.props.form,
@@ -248,11 +245,28 @@ export default class Validator extends Component{
         this.setState({form,errors});
     }
 
-    requestSent(value,callback){
-        this.setState({
-            sent:value
-            },
-            () => callback
+    requestSent(bool,callback){
+        this.setState(
+            {sent:bool},
+            () =>
+                callback()
+                    .then(
+                        (response) => {
+                            this.props.history.push({
+                                pathname:response.data.redirect,
+                                state:{message:response.data}
+                            })
+                        }
+                    )
+                    .catch(
+                        (err) =>
+                            this.context.validationError({
+                                error:err,
+                                validation:this.state.validation,
+                                form:this.state.form,
+                                target:this
+                            })
+                    )
         );
     }
 
@@ -264,16 +278,20 @@ export default class Validator extends Component{
                     this.state.form
                 );
         if (hasErrors.length>0)
-            this.displayFrontendErrors([hasErrors,errors])
-        else {
+            this.setState(
+                {errors},
+                () => this.context.frontEndError(hasErrors)
+            )
+        else
             this.requestSent(
                 true,
-                this.requestHandler(
-                    castBeforeSending(this.state.form,this.state.validation),
-                    this.displayBackendErrors
+                () => this.requestHandler(
+                    castBeforeSending(
+                        this.state.form,
+                        this.state.validation
+                    )
                 )
-            );
-        }
+            )
     }
 
     cancelarFormulario(e){
@@ -287,38 +305,15 @@ export default class Validator extends Component{
         })
     }
 
-    dataSuccess(response){
-        const   data = response.data,
-                message = {
-                    message:{
-                        data:data.message,
-                        title:(
-                            <>
-                                <i className="fas fa-check-circle bold sub-title side-margin" />
-                                <span className="side-margin">{data.title}</span>
-                            </>
-                        ),
-                        type:data.type,
-                        update:true
-                    }
-                };
-        this.props.wait(
-            data.redirect,
-            data.parameters,
-            data.route,
-            message
-        );
-    }
-
     render(){
-        const Form = React.cloneElement(
-            this.props.children,
-            {
-                fields:this.state.form,
-                change:this.changeFormField,
-                errors:this.state.errors
-            }
-        );
+        const   Form = React.cloneElement(
+                    this.props.children,
+                    {
+                        fields:this.state.form,
+                        change:this.changeFormField,
+                        errors:this.state.errors
+                    }
+                );
         return (
             <>
                 <div className="visible relative">
@@ -337,3 +332,4 @@ export default class Validator extends Component{
         )
     }
 }
+export default withRouter(ValidationHandler)

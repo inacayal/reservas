@@ -12,7 +12,7 @@ import { MultipleSelect } from '../../../componentes/input/MultipleSelect';
 import {Toggle} from '../../../componentes/input/Toggle';
 import {createFeriadosList} from '../../../utils/Helper';
 
-export function Formulario (props) {
+export default function Formulario (props) {
     const   data = props.data.all,
             estado = props.fields.scope == 1,
             feriadoList = createFeriadosList(data.feriados.data);

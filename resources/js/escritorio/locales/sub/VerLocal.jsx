@@ -33,7 +33,7 @@ const links = (key) => [
     }
 ];
 
-export function VerLocal (props) {
+export default function VerLocal (props) {
     const data = props.data;
     props.nav.buttons[0].click = props.toggleModal;
     data.franquicia.acciones= <Actions otherSection links={links(data.franquicia.id)}/>;

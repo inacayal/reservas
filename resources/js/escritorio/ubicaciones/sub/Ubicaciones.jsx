@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import Titulo from '../../../componentes/basic/Titulo';
 import generateUbicacionesCard from '../../../generators/generateUbicacionesCard';
 
-export function Ubicaciones (props) {
+export default function Ubicaciones (props) {
     const ubicaciones = generateUbicacionesCard(
             props.data,
             {eliminar:props.toggleModal}

@@ -7,7 +7,7 @@ import {Redirect} from 'react-router-dom';
 import Titulo from '../../../componentes/basic/Titulo';
 import generatePromocionesCard from '../../../generators/generatePromocionesCard';
 
-export function Promociones (props) {
+export default function Promociones (props) {
     const promociones = generatePromocionesCard(
         props.data,
         {eliminar: props.toggleModal}

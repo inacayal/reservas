@@ -12,7 +12,7 @@ import {Calendario} from '../../../form/Calendario';
 import {CommaList} from '../../../componentes/basic/CommaList';
 import EventosTable from '../../../componentes/tables/EventosTable';
 
-export function VerFeriado (props) {
+export default function VerFeriado (props) {
     props.nav.buttons[0].click = props.toggleModal;
     const   data = props.data,
             date= new Date(data.data.fecha),

@@ -6,7 +6,7 @@ import Actions from '../../../componentes/basic/Actions';
 import { FormularioEstablecimiento } from '../../../form/FormularioEstablecimiento';
 import { FormularioUsuario } from '../../../form/FormularioUsuario';
 
-export function Formulario (props) {
+export default function Formulario (props) {
     if (props.editar)
         props.nav.buttons[0].click = props.toggleModal;
     const data = props.data;

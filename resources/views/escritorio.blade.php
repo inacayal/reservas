@@ -101,7 +101,7 @@
         )
     !!};
 </script>
-    <div id="escritorio-container" class="relative full-width background-border full-height">
+    <div id="escritorio-container" class="relative full-width full-height">
     </div>
 </div>
 @endsection

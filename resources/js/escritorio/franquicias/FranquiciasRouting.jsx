@@ -7,12 +7,12 @@ import React, {
 } from 'react';
 import ReactDOM from 'react-dom';
 import {Route,Switch} from 'react-router-dom';
-import {Formulario} from './sub/Formulario';
-import {Franquicias} from './sub/Franquicias';
-import {VerFranquicia} from './sub/VerFranquicia';
 import {Navegacion} from '../../acciones/ActionsByView';
-import {ConfirmarModal} from '../../componentes/modal/Modal';
-import Validator from '../../hocs/Validator';
+import Formulario from './sub/Formulario';
+import Franquicias from './sub/Franquicias';
+import VerFranquicia from './sub/VerFranquicia';
+import ConfirmarModal from '../../componentes/modal/Modal';
+import ValidationHandler from '../../hocs/ValidationHandler';
 import validation from './validation';
 
 export default function FranquiciasRouting (props) {

@@ -8,12 +8,13 @@ import React, {
 import ReactDOM from 'react-dom';
 import {Route, Switch} from 'react-router-dom';
 import {Navegacion} from '../../acciones/ActionsByView';
-import {Formulario} from './sub/Formulario';
-import {Locales} from './sub/Locales';
-import {VerLocal} from './sub/VerLocal';
-import {ConfirmarModal} from '../../componentes/modal/Modal';
+import Formulario from './sub/Formulario';
+import Locales from './sub/Locales';
+import VerLocal from './sub/VerLocal';
+import ConfirmarModal from '../../componentes/modal/Modal';
 import validation from './validation';
-import Validator from '../../hocs/Validator';
+import ValidationHandler from '../../hocs/ValidationHandler';
+
 
 export default function LocalesRouting (props) {
     const   [open,toggle] = useState(false),
@@ -62,15 +63,15 @@ export default function LocalesRouting (props) {
                                     telefono_encargado:props.data.admTelefono
                                 };
                                 return (
-                                    <Validator  form={fields}
-                                                sendRequest={()=> false}
-                                                validation={validation}>
+                                    <ValidationHandler  form={fields}
+                                                        sendRequest={()=> false}
+                                                        validation={validation}>
                                         <Formulario editar={true}
                                                     data={props.data}
                                                     toggleModal={openModal}
                                                     nav={Navegacion.formulario(()=>false,match.match.params.id,'locales')}
                                                     {...match}/>
-                                    </Validator>
+                                    </ValidationHandler>
 
                                 )
                             }
@@ -95,15 +96,15 @@ export default function LocalesRouting (props) {
                                     telefono_encargado:""
                                 };
                                 return (
-                                    <Validator  form={fields}
-                                                sendRequest={()=> false}
-                                                validation={validation}>
+                                    <ValidationHandler  form={fields}
+                                                        sendRequest={()=> false}
+                                                        validation={validation}>
                                         <Formulario editar={false}
                                                     data={props.data}
                                                     toggleModal={openModal}
                                                     nav={Navegacion.agregar('locales')}
                                                     {...match} />
-                                    </Validator>
+                                    </ValidationHandler>
                                 )
                             }
                         }/>
