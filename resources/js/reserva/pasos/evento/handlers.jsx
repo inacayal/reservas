@@ -3,12 +3,25 @@
  */
 import React, { Component, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-
+import {compareDates} from '../../../utils/Helper';
 export const generateListByLocationCapacity = (m) => {
     const l = [...Array(m + 1).keys()];
     l.shift();
     return l;
 };
+
+export function checkValid({date,min,horarios,feriados}){
+    const   resDate = compareDates(date,min,{d:'<',m:'=',y:'='})
+                ? new Date(min)
+                : new Date(date);
+    while (
+        horarios[resDate.getDay()+1].estado === 'no_laboral'
+        || (feriados[resDate.getDate()]||{}).estado==='no_laboral'
+        && resDate.getMonth() === date.getMonth()
+    )
+        resDate.setDate(resDate.getDate()+1);
+    return resDate;
+}
 
 export const generateHourArray = (
     h,
@@ -66,11 +79,11 @@ export const generateAcceptedHours = ({
     f,
     m
 }) => {
-    const
-        sH = m.getDate() === f.getDate() && m.getMonth() === f.getMonth() && m.getFullYear() === f.getFullYear()
-            ? g.apertura.reserva.hora + a
-            : g.apertura.reserva.hora,
-        sM = g.apertura.reserva.minuto;
+    const   nw = new Date(),
+            sH = (m.getDate() === f.getDate() && m.getMonth() === f.getMonth() && m.getFullYear() === f.getFullYear()) && m.getHours()>nw.getHours()
+                ? g.apertura.reserva.hora + a
+                : g.apertura.reserva.hora,
+            sM = g.apertura.reserva.minuto;
 
     return generateHourArray(
         g,

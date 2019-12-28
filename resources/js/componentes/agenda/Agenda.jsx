@@ -40,17 +40,15 @@ export default class Agenda extends Component {
 
     changeWeekCalendar (e) {
         e.preventDefault();
-        const offset = parseInt(e.currentTarget.getAttribute('data')),
-            date = new Date(this.state.date),
-            change = offset < 0
-            ?
-                {
+        const   offset = parseInt(e.currentTarget.getAttribute('data')),
+                date = new Date(this.state.date),
+                change = offset < 0
+                ? {
                     o: new Date(this.state.date),
                     n: new Date(date.setDate(date.getDate() + offset + (6 - date.getDay()))),
                     m: getMonthLength(date.getMonth() + 1, date.getFullYear())
                 }
-            :
-                {
+                : {
                     o: new Date(this.state.date),
                     n: new Date(date.setDate(date.getDate() + offset - date.getDay())),
                     m: 1
@@ -68,13 +66,13 @@ export default class Agenda extends Component {
 
     changeMonthCalendar (e) {
         e.preventDefault();
-        const offset = parseInt(e.currentTarget.getAttribute('data')),
-            date = new Date(this.state.date),
-            change = {
-                o: new Date(date),
-                n: new Date(date.setMonth(date.getMonth() + offset)),
-                m: 1
-            };
+        const   offset = parseInt(e.currentTarget.getAttribute('data')),
+                date = new Date(this.state.date),
+                change = {
+                    o: new Date(date),
+                    n: new Date(date.setMonth(date.getMonth() + offset)),
+                    m: 1
+                };
         evaluateDateChange(
             change,
             this.context,
@@ -87,13 +85,13 @@ export default class Agenda extends Component {
 
     changeSelectedMonth(e){
         e.preventDefault();
-        const month = parseInt(e.currentTarget.getAttribute('data')),
-            date = this.state.date,
-            change = {
-                o: new Date(date),
-                n: new Date(date.setMonth(month-1)),
-                m: 1
-            };
+        const   month = parseInt(e.currentTarget.getAttribute('data')),
+                date = this.state.date,
+                change = {
+                    o: new Date(date),
+                    n: new Date(date.setMonth(month-1)),
+                    m: 1
+                };
         evaluateDateChange(
             change,
             this.context,
@@ -106,13 +104,13 @@ export default class Agenda extends Component {
 
     changeYearCalendar (e) {
         e.preventDefault();
-        const offset = parseInt(e.currentTarget.getAttribute('data')),
-            date = new Date(this.state.date),
-            change = {
-                o: new Date(date),
-                n: new Date(date.setFullYear(parseInt(date.getFullYear())+offset)),
-                m: 1
-            };
+        const   offset = parseInt(e.currentTarget.getAttribute('data')),
+                date = new Date(this.state.date),
+                change = {
+                    o: new Date(date),
+                    n: new Date(date.setFullYear(parseInt(date.getFullYear())+offset)),
+                    m: 1
+                };
         evaluateDateChange(
             change,
             this.context,
@@ -130,7 +128,10 @@ export default class Agenda extends Component {
                 || prevProps.show !== this.props.show
             ) && this.props.type==='reservas'
         ) {
-            this.setState({ date: this.props.date, show: this.props.show});
+            this.setState({
+                date: this.props.date,
+                show: this.props.show
+            });
         }
     }
 

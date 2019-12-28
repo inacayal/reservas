@@ -4,10 +4,6 @@
 import React, {
     Component
 } from 'react';
-import ReactDOM from 'react-dom';
-import {Redirect} from 'react-router-dom';
-import BreadCrumb from '../componentes/control/BreadCrumb';
-import Lateral from '../componentes/control/Lateral';
 import {
     withRouter,
     matchPath
@@ -16,8 +12,14 @@ import {
     downloadHandler,
     LoadBar
 } from '../componentes/control/LoadBar';
+import {Redirect} from 'react-router-dom';
 import {handlerArray} from '../handlers/index';
-const searchHandler = (path) => {
+import ReactDOM from 'react-dom';
+import BreadCrumb from '../componentes/control/BreadCrumb';
+import Lateral from '../componentes/control/Lateral';
+
+
+function searchHandler (path) {
     return handlerArray.filter(
         c => path.match(c.match)
     ).pop();
@@ -40,14 +42,13 @@ function awaitLoading (
 }
 
 
-const assignRoute =
-    (location) => {
-        const handler = searchHandler(location);
-        return {
-            handler,
-            route:matchPath(location,{path:handler.endpoint})
-        };
+function assignRoute (location){
+    const handler = searchHandler(location);
+    return {
+        handler,
+        route:matchPath(location,{path:handler.endpoint})
     };
+};
 
 export const WaitsLoading = React.createContext({});
 
@@ -69,11 +70,11 @@ export default class DataHandler extends Component {
         this.awaitLoading({...config})
     }
 
-    fetchHandler(){
-        this.state.fetchData()
-            .catch(
-                err => {console.log(err);this.setState({message:err})}
-            )
+    fetchHandler(params){
+        return  this.state.fetchData(params)
+                .catch(
+                    err => {console.log(err);}
+                )
     }
 
     shouldComponentUpdate(np,ns){
@@ -82,7 +83,7 @@ export default class DataHandler extends Component {
     }
 
     componentDidUpdate(pp,ps){
-        if(pp.location !== this.props.location){
+        if(pp.location.pathname !== this.props.location.pathname){
             this.routeChange(this.props.location)
         }
     }
@@ -99,7 +100,7 @@ export default class DataHandler extends Component {
                         ? `escritorio${this.state.location.pathname}`
                         : `escritorio`;
         return (
-            <WaitsLoading.Provider value={this.awaitLoading}>
+            <WaitsLoading.Provider value={this.fetchHandler}>
                 <LoadBar loaded={this.state.loading}/>
                 <div    className="col-md-2 no-padding white-background">
                     <Lateral    current={this.props.sidebarElem}

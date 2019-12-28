@@ -43,96 +43,96 @@ export const horariosHandlers = {
     }
 };
 
-const editFormHandler = (endpoint,location) => {
-    return function (params) {
+const editFormHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
         });
-        request
-            .then(
-                response => {
-                    const data = response.data.horarios[0],
-                        nombre = DAYS[parseInt(data.diaSemana)-1];
-                    this.setState({
-                        data:{
-                            horarios:data,
-                            eventos:response.data.eventos,
-                            minutes: generateHoursFromInterval(response.data.intervalo),
-                            side: response.data.horarios[0].estado === 'laboral'
-                        },
-                        nombre:`Horario del ${nombre}`,
-                        location:this.props.location,
-                        loadFinished: true
-                    });
-                }
-            )
+        return  request
+                .then(
+                    response => {
+                        const data = response.data.horarios[0],
+                            nombre = DAYS[parseInt(data.diaSemana)-1];
+                        this.setState({
+                            data:{
+                                horarios:data,
+                                eventos:response.data.eventos,
+                                minutes: generateHoursFromInterval(response.data.intervalo),
+                                side: response.data.horarios[0].estado === 'laboral'
+                            },
+                            nombre:`Horario del ${nombre}`,
+                            location:this.props.location,
+                            loadFinished: true
+                        });
+                    }
+                )
     }
 }
 
-const addFormHandler = (endpoint,location) => {
-    return function (params) {
+const addFormHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
         });
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data:{
-                            horarios: null,
-                            eventos: response.data.eventos,
-                            minutes: generateHoursFromInterval(response.data.intervalo)
-                        },
-                        location:this.props.location,
-                        loadFinished: true
-                    });
-                }
-            )
+        return  request
+                .then(
+                    response => {
+                        this.setState({
+                            data:{
+                                horarios: null,
+                                eventos: response.data.eventos,
+                                minutes: generateHoursFromInterval(response.data.intervalo)
+                            },
+                            location:this.props.location,
+                            loadFinished: true
+                        });
+                    }
+                )
     }
 }
 
-const listHandler = (endpoint,location) => {
-    return function (params) {
+const listHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
         });
 
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: response.data.horarios.data,
-                        location:this.props.location,
-                        loadFinished:true
-                    });
-                }
-            )
+        return  request
+                .then(
+                    response => {
+                        this.setState({
+                            data: response.data.horarios.data,
+                            location:this.props.location,
+                            loadFinished:true
+                        });
+                    }
+                )
     }
 }
 
-const singleHandler = (endpoint,location) => {
-    return function (params) {
+const singleHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
         });
 
-        request
-            .then(
-                response => {
-                    const data = response.data.horarios[0],
-                        nombre = DAYS[parseInt(data.diaSemana)-1];
-                    this.setState({
-                        data: data,
-                        nombre:`Horario del ${nombre}`,
-                        location:this.props.location,
-                        loadFinished:true
-                    });
-                }
-            )
+        return  request
+                .then(
+                    response => {
+                        const data = response.data.horarios[0],
+                            nombre = DAYS[parseInt(data.diaSemana)-1];
+                        this.setState({
+                            data: data,
+                            nombre:`Horario del ${nombre}`,
+                            location:this.props.location,
+                            loadFinished:true
+                        });
+                    }
+                )
     }
 }
 

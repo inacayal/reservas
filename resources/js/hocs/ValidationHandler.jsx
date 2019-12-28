@@ -307,13 +307,13 @@ class ValidationHandler extends Component{
 
     render(){
         const   Form = React.cloneElement(
-                    this.props.children,
-                    {
-                        fields:this.state.form,
-                        change:this.changeFormField,
-                        errors:this.state.errors
-                    }
-                );
+                this.props.children,
+                {
+                    fields:this.state.form,
+                    change:this.changeFormField,
+                    errors:this.state.errors
+                }
+            );
         return (
             <>
                 <div className="visible relative">

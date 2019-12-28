@@ -13,13 +13,22 @@ export const evaluateDateChange = (
     view,
     section
 ) => {
-    const oDate = changeObject.o,
-        nDate = changeObject.n;
-    if (oDate.getMonth() !== nDate.getMonth() || oDate.getFullYear() !== nDate.getFullYear()) {
+    const   oDate = changeObject.o,
+            nDate = changeObject.n;
+    if (
+        oDate.getMonth() !== nDate.getMonth()
+        || oDate.getFullYear() !== nDate.getFullYear()
+    ) {
         nDate.setDate(changeObject.m);
-        return fetchCallback(path,{date:new Date(nDate),show:view,refresh:true},section);
+        return  fetchCallback({
+                    date:new Date(nDate),
+                    show:view,
+                });
     } else
-        return changeDate({date:new Date(nDate),show:view});
+        return changeDate({
+            date:new Date(nDate),
+            show:view
+        });
 };
 
 export const generateHoursFromInterval = (interval) => {

@@ -42,8 +42,8 @@ export const feriadosHandlers = {
     }
 };
 
-const editFormHandler = (endpoint,location) => {
-    return function (params){
+const editFormHandler = (endpoint) => {
+    return function (){
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -69,9 +69,11 @@ const editFormHandler = (endpoint,location) => {
     }
 }
 
-const addFormHandler = (endpoint,location) => {
-    return function (params){
-        const date = params.date ? params.date : new Date();
+const addFormHandler = (endpoint) => {
+    return function (params) {
+        const   date = params.date
+                    ? params.date
+                    : new Date();
         const request = GET({
             endpoint: endpoint + (date.getMonth() + 1) + '/' + date.getFullYear(),
             download: this.downloadHandler
@@ -94,7 +96,7 @@ const addFormHandler = (endpoint,location) => {
     }
 }
 
-const listHandler = (endpoint,location) => {
+const listHandler = (endpoint) => {
     return function (params){
         const date = params.date||new Date(),
             request = GET({
@@ -120,8 +122,8 @@ const listHandler = (endpoint,location) => {
 }
 
 
-const singleHandler = (endpoint,location) => {
-    return function (params){
+const singleHandler = (endpoint) => {
+    return function (){
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler

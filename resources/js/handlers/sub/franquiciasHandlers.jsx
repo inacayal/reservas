@@ -42,8 +42,8 @@ export const franquiciasHandlers = {
 };
 
 
-const editFormHandler = (endpoint,location) => {
-    return function (params) {
+const editFormHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -63,8 +63,8 @@ const editFormHandler = (endpoint,location) => {
     }
 }
 
-const addFormHandler = (endpoint,location) => {
-    return function (params) {
+const addFormHandler = (endpoint) => {
+    return function () {
         this.setState({
             data:true,
             loadFinished:true,
@@ -74,8 +74,8 @@ const addFormHandler = (endpoint,location) => {
 }
 
 
-const listHandler = (endpoint,location) => {
-    return function (params) {
+const listHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -93,8 +93,8 @@ const listHandler = (endpoint,location) => {
     }
 }
 
-const singleHandler = (endpoint,location) => {
-    return function (params) {
+const singleHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler

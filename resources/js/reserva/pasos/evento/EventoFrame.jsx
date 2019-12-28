@@ -16,86 +16,52 @@ import {
 import {
     generateHourArray,
     calculateOffset,
-    generateAcceptedHours
+    generateAcceptedHours,
+    checkValid
 } from './Handlers';
 import {compareDates} from '../../../utils/Helper';
-
-function initializeComponent (props) {
-    const   date = props.fecha,
-            currentData = props.data.feriados.data[date.getDate()]
-            ? props.data.feriados.data[date.getDate()]
-            : props.data.horarios.data[date.getDay()+1];
-
-    return {
-        date:date,
-        current:currentData,
-        min: calculateOffset(
-            props.data.antelacion,
-            new Date(),
-            currentData
-        ),
-        horario: generateAcceptedHours({
-            a: props.data.antelacion,
-            g: currentData,
-            i: props.data.intervalo.id,
-            f: date,
-            m: date
-        })
-    }
-}
 
 export default class EventoFrame extends Component {
     constructor(props){
         super(props);
-        this.state = initializeComponent(this.props);
+        this.state = {};
         this.changeDate = this.changeDate.bind(this);
         this.fetchData = this.fetchData.bind(this);
     }
-    changeDate(d){
-        return (e) => {
-            const   date = new Date(d),
-                    props = this.props,
-                    generateData = props.data.feriados.data[date.getDate()]
-                        ? props.data.feriados.data[date.getDate()]
-                        : props.data.horarios.data[date.getDay() + 1],
-                    curr = e.currentTarget;
-            this.setState ({
-                date:date,
-                horario: generateAcceptedHours({
-                    a: props.data.antelacion,
-                    g: generateData,
-                    i: props.data.intervalo.id,
-                    f: date,
-                    m: this.state.min
-                }),
-                current:generateData
-            },
-                () => {
-                    this.props.change(curr)
-                }
-            );
-        }
+
+    changeDate(e){
+        this.props.change(e.currentTarget)
     }
 
-    fetchData(date){
-        this.props.fetch('/reservas/agregar',{date:date,refresh:true},'reservas');
+    fetchData(date,callback){
+        const data = this.props.data.data;
+        new Promise (
+            (resolve,reject) => {
+                this.props.fetch(date)
+                    .then(resolve())
+            }
+        )
+        .then(callback)
     }
 
     render(){
         const   props = this.props,
-                showDate = compareDates(this.state.date,this.state.min,{d:'<',m:'=',y:'='})
-                    ? this.state.min
-                    : this.state.date,
-                minDate = this.state.min,
-                horario = this.state.horario,
-                currentData = this.state.current,
-                ubicaciones = props.data.ubicaciones;
+                data = props.data.data,
+                showDate = new Date(props.fecha),
+                horario = generateAcceptedHours({
+                    a: data.antelacion,
+                    g: props.current,
+                    i: data.intervalo.id,
+                    f: showDate,
+                    m: props.minDate
+                });
         return (
             <div className="container">
                 <CalendarioEventos  data={props.data}
-                                    current = {currentData}
+                                    current = {props.current}
                                     showDate={showDate}
-                                    minDate={minDate}
+                                    minDate={props.minDate}
+                                    fecha = {props.fecha}
                                     clickCallback={this.changeDate}
                                     fetch = {this.fetchData}
                                     change={props.change}/>
@@ -104,8 +70,8 @@ export default class EventoFrame extends Component {
                 </div>
                 <div className="row">
                     <CalendarioFormulario   date={showDate}
-                                            currentData={currentData}
-                                            ubicaciones={ubicaciones}
+                                            currentData={this.props.current}
+                                            ubicaciones={data.ubicaciones}
                                             horario={horario}
                                             fields={props.fields}
                                             change={props.change}

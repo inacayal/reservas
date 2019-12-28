@@ -9,7 +9,7 @@ import Ubicaciones from './sub/Ubicaciones';
 import VerUbicacion from './sub/VerUbicacion';
 import {Navegacion} from '../../acciones/ActionsByView';
 import ValidationHandler from '../../hocs/ValidationHandler';
-
+import ConfirmarModal from '../../componentes/modal/Modal';
 import validation from './validation';
 
 export default function UbicacionesRouting (props) {

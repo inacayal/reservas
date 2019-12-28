@@ -15,48 +15,84 @@ import {
     MONTHS
 } from '../../../constantes/DaysMonths';
 import {compareDates} from '../../../utils/Helper';
+import {checkValid} from './Handlers';
 
 function CalendarioMemo(props) {
-    const   [dateEvent,changeDate]  = useState({event:null,dt:props.showDate}),
+    const   [dateEvent,changeDate]  = useState({
+                event:null,
+                dt:props.showDate,
+                fetch:false
+            }),
+            data = props.data.data,
             frst = useRef(true),
             inputRef = useRef(null),
             dayChange = (date) => {
                 changeDate({
-                    event:new Event('change',{
-                        bubbles: true
+                    event:  new Event('change',{
+                                bubbles: true
+                            }),
+                    dt: checkValid({
+                        date:date,
+                        min:props.minDate,
+                        horarios:data.horarios.data,
+                        feriados:data.feriados.data
                     }),
-                    dt:date
+                    fetch:false
                 });
             },
             tileDisabled = ({ activeStartDate, date, view }) => {
-                const   normal = props.data.horarios.data[date.getDay() + 1],
-                        feriado = props.data.feriados.data[date.getDate()],
+                const   normal = data.horarios.data[date.getDay() + 1],
+                        feriado = data.feriados.data[date.getDate()],
                         feriadoNoLaboral = feriado!==undefined
                             ? feriado.estado === 'no_laboral'
                             : false,
                         disableByDate = view === 'month'
                             ? normal.estado === 'no_laboral' || feriadoNoLaboral
-                            : date.getMonth() < activeStartDate.getMonth() || date.getFullYear() < activeStartDate.getFullYear();
+                            : date.getMonth() < activeStartDate.getMonth()
+                                || date.getFullYear() < activeStartDate.getFullYear();
 
                 return disableByDate;
             },
             monthChange = (date) => {
-                props.fetch(date);
+                changeDate({
+                    event:  new Event('change',{
+                                bubbles: true
+                            }),
+                    dt: checkValid({
+                        date:date,
+                        min:props.minDate,
+                        horarios:data.horarios.data,
+                        feriados:data.feriados.data
+                    }),
+                    fetch:true
+                });
             },
             navChange = ({ activeStartDate, view }) => {
-                props.fetch(activeStartDate);
+                changeDate({
+                    event:  new Event('change',{
+                                bubbles: true
+                            }),
+                    dt:checkValid({
+                        date:activeStartDate,
+                        min:props.minDate,
+                        horarios:data.horarios.data,
+                        feriados:data.feriados.data
+                    }),
+                    fetch:true
+                });
             },
             tileContent = ({ date, view }) => {
                 const   index = date.getDate(),
-                        feriado = props.data.feriados.data[index],
-                        data = feriado !== undefined
+                        feriado = data.feriados.data[index],
+                        fData = feriado !== undefined
                             ? feriado
-                            : props.data.horarios.data[date.getDay()+1],
-                        cond = data.estado === 'no_laboral' || compareDates(date, props.minDate, {d:'<',m:'=',y:'='}),
-                        handler =  (date) =>
-                            (e) =>
-                                props.changeHover(date);
-
+                            : data.horarios.data[date.getDay()+1],
+                        cond =  fData.estado === 'no_laboral'
+                                || compareDates(date, props.minDate, {d:'<',m:'=',y:'='}),
+                        handler =
+                            (date) =>
+                                (e) =>
+                                    props.changeHover(date);
                 return feriado !== undefined
                     ?
                         <>
@@ -78,21 +114,27 @@ function CalendarioMemo(props) {
 
     useEffect(
         () => {
-            if (!frst.current)
-                inputRef.current.dispatchEvent(dateEvent.event);
+            if (!frst.current) {
+                if (dateEvent.fetch)
+                    props.fetch(
+                        dateEvent.dt,
+                        () => inputRef.current.dispatchEvent(dateEvent.event)
+                    )
+                else
+                    inputRef.current.dispatchEvent(dateEvent.event)
+            }
             else
                 frst.current = false;
         },
-         [dateEvent]
+        [dateEvent]
     );
-
     return (
         <>
             <input  readOnly
                     type="date"
                     ref = {inputRef}
                     value={dateEvent.dt}
-                    onChange={props.clickCallback(dateEvent.dt)}
+                    onChange={props.clickCallback}
                     name="fecha_reserva"
                     className="hidden" />
             <Calendar   tileClassName='relative'

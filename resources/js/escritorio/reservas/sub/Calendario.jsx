@@ -44,36 +44,53 @@ export default class Calendario extends Component {
 
     verReserva(e) {
         e.preventDefault();
-        const date = new Date(e.currentTarget.getAttribute('data')),
-            show = this.state.show,
-            controls=this.state.controls;
-        this.setState({date:date,show:"3"})
+        const   date = new Date(e.currentTarget.getAttribute('data')),
+                show = this.state.show,
+                controls=this.state.controls;
+        this.props.history.replace({
+            state:{
+                date:date,
+                show:"3"
+            }
+        });
     }
 
     componentWillUnmount() {
         console.log('reservasSubUnmount');
     }
 
+    componentDidUpdate(pp){
+        if (this.props.location.state.date !== (pp.location.state||{}).date)
+            this.setState({
+                date:new Date(this.props.location.state.date),
+                show:this.props.location.state.show
+            })
+    }
+
+    componentDidMount() {
+        if (this.props.location.state)
+            this.setState({
+                date:new Date(this.props.location.state.date),
+                show:this.props.location.state.show
+            })
+    }
+
     render(){
         const data = this.props.data;
         return (
             <>
-                <Titulo
-                    title={"Reservaciones"}
-                    links={this.props.nav.links} />
+                <Titulo title={"Reservaciones"}
+                        links={this.props.nav.links} />
                 <div className="container">
-                    <Agenda
-                        show={this.state.show}
-                        horariosReserva={data.horarios}
-                        date={this.state.date}
-                        weekRender={true}
-                        dayRender={true}
-                        actions={this.actions}
-                        controls={this.state.controls}
-                        data={data.data}
-                        type="reservas"
-                        endpoint="reservas"
-                        fetchNewMonth={this.props.fetch}/>
+                    <Agenda show={this.state.show}
+                            horariosReserva={data.horarios}
+                            date={this.state.date}
+                            actions={this.actions}
+                            controls={this.state.controls}
+                            data={data.data}
+                            type="reservas"
+                            endpoint="reservas"
+                            fetchNewMonth={this.props.fetch}/>
                 </div>
             </>
         );

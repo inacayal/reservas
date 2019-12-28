@@ -93504,15 +93504,16 @@ var validation = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../acciones/ActionsByView */ "./resources/js/acciones/ActionsByView.jsx");
-/* harmony import */ var _sub_Formulario__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sub/Formulario */ "./resources/js/escritorio/reservas/sub/Formulario.jsx");
-/* harmony import */ var _sub_Calendario__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sub/Calendario */ "./resources/js/escritorio/reservas/sub/Calendario.jsx");
-/* harmony import */ var _sub_VerReserva__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./sub/VerReserva */ "./resources/js/escritorio/reservas/sub/VerReserva.jsx");
-/* harmony import */ var _hocs_ValidationHandler__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../hocs/ValidationHandler */ "./resources/js/hocs/ValidationHandler.jsx");
-/* harmony import */ var _validation__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./validation */ "./resources/js/escritorio/reservas/validation.jsx");
+/* harmony import */ var _reserva_pasos_evento_Handlers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../reserva/pasos/evento/Handlers */ "./resources/js/reserva/pasos/evento/Handlers.jsx");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../acciones/ActionsByView */ "./resources/js/acciones/ActionsByView.jsx");
+/* harmony import */ var _sub_Formulario__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sub/Formulario */ "./resources/js/escritorio/reservas/sub/Formulario.jsx");
+/* harmony import */ var _sub_Calendario__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./sub/Calendario */ "./resources/js/escritorio/reservas/sub/Calendario.jsx");
+/* harmony import */ var _sub_VerReserva__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./sub/VerReserva */ "./resources/js/escritorio/reservas/sub/VerReserva.jsx");
+/* harmony import */ var _hocs_ValidationHandler__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../hocs/ValidationHandler */ "./resources/js/hocs/ValidationHandler.jsx");
+/* harmony import */ var _validation__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./validation */ "./resources/js/escritorio/reservas/validation.jsx");
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 
@@ -93525,21 +93526,33 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 
+
 var ReservasRouting = function ReservasRouting(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: props.match.url,
     exact: true,
     render: function render(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Calendario__WEBPACK_IMPORTED_MODULE_5__["default"], _extends({
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Calendario__WEBPACK_IMPORTED_MODULE_6__["default"], _extends({
         data: props.data,
-        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_3__["Navegacion"].listado('reservas')
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_4__["Navegacion"].listado('reservas')
       }, match));
     }
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "".concat(props.match.url, "/agregar"),
     render: function render(match) {
-      var form = {
-        fecha_reserva: new Date(),
+      var data = props.data.data,
+          ndate = new Date(),
+          currentData = data.feriados.data[ndate.getDate()] ? data.feriados.data[ndate.getDate()] : data.horarios.data[ndate.getDay() + 1],
+          min = Object(_reserva_pasos_evento_Handlers__WEBPACK_IMPORTED_MODULE_1__["calculateOffset"])(data.antelacion, ndate, currentData),
+          date = Object(_reserva_pasos_evento_Handlers__WEBPACK_IMPORTED_MODULE_1__["checkValid"])({
+        date: new Date(min),
+        min: min,
+        horarios: data.horarios.data,
+        feriados: data.feriados.data
+      }),
+          form = {
+        fecha_reserva: (props.location.state || {}).date ? props.location.state.date : date,
+        min_fecha: min,
         id_ubicacion: "",
         id_evento: "",
         id_promocion: "",
@@ -93552,23 +93565,23 @@ var ReservasRouting = function ReservasRouting(props) {
         telefono: "",
         descripcion_evento: ""
       };
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_ValidationHandler__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_ValidationHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
         form: form,
         sendRequest: function sendRequest() {
           return false;
         },
-        validation: _validation__WEBPACK_IMPORTED_MODULE_8__["default"]
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["default"], _extends({
+        validation: _validation__WEBPACK_IMPORTED_MODULE_9__["default"]
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_5__["default"], _extends({
         data: props.data,
-        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_3__["Navegacion"].agregar('reservas')
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_4__["Navegacion"].agregar('reservas')
       }, match)));
     }
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "".concat(props.match.url, "/:id"),
     render: function render(match) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerReserva__WEBPACK_IMPORTED_MODULE_6__["default"], _extends({
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_VerReserva__WEBPACK_IMPORTED_MODULE_7__["default"], _extends({
         data: props.data,
-        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_3__["Navegacion"].singular(function () {
+        nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_4__["Navegacion"].singular(function () {
           return false;
         }, match.match.params.id, 'reservas')
       }, match));
@@ -93677,15 +93690,33 @@ function (_Component) {
       var date = new Date(e.currentTarget.getAttribute('data')),
           show = this.state.show,
           controls = this.state.controls;
-      this.setState({
-        date: date,
-        show: "3"
+      this.props.history.replace({
+        state: {
+          date: date,
+          show: "3"
+        }
       });
     }
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       console.log('reservasSubUnmount');
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(pp) {
+      if (this.props.location.state.date !== (pp.location.state || {}).date) this.setState({
+        date: new Date(this.props.location.state.date),
+        show: this.props.location.state.show
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      if (this.props.location.state) this.setState({
+        date: new Date(this.props.location.state.date),
+        show: this.props.location.state.show
+      });
     }
   }, {
     key: "render",
@@ -93700,8 +93731,6 @@ function (_Component) {
         show: this.state.show,
         horariosReserva: data.horarios,
         date: this.state.date,
-        weekRender: true,
-        dayRender: true,
         actions: this.actions,
         controls: this.state.controls,
         data: data.data,
@@ -93736,6 +93765,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _reserva_pasos_evento_EventoFrame__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../reserva/pasos/evento/EventoFrame */ "./resources/js/reserva/pasos/evento/EventoFrame.jsx");
 /* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
 /* harmony import */ var _hocs_DataHandler__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../hocs/DataHandler */ "./resources/js/hocs/DataHandler.jsx");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /**
  * react basic
  */
@@ -93745,8 +93776,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function Formulario(props) {
+  var _React$createElement;
+
   var context = Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_hocs_DataHandler__WEBPACK_IMPORTED_MODULE_4__["WaitsLoading"]),
-      data = props.data;
+      data = props.data,
+      fecha = new Date(props.fields.fecha_reserva),
+      currentData = data.data.feriados.data[fecha.getDate()] ? data.data.feriados.data[fecha.getDate()] : data.data.horarios.data[fecha.getDay() + 1];
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_3__["default"], {
     title: "Agregar Reservaci\xF3n",
     links: props.nav.links
@@ -93754,16 +93789,14 @@ function Formulario(props) {
     className: "container"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_reserva_pasos_evento_EventoFrame__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_reserva_pasos_evento_EventoFrame__WEBPACK_IMPORTED_MODULE_2__["default"], (_React$createElement = {
     displayTitles: false,
     current: true,
-    fecha: data.date,
+    fecha: fecha,
+    minDate: props.fields.min_fecha,
     fetch: context,
-    data: data.data,
-    fields: props.fields,
-    change: props.change,
-    errors: props.errors
-  }))));
+    data: data
+  }, _defineProperty(_React$createElement, "current", currentData), _defineProperty(_React$createElement, "location", props.location), _defineProperty(_React$createElement, "fields", props.fields), _defineProperty(_React$createElement, "change", props.change), _defineProperty(_React$createElement, "errors", props.errors), _React$createElement)))));
 }
 
 /***/ }),
@@ -94159,7 +94192,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _sub_VerUbicacion__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sub/VerUbicacion */ "./resources/js/escritorio/ubicaciones/sub/VerUbicacion.jsx");
 /* harmony import */ var _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../acciones/ActionsByView */ "./resources/js/acciones/ActionsByView.jsx");
 /* harmony import */ var _hocs_ValidationHandler__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../hocs/ValidationHandler */ "./resources/js/hocs/ValidationHandler.jsx");
-/* harmony import */ var _validation__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./validation */ "./resources/js/escritorio/ubicaciones/validation.jsx");
+/* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
+/* harmony import */ var _validation__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./validation */ "./resources/js/escritorio/ubicaciones/validation.jsx");
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
@@ -94173,6 +94207,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 /**
  * react basic
  */
+
 
 
 
@@ -94196,7 +94231,7 @@ function UbicacionesRouting(props) {
     toggle(false);
   };
 
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ConfirmarModal, {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_8__["default"], {
     open: open,
     closeModal: closeModal,
     title: "Eliminar Ubicación",
@@ -94227,7 +94262,7 @@ function UbicacionesRouting(props) {
         sendRequest: function sendRequest() {
           return false;
         },
-        validation: _validation__WEBPACK_IMPORTED_MODULE_8__["default"]
+        validation: _validation__WEBPACK_IMPORTED_MODULE_9__["default"]
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({
         editar: true,
         data: props.data,
@@ -94252,7 +94287,7 @@ function UbicacionesRouting(props) {
         sendRequest: function sendRequest() {
           return false;
         },
-        validation: _validation__WEBPACK_IMPORTED_MODULE_8__["default"]
+        validation: _validation__WEBPACK_IMPORTED_MODULE_9__["default"]
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_3__["default"], _extends({
         editar: false,
         data: props.data,
@@ -95877,83 +95912,75 @@ var configuracionHandlers = {
   }
 };
 
-var establecimientoHandler = function establecimientoHandler(endpoint, location) {
-  return function (params) {
+var establecimientoHandler = function establecimientoHandler(endpoint) {
+  return function () {
     var _this = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       _this.setState({
         data: response.data.data,
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this.props.location
       });
-    })["catch"](this.displayErrors);
+    });
   };
 };
 
-var configuracionHandler = function configuracionHandler(endpoint, location) {
-  return function (params) {
+var configuracionHandler = function configuracionHandler(endpoint) {
+  return function () {
     var _this2 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       _this2.setState({
         data: response.data.data,
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this2.props.location
       });
-    })["catch"](this.displayErrors);
+    });
   };
 };
 
-var reservaHandler = function reservaHandler(endpoint, location) {
-  return function (params) {
+var reservaHandler = function reservaHandler(endpoint) {
+  return function () {
     var _this3 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       _this3.setState({
         data: response.data.data,
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this3.props.location
       });
-    })["catch"](this.displayErrors);
+    });
   };
 };
 
-var usuarioHandler = function usuarioHandler(endpoint, location) {
-  return function (params) {
+var usuarioHandler = function usuarioHandler(endpoint) {
+  return function () {
     var _this4 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       _this4.setState({
         data: response.data.data,
         loadFinished: true,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this4.props.location
       });
-    })["catch"](this.displayErrors);
+    });
   };
 };
 
@@ -96051,25 +96078,25 @@ var eventosHandlers = {
     endpoint: '/eventos',
     match: /\/eventos$/,
     callback: function callback(params) {
-      return listHandler("/eventos/list/".concat(user.id), "/eventos", params);
+      return listHandler("/eventos/list/".concat(user.id));
     }
   }, {
     endpoint: '/eventos/agregar',
     match: /\/eventos\/(agregar)$/,
     callback: function callback(params) {
-      return addFormHandler("/eventos/add/".concat(user.id), "/eventos/agregar", params);
+      return addFormHandler("/eventos/add/".concat(user.id));
     }
   }, {
     endpoint: '/eventos/editar/:id',
     match: /\/eventos\/(editar\/\d+)$/,
     callback: function callback(params) {
-      return editFormHandler("eventos/single/".concat(user.id, "/").concat(params.id), "/eventos/editar/".concat(params.id), params);
+      return editFormHandler("eventos/single/".concat(user.id, "/").concat(params.id));
     }
   }, {
     endpoint: '/eventos/:id',
     match: /\/eventos\/(\d+)$/,
     callback: function callback(params) {
-      return singleHandler("/eventos/single/".concat(user.id, "/").concat(params.id), "/eventos/".concat(params.id), params);
+      return singleHandler("/eventos/single/".concat(user.id, "/").concat(params.id));
     }
   }],
   form: {
@@ -96135,7 +96162,7 @@ var addFormHandler = function addFormHandler(endpoint) {
 };
 
 var listHandler = function listHandler(endpoint) {
-  return function (component) {
+  return function () {
     var _this3 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
@@ -96251,8 +96278,8 @@ var feriadosHandlers = {
   }
 };
 
-var editFormHandler = function editFormHandler(endpoint, location) {
-  return function (params) {
+var editFormHandler = function editFormHandler(endpoint) {
+  return function () {
     var _this = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
@@ -96278,7 +96305,7 @@ var editFormHandler = function editFormHandler(endpoint, location) {
   };
 };
 
-var addFormHandler = function addFormHandler(endpoint, location) {
+var addFormHandler = function addFormHandler(endpoint) {
   return function (params) {
     var _this2 = this;
 
@@ -96302,7 +96329,7 @@ var addFormHandler = function addFormHandler(endpoint, location) {
   };
 };
 
-var listHandler = function listHandler(endpoint, location) {
+var listHandler = function listHandler(endpoint) {
   return function (params) {
     var _this3 = this;
 
@@ -96326,8 +96353,8 @@ var listHandler = function listHandler(endpoint, location) {
   };
 };
 
-var singleHandler = function singleHandler(endpoint, location) {
-  return function (params) {
+var singleHandler = function singleHandler(endpoint) {
+  return function () {
     var _this4 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
@@ -96413,8 +96440,8 @@ var franquiciasHandlers = {
   }
 };
 
-var editFormHandler = function editFormHandler(endpoint, location) {
-  return function (params) {
+var editFormHandler = function editFormHandler(endpoint) {
+  return function () {
     var _this = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
@@ -96436,8 +96463,8 @@ var editFormHandler = function editFormHandler(endpoint, location) {
   };
 };
 
-var addFormHandler = function addFormHandler(endpoint, location) {
-  return function (params) {
+var addFormHandler = function addFormHandler(endpoint) {
+  return function () {
     this.setState({
       data: true,
       loadFinished: true,
@@ -96446,8 +96473,8 @@ var addFormHandler = function addFormHandler(endpoint, location) {
   };
 };
 
-var listHandler = function listHandler(endpoint, location) {
-  return function (params) {
+var listHandler = function listHandler(endpoint) {
+  return function () {
     var _this2 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
@@ -96464,8 +96491,8 @@ var listHandler = function listHandler(endpoint, location) {
   };
 };
 
-var singleHandler = function singleHandler(endpoint, location) {
-  return function (params) {
+var singleHandler = function singleHandler(endpoint) {
+  return function () {
     var _this3 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
@@ -96551,15 +96578,15 @@ var horariosHandlers = {
   }
 };
 
-var editFormHandler = function editFormHandler(endpoint, location) {
-  return function (params) {
+var editFormHandler = function editFormHandler(endpoint) {
+  return function () {
     var _this = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       var data = response.data.horarios[0],
           nombre = _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__["DAYS"][parseInt(data.diaSemana) - 1];
 
@@ -96578,15 +96605,15 @@ var editFormHandler = function editFormHandler(endpoint, location) {
   };
 };
 
-var addFormHandler = function addFormHandler(endpoint, location) {
-  return function (params) {
+var addFormHandler = function addFormHandler(endpoint) {
+  return function () {
     var _this2 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       _this2.setState({
         data: {
           horarios: null,
@@ -96600,15 +96627,15 @@ var addFormHandler = function addFormHandler(endpoint, location) {
   };
 };
 
-var listHandler = function listHandler(endpoint, location) {
-  return function (params) {
+var listHandler = function listHandler(endpoint) {
+  return function () {
     var _this3 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       _this3.setState({
         data: response.data.horarios.data,
         location: _this3.props.location,
@@ -96618,15 +96645,15 @@ var listHandler = function listHandler(endpoint, location) {
   };
 };
 
-var singleHandler = function singleHandler(endpoint, location) {
-  return function (params) {
+var singleHandler = function singleHandler(endpoint) {
+  return function () {
     var _this4 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       var data = response.data.horarios[0],
           nombre = _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_5__["DAYS"][parseInt(data.diaSemana) - 1];
 
@@ -96702,15 +96729,15 @@ var localesHandlers = {
   }
 };
 
-var editFormHandler = function editFormHandler(endpoint, location) {
-  return function (params) {
+var editFormHandler = function editFormHandler(endpoint) {
+  return function () {
     var _this = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       var data = response.data.data;
 
       _this.setState({
@@ -96723,15 +96750,15 @@ var editFormHandler = function editFormHandler(endpoint, location) {
   };
 };
 
-var addFormHandler = function addFormHandler(endpoint, location) {
-  return function (params) {
+var addFormHandler = function addFormHandler(endpoint) {
+  return function () {
     var _this2 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.props.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       var data = response.data.usuarios.list;
 
       _this2.setState({
@@ -96743,15 +96770,15 @@ var addFormHandler = function addFormHandler(endpoint, location) {
   };
 };
 
-var listHandler = function listHandler(endpoint, location) {
-  return function (params) {
+var listHandler = function listHandler(endpoint) {
+  return function () {
     var _this3 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       _this3.setState({
         data: response.data.locales.data,
         loadFinished: true,
@@ -96769,7 +96796,7 @@ var singleHandler = function singleHandler(endpoint, location) {
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       var data = response.data.data;
 
       _this4.setState({
@@ -96850,8 +96877,8 @@ var promocionesHandlers = {
   }
 };
 
-var singleHandler = function singleHandler(endpoint, location) {
-  return function (params) {
+var singleHandler = function singleHandler(endpoint) {
+  return function () {
     var _this = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
@@ -96871,8 +96898,8 @@ var singleHandler = function singleHandler(endpoint, location) {
   };
 };
 
-var listHandler = function listHandler(endpoint, location) {
-  return function (params) {
+var listHandler = function listHandler(endpoint) {
+  return function () {
     var _this2 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
@@ -96889,14 +96916,10 @@ var listHandler = function listHandler(endpoint, location) {
   };
 };
 
-var editFormHandler = function editFormHandler(endpoint, location) {
-  return function (params) {
+var editFormHandler = function editFormHandler(endpoint) {
+  return function () {
     var _this3 = this;
 
-    this.setState({
-      data: null,
-      isLoading: true
-    });
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
@@ -96919,8 +96942,8 @@ var editFormHandler = function editFormHandler(endpoint, location) {
   };
 };
 
-var addFormHandler = function addFormHandler(endpoint, location) {
-  return function (params) {
+var addFormHandler = function addFormHandler(endpoint) {
+  return function () {
     var _this4 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
@@ -96993,16 +97016,48 @@ var reservasHandlers = {
   }
 };
 
-var listHandler = function listHandler(endpoint, location) {
+var listHandler = function listHandler(endpoint) {
   return function (params) {
     var _this = this;
 
-    var date = params.date || new Date(),
+    var date = (params || {}).date || new Date(),
         request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
-      endpoint: endpoint + parseInt(date.getMonth() + 1) + '/' + date.getFullYear(),
+      endpoint: "".concat(endpoint).concat(parseInt(date.getMonth() + 1), "/").concat(date.getFullYear()),
       download: this.downloadHandler
     });
-    request.then(function (response) {
+
+    if (params) {
+      this.props.history.replace({
+        state: {
+          date: date,
+          show: params.show
+        }
+      });
+      return new Promise(function (resolve, reject) {
+        _this.setState({
+          loadFinished: false,
+          loading: 0
+        }, function () {
+          return resolve();
+        });
+      }).then(request.then(function (response) {
+        _this.setState({
+          data: {
+            data: response.data.reservas.data,
+            horarios: {
+              data: response.data.horarios.data,
+              intervalo: response.data.intervalo.id,
+              antelacion: response.data.antelacion
+            },
+            date: date
+          },
+          location: _this.props.location,
+          loadFinished: true
+        });
+      }));
+    }
+
+    return request.then(function (response) {
       _this.setState({
         data: {
           data: response.data.reservas.data,
@@ -97011,8 +97066,7 @@ var listHandler = function listHandler(endpoint, location) {
             intervalo: response.data.intervalo.id,
             antelacion: response.data.antelacion
           },
-          date: date,
-          show: params.show || "1"
+          date: date
         },
         location: _this.props.location,
         loadFinished: true
@@ -97021,15 +97075,15 @@ var listHandler = function listHandler(endpoint, location) {
   };
 };
 
-var singleHandler = function singleHandler(endpoint, location) {
-  return function (params) {
+var singleHandler = function singleHandler(endpoint) {
+  return function () {
     var _this2 = this;
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       var data = response.data.reservas[0];
 
       _this2.setState({
@@ -97042,16 +97096,44 @@ var singleHandler = function singleHandler(endpoint, location) {
   };
 };
 
-var formHandler = function formHandler(endpoint, location) {
+var formHandler = function formHandler(endpoint) {
   return function (params) {
     var _this3 = this;
 
-    var date = params.date || new Date(),
+    var date = (params || {}).date || new Date(),
         request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: "".concat(endpoint).concat(parseInt(date.getMonth() + 1), "/").concat(date.getFullYear()),
       download: this.downloadHandler
     });
-    request.then(function (response) {
+
+    if (params) {
+      this.props.history.replace({
+        state: {
+          date: date
+        }
+      });
+      return new Promise(function (resolve, reject) {
+        _this3.setState({
+          loadFinished: false,
+          loading: 0
+        }, function () {
+          return resolve();
+        });
+      }).then(request.then(function (response) {
+        var data = response.data;
+
+        _this3.setState({
+          data: {
+            data: data,
+            date: date
+          },
+          loadFinished: true,
+          location: _this3.props.location
+        });
+      }));
+    }
+
+    return request.then(function (response) {
       var data = response.data;
 
       _this3.setState({
@@ -97213,13 +97295,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return DataHandler; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var _componentes_control_BreadCrumb__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../componentes/control/BreadCrumb */ "./resources/js/componentes/control/BreadCrumb.jsx");
-/* harmony import */ var _componentes_control_Lateral__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../componentes/control/Lateral */ "./resources/js/componentes/control/Lateral.jsx");
-/* harmony import */ var _componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../componentes/control/LoadBar */ "./resources/js/componentes/control/LoadBar.jsx");
-/* harmony import */ var _handlers_index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../handlers/index */ "./resources/js/handlers/index.jsx");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../componentes/control/LoadBar */ "./resources/js/componentes/control/LoadBar.jsx");
+/* harmony import */ var _handlers_index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../handlers/index */ "./resources/js/handlers/index.jsx");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _componentes_control_BreadCrumb__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../componentes/control/BreadCrumb */ "./resources/js/componentes/control/BreadCrumb.jsx");
+/* harmony import */ var _componentes_control_Lateral__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../componentes/control/Lateral */ "./resources/js/componentes/control/Lateral.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -97256,11 +97338,11 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var searchHandler = function searchHandler(path) {
-  return _handlers_index__WEBPACK_IMPORTED_MODULE_6__["handlerArray"].filter(function (c) {
+function searchHandler(path) {
+  return _handlers_index__WEBPACK_IMPORTED_MODULE_3__["handlerArray"].filter(function (c) {
     return path.match(c.match);
   }).pop();
-};
+}
 
 function awaitLoading(_ref) {
   var _this = this;
@@ -97276,16 +97358,17 @@ function awaitLoading(_ref) {
   });
 }
 
-var assignRoute = function assignRoute(location) {
+function assignRoute(location) {
   var handler = searchHandler(location);
   return {
     handler: handler,
-    route: Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["matchPath"])(location, {
+    route: Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["matchPath"])(location, {
       path: handler.endpoint
     })
   };
-};
+}
 
+;
 var WaitsLoading = react__WEBPACK_IMPORTED_MODULE_0___default.a.createContext({});
 
 var DataHandler =
@@ -97303,7 +97386,7 @@ function (_Component) {
       data: null,
       loading: 0
     };
-    _this2.downloadHandler = _componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_5__["downloadHandler"].bind(_assertThisInitialized(_this2));
+    _this2.downloadHandler = _componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_2__["downloadHandler"].bind(_assertThisInitialized(_this2));
     _this2.awaitLoading = awaitLoading.bind(_assertThisInitialized(_this2));
     _this2.fetchHandler = _this2.fetchHandler.bind(_assertThisInitialized(_this2));
     _this2.routeChange = _this2.routeChange.bind(_assertThisInitialized(_this2));
@@ -97318,15 +97401,9 @@ function (_Component) {
     }
   }, {
     key: "fetchHandler",
-    value: function fetchHandler() {
-      var _this3 = this;
-
-      this.state.fetchData()["catch"](function (err) {
+    value: function fetchHandler(params) {
+      return this.state.fetchData(params)["catch"](function (err) {
         console.log(err);
-
-        _this3.setState({
-          message: err
-        });
       });
     }
   }, {
@@ -97337,7 +97414,7 @@ function (_Component) {
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(pp, ps) {
-      if (pp.location !== this.props.location) {
+      if (pp.location.pathname !== this.props.location.pathname) {
         this.routeChange(this.props.location);
       }
     }
@@ -97354,12 +97431,12 @@ function (_Component) {
     value: function render() {
       var location = this.state.location ? "escritorio".concat(this.state.location.pathname) : "escritorio";
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(WaitsLoading.Provider, {
-        value: this.awaitLoading
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_5__["LoadBar"], {
+        value: this.fetchHandler
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_2__["LoadBar"], {
         loaded: this.state.loading
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-2 no-padding white-background"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_Lateral__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_Lateral__WEBPACK_IMPORTED_MODULE_6__["default"], {
         current: this.props.sidebarElem,
         items: sidebar
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -97369,7 +97446,7 @@ function (_Component) {
         }
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_BreadCrumb__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_BreadCrumb__WEBPACK_IMPORTED_MODULE_5__["default"], {
         url: location,
         nombre: this.state.nombre
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -98367,6 +98444,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_calendar__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_calendar__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _constantes_DaysMonths__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../constantes/DaysMonths */ "./resources/js/constantes/DaysMonths.jsx");
 /* harmony import */ var _utils_Helper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../utils/Helper */ "./resources/js/utils/Helper.jsx");
+/* harmony import */ var _Handlers__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Handlers */ "./resources/js/reserva/pasos/evento/Handlers.jsx");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -98384,14 +98462,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 function CalendarioMemo(props) {
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({
     event: null,
-    dt: props.showDate
+    dt: props.showDate,
+    fetch: false
   }),
       _useState2 = _slicedToArray(_useState, 2),
       dateEvent = _useState2[0],
       changeDate = _useState2[1],
+      data = props.data.data,
       frst = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(true),
       inputRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null),
       dayChange = function dayChange(date) {
@@ -98399,35 +98480,63 @@ function CalendarioMemo(props) {
       event: new Event('change', {
         bubbles: true
       }),
-      dt: date
+      dt: Object(_Handlers__WEBPACK_IMPORTED_MODULE_5__["checkValid"])({
+        date: date,
+        min: props.minDate,
+        horarios: data.horarios.data,
+        feriados: data.feriados.data
+      }),
+      fetch: false
     });
   },
       tileDisabled = function tileDisabled(_ref) {
     var activeStartDate = _ref.activeStartDate,
         date = _ref.date,
         view = _ref.view;
-    var normal = props.data.horarios.data[date.getDay() + 1],
-        feriado = props.data.feriados.data[date.getDate()],
+    var normal = data.horarios.data[date.getDay() + 1],
+        feriado = data.feriados.data[date.getDate()],
         feriadoNoLaboral = feriado !== undefined ? feriado.estado === 'no_laboral' : false,
         disableByDate = view === 'month' ? normal.estado === 'no_laboral' || feriadoNoLaboral : date.getMonth() < activeStartDate.getMonth() || date.getFullYear() < activeStartDate.getFullYear();
     return disableByDate;
   },
       monthChange = function monthChange(date) {
-    props.fetch(date);
+    changeDate({
+      event: new Event('change', {
+        bubbles: true
+      }),
+      dt: Object(_Handlers__WEBPACK_IMPORTED_MODULE_5__["checkValid"])({
+        date: date,
+        min: props.minDate,
+        horarios: data.horarios.data,
+        feriados: data.feriados.data
+      }),
+      fetch: true
+    });
   },
       navChange = function navChange(_ref2) {
     var activeStartDate = _ref2.activeStartDate,
         view = _ref2.view;
-    props.fetch(activeStartDate);
+    changeDate({
+      event: new Event('change', {
+        bubbles: true
+      }),
+      dt: Object(_Handlers__WEBPACK_IMPORTED_MODULE_5__["checkValid"])({
+        date: activeStartDate,
+        min: props.minDate,
+        horarios: data.horarios.data,
+        feriados: data.feriados.data
+      }),
+      fetch: true
+    });
   },
       tileContent = function tileContent(_ref3) {
     var date = _ref3.date,
         view = _ref3.view;
 
     var index = date.getDate(),
-        feriado = props.data.feriados.data[index],
-        data = feriado !== undefined ? feriado : props.data.horarios.data[date.getDay() + 1],
-        cond = data.estado === 'no_laboral' || Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_4__["compareDates"])(date, props.minDate, {
+        feriado = data.feriados.data[index],
+        fData = feriado !== undefined ? feriado : data.horarios.data[date.getDay() + 1],
+        cond = fData.estado === 'no_laboral' || Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_4__["compareDates"])(date, props.minDate, {
       d: '<',
       m: '=',
       y: '='
@@ -98462,14 +98571,18 @@ function CalendarioMemo(props) {
   };
 
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-    if (!frst.current) inputRef.current.dispatchEvent(dateEvent.event);else frst.current = false;
+    if (!frst.current) {
+      if (dateEvent.fetch) props.fetch(dateEvent.dt, function () {
+        return inputRef.current.dispatchEvent(dateEvent.event);
+      });else inputRef.current.dispatchEvent(dateEvent.event);
+    } else frst.current = false;
   }, [dateEvent]);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     readOnly: true,
     type: "date",
     ref: inputRef,
     value: dateEvent.dt,
-    onChange: props.clickCallback(dateEvent.dt),
+    onChange: props.clickCallback,
     name: "fecha_reserva",
     className: "hidden"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_calendar__WEBPACK_IMPORTED_MODULE_2___default.a, {
@@ -98526,17 +98639,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 function CalendarioEventos(props) {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.showDate),
+  var data = props.data.data,
+      _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(props.showDate),
       _useState2 = _slicedToArray(_useState, 2),
       hoverDate = _useState2[0],
       changeHover = _useState2[1],
       fecha = hoverDate.getDate(),
       dia = hoverDate.getDay(),
-      hoverData = props.data.feriados.data[fecha] ? props.data.feriados.data[fecha] : props.data.horarios.data[dia + 1],
-      feriado = props.data.feriados.data[fecha],
+      hoverData = data.feriados.data[fecha] ? data.feriados.data[fecha] : data.horarios.data[dia + 1],
+      feriado = data.feriados.data[fecha],
       horarioAtencion = "".concat(hoverData.apertura.atencion.hora, ":").concat(hoverData.apertura.atencion.minuto < 10 ? "0" + hoverData.apertura.atencion.minuto : hoverData.apertura.atencion.minuto, " - ").concat(hoverData.cierre.atencion.hora, ":").concat(hoverData.cierre.atencion.minuto < 10 ? "0" + hoverData.cierre.atencion.minuto : hoverData.cierre.atencion.minuto),
       horarioReserva = "".concat(hoverData.apertura.reserva.hora, ":").concat(hoverData.apertura.reserva.minuto < 10 ? "0" + hoverData.apertura.reserva.minuto : hoverData.apertura.reserva.minuto, " - ").concat(hoverData.cierre.reserva.hora, ":").concat(hoverData.cierre.reserva.minuto < 10 ? "0" + hoverData.cierre.reserva.minuto : hoverData.cierre.reserva.minuto);
 
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    changeHover(props.showDate);
+  }, [props.showDate]);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row v-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -98564,6 +98681,7 @@ function CalendarioEventos(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Calendario__WEBPACK_IMPORTED_MODULE_4__["Calendario"], {
     showDate: props.showDate,
     minDate: props.minDate,
+    formDate: props.fecha,
     data: props.data,
     changeHover: changeHover,
     fetch: props.fetch,
@@ -98870,23 +98988,6 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-function initializeComponent(props) {
-  var date = props.fecha,
-      currentData = props.data.feriados.data[date.getDate()] ? props.data.feriados.data[date.getDate()] : props.data.horarios.data[date.getDay() + 1];
-  return {
-    date: date,
-    current: currentData,
-    min: Object(_Handlers__WEBPACK_IMPORTED_MODULE_5__["calculateOffset"])(props.data.antelacion, new Date(), currentData),
-    horario: Object(_Handlers__WEBPACK_IMPORTED_MODULE_5__["generateAcceptedHours"])({
-      a: props.data.antelacion,
-      g: currentData,
-      i: props.data.intervalo.id,
-      f: date,
-      m: date
-    })
-  };
-}
-
 var EventoFrame =
 /*#__PURE__*/
 function (_Component) {
@@ -98898,7 +98999,7 @@ function (_Component) {
     _classCallCheck(this, EventoFrame);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(EventoFrame).call(this, props));
-    _this.state = initializeComponent(_this.props);
+    _this.state = {};
     _this.changeDate = _this.changeDate.bind(_assertThisInitialized(_this));
     _this.fetchData = _this.fetchData.bind(_assertThisInitialized(_this));
     return _this;
@@ -98906,58 +99007,40 @@ function (_Component) {
 
   _createClass(EventoFrame, [{
     key: "changeDate",
-    value: function changeDate(d) {
-      var _this2 = this;
-
-      return function (e) {
-        var date = new Date(d),
-            props = _this2.props,
-            generateData = props.data.feriados.data[date.getDate()] ? props.data.feriados.data[date.getDate()] : props.data.horarios.data[date.getDay() + 1],
-            curr = e.currentTarget;
-
-        _this2.setState({
-          date: date,
-          horario: Object(_Handlers__WEBPACK_IMPORTED_MODULE_5__["generateAcceptedHours"])({
-            a: props.data.antelacion,
-            g: generateData,
-            i: props.data.intervalo.id,
-            f: date,
-            m: _this2.state.min
-          }),
-          current: generateData
-        }, function () {
-          _this2.props.change(curr);
-        });
-      };
+    value: function changeDate(e) {
+      this.props.change(e.currentTarget);
     }
   }, {
     key: "fetchData",
-    value: function fetchData(date) {
-      this.props.fetch('/reservas/agregar', {
-        date: date,
-        refresh: true
-      }, 'reservas');
+    value: function fetchData(date, callback) {
+      var _this2 = this;
+
+      var data = this.props.data.data;
+      new Promise(function (resolve, reject) {
+        _this2.props.fetch(date).then(resolve());
+      }).then(callback);
     }
   }, {
     key: "render",
     value: function render() {
       var props = this.props,
-          showDate = Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_6__["compareDates"])(this.state.date, this.state.min, {
-        d: '<',
-        m: '=',
-        y: '='
-      }) ? this.state.min : this.state.date,
-          minDate = this.state.min,
-          horario = this.state.horario,
-          currentData = this.state.current,
-          ubicaciones = props.data.ubicaciones;
+          data = props.data.data,
+          showDate = new Date(props.fecha),
+          horario = Object(_Handlers__WEBPACK_IMPORTED_MODULE_5__["generateAcceptedHours"])({
+        a: data.antelacion,
+        g: props.current,
+        i: data.intervalo.id,
+        f: showDate,
+        m: props.minDate
+      });
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CalendarioEventos__WEBPACK_IMPORTED_MODULE_2__["default"], {
         data: props.data,
-        current: currentData,
+        current: props.current,
         showDate: showDate,
-        minDate: minDate,
+        minDate: props.minDate,
+        fecha: props.fecha,
         clickCallback: this.changeDate,
         fetch: this.fetchData,
         change: props.change
@@ -98967,8 +99050,8 @@ function (_Component) {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CalendarioFormulario__WEBPACK_IMPORTED_MODULE_3__["default"], {
         date: showDate,
-        currentData: currentData,
-        ubicaciones: ubicaciones,
+        currentData: this.props.current,
+        ubicaciones: data.ubicaciones,
         horario: horario,
         fields: props.fields,
         change: props.change,
@@ -98988,12 +99071,13 @@ function (_Component) {
 /*!********************************************************!*\
   !*** ./resources/js/reserva/pasos/evento/Handlers.jsx ***!
   \********************************************************/
-/*! exports provided: generateListByLocationCapacity, generateHourArray, calculateOffset, generateAcceptedHours */
+/*! exports provided: generateListByLocationCapacity, checkValid, generateHourArray, calculateOffset, generateAcceptedHours */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "generateListByLocationCapacity", function() { return generateListByLocationCapacity; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "checkValid", function() { return checkValid; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "generateHourArray", function() { return generateHourArray; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "calculateOffset", function() { return calculateOffset; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "generateAcceptedHours", function() { return generateAcceptedHours; });
@@ -99001,6 +99085,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utils_Helper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../utils/Helper */ "./resources/js/utils/Helper.jsx");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -99014,12 +99099,30 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
  */
 
 
+
 var generateListByLocationCapacity = function generateListByLocationCapacity(m) {
   var l = _toConsumableArray(Array(m + 1).keys());
 
   l.shift();
   return l;
 };
+function checkValid(_ref) {
+  var date = _ref.date,
+      min = _ref.min,
+      horarios = _ref.horarios,
+      feriados = _ref.feriados;
+  var resDate = Object(_utils_Helper__WEBPACK_IMPORTED_MODULE_2__["compareDates"])(date, min, {
+    d: '<',
+    m: '=',
+    y: '='
+  }) ? new Date(min) : new Date(date);
+
+  while (horarios[resDate.getDay() + 1].estado === 'no_laboral' || (feriados[resDate.getDate()] || {}).estado === 'no_laboral' && resDate.getMonth() === date.getMonth()) {
+    resDate.setDate(resDate.getDate() + 1);
+  }
+
+  return resDate;
+}
 var generateHourArray = function generateHourArray(h, i, hA, s) {
   var sH = h.apertura.reserva.hora,
       sM = h.apertura.reserva.minuto,
@@ -99065,13 +99168,14 @@ var calculateOffset = function calculateOffset(a, dt, d) {
 
   return dt;
 };
-var generateAcceptedHours = function generateAcceptedHours(_ref) {
-  var a = _ref.a,
-      g = _ref.g,
-      i = _ref.i,
-      f = _ref.f,
-      m = _ref.m;
-  var sH = m.getDate() === f.getDate() && m.getMonth() === f.getMonth() && m.getFullYear() === f.getFullYear() ? g.apertura.reserva.hora + a : g.apertura.reserva.hora,
+var generateAcceptedHours = function generateAcceptedHours(_ref2) {
+  var a = _ref2.a,
+      g = _ref2.g,
+      i = _ref2.i,
+      f = _ref2.f,
+      m = _ref2.m;
+  var nw = new Date(),
+      sH = m.getDate() === f.getDate() && m.getMonth() === f.getMonth() && m.getFullYear() === f.getFullYear() && m.getHours() > nw.getHours() ? g.apertura.reserva.hora + a : g.apertura.reserva.hora,
       sM = g.apertura.reserva.minuto;
   return generateHourArray(g, i, {}, {
     hora: sH,
@@ -99192,11 +99296,10 @@ var evaluateDateChange = function evaluateDateChange(changeObject, fetchCallback
 
   if (oDate.getMonth() !== nDate.getMonth() || oDate.getFullYear() !== nDate.getFullYear()) {
     nDate.setDate(changeObject.m);
-    return fetchCallback(path, {
+    return fetchCallback({
       date: new Date(nDate),
-      show: view,
-      refresh: true
-    }, section);
+      show: view
+    });
   } else return changeDate({
     date: new Date(nDate),
     show: view

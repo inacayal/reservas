@@ -35,79 +35,150 @@ export const reservasHandlers = {
     }
 };
 
-const listHandler = (endpoint,location) => {
+const listHandler = (endpoint) => {
     return function (params) {
-        const date = params.date||new Date(),
-            request = GET({
-                endpoint: endpoint + parseInt(date.getMonth()+1) + '/' + date.getFullYear(),
-                download: this.downloadHandler
-            });
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: {
-                            data:response.data.reservas.data,
-                            horarios: {
-                                data:response.data.horarios.data,
-                                intervalo:response.data.intervalo.id,
-                                antelacion: response.data.antelacion
-                            },
-                            date:date,
-                            show:params.show||"1"
-                        },
-                        location:this.props.location,
-                        loadFinished:true
-                    });
+        const   date = (params||{}).date||new Date(),
+                request = GET({
+                    endpoint: `${endpoint}${parseInt(date.getMonth()+1)}/${date.getFullYear()}`,
+                    download: this.downloadHandler
+                });
+        if (params) {
+            this.props.history.replace({
+                state:{
+                    date:date,
+                    show:params.show
                 }
-            )
+            })
+            return  new Promise(
+                        (resolve,reject) => {
+                            this.setState({
+                                    loadFinished:false,
+                                    loading:0
+                                },
+                                () => resolve()
+                            )
+                        }
+                    )
+                    .then (
+                        request
+                        .then(
+                            response => {
+                                this.setState({
+                                    data: {
+                                        data:response.data.reservas.data,
+                                        horarios: {
+                                            data:response.data.horarios.data,
+                                            intervalo:response.data.intervalo.id,
+                                            antelacion: response.data.antelacion,
+                                        },
+                                        date:date
+                                    },
+                                    location:this.props.location,
+                                    loadFinished:true
+                                });
+                            }
+                        )
+                    );
+        }
+        return  request
+                .then(
+                    response => {
+                        this.setState({
+                            data: {
+                                data:response.data.reservas.data,
+                                horarios: {
+                                    data:response.data.horarios.data,
+                                    intervalo:response.data.intervalo.id,
+                                    antelacion: response.data.antelacion
+                                },
+                                date:date
+                            },
+                            location:this.props.location,
+                            loadFinished:true
+                        });
+                    }
+                )
+
     }
 }
 
 
-const singleHandler = (endpoint,location) => {
-    return function (params) {
+const singleHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
         });
-        request
-            .then(
-                response => {
-                    const data = response.data.reservas[0];
-                    this.setState({
-                        data: data,
-                        nombre:`Reserva de ${data.nombre} ${data.apellido}`,
-                        loadFinished:true,
-                        location:this.props.location,
-                    });
-                }
-            )
+        return  request
+                .then(
+                    response => {
+                        const data = response.data.reservas[0];
+                        this.setState({
+                            data: data,
+                            nombre:`Reserva de ${data.nombre} ${data.apellido}`,
+                            loadFinished:true,
+                            location:this.props.location,
+                        });
+                    }
+                )
     }
 }
 
 
-const formHandler = (endpoint,location) => {
+const formHandler = (endpoint) => {
     return function (params) {
-        const   date = params.date||new Date(),
+        const   date = (params||{}).date||new Date(),
                 request = GET({
                     endpoint: `${endpoint}${parseInt(date.getMonth() + 1)}/${date.getFullYear()}`,
                     download: this.downloadHandler
                 });
-        request
-            .then(
-                response => {
-                    const data = response.data;
-                    this.setState({
-                        data:{
-                            data:data,
-                            date:date
-                        },
-                        loadFinished:true,
-                        location:this.props.location,
-                    });
+        if (params) {
+            this.props.history.replace({
+                state:{
+                    date:date
                 }
-            )
+            })
+            return  new Promise(
+                        (resolve,reject) => {
+                            this.setState({
+                                    loadFinished:false,
+                                    loading:0
+                                },
+                                () => resolve()
+                            )
+                        }
+                    )
+                    .then (
+                        request
+                        .then(
+                            response => {
+                                const data = response.data;
+                                this.setState({
+                                    data:{
+                                        data:data,
+                                        date:date
+                                    },
+                                    loadFinished:true,
+                                    location:this.props.location,
+                                });
+                            }
+                        )
+                    );
+        }
+        return  request
+                .then(
+                    response => {
+                        const data = response.data;
+                        this.setState({
+                            data:{
+                                data:data,
+                                date:date
+                            },
+                            loadFinished:true,
+                            location:this.props.location,
+                        });
+                    }
+                )
     }
 }
 

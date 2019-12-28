@@ -17,15 +17,23 @@ import {
 } from '../../../constantes/DaysMonths';
 
 export default function CalendarioEventos(props){
-    const   [hoverDate, changeHover] = useState(props.showDate),
+    const   data = props.data.data,
+            [hoverDate, changeHover] = useState(props.showDate),
             fecha = hoverDate.getDate(),
             dia = hoverDate.getDay(),
-            hoverData = props.data.feriados.data[fecha]
-                ? props.data.feriados.data[fecha]
-                : props.data.horarios.data[dia+1],
-            feriado = props.data.feriados.data[fecha],
+            hoverData = data.feriados.data[fecha]
+                            ? data.feriados.data[fecha]
+                            : data.horarios.data[dia+1],
+            feriado = data.feriados.data[fecha],
             horarioAtencion = `${hoverData.apertura.atencion.hora}:${hoverData.apertura.atencion.minuto < 10 ? "0" + hoverData.apertura.atencion.minuto : hoverData.apertura.atencion.minuto} - ${hoverData.cierre.atencion.hora}:${hoverData.cierre.atencion.minuto < 10 ? "0" + hoverData.cierre.atencion.minuto : hoverData.cierre.atencion.minuto}`,
             horarioReserva = `${hoverData.apertura.reserva.hora }:${hoverData.apertura.reserva.minuto < 10 ? "0" + hoverData.apertura.reserva.minuto : hoverData.apertura.reserva.minuto} - ${hoverData.cierre.reserva.hora}:${hoverData.cierre.reserva.minuto < 10 ? "0" + hoverData.cierre.reserva.minuto : hoverData.cierre.reserva.minuto}`;
+
+    useEffect(
+        () => {
+            changeHover(props.showDate);
+        },
+        [props.showDate]
+    )
 
     return (
         <>
@@ -66,6 +74,7 @@ export default function CalendarioEventos(props){
                             <div className="col-md-8 text-left">
                                 <Calendario showDate={props.showDate}
                                             minDate={props.minDate}
+                                            formDate = {props.fecha}
                                             data={props.data}
                                             changeHover={changeHover}
                                             fetch={props.fetch}

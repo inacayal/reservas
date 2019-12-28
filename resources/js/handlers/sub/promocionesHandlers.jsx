@@ -42,8 +42,8 @@ export const promocionesHandlers = {
 };
 
 
-const singleHandler = (endpoint,location) => {
-    return function (params) {
+const singleHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -64,8 +64,8 @@ const singleHandler = (endpoint,location) => {
 }
 
 
-const listHandler = (endpoint,location) => {
-    return function (params) {
+const listHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -85,13 +85,8 @@ const listHandler = (endpoint,location) => {
 }
 
 
-const editFormHandler = (endpoint,location) => {
-    return function (params) {
-        this.setState({
-            data: null,
-            isLoading: true,
-        });
-
+const editFormHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
@@ -117,8 +112,8 @@ const editFormHandler = (endpoint,location) => {
     }
 }
 
-const addFormHandler = (endpoint,location) => {
-    return function (params) {
+const addFormHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler

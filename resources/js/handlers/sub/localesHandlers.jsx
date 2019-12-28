@@ -42,67 +42,67 @@ export const localesHandlers = {
     }
 };
 
-const editFormHandler = (endpoint,location) => {
-    return function (params) {
+const editFormHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
         });
-        request
-            .then(
-                response => {
-                    const data = response.data.data
-                    this.setState({
-                        data:data,
-                        nombre:data.nombre,
-                        loadFinished:true,
-                        location:this.props.location,
-                    });
-                }
-            )
+        return  request
+                .then(
+                    response => {
+                        const data = response.data.data
+                        this.setState({
+                            data:data,
+                            nombre:data.nombre,
+                            loadFinished:true,
+                            location:this.props.location,
+                        });
+                    }
+                )
     }
 }
 
-const addFormHandler = (endpoint,location) => {
-    return function (params) {
+const addFormHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.props.downloadHandler
         });
-        request
-            .then(
-                response => {
-                    const data = response.data.usuarios.list;
-                    this.setState({
-                        data:data,
-                        loadFinished:true,
-                        location:this.props.location,
-                    });
-                }
-            )
+        return  request
+                .then(
+                    response => {
+                        const data = response.data.usuarios.list;
+                        this.setState({
+                            data:data,
+                            loadFinished:true,
+                            location:this.props.location,
+                        });
+                    }
+                )
     }
 }
 
 
 
 
-const listHandler = (endpoint,location) => {
-    return function (params) {
+const listHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
         });
 
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: response.data.locales.data,
-                        loadFinished: true,
-                        location:this.props.location,
-                    });
-                }
-            )
+        return  request
+                .then(
+                    response => {
+                        this.setState({
+                            data: response.data.locales.data,
+                            loadFinished: true,
+                            location:this.props.location,
+                        });
+                    }
+                )
     }
 }
 
@@ -114,19 +114,19 @@ const singleHandler = (endpoint,location) => {
             download: this.downloadHandler
         });
 
-        request
-            .then(
-                response => {
-                    const data = response.data.data;
-                    this.setState({
-                        data: response.data.data,
-                        loadFinished:true,
-                        nombre:data.nombre,
-                        location:this.props.location,
-                    });
+        return  request
+                .then(
+                    response => {
+                        const data = response.data.data;
+                        this.setState({
+                            data: response.data.data,
+                            loadFinished:true,
+                            nombre:data.nombre,
+                            location:this.props.location,
+                        });
 
-                }
-            )
+                    }
+                )
     }
 }
 

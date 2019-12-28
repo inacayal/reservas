@@ -43,88 +43,84 @@ export const configuracionHandlers = {
 
 
 
-const establecimientoHandler = (endpoint,location) => {
-    return function (params) {
+const establecimientoHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
         });
 
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: response.data.data,
-                        loadFinished:true,
-                        redirect: <Redirect to={location}/>
-                    });
-                }
-            )
-            .catch(this.displayErrors);
+        return  request
+                .then(
+                    response => {
+                        this.setState({
+                            data: response.data.data,
+                            loadFinished:true,
+                            location: this.props.location
+                        });
+                    }
+                );
     }
 }
 
-const configuracionHandler = (endpoint,location) => {
-    return function (params) {
+const configuracionHandler = (endpoint) => {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
         });
 
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: response.data.data,
-                        loadFinished:true,
-                        redirect: <Redirect to={location}/>
-                    });
-                }
-            )
-            .catch(this.displayErrors);
+        return  request
+                .then(
+                    response => {
+                        this.setState({
+                            data: response.data.data,
+                            loadFinished:true,
+                            location: this.props.location
+                        });
+                    }
+                )
     }
 }
 
-const reservaHandler = (endpoint,location) => {
-    return function (params){
+const reservaHandler = (endpoint) => {
+    return function (){
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
         });
 
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: response.data.data,
-                        loadFinished:true,
-                        redirect: <Redirect to={location}/>
-                    });
-                }
-            )
-            .catch(this.displayErrors);
+        return  request
+                .then(
+                    response => {
+                        this.setState({
+                            data: response.data.data,
+                            loadFinished:true,
+                            location: this.props.location
+                        });
+                    }
+                )
     }
 }
 
 
-const usuarioHandler = (endpoint,location) => {
-    return function (params){
+const usuarioHandler = (endpoint) => {
+    return function (){
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
         });
 
-        request
-            .then(
-                response => {
-                    this.setState({
-                        data: response.data.data,
-                        loadFinished:true,
-                        redirect: <Redirect to={location}/>
-                    });
-                }
-            )
-            .catch(this.displayErrors);
+        return  request
+                .then(
+                    response => {
+                        this.setState({
+                            data: response.data.data,
+                            loadFinished:true,
+                            location: this.props.location
+                        });
+                    }
+                )
     }
 }
 

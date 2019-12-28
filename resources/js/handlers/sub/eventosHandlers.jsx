@@ -16,25 +16,25 @@ export const eventosHandlers = {
             endpoint:'/eventos',
             match:/\/eventos$/,
             callback:(params) =>
-                listHandler(`/eventos/list/${user.id}`,`/eventos`,params)
+                listHandler(`/eventos/list/${user.id}`)
         },
         {
             endpoint:'/eventos/agregar',
             match:/\/eventos\/(agregar)$/,
             callback:(params) =>
-                addFormHandler(`/eventos/add/${user.id}`,`/eventos/agregar`,params)
+                addFormHandler(`/eventos/add/${user.id}`)
         },
         {
             endpoint:'/eventos/editar/:id',
             match:/\/eventos\/(editar\/\d+)$/,
             callback:(params) =>
-                editFormHandler(`eventos/single/${user.id}/${params.id}`,`/eventos/editar/${params.id}`,params)
+                editFormHandler(`eventos/single/${user.id}/${params.id}`)
         },
         {
             endpoint:'/eventos/:id',
             match: /\/eventos\/(\d+)$/,
             callback: (params) =>
-                singleHandler(`/eventos/single/${user.id}/${params.id}`,`/eventos/${params.id}`,params)
+                singleHandler(`/eventos/single/${user.id}/${params.id}`)
         }
     ],
     form: {
@@ -99,7 +99,7 @@ const addFormHandler = (endpoint) => {
 }
 
 const listHandler = (endpoint) => {
-    return function (component) {
+    return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
