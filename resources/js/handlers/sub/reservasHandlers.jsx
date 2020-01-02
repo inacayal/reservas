@@ -13,19 +13,19 @@ export const reservasHandlers = {
             endpoint:'/reservas',
             match:/\/reservas$/,
             callback:(params) =>
-                listHandler(`reservas/list/${user.id}/`,`/reservas`)
+                listHandler(`reservas/list/${user.id}/`)
         },
         {
             endpoint:'/reservas/agregar',
             match:/\/reservas\/(agregar)$/,
             callback:(params) =>
-                formHandler(`reservas/add/${user.id}/`,`/reservas/agregar`)
+                formHandler(`reservas/add/${user.id}/`)
         },
         {
             endpoint:'/reservas/:id',
             match: /\/reservas\/(\d+)$/,
             callback: (params) =>
-                singleHandler(`/reservas/single/${user.id}/${params.id}`,`/reservas/${params.id}`)
+                singleHandler(`/reservas/single/${user.id}/${params.id}`)
         }
     ],
     form: {
@@ -42,6 +42,7 @@ const listHandler = (endpoint) => {
                     endpoint: `${endpoint}${parseInt(date.getMonth()+1)}/${date.getFullYear()}`,
                     download: this.downloadHandler
                 });
+        console.log(date)
         if (params) {
             this.props.history.replace({
                 state:{

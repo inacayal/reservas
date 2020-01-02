@@ -40,7 +40,7 @@ export default function FeriadosRouting (props) {
                         (match) =>
                             <Feriados   data={props.data}
                                         toggleModal={openModal}
-                                        nav={Navegacion.listado('/feriados')} {...match} />
+                                        nav={Navegacion.listado('feriados')} {...match} />
                     } />
             <Switch>
                 <Route  path={`${props.match.url}/editar/:id`}
@@ -64,15 +64,15 @@ export default function FeriadosRouting (props) {
                                             id_estado:                 feriado.estado === 'laboral'
                                         };
                                 return (
-                                    <Validator  form={form}
-                                                sendRequest={()=> false}
-                                                validation={validation}>
+                                    <ValidationHandler  form={form}
+                                                        sendRequest={()=> false}
+                                                        validation={validation}>
                                         <Formulario data={props.data}
                                                     toggleModal={openModal}
-                                                    nav={Navegacion.formulario(()=>false,match.match.params.id,'horarios/feriados')}
+                                                    nav={Navegacion.formulario(()=>false,match.match.params.id,'feriados')}
                                                     formActions={FormActions()}
                                                     editar={true} {...match} />
-                                    </Validator>
+                                    </ValidationHandler>
                                 )
                             }
                         } />
@@ -95,14 +95,14 @@ export default function FeriadosRouting (props) {
                                     id_estado:                 true
                                 };
                                 return (
-                                    <Validator  form={form}
-                                                sendRequest={()=> false}
-                                                validation={validation}>
+                                    <ValidationHandler  form={form}
+                                                        sendRequest={()=> false}
+                                                        validation={validation}>
                                         <Formulario data={props.data}
                                                     toggleModal={openModal}
-                                                    nav={Navegacion.agregar('/feriados')}
+                                                    nav={Navegacion.agregar('feriados')}
                                                     editar={false} {...match} />
-                                    </Validator>
+                                    </ValidationHandler>
                                 )
                             }
                         } />
@@ -111,7 +111,7 @@ export default function FeriadosRouting (props) {
                             (match) =>
                                 <VerFeriado data={props.data}
                                             toggleModal={openModal}
-                                            nav={Navegacion.singular(()=>false,match.match.params.id,'/feriados')} {...props} />
+                                            nav={Navegacion.singular(()=>false,match.match.params.id,'feriados')} {...props} />
                         } />
             </Switch>
         </>

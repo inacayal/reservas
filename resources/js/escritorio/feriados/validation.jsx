@@ -8,7 +8,8 @@ const validation = {
     },
     fecha_feriado : {
         rules:{
-            required:true
+            required:true,
+            isDate:true
         },
         fieldName:"Fecha"
     },

@@ -47,7 +47,9 @@ const ReservasRouting = (props) => (
                                         feriados:data.feriados.data
                                     }),
                                     form ={
-                                        fecha_reserva: (props.location.state||{}).date ? props.location.state.date :  date,
+                                        fecha_reserva: (props.location.state||{}).date
+                                            ? props.location.state.date
+                                            :  date,
                                         min_fecha: min,
                                         id_ubicacion:"",
                                         id_evento:"",

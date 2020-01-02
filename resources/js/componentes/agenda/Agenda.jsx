@@ -123,10 +123,8 @@ export default class Agenda extends Component {
 
     componentDidUpdate(prevProps){
         if (
-            (
-                prevProps.date !== this.props.date
-                || prevProps.show !== this.props.show
-            ) && this.props.type==='reservas'
+            prevProps.date !== this.props.date
+            || prevProps.show !== this.props.show
         ) {
             this.setState({
                 date: this.props.date,

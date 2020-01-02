@@ -15,6 +15,14 @@ const evaluateRule = {
                 field:name
             };
     },
+    isDate: ({val,name}) => {
+        if (!(val instanceof Date))
+            return {
+                description:`el campo ${name} tiene que ser una fecha válida`,
+                type:'isDate',
+                field:name
+            };
+    },
     maxVal:({val,maxVal,name}) => {
         if (parseInt(val) > maxVal)
             return {
@@ -306,6 +314,7 @@ class ValidationHandler extends Component{
     }
 
     render(){
+        console.log(this.state.form)
         const   Form = React.cloneElement(
                 this.props.children,
                 {

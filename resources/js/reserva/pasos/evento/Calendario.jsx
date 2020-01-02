@@ -117,13 +117,12 @@ function CalendarioMemo(props) {
             if (!frst.current) {
                 if (dateEvent.fetch)
                     props.fetch(
-                        dateEvent.dt,
+                        {date:dateEvent.dt},
                         () => inputRef.current.dispatchEvent(dateEvent.event)
                     )
                 else
                     inputRef.current.dispatchEvent(dateEvent.event)
-            }
-            else
+            } else
                 frst.current = false;
         },
         [dateEvent]

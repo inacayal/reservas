@@ -67,14 +67,6 @@ export default class Calendario extends Component {
             })
     }
 
-    componentDidMount() {
-        if (this.props.location.state)
-            this.setState({
-                date:new Date(this.props.location.state.date),
-                show:this.props.location.state.show
-            })
-    }
-
     render(){
         const data = this.props.data;
         return (

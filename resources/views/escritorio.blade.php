@@ -6,13 +6,6 @@
         json_encode (
             [//get on user login, assign according to permissions
                 [
-                    'data'=> "0",
-                    'disabled'=> false,
-                    'title'=> "Escritorio",
-                    'route'=> '',
-                    'sub'=> []
-                ],
-                [
                     'data'=> "1",
                     'disabled'=> false,
                     'title'=> "Reservaciones",

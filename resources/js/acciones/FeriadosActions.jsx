@@ -23,9 +23,9 @@ export const FeriadosActions = {
                             Editar
                         </div>
                     ),
-                    to: `/horarios/feriados/editar/${key}`,
+                    to: `/feriados/editar/${key}`,
                     params:{id:key},
-                    route:'horarios/feriados'
+                    route:'feriados'
                 }
             ],
             buttons: [
@@ -54,16 +54,16 @@ export const FeriadosActions = {
                             <i className="fas fa-eye side-margin" />
                         </div>
                     ),
-                    to: `/horarios/feriados/${key}`,
+                    to: `/feriados/${key}`,
                     params:{id:key},
-                    route:'horarios/feriados'
+                    route:'feriados'
                 },{
                     title: (
                         <div className="smaller-text decorate-hover text small-v-padding">
                             <i className="fas fa-pen inline-box side-margin" />
                         </div>
                     ),
-                    to: `/horarios/feriados/editar/${key}`,
+                    to: `/feriados/editar/${key}`,
                     params:{id:key},
                     route:'feriados'
                 }

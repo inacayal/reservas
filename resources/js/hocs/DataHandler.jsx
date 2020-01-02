@@ -37,7 +37,7 @@ function awaitLoading (
             loadFinished:false,
             fetchData:handler.callback(route.params).bind(this),
         },
-        () => this.fetchHandler()
+        () => this.fetchHandler(this.props.location.state)
     );
 }
 
@@ -83,9 +83,8 @@ export default class DataHandler extends Component {
     }
 
     componentDidUpdate(pp,ps){
-        if(pp.location.pathname !== this.props.location.pathname){
+        if(pp.location.pathname !== this.props.location.pathname)
             this.routeChange(this.props.location)
-        }
     }
 
     componentDidMount() {

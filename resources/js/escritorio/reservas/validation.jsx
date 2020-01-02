@@ -6,6 +6,13 @@ const validation = {
         },
         fieldName:"Fecha"
     },
+    min_fecha: {
+        rules:{
+            required:true,
+            isDate:true
+        },
+        fieldName:"Fecha mínima"
+    },
     id_ubicacion:{
         rules:{
             required:true,
