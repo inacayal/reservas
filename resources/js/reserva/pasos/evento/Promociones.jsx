@@ -12,7 +12,7 @@ import {
     MONTHS
 } from '../../../constantes/DaysMonths';
 
-export default function Promociones (props) {
+function Promociones (props) {
     const   data = props.data,
             list = props.list,
             showData = Object.keys(props.data).reduce(
@@ -44,7 +44,7 @@ export default function Promociones (props) {
     return (
         <>
             <div className="sub-title highlight">
-                Promociones
+                Promociones del día
             </div>
             <ul style={{ maxHeight: "45vh", overflowY: "auto"}}
                 className="nav-list no-padding full-width" >
@@ -82,3 +82,4 @@ export default function Promociones (props) {
         </>
     )
 }
+export default React.memo(Promociones)

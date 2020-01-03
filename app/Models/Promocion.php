@@ -51,14 +51,13 @@ class Promocion extends Eloquent
             'eventos' => [
               'array',
               'required_if:requestType,POST',
-              Rule::exists('usuario_evento','id')->where('id_usuario',$user)
+              Rule::exists('usuario_eventos','id')->where('id_usuario',$user)
             ],
             'eventos.*'        => 'int',
             'descuento'        => 'nullable|min:0|max:100',
             'descripcion'      => 'required|max:50',
             'nombre'           => 'required|max:50',
             'requestType' 	 => 'required|in:PUT,POST',
-            'id_estado' 	     => 'required|exists:estado_evento,id'
         ];
     }
 

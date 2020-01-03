@@ -6,8 +6,10 @@ import ReactDOM from 'react-dom';
 import Titulo from '../../../componentes/basic/Titulo';
 import {Numeric} from '../../../componentes/input/Numeric';
 import {Text} from '../../../componentes/input/Text';
+import {Toggle} from '../../../componentes/input/Toggle';
 
 export default function Formulario (props) {
+    const estado = props.fields.scope == 1;
     if (props.editar)
         props.nav.buttons[0].click = props.toggleModal;
     const data = props.data||{};
@@ -21,7 +23,20 @@ export default function Formulario (props) {
                     links={props.nav.links}
                     buttons={props.nav.buttons} />
             <div className="container">
-                <div className="row">
+                <div className="row bold justify-content-end h-padding">
+                    <Toggle rightTitle="Activo"
+                            leftTitle="Inactivo"
+                            name="scope"
+                            side={estado}
+                            value={props.fields.scope}
+                            changeSide={props.change}/>
+                </div>
+                <div className="row relative visible top-padding">
+                    <div className={
+                        estado
+                            ? "hidden"
+                            : "top-padding full-width overlay"
+                        }/>
                     <div className="col-md-3 bold">
                         foto de la ubicacion
                     </div>
@@ -44,9 +59,9 @@ export default function Formulario (props) {
                                             </span>
                                         }
                                         holder="Máximo de personas en la ubicación"
-                                        value={props.fields.capacidad_maxima}
+                                        value={props.fields.cantidad_maxima}
                                         changeHandler={props.change}
-                                        errors={props.errors.capacidad_maxima}/>
+                                        errors={props.errors.cantidad_maxima}/>
                         </div>
                         <div className="row top-padding">
                             <Numeric    titulo="Máximo personas"

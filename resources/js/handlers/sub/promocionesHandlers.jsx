@@ -131,8 +131,18 @@ const addFormHandler = (endpoint) => {
     }
 }
 
-export function sendPostRequest () { }
+export function sendPostRequest (data) {
+    return POST({
+        endpoint: 'promociones/create',
+        data: JSON.stringify(data)
+    });
+}
+
+export function sendPutRequest (data) {
+    return PUT({
+        endpoint: 'promociones/update',
+        data: JSON.stringify(data)
+    });
+}
 
 export function updateScope () { }
-
-export function sendPutRequest () { }

@@ -11,6 +11,7 @@ import {Navegacion} from '../../acciones/ActionsByView';
 import ValidationHandler from '../../hocs/ValidationHandler';
 import ConfirmarModal from '../../componentes/modal/Modal';
 import validation from './validation';
+import {ubicacionesHandlers} from '../../handlers/sub/ubicacionesHandlers';
 
 export default function UbicacionesRouting (props) {
     const   [open,toggle] = useState(false),
@@ -44,14 +45,16 @@ export default function UbicacionesRouting (props) {
                             (match) =>{
                                 const form ={
                                     id: props.data.id,
+                                    id_usuario:user.id,
                                     nombre:props.data.nombre,
                                     descripcion:props.data.descripcion,
-                                    capacidad_maxima:props.data.capacidad,
-                                    maximo_personas:props.data.maximo
+                                    cantidad_maxima:props.data.capacidad,
+                                    maximo_personas:props.data.maximo,
+                                    scope:props.data.estado === 'Activo' ? 1 : 2
                                 };
                                 return (
                                     <ValidationHandler  form={form}
-                                                        sendRequest={()=> false}
+                                                        sendRequest={ubicacionesHandlers.form.edit}
                                                         validation={validation}>
                                         <Formulario editar={true}
                                                     data={props.data}
@@ -65,15 +68,16 @@ export default function UbicacionesRouting (props) {
                         component={
                             (match) => {
                                 const form ={
-                                    id: "",
                                     nombre:"",
+                                    id_usuario:user.id,
                                     descripcion:"",
-                                    capacidad_maxima:"",
-                                    maximo_personas:""
+                                    cantidad_maxima:'',
+                                    maximo_personas:'',
+                                    scope:true
                                 };
                                 return (
                                     <ValidationHandler  form={form}
-                                                        sendRequest={()=> false}
+                                                        sendRequest={ubicacionesHandlers.form.add}
                                                         validation={validation}>
                                         <Formulario editar={false}
                                                     data={props.data}

@@ -4,10 +4,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Message from '../componentes/control/Message';
-import {searchErrors} from './ValidationHandler';
-/**
- * navigation
- */
+import {searchErrors} from '../utils/validationMethods';
 export const DisplaysMessages = React.createContext({});
 
 function pushMessage (m) {

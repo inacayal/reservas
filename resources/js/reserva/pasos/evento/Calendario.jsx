@@ -17,7 +17,7 @@ import {
 import {compareDates} from '../../../utils/Helper';
 import {checkValid} from './Handlers';
 
-function CalendarioMemo(props) {
+function Calendario(props) {
     const   [dateEvent,changeDate]  = useState({
                 event:null,
                 dt:props.showDate,
@@ -149,4 +149,4 @@ function CalendarioMemo(props) {
     );
 }
 
-export const Calendario =  React.memo(CalendarioMemo)
+export default React.memo(Calendario)

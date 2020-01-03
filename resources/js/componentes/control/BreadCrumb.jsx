@@ -115,7 +115,7 @@ export default class BreadCrumb extends Component {
                 items = this.props.url.split('/');
         return (
             <>
-                <ul className="flex-row top-padding nav-list white-background full-width h-padding">
+                <ul className="flex-row small-v-padding nav-list white-background full-width h-padding">
                     {
                         items.map(
                             (e,i) => {

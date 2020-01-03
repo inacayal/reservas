@@ -5,35 +5,40 @@ import React,
 {
     Component,
     useState,
-    useEffect
+    useEffect,
+    useRef
 } from 'react';
-import ReactDOM from 'react-dom';
-import Promociones from './Promociones';
-import Calendar from 'react-calendar';
-import {Calendario} from './Calendario';
 import {
     DAYS,
     MONTHS
 } from '../../../constantes/DaysMonths';
+import ReactDOM from 'react-dom';
+import Promociones from './Promociones';
+import Calendario from './Calendario';
+import {compareDates} from '../../../utils/Helper';
 
-export default function CalendarioEventos(props){
+function CalendarioEventos(props){
     const   data = props.data.data,
+            [date,changeDate] = useState(props.showDate),
             [hoverDate, changeHover] = useState(props.showDate),
             fecha = hoverDate.getDate(),
             dia = hoverDate.getDay(),
             hoverData = data.feriados.data[fecha]
-                            ? data.feriados.data[fecha]
-                            : data.horarios.data[dia+1],
+                ? data.feriados.data[fecha]
+                : data.horarios.data[dia+1],
             feriado = data.feriados.data[fecha],
             horarioAtencion = `${hoverData.apertura.atencion.hora}:${hoverData.apertura.atencion.minuto < 10 ? "0" + hoverData.apertura.atencion.minuto : hoverData.apertura.atencion.minuto} - ${hoverData.cierre.atencion.hora}:${hoverData.cierre.atencion.minuto < 10 ? "0" + hoverData.cierre.atencion.minuto : hoverData.cierre.atencion.minuto}`,
             horarioReserva = `${hoverData.apertura.reserva.hora }:${hoverData.apertura.reserva.minuto < 10 ? "0" + hoverData.apertura.reserva.minuto : hoverData.apertura.reserva.minuto} - ${hoverData.cierre.reserva.hora}:${hoverData.cierre.reserva.minuto < 10 ? "0" + hoverData.cierre.reserva.minuto : hoverData.cierre.reserva.minuto}`;
 
     useEffect(
         () => {
-            changeHover(props.showDate);
+            changeDate(props.showDate)
+            changeHover(props.showDate)
         },
         [props.showDate]
     )
+
+    console.log('render')
 
     return (
         <>
@@ -72,7 +77,7 @@ export default function CalendarioEventos(props){
                     <div className="container col-md-11">
                         <div className="row">
                             <div className="col-md-8 text-left">
-                                <Calendario showDate={props.showDate}
+                                <Calendario showDate={date}
                                             minDate={props.minDate}
                                             formDate = {props.fecha}
                                             data={props.data}
@@ -88,9 +93,19 @@ export default function CalendarioEventos(props){
                     </div>
                 </div>
             </div>
-
-
         </>
 
     );
 }
+
+export default  React.memo(
+    CalendarioEventos,
+    (pp,np) => compareDates(
+            pp.showDate,
+            np.showDate,{
+                d:'=',
+                m:'=',
+                y:'='
+            }
+        )
+);

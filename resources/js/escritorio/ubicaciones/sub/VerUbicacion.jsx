@@ -16,6 +16,9 @@ export default function VerUbicacion (props) {
             < Titulo    title={data.nombre}
                         links={props.nav.links}
                         buttons ={props.nav.buttons}/>
+            <div className="bold m-font text-right h-padding">
+                {data.estado}
+            </div>
             <div className="row full-width">
                 <div className="col-md-4 bold">
                     imagen de ubicacion

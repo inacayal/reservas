@@ -24,17 +24,23 @@ function noMemoNumeric(props) {
                     ? "light-input error-box error"
                     : "light-input "
                 }>
-                <input  type="number"
-                        name={props.name}
-                        placeholder={props.holder}
-                        className={
-                            hasError && props.value !==''
-                                ? "full-width box-transparent error"
-                                : "full-width box-transparent"
-                        }
-                        onChange={props.changeHandler}
-                        value={props.value}
-                        needsvalue={1}/>
+                <textarea   name={props.name}
+                            rows='1'
+                            placeholder={props.holder}
+                            className={
+                                hasError && props.value !==''
+                                    ? "full-width box-transparent error"
+                                    : "full-width box-transparent"
+                            }
+                            onChange={
+                                e => {
+                                    e.preventDefault()
+                                    if (parseInt(e.currentTarget.value) || e.currentTarget.value === '')
+                                        props.changeHandler(e);
+                                }
+                            }
+                            value={props.value}
+                            needsvalue={1}/>
             </div>
         </div>
     );

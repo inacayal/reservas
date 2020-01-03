@@ -35,7 +35,10 @@ export const ubicacionesHandlers = {
 
         }
     ],
-    form:[]
+    form:{
+        add:sendPostRequest,
+        edit:sendPutRequest
+    }
 };
 
 const singleHandler  = (endpoint) => {
@@ -101,16 +104,27 @@ const editFormHandler = (endpoint) => {
 
 const addFormHandler = (endpoint) => {
     return function () {
-        this.setState({
-            data: true,
-            loadFinished:true,
-            location:this.props.location
-        });
+        return new Promise ((resolve) => resolve())
+            .then (
+                this.setState({
+                    data: true,
+                    loadFinished:true,
+                    location:this.props.location
+                })
+            )
     }
 }
 
-export function sendPostRequest () { }
+export function sendPostRequest (data) {
+    return POST({
+        endpoint: 'ubicaciones/create',
+        data: JSON.stringify(data)
+    });
+}
 
-export function updateScope () { }
-
-export function sendPutRequest () { }
+export function sendPutRequest (data) {
+    return PUT({
+        endpoint: 'ubicaciones/update',
+        data: JSON.stringify(data)
+    });
+}

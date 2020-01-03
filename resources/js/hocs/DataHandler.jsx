@@ -17,7 +17,7 @@ import {handlerArray} from '../handlers/index';
 import ReactDOM from 'react-dom';
 import BreadCrumb from '../componentes/control/BreadCrumb';
 import Lateral from '../componentes/control/Lateral';
-
+import {DisplaysMessages} from './MessageHandler';
 
 function searchHandler (path) {
     return handlerArray.filter(
@@ -65,6 +65,8 @@ export default class DataHandler extends Component {
         this.routeChange = this.routeChange.bind(this);
     }
 
+    static contextType = DisplaysMessages;
+
     routeChange (location) {
         const config = assignRoute(location.pathname);
         this.awaitLoading({...config})
@@ -72,9 +74,7 @@ export default class DataHandler extends Component {
 
     fetchHandler(params){
         return  this.state.fetchData(params)
-                .catch(
-                    err => {console.log(err);}
-                )
+                .catch(this.context.backEndError)
     }
 
     shouldComponentUpdate(np,ns){
@@ -101,13 +101,13 @@ export default class DataHandler extends Component {
         return (
             <WaitsLoading.Provider value={this.fetchHandler}>
                 <LoadBar loaded={this.state.loading}/>
-                <div    className="col-md-2 no-padding white-background">
-                    <Lateral    current={this.props.sidebarElem}
+                <div    className="col-md-2 no-padding white-background" style={{height:'100%',borderRight:'solid 1px var(--border)'}} >
+                    <Lateral    current={(this.state.location||this.props.location).pathname}
                                 items={sidebar}/>
                 </div>
                 <div    className="col-md-8 container-fluid"
                         style={{height:'100%'}}>
-                    <div className="row">
+                    <div className="row" style={{borderBottom:'solid 1px var(--border)'}} >
                         <BreadCrumb url={location}
                                     nombre={this.state.nombre}/>
                     </div>

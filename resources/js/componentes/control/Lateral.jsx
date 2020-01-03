@@ -33,11 +33,12 @@ export default class Lateral extends Component {
             {
                 props.items.map(
                     (e, i) => {
-                        const linkParam = {
-                            to:`/${e.route}`,
-                            route:e.route,
-                            params:{}
-                        }
+                        const   linkParam = {
+                                    to:`/${e.route}`,
+                                    route:e.route,
+                                    params:{}
+                                },
+                                isRoute = props.current.match(`/${e.route}`)||[].length>0
                         return(
                             <li className="full-width relative"
                                 key={i}
@@ -46,12 +47,12 @@ export default class Lateral extends Component {
                                 <button title={e.title}
                                         data={i}
                                         className={
-                                            props.current == i
+                                            isRoute
                                                 ? "selected bold full-width text-left bold no-border no-padding"
                                                 : "box-transparent full-width text-left box-padding highlight-hover bold-hover"}>
                                     <CustomLink params={linkParam}>
                                         <div className={
-                                            props.current == i
+                                            isRoute
                                                 ? "fat-border box-padding"
                                                 : ""
                                             }>
@@ -60,7 +61,7 @@ export default class Lateral extends Component {
                                             </span>
                                             <span className="inline-block text-right half">
                                                 <i className={
-                                                    props.current == i||hover === i
+                                                    isRoute||hover === i
                                                         ? "line-v-middle middle-font highlight fas fa-angle-right"
                                                         : e.sub.length>0
                                                             ? "line-v-middle middle-font border-font fas fa-angle-right"
@@ -72,7 +73,7 @@ export default class Lateral extends Component {
                                     {
                                         (e.sub.length>0)
                                         ?
-                                            <SubElements    isCurrent={props.current == i}
+                                            <SubElements    isCurrent={isRoute}
                                                             isHover={hover===i}
                                                             index ={i}
                                                             sub={e.sub}

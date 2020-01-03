@@ -17,7 +17,7 @@ import { Select } from "../../../componentes/input/Select.jsx";
 import { Text } from "../../../componentes/input/Text.jsx";
 import { generateListByLocationCapacity } from './Handlers';
 
-export default function CalendarioFormulario(props) {
+function CalendarioFormulario(props) {
     const   fields = props.fields,
             ubicacion = props.ubicaciones.data[props.fields.id_ubicacion] || null,
             personas = ubicacion ? generateListByLocationCapacity(ubicacion.maximo+1) : {},
@@ -260,3 +260,5 @@ export default function CalendarioFormulario(props) {
         </div>
     )
 }
+
+export default React.memo(CalendarioFormulario);

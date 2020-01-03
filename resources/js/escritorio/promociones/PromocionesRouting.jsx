@@ -14,6 +14,7 @@ import ConfirmarModal from '../../componentes/modal/Modal';
 import { Route, Switch } from 'react-router-dom';
 import ValidationHandler from '../../hocs/ValidationHandler';
 import validation from './validation';
+import {promocionesHandlers} from '../../handlers/sub/promocionesHandlers';
 
 export default function PromocionesRouting (props) {
     const   [open,toggle] = useState(false),
@@ -47,14 +48,16 @@ export default function PromocionesRouting (props) {
                                 const   selected = props.data.selected,
                                         fields = {
                                             id:selected.id,
+                                            id_usuario:user.id,
                                             eventos:Object.keys(selected.eventos.list).join(','),
                                             descuento:selected.descuento,
                                             descripcion:selected.descripcion,
-                                            nombre:selected.nombre
+                                            nombre:selected.nombre,
+                                            scope: selected.estado === 'Activo' ? 1 : 2
                                         }
                                 return (
                                     <ValidationHandler  form={fields}
-                                                        sendRequest={()=> false}
+                                                        sendRequest={promocionesHandlers.form.edit}
                                                         validation={validation}>
                                         <Formulario data={props.data}
                                                     editar={true}
@@ -68,15 +71,16 @@ export default function PromocionesRouting (props) {
                         component={
                             (match) => {
                                 const fields = {
-                                    id:'',
+                                    id_usuario:user.id,
                                     eventos:'',
                                     descuento:'',
                                     descripcion:'',
-                                    nombre:''
+                                    nombre:'',
+                                    scope: 1
                                 };
                                 return (
                                     <ValidationHandler  form={fields}
-                                                        sendRequest={()=> false}
+                                                        sendRequest={promocionesHandlers.form.add}
                                                         validation={validation}>
                                         <Formulario data={{all:props.data}}
                                                     editar={false}

@@ -43,34 +43,31 @@ export default class EventoFrame extends Component {
         )
         .then(callback)
     }
-
     render(){
         const   props = this.props,
                 data = props.data.data,
-                showDate = new Date(props.fecha),
                 horario = generateAcceptedHours({
                     a: data.antelacion,
                     g: props.current,
                     i: data.intervalo.id,
-                    f: showDate,
+                    f: props.fecha,
                     m: props.minDate
                 });
+        //console.log(props.current)
         return (
             <div className="container">
                 <CalendarioEventos  data={props.data}
-                                    current = {props.current}
-                                    showDate={showDate}
+                                    showDate={props.fecha}
                                     minDate={props.minDate}
-                                    fecha = {props.fecha}
                                     clickCallback={this.changeDate}
                                     fetch = {this.fetchData}
                                     change={props.change}/>
                 <div className="row justify-content-end smaller-text top-padding">
-                    {`Debes reservar con al menos ${props.data.antelacion} horas de antelación.'`}
+                    {`Debes reservar con al menos ${data.antelacion} horas de antelación.`}
                 </div>
                 <div className="row">
-                    <CalendarioFormulario   date={showDate}
-                                            currentData={this.props.current}
+                    <CalendarioFormulario   date={props.fecha}
+                                            currentData={props.current}
                                             ubicaciones={data.ubicaciones}
                                             horario={horario}
                                             fields={props.fields}

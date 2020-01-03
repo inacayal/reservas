@@ -44,6 +44,7 @@ class Ubicacion extends Eloquent
 		'descripcion',
 		'cantidad_maxima',
 		'id_estado',
+		'scope',
 		'maximo_personas'
 	];
 

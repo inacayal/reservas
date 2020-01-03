@@ -10,7 +10,7 @@ import { Text } from '../../../componentes/input/Text';
 import {Toggle} from '../../../componentes/input/Toggle'
 
 export default function Formulario (props) {
-    const [estado,toggle] = useState((props.data.selected||{}).estado === 'Activo');
+    const estado = props.fields.scope == 1;
     if (props.editar)
         props.nav.buttons[0].click = props.toggleModal;
     return (
@@ -26,9 +26,9 @@ export default function Formulario (props) {
                 <div className="row justify-content-end h-padding bold">
                     <Toggle rightTitle="Activo"
                             leftTitle="Inactivo"
-                            name="estado"
-                            side={estado}
-                            changeSide={toggle}/>
+                            name="scope"
+                            value={props.fields.scope}
+                            changeSide={props.change}/>
                 </div>
                 <div className="row relative visible top-padding">
                     <div className={
