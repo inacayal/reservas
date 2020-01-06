@@ -7,94 +7,109 @@ import CustomLink from '../basic/CustomLink';
 
 const map = {
     escritorio:   () => (
-        <>
-            <i className="fas fa-tachometer-alt inline-box side-margin" />
-            <span className="text bold">Escritorio</span>
-        </>
+        (weight) =>
+            <>
+                <i className="fas fa-tachometer-alt inline-box side-margin" />
+                <span className={`text ${weight}`}>Escritorio</span>
+            </>
     ),
     reservas: () => (
-        <>
-            <i className="fas fa-book inline-box side-margin" />
-            <span className="text bold">Reservaciones</span>
-        </>
+        (weight) =>
+            <>
+                <i className="fas fa-book inline-box side-margin" />
+                <span className={`text ${weight}`}>Reservaciones</span>
+            </>
     ),
     horarios: () => (
-        <>
-            <i className="fas fa-calendar-week inline-box side-margin" />
-            <span className="text bold">Horarios</span>
-        </>
+        (weight) =>
+            <>
+                <i className="fas fa-calendar-week inline-box side-margin" />
+                <span className={`text ${weight}`}>Horarios</span>
+            </>
     ),
     ubicaciones: () => (
-        <>
-            <i className="fas fa-store-alt inline-box side-margin" />
-            <span className="text bold">Ubicaciones</span>
-        </>
+        (weight) =>
+            <>
+                <i className="fas fa-store-alt inline-box side-margin" />
+                <span className={`text ${weight}`}>Ubicaciones</span>
+            </>
     ),
     eventos: () => (
-        <>
-          <i className="fas fa-glass-cheers inline-box side-margin" />
-          <span className="text bold">Eventos</span>
-        </>
+        (weight) =>
+            <>
+              <i className="fas fa-glass-cheers inline-box side-margin" />
+              <span className={`text ${weight}`}>Eventos</span>
+            </>
     ),
     configuracion: () => (
-        <>
-          <i className="fas fa-cog inline-box side-margin" />
-          <span className="text bold">Configuración</span>
-        </>
+        (weight) =>
+            <>
+              <i className="fas fa-cog inline-box side-margin" />
+              <span className={`text ${weight}`}>Configuración</span>
+            </>
     ),
     franquicias: () => (
-        <>
-            <i className="fas fa-tag inline-box side-margin" />
-            <span className="text bold">Franquicias</span>
-        </>
+        (weight) =>
+            <>
+                <i className="fas fa-tag inline-box side-margin" />
+                <span className={`text ${weight}`}>Franquicias</span>
+            </>
     ),
     feriados: () => (
-        <>
-            <i className="fas fa-calendar-day inline-box side-margin" />
-            <span className="text bold">Feriados</span>
-        </>
+        (weight) =>
+            <>
+                <i className="fas fa-calendar-day inline-box side-margin" />
+                <span className={`text ${weight}`}>Feriados</span>
+            </>
     ),
     locales: () => (
-        <>
-            <i className="fas fa-store inline-box side-margin" />
-            <span className="text bold">Locales</span>
-        </>
+        (weight) =>
+            <>
+                <i className="fas fa-store inline-box side-margin" />
+                <span className={`text ${weight}`}>Locales</span>
+            </>
     ),
     promociones: () => (
-        <>
-            <i className="fas fa-percentage inline-box side-margin" />
-            <span className="text bold">Promociones</span>
-        </>
+        (weight) =>
+            <>
+                <i className="fas fa-percentage inline-box side-margin" />
+                <span className={`text ${weight}`}>Promociones</span>
+            </>
     ),
     editar: (nombre) => (
-      <>
-          <i className="fas fa-pen inline-box side-margin" />
-          <span className="text bold">{"Editar "+nombre||''}</span>
-      </>
+        (weight) =>
+            <>
+                <i className="fas fa-pen inline-box side-margin" />
+                <span className={`text ${weight}`}>{"Editar "+nombre||''}</span>
+            </>
     ),
     agregar: () => (
-        <>
-            <i className="fas fa-plus-circle inline-box side-margin" />
-            <span className="text bold">Agregar</span>
-        </>
+        (weight) =>
+            <>
+                <i className="fas fa-plus-circle inline-box side-margin" />
+                <span className={`text ${weight}`}>Agregar</span>
+            </>
     ),
     usuario: () => (
-        <>
-            <i className="fas fa-user inline-box side-margin" />
-            <span className="text bold">Usuario</span>
-        </>
+        (weight) =>
+            <>
+                <i className="fas fa-user inline-box side-margin" />
+                <span className={`text ${weight}`}>Usuario</span>
+            </>
     ),
     establecimiento: () => (
-        <>
-            <i className="fas fa-store inline-box side-margin" />
-            <span className="text bold">Establecimiento</span>
-        </>
+        (weight) =>
+            <>
+                <i className="fas fa-store inline-box side-margin" />
+                <span className={`text ${weight}`}>Establecimiento</span>
+            </>
     ),
     ver:(nombre) => (
-        <>
-            <i className="fas fa-eye inline-box side-margin" />
-            <span className="text bold">{nombre}</span>
-        </>
+        (weight) =>
+            <>
+                <i className="fas fa-eye inline-box side-margin" />
+                <span className={`text ${weight}`}>{nombre}</span>
+            </>
     )
 };
 
@@ -127,18 +142,18 @@ export default class BreadCrumb extends Component {
                                     route:e
                                 };
                                 if (items[i-1] === 'editar')
-                                    display = '';
+                                    display = () => false;
                                 return (
                                     <li key={i} className="margin-box ">
                                         {
                                             i === items.length-1 || e === 'editar' || e === 'agregar'
                                             ?
-                                                <div className="inline-block line-v-middle smaller-text margin-box">{display}</div>
+                                                <div className="inline-block line-v-middle smaller-text margin-box">{display()}</div>
                                             :
                                                 <>
                                                     <CustomLink params={linkParam}>
-                                                        <span className="bold decorate-blue-hover smaller-text text bold inline-block">
-                                                            {display}
+                                                        <span className="decorate-blue-hover smaller-text text inline-block" style={{fontWeight:"bold !important"}}>
+                                                            {display('bold')}
                                                         </span>
                                                     </CustomLink>
                                                     <i className={"h-padding inline-block margin-box line-v-middle highlight middle-font fas fa-angle-right"}/>

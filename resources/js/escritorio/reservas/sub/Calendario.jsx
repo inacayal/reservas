@@ -60,7 +60,8 @@ export default class Calendario extends Component {
     }
 
     componentDidUpdate(pp){
-        if (this.props.location.state.date !== (pp.location.state||{}).date)
+        const location = this.props.location || {};
+        if ((location.state||{}).date !== (pp.location.state||{}).date)
             this.setState({
                 date:new Date(this.props.location.state.date),
                 show:this.props.location.state.show

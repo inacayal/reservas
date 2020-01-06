@@ -18,6 +18,7 @@ import ReactDOM from 'react-dom';
 import BreadCrumb from '../componentes/control/BreadCrumb';
 import Lateral from '../componentes/control/Lateral';
 import {DisplaysMessages} from './MessageHandler';
+import Search from '../componentes/search/Search';
 
 function searchHandler (path) {
     return handlerArray.filter(
@@ -63,6 +64,7 @@ export default class DataHandler extends Component {
         this.awaitLoading = awaitLoading.bind(this);
         this.fetchHandler = this.fetchHandler.bind(this);
         this.routeChange = this.routeChange.bind(this);
+        this.searchMode = this.searchMode.bind(this);
     }
 
     static contextType = DisplaysMessages;
@@ -82,9 +84,14 @@ export default class DataHandler extends Component {
                 || ns.loadFinished !== this.state.loadFinished;
     }
 
+    searchMode() {
+        this.setState({loadFinished:!this.state.loadFinished})
+    }
+
     componentDidUpdate(pp,ps){
-        if(pp.location.pathname !== this.props.location.pathname)
+        if(pp.location.pathname !== this.props.location.pathname){
             this.routeChange(this.props.location)
+        }
     }
 
     componentDidMount() {
@@ -97,19 +104,33 @@ export default class DataHandler extends Component {
     render() {
         const   location = this.state.location
                         ? `escritorio${this.state.location.pathname}`
-                        : `escritorio`;
+                        : `escritorio`,
+                path = (this.state.location||this.props.location).pathname;
         return (
             <WaitsLoading.Provider value={this.fetchHandler}>
                 <LoadBar loaded={this.state.loading}/>
-                <div    className="col-md-2 no-padding white-background" style={{height:'100%',borderRight:'solid 1px var(--border)'}} >
-                    <Lateral    current={(this.state.location||this.props.location).pathname}
+                <div    className="col-md-2 no-padding white-background"
+                        style={
+                            {
+                                height:'100%',
+                                borderRight:'solid 1px var(--border)'
+                            }
+                        } >
+                    <Lateral    current={path}
                                 items={sidebar}/>
                 </div>
                 <div    className="col-md-8 container-fluid"
                         style={{height:'100%'}}>
-                    <div className="row" style={{borderBottom:'solid 1px var(--border)'}} >
-                        <BreadCrumb url={location}
-                                    nombre={this.state.nombre}/>
+                    <div className="row white-background" style={{borderBottom:'solid 1px var(--border)'}} >
+                        <div className="col-md-8 no-padding">
+                            <BreadCrumb url={location}
+                                        nombre={this.state.nombre}/>
+                        </div>
+                        <div className="col-md-4 align-center no-h-padding">
+                            <Search route={path}
+                                    searchMode={this.searchMode}
+                                    error={this.context.backEndError}/>
+                        </div>
                     </div>
                     <div    className="row white-background"
                             style={{height:'100%'}}>
@@ -125,8 +146,7 @@ export default class DataHandler extends Component {
                                                         this.state.loadFinished
                                                             ? "hidden"
                                                             : "top-padding full-width overlay"
-                                                    }
-                                                    style={{marginLeft:"-15px"}}/>
+                                                    }/>
                                                 {
                                                     (this.state.location.pathname === this.props.location.pathname)
                                                         ? React.cloneElement(

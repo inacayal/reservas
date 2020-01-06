@@ -34,7 +34,6 @@ class Reserva extends Eloquent
 	];
 
 	protected $dates = [
-		'hora_reserva'
 	];
 
 	protected $fillable = [
