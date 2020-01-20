@@ -29,7 +29,7 @@ export default class Lateral extends Component {
             hoverToggle = this.hoverToggle,
             props = this.props;
         return (
-            <ul className="nav-list no-padding" style={{height:'93.1%'}}>
+            <ul className="nav-list no-padding" style={{marginTop:"6px"}}>
             {
                 props.items.map(
                     (e, i) => {

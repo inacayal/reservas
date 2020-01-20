@@ -10,8 +10,8 @@ import ButtonList from '../basic/ButtonList';
 
 function Profile(props) {
     return (
-        <div className="container extra-v-box-padding">
-            <div className="row box-padding white-background">
+        <div className="container fixed-down white-background" style={{zIndex:5,height:"100%",borderLeft:"solid 1px var(--border)",marginTop:"6px"}}>
+            <div className="row">
                 <div>
                     foto perfil
                 </div>

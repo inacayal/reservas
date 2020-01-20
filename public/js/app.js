@@ -87891,19 +87891,11 @@ function BarraNavegacion(props) {
       className: "fas fa-bars"
     })
   }];
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-sm-8 relative"
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-sm-8 relative v-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", {
-    className: "bold align-bottom white-font"
-  }, user.nombre)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-sm-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_basic_ButtonList__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    selected: false,
-    clickHandler: props.func,
-    displayList: "full-width h-padding text-right nav-list align-bottom",
-    elemClass: "inline-block btn reduce-padding white-font",
-    elems: items
-  })));
+    className: "bold white-font"
+  }, user.nombre));
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (react__WEBPACK_IMPORTED_MODULE_0___default.a.memo(BarraNavegacion));
@@ -88112,7 +88104,7 @@ function (_Component) {
       var props = this.props,
           items = this.props.url.split('/');
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-        className: "flex-row small-v-padding nav-list white-background full-width h-padding"
+        className: "flex-row nav-list no-padding"
       }, items.map(function (e, i) {
         stored = e === 'escritorio' ? '' : "".concat(stored, "/").concat(e);
         display = map[e] ? map[e](props.nombre) : map.ver(props.nombre);
@@ -88245,7 +88237,7 @@ function (_Component) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
         className: "nav-list no-padding",
         style: {
-          height: '93.1%'
+          marginTop: "6px"
         }
       }, props.items.map(function (e, i) {
         var linkParam = {
@@ -88375,10 +88367,12 @@ function LoadBar(progress) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-12 no-padding no-margin"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "fixed-down",
     style: {
       width: "".concat(progress.loaded, "%"),
       backgroundColor: "var(--highlight-blue)",
-      height: "6px"
+      height: "6px",
+      zIndex: 6
     }
   }));
 }
@@ -88602,9 +88596,15 @@ __webpack_require__.r(__webpack_exports__);
 
 function Profile(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "container extra-v-box-padding"
+    className: "container fixed-down white-background",
+    style: {
+      zIndex: 5,
+      height: "100%",
+      borderLeft: "solid 1px var(--border)",
+      marginTop: "6px"
+    }
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row box-padding white-background"
+    className: "row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "foto perfil"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "logout y otros")));
 }
 
@@ -89952,30 +89952,19 @@ __webpack_require__.r(__webpack_exports__);
 
 var Mainframe = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["withRouter"])(function (props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_MessageHandler__WEBPACK_IMPORTED_MODULE_5__["default"], props, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "dark-border-bottom dark-background full-width",
-    style: {
-      position: "absolute",
-      height: '40%'
-    }
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "container-fluid full-width full-height",
-    style: {
-      position: 'absolute',
-      padding: "25px"
-    }
+    className: "container-fluid"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row",
+    className: "dark-background row fixed-top",
     style: {
-      height: '5%'
+      height: "7vh"
     }
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_BarraNavegacion__WEBPACK_IMPORTED_MODULE_2__["default"], null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row round-border",
+    className: "row",
     style: {
-      height: '95%',
-      overflow: 'hidden'
+      marginTop: "7vh"
     }
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_DataHandler__WEBPACK_IMPORTED_MODULE_7__["default"], props, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AppRouting__WEBPACK_IMPORTED_MODULE_4__["default"], null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-2 hidden-sm white-background"
+    className: "col-md-1 hidden-sm white-background d-none d-md-block"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_Profile__WEBPACK_IMPORTED_MODULE_6__["default"], props)))));
 });
 
@@ -94561,7 +94550,7 @@ function Formulario(props) {
     links: props.nav.links,
     buttons: props.nav.buttons
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "container"
+    className: "container-fluid"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row bold justify-content-end h-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Toggle__WEBPACK_IMPORTED_MODULE_5__["Toggle"], {
@@ -94708,7 +94697,7 @@ function VerUbicacion(props) {
   props.nav.buttons[0].click = props.toggleModal;
   var data = props.data;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "container no-padding"
+    className: "container-fluid no-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_2__["default"], {
     title: data.nombre,
     links: props.nav.links,
@@ -97785,51 +97774,53 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_LoadBar__WEBPACK_IMPORTED_MODULE_2__["LoadBar"], {
         loaded: this.state.loading
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-2 no-padding white-background",
+        className: "col-md-12 white-background fixed-down d-none d-md-block",
         style: {
-          height: '100%',
-          borderRight: 'solid 1px var(--border)'
+          zIndex: 5,
+          height: "6vh",
+          marginTop: "6px",
+          borderBottom: 'solid 1px var(--border)'
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row small-v-padding background-border"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-8"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_BreadCrumb__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        url: location,
+        nombre: this.state.nombre
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-3"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_search_Search__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        route: path,
+        searchMode: this.searchMode,
+        error: this.context.backEndError
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-1"
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-2 no-padding white-background fixed-down d-none d-md-block",
+        style: {
+          borderRight: 'solid 1px var(--border)',
+          zIndex: 4,
+          height: "100%",
+          marginTop: "6vh"
         }
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_Lateral__WEBPACK_IMPORTED_MODULE_6__["default"], {
         current: path,
         items: sidebar
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-8 container-fluid",
-        style: {
-          height: '100%'
-        }
+        className: "col-md-9 container-fluid offset-md-2 relative"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row white-background",
         style: {
-          borderBottom: 'solid 1px var(--border)'
+          marginTop: "7vh"
         }
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-8 no-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_control_BreadCrumb__WEBPACK_IMPORTED_MODULE_5__["default"], {
-        url: location,
-        nombre: this.state.nombre
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-4 align-center no-h-padding"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_search_Search__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        route: path,
-        searchMode: this.searchMode,
-        error: this.context.backEndError
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row white-background",
-        style: {
-          height: '100%'
-        }
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-12 container-fluid no-padding",
-        style: {
-          height: '90%'
-        }
+        className: "col-md-12 container-fluid no-padding"
       }, this.state.data ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
-          padding: "10px 16px",
-          height: "99%"
+          padding: "10px 16px"
         },
-        className: "main-container h-overflow-auto"
+        className: "main-container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "visible relative"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {

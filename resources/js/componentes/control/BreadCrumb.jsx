@@ -123,6 +123,7 @@ export default class BreadCrumb extends Component {
     shouldComponentUpdate(pp,ns){
         return pp.url !== this.props.url || pp.nombre !== this.props.nombre;
     }
+
     render (){
         let stored = '',
             display = null;
@@ -130,7 +131,7 @@ export default class BreadCrumb extends Component {
                 items = this.props.url.split('/');
         return (
             <>
-                <ul className="flex-row small-v-padding nav-list white-background full-width h-padding">
+                <ul className="flex-row nav-list no-padding">
                     {
                         items.map(
                             (e,i) => {

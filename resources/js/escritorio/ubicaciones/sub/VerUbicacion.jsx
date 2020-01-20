@@ -12,7 +12,7 @@ export default function VerUbicacion (props) {
     props.nav.buttons[0].click = props.toggleModal;
     const data = props.data;
     return (
-        <div className="container no-padding">
+        <div className="container-fluid no-padding">
             < Titulo    title={data.nombre}
                         links={props.nav.links}
                         buttons ={props.nav.buttons}/>

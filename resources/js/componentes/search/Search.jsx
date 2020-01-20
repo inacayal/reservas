@@ -71,7 +71,7 @@ export default class Search extends Component {
                         <i className="fas fa-search" style={{color:this.state.focus ? 'var(--light-danger)' : 'var(--border)'}}/>
                     </div>
                 </div>
-                <div className="visible relative" >
+                <div className="visible relative">
                     <div    className={
                                 this.state.term === '' || !this.state.focus
                                     ? "hidden"

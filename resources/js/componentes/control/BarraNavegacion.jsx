@@ -18,20 +18,11 @@ function BarraNavegacion(props) {
         }
     ];
     return (
-        <>
-            <div className="col-sm-8 relative">
-                <h4 className="bold align-bottom white-font">
-                    {user.nombre}
-                </h4>
-            </div>
-            <div className="col-sm-4">
-                <ButtonList selected = {false}
-                            clickHandler={props.func}
-                            displayList="full-width h-padding text-right nav-list align-bottom"
-                            elemClass="inline-block btn reduce-padding white-font"
-                            elems={items} />
-            </div>
-        </>
+        <div className="col-sm-8 relative v-padding">
+            <h4 className="bold white-font">
+                {user.nombre}
+            </h4>
+        </div>
     );
 }
 export default React.memo(BarraNavegacion);

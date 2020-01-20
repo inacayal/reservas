@@ -15,17 +15,15 @@ const Mainframe =  withRouter(
     (props)  => {
         return (
             <MessageHandler {...props}>
-                <div className="dark-border-bottom dark-background full-width" style={{position:"absolute",height:'40%'}}>
-                </div>
-                <div className="container-fluid full-width full-height" style={{position:'absolute',padding:"25px"}}>
-                    <div className="row" style={{height:'5%'}}>
+                <div className="container-fluid">
+                    <div className="dark-background row fixed-top" style={{height:"7vh"}}>
                         <BarraNavegacion />
                     </div>
-                    <div className="row round-border" style={{height:'95%',overflow:'hidden'}}>
+                    <div className="row" style={{marginTop:"7vh"}}>
                         <DataHandler {...props}>
                             <AppRouting/>
                         </DataHandler>
-                        <div className="col-md-2 hidden-sm white-background">
+                        <div className="col-md-1 hidden-sm white-background d-none d-md-block">
                             <Profile {...props}/>
                         </div>
                     </div>

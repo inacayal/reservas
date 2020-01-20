@@ -109,38 +109,45 @@ export default class DataHandler extends Component {
         return (
             <WaitsLoading.Provider value={this.fetchHandler}>
                 <LoadBar loaded={this.state.loading}/>
-                <div    className="col-md-2 no-padding white-background"
-                        style={
-                            {
-                                height:'100%',
-                                borderRight:'solid 1px var(--border)'
-                            }
-                        } >
-                    <Lateral    current={path}
-                                items={sidebar}/>
-                </div>
-                <div    className="col-md-8 container-fluid"
-                        style={{height:'100%'}}>
-                    <div className="row white-background" style={{borderBottom:'solid 1px var(--border)'}} >
-                        <div className="col-md-8 no-padding">
+                <div className="col-md-12 white-background fixed-down d-none d-md-block"
+                     style={{
+                         zIndex:5,
+                         height:"6vh",
+                         marginTop:"6px",
+                         borderBottom:'solid 1px var(--border)',
+
+                     }} >
+                    <div className="row small-v-padding background-border">
+                        <div className="col-md-8">
                             <BreadCrumb url={location}
                                         nombre={this.state.nombre}/>
                         </div>
-                        <div className="col-md-4 align-center no-h-padding">
+                        <div className="col-md-3">
                             <Search route={path}
                                     searchMode={this.searchMode}
                                     error={this.context.backEndError}/>
                         </div>
+                        <div className="col-md-1"></div>
                     </div>
-                    <div    className="row white-background"
-                            style={{height:'100%'}}>
-                        <div    className="col-md-12 container-fluid no-padding"
-                                style={{height:'90%'}}>
+                </div>
+                <div    className="col-md-2 no-padding white-background fixed-down d-none d-md-block"
+                        style={{
+                            borderRight:'solid 1px var(--border)',
+                            zIndex:4,
+                            height:"100%",
+                            marginTop:"6vh"
+                        }} >
+                    <Lateral    current={path}
+                                items={sidebar}/>
+                </div>
+                <div className="col-md-9 container-fluid offset-md-2 relative">
+                    <div className="row white-background" style={{marginTop:"7vh"}}>
+                        <div className="col-md-12 container-fluid no-padding" >
                             {
                                 (this.state.data)
                                 ?
-                                    <div    style={{padding:"10px 16px", height:"99%"}}
-                                            className="main-container h-overflow-auto">
+                                    <div    style={{padding:"10px 16px"}}
+                                            className="main-container">
                                         <div className="visible relative">
                                             <div    className={
                                                         this.state.loadFinished

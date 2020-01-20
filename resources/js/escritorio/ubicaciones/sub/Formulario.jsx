@@ -22,7 +22,7 @@ export default function Formulario (props) {
                     }
                     links={props.nav.links}
                     buttons={props.nav.buttons} />
-            <div className="container">
+            <div className="container-fluid">
                 <div className="row bold justify-content-end h-padding">
                     <Toggle rightTitle="Activo"
                             leftTitle="Inactivo"

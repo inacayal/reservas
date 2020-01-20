@@ -16,11 +16,12 @@ export function downloadHandler(pEvent) {
 export function LoadBar (progress){
     return (
         <div className="col-md-12 no-padding no-margin">
-            <div style={
+            <div className="fixed-down" style={
                 {
                     width:`${progress.loaded}%`,
                     backgroundColor:"var(--highlight-blue)",
-                    height:"6px"
+                    height:"6px",
+                    zIndex:6
                 }
             }/>
         </div>
