@@ -8,7 +8,7 @@ export const GET = (
 ) => axios({
         method:'get',
         url:options.endpoint,
-        timeout: 1000,
+        timeout: 2000,
         baseURL: 'http://localhost/api/',
         onDownloadProgress:options.download
     })

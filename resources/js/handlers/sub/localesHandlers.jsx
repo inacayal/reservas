@@ -37,8 +37,7 @@ export const localesHandlers = {
     ],
     form: {
         add:sendPostRequest,
-        edit:sendPutRequest,
-        update:updateScope
+        edit:sendPutRequest
     }
 };
 
@@ -130,8 +129,16 @@ const singleHandler = (endpoint,location) => {
     }
 }
 
-export function sendPostRequest () { }
+export function sendPostRequest (data) {
+    return POST({
+        endpoint: 'locales/create',
+        data: JSON.stringify(data)
+    });
+}
 
-export function updateScope () { }
-
-export function sendPutRequest () { }
+export function sendPutRequest (data) {
+    return PUT({
+        endpoint: 'locales/update',
+        data: JSON.stringify(data)
+    });
+}

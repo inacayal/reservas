@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/search/{term}/{route}/{field}/{user}','SearchController@search');
+Route::get('/search/{route}/{user}','SearchController@search')->name('search');
 
 Route::prefix('usuario')->name('usuario.')->group(function (){
 

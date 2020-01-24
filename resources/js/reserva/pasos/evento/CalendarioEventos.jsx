@@ -38,8 +38,6 @@ function CalendarioEventos(props){
         [props.showDate]
     )
 
-    console.log('render')
-
     return (
         <>
             <div className="row v-padding">

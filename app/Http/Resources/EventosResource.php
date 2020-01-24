@@ -48,7 +48,7 @@ class EventosResource extends JsonResource
             'estado' =>false,
             'horarios'=>'list'
         ],
-
+        'search' => []
     ];
     public $preserveKeys = true;
     public function toArray($request)

@@ -13,6 +13,7 @@ import Configuracion from './sub/Configuracion';
 import {Navegacion} from '../../acciones/ActionsByView';
 import ValidationHandler from '../../hocs/ValidationHandler';
 import validation from './validation';
+import {configuracionHandlers} from '../../handlers/sub/configuracionHandlers';
 
 export default function ConfiguracionRouting (props) {
     const nav = Navegacion.agregar('configuracion');
@@ -38,7 +39,8 @@ export default function ConfiguracionRouting (props) {
                             }
                             return (
                                 <ValidationHandler  form = {fields}
-                                                    validation = {validation}>
+                                                    validation = {validation}
+                                                    sendRequest={configuracionHandlers.form.usuario}>
                                     <Usuario    data={props.data}
                                                 nav={nav}
                                                 {...match}/>
@@ -65,7 +67,8 @@ export default function ConfiguracionRouting (props) {
                             };
                             return (
                                 <ValidationHandler  form = {fields}
-                                                    validation = {validation}>
+                                                    validation = {validation}
+                                                    sendRequest={configuracionHandlers.form.establecimiento}>
                                     <Establecimiento    data={props.data}
                                                         nav={nav}
                                                         {...match}/>
@@ -84,7 +87,8 @@ export default function ConfiguracionRouting (props) {
                             };
                             return (
                                 <ValidationHandler  form = {fields}
-                                                    validation = {validation}>
+                                                    validation = {validation}
+                                                    sendRequest={configuracionHandlers.form.reservas}>
                                     <Reservas   data={props.data}
                                                 nav={nav}
                                                 {...match}/>

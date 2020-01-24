@@ -19,27 +19,15 @@ class SearchController extends Controller
 
     }
 
-    public function buildQuery($query,$term,$names){
-        return $query->where(
-                function ($query) use ($term,$names){
-                    foreach($names as $index=>$name){
-                        $query = ($index === 0)
-                            ? $query->where($name,'like',"%$term%")
-                            : $query->orWhere($name,'like',"%$term%");
-                    }
-                }
-            )
-            ->get();
-    }
-
-    public function search($term,$route,$field,$user){
+    public function search($route,$user){
 
         $model = $this->modelMapping[$route];
-        $fieldNames = explode(',',$field);
         $query = $model::where('id_usuario',$user);
+        $resource = $model::getResource();
 
-        return count($fieldNames) > 1
-            ? $this->buildQuery($query,$term,$fieldNames)
-            : $query->where($field,'like',"%$term%")->get();
+        return call_user_func_array(
+			"$resource::collection",
+			[$query->get()]
+		);
     }
 }

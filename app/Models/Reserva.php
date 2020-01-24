@@ -49,7 +49,8 @@ class Reserva extends Eloquent
 		'id_evento',
 		'descripcion_evento',
 		'hora_reserva',
-		'id_estado'
+		'id_estado',
+		'dni'
 	];
 
 	public static function validateEditAdd($request) {
@@ -59,6 +60,7 @@ class Reserva extends Eloquent
 		$method = $request->getMethod();
 		return [
 			'id_usuario' => 'bail|required|exists:usuarios,id',
+			'dni' => 'required|max:10|numeric',
 			'email' => 'email|required|max:100',
 			'nombre' => 'required|max:100',
 			'apellido' => 'required|max:100',
