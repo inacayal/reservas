@@ -39,7 +39,6 @@ export const horariosHandlers = {
     form: {
         add:sendPostRequest,
         edit:sendPutRequest,
-        update:updateScope
     }
 };
 
@@ -136,8 +135,16 @@ const singleHandler = (endpoint) => {
     }
 }
 
-export function sendPostRequest () { }
+export function sendPostRequest (data) {
+    return POST({
+        endpoint: 'franquicias/create',
+        data: JSON.stringify(data)
+    });
+}
 
-export function updateScope () { }
-
-export function sendPutRequest () { }
+export function sendPutRequest (data) {
+    return PUT({
+        endpoint: 'franquicias/update',
+        data: JSON.stringify(data)
+    });
+}

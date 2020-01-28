@@ -27,7 +27,8 @@ class FeriadosResource extends JsonResource
         'eventos.add' => [],
         'feriados.single'=>[
             'eventos' => 'all'
-        ]
+        ],
+        'search' => []
     ];
 
     public function toArray($request)

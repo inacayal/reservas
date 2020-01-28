@@ -29,12 +29,14 @@ class ReservaResource extends JsonResource
             'evento'    => false,
             'promocion' => false,
             'estado'    => false
-        ]
+        ],
+        'search' => []
     ];
 
     public function singleReserva($el) {
         return [
             "id"=> $el->id,
+            "dni" => $el->dni,
             "email"=> $el->email,
             "nombre"=> $el->nombre,
             "id_usuario" => $el->id_usuario,

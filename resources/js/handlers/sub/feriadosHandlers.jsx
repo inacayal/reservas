@@ -37,8 +37,7 @@ export const feriadosHandlers = {
     ],
     form: {
         add:sendPostRequest,
-        edit:sendPutRequest,
-        update:updateScope
+        edit:sendPutRequest
     }
 };
 
@@ -79,6 +78,7 @@ const addFormHandler = (endpoint) => {
         if (params) {
             this.props.history.replace({
                 state:{
+                    ...this.props.location.state||{},
                     date:date,
                     show:params.show
                 }
@@ -215,8 +215,17 @@ const singleHandler = (endpoint) => {
 
     }
 }
-export function sendPostRequest () { }
 
-export function updateScope () { }
+export function sendPostRequest (data) {
+    return POST({
+        endpoint: 'feriados/create',
+        data: JSON.stringify(data)
+    });
+}
 
-export function sendPutRequest () { }
+export function sendPutRequest (data) {
+    return PUT({
+        endpoint: 'feriados/update',
+        data: JSON.stringify(data)
+    });
+}

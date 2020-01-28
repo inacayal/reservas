@@ -36,7 +36,8 @@ class PromocionesResource extends JsonResource
         ],
         'feriados.single' => [
             'estado' => false
-        ]
+        ],
+        'search' => []
     ];
     public $preserveKeys = true;
     public function toArray($request)

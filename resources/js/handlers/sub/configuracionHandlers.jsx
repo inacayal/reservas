@@ -124,8 +124,23 @@ const usuarioHandler = (endpoint) => {
     }
 }
 
-export function sendEstablecimientoPutRequest () { }
+export function sendEstablecimientoPutRequest (data) {
+    return PUT({
+        endpoint: 'update/establecimientp',
+        data: JSON.stringify(data)
+    });
+}
 
-export function  sendReservasPutRequest() { }
+export function  sendReservasPutRequest(data) {
+    return PUT({
+        endpoint: 'update/reservas',
+        data: JSON.stringify(data)
+    });
+}
 
-export function sendUsuarioPutRequest () { }
+export function sendUsuarioPutRequest (data) {
+    return PUT({
+        endpoint: 'update/usuario',
+        data: JSON.stringify(data)
+    });
+}

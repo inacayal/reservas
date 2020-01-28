@@ -137,6 +137,7 @@ const formHandler = (endpoint) => {
         if (params) {
             this.props.history.replace({
                 state:{
+                    ...this.props.location.state||{},
                     date:date
                 }
             })
@@ -184,8 +185,18 @@ const formHandler = (endpoint) => {
     }
 }
 
-export function sendPostRequest () { }
+export function sendPostRequest (data) {
+    return POST({
+        endpoint: 'reservas/create',
+        data: JSON.stringify(data)
+    });
+}
+
+export function sendPutRequest (data) {
+    return PUT({
+        endpoint: 'reservas/update',
+        data: JSON.stringify(data)
+    });
+}
 
 export function updateScope () { }
-
-export function sendPutRequest () { }
