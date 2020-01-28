@@ -12,6 +12,17 @@ export const UbicacionesActions = (
         {
             title: (
                 <div className="smaller-text text bold">
+                    <i className="fas fa-eye inline-box side-margin" />
+                    Ver
+                </div>
+            ),
+            to: `/ubicaciones/${key}`,
+            params:{id:key},
+            route:'ubicaciones'
+        },
+        {
+            title: (
+                <div className="smaller-text text bold">
                     <i className="fas fa-pen inline-box side-margin" />
                     Editar
                 </div>

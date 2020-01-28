@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import ReactDOM from 'react-dom';
 import Titulo from '../../../componentes/basic/Titulo';
-import generateWeek from '../../../componentes/agenda/procedimientos/generateWeek';
+import horarioGenerator from '../../../generators/horarioGenerator';
 
 const links = [
     {
@@ -24,12 +24,10 @@ const links = [
 ];
 
 export default function Horarios (props) {
-    const week = generateWeek(
-            null,
-            props.data,
-            {eliminar: props.toggleModal},
-            'horarios'
-        );
+    const week = horarioGenerator(
+        props.data,
+        {eliminar: props.toggleModal}
+    );
     return (
         <>
             <Titulo title="Horarios"

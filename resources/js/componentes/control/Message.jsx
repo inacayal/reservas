@@ -16,7 +16,7 @@ export default function Message (props){
         position:"fixed",
         top:"20px",
         right:"20px",
-        zIndex:"5",
+        zIndex:'1031',
         borderRadius:"3px",
         maxWidth:"400px",
         minWidth:"200px",

@@ -14,7 +14,7 @@ import Button from '../basic/Button';
  * component
  */
 function noMemoToggle(props) {
-    const side = props.value;
+    const side = props.side;
     return (
         <div className="inline-block">
             <span className="margin-box">

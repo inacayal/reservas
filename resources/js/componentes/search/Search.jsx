@@ -56,8 +56,7 @@ export default class Search extends Component {
         const route = this.props.route.split('/')[1];
         return (
             <>
-                <div    className="white-background border-box-no-padding full-width relative flex-row"
-                        style={{borderRadius:"25px"}}>
+                <div className="white-background search-box full-width relative flex-row align-center">
                     <div className="select-title"  style={{overflow:"hidden"}}>
                         <input  type="text"
                                 value={this.state.term}

@@ -130,43 +130,41 @@ export default class BreadCrumb extends Component {
         const   props = this.props,
                 items = this.props.url.split('/');
         return (
-            <>
-                <ul className="flex-row nav-list no-padding">
-                    {
-                        items.map(
-                            (e,i) => {
-                                stored = e==='escritorio' ? '' : `${stored}/${e}`;
-                                display = map[e] ? map[e](props.nombre): map.ver(props.nombre);
-                                const linkParam = {
-                                    to:`${stored}`||'/',
-                                    params:{},
-                                    route:e
-                                };
-                                if (items[i-1] === 'editar')
-                                    display = () => false;
-                                return (
-                                    <li key={i} className="margin-box ">
-                                        {
-                                            i === items.length-1 || e === 'editar' || e === 'agregar'
-                                            ?
-                                                <div className="inline-block line-v-middle smaller-text margin-box">{display()}</div>
-                                            :
-                                                <>
-                                                    <CustomLink params={linkParam}>
-                                                        <span className="decorate-blue-hover smaller-text text inline-block" style={{fontWeight:"bold !important"}}>
-                                                            {display('bold')}
-                                                        </span>
-                                                    </CustomLink>
-                                                    <i className={"h-padding inline-block margin-box line-v-middle highlight middle-font fas fa-angle-right"}/>
-                                                </>
-                                        }
-                                    </li>
-                                );
-                            }
-                        )
-                    }
-                </ul>
-            </>
+            <ul className="flex-row nav-list no-padding text-font">
+                {
+                    items.map(
+                        (e,i) => {
+                            stored = e==='escritorio' ? '' : `${stored}/${e}`;
+                            display = map[e] ? map[e](props.nombre): map.ver(props.nombre);
+                            const linkParam = {
+                                to:`${stored}`||'/',
+                                params:{},
+                                route:e
+                            };
+                            if (items[i-1] === 'editar')
+                                display = () => false;
+                            return (
+                                <li key={i} className="margin-box ">
+                                    {
+                                        i === items.length-1 || e === 'editar' || e === 'agregar'
+                                        ?
+                                            <div className="inline-block line-v-middle margin-box">{display()}</div>
+                                        :
+                                            <>
+                                                <CustomLink params={linkParam}>
+                                                    <span className="decorate-blue-hover text inline-block line-v-middle" style={{fontWeight:"bold !important"}}>
+                                                        {display('bold')}
+                                                    </span>
+                                                </CustomLink>
+                                                <i className={"h-padding inline-block margin-box line-v-middle highlight middle-font fas fa-angle-right"}/>
+                                            </>
+                                    }
+                                </li>
+                            );
+                        }
+                    )
+                }
+            </ul>
         )
     };
 }

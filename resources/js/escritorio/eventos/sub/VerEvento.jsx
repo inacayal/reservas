@@ -7,7 +7,7 @@ import React, {
 import ReactDOM from 'react-dom';
 import CustomLink from '../../../componentes/basic/CustomLink';
 import Titulo from '../../../componentes/basic/Titulo';
-import { assignHorarios } from '../../../generators/generateEventosCard';
+import {assignHorarios} from '../../../utils/Helper';
 import {CommaList} from '../../../componentes/basic/CommaList';
 import PromocionesTable from '../../../componentes/tables/PromocionesTable';
 import {createFeriadosList} from '../../../utils/Helper';

@@ -8,7 +8,7 @@ import {
     POST,
     PUT
 } from '../../utils/api';
-import { assignHorarios } from '../../generators/generateEventosCard';
+import {assignHorarios} from '../../utils/Helper';
 
 export const eventosHandlers = {
     list: [

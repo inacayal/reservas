@@ -1,16 +1,9 @@
-
 /**
  * react basic
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-/**
- * react table
- */
-import ReactTable from 'react-table';
-import "react-table/react-table.css";
-import withFixedColumns from "react-table-hoc-fixed-columns";
-import "react-table-hoc-fixed-columns/lib/styles.css";
+import BaseTable from './BaseTable';
 
 export default function PromocionesTable(props){
     const columns = [
@@ -18,41 +11,39 @@ export default function PromocionesTable(props){
                 Header: "Nombre",
                 accessor: "nombre",
                 headerClassName: 'bold highlight-title text-left',
-                fixed: "left"
+                fixed: "left",
+                filterMethod: (filter, row) => row[filter.id].match(new RegExp(`${filter.value}*`,'gi'))
             },
             {
                 Header: "Descripción",
                 accessor: "descripcion",
-                headerClassName: 'bold highlight-title text-left'
+                headerClassName: 'bold highlight-title text-left',
+                Filter: ({ filter, onChange }) =><></>
             },
             {
                 Header: "Descuento",
                 accessor: "descuento",
-                headerClassName: 'bold highlight-title text-left'
+                headerClassName: 'bold highlight-title text-left',
+                Filter: ({ filter, onChange }) =><></>
             }
-        ],
-        ReactTableFixedColumns = withFixedColumns(ReactTable);
+        ];
+    if (props.showEventos)
+        columns.push({
+            Header: "Eventos",
+            accessor: "eventos",
+            className: "visible",
+            headerClassName: 'bold highlight-title text-left',
+            Filter: ({ filter, onChange }) =><></>
+        });
+    if (props.showActions)
+        columns.push({
+            Header: "Acciones",
+            accessor: "acciones",
+            className: "visible text-right",
+            headerClassName: 'bold highlight-title text-right',
+            Filter: ({ filter, onChange }) =><></>
+        });
     return (
-        <>
-            <ReactTableFixedColumns
-                data={props.data}
-                columns={columns}
-                minRows={0}
-                previousText={
-                    <div>
-                        <i className="line-v-middle highlight middle-font fas fa-angle-left" />
-                        <span className="text ">Anterior</span>
-                    </div>
-                }
-                nextText={
-                    <div>
-                        <span className="text ">Siguiente</span>
-                        <i className="line-v-middle highlight middle-font fas fa-angle-right" />
-                    </div>
-                }
-                pageText='Página'
-                ofText='de'
-                rowsText='filas'/>
-        </>
+        <BaseTable data={props.data} columns={columns} filterable={props.filter}/>
     );
 }

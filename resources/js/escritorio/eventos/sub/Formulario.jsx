@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import Calendar from 'react-calendar';
 import Titulo from '../../../componentes/basic/Titulo';
 import Actions from '../../../componentes/basic/Actions';
-import { assignHorarios } from '../../../generators/generateEventosCard';
+import {assignHorarios} from '../../../utils/Helper';
 import { Text } from '../../../componentes/input/Text';
 import { MultipleSelect } from '../../../componentes/input/MultipleSelect';
 import {Toggle} from '../../../componentes/input/Toggle';

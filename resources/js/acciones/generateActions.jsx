@@ -36,9 +36,7 @@ export const GenerateActions = {
             fullDate
         );
         return (
-            <Actions
-                overlay={type === 'month' ? true : false}
-                links={acciones.links}
+            <Actions links={acciones.links}
                 buttons={acciones.buttons} />
         );
     },
@@ -59,8 +57,7 @@ export const GenerateActions = {
     horarios: (
         data,
         actions,
-        key,
-        type
+        key
     ) => {
         const index = data ? 'data' : 'no_data',
             acciones = HorariosActions[index](

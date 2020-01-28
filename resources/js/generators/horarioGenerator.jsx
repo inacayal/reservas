@@ -1,29 +1,24 @@
-/**
- * react basic
- */
+import {GenerateActions} from '../acciones/GenerateActions';
 import React, { Component, useState, useContext } from 'react';
 import ReactDOM from 'react-dom';
-import CardList from '../../basic/CardList';
-import {CommaList} from '../../basic/CommaList';
-import { DAYS, MONTHS } from '../../../constantes/DaysMonths';
-import { CLASSBYSTATE } from '../../../constantes/CardObject';
-import CustomLink from '../../basic/CustomLink';
-import {ExpandableComponent} from '../../../hocs/ExpandableComponent';
+import {CommaList} from '../componentes/basic/CommaList';
+import { DAYS, MONTHS } from '../constantes/DaysMonths';
+import { CLASSBYSTATE } from '../constantes/CardObject';
+import CustomLink from '../componentes/basic/CustomLink';
+import {ExpandableComponent} from '../hocs/ExpandableComponent';
 
-
-export const HorarioWeekByState = {
+const HorarioByState = {
     laboral: (
         renderActions,
         sectionData,
         statusIndex,
-        originalActions,
-        dataIndex
+        originalActions
     ) =>{
         const eventos = sectionData.eventos.list,
             eventoLength = Object.keys(eventos).length,
             linkParam={
-                to:`/horarios/${dataIndex}`,
-                params:{id:dataIndex},
+                to:`/horarios/${statusIndex}`,
+                params:{id:statusIndex},
                 route:'horarios'
             };
         return {
@@ -89,13 +84,12 @@ export const HorarioWeekByState = {
         renderActions,
         sectionData,
         statusIndex,
-        originalActions,
-        dataIndex
+        originalActions
     ) =>
         {
             const linkParam = {
-                to:`/horarios/${dataIndex}`,
-                params:{id:dataIndex},
+                to:`/horarios/${statusIndex}`,
+                params:{id:statusIndex},
                 route:'horarios'
             };
             return {
@@ -145,8 +139,7 @@ export const HorarioWeekByState = {
         renderActions,
         sectionData,
         statusIndex,
-        originalActions,
-        dataIndex
+        originalActions
     ) =>
         ({
             content: () =>
@@ -154,7 +147,7 @@ export const HorarioWeekByState = {
                                         links = {renderActions.links}
                                         title = {
                                             <div className="h-padding highlight mid-title">
-                                                {DAYS[dataIndex - 1]}
+                                                {DAYS[statusIndex - 1]}
                                             </div>
                                         }>
                     <div className="row m-font justify-content-end h-padding bold">
@@ -169,8 +162,35 @@ export const HorarioWeekByState = {
                         </div>
                     </div>
                 </ExpandableComponent>,
-            class: dataIndex === 7
+            class: statusIndex === 7
                 ? "extra-v-padding extra-h-padding"
                 : "extra-h-padding extra-v-padding border-bottom"
         })
 };
+
+export default function horarioGenerator(
+    data,
+    actions
+){
+    return DAYS.map(
+            (prev, ind) => {
+                const currentData = data[ind+1],
+                    index = currentData ? currentData.id : ind,
+                    acciones = GenerateActions.horarios(
+                        currentData,
+                        actions,
+                        index
+                    ),
+                    type = currentData
+                        ? currentData.estado
+                        : 'no_data';
+                console.log(type)
+                return  HorarioByState[type](
+                    acciones,
+                    currentData,
+                    index,
+                    actions
+                );
+            }
+    )
+}

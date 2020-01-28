@@ -1,8 +1,4 @@
 export const NO_DAY_CONTROL = {
-    0: {
-        title: "Anual",
-        data: "0"
-    },
     1: {
         title: "Mensual",
         data: "1"
@@ -13,10 +9,6 @@ export const NO_DAY_CONTROL = {
     }
 };
 export const ALL_CONTROL = {
-    0: {
-        title: "Anual",
-        data: "0"
-    },
     1: {
         title: "Mensual",
         data: "1"
@@ -31,10 +23,6 @@ export const ALL_CONTROL = {
     }
 };
 export const NO_WEEK_CONTROLS = {
-    0: {
-        title: "Anual",
-        data: "0"
-    },
     1: {
         title: "Mensual",
         data: "1"

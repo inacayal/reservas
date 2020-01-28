@@ -7,8 +7,10 @@ import React, {
 import ReactDOM from 'react-dom';
 import ButtonList from './ButtonList';
 import Actions from './Actions';
+import {Toggle} from '../input/Toggle';
 
 export default function Titulo (props){
+    const config = props.changeView;
     return (
         <div className="container-fluid">
             <div className="row">
@@ -16,7 +18,16 @@ export default function Titulo (props){
                         style={{overflow:"hidden"}}>
                     {props.title}
                 </div>
-                <div className="col-md-6 text-right no-padding" >
+                <div className="col-md-6 text-right no-padding align-center">
+                    {
+                        config
+                        ?
+                            <Toggle rightTitle={config.left}
+                                    leftTitle={config.right}
+                                    side={config.side}
+                                    changeSide={config.change}/>
+                        : <></>
+                    }
                     <Actions    links={props.links}
                                 buttons={props.buttons}/>
                 </div>

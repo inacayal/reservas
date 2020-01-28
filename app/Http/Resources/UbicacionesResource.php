@@ -22,7 +22,8 @@ class UbicacionesResource extends JsonResource
             "descripcion" =>$this->descripcion,
             "capacidad" => $this->cantidad_maxima,
             "estado" => $this->estado->descripcion,
-            "maximo" => $this->maximo_personas
+            "maximo" => $this->maximo_personas,
+            "foto" => 'foto'
         ];
     }
 }

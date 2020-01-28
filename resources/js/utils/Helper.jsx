@@ -5,32 +5,6 @@ import {
     monthIndex
 } from '../constantes/DaysMonths';
 
-export const evaluateDateChange = (
-    changeObject,
-    fetchCallback,
-    changeDate,
-    path,
-    view,
-    section
-) => {
-    const   oDate = changeObject.o,
-            nDate = changeObject.n;
-    if (
-        oDate.getMonth() !== nDate.getMonth()
-        || oDate.getFullYear() !== nDate.getFullYear()
-    ) {
-        nDate.setDate(changeObject.m);
-        return  fetchCallback({
-                    date:new Date(nDate),
-                    show:view,
-                });
-    } else
-        return changeDate({
-            date:new Date(nDate),
-            show:view
-        });
-};
-
 export const generateHoursFromInterval = (interval) => {
     let res = {};
     res["0"] = "00";
@@ -72,3 +46,16 @@ export const createFeriadosList = (data) =>
             return total
         }, {}
     );
+
+
+export const assignHorarios = (hList) => {
+    const keys = Object.keys(hList),
+        res = keys.reduce(
+            (final, curr) => {
+                const el = hList[curr];
+                final[el] = DAYS[curr-1];
+                return final;
+            }, {}
+        );
+    return [res,keys.length];
+}

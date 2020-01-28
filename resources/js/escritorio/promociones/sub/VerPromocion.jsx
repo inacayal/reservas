@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import {Redirect} from 'react-router-dom';
 import Titulo from '../../../componentes/basic/Titulo';
 import {Link} from 'react-router-dom';
-import { assignHorarios } from '../../../generators/generateEventosCard';
+import {assignHorarios} from '../../../utils/Helper';
 import {CommaList} from '../../../componentes/basic/CommaList';
 import EventosTable from '../../../componentes/tables/EventosTable'
 import CustomLink from '../../../componentes/basic/CustomLink';

@@ -21,12 +21,12 @@ export default function Actions (props) {
             overHandler: (e) => changeHover(true),
             leaveHandler: (e) => changeHover(false),
             container: "overlay-gradient full-cover",
-            list: showOptions ? "nav-list text-super flex-row no-padding " : "hidden",
+            list: showOptions ? "nav-list text-super flex-row no-padding total-center" : "hidden",
             element: {
-                link: "align-center stick-bottom decorate-hover",
-                button: "no-padding no-margin box-transparent",
+                link: "align-center small-margin decorate-hover",
+                button: " no-padding small-margin stick-bottom box-transparent",
                 container:{
-                    button:"align-center stick-bottom decorate-hover"
+                    button:"no-padding small-margin  box-transparent align-center"
                 }
             }
         }

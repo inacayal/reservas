@@ -140,8 +140,8 @@ const listHandler = (endpoint) => {
         if (params) {
             this.props.history.replace({
                 state:{
-                    date:date,
-                    show:params.show
+                    ...(this.props.location||{}).state,
+                    date
                 }
             })
             return  new Promise(
@@ -162,8 +162,7 @@ const listHandler = (endpoint) => {
                                     data:{
                                         date:date,
                                         data: response.data.feriados.data||{},
-                                        intervalo: response.data.intervalo,
-                                        show: params.show||"2"
+                                        intervalo: response.data.intervalo
                                     },
                                     loadFinished:true,
                                     location:this.props.location
@@ -179,8 +178,7 @@ const listHandler = (endpoint) => {
                             data:{
                                 date:date,
                                 data: response.data.feriados.data||{},
-                                intervalo: response.data.intervalo,
-                                show:"2"
+                                intervalo: response.data.intervalo
                             },
                             loadFinished:true,
                             location:this.props.location

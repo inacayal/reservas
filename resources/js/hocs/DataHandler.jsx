@@ -18,7 +18,6 @@ import ReactDOM from 'react-dom';
 import BreadCrumb from '../componentes/control/BreadCrumb';
 import Lateral from '../componentes/control/Lateral';
 import {DisplaysMessages} from './MessageHandler';
-import Search from '../componentes/search/Search';
 
 function searchHandler (path) {
     return handlerArray.filter(
@@ -64,7 +63,6 @@ export default class DataHandler extends Component {
         this.awaitLoading = awaitLoading.bind(this);
         this.fetchHandler = this.fetchHandler.bind(this);
         this.routeChange = this.routeChange.bind(this);
-        this.searchMode = this.searchMode.bind(this);
     }
 
     static contextType = DisplaysMessages;
@@ -82,10 +80,6 @@ export default class DataHandler extends Component {
     shouldComponentUpdate(np,ns){
         return  np.location !== this.props.location
                 || ns.loadFinished !== this.state.loadFinished;
-    }
-
-    searchMode() {
-        this.setState({loadFinished:!this.state.loadFinished})
     }
 
     componentDidUpdate(pp,ps){
@@ -109,39 +103,30 @@ export default class DataHandler extends Component {
         return (
             <WaitsLoading.Provider value={this.fetchHandler}>
                 <LoadBar loaded={this.state.loading}/>
-                <div className="col-md-12 white-background fixed-down d-none d-md-block"
+                <div className="col-md-12 fixed-down d-none d-md-block"
                      style={{
                          zIndex:5,
                          height:"6vh",
                          marginTop:"6px",
-                         borderBottom:'solid 1px var(--border)',
-
+                         backgroundColor:'rgba(255,255,255,0.8)'
                      }} >
-                    <div className="row small-v-padding background-border">
-                        <div className="col-md-8">
-                            <BreadCrumb url={location}
-                                        nombre={this.state.nombre}/>
-                        </div>
-                        <div className="col-md-3">
-                            <Search route={path}
-                                    searchMode={this.searchMode}
-                                    error={this.context.backEndError}/>
-                        </div>
-                        <div className="col-md-1"></div>
+                    <div className="row small-v-padding margin-left">
+                        <BreadCrumb url={location}
+                                    nombre={this.state.nombre}/>
                     </div>
                 </div>
-                <div    className="col-md-2 no-padding white-background fixed-down d-none d-md-block"
-                        style={{
-                            borderRight:'solid 1px var(--border)',
-                            zIndex:4,
-                            height:"100%",
-                            marginTop:"6vh"
-                        }} >
+                <div className="col-md-2 margin-left no-padding fixed-down d-none d-md-block"
+                    style={{
+                        zIndex:4,
+                        height:"100%",
+                        marginTop:"6vh"
+                    }} >
                     <Lateral    current={path}
                                 items={sidebar}/>
+                    <div className="text-center v-padding align-center">Designed by santiago</div>
                 </div>
                 <div className="col-md-9 container-fluid offset-md-2 relative">
-                    <div className="row white-background" style={{marginTop:"7vh"}}>
+                    <div className="row white-background margin-left" style={{marginTop:"7vh"}}>
                         <div className="col-md-12 container-fluid no-padding" >
                             {
                                 (this.state.data)

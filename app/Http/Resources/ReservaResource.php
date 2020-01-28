@@ -67,7 +67,7 @@ class ReservaResource extends JsonResource
             $dependencyData = $this->formatData($el,$request);
             $res->push(array_merge($data,$dependencyData));
         }
-        return $res->groupBy('hora_reserva');
+        return $res;
     }
 
     public function toArray($request)

@@ -3,10 +3,12 @@
  */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Agenda from '../../../componentes/agenda/Agenda';
 import Titulo from '../../../componentes/basic/Titulo';
 import {NO_DAY_CONTROL} from '../../../constantes/CalendarControls';
 import {DAYS,MONTHS} from '../../../constantes/DaysMonths';
+import FeriadosTable from '../../../componentes/tables/FeriadosTable';
+import DateFilter from '../../../hocs/DateFilter';
+import FeriadoViews from '../../../componentes/agenda/FeriadoView';
 
 const links = [
     {
@@ -26,34 +28,20 @@ export default class Feriados extends Component {
     constructor(props){
         super(props);
         this.state= {
-            date: this.props.data.date,
-            show:"2",
-            controls : NO_DAY_CONTROL
+            view:true
         };
     }
 
     componentDidMount() {
-    }
-
-    verFeriado(e) {
-        e.preventDefault();
-        let dateString = parseInt(e.currentTarget.getAttribute('data'));
-        this.setState({show:"2",date:new Date(dateString)});
+        console.log('mount')
     }
 
     componentWillUnmount() {
         console.log('feriadosUnmount');
     }
 
-
-
-    componentDidUpdate(pp){
-        const location = this.props.location || {};
-        if ((location.state||{}).date !== (pp.location.state||{}).date)
-            this.setState({
-                date:new Date(this.props.location.state.date),
-                show:this.props.location.state.show
-            })
+    changeView(){
+        this.setState({view:!this.state.view})
     }
 
     render(){
@@ -62,16 +50,25 @@ export default class Feriados extends Component {
         return (
             <>
                 <Titulo title="Feriados"
-                        links={nav} />
+                    changeView ={{
+                        right:"Ver tabla",
+                        left:"Ver agenda",
+                        change:this.changeView.bind(this),
+                        side:this.state.view
+                    }}
+                    links={nav}/>
                 <div className="container">
-                    <Agenda show={data.show}
-                            date={this.state.date}
-                            type="feriados"
-                            actions={{eliminar:this.toggleModal}}
-                            controls={this.state.controls}
-                            fetchNewMonth={this.props.fetch}
-                            endpoint="feriados"
-                            data={data.data}/>
+                {
+                    this.state.view
+                    ?
+                        <DateFilter data={this.props.data}
+                            controls={NO_DAY_CONTROL}
+                            defaultView={"1"}>
+                            <FeriadoViews actions={{eliminar:this.props.toggleModal}}/>
+                        </DateFilter>
+                    :
+                        <FeriadosTable data={Object.values(data.data)}/>
+                }
                 </div>
             </>
         );

@@ -17,7 +17,7 @@ function CommaListMemo(props) {
                     </li>
             );
     return (
-        <ul className="nav-list no-padding">
+        <ul className="nav-list no-padding" style={{whiteSpace:"normal"}}>
             {list}
         </ul>
     )

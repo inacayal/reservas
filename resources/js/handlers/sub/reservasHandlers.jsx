@@ -37,19 +37,18 @@ export const reservasHandlers = {
 
 const listHandler = (endpoint) => {
     return function (params) {
-        const   date = (params||{}).date||new Date(),
-                request = GET({
-                    endpoint: `${endpoint}${parseInt(date.getMonth()+1)}/${date.getFullYear()}`,
-                    download: this.downloadHandler
-                });
-        console.log(date)
+        const date = (params||{}).date||new Date(),
+            request = GET({
+                endpoint: `${endpoint}${parseInt(date.getMonth()+1)}/${date.getFullYear()}`,
+                download: this.downloadHandler
+            });
         if (params) {
             this.props.history.replace({
                 state:{
-                    date:date,
-                    show:params.show
+                    ...(this.props.location||{}).state,
+                    date:date
                 }
-            })
+            });
             return  new Promise(
                         (resolve,reject) => {
                             this.setState({
@@ -67,12 +66,13 @@ const listHandler = (endpoint) => {
                                 this.setState({
                                     data: {
                                         data:response.data.reservas.data,
+                                        first:false,
                                         horarios: {
                                             data:response.data.horarios.data,
                                             intervalo:response.data.intervalo.id,
                                             antelacion: response.data.antelacion,
                                         },
-                                        date:date
+                                        date:new Date(date)
                                     },
                                     location:this.props.location,
                                     loadFinished:true
@@ -87,12 +87,13 @@ const listHandler = (endpoint) => {
                         this.setState({
                             data: {
                                 data:response.data.reservas.data,
+                                first:true,
+                                date:new Date(),
                                 horarios: {
                                     data:response.data.horarios.data,
                                     intervalo:response.data.intervalo.id,
-                                    antelacion: response.data.antelacion
-                                },
-                                date:date
+                                    antelacion: response.data.antelacion,
+                                }
                             },
                             location:this.props.location,
                             loadFinished:true

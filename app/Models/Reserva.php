@@ -131,8 +131,7 @@ class Reserva extends Eloquent
 			$date->format("i"),
 			'00'
 		);
-		$dateStr = date_format($date,'H:i');
-		return (int) str_replace(':','',$dateStr);
+		return date_format($date,'H:i');
 	}
 
 	public function getDiaReservaAttribute($value){

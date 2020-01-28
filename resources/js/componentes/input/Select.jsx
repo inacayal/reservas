@@ -44,7 +44,7 @@ const noMemoSelect = (props) => {
                     }
                     onClick={showCallback}
                     select={ props.name}>
-                    <div className="select-title v-padding"  style={{overflow:"hidden"}}>
+                    <div className={"select-title v-padding"}  style={{overflow:"hidden"}}>
                         <span className={(show) ? "hidden" : ""}>
                         {
                             (selected)

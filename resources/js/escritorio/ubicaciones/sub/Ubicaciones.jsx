@@ -4,10 +4,22 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Titulo from '../../../componentes/basic/Titulo';
-import generateUbicacionesCard from '../../../generators/generateUbicacionesCard';
+import UbicacionesTable from '../../../componentes/tables/UbicacionesTable';
+import {GenerateActions} from '../../../acciones/GenerateActions';
+
+const format = (ubicaciones,actions) =>
+    Object.keys(ubicaciones).map(
+        e => ({
+            ...ubicaciones[e],
+            acciones:GenerateActions.ubicaciones(
+                e,
+                actions
+            )
+        })
+    );
 
 export default function Ubicaciones (props) {
-    const ubicaciones = generateUbicacionesCard(
+    const ubicaciones = format(
             props.data,
             {eliminar:props.toggleModal}
         );
@@ -21,14 +33,7 @@ export default function Ubicaciones (props) {
                     <div className="m-font">
                         {`Mostrando ${ubicaciones.length} ubicaciones encontradas`}
                     </div>
-                    <ul className="full-width nav-list no-padding">
-                        {
-                            ubicaciones.map(
-                                (elem, index) =>
-                                    <li key={index} className={elem.class}><elem.content /></li>
-                            )
-                        }
-                    </ul>
+                    <UbicacionesTable data={ubicaciones}/>
                 </div>
             </div>
         </>

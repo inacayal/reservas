@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import ReactDOM from 'react-dom';
 import Titulo from '../../../componentes/basic/Titulo';
-import generateConfigurationCards from '../../../generators/generateConfigurationCards';
+import generateConfigurationCards from '../../../generators/configuracionGenerator';
 
 export default function Configuracion (props) {
     const configuracion = generateConfigurationCards(

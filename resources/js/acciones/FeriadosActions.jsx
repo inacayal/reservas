@@ -50,7 +50,7 @@ export const FeriadosActions = {
             links: [
                 {
                     title: (
-                        <div className="smaller-text decorate-hover text small-v-padding">
+                        <div className="smaller-text decorate-hover highlight-title small-v-padding">
                             <i className="fas fa-eye side-margin" />
                         </div>
                     ),
@@ -59,7 +59,7 @@ export const FeriadosActions = {
                     route:'feriados'
                 },{
                     title: (
-                        <div className="smaller-text decorate-hover text small-v-padding">
+                        <div className="smaller-text decorate-hover highlight-title small-v-padding">
                             <i className="fas fa-pen inline-box side-margin" />
                         </div>
                     ),
@@ -71,7 +71,7 @@ export const FeriadosActions = {
             buttons: [
                 {
                     title: (
-                        <div className="smaller-text decorate-hover ">
+                        <div className="smaller-text  highlight-title decorate-hover ">
                             <i className="fas fa-trash side-margin" />
                         </div>
                     ),

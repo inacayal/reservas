@@ -29,7 +29,7 @@ export default class Lateral extends Component {
             hoverToggle = this.hoverToggle,
             props = this.props;
         return (
-            <ul className="nav-list no-padding" style={{marginTop:"6px"}}>
+            <ul className="nav-list sidebar-box no-padding " style={{marginTop:"10px"}}>
             {
                 props.items.map(
                     (e, i) => {
@@ -38,9 +38,14 @@ export default class Lateral extends Component {
                                     route:e.route,
                                     params:{}
                                 },
-                                isRoute = props.current.match(`/${e.route}`)||[].length>0
+                                isRoute = props.current.match(`/${e.route}`)||[].length>0,
+                                extraClass = i=== 0
+                                    ? "o-hidden round-b-top"
+                                    : i=== props.items.length-1
+                                        ? "o-hidden round-b-bottom"
+                                        : "";
                         return(
-                            <li className="full-width relative"
+                            <li className={`full-width relative ${extraClass}`}
                                 key={i}
                                 onMouseOver ={()=>hoverToggle(i)}
                                 onMouseLeave ={()=>hoverToggle()}>

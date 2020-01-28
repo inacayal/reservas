@@ -5,7 +5,6 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Traits\hasDependencies;
 use App\Models\Evento;
-
 class EventosResource extends JsonResource
 {
     use hasDependencies;

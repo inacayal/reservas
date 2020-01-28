@@ -31,88 +31,101 @@ export default function FeriadosRouting (props) {
     return (
         <>
             <ConfirmarModal open={open}
-                            closeModal={closeModal}
-                            title={"Eliminar Feriado"}
-                            content={"¿estás seguro de eliminar este feriado?"} />
+                closeModal={closeModal}
+                title={"Eliminar Feriado"}
+                content={"¿estás seguro de eliminar este feriado?"} />
             <Route  path={props.match.url}
-                    exact
-                    render={
-                        (match) =>
-                            <Feriados   data={props.data}
-                                        toggleModal={openModal}
-                                        nav={Navegacion.listado('feriados')} {...match} />
-                    } />
+                exact
+                render={
+                    (match) =>
+                        <Feriados data={props.data}
+                            toggleModal={openModal}
+                            nav={Navegacion.listado('feriados')} {...match} />
+                } />
             <Switch>
                 <Route  path={`${props.match.url}/editar/:id`}
-                        exact
-                        render={
-                            (match) => {
-                                const   feriado = props.data.feriados,
-                                        form ={
-                                            nombre:                    feriado.nombre,
-                                            fecha_feriado:             props.data.date,
-                                            id_evento:                 Object.keys(props.data.eventos.list).join(','),
-                                            apertura_reserva_hora:     feriado.apertura.reserva.hora,
-                                            apertura_reserva_minuto:   feriado.apertura.reserva.minuto,
-                                            cierre_reserva_hora:       feriado.cierre.reserva.hora,
-                                            cierre_reserva_minuto:     feriado.cierre.reserva.minuto,
-                                            apertura_atencion_hora:    feriado.apertura.atencion.hora,
-                                            apertura_atencion_minuto:  feriado.apertura.atencion.minuto,
-                                            cierre_atencion_hora:      feriado.cierre.atencion.hora,
-                                            cierre_atencion_minuto:    feriado.cierre.atencion.minuto,
-                                            descripcion:               props.data.descripcion||"",
-                                            id_estado:                 feriado.estado === 'laboral'
-                                        };
-                                return (
-                                    <ValidationHandler  form={form}
-                                                        sendRequest={()=> false}
-                                                        validation={validation}>
-                                        <Formulario data={props.data}
-                                                    toggleModal={openModal}
-                                                    nav={Navegacion.formulario(()=>false,match.match.params.id,'feriados')}
-                                                    formActions={FormActions()}
-                                                    editar={true} {...match} />
-                                    </ValidationHandler>
-                                )
-                            }
-                        } />
+                    exact
+                    render={
+                        (match) => {
+                            const   feriado = props.data.feriados,
+                                    form ={
+                                        nombre:                    feriado.nombre,
+                                        fecha_feriado:             props.data.date,
+                                        id_evento:                 Object.keys(props.data.eventos.list).join(','),
+                                        apertura_reserva_hora:     feriado.apertura.reserva.hora,
+                                        apertura_reserva_minuto:   feriado.apertura.reserva.minuto,
+                                        cierre_reserva_hora:       feriado.cierre.reserva.hora,
+                                        cierre_reserva_minuto:     feriado.cierre.reserva.minuto,
+                                        apertura_atencion_hora:    feriado.apertura.atencion.hora,
+                                        apertura_atencion_minuto:  feriado.apertura.atencion.minuto,
+                                        cierre_atencion_hora:      feriado.cierre.atencion.hora,
+                                        cierre_atencion_minuto:    feriado.cierre.atencion.minuto,
+                                        descripcion:               props.data.descripcion||"",
+                                        id_estado:                 feriado.estado === 'laboral'
+                                    };
+                            return (
+                                <ValidationHandler form={form}
+                                    sendRequest={()=> false}
+                                    validation={validation}>
+                                    <Formulario data={props.data}
+                                        toggleModal={openModal}
+                                        formActions={FormActions()}
+                                        editar={true}
+                                        nav={
+                                            Navegacion.formulario(
+                                                ()=>false,
+                                                match.match.params.id,
+                                                'feriados'
+                                            )
+                                        }
+                                        {...match} />
+                                </ValidationHandler>
+                            )
+                        }
+                    } />
                 <Route  path={`${props.match.url}/agregar`}
-                        component={
-                            (match) => {
-                                const form ={
-                                    fecha_feriado:             new Date(props.data.date),
-                                    nombre:                    "",
-                                    id_evento:                 "",
-                                    apertura_reserva_hora:     "",
-                                    apertura_reserva_minuto:   "",
-                                    cierre_reserva_hora:       "",
-                                    cierre_reserva_minuto:     "",
-                                    apertura_atencion_hora:    "",
-                                    apertura_atencion_minuto:  "",
-                                    cierre_atencion_hora:      "",
-                                    cierre_atencion_minuto:    "",
-                                    descripcion:               "",
-                                    id_estado:                 true
-                                };
-                                return (
-                                    <ValidationHandler  form={form}
-                                                        sendRequest={()=> false}
-                                                        validation={validation}>
-                                        <Formulario data={props.data}
-                                                    toggleModal={openModal}
-                                                    nav={Navegacion.agregar('feriados')}
-                                                    editar={false} {...match} />
-                                    </ValidationHandler>
-                                )
-                            }
-                        } />
+                    component={
+                        (match) => {
+                            const form ={
+                                fecha_feriado:             new Date(props.data.date),
+                                nombre:                    "",
+                                id_evento:                 "",
+                                apertura_reserva_hora:     "",
+                                apertura_reserva_minuto:   "",
+                                cierre_reserva_hora:       "",
+                                cierre_reserva_minuto:     "",
+                                apertura_atencion_hora:    "",
+                                apertura_atencion_minuto:  "",
+                                cierre_atencion_hora:      "",
+                                cierre_atencion_minuto:    "",
+                                descripcion:               "",
+                                id_estado:                 true
+                            };
+                            return (
+                                <ValidationHandler form={form}
+                                    sendRequest={()=> false}
+                                    validation={validation}>
+                                    <Formulario data={props.data}
+                                        toggleModal={openModal}
+                                        nav={Navegacion.agregar('feriados')}
+                                        editar={false}
+                                        {...match} />
+                                </ValidationHandler>
+                            )
+                        }
+                    } />
                 <Route  path={`${props.match.url}/:id`}
-                        component={
-                            (match) =>
-                                <VerFeriado data={props.data}
-                                            toggleModal={openModal}
-                                            nav={Navegacion.singular(()=>false,match.match.params.id,'feriados')} {...props} />
-                        } />
+                    component={
+                        (match) =>
+                            <VerFeriado data={props.data}
+                                toggleModal={openModal}
+                                nav={
+                                    Navegacion.singular(
+                                        ()=>false,match.match.params.id,
+                                        'feriados'
+                                    )}
+                                {...props} />
+                    } />
             </Switch>
         </>
     );

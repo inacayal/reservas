@@ -68,39 +68,5 @@ export const ReservasActions = {
             }],
             links: null
         })
-    },
-    week: {
-        data: (
-            actions,
-            data
-        ) => ({}),
-        no_data: (
-            actions,
-            data
-        ) => ({})
-    },
-    month: {
-        data: (
-            actions,
-            data,
-            date
-        ) => ({
-                buttons: [
-                    {
-                        title: (
-                            <div className="decorate-hover small-padding smaller-text text bold text-center">
-                                <i className="fas fa-eye inline-box side-margin" />
-                            </div>
-                        ),
-                        click: actions.ver,
-                        data: date
-                    }
-                ],
-                links:null
-            }),
-        no_data: (
-            actions,
-            data
-        ) => ({})
     }
 };

@@ -13,6 +13,17 @@ export const EventosActions = (
             {
                 title: (
                     <div className="smaller-text text bold">
+                        <i className="fas fa-eye inline-box side-margin" />
+                        Ver
+                    </div>
+                ),
+                to: `/eventos/${key}`,
+                params:{id:key},
+                route:'eventos'
+            },
+            {
+                title: (
+                    <div className="smaller-text text bold">
                         <i className="fas fa-pen inline-box side-margin" />
                         Editar
                     </div>

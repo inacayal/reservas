@@ -60,7 +60,10 @@ div,ul,body,html {
     position:fixed;
     top:7vh;
 }
-
+.tile-selected{
+    background-color:var(--highlight-blue) !important;
+    color:white !important;
+}
 .arrow-up {
     width: 0;
     height: 0;
@@ -82,6 +85,11 @@ div,ul,body,html {
 
 .light-text{
     color:var(--dark-border);
+}
+.sidebar-box{
+    border:solid 1px rgba(0,0,0,0.2);
+    margin-left:5px;
+    border-radius: 8px;
 }
 .error-box{
     border-bottom:solid 1px var(--light-danger) !important;
@@ -183,7 +191,12 @@ body::-webkit-scrollbar-thumb:hover {
 }
 .border-box-no-padding{
     padding:2px 5px;
-    border:solid 1px var(--border) !important;
+    border:solid 1px rgba(0,0,0,0.2) !important;
+}
+.search-box{
+    padding:2px 5px;
+    border:solid 1px rgba(0,0,0,0.2);
+    border-radius:25px;
 }
 .light-bg{
     background-color:var(--light-border);
@@ -278,6 +291,9 @@ body::-webkit-scrollbar-thumb:hover {
 .ms-font{
     font-size:16px;
 }
+.text-font{
+    font-size:14px;
+}
 .no-top-padding{
     padding-top:0px;
 }
@@ -292,12 +308,19 @@ body::-webkit-scrollbar-thumb:hover {
     max-height:200px;
     overflow:auto;
 }
+.square{
+    min-width:100px;
+    min-height:100px;
+}
+.auto-flow{
+    overflow-x:auto;
+}
 .highlight-hover:hover{
     background-color:var(--no-highlight);
 }
 .highlight-blue:hover{
     background-color:var(--highlight-blue);
-    color:white;
+    color:white !important;
 }
 .background-border{
     background-color:var(--border);
@@ -340,9 +363,16 @@ body::-webkit-scrollbar-thumb:hover {
     margin-top:3px;
     margin-bottom:3px;
 }
+.small-margin{
+    margin:5px;
+}
 .black-overlay:hover{
     background-color:rgba(0, 0, 0, 0.2);
     cursor:pointer;
+}
+.black-border{
+    border:solid 1px rgba(0, 0, 0, 0.2);
+    border-radius:3px;
 }
 .gradient-background:hover{
     color:var(--highlight-blue);
@@ -360,6 +390,9 @@ body::-webkit-scrollbar-thumb:hover {
 }
 .visible {
     overflow:visible !important;
+}
+.hide-overflow{
+    overflow:hidden !important;
 }
 .text-left{
     text-align:left;
@@ -431,7 +464,7 @@ body::-webkit-scrollbar-thumb:hover {
     color:white !important;
 }
 .fix-height{
-    height:80px;
+    height:100px;
 }
 .pointer:hover{
     cursor:pointer
@@ -539,7 +572,16 @@ label{
     margin-bottom:auto;
 }
 .stick-bottom{
-    margin-bottom:5px;
+    margin-top:0px;
+    margin-left:5px
+}
+.total-center{
+    justify-content: center;
+    align-items: center;
+    height:100%;
+}
+.left-margin{
+    margin-left:7px;
 }
 .bottom-padding{
     padding-bottom:15px;
@@ -656,7 +698,7 @@ label{
     color: var(--light-danger);
     text-align:left;
 }
-.selected{k
+.selected{
     cursor: pointer;
     background-color: var(--border);
 }
@@ -733,6 +775,17 @@ button:focus {
 .hidden{
     display:none;
 }
+.o-hidden{
+    overflow-y: hidden
+}
+.round-b-top{
+    border-top-left-radius:8px;
+    border-top-right-radius:8px;
+}
+.round-b-bottom{
+    border-bottom-left-radius:8px;
+    border-bottom-right-radius:8px;
+}
 .flex-row{
     display:flex;
     flex-direction:row;
@@ -785,7 +838,7 @@ button:focus {
     display: inline-block;
 }
 .border-box{
-    border: solid 1px var(--border);
+    border: solid 1px rgba(0,0,0,0.2);
     padding:5px 10px;
 }
 .v-margin{
@@ -794,7 +847,7 @@ button:focus {
 }
 
 .margin-left{
-    margin-left:10px;
+    margin-left:15px;
 }
 /** start react calendar*/
 .react-calendar__month-view__days__day--weekend{

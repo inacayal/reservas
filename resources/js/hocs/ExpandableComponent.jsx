@@ -36,19 +36,17 @@ export const ExpandableComponent = (props) => {
         buttons = action;
 
     return (
-        <div className="container v-padding" style={{paddingLeft:"0",paddingRight:"0"}}>
+        <div className="container-fluid no-padding">
             <div className="row mid-title ">
-                <div className="col-md-6 no-padding">
+                <div className="col-md-8">
                     {props.title}
                 </div>
-                <div className="col-md-6 text-right no-padding">
+                <div className="col-md-4 text-right">
                     <Actions links={props.links} buttons={buttons}/>
                 </div>
             </div>
-            <div className={more ? "row" : "hidden"}>
-                <div className="container">
-                    {props.children}
-                </div>
+            <div className={more ? "container-fluid" : "hidden"}>
+                {props.children}
             </div>
         </div>
     )
