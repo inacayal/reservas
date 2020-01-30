@@ -12,7 +12,7 @@ export default function Configuracion (props) {
     return (
         <>
             <Titulo title="Configuración"/>
-            <ul className="full-width nav-list h-padding">
+            <ul className="full-width nav-list no-padding">
                 {
                     configuracion.map(
                         (elem, index) =>

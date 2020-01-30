@@ -21,6 +21,7 @@ class EventosResource extends JsonResource
         'reservas.add' => [
             'promociones' => 'key',
         ],
+        'reservas.all' => [],
         'reservas.single'=>[
             'estado'=>false
         ],
@@ -30,6 +31,7 @@ class EventosResource extends JsonResource
             'promociones' => 'list'
         ],
         'feriados.list'=>[],
+        'feriados.all'=>[],
         'feriados.add'=>[],
         'feriados.single'=>[
             'promociones'=>'list'

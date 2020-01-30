@@ -16,7 +16,9 @@ class EventoController extends Controller
 
     protected $model = '\\App\\Models\\Evento';
 
-    protected $redirect = 'eventos';
+    public function getRedirect($id){
+        return ['dir' => "/eventos/$id", 'route' => 'eventos'];
+    }
 
     public function __construct () {
         $this->middleware('length');

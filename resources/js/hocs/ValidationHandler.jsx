@@ -30,18 +30,18 @@ class ValidationHandler extends Component{
     static contextType = DisplaysMessages;
 
     changeFormField(e){
-        const   input = e.currentTarget||e,
-                name = input.getAttribute('name'),
-                value = input.getAttribute('needsvalue') === '1'
-                    ? input.value
-                    : input.getAttribute('value'),
-                [form,errors] = methods.assignValues(
-                    value,
-                    name,
-                    this.state.form,
-                    this.state.validation,
-                    this.state.errors
-                );
+        const input = e.currentTarget||e,
+            name = input.getAttribute('name'),
+            value = input.getAttribute('needsvalue') === '1'
+                ? input.value
+                : input.getAttribute('value'),
+            [form,errors] = methods.assignValues(
+                value,
+                name,
+                this.state.form,
+                this.state.validation,
+                this.state.errors
+            );
         this.setState({form,errors});
     }
 
@@ -60,25 +60,23 @@ class ValidationHandler extends Component{
                     )
                     .catch(
                         (err) =>
-                            (err instanceof Error)
-                                ? this.context.backEndError(err)
-                                : this.context.validationError({
-                                    error:err,
-                                    validation:this.state.validation,
-                                    form:this.state.form,
-                                    target:this
-                                })
+                            this.context.validationError({
+                                error:err,
+                                validation:this.state.validation,
+                                form:this.state.form,
+                                target:this
+                            })
                     )
         );
     }
 
     enviarFormulario(e){
         e.preventDefault();
-        const   [hasErrors,errors] = methods.searchErrors(
-                    this.state.errors,
-                    this.state.validation,
-                    this.state.form
-                );
+        const [hasErrors,errors] = methods.searchErrors(
+            this.state.errors,
+            this.state.validation,
+            this.state.form
+        );
         if (hasErrors.length>0)
             this.setState(
                 {errors},
@@ -108,14 +106,14 @@ class ValidationHandler extends Component{
     }
 
     render(){
-        const   Form = React.cloneElement(
-                this.props.children,
-                {
-                    fields:this.state.form,
-                    change:this.changeFormField,
-                    errors:this.state.errors
-                }
-            );
+        const Form = React.cloneElement(
+            this.props.children,
+            {
+                fields:this.state.form,
+                change:this.changeFormField,
+                errors:this.state.errors
+            }
+        );
         return (
             <>
                 <div className="visible relative">

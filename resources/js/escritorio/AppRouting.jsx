@@ -20,48 +20,68 @@ import EscritorioRouting from './escritorio/EscritorioRouting';
 export default function AppRouting (props) {
     return (
         <Switch>
-            <Route  path='/'
-                    exact
-                    render={
-                        (match) => <EscritorioRouting   data={props.data} {...match}/>
-                    }/>
-            <Route  path='/reservas'
-                    render={
-                        (match) => <ReservasRouting data={props.data} {...match}/>
-                    } />
-            <Route  path='/feriados'
-                    render={
-                        (match) => <FeriadosRouting data={props.data} {...match}/>
-                    }/>
-            <Route  path='/horarios'
-                    render={
-                        (match) => <HorariosRouting data={props.data} {...match}/>
-                    }/>
-            <Route  path='/ubicaciones'
-                    render={
-                        (match) => <UbicacionesRouting  data={props.data} {...match}/>
-                    } />
-            <Route  path='/eventos'
-                    render={
-                        (match) => <EventosRouting data={props.data} {...match}/>
+            <Route path='/'
+                exact
+                render={
+                    (match) =>
+                        <EscritorioRouting data={props.data}
+                            {...match}/>
+                }/>
+            <Route path='/reservas'
+                render={
+                    (match) =>
+                        <ReservasRouting data={props.data}
+                            {...match}/>
+                } />
+            <Route path='/feriados'
+                render={
+                    (match) =>
+                        <FeriadosRouting data={props.data}
+                            {...match}/>
+                }/>
+            <Route path='/horarios'
+                render={
+                    (match) =>
+                        <HorariosRouting data={props.data}
+                            {...match}/>
+                }/>
+            <Route path='/ubicaciones'
+                render={
+                    (match) =>
+                        <UbicacionesRouting data={props.data}
+                            {...match}/>
+                } />
+            <Route path='/eventos'
+                render={
+                    (match) =>
+                        <EventosRouting data={props.data}
+                            {...match}/>
 
                     } />
-            <Route  path='/promociones'
-                    render={
-                        (match) => <PromocionesRouting data={props.data} {...match} />
-                    } />
-            <Route  path='/locales'
-                    component={
-                        (match) => <LocalesRouting data={props.data} {...match} />
-                    } />
-            <Route  path='/configuracion'
-                    render={
-                        (match) => <ConfiguracionRouting data={props.data}{...match} />
-                    } />
-            <Route  path='/franquicias'
-                    render={
-                        (match) => <FranquiciasRouting data={props.data} {...match} />
-                    }/>
+            <Route path='/promociones'
+                render={
+                    (match) =>
+                        <PromocionesRouting data={props.data}
+                            {...match} />
+                } />
+            <Route path='/locales'
+                component={
+                    (match) =>
+                        <LocalesRouting data={props.data}
+                            {...match} />
+                } />
+            <Route path='/configuracion'
+                render={
+                    (match) =>
+                        <ConfiguracionRouting data={props.data}
+                            {...match} />
+                } />
+            <Route path='/franquicias'
+                render={
+                    (match) =>
+                        <FranquiciasRouting data={props.data    }
+                        {...match} />
+                }/>
         </Switch>
     )
 }

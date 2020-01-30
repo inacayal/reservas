@@ -6,6 +6,7 @@ import {
     POST,
     PUT
 } from '../../utils/api';
+import {processData} from '../../utils/Helper';
 
 export const reservasHandlers = {
     list: [
@@ -13,7 +14,7 @@ export const reservasHandlers = {
             endpoint:'/reservas',
             match:/\/reservas$/,
             callback:(params) =>
-                listHandler(`reservas/list/${user.id}/`)
+                listHandler(`reservas/list/${user.id}`)
         },
         {
             endpoint:'/reservas/agregar',
@@ -35,20 +36,71 @@ export const reservasHandlers = {
     }
 };
 
+const listType = {
+    agenda:{
+        request:(
+            endpoint,
+            date,
+            download
+        ) => ({
+            endpoint: `${endpoint}/${parseInt(date.getMonth()+1)}/${date.getFullYear()}`,
+            download
+        }),
+        resolve:({
+            date,
+            location,
+            response
+        }) => ({
+            data: {
+                data:response.data.reservas.data,
+                horarios: {
+                    data:response.data.horarios.data,
+                    intervalo:response.data.intervalo.id,
+                    antelacion: response.data.antelacion,
+                },
+                date,
+                type:'agenda'
+            },
+            location,
+            loadFinished:true
+        })
+    },
+    tabla:{
+        request:(
+            endpoint,
+            date,
+            download
+        ) => ({
+            endpoint: `${endpoint}/all`,
+            download
+        }),
+        resolve:({
+            location,
+            response
+        }) => ({
+            data:{
+                data:processData(response.data.reservas.data),
+                type:'tabla'
+            },
+            location,
+            loadFinished:true,
+        })
+    }
+};
+
 const listHandler = (endpoint) => {
     return function (params) {
         const date = (params||{}).date||new Date(),
-            request = GET({
-                endpoint: `${endpoint}${parseInt(date.getMonth()+1)}/${date.getFullYear()}`,
-                download: this.downloadHandler
-            });
-        if (params) {
-            this.props.history.replace({
-                state:{
-                    ...(this.props.location||{}).state,
-                    date:date
-                }
-            });
+            loc = (this.props.location||{}).state||{},
+            type = params.type||loc.type||'agenda',
+            conf = listType[type],
+            request = GET(
+                conf.request(
+                    endpoint,
+                    date,
+                    this.downloadHandler
+                )
+            );
             return  new Promise(
                         (resolve,reject) => {
                             this.setState({
@@ -63,45 +115,27 @@ const listHandler = (endpoint) => {
                         request
                         .then(
                             response => {
-                                this.setState({
-                                    data: {
-                                        data:response.data.reservas.data,
-                                        first:false,
-                                        horarios: {
-                                            data:response.data.horarios.data,
-                                            intervalo:response.data.intervalo.id,
-                                            antelacion: response.data.antelacion,
-                                        },
-                                        date:new Date(date)
-                                    },
-                                    location:this.props.location,
-                                    loadFinished:true
-                                });
+                                this.setState(
+                                    conf.resolve({
+                                        date: new Date(date),
+                                        location:this.props.location,
+                                        response
+                                    }),
+                                    () => {
+                                        this.props.history.replace({
+                                            state:{
+                                                ...loc,
+                                                first:true,
+                                                date,
+                                                type
+                                            }
+                                        });
+                                    }
+                                );
                             }
                         )
-                    );
+                    )
         }
-        return  request
-                .then(
-                    response => {
-                        this.setState({
-                            data: {
-                                data:response.data.reservas.data,
-                                first:true,
-                                date:new Date(),
-                                horarios: {
-                                    data:response.data.horarios.data,
-                                    intervalo:response.data.intervalo.id,
-                                    antelacion: response.data.antelacion,
-                                }
-                            },
-                            location:this.props.location,
-                            loadFinished:true
-                        });
-                    }
-                )
-
-    }
 }
 
 

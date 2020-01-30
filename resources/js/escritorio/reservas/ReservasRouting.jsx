@@ -16,7 +16,6 @@ import VerReserva from './sub/VerReserva';
 import ValidationHandler from '../../hocs/ValidationHandler';
 import validation from './validation';
 
-
 const ReservasRouting = (props) => (
     <>
         <Route  path={props.match.url}

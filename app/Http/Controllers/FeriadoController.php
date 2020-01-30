@@ -15,7 +15,9 @@ class FeriadoController extends Controller
 
     protected $model = '\\App\\Models\\Feriado';
 
-    protected $redirect = 'horarios/feriados';
+    public function getRedirect($id){
+        return ['dir' => "/feriados/$id", 'route' => 'feriados'];
+    }
 
     protected static $dependencies = [
         'list' => [
@@ -33,6 +35,11 @@ class FeriadoController extends Controller
             'feriados.eventos'   => false,
             'intervalo'          => false,
             'eventos'            => 'all'
+        ],
+        'all' => [
+            'feriados'          =>	'key',
+            'intervalo'         => false,
+            'feriados.eventos'  =>  false
         ]
     ];
 
@@ -77,6 +84,28 @@ class FeriadoController extends Controller
 
         return response(array_merge($data,$extra),200)->header('Content-Type','application/json');
     }
+
+    public function all(
+        $id,
+        $route
+    ){
+        $dependencies = self::getDependencies($route);
+        $relations = $this->getDependencyScopes(
+            array_keys($dependencies),
+            array()
+        );
+
+        $user = User::with(
+            $relations
+        )->find($id);
+
+        $data = self::formatResults(
+            $user,
+            $dependencies
+        );
+        return response($data,200)->header('Content-Type','application/json');
+    }
+
     /**
      * this function assigns dependencies and it corresponding callbacks
      * @param dependencies is an associative array with Reservas dependencies to be eagerly loaded

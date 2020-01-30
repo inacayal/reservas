@@ -68,9 +68,9 @@ export const FormularioReservas = (props)  => {
                         Antelación de la reserva
                     </h6>
                     <Select titulo="Selecciona la antelación de las reservas"
-                            changeSelect={props.change}
-                            errors={props.errors.antelacion_reserva}
-                            {...select.antelacion}/>
+                        changeSelect={props.change}
+                        errors={props.errors.antelacion_reserva}
+                        {...select.antelacion}/>
                     <span className="smaller-text">
                         El mínimo de horas que el usuario debe esperar antes de hacer la reservación (si la suma de esta y la hora actual excede el cierre de reservas actual, el usuario tendrá que reservar el próximo día)
                     </span>
@@ -80,9 +80,9 @@ export const FormularioReservas = (props)  => {
                         Intervalo de la reserva
                     </h6>
                     <Select titulo="Selecciona la antelación de las reservas"
-                            changeSelect={props.change}
-                            errors={props.errors.intervalo_reserva}
-                            {...select.intervalo}/>
+                        changeSelect={props.change}
+                        errors={props.errors.intervalo_reserva}
+                        {...select.intervalo}/>
                     <span className="smaller-text">
                         El espacio temporal entre los minutos disponibles para hacer la reserva en una hora.
                     </span>
@@ -94,20 +94,20 @@ export const FormularioReservas = (props)  => {
                         Caída de la reserva
                     </h6>
                     <Select titulo="Selecciona la antelación de las reservas"
-                            changeSelect={props.change}
-                            errors={props.errors.caida_reserva}
-                            {...select.caida}/>
+                        changeSelect={props.change}
+                        errors={props.errors.caida_reserva}
+                        {...select.caida}/>
                     <span className="smaller-text">
                         La cantidad de minutos que pasarán desde la hora de la reserva para que se considere como inválida
                     </span>
                 </div>
                 <div className="col-md-6">
-                    <Numeric    titulo="Disponibilidad de reservas"
-                                name="disponibilidad_reserva"
-                                holder="Puedes elegir hasta 60 días como máximo"
-                                value={props.fields.disponibilidad_reserva}
-                                changeHandler={props.change}
-                                errors={props.errors.disponibilidad_reserva}/>
+                    <Numeric  titulo="Disponibilidad de reservas"
+                        name="disponibilidad_reserva"
+                        holder="Puedes elegir hasta 60 días como máximo"
+                        value={props.fields.disponibilidad_reserva}
+                        changeHandler={props.change}
+                        errors={props.errors.disponibilidad_reserva}/>
                     <span className="smaller-text">
                         La cantidad de días a partir de la fecha actual, disponibles para hacer la reserva.
                     </span>

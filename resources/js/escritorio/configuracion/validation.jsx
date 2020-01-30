@@ -1,17 +1,25 @@
 const validation = {
     id:{
-        rules:{},
-        fieldName:"Id"
+        rules:{
+            required:true
+        },
+        fieldName:"ID"
     },
-    franquicia:{
-        rules:{},
+    id_usuario:{
+        rules:{
+            required:true
+        },
+        fieldName:"ID de usuario"
+    },
+    id_franquicia:{
+        rules:{
+        },
         fieldName:"Franquicia"
     },
     nombre:{
         rules:{
             required:true,
-            maxLen:100,
-            alpha_numeric:true
+            maxLen:100
         },
         fieldName:"Nombre"
     },
@@ -34,8 +42,7 @@ const validation = {
     username: {
         rules:{
             required:true,
-            maxLen:100,
-            alpha_numeric:true
+            maxLen:100
         },
         fieldName:"Username"
     },
@@ -43,16 +50,14 @@ const validation = {
         rules:{
             required:true,
             email:true,
-            maxLen:100,
-            alpha_numeric:true
+            maxLen:100
         },
         fieldName:"Email de usuario"
     },
     razon_social:{
         rules:{
             required:true,
-            maxLen:100,
-            alpha_numeric:true
+            maxLen:100
         },
         fieldName:"Razón Social"
     },
@@ -73,23 +78,21 @@ const validation = {
         },
         fieldName:"Provincia"
     },
-    direccion:{
+    direccion_local:{
         rules:{
             required:true,
-            alpha_numeric:true,
             maxLen:150
         },
-        fieldName:"Máximo Personas"
+        fieldName:"Dirección del local"
     },
-    nombre_encargado:{
+    nombre_adm:{
         rules:{
             required:true,
-            alpha_numeric:true,
             maxLen:100
         },
         fieldName:"Nombre del Encargado"
     },
-    correo_encargado:{
+    correo_adm:{
         rules:{
             required:true,
             maxLen:100,
@@ -97,7 +100,7 @@ const validation = {
         },
         fieldName:"Correo del encargado"
     },
-    telefono_encargado:{
+    telefono_adm:{
         rules:{
             required:true,
             phone:true,

@@ -20,6 +20,9 @@ class FeriadosResource extends JsonResource
         'reservas.add' => [
             'eventos' => 'all'
         ],
+        'feriados.all' => [
+            'eventos' => 'list'
+        ],
         'feriados.list'=>[
             'eventos' => 'list'
         ],

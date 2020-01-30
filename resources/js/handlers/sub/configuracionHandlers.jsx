@@ -126,21 +126,21 @@ const usuarioHandler = (endpoint) => {
 
 export function sendEstablecimientoPutRequest (data) {
     return PUT({
-        endpoint: 'update/establecimientp',
+        endpoint: 'usuario/update/establecimiento',
         data: JSON.stringify(data)
     });
 }
 
 export function  sendReservasPutRequest(data) {
     return PUT({
-        endpoint: 'update/reservas',
+        endpoint: 'usuario/update/reservas',
         data: JSON.stringify(data)
     });
 }
 
 export function sendUsuarioPutRequest (data) {
     return PUT({
-        endpoint: 'update/usuario',
+        endpoint: 'usuario/update/usuario',
         data: JSON.stringify(data)
     });
 }

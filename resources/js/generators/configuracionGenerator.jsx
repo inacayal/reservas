@@ -12,7 +12,7 @@ import {ExpandableComponent} from '../hocs/ExpandableComponent';
 const configurationCards = [
     {
         element: (data) => (
-            <div className="container-fluid">
+            <>
                 <div className="row v-padding">
                     <div className="col-md-4">
                         <h6 className="full-width light-danger m-font">
@@ -57,10 +57,10 @@ const configurationCards = [
                         </div>
                     </div>
                 </div>
-                <div className="row sub-title top-padding margin-box">
+                <div className="row sub-title top-padding">
                     Encargado
                 </div>
-                <div className="row v-padding margin-box">
+                <div className="row v-padding">
                     <div className="col-md-4">
                         <h6 className="full-width light-danger m-font">
                             Nombre
@@ -86,10 +86,10 @@ const configurationCards = [
                         </div>
                     </div>
                 </div>
-                <div className="row sub-title top-padding margin-box">
+                <div className="row sub-title top-padding">
                     Ubicación
                 </div>
-                <div className="row v-padding margin-box">
+                <div className="row v-padding">
                     <div className="col-md-6">
                         <h6 className="full-width light-danger m-font">
                             Provincia
@@ -107,15 +107,15 @@ const configurationCards = [
                         </div>
                     </div>
                 </div>
-            </div>
+            </>
         ),
         route: 'establecimiento',
         title: 'Mi establecimiento'
     },
     {
         element: (data) => (
-            <div className="container full-width">
-                <div className="row">
+            <>
+                <div className="row top-padding">
                     <div className="col-md-4">
                         <h6 className="full-width light-danger m-font">
                             Username
@@ -141,15 +141,15 @@ const configurationCards = [
                     </div>
                     </div>
                 </div>
-            </div>
+            </>
         ),
         route: 'usuario',
         title: 'Mi usuario'
     },
     {
         element: (data) => (
-            <div className="container full-width">
-                <div className="row">
+            <>
+                <div className="row top-padding">
                     <div className="col-md-6">
                         <h6 className="full-width light-danger m-font">
                             Intervalo de Reservas
@@ -189,7 +189,7 @@ const configurationCards = [
                         </div>
                     </div>
                 </div>
-            </div>
+            </>
         ),
         route: 'reservas',
         title: 'Reservas'
@@ -227,7 +227,7 @@ export default function generateConfigurationCards (
                         </>
                     );
                 },
-                class: 'h-padding'
+                class: "v-padding"
             }
         }
     );

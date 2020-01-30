@@ -8,7 +8,7 @@ import {searchErrors} from '../utils/validationMethods';
 export const DisplaysMessages = React.createContext({});
 
 function pushMessage (m) {
-    const   queue = this.state.messages;
+    const queue = this.state.messages;
     queue.push(m)
     this.setState({messages:queue})
 }
@@ -36,6 +36,7 @@ const messageType = {
         const   errorMessage = error.response
                     ? error.response
                     : error;
+        console.log(error);
         this.pushMessage({
             data:(
                 <div className="h-padding">

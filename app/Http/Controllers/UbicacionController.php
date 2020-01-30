@@ -17,6 +17,10 @@ class UbicacionController extends Controller
 
     protected $redirect = 'ubicaciones';
 
+    public function getRedirect($id){
+        return ['dir' => "/ubicaciones/$id", 'route' => 'ubicaciones'];
+    }
+
     protected static $dependencies = [
         'list' => [
             'ubicaciones'           => 'key',

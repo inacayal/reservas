@@ -9,17 +9,12 @@ import BaseTable from './BaseTable';
 export default function UbicacionesTable(props){
     const columns = [
             {
-                Header: "Nombre",
-                accessor: "nombre",
+                id:"nombre",
+                Header: "Nombre y apellido",
+                accessor: d => `${d.nombre} ${d.apellido}`,
                 headerClassName: 'bold highlight-title text-left',
                 fixed:"left",
-                filterMethod: (filter, row) => row[filter.id].match(new RegExp(`${filter.value}*`,'gi'))
-            },
-            {
-                Header: "Apellido",
-                accessor: "apellido",
-                headerClassName: 'bold highlight-title text-left',
-                fixed:"left",
+                minWidth: 150,
                 filterMethod: (filter, row) => row[filter.id].match(new RegExp(`${filter.value}*`,'gi'))
             },
             {
@@ -49,7 +44,13 @@ export default function UbicacionesTable(props){
             },
             {
                 Header: "Ocasión",
-                accessor: "eventos.nombre",
+                accessor: "evento.nombre",
+                headerClassName: 'bold highlight-title text-left',
+                Filter: ({ filter, onChange }) =><></>
+            },
+            {
+                Header: "Ubicación",
+                accessor: "ubicacion.nombre",
                 headerClassName: 'bold highlight-title text-left',
                 Filter: ({ filter, onChange }) =><></>
             },

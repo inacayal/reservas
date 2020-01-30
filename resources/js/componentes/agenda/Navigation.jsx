@@ -69,7 +69,7 @@ export default function Navigation (props){
                 }
                 </div>
                 <div className="col-md-4 flex">
-                    <Search route="/r"/>
+                    <Search route={props.route}/>
                 </div>
             </div>
         </div>

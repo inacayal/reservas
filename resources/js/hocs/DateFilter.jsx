@@ -52,6 +52,7 @@ class DateFilter extends Component {
                         changeMonth={this.changeMonth.bind(this)}
                         changeYear={this.changeYear.bind(this)}
                         changeView={this.changeView.bind(this)}
+                        route={props.route}
                         controls={Object.values(props.controls)}
                         show={location.show||props.defaultView}
                         hide={props.hideViews}/>

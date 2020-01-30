@@ -13,6 +13,13 @@ const map = {
                 <span className={`text ${weight}`}>Escritorio</span>
             </>
     ),
+    perfil:   () => (
+        (weight) =>
+            <>
+                <i className="fas fa-user inline-box side-margin" />
+                <span className={`text ${weight}`}>Perfil</span>
+            </>
+    ),
     reservas: () => (
         (weight) =>
             <>

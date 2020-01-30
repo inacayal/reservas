@@ -14,7 +14,7 @@ export const feriadosHandlers = {
             endpoint:`/feriados`,
             match:/(\/feriados)$/,
             callback:(params) =>
-                listHandler(`/feriados/list/${user.id}/`)
+                listHandler(`/feriados/list/${user.id}`)
         },
         {
             endpoint:`/feriados/agregar`,
@@ -130,20 +130,68 @@ const addFormHandler = (endpoint) => {
     }
 }
 
+
+const listType = {
+    agenda:{
+        request:(
+            endpoint,
+            date,
+            download
+        ) => ({
+            endpoint: `${endpoint}/${parseInt(date.getMonth()+1)}/${date.getFullYear()}`,
+            download
+        }),
+        resolve:({
+            date,
+            location,
+            response
+        }) => ({
+            data:{
+                date:date,
+                data: response.data.feriados.data||{},
+                intervalo: response.data.intervalo,
+                type:'agenda'
+            },
+            loadFinished:true,
+            location
+        })
+    },
+    tabla:{
+        request:(
+            endpoint,
+            date,
+            download
+        ) => ({
+            endpoint: `${endpoint}/all`,
+            download
+        }),
+        resolve:({
+            location,
+            response
+        }) => ({
+            data:{
+                data:Object.values(response.data.feriados.data),
+                type:'tabla'
+            },
+            location,
+            loadFinished:true,
+        })
+    }
+};
+
 const listHandler = (endpoint) => {
-    return function (params){
-        const   date = (params||{}).date||new Date(),
-                request = GET({
-                    endpoint: `${endpoint}${parseInt(date.getMonth()+1)}/${date.getFullYear()}`,
-                    download: this.downloadHandler
-                });
-        if (params) {
-            this.props.history.replace({
-                state:{
-                    ...(this.props.location||{}).state,
-                    date
-                }
-            })
+    return function (params) {
+        const date = (params||{}).date||new Date(),
+            loc = (this.props.location||{}).state||{},
+            type = params.type||loc.type||'agenda',
+            conf = listType[type],
+            request = GET(
+                conf.request(
+                    endpoint,
+                    date,
+                    this.downloadHandler
+                )
+            );
             return  new Promise(
                         (resolve,reject) => {
                             this.setState({
@@ -158,36 +206,27 @@ const listHandler = (endpoint) => {
                         request
                         .then(
                             response => {
-                                this.setState({
-                                    data:{
-                                        date:date,
-                                        data: response.data.feriados.data||{},
-                                        intervalo: response.data.intervalo
-                                    },
-                                    loadFinished:true,
-                                    location:this.props.location
-                                });
+                                this.setState(
+                                    conf.resolve({
+                                        date: new Date(date),
+                                        location:this.props.location,
+                                        response
+                                    }),
+                                    () => {
+                                        this.props.history.replace({
+                                            state:{
+                                                ...loc,
+                                                date,
+                                                type
+                                            }
+                                        });
+                                    }
+                                );
                             }
                         )
-                    );
+                    )
         }
-        return  request
-                .then(
-                    response => {
-                        this.setState({
-                            data:{
-                                date:date,
-                                data: response.data.feriados.data||{},
-                                intervalo: response.data.intervalo
-                            },
-                            loadFinished:true,
-                            location:this.props.location
-                        });
-                    }
-                )
-    }
-}
-
+};
 
 const singleHandler = (endpoint) => {
     return function (){

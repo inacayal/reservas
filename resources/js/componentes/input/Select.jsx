@@ -12,7 +12,7 @@ const noMemoSelect = (props) => {
             selected = props.selected.toString(),
             input = useRef(null),
             [show,toggle] = useState(false),
-            [term,updateSearch] = useState(props.list[selected]||""),
+            [term,updateSearch] = useState(""),
             showCallback = (e) => {
                 toggle(true);
                 updateSearch(props.list[selected]||"");
@@ -57,6 +57,7 @@ const noMemoSelect = (props) => {
                         <input  type="text"
                                 defaultValue={term}
                                 ref={input}
+                                onFocus = {e => updateSearch("")}
                                 onChange = {e => updateSearch(e.currentTarget.value)}
                                 onBlur={() => toggle(false) }
                                 className={

@@ -9,12 +9,12 @@ export default function Reservas (props) {
     return (
         <>
             <Titulo title="Configurar Reservas"
-                    links={props.nav.links} />
+                links={props.nav.links} />
             <div className="container">
                 <FormularioReservas data ={props.data}
-                                    fields={props.fields}
-                                    errors={props.errors}
-                                    change={props.change}/>
+                    fields={props.fields}
+                    errors={props.errors}
+                    change={props.change}/>
             </div>
         </>
     );

@@ -21,7 +21,9 @@ class UserController extends Controller
 
     protected $model = '\\App\\User';
 
-    protected $redirect = '';
+    public function getRedirect($id){
+        return ['dir' => '/configuracion', 'route' => 'configuracion'];
+    }
 
     protected static $dependencies = [
         'list' => [],

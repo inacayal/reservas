@@ -9,6 +9,8 @@ import {DAYS,MONTHS} from '../../../constantes/DaysMonths';
 import FeriadosTable from '../../../componentes/tables/FeriadosTable';
 import DateFilter from '../../../hocs/DateFilter';
 import FeriadoViews from '../../../componentes/agenda/FeriadoView';
+import {WaitsLoading} from '../../../hocs/DataHandler';
+import {assignType} from '../../../utils/Helper';
 
 const links = [
     {
@@ -24,13 +26,29 @@ const links = [
     }
 ];
 
+
+const dataByType = {
+    agenda: (par) => (
+        <DateFilter data={par.props.data}
+            controls={NO_DAY_CONTROL}
+            route={'feriados'}
+            defaultView={"1"}>
+            <FeriadoViews actions={{eliminar:par.props.toggleModal}}/>
+        </DateFilter>
+    ),
+    tabla: (par) => (
+        <div className="row">
+            <FeriadosTable data={par.props.data.data}/>
+        </div>
+    )
+}
+
 export default class Feriados extends Component {
     constructor(props){
         super(props);
-        this.state= {
-            view:true
-        };
     }
+
+    static contextType = WaitsLoading;
 
     componentDidMount() {
         console.log('mount')
@@ -41,33 +59,27 @@ export default class Feriados extends Component {
     }
 
     changeView(){
-        this.setState({view:!this.state.view})
+        const loc = (this.props.location||{}).state||{};
+        this.context({
+            date:loc.date,
+            type: assignType(this.props.data.type)
+        });
     }
 
     render(){
-        const   data = this.props.data,
-                nav = this.props.nav.links.concat(links);
         return (
             <>
                 <Titulo title="Feriados"
                     changeView ={{
-                        right:"Ver tabla",
-                        left:"Ver agenda",
+                        right:"viendo tabla",
+                        left:"viendo agenda",
                         change:this.changeView.bind(this),
-                        side:this.state.view
+                        side:this.props.data.type === 'agenda'
                     }}
-                    links={nav}/>
+                    links={this.props.nav.links.concat(links)}/>
                 <div className="container">
                 {
-                    this.state.view
-                    ?
-                        <DateFilter data={this.props.data}
-                            controls={NO_DAY_CONTROL}
-                            defaultView={"1"}>
-                            <FeriadoViews actions={{eliminar:this.props.toggleModal}}/>
-                        </DateFilter>
-                    :
-                        <FeriadosTable data={Object.values(data.data)}/>
+                    dataByType[this.props.data.type](this)
                 }
                 </div>
             </>

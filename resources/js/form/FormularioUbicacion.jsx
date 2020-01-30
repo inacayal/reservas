@@ -45,18 +45,18 @@ export const FormularioUbicacion = (props)  => {
                     Provincia
                 </h6>
                 <Select titulo="Selecciona la provincia"
-                        changeSelect={props.change}
-                        errors={props.errors.id_provincia}
-                        {...provincia}/>
+                    changeSelect={props.change}
+                    errors={props.errors.id_provincia}
+                    {...provincia}/>
             </div>
             <div className="col-md-6">
-                <Text   rows={4}
-                        titulo="Dirección del local"
-                        name="direccion"
-                        holder="Dirección hasta 150 caracteres"
-                        errors={props.errors.direccion}
-                        value={props.fields.direccion}
-                        changeHandler={props.change}/>
+                <Text rows={4}
+                    titulo="Dirección del local"
+                    name="direccion_local"
+                    holder="Dirección hasta 150 caracteres"
+                    errors={props.errors.direccion_local}
+                    value={props.fields.direccion_local}
+                    changeHandler={props.change}/>
             </div>
         </div>
     )

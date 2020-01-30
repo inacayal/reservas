@@ -139,6 +139,7 @@ export function formatErrors (
     );
 }
 
+
 export function searchErrors (
     errors,
     fields,
@@ -146,16 +147,16 @@ export function searchErrors (
 ) {
     const frmtErrs = Object.keys(form).reduce(
             (t,e,i) => {
-                const   flds = (errors[e]||[]).length>0
-                            ? errors[e]
-                            : validateValue(form[e],fields[e]),
-                        err = flds.length>0
-                            ? formatErrors(
-                                flds,
-                                fields[e].fieldName,
-                                i
-                            )
-                            : null;
+                const flds = (errors[e]||[]).length>0
+                        ? errors[e]
+                        : validateValue(form[e],fields[e]),
+                    err = flds.length>0
+                        ? formatErrors(
+                            flds,
+                            fields[e].fieldName,
+                            i
+                        )
+                        : null;
                 errors[e] = flds;
                 if (err)
                     t.push(err);

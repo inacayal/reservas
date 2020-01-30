@@ -54,7 +54,8 @@ class UsuarioResource extends JsonResource
                 'email'=> $user->email,
                 'intervalo'=> $user->intervalo,
                 'caida'=> $user->caida_reserva,
-                'antelacionReserva'=> $user->antelacion_reserva
+                'antelacionReserva'=> $user->antelacion_reserva,
+                'disponiblidad'=> $user->disponibilidad_reserva
             ];
             $dependencyData = self::formatResults(
                 $user,

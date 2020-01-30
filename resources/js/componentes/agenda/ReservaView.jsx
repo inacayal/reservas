@@ -11,15 +11,8 @@ import ReservasTable from '../tables/ReservasTable';
 import AttentionSchedule from '../basic/AttentionSchedule';
 import {getMonthLength} from '../../utils/Helper';
 import {DAYS,MONTHS} from '../../constantes/DaysMonths';
-import {Select} from '../input/Select'
-
-export function processData (
-    data
-) {
-    return Object.values(data).reduce(
-        (t,x) => [...t,...x],[]
-    );
-}
+import {Select} from '../input/Select';
+import {processData} from '../../utils/Helper';
 
 const generateDays =
     (month,year) => (
@@ -33,7 +26,6 @@ const generateDays =
     );
 
 export function DayNavigation (props){
-    console.log(props.date)
     const date = new Date(props.date),
         day = {
             name: "day",
@@ -77,55 +69,56 @@ function changeScroll(ref,off){
 }
 
 function View(props) {
-    let data = processData(props.data.data),
-        days;
-    const [date,changeDate] = useState(new Date(props.data.date)),
-        isFirst = useRef(props.data.first),
-        ref = useRef(null),
+    const loc = props.location.state||{},
+        date = loc.date || new Date(),
+        ul = useRef(null),
         changeDay = (e) => {
-            const off = parseInt(e.currentTarget.getAttribute('value')||0);
-            isFirst.current = off === date.getDate()||!off;
-            changeScroll(ref,isFirst.current ? 0 : off);
-            changeDate(new Date(date.setDate(off)));
+            const off = parseInt(e.currentTarget.getAttribute('value')||0),
+                date = loc.date,
+                first = off === date.getDate()||!off;
+            date.setDate(off);
+            props.history.replace({
+                state: {
+                    ...loc,
+                    date,
+                    first
+                }
+            });
+            changeScroll(ul,first ? 0 : off);
         },
-        horarios = props.data.horarios.data[date.getDay()+1];
+        horarios = props.data.horarios.data[date.getDay()+1],
+        data = loc.first
+            ? processData(props.data.data)
+            : props.data.data[date.getDate()]||[];
 
     useEffect(
         () => {
-            if (props.data.date.getMonth() !== date.getMonth()){
-                isFirst.current=true;
-                changeScroll(ref,0);
-                changeDate(new Date(props.data.date));
-            }
-            if (!ref.current.scrollLeft && !isFirst.current){
-                changeScroll(ref,date.getDate());
-            }
+            const off = loc.first
+                ? 0
+                :date.getDate();
+            changeScroll(ul,off);
         },
-        [props.data.date,date]
-    );
-
-    data = isFirst.current
-        ? data
-        : props.data.data[date.getDate()]||[];
-
-    days =  reservaGenerator(
-        date,
-        props.data.data,
-        changeDay,
-        isFirst.current
+        [loc.first]
     );
 
     return (
         <div className="full-width">
             <div className="v-padding">
-                <ul className="nav-list flex-row no-padding" ref={ref}>
-                    {days}
+                <ul className="nav-list flex-row no-padding" ref={ul}>
+                    {
+                        reservaGenerator(
+                            new Date(date),
+                            props.data.data,
+                            changeDay,
+                            loc.first
+                        )
+                    }
                 </ul>
             </div>
             <div className="v-padding container-fluid">
                 <div className="row">
                     <DayNavigation date={date}
-                        isFirst={isFirst.current}
+                        isFirst={loc.first}
                         changeDay={changeDay}/>
                 </div>
                 {

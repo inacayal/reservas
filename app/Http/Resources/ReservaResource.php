@@ -30,20 +30,25 @@ class ReservaResource extends JsonResource
             'promocion' => false,
             'estado'    => false
         ],
+        'reservas.all' => [
+            'ubicacion' => false,
+            'evento'    => false,
+            'promocion' => false
+        ],
         'search' => []
     ];
 
     public function singleReserva($el) {
         return [
-            "id"=> $el->id,
-            "dni" => $el->dni,
-            "email"=> $el->email,
-            "nombre"=> $el->nombre,
             "id_usuario" => $el->id_usuario,
+            "id"=> $el->id,
+            "nombre"=> $el->nombre,
             "apellido"=> $el->apellido,
+            "dni" => $el->dni,
             "telefono"=> $el->telefono,
-            "ubicacion"=>$el->ubicacion,
+            "email"=> $el->email,
             "evento"=>$el->evento,
+            "ubicacion"=>$el->ubicacion,
             "promocion"=>$el->promocion,
             "personas"=> $el->cantidad_personas,
             "fechaReserva"=> $el->getAttributes()['dia_reserva'],

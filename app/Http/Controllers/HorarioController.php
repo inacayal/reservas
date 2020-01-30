@@ -15,7 +15,9 @@ class HorarioController extends Controller
 
     protected $model = '\\App\\Models\\Horario';
 
-    protected $redirect = 'horarios';
+    public function getRedirect($id){
+        return ['dir' => "/horarios/$id", 'route' => 'horarios'];
+    }
 
     protected static $dependencies = [
         'list' => [

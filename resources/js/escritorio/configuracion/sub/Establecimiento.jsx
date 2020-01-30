@@ -13,12 +13,12 @@ export default function Establecimiento (props) {
     return (
         <>
             <Titulo title="Configurar Establecimiento"
-                    links={props.nav.links} />
+                links={props.nav.links} />
             <div className="container">
                 <FormularioEstablecimiento  data={props.data}
-                                            fields={props.fields}
-                                            errors={props.errors}
-                                            change={props.change}/>
+                    fields={props.fields}
+                    errors={props.errors}
+                    change={props.change}/>
             </div>
         </>
     );

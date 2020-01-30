@@ -16,7 +16,9 @@ class PromocionController extends Controller
 
     protected $model = '\\App\\Models\\Promocion';
 
-    protected $redirect = 'promociones';
+    public function getRedirect($id){
+        return ['dir' => "/promociones/$id", 'route' => 'promociones'];
+    }
 
     public function __construct () {
         $this->middleware('length');

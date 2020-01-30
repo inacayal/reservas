@@ -61,7 +61,7 @@ class User extends Eloquent
 		"username",
 		"correo_contacto",
 		"antelacion_reserva",
-		"disponibilidad_reservas"
+		"disponibilidad_reserva"
 	];
 
 	protected $relationNames = [];
@@ -72,7 +72,7 @@ class User extends Eloquent
 			"id_usuario" => 'required|exists:usuarios,id',
 			"intervalo_reserva" => "required|int|max:60|min:1|exists:intervalos,id",
 			"antelacion_reserva" => "required|int|min:0|int",
-			"disponibilidad_reservas" => "required|min:0|int",
+			"disponibilidad_reserva" => "required|min:0|int",
 			"caida_reserva" => "min:10|max:60|required|int"
 		];
 	}
@@ -110,7 +110,7 @@ class User extends Eloquent
 				"max:100",
 				Rule::unique('usuarios')->ignore($user->email,'email')
 			],
-			"password" => "required|max:100|string"
+			"password" => "max:100|string"
 		];
 	}
 

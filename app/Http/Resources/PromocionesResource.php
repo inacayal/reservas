@@ -15,6 +15,7 @@ class PromocionesResource extends JsonResource
      */
     private static $dependencies = [
         'reservas.list' => [],
+        'reservas.all' => [],
         'reservas.add' => [
             'eventos' => 'list',
         ],

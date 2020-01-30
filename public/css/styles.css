@@ -79,13 +79,17 @@ div,ul,body,html {
     height: 0;
     border-left: 15px solid transparent;
     border-right: 15px solid transparent;
-    border-bottom: 15px solid white;
+    border-bottom: 15px solid rgba(0,0,0,0.2);
 }
 
 .shadow-result{
-    -webkit-box-shadow: 0px 0px 5px 0px var(--border);
-    -moz-box-shadow: 0px 0px 5px 0px var(--border);
-    box-shadow: 0px 0px 5px 0px var(--border);
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.2);
+    opacity:1 !important;
+    overflow:auto;
+    max-height:50vh;
+    right:100%;
 }
 
 .fixed{

@@ -117,7 +117,7 @@ const SubElements = (props) => {
                 sub.map(
                     (sub, ind) => {
                         const linkParam = {
-                            to:`/${sub.to}`,
+                            to:`${sub.to}`,
                             route:sub.route,
                             params:{}
                         }

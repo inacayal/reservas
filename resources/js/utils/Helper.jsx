@@ -19,6 +19,24 @@ export const getMonthLength = (month, year) => {
     return date;
 }
 
+export function processData (
+    data
+) {
+    return Object.values(data).reduce(
+        (t,x) => [...t,...x],[]
+    );
+}
+
+
+export const assignType = (curr) =>
+    (curr  === 'agenda')
+        ? 'tabla'
+        : (curr === 'tabla')
+            ? 'agenda'
+            :'agenda'
+
+
+
 const cmp = {
     '>'    : (a,b) => a>b,
     '<'    : (a,b) => a<b,

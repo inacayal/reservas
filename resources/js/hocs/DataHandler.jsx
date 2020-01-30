@@ -37,7 +37,7 @@ function awaitLoading (
             loadFinished:false,
             fetchData:handler.callback(route.params).bind(this),
         },
-        () => this.fetchHandler(this.props.location.state)
+        () => this.fetchHandler(this.props.location.state||{})
     );
 }
 
@@ -108,7 +108,7 @@ export default class DataHandler extends Component {
                          zIndex:5,
                          height:"6vh",
                          marginTop:"6px",
-                         backgroundColor:'rgba(255,255,255,0.8)'
+                         backgroundColor:'rgba(255,255,255,0.95)'
                      }} >
                     <div className="row small-v-padding margin-left">
                         <BreadCrumb url={location}

@@ -21,6 +21,7 @@ class HorarioResource extends JsonResource
             'eventos' => 'all'
         ],
         'reservas.list' => [],
+        'reservas.all' => [],
         'horarios.list' => [
             'eventos' => 'list'
         ],

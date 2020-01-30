@@ -15,10 +15,11 @@ class ReservaController extends Controller
 
     protected $model = '\\App\\Models\\Reserva';
 
-    protected $redirect = 'reservas';
-    /**
-     * start trait information
-     */
+    public function getRedirect($id){
+        return ['dir' => "/reservas/$id", 'route' => 'reservas'];
+    }
+
+
     protected static $dependencies = [
         'list' => [
             'reservas'              =>  'group',
@@ -46,6 +47,13 @@ class ReservaController extends Controller
             'reservas.evento'    => false,
             'reservas.promocion' => false,
             'reservas.estado'    => false
+        ],
+        'all' => [
+            'reservas'              =>  'group',
+            'reservas.ubicacion'    =>  false,
+            'reservas.evento'       =>  false,
+            'reservas.evento.estado'=>  false,
+            'reservas.promocion'    =>  false,
         ]
     ];
 
@@ -84,6 +92,27 @@ class ReservaController extends Controller
             'antelacion' => $user->antelacion_reserva
         ];
         return response(array_merge($data,$extra),200)->header('Content-Type','application/json');
+    }
+
+    public function all(
+        $id,
+        $route
+    ){
+        $dependencies = self::getDependencies($route);
+        $relations = $this->getDependencyScopes(
+            array_keys($dependencies),
+            array()
+        );
+
+        $user = User::with(
+            $relations
+        )->find($id);
+
+        $data = self::formatResults(
+            $user,
+            $dependencies
+        );
+        return response($data,200)->header('Content-Type','application/json');
     }
 
     public function add(
