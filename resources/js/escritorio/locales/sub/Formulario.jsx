@@ -6,9 +6,11 @@ import {Redirect} from 'react-router-dom';
 import { FormularioEstablecimiento } from '../../../form/FormularioEstablecimiento';
 import { FormularioUsuario } from '../../../form/FormularioUsuario';
 import { FormularioFranquicia } from '../../../form/FormularioFranquicia';
+import { FormularioUbicacion } from '../../../form/FormularioUbicacion';
 import Actions from '../../../componentes/basic/Actions';
 import Titulo from '../../../componentes/basic/Titulo';
 import { Navegacion } from '../../../acciones/ActionsByView';
+
 
 export default function Formulario (props) {
     const data = props.data;
@@ -17,64 +19,52 @@ export default function Formulario (props) {
     return (
         <>
             <Titulo title={
-                    props.editar
-                        ? data.nombre
-                        : "Agregar Local"
-                    }
-                    links={props.nav.links}
-                    buttons ={props.nav.buttons} />
+                props.editar
+                    ? data.nombre
+                    : "Agregar Local"
+                }
+                links={props.nav.links}
+                buttons ={props.nav.buttons} />
             <div className="container">
-                <FormularioFranquicia   data={data}
-                                        agregarLocal={!props.editar}
-                                        fields={props.fields}
-                                        errors={props.errors}
-                                        change={props.change}/>
-                <div className="row mid-title top-padding">
-                    Información del local
-                </div>
+                <FormularioFranquicia data={data}
+                    type={props.type}
+                    agregarLocal={!props.editar}
+                    fields={props.fields}
+                    errors={props.errors}
+                    change={props.change}/>
                 <div className="v-padding">
-                    <FormularioEstablecimiento  userType="Local"
-                                                data={data}
-                                                fields={props.fields}
-                                                errors={props.errors}
-                                                change={props.change}
-                                                isFranquicia/>
+                {
+                    !props.editar
+                    ?
+                        <>
+                            <div className="row mid-title top-padding">
+                                Información del local
+                            </div>
+                            <FormularioEstablecimiento  userType="Local"
+                                data={data}
+                                fields={props.fields}
+                                errors={props.errors}
+                                change={props.change}
+                                isFranquicia/>
+                            <div className="sub-title top-padding">
+                                Ubicación
+                            </div>
+                            <FormularioUbicacion  data={data}
+                                fields={props.fields}
+                                errors={props.errors}
+                                change={props.change}/>
+                        </>
+                    :
+                        <></>
+                }
                 </div>
                 <div className="v-padding">
                     <FormularioUsuario  data={data}
-                                        fields={props.fields}
-                                        errors={props.errors}
-                                        change={props.change}/>
+                        fields={props.fields}
+                        errors={props.errors}
+                        change={props.change}/>
                 </div>
             </div>
         </>
     );
 }
-
-/*
-if (props.editar)
-props.nav.buttons[0].click = props.toggleModal;
-const data = props.data;
-return (
-<>
-<Titulo title={
-props.editar
-? data.nombre
-: "Agregar franquicia"
-}
-links={props.nav.links}
-buttons={props.nav.buttons} />
-<div className="container">
-<FormularioEstablecimiento  data={data}
-isFranquicia
-fields={props.fields}
-errors={props.errors}
-change={props.change}/>
-<FormularioUsuario  data={data}
-fields={props.fields}
-errors={props.errors}
-change={props.change}/>
-</div>
-</>
-)
-*/

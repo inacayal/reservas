@@ -10,16 +10,15 @@ use App\Models\Query\Provincia;
 use App\Models\Query\Intervalo;
 use App\Http\Resources\UsuarioResource as Resource;
 use App\Traits\ValidatesForm;
-use App\User;
+use App\Local;
 use Illuminate\Support\Facades\Hash;
 
-
-class UserController extends Controller
+class LocalController extends Controller
 {
     use hasDependencies,
         ValidatesForm;
 
-    protected $model = '\\App\\User';
+    protected $model = '\\App\\Local';
 
     public function getRedirect($id){
         return ['dir' => '/configuracion', 'route' => 'configuracion'];
@@ -35,60 +34,32 @@ class UserController extends Controller
             'intervalo' => false,
             'locales.franquicia' => false,
             'locales.administrador'=>false
-        ],
-        'locales'=>[
-            'locales' => 'key',
-            'intervalo' => false,
-            'locales.franquicia' => false,
-            'locales.administrador'=>false
-        ],
-        'franquicia' => [
-            'franquicia.locales' => false,
-            'franquicia.administrador'=>false
-        ],
-        'franquicias'=>[
-            'usuarios' => 'key',
-            'intervalo' => false,
-            'franquicia.administrador'=>false
         ]
     ];
 
     public function __construct () {
         $this->middleware('length');
     }
-
-    public function add (
+    public function single(
         $route,
-        $id,
-        $role
+        $id
     ){
         $dependencies = self::getDependencies($route);
-        $scope = $role != 1
-        ?
-            (object)[
-                'id' => $id,
-                'scope'=>'searchId'
-            ]
-        :
-            (object)[
-                'scope' => 'searchFranquicias'
-            ];
         $relations = $this->getDependencyScopes(
             array_keys($dependencies),
             array(
-                'usuarios' => $scope
+                'usuarios' => (object)[
+                    'scope' => 'searchLocales'
+                ]
             )
         );
         $user = User::with(
             $relations
         )->find($id);
 
-        $data = self::formatResults(
-            $user,
-            $dependencies
-        );
-
-        return response($data,200)->header('Content-Type','application/json');
+        return response([
+            'data'=>new Resource($user)
+        ],200)->header('Content-Type','application/json');
     }
 
     public function create (Request $request){
@@ -106,31 +77,21 @@ class UserController extends Controller
         return $this->applyValidation($request);
     }
 
-    public function updateUsuario (Request $request){
-        $data = $request->post();
-        $merge = [
-            'validationType' => 'Usuario',
-            'validationTitle'=> 'Local',
-            'requestType' => 'PUT',
-        ];
-        if ($data['password']){
-            $merge['password'] = Hash::make($data['password']);
-        }
-        $request->merge($merge);
-        return $this->applyValidation($request);
-    }
-
-
-    public function modifyScope (Request $request) {
+    public function updateReservas (Request $request){
         $request->merge([
-            'validationType' => 'ScopeUpdate',
+            'validationType' => 'Reservas',
+            'validationTitle'=> 'Local',
             'requestType' => 'PUT',
         ]);
         return $this->applyValidation($request);
     }
 
-    public function delete (){
-        return response(['respuesta'=>'delete'],200)
-            ->header('Content-Type','application/json');
+    public function updateEstablecimiento (Request $request){
+        $request->merge([
+            'validationType' => 'Establecimiento',
+            'validationTitle'=> 'Local',
+            'requestType' => 'PUT',
+        ]);
+        return $this->applyValidation($request);
     }
 }

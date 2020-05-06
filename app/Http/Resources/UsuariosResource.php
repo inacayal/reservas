@@ -52,6 +52,7 @@ class UsuarioResource extends JsonResource
                 'direccionLocal'=> $user->direccion,
                 'username' => $user->username,
                 'email'=> $user->email,
+                'rol' => $user->id_rol,
                 'intervalo'=> $user->intervalo,
                 'caida'=> $user->caida_reserva,
                 'antelacionReserva'=> $user->antelacion_reserva,

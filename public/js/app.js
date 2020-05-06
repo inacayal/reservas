@@ -90793,6 +90793,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
 /* harmony import */ var _hocs_ValidationHandler__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../hocs/ValidationHandler */ "./resources/js/hocs/ValidationHandler.jsx");
 /* harmony import */ var _validation__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./validation */ "./resources/js/escritorio/franquicias/validation.jsx");
+/* harmony import */ var _handlers_sub_franquiciasHandlers__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../handlers/sub/franquiciasHandlers */ "./resources/js/handlers/sub/franquiciasHandlers.jsx");
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
@@ -90806,6 +90807,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 /**
  * react basic
  */
+
 
 
 
@@ -90852,18 +90854,16 @@ function FranquiciasRouting(props) {
       var fields = {
         id: props.data.id,
         nombre: props.data.nombre,
-        correo: props.data.correoLocal || '',
-        telefono: props.data.telefonoLocal || '',
+        correo_contacto: props.data.correoContacto || '',
+        telefono_contacto: props.data.telefonoContacto || '',
         username: props.data.username || '',
         email: props.data.email || '',
         razon_social: props.data.razonSocial || '',
         cuit_cuil: props.data.cuitCuil || ''
       };
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Validator, {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_ValidationHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
         form: fields,
-        sendRequest: function sendRequest() {
-          return false;
-        },
+        sendRequest: _handlers_sub_franquiciasHandlers__WEBPACK_IMPORTED_MODULE_10__["franquiciasHandlers"].form.edit,
         validation: _validation__WEBPACK_IMPORTED_MODULE_9__["default"]
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["default"], _extends({
         data: props.data,
@@ -90879,20 +90879,17 @@ function FranquiciasRouting(props) {
     render: function render(match) {
       var fields = {
         id: '',
-        franquicia: '',
         nombre: '',
-        correo: '',
-        telefono: '',
+        correo_contacto: '',
+        telefono_contacto: '',
         username: '',
         email: '',
         razon_social: '',
         cuit_cuil: ''
       };
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Validator, {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_ValidationHandler__WEBPACK_IMPORTED_MODULE_8__["default"], {
         form: fields,
-        sendRequest: function sendRequest() {
-          return false;
-        },
+        sendRequest: _handlers_sub_franquiciasHandlers__WEBPACK_IMPORTED_MODULE_10__["franquiciasHandlers"].form.add,
         validation: _validation__WEBPACK_IMPORTED_MODULE_9__["default"]
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["default"], _extends({
         data: props.data,
@@ -91240,8 +91237,7 @@ var validation = {
   nombre: {
     rules: {
       required: true,
-      maxLen: 100,
-      alpha_numeric: true
+      maxLen: 100
     },
     fieldName: "Nombre de la franquicia"
   },
@@ -91256,16 +91252,14 @@ var validation = {
   telefono_contacto: {
     rules: {
       required: true,
-      maxLen: 20,
-      alpha_numeric: true
+      maxLen: 20
     },
     fieldName: "Teléfono de contacto"
   },
   username: {
     rules: {
       required: true,
-      maxLen: 100,
-      alpha_numeric: true
+      maxLen: 100
     },
     fieldName: "Nombre de Usuario"
   },
@@ -91273,16 +91267,14 @@ var validation = {
     rules: {
       required: true,
       email: true,
-      maxLen: 100,
-      alpha_numeric: true
+      maxLen: 100
     },
     fieldName: "Email de usuario"
   },
   razon_social: {
     rules: {
       required: true,
-      maxLen: 100,
-      alpha_numeric: true
+      maxLen: 100
     },
     fieldName: "Razón Social"
   },
@@ -91844,6 +91836,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _componentes_modal_Modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../componentes/modal/Modal */ "./resources/js/componentes/modal/Modal.jsx");
 /* harmony import */ var _validation__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./validation */ "./resources/js/escritorio/locales/validation.jsx");
 /* harmony import */ var _hocs_ValidationHandler__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../hocs/ValidationHandler */ "./resources/js/hocs/ValidationHandler.jsx");
+/* harmony import */ var _handlers_sub_localesHandlers__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../handlers/sub/localesHandlers */ "./resources/js/handlers/sub/localesHandlers.jsx");
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
@@ -91866,6 +91859,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+
+
+var assignList = function assignList(fr, nm) {
+  var list = {};
+  list[fr] = nm;
+  return list;
+};
 
 function LocalesRouting(props) {
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
@@ -91902,7 +91903,7 @@ function LocalesRouting(props) {
     render: function render(match) {
       var fields = {
         id: props.data.id,
-        franquicia: props.data.franquicia.id,
+        id_franquicia: props.data.franquicia.id,
         nombre: props.data.nombre,
         correo_contacto: props.data.correoContacto,
         telefono_contacto: props.data.telefonoContacto,
@@ -91911,20 +91912,28 @@ function LocalesRouting(props) {
         razon_social: props.data.razonSocial,
         cuit_cuil: props.data.cuitCuil,
         id_provincia: props.data.provincia.id,
-        direccion: props.data.direccionLocal,
-        nombre_encargado: props.data.admNombre,
-        correo_encargado: props.data.admEmail,
-        telefono_encargado: props.data.admTelefono
+        direccion_local: props.data.direccionLocal,
+        nombre_adm: props.data.admNombre,
+        correo_adm: props.data.admEmail,
+        telefono_adm: props.data.admTelefono
+      },
+          config = user.rol === 2 ? {
+        rol: 'franquicia',
+        sel: user.id,
+        list: assignList(user.id, user.nombre)
+      } : {
+        rol: 'admin',
+        sel: match.params.id || "",
+        list: props.data
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_ValidationHandler__WEBPACK_IMPORTED_MODULE_9__["default"], {
         form: fields,
-        sendRequest: function sendRequest() {
-          return false;
-        },
+        sendRequest: _handlers_sub_localesHandlers__WEBPACK_IMPORTED_MODULE_10__["localesHandlers"].form.edit,
         validation: _validation__WEBPACK_IMPORTED_MODULE_8__["default"]
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["default"], _extends({
         editar: true,
         data: props.data,
+        type: config,
         toggleModal: openModal,
         nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_3__["Navegacion"].formulario(function () {
           return false;
@@ -91935,8 +91944,8 @@ function LocalesRouting(props) {
     path: "".concat(props.match.url, "/agregar"),
     render: function render(match) {
       var fields = {
-        id: "",
-        franquicia: "",
+        id_usuario: user.id,
+        id_franquicia: user.id,
         nombre: "",
         correo_contacto: "",
         telefono_contacto: "",
@@ -91945,20 +91954,25 @@ function LocalesRouting(props) {
         razon_social: "",
         cuit_cuil: "",
         id_provincia: "",
-        direccion: "",
-        nombre_encargado: "",
-        correo_encargado: "",
-        telefono_encargado: ""
+        direccion_local: ""
+      },
+          config = user.rol === 2 ? {
+        rol: 'franquicia',
+        sel: user.id,
+        list: assignList(user.id, user.nombre)
+      } : {
+        rol: 'admin',
+        sel: "",
+        list: props.data
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_hocs_ValidationHandler__WEBPACK_IMPORTED_MODULE_9__["default"], {
         form: fields,
-        sendRequest: function sendRequest() {
-          return false;
-        },
+        sendRequest: _handlers_sub_localesHandlers__WEBPACK_IMPORTED_MODULE_10__["localesHandlers"].form.add,
         validation: _validation__WEBPACK_IMPORTED_MODULE_8__["default"]
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_sub_Formulario__WEBPACK_IMPORTED_MODULE_4__["default"], _extends({
         editar: false,
         data: props.data,
+        type: config,
         toggleModal: openModal,
         nav: _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_3__["Navegacion"].agregar('locales')
       }, match)));
@@ -91997,9 +92011,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _form_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../form/FormularioEstablecimiento */ "./resources/js/form/FormularioEstablecimiento.jsx");
 /* harmony import */ var _form_FormularioUsuario__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../form/FormularioUsuario */ "./resources/js/form/FormularioUsuario.jsx");
 /* harmony import */ var _form_FormularioFranquicia__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../form/FormularioFranquicia */ "./resources/js/form/FormularioFranquicia.jsx");
-/* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
-/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
-/* harmony import */ var _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../acciones/ActionsByView */ "./resources/js/acciones/ActionsByView.jsx");
+/* harmony import */ var _form_FormularioUbicacion__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../form/FormularioUbicacion */ "./resources/js/form/FormularioUbicacion.jsx");
+/* harmony import */ var _componentes_basic_Actions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../componentes/basic/Actions */ "./resources/js/componentes/basic/Actions.jsx");
+/* harmony import */ var _componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../componentes/basic/Titulo */ "./resources/js/componentes/basic/Titulo.jsx");
+/* harmony import */ var _acciones_ActionsByView__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../acciones/ActionsByView */ "./resources/js/acciones/ActionsByView.jsx");
+
 
 
 
@@ -92012,7 +92028,7 @@ __webpack_require__.r(__webpack_exports__);
 function Formulario(props) {
   var data = props.data;
   if (props.editar) props.nav.buttons[0].click = props.toggleModal;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_basic_Titulo__WEBPACK_IMPORTED_MODULE_8__["default"], {
     title: props.editar ? data.nombre : "Agregar Local",
     links: props.nav.links,
     buttons: props.nav.buttons
@@ -92020,22 +92036,30 @@ function Formulario(props) {
     className: "container"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_FormularioFranquicia__WEBPACK_IMPORTED_MODULE_5__["FormularioFranquicia"], {
     data: data,
+    type: props.type,
     agregarLocal: !props.editar,
     fields: props.fields,
     errors: props.errors,
     change: props.change
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row mid-title top-padding"
-  }, "Informaci\xF3n del local"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "v-padding"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_3__["FormularioEstablecimiento"], {
+  }, !props.editar ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row mid-title top-padding"
+  }, "Informaci\xF3n del local"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_FormularioEstablecimiento__WEBPACK_IMPORTED_MODULE_3__["FormularioEstablecimiento"], {
     userType: "Local",
     data: data,
     fields: props.fields,
     errors: props.errors,
     change: props.change,
     isFranquicia: true
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "sub-title top-padding"
+  }, "Ubicaci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_FormularioUbicacion__WEBPACK_IMPORTED_MODULE_6__["FormularioUbicacion"], {
+    data: data,
+    fields: props.fields,
+    errors: props.errors,
+    change: props.change
+  })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "v-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_form_FormularioUsuario__WEBPACK_IMPORTED_MODULE_4__["FormularioUsuario"], {
     data: data,
@@ -92044,33 +92068,6 @@ function Formulario(props) {
     change: props.change
   }))));
 }
-/*
-if (props.editar)
-props.nav.buttons[0].click = props.toggleModal;
-const data = props.data;
-return (
-<>
-<Titulo title={
-props.editar
-? data.nombre
-: "Agregar franquicia"
-}
-links={props.nav.links}
-buttons={props.nav.buttons} />
-<div className="container">
-<FormularioEstablecimiento  data={data}
-isFranquicia
-fields={props.fields}
-errors={props.errors}
-change={props.change}/>
-<FormularioUsuario  data={data}
-fields={props.fields}
-errors={props.errors}
-change={props.change}/>
-</div>
-</>
-)
-*/
 
 /***/ }),
 
@@ -92314,20 +92311,27 @@ function VerLocal(props) {
 __webpack_require__.r(__webpack_exports__);
 var validation = {
   id: {
-    rules: {},
-    fieldName: "Id"
+    rules: {
+      required: true
+    },
+    fieldName: "ID"
   },
-  franquicia: {
+  id_usuario: {
+    rules: {
+      required: true
+    },
+    fieldName: "ID de usuario"
+  },
+  id_franquicia: {
     rules: {},
     fieldName: "Franquicia"
   },
   nombre: {
     rules: {
       required: true,
-      maxLen: 100,
-      alpha_numeric: true
+      maxLen: 100
     },
-    fieldName: "Nombre del local"
+    fieldName: "Nombre"
   },
   correo_contacto: {
     rules: {
@@ -92341,32 +92345,29 @@ var validation = {
     rules: {
       required: true,
       maxLen: 20,
-      alpha_numeric: true
+      phone: true
     },
     fieldName: "Teléfono de contacto"
   },
   username: {
     rules: {
       required: true,
-      maxLen: 100,
-      alpha_numeric: true
+      maxLen: 100
     },
-    fieldName: "Nombre de Usuario"
+    fieldName: "Username"
   },
   email: {
     rules: {
       required: true,
       email: true,
-      maxLen: 100,
-      alpha_numeric: true
+      maxLen: 100
     },
     fieldName: "Email de usuario"
   },
   razon_social: {
     rules: {
       required: true,
-      maxLen: 100,
-      alpha_numeric: true
+      maxLen: 100
     },
     fieldName: "Razón Social"
   },
@@ -92378,16 +92379,23 @@ var validation = {
     },
     fieldName: "CUIT/CUIL del local"
   },
-  nombre_encargado: {
+  id_provincia: {
     rules: {
-      required: true,
-      alpha_numeric: true,
-      maxLen: 100
+      minVal: 1,
+      maxVal: 24
     },
-    fieldName: "Nombre del Encargado"
+    fieldName: "Provincia"
+  },
+  direccion_local: {
+    rules: {
+      maxLen: 150
+    },
+    fieldName: "Dirección del local"
   },
   password: {
-    rules: {},
+    rules: {
+      required: true
+    },
     fieldName: "Contraseña de usuario"
   }
 };
@@ -94278,18 +94286,11 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 
-
-var assignList = function assignList(fr, nm) {
-  var list = {};
-  list[fr] = nm;
-  return list;
-};
-
 var FormularioFranquicia = function FormularioFranquicia(props) {
   var franquicia = {
-    name: "franquicia",
-    selected: props.fields.franquicia,
-    list: props.agregarLocal ? props.data : assignList(props.fields.franquicia, props.data.franquicia.nombre)
+    name: "id_franquicia",
+    selected: props.type.sel,
+    list: props.type.list
   },
       agregar = [{
     title: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -94310,12 +94311,12 @@ var FormularioFranquicia = function FormularioFranquicia(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-12 text-left relative visible h-padding"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: props.agregarLocal ? "hidden" : "top-padding full-width overlay"
+    className: props.type.rol === "franquicia" ? "top-padding full-width overlay" : "hidden"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentes_input_Select__WEBPACK_IMPORTED_MODULE_3__["Select"], _extends({
     titulo: "Nombre de la franquicia",
     changeSelect: props.change,
-    errors: props.errors.franquicia
-  }, franquicia)))), props.agregarLocal ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    errors: props.errors.id_franquicia
+  }, franquicia)))), props.type.rol === "admin" ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row v-padding justify-content-end"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
     className: "smaller-text"
@@ -96258,16 +96259,14 @@ var editFormHandler = function editFormHandler(endpoint) {
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       var data = response.data.data;
 
       _this.setState({
         data: data,
         loadFinished: true,
         nombre: data.nombre,
-        redirect: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: location
-        })
+        location: _this.props.location
       });
     });
   };
@@ -96275,11 +96274,14 @@ var editFormHandler = function editFormHandler(endpoint) {
 
 var addFormHandler = function addFormHandler(endpoint) {
   return function () {
-    this.setState({
+    return new Promise(function (resolve) {
+      return resolve();
+    }).then(this.setState({
       data: true,
       loadFinished: true,
+      loading: 100,
       location: this.props.location
-    });
+    }));
   };
 };
 
@@ -96291,7 +96293,7 @@ var listHandler = function listHandler(endpoint) {
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       _this2.setState({
         data: response.data.usuarios.data,
         loadFinished: true,
@@ -96309,7 +96311,7 @@ var singleHandler = function singleHandler(endpoint) {
       endpoint: endpoint,
       download: this.downloadHandler
     });
-    request.then(function (response) {
+    return request.then(function (response) {
       var data = response.data.data;
 
       _this3.setState({
@@ -96580,7 +96582,7 @@ var addFormHandler = function addFormHandler(endpoint) {
 
     var request = Object(_utils_api__WEBPACK_IMPORTED_MODULE_3__["GET"])({
       endpoint: endpoint,
-      download: this.props.downloadHandler
+      download: this.downloadHandler
     });
     return request.then(function (response) {
       var data = response.data.usuarios.list;

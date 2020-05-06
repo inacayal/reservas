@@ -7,7 +7,6 @@ const validation = {
         rules:{
             required:true,
             maxLen:100,
-            alpha_numeric:true
         },
         fieldName:"Nombre de la franquicia"
     },
@@ -22,16 +21,14 @@ const validation = {
     telefono_contacto:{
         rules:{
             required:true,
-            maxLen:20,
-            alpha_numeric:true
+            maxLen:20
         },
         fieldName:"Teléfono de contacto"
     },
     username: {
         rules:{
             required:true,
-            maxLen:100,
-            alpha_numeric:true
+            maxLen:100
         },
         fieldName:"Nombre de Usuario"
     },
@@ -39,8 +36,7 @@ const validation = {
         rules:{
             required:true,
             email:true,
-            maxLen:100,
-            alpha_numeric:true
+            maxLen:100
         },
         fieldName:"Email de usuario"
     },
@@ -48,7 +44,6 @@ const validation = {
         rules:{
             required:true,
             maxLen:100,
-            alpha_numeric:true
         },
         fieldName:"Razón Social"
     },

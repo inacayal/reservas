@@ -66,7 +66,7 @@ const addFormHandler = (endpoint) => {
     return function () {
         const request = GET({
             endpoint: endpoint,
-            download: this.props.downloadHandler
+            download: this.downloadHandler
         });
         return  request
                 .then(

@@ -20,13 +20,13 @@ trait hasDependencies
         'promociones'   => 'App\\Models\\Promocion',
         'promocion'     => 'App\\Models\\Promocion',
         'usuarios'      => 'App\\User',
-        'locales'       => 'App\\User',
-        'franquicia'    => 'App\\User',
-        'franquicias'   => 'App\\User',
-        'administrador' => 'App\\User',
+        'locales'       => 'App\\Local',
+        'franquicia'    => 'App\\Franquicia',
+        'franquicias'   => 'App\\Franquicia',
+        'administrador' => 'App\\Admin',
         'escritorio'    => 'App\\User'
     ];
-    
+
     public static function getFormatOptions (string $opt, string $model){
         return $model::$formatOptions[$opt];
     }

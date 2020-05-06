@@ -1,19 +1,27 @@
 const validation = {
     id:{
-        rules:{},
-        fieldName:"Id"
+        rules:{
+            required:true
+        },
+        fieldName:"ID"
     },
-    franquicia:{
-        rules:{},
+    id_usuario:{
+        rules:{
+            required:true
+        },
+        fieldName:"ID de usuario"
+    },
+    id_franquicia:{
+        rules:{
+        },
         fieldName:"Franquicia"
     },
     nombre:{
         rules:{
             required:true,
-            maxLen:100,
-            alpha_numeric:true
+            maxLen:100
         },
-        fieldName:"Nombre del local"
+        fieldName:"Nombre"
     },
     correo_contacto:{
         rules:{
@@ -27,32 +35,29 @@ const validation = {
         rules:{
             required:true,
             maxLen:20,
-            alpha_numeric:true
+            phone:true
         },
         fieldName:"Teléfono de contacto"
     },
     username: {
         rules:{
             required:true,
-            maxLen:100,
-            alpha_numeric:true
+            maxLen:100
         },
-        fieldName:"Nombre de Usuario"
+        fieldName:"Username"
     },
     email: {
         rules:{
             required:true,
             email:true,
-            maxLen:100,
-            alpha_numeric:true
+            maxLen:100
         },
         fieldName:"Email de usuario"
     },
     razon_social:{
         rules:{
             required:true,
-            maxLen:100,
-            alpha_numeric:true
+            maxLen:100
         },
         fieldName:"Razón Social"
     },
@@ -64,17 +69,25 @@ const validation = {
         },
         fieldName:"CUIT/CUIL del local"
     },
-    nombre_encargado:{
+    id_provincia:{
         rules:{
-            required:true,
-            alpha_numeric:true,
-            maxLen:100
+            minVal:1,
+            maxVal:24,
         },
-        fieldName:"Nombre del Encargado"
+        fieldName:"Provincia"
+    },
+    direccion_local:{
+        rules:{
+            maxLen:150
+        },
+        fieldName:"Dirección del local"
     },
     password:{
-        rules:{},
+        rules:{
+            required:true
+        },
         fieldName:"Contraseña de usuario"
-    }
+    },
 };
+
 export default validation;

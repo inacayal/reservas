@@ -27,7 +27,7 @@ class EscritorioController extends Controller
     {
         $user = json_encode([
             'data'=> new UsuarioResource(
-                User::where('id',27)->first()
+                User::where('id',4)->first()
             )
         ]);
         return view('escritorio',compact('user'));

@@ -40,14 +40,13 @@ export const franquiciasHandlers = {
     }
 };
 
-
 const editFormHandler = (endpoint) => {
     return function () {
         const request = GET({
             endpoint: endpoint,
             download: this.downloadHandler
         });
-        request
+        return request
             .then(
                 response => {
                     const data = response.data.data;
@@ -55,7 +54,7 @@ const editFormHandler = (endpoint) => {
                         data: data,
                         loadFinished:true,
                         nombre:data.nombre,
-                        redirect: <Redirect to={location}/>
+                        location:this.props.location,
                     });
                 }
             )
@@ -64,11 +63,15 @@ const editFormHandler = (endpoint) => {
 
 const addFormHandler = (endpoint) => {
     return function () {
-        this.setState({
-            data:true,
-            loadFinished:true,
-            location:this.props.location,
-        })
+        return new Promise ((resolve) => resolve())
+            .then (
+                this.setState({
+                    data:true,
+                    loadFinished:true,
+                    loading:100,
+                    location:this.props.location
+                })
+            );
     }
 }
 
@@ -79,7 +82,7 @@ const listHandler = (endpoint) => {
             endpoint: endpoint,
             download: this.downloadHandler
         });
-        request
+        return request
             .then(
                 response => {
                     this.setState({
@@ -99,7 +102,7 @@ const singleHandler = (endpoint) => {
             download: this.downloadHandler
         });
 
-        request
+        return request
             .then(
                 response => {
                     const data = response.data.data
