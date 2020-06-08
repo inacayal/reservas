@@ -1,16 +1,25 @@
-/**
- * react basic
- */
-import React, { Component } from 'react';
+import React, {
+    Component
+} from 'react';
 import ReactDOM from 'react-dom';
-import Titulo from '../../../componentes/basic/Titulo';
-import {NO_DAY_CONTROL} from '../../../constantes/CalendarControls';
-import {DAYS,MONTHS} from '../../../constantes/DaysMonths';
-import FeriadosTable from '../../../componentes/tables/FeriadosTable';
-import DateFilter from '../../../hocs/DateFilter';
-import FeriadoViews from '../../../componentes/agenda/FeriadoView';
-import {WaitsLoading} from '../../../hocs/DataHandler';
-import {assignType} from '../../../utils/Helper';
+
+import Titulo from '../../../app/componentes/basic/Titulo';
+import {
+    NO_DAY_CONTROL
+} from '../../../app/constantes/CalendarControls';
+import {
+    DAYS,
+    MONTHS
+} from '../../../app/constantes/DaysMonths';
+import FeriadosTable from '../../../app/componentes/tables/FeriadosTable';
+import DateFilter from '../../../app/hocs/DateFilter';
+import FeriadoViews from '../../../app/componentes/agenda/FeriadoView';
+import {
+    WaitsLoading
+} from '../../../app/hocs/DataHandler';
+import {
+    assignType
+} from '../../../app/utils/Helper';
 
 const links = [
     {
@@ -20,9 +29,7 @@ const links = [
                 Horarios
             </div>
         ),
-        to:`/horarios`,
-        params:{},
-        route:`horarios`
+        to:`/horarios`
     }
 ];
 
@@ -37,8 +44,10 @@ const dataByType = {
         </DateFilter>
     ),
     tabla: (par) => (
-        <div className="row">
-            <FeriadosTable data={par.props.data.data}/>
+        <div className="container-fluid">
+            <div className="row">
+                <FeriadosTable actions={{eliminar:par.props.toggleModal}} data={par.props.data.data}/>
+            </div>
         </div>
     )
 }
@@ -77,11 +86,9 @@ export default class Feriados extends Component {
                         side:this.props.data.type === 'agenda'
                     }}
                     links={this.props.nav.links.concat(links)}/>
-                <div className="container">
                 {
                     dataByType[this.props.data.type](this)
                 }
-                </div>
             </>
         );
     }

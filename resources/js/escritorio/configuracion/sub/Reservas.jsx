@@ -1,9 +1,12 @@
+import ReactDOM from 'react-dom';
 import React, {
     Component
 } from 'react';
-import ReactDOM from 'react-dom';
-import {FormularioReservas} from '../../../form/FormularioReservas';
-import Titulo from '../../../componentes/basic/Titulo';
+
+import {
+    FormularioReservas
+} from '../../../app/form/FormularioReservas';
+import Titulo from '../../../app/componentes/basic/Titulo';
 
 export default function Reservas (props) {
     return (

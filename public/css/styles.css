@@ -31,7 +31,7 @@
   --danger-transparent: rgba(227, 52, 47,0.9);
   --success-transparent: rgba(56, 193, 114,0.9);
   --warning-transparent: rgba(255, 237, 74,0.9);
-  --black:rgba(0,0,0,0.2);
+  --black:rgba(0,0,0,0.3);
 }
 
 html,body {
@@ -138,7 +138,9 @@ body::-webkit-scrollbar-thumb:hover {
 .white-background{
     background-color: white;
 }
-
+.normal{
+    white-space: normal !important;
+}
 .light-background{
     background-color: var(--light-border);
 }

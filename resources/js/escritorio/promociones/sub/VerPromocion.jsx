@@ -1,15 +1,20 @@
-/**
- * react basic
- */
-import React, { Component } from 'react';
+import React, {
+    Component
+} from 'react';
 import ReactDOM from 'react-dom';
-import {Redirect} from 'react-router-dom';
-import Titulo from '../../../componentes/basic/Titulo';
-import {Link} from 'react-router-dom';
-import {assignHorarios} from '../../../utils/Helper';
-import {CommaList} from '../../../componentes/basic/CommaList';
-import EventosTable from '../../../componentes/tables/EventosTable'
-import CustomLink from '../../../componentes/basic/CustomLink';
+import {
+    Redirect,
+    Link
+} from 'react-router-dom';
+
+import Titulo from '../../../app/componentes/basic/Titulo';
+import {
+    assignHorarios
+} from '../../../app/utils/Helper';
+import {
+    CommaList
+} from '../../../app/componentes/basic/CommaList';
+import EventosTable from '../../../app/componentes/tables/EventosTable';
 
 const generateList = (list) => {
     const eventos = Object.values(list).map(
@@ -18,15 +23,11 @@ const generateList = (list) => {
             return {
                 ...e,
                 nombre:(
-                    <CustomLink params={{
-                                    to:`/eventos/${e.id}`,
-                                    params:{id:e.id},
-                                    route:'eventos'
-                                }}>
+                    <Link to={`/eventos/${e.id}`}>
                         <span className="text">
                             {e.nombre}
                         </span>
-                    </CustomLink>
+                    </Link>
                 ),
                 horarios:(
                     <CommaList  list={horarios}
@@ -41,31 +42,28 @@ export default function VerPromocion (props) {
     props.nav.buttons[0].click = props.toggleModal;
     const   eventos = generateList(props.data.eventos.data),
             data = {...props.data,eventos};
-
     return (
         <>
             <Titulo title={data.nombre}
-                    links={props.nav.links}
-                    buttons ={props.nav.buttons}/>
-            <div className="container ">
-                <div className="row">
-                    <div className="col-md-9">
-                        <div className="mid-title">
-                            Eventos
-                        </div>
-                        <EventosTable data={data.eventos}/>
+                links={props.nav.links}
+                buttons ={props.nav.buttons}
+                changeView={props.changeView}/>
+            <div className="container-fluid">
+                <div className="row h-padding">
+                    <div className="mid-title">
+                        Eventos
                     </div>
-                    <div className="col-md-3">
-                        <div className="h-padding text-right bold sub-title">
-                            {data.estado}
-                        </div>
+                    <EventosTable data={data.eventos}/>
+                </div>
+                <div className="row">
+                    <div className="col-md-12">
                         <div className="light-danger m-font">
                             Descripción:
                         </div>
                         <div>
                             {data.descripcion}
                         </div>
-                        <h6 className="highlight no-margin m-font top-padding">
+                        <h6 className="highlight m-font top-padding">
                             Descuento:
                         </h6>
                         <div>
@@ -79,7 +77,6 @@ export default function VerPromocion (props) {
                         </div>
                     </div>
                 </div>
-
             </div>
         </>
     )

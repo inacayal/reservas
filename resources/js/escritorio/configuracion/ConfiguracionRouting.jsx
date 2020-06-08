@@ -1,3 +1,4 @@
+import ReactDOM from 'react-dom';
 import {
     Switch,
     Route
@@ -5,15 +6,21 @@ import {
 import React, {
     Component
 } from 'react';
-import ReactDOM from 'react-dom';
+
+import {
+    Navegacion
+} from '../../app/acciones/ActionsByView';
+import ValidationHandler from '../../app/hocs/ValidationHandler';
+import {
+    configuracionHandlers
+} from '../../app/handlers/sub/configuracionHandlers';
+
 import Establecimiento from './sub/Establecimiento';
 import Usuario from './sub/Usuario';
 import Reservas from './sub/Reservas';
 import Configuracion from './sub/Configuracion';
-import {Navegacion} from '../../acciones/ActionsByView';
-import ValidationHandler from '../../hocs/ValidationHandler';
 import validation from './validation';
-import {configuracionHandlers} from '../../handlers/sub/configuracionHandlers';
+
 
 export default function ConfiguracionRouting (props) {
     const nav = Navegacion.agregar('configuracion');

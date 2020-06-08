@@ -1,13 +1,14 @@
 import {
     DAYS,
     MONTHS
-} from '../../../constantes/DaysMonths';
+} from '../../../app/constantes/DaysMonths';
 import React, {
     Component
 } from 'react';
 import ReactDOM from 'react-dom';
-import Titulo from '../../../componentes/basic/Titulo';
-import horarioGenerator from '../../../generators/horarioGenerator';
+
+import Titulo from '../../../app/componentes/basic/Titulo';
+import horarioGenerator from '../../../app/generators/horarioGenerator';
 
 const links = [
     {
@@ -17,9 +18,7 @@ const links = [
                 Feriados
             </div>
         ),
-        to:`/horarios/feriados`,
-        params:{},
-        route:`horarios/feriados`
+        to:`/feriados`
     }
 ];
 
@@ -31,13 +30,15 @@ export default function Horarios (props) {
     return (
         <>
             <Titulo title="Horarios"
-                    links={links}/>
+                links={links}/>
             <div className="v-padding">
                 <ul className="v-padding justify no-padding full-width flex-column nav-list h-center">
                     {
                         week.map(
                             (elem, index) =>
-                                <li key={index} className={elem.class}><elem.content /></li>
+                                <li key={index} className={elem.class}>
+                                    <elem.content />
+                                </li>
                         )
                     }
                 </ul>

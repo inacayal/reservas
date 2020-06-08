@@ -40,6 +40,7 @@ class Ubicacion extends Eloquent
 
 	protected $fillable = [
 		'id_usuario',
+		'foto',
 		'nombre',
 		'descripcion',
 		'cantidad_maxima',

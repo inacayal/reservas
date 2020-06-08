@@ -1,11 +1,12 @@
 <?php
 
 namespace App;
-use Reliese\Database\Eloquent\Model as Eloquent;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
 use App\Traits\DataFormatting;
 use App\Traits\ValidationMessages;
 use Illuminate\Validation\Rule;
+use App\User;
 
 class Franquicia extends Eloquent
 {
@@ -18,7 +19,7 @@ class Franquicia extends Eloquent
 
 	private static $valueKey = "nombre";
 
-	private static $dataResource = "\\App\\Http\\Resources\\FranquiciaResource";
+	private static $dataResource = "\\App\\Http\\Resources\\FranquiciasResource";
 
 	public $timestamps = false;
 
@@ -58,10 +59,6 @@ class Franquicia extends Eloquent
 		];
 	}
 
-    public function getRelationNames(){
-      	return $this->relationNames;
-    }
-
 	public function scopeSearchId($query,$params){
 		return $query->where("id",$params->id);
 	}
@@ -72,12 +69,32 @@ class Franquicia extends Eloquent
 		};
 	}
 
+	public function usuario(){
+		return $this->belongsTo(\App\User::class, "id" );
+	}
+
+	public function horarios(){
+		return $this->hasMany(\App\Models\Horario::class, "id_franquicia");
+	}
+
+	public function feriados(){
+		return $this->hasMany(\App\Models\Feriado::class, "id_franquicia");
+	}
+
+	public function reservas(){
+		return $this->hasMany(\App\Models\Reserva::class, "id_franquicia");
+	}
+
+	public function ubicaciones(){
+		return $this->hasMany(\App\Models\Ubicacion::class, "id_franquicia");
+	}
+
 	public function promociones(){
-		return $this->hasMany(\App\Models\Promocion::class, "id_usuario");
+		return $this->hasMany(\App\Models\Promocion::class, "id_franquicia");
 	}
 
 	public function eventos(){
-		return $this->hasMany(\App\Models\Evento::class, "id_usuario");
+		return $this->hasMany(\App\Models\Evento::class, "id_franquicia");
 	}
 
 	public function locales(){

@@ -4,13 +4,21 @@
 import React, {
     Component
 } from 'react';
-import {Redirect} from 'react-router-dom';
-import CustomLink from '../../../componentes/basic/CustomLink';
+import {
+    Link
+} from 'react-router-dom';
 import ReactDOM from 'react-dom';
-import {Calendario} from '../../../form/Calendario';
-import {MONTHS} from '../../../constantes/DaysMonths';
-import Titulo from '../../../componentes/basic/Titulo';
-import {ReservasActions} from '../../../acciones/ReservasActions';
+
+import {
+    Calendario
+} from '../../../app/form/Calendario';
+import {
+    MONTHS
+} from '../../../app/constantes/DaysMonths';
+import Titulo from '../../../app/componentes/basic/Titulo';
+import {
+    ReservasActions
+} from '../../../app/acciones/ReservasActions';
 
 export default class VerReserva extends Component {
     constructor(props){
@@ -65,28 +73,13 @@ export default class VerReserva extends Component {
                             Pendiente
                         </div>
                     )
-                },
-                eventoParam = {
-                    to:`/eventos/${data.evento.id}`,
-                    params:{id:data.evento.id},
-                    route:'eventos'
-                },
-                ubicacionParam = {
-                    to:`/ubicaciones/${data.ubicacion.id}`,
-                    params:{id:data.ubicacion.id},
-                    route:'ubicaciones'
-                },
-                promoParam = {
-                    to:`/promociones/${data.promocion.id}`,
-                    params:{id:data.promocion.id},
-                    route:'promociones'
                 };
         return (
             <>
                 <Titulo title={`Reserva de ${data.nombre} ${data.apellido}`}
-                        links={[this.props.nav.links[0]]}
-                        buttons ={actions.buttons}/>
-                <div className="container">
+                    links={[this.props.nav.links[0]]}
+                    buttons ={actions.buttons}/>
+                <div className="container-fluid">
                     <div className="m-font light-danger row">
                         {
                             data.DNI
@@ -107,23 +100,25 @@ export default class VerReserva extends Component {
 
                     </div>
                     <div className="row v-padding">
-                        <div className="col-md-6 container">
+                        <div className="col-md-6 container-fluid">
                             <div className="row">
                                 <Calendario editar={true}
-                                            date={date}
-                                            data={data}/>
+                                    date={date}
+                                    data={data}/>
                             </div>
                         </div>
                         <div className="col-md-6 container">
                             <div className="row">
                                 <div className="col-md-8 no-padding">
-                                    <span className="mid-title inline-block">
+                                    <div className="mid-title">
                                         {`${date.getDate()} de ${MONTHS[date.getMonth()]} de ${date.getFullYear()}`}
-                                    </span>
-                                    <span className="c-title inline-block">{`${data.hora_reserva} horas`}</span>
-                                </div>
-                                <div className="col-md-4 text-right mid-font relative">
-                                    {ElemByState[data.estado]()}
+                                    </div>
+                                    <div className="c-title">
+                                        {`${data.hora_reserva} horas`}
+                                    </div>
+                                    <div className="mid-font">
+                                        {ElemByState[data.estado]()}
+                                    </div>
                                 </div>
                             </div>
                             <div className="row">
@@ -148,22 +143,22 @@ export default class VerReserva extends Component {
                                 <div className="col-md-6 no-padding">
                                     <div className="m-font light-danger">
                                         Evento:
-                                        <CustomLink params = {eventoParam}>
+                                        <Link to={`/eventos/${data.evento.id}`}>
                                             <span className="side-margin">
                                                 {data.evento.nombre}
                                             </span>
-                                        </CustomLink>
+                                        </Link>
                                     </div>
                                     {data.evento.descripcion||"sin definir"}
                                 </div>
                                 <div className="col-md-6 no-padding">
                                     <div className="m-font light-danger">
                                         Promoción:
-                                        <CustomLink params = {promoParam}>
+                                        <Link to={`/promociones/${data.promocion.id}`}>
                                             <span className="side-margin">
                                                 {data.promocion.nombre||"sin definir"}
                                             </span>
-                                        </CustomLink>
+                                        </Link>
                                     </div>
                                     {data.promocion.descripcion||"sin definir"}
                                     <div className="small-v-padding bold">
@@ -176,11 +171,11 @@ export default class VerReserva extends Component {
                                     <span className="light-danger side-margin m-font ">
                                         Ubicación:
                                     </span>
-                                    <CustomLink params={ubicacionParam}>
+                                    <Link to={`/ubicaciones/${data.ubicacion.id}`}>
                                         <span className="side-margin">
                                             {data.ubicacion.nombre||"sin definir"}
                                         </span>
-                                    </CustomLink>
+                                    </Link>
                                     <div>
                                         {data.ubicacion.descripcion||"sin definir"}
                                     </div>

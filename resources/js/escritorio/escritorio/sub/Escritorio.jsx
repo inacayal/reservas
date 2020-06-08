@@ -1,30 +1,52 @@
-/**
- * react basic
- */
-import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Titulo from '../../../componentes/basic/Titulo';
+import React, {
+    Component
+} from 'react';
+import {
+    Redirect
+} from 'react-router-dom';
 
-export default function Escritorio (props) {
-    const data = props.data;
-    return (
-        <>
-            <Titulo
-                title={"Bienvenido, "+data.username} />
-            <div className="container">
-                <div className="row">
-                    <div className="col-md-4 bold">
-                        foto de local
-                    </div>
-                    <div className="col-md-8 container">
-                        <div className="row">
-                            <div className="col-md-6">
-                                {data.nombre}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
-    );
+import {
+    ReservaView
+} from '../../../app/componentes/agenda/ReservaView';
+import DateFilter from '../../../app/hocs/DateFilter';
+import Titulo from '../../../app/componentes/basic/Titulo';
+
+export default class Escritorio extends Component {
+    constructor(props){
+        super(props);
+        this.actions = {
+            aceptar: this.aceptarReserva.bind(this),
+            rechazar: this.rechazarReserva.bind(this),
+            revertir: this.revertirReserva.bind(this)
+        };
+    }
+
+    revertirReserva() {
+        console.log('revertir');
+    }
+
+    aceptarReserva() {
+        console.log('aceptarReserva');
+    }
+
+    rechazarReserva() {
+        console.log('rechazarReserva');
+    }
+
+    render(){
+        const data = this.props.data;
+        return (
+            <>
+                <Titulo
+                    title={"Bienvenido, "+data.username} />
+                <DateFilter hideViews
+                    data={this.props.data}
+                    route={'reservas'}
+                    controls={{}}>
+                    <ReservaView actions={this.actions}/>
+                </DateFilter>
+            </>
+        );
+    }
 }

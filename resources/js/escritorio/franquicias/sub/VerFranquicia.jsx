@@ -1,15 +1,15 @@
-/**
- * react basic
- */
-import React, { Component,useState } from 'react';
+import React, {
+    Component,
+    useState
+} from 'react';
 import ReactDOM from 'react-dom';
-import Actions from '../../../componentes/basic/Actions';
-/**
- * componentes
- */
-import Titulo from '../../../componentes/basic/Titulo';
-import LocalesTable from '../../../componentes/tables/LocalesTable';
-import {ExpandableComponent} from '../../../hocs/ExpandableComponent';
+
+import Actions from '../../../app/componentes/basic/Actions';
+import Titulo from '../../../app/componentes/basic/Titulo';
+import LocalesTable from '../../../app/componentes/tables/LocalesTable';
+import {
+    ExpandableComponent
+} from '../../../app/hocs/ExpandableComponent';
 
 function links(key) {
     return [

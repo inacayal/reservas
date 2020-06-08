@@ -1,12 +1,12 @@
-/**
- * react basic
- */
+import ReactDOM from 'react-dom';
 import React, {
     Component
 } from 'react';
-import ReactDOM from 'react-dom';
-import Titulo from '../../../componentes/basic/Titulo';
-import { FormularioUsuario } from '../../../form/FormularioUsuario';
+
+import {
+    FormularioUsuario
+} from '../../../app/form/FormularioUsuario';
+import Titulo from '../../../app/componentes/basic/Titulo';
 
 export default function Usuario (props) {
     return (

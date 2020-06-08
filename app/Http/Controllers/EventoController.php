@@ -16,11 +16,14 @@ class EventoController extends Controller
 
     protected $model = '\\App\\Models\\Evento';
 
+    private $consult;
+
     public function getRedirect($id){
         return ['dir' => "/eventos/$id", 'route' => 'eventos'];
     }
 
     public function __construct () {
+        $this->consult = "App\\Local";
         $this->middleware('length');
     }
 
@@ -50,81 +53,67 @@ class EventoController extends Controller
         $route,
         $id
     ){
-        $dependencies = self::getDependencies($route);
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array()
-        );
-
-        $user = User::with(
-            $relations
-        )->find($id);
-
-        $data = self::formatResults(
-            $user,
-            $dependencies
-        );
-        return response($data,200)->header('Content-Type','application/json');
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(),
+                "model" => $this->consult,
+                "extra" => array(),
+                "uid" => $id
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
 
     public function add (
         $route,
         $id
     ){
-        $dependencies = self::getDependencies($route);
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array(
-                'feriados' => (object) [
-                    'date' => new \DateTime(),
-                    'operator'=>'>=',
-                    'scope'=>'thisDate'
-                ]
-            )
-        );
-
-        $user = User::with(
-            $relations
-        )->find($id);
-
-        $data = self::formatResults(
-            $user,
-            $dependencies
-        );
-        return response($data,200)->header('Content-Type','application/json');
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(
+                    'feriados' => (object) [
+                        'date' => new \DateTime(),
+                        'operator'=>'>=',
+                        'scope'=>'thisDate'
+                    ]
+                ),
+                "model" => $this->consult,
+                "extra" => array(),
+                "uid" => $id
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
 
     public function single (
         $route,
-        $userId,
+        $uId,
         $id
     ){
-        $dependencies = self::getDependencies($route);
         $feriadoScope = (object) [
             'date' => new \DateTime(),
             'operator'=>'>=',
             'scope'=>'thisDate'
         ];
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array(
-                'eventos' => (object) [
-                    'id'=>$id,
-                    'scope'=>'searchId'
-                ],
-                'eventos.feriados' => $feriadoScope,
-                'feriados' => $feriadoScope
-            )
-        );
-        $user = User::with(
-            $relations
-        )->find($userId);
-
-        $data = self::formatResults(
-            $user,
-            $dependencies
-        );
-        return response($data,200)->header('Content-Type','application/json');
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(
+                    'eventos' => (object) [
+                        'id'=>$id,
+                        'scope'=>'searchId'
+                    ],
+                    'eventos.feriados' => $feriadoScope,
+                    'feriados' => $feriadoScope
+                ),
+                "model" => $this->consult,
+                "extra" => array(),
+                "uid" => $uId
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
 
     public function create(Request $request){

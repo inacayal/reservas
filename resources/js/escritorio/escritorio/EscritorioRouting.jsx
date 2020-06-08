@@ -1,13 +1,10 @@
-/**
- * react basic
- */
-import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-/**
- * form sub elements
- */
-import Escritorio from './sub/Escritorio';
 import {Route} from 'react-router-dom';
+import React, {
+    Component
+} from 'react';
+
+import Escritorio from './sub/Escritorio';
 
 export default function EscritorioRouting (props) {
     return (

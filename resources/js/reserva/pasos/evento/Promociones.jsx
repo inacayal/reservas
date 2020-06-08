@@ -6,40 +6,43 @@ import React,
 } from 'react';
 import ReactDOM from 'react-dom';
 import Calendar from 'react-calendar';
-import {CommaList} from '../../../componentes/basic/CommaList';
+
+import {
+    CommaList
+} from '../../../app/componentes/basic/CommaList';
 import {
     DAYS,
     MONTHS
-} from '../../../constantes/DaysMonths';
+} from '../../../app/constantes/DaysMonths';
 
 function Promociones (props) {
-    const   data = props.data,
-            list = props.list,
-            showData = Object.keys(props.data).reduce(
-                (tot,curr, i) => {
-                    const promo = props.data[curr].promociones;
-                    if ( promo && promo.data ){
-                        Object.keys(promo.data).map(
-                            (e,i) => {
-                                const eventos = promo.data[e].eventos.list;
-                                if (tot[e]){
-                                    Object.assign(tot[e].eventos, eventos);
-                                } else {
-                                    tot[e] = {
-                                        nombre: promo.data[e].nombre,
-                                        eventos: eventos,
-                                        descripcion: promo.data[e].descripcion,
-                                        descuento: promo.data[e].descuento,
-                                    };
-                                }
+    const data = props.data,
+        list = props.list,
+        showData = Object.keys(props.data).reduce(
+            (tot,curr, i) => {
+                const promo = props.data[curr].promociones;
+                if ( promo && promo.data ){
+                    Object.keys(promo.data).map(
+                        (e,i) => {
+                            const eventos = promo.data[e].eventos.list;
+                            if (tot[e]){
+                                Object.assign(tot[e].eventos, eventos);
+                            } else {
+                                tot[e] = {
+                                    nombre: promo.data[e].nombre,
+                                    eventos: eventos,
+                                    descripcion: promo.data[e].descripcion,
+                                    descuento: promo.data[e].descuento,
+                                };
                             }
-                        )
-                    }
-                    return tot;
-                },
-                {}
-            ),
-            dataArray = Object.keys(showData);
+                        }
+                    )
+                }
+                return tot;
+            },
+            {}
+        ),
+        dataArray = Object.keys(showData);
 
     return (
         <>

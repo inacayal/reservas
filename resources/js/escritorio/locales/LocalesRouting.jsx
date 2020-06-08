@@ -6,15 +6,24 @@ import React, {
     useState
 } from 'react';
 import ReactDOM from 'react-dom';
-import {Route, Switch} from 'react-router-dom';
-import {Navegacion} from '../../acciones/ActionsByView';
-import Formulario from './sub/Formulario';
+import {
+    Route,
+    Switch
+} from 'react-router-dom';
+
+import {
+    Navegacion
+} from '../../app/acciones/ActionsByView';
+import Formulario from '../eventos/sub/Formulario';
+import ConfirmarModal from '../../app/componentes/modal/Modal';
+import ValidationHandler from '../../app/hocs/ValidationHandler';
+import {
+    localesHandlers
+} from '../../app/handlers/sub/localesHandlers';
+
 import Locales from './sub/Locales';
 import VerLocal from './sub/VerLocal';
-import ConfirmarModal from '../../componentes/modal/Modal';
 import validation from './validation';
-import ValidationHandler from '../../hocs/ValidationHandler';
-import {localesHandlers} from '../../handlers/sub/localesHandlers';
 
 
 const assignList = (fr,nm) => {
@@ -24,15 +33,15 @@ const assignList = (fr,nm) => {
 }
 
 export default function LocalesRouting (props) {
-    const   [open,toggle] = useState(false),
-            openModal = (e) => {
-                e.preventDefault();
-                toggle(true);
-            },
-            closeModal = (e) => {
-                e.preventDefault();
-                toggle(false);
-            };
+    const [open,toggle] = useState(false),
+        openModal = (e) => {
+            e.preventDefault();
+            toggle(true);
+        },
+        closeModal = (e) => {
+            e.preventDefault();
+            toggle(false);
+        };
     return (
         <>
             <ConfirmarModal open={open}

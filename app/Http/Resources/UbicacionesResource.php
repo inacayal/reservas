@@ -17,13 +17,13 @@ class UbicacionesResource extends JsonResource
     {
         return [
             "id" => $this->id,
+            "foto" => $this->foto,
             "id_usuario" => $this->id_usuario,
             "nombre" => $this->nombre,
             "descripcion" =>$this->descripcion,
             "capacidad" => $this->cantidad_maxima,
             "estado" => $this->estado->descripcion,
-            "maximo" => $this->maximo_personas,
-            "foto" => 'foto'
+            "maximo" => $this->maximo_personas
         ];
     }
 }

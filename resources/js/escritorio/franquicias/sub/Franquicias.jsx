@@ -1,14 +1,11 @@
-/**
- * react basic
- */
-import React, { Component } from 'react';
+import React, {
+    Component
+} from 'react';
 import ReactDOM from 'react-dom';
-/**
- * componentes
- */
-import Titulo from '../../../componentes/basic/Titulo';
-import Actions from '../../../componentes/basic/Actions';
-import FranquiciasTable from '../../../componentes/tables/FranquiciasTable'
+
+import Titulo from '../../../app/componentes/basic/Titulo';
+import Actions from '../../../app/componentes/basic/Actions';
+import FranquiciasTable from '../../../app/componentes/tables/FranquiciasTable'
 
 const links = (key) => [
     {
@@ -55,8 +52,7 @@ export default function Franquicias (props) {
     );
     return (
         <>
-            <Titulo
-                title="Franquicias"
+            <Titulo title="Franquicias"
                 links={props.nav.links} />
             <div className="container">
                 <div className="row">

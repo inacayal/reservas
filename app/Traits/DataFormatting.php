@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 use Illuminate\Support\Collection;
-use App\User;
 /**
  * managing data and dependency data format
  */
@@ -23,13 +22,6 @@ trait DataFormatting
 			'keyData'=>'data'
         ]
     ];
-
-	public static function getModelKeys(){
-		return (object) [
-			'key'=>self::$dataKey,
-			'value'=>self::$valueKey
-		];
-	}
 
 	public static function listCallback(
 		$modelKeys
@@ -67,6 +59,13 @@ trait DataFormatting
 		return $data->keyBy($keys->key);
 	}
 
+    public static function getModelKeys(){
+		return (object) [
+			'key'=>self::$dataKey,
+			'value'=>self::$valueKey
+		];
+	}
+
 	public static function getResource(){
 		return self::$dataResource;
 	}
@@ -76,8 +75,8 @@ trait DataFormatting
 		array $formatOptions
 	){
 		$formattedData = collect([]);
-		$modelKeys = self::getModelKeys();
-		$class = self::class;
+        $class = get_called_class();
+		$modelKeys = $class::getModelKeys($class);
 		if (count($formatOptions)>0) {
 			foreach($formatOptions as $optKey=>$option){
 				$auxData = call_user_func_array(
@@ -85,13 +84,13 @@ trait DataFormatting
 					[$data,$class,$modelKeys]
 				);
 				if (property_exists($class,'dataResource') && $option!=='list'){
-					$auxData = self::applyResource($auxData, self::getResource());
+					$auxData = $class::applyResource($auxData, $class::getResource( $class ));
 					$auxData = $auxData->collection;
 				}
 				$formattedData[$option] = $auxData;
 			}
 		} elseif(property_exists($class,'dataResource'))
-			$formattedData = self::applyResource($data, self::getResource());
+			$formattedData = $class::applyResource($data, $class::getResource($class));
 		return $formattedData;
 	}
 
@@ -104,5 +103,12 @@ trait DataFormatting
 		else {
 			return (new $resource($data))->toArray(request());
 		}
+	}
+
+	public function pairExtra( $data,$extra ){
+		foreach ($extra as $n=>$i) {
+			$data[$n] = $this->{$i};
+		}
+		return $data;
 	}
 }

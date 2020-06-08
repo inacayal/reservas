@@ -15,11 +15,7 @@ class UbicacionController extends Controller
 
     protected $model = '\\App\\Models\\Ubicacion';
 
-    protected $redirect = 'ubicaciones';
-
-    public function getRedirect($id){
-        return ['dir' => "/ubicaciones/$id", 'route' => 'ubicaciones'];
-    }
+    private $consult;
 
     protected static $dependencies = [
         'list' => [
@@ -33,50 +29,48 @@ class UbicacionController extends Controller
     ];
 
     public function __construct () {
+        $this->consult = "App\\Local";
         $this->middleware('length');
     }
 
-    public function list ($route,$id){
-        $dependencies = self::getDependencies($route);
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array()
-        );
-        $user = User::with(
-            $relations
-        )->find($id);
+    public function getRedirect($id){
+        return ['dir' => "/ubicaciones/$id", 'route' => 'ubicaciones'];
+    }
 
-        $data = self::formatResults(
-            $user,
-            $dependencies
-        );
-        return response($data,200)->header('Content-Type','application/json');
+    public function list ($route,$id){
+        //dd(csrf_token());
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(),
+                "model" => $this->consult,
+                "extra" => array(),
+                "uid" => $id
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
 
     public function single (
         $route,
-        $userId,
+        $uId,
         $id
     ){
-        $dependencies = self::getDependencies($route);
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array(
-                'ubicaciones' => (object)[
-                    'id'=>$id,
-                    'scope' => 'searchId'
-                ]
-            )
-        );
-        $user = User::with(
-            $relations
-        )->find($userId);
-
-        $data = self::formatResults(
-            $user,
-            $dependencies
-        );
-        return response($data,200)->header('Content-Type','application/json');
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(
+                    'ubicaciones' => (object)[
+                        'id'=>$id,
+                        'scope' => 'searchId'
+                    ]
+                ),
+                "model" => $this->consult,
+                "extra" => array(),
+                "uid" => $uId
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
 
     public function create (Request $request){

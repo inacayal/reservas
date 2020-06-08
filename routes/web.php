@@ -10,12 +10,4 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Auth::routes();
-Route::get('/','EscritorioController@reservas')->name('reserva');
-Route::get('/escritorio', 'EscritorioController@index')->name('escritorio');
-Route::get('/mail', 'EscritorioController@mail')->name('mail');
-Route::get('/escritorio/{path?}', [
-    'uses' => 'EscritorioController@index',
-    'as' => 'escritorio',
-    'where' => ['path' => '.*']
-]);
+Route::get('/{base}','AppController@base')->name('base')->where('base', '.*');

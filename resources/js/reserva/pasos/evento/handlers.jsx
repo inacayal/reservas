@@ -1,9 +1,14 @@
-/**
- * react basic
- */
-import React, { Component, useState, useEffect } from 'react';
+import React, {
+    Component,
+    useState,
+    useEffect
+} from 'react';
 import ReactDOM from 'react-dom';
-import {compareDates} from '../../../utils/Helper';
+
+import {
+    compareDates
+} from '../../../app/utils/Helper';
+
 export const generateListByLocationCapacity = (m) => {
     const l = [...Array(m + 1).keys()];
     l.shift();

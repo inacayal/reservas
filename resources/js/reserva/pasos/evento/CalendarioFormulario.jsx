@@ -1,6 +1,3 @@
-/**
- * react basic
- */
 import React, {
     Component,
     useState,
@@ -9,47 +6,55 @@ import React, {
 import {
     DAYS,
     MONTHS
-} from '../../../constantes/DaysMonths';
+} from '../../../app/constantes/DaysMonths';
 import ReactDOM from 'react-dom';
 import Calendar from 'react-calendar';
+
 import Promociones from './Promociones';
-import { Select } from "../../../componentes/input/Select.jsx";
-import { Text } from "../../../componentes/input/Text.jsx";
-import { generateListByLocationCapacity } from './Handlers';
+import {
+    generateListByLocationCapacity
+} from './Handlers';
+
+import {
+    Select
+} from "../../../app/componentes/input/Select.jsx";
+import {
+    Text
+} from "../../../app/componentes/input/Text.jsx";
 
 function CalendarioFormulario(props) {
-    const   fields = props.fields,
-            ubicacion = props.ubicaciones.data[props.fields.id_ubicacion] || null,
-            personas = ubicacion ? generateListByLocationCapacity(ubicacion.maximo+1) : {},
-            eventos = props.currentData.eventos,
-            promociones = props.fields.id_evento ? eventos.data[fields.id_evento].promociones.data : null,
-            select = {
-                id_ubicacion:{
-                    name:"id_ubicacion",
-                    selected: fields.id_ubicacion,
-                    list: props.ubicaciones.list
-                },
-                id_evento: {
-                    name: "id_evento",
-                    selected: fields.id_evento,
-                    list: eventos.list
-                },
-                hora_reserva: {
-                    name: "hora_reserva",
-                    selected: fields.hora_reserva,
-                    list: props.horario.hList||{}
-                },
-                minuto_reserva: {
-                    name: "minuto_reserva",
-                    selected: fields.minuto_reserva,
-                    list: props.horario.hourArray[props.fields.hora_reserva]||{}
-                },
-                cantidad_personas: {
-                    name: "cantidad_personas",
-                    selected: fields.cantidad_personas,
-                    list:personas
-                }
-            };
+    const fields = props.fields,
+        ubicacion = props.ubicaciones.data[props.fields.id_ubicacion] || null,
+        personas = ubicacion ? generateListByLocationCapacity(ubicacion.maximo+1) : {},
+        eventos = props.currentData.eventos,
+        promociones = props.fields.id_evento ? eventos.data[fields.id_evento].promociones.data : null,
+        select = {
+            id_ubicacion:{
+                name:"id_ubicacion",
+                selected: fields.id_ubicacion,
+                list: props.ubicaciones.list
+            },
+            id_evento: {
+                name: "id_evento",
+                selected: fields.id_evento,
+                list: eventos.list
+            },
+            hora_reserva: {
+                name: "hora_reserva",
+                selected: fields.hora_reserva,
+                list: props.horario.hList||{}
+            },
+            minuto_reserva: {
+                name: "minuto_reserva",
+                selected: fields.minuto_reserva,
+                list: props.horario.hourArray[props.fields.hora_reserva]||{}
+            },
+            cantidad_personas: {
+                name: "cantidad_personas",
+                selected: fields.cantidad_personas,
+                list:personas
+            }
+        };
     return (
         <div className="container-fluid">
             <div className="row box-padding">

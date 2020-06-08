@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 use Illuminate\Support\Collection;
-use App\User;
 /**
  * handle dependency formatting
  * must define @param dependency inside class indicating which models this instance depends on
@@ -19,12 +18,11 @@ trait hasDependencies
         'evento'        => 'App\\Models\\Evento',
         'promociones'   => 'App\\Models\\Promocion',
         'promocion'     => 'App\\Models\\Promocion',
-        'usuarios'      => 'App\\User',
+        'usuario'       => 'App\\User',
         'locales'       => 'App\\Local',
         'franquicia'    => 'App\\Franquicia',
         'franquicias'   => 'App\\Franquicia',
-        'administrador' => 'App\\Admin',
-        'escritorio'    => 'App\\User'
+        'administrador' => 'App\\Admin'
     ];
 
     public static function getFormatOptions (string $opt, string $model){
@@ -50,8 +48,9 @@ trait hasDependencies
             if ($method){
                 $format = self::getFormatOptions($method,$model);
                 $result[$name] =  $model::getFormattedData($modelInstance->{$name},$format);
-            } elseif ($model)
+            } elseif ($model){
                 $result[$name] =  $model::getFormattedData($modelInstance->{$name},[]);
+            }
         }
         return $result;
     }
@@ -78,5 +77,12 @@ trait hasDependencies
                 array_push($result,$dep);
         }
         return $result;
+    }
+
+    public function getData( $config ) {
+        $relations = $this->getDependencyScopes( array_keys( $config->depends ),$config->scope );
+        $user = $config->model::with( $relations )->find($config->uid);
+        $data = self::formatResults( $user,$config->depends );
+        return $user->pairExtra( $data,$config->extra );
     }
 }

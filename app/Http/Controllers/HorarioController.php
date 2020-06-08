@@ -15,9 +15,7 @@ class HorarioController extends Controller
 
     protected $model = '\\App\\Models\\Horario';
 
-    public function getRedirect($id){
-        return ['dir' => "/horarios/$id", 'route' => 'horarios'];
-    }
+    private $consult;
 
     protected static $dependencies = [
         'list' => [
@@ -37,27 +35,28 @@ class HorarioController extends Controller
     ];
 
     public function __construct () {
+        $this->consult = "App\\Local";
         $this->middleware('length');
+    }
+
+    public function getRedirect($id){
+        return ['dir' => "/horarios/$id", 'route' => 'horarios'];
     }
 
     public function list (
         $route,
         $id
     ){
-        $dependencies = self::getDependencies($route);
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array()
-        );
-        $user = User::with(
-            $relations
-        )->find($id);
-
-        $data = self::formatResults(
-            $user,
-            $dependencies
-        );
-        return response($data,200)->header('Content-Type','application/json');
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(),
+                "model" => $this->consult,
+                "extra" => array(),
+                "uid" => $id
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
 
     /**
@@ -69,67 +68,43 @@ class HorarioController extends Controller
         $route,
         $id
     ){
-        $dependencies = self::getDependencies($route);
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array()
-        );
-        $user = User::with(
-            $relations
-        )->find($id);
-
-        $data = self::formatResults(
-            $user,
-            $dependencies
-        );
-
-        $extra = [
-            'intervalo' => $user->intervalo->id
-        ];
-
-        return response(array_merge($data,$extra),200)->header('Content-Type','application/json');
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(),
+                "model" => $this->consult,
+                "extra" => array(
+                    'intervalo' => "intervalo"
+                ),
+                "uid" => $id
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
 
     public function single(
         $route,
-        $userId,
+        $uId,
         $id
     ){
-        $dependencies = self::getDependencies($route);
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array('horarios' => (object)['id'=>$id,'scope'=>'searchId'])
-        );
-
-        $user = User::with(
-            $relations
-        )->find($userId);
-
-        $data = self::formatResults(
-            $user,
-            $dependencies
-        );
-
-        $extra = [
-            'intervalo' => $user->intervalo->id
-        ];
-        return response(array_merge($data,$extra),200)->header('Content-Type','application/json');
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(
+                    'horarios' => (object)[
+                        'id'=>$id,
+                        'scope'=>'searchId'
+                    ]
+                ),
+                "model" => $this->consult,
+                "extra" => array(
+                    'intervalo' => "intervalo"
+                ),
+                "uid" => $uId
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
-
-    public function formatDependencyData(
-        array $dataModels,
-        User $user
-    ) {
-        $res = [];
-        foreach($dataModels as $relation=>$model){
-            $opt = $this->model===$model ? 'mainFormatOptions' : 'dependencyFormatOptions';
-            if ($model && property_exists($model,$opt)){
-                $res[$relation] = $model::getFormattedData($user->{$relation},$opt);
-            }
-        }
-        return collect($res);
-    }
-
 
     public function create (Request $request){
         $request->merge([
@@ -146,7 +121,6 @@ class HorarioController extends Controller
         ]);
         return $this->applyValidation($request);
     }
-
 
     public function delete (){
         return response(['respuesta'=>'delete'],200)

@@ -1,11 +1,12 @@
 <?php
 
 namespace App;
-use Reliese\Database\Eloquent\Model as Eloquent;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Support\Collection;
 use App\Traits\DataFormatting;
 use App\Traits\ValidationMessages;
 use Illuminate\Validation\Rule;
+use App\User;
 
 class Admin extends Eloquent
 {
@@ -20,7 +21,7 @@ class Admin extends Eloquent
 
 	private static $valueKey = "nombre";
 
-	private static $dataResource = "\\App\\Http\\Resources\\AdminResource";
+	private static $dataResource = "\\App\\Http\\Resources\\AdminsResource";
 
 	protected $fillable = [
 		"id",
@@ -57,6 +58,34 @@ class Admin extends Eloquent
 		return function ($query) use ($params) {
 			return $query->{$params->scope}($params);
 		};
+	}
+
+	public function usuario(){
+		return $this->belongsTo(\App\User::class, "id" );
+	}
+
+	public function eventos(){
+		return $this->hasMany(\App\Models\Evento::class, "id_local");
+	}
+
+	public function horarios(){
+		return $this->hasMany(\App\Models\Horario::class, "id_administrador");
+	}
+
+	public function feriados(){
+		return $this->hasMany(\App\Models\Feriado::class, "id_administrador");
+	}
+
+	public function reservas(){
+		return $this->hasMany(\App\Models\Reserva::class, "id_administrador");
+	}
+
+	public function ubicaciones(){
+		return $this->hasMany(\App\Models\Ubicacion::class, "id_administrador");
+	}
+
+	public function promociones(){
+		return $this->hasMany(\App\Models\Promocion::class, "id_administrador");
 	}
 
 	public function locales(){

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Traits\hasDependencies;
 use Illuminate\Support\Collection;
-use App\Http\Resources\AdminResource as Resource;
+use App\Http\Resources\AdminsResource as Resource;
 use App\Traits\ValidatesForm;
 use Illuminate\Support\Facades\Hash;
 
@@ -28,18 +28,7 @@ class AdminController extends Controller
         'single'=>[
             'administradores' => 'key',
             'franquicias' => 'key',
-            'locales' => 'key'        
-        ],
-        'locales'=>[
-            'locales' => 'key',
-            'intervalo' => false,
-            'locales.franquicia' => false,
-            'locales.administrador'=>false
-        ],
-        'franquicias'=>[
-            'franquicias' => 'key',
-            'intervalo' => false,
-            'franquicia.administrador'=>false
+            'locales' => 'key'
         ]
     ];
 

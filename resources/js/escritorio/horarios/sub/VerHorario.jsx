@@ -2,11 +2,18 @@ import React, {
     Component
 } from 'react';
 import ReactDOM from 'react-dom';
-import CustomLink from '../../../componentes/basic/CustomLink';
-import Titulo from '../../../componentes/basic/Titulo';
-import {DAYS} from '../../../constantes/DaysMonths';
-import {CommaList} from '../../../componentes/basic/CommaList';
-import EventosTable from '../../../componentes/tables/EventosTable';
+import {
+    Link
+} from 'react-router-dom';
+
+import Titulo from '../../../app/componentes/basic/Titulo';
+import {
+    DAYS
+} from '../../../app/constantes/DaysMonths';
+import {
+    CommaList
+} from '../../../app/componentes/basic/CommaList';
+import EventosTable from '../../../app/componentes/tables/EventosTable';
 
 export default function VerHorario (props) {
     props.nav.buttons[0].click = props.toggleModal;
@@ -16,15 +23,11 @@ export default function VerHorario (props) {
                 e => ({
                     ...e,
                     nombre: (
-                        <CustomLink params={{
-                                to:`/eventos/${e.id}`,
-                                params:{id:e.id},
-                                route:'eventos'
-                            }}>
+                        <Link to={`/eventos/${e.id}`}>
                             <span className="text">
                                 {e.nombre}
                             </span>
-                        </CustomLink>
+                        </Link>
                     ),
                     promociones:(
                         <CommaList  list={e.promociones.list}
@@ -98,8 +101,8 @@ export default function VerHorario (props) {
                         {
                             eventos.length>0
                             ?
-                                <EventosTable   data={eventos}
-                                                showPromociones ={true}/>
+                                <EventosTable data={eventos}
+                                    showPromociones ={true}/>
                             : "No hay eventos asociados"
                         }
                     </div>

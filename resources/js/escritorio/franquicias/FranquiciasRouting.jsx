@@ -6,15 +6,22 @@ import React, {
     useState
 } from 'react';
 import ReactDOM from 'react-dom';
-import {Route,Switch} from 'react-router-dom';
-import {Navegacion} from '../../acciones/ActionsByView';
+import {
+    Route,
+    Switch
+} from 'react-router-dom';
+
+import {Navegacion} from '../../app/acciones/ActionsByView';
+import ConfirmarModal from '../../app/componentes/modal/Modal';
+import ValidationHandler from '../../app/hocs/ValidationHandler';
+import {
+    franquiciasHandlers
+} from '../../app/handlers/sub/franquiciasHandlers';
+
 import Formulario from './sub/Formulario';
 import Franquicias from './sub/Franquicias';
 import VerFranquicia from './sub/VerFranquicia';
-import ConfirmarModal from '../../componentes/modal/Modal';
-import ValidationHandler from '../../hocs/ValidationHandler';
 import validation from './validation';
-import {franquiciasHandlers} from '../../handlers/sub/franquiciasHandlers';
 
 export default function FranquiciasRouting (props) {
     const [open,toggle] = useState(false),

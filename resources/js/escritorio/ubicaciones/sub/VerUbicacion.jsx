@@ -1,29 +1,26 @@
-/**
- * react basic
- */
-import React, { Component } from 'react';
+import React, {
+    Component
+} from 'react';
 import ReactDOM from 'react-dom';
-/**
- * basic
- */
-import Titulo from '../../../componentes/basic/Titulo';
+
+import Titulo from '../../../app/componentes/basic/Titulo';
 
 export default function VerUbicacion (props) {
     props.nav.buttons[0].click = props.toggleModal;
     const data = props.data;
     return (
         <div className="container-fluid no-padding">
-            < Titulo    title={data.nombre}
-                        links={props.nav.links}
-                        buttons ={props.nav.buttons}/>
-            <div className="bold m-font text-right h-padding">
-                {data.estado}
-            </div>
+            < Titulo title={data.nombre}
+                links={props.nav.links}
+                buttons ={props.nav.buttons}
+                changeView={props.changeView}/>
             <div className="row full-width">
-                <div className="col-md-4 bold">
-                    imagen de ubicacion
+                <div className="col-md-4 text-center" >
+                    <div className="sidebar-box">
+                        <img className="img-responsive" src={data.foto} alt="ubicacion foto" style={{maxHeight:"300px",maxWidth:"300px"}}/>
+                    </div>
                 </div>
-                <div className="col-md-8 container">
+                <div className="col-md-8 container h-padding">
                     <div className="row m-font highlight top-padding">
                         Descripcion:
                     </div>

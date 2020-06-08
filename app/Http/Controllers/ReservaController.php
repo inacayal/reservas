@@ -13,12 +13,9 @@ class ReservaController extends Controller
     use hasDependencies,
         ValidatesForm;
 
+    private $consult;
+
     protected $model = '\\App\\Models\\Reserva';
-
-    public function getRedirect($id){
-        return ['dir' => "/reservas/$id", 'route' => 'reservas'];
-    }
-
 
     protected static $dependencies = [
         'list' => [
@@ -58,7 +55,12 @@ class ReservaController extends Controller
     ];
 
     public function __construct () {
+        $this->consult = "App\\Local";
         $this->middleware('length');
+    }
+
+    public function getRedirect($id){
+        return ['dir' => "/reservas/$id", 'route' => 'reservas'];
     }
 
     public function list (
@@ -67,52 +69,42 @@ class ReservaController extends Controller
         $month,
         $year
     ){
-        $dependencies = self::getDependencies($route);
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array(
-                'reservas' => (object) [
-                    'month'=>$month,
-                    'operator'=>'=',
-                    'year'=>$year,
-                    'scope'=>'thisMonth'
-                ]
-            )
-        );
-        $user = User::with(
-            $relations
-        )->find($id);
-
-        $data = self::formatResults(
-            $user,
-            $dependencies
-        );
-        $extra = [
-            'intervalo' => $user->intervalo,
-            'antelacion' => $user->antelacion_reserva
-        ];
-        return response(array_merge($data,$extra),200)->header('Content-Type','application/json');
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(
+                    'reservas' => (object) [
+                        'month'=>$month,
+                        'operator'=>'=',
+                        'year'=>$year,
+                        'scope'=>'thisMonth'
+                    ]
+                ),
+                "model" => $this->consult,
+                "extra" => array(
+                    'intervalo' => "intervalo",
+                    'antelacion' => "antelacion_reserva"
+                ),
+                "uid" => $id
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
 
     public function all(
         $id,
         $route
     ){
-        $dependencies = self::getDependencies($route);
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array()
-        );
-
-        $user = User::with(
-            $relations
-        )->find($id);
-
-        $data = self::formatResults(
-            $user,
-            $dependencies
-        );
-        return response($data,200)->header('Content-Type','application/json');
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(),
+                "model" => $this->consult,
+                "extra" => array(),
+                "uid" => $id
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
 
     public function add(
@@ -121,56 +113,49 @@ class ReservaController extends Controller
         $month,
         $year
     ){
-        $dependencies = self::getDependencies($route);
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array(
-                'feriados' => (object) [
-                    'month'=>$month,
-                    'operator'=>'=',
-                    'year'=>$year,
-                    'scope'=>'thisMonth'
-                ]
-            )
-        );
-        $user = User::with(
-            $relations
-        )->find($id);
-
-        $data = self::formatResults(
-            $user,
-            $dependencies
-        );
-        $extra = [
-            'intervalo' => $user->intervalo,
-            'antelacion' => $user->antelacion_reserva
-        ];
-        return response(array_merge($data,$extra) ,200)->header('Content-Type','application/json');
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(
+                    'feriados' => (object) [
+                        'month'=>$month,
+                        'operator'=>'=',
+                        'year'=>$year,
+                        'scope'=>'thisMonth'
+                    ]
+                ),
+                "model" => $this->consult,
+                "extra" => array(
+                    'intervalo' => "intervalo",
+                    'antelacion' => "antelacion_reserva"
+                ),
+                "uid" => $id
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
 
     public function single(
         $route,
-        $userId,
+        $uId,
         $id
     ){
-        $dependencies = self::getDependencies($route);
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array('reservas' => (object)['id'=>$id,'scope'=>'searchId'])
-        );
-
-        $user = User::with(
-            $relations
-        )->find($userId);
-
-        $data = self::formatResults(
-            $user,
-            $dependencies
-        );
-
-        return response($data,200)->header('Content-Type','application/json');
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(
+                    'reservas' => (object)[
+                        'id'=>$id,
+                        'scope'=>'searchId'
+                    ]
+                ),
+                "model" => $this->consult,
+                "extra" => array(),
+                "uid" => $uId
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
-
 
     public function create (Request $request){
         $request->merge([

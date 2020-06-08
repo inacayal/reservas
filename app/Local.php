@@ -2,8 +2,11 @@
 
 namespace App;
 use App\User;
+use App\Traits\DataFormatting;
+use App\Traits\ValidationMessages;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class Local extends User
+class Local extends Eloquent
 {
 	use DataFormatting,
 		ValidationMessages;
@@ -107,7 +110,7 @@ class Local extends User
 		];
 	}
 
-    public function getRelationNames(){
+	public function getRelationNames(){
       	return $this->relationNames;
     }
 
@@ -121,20 +124,28 @@ class Local extends User
 		};
 	}
 
+	public function eventos(){
+		return $this->hasMany(\App\Models\Evento::class, "id_local");
+	}
+
 	public function horarios(){
-		return $this->hasMany(\App\Models\Horario::class, "id_usuario");
+		return $this->hasMany(\App\Models\Horario::class, "id_local");
 	}
 
 	public function feriados(){
-		return $this->hasMany(\App\Models\Feriado::class, "id_usuario");
+		return $this->hasMany(\App\Models\Feriado::class, "id_local");
 	}
 
 	public function reservas(){
-		return $this->hasMany(\App\Models\Reserva::class, "id_usuario");
+		return $this->hasMany(\App\Models\Reserva::class, "id_local");
 	}
 
 	public function ubicaciones(){
-		return $this->hasMany(\App\Models\Ubicacion::class, "id_usuario");
+		return $this->hasMany(\App\Models\Ubicacion::class, "id_local");
+	}
+
+	public function promociones(){
+		return $this->hasMany(\App\Models\Promocion::class, "id_local");
 	}
 
 	public function intervalo(){
@@ -145,11 +156,19 @@ class Local extends User
 		return $this->belongsTo(\App\Models\Query\Provincia::class, "id_provincia");
 	}
 
+	public function usuario(){
+		return $this->belongsTo(\App\User::class, "id" );
+	}
+
 	public function franquicia(){
 		return $this->belongsTo(\App\Franquicia::class, "id_franquicia","id");
 	}
 
 	public function administrador(){
 		return $this->belongsTo(\App\Admin::class, "id_administrador", "id");
+	}
+
+	public function estado(){
+		return $this->belongsTo(\App\Models\Query\Scope::class, "scope");
 	}
 }

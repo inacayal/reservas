@@ -5,66 +5,69 @@ import React, {
     Component
 } from 'react';
 import ReactDOM from 'react-dom';
-import CustomLink from '../../../componentes/basic/CustomLink';
-import Titulo from '../../../componentes/basic/Titulo';
-import {assignHorarios} from '../../../utils/Helper';
-import {CommaList} from '../../../componentes/basic/CommaList';
-import PromocionesTable from '../../../componentes/tables/PromocionesTable';
-import {createFeriadosList} from '../../../utils/Helper';
+import {
+    Link
+} from 'react-router-dom';
+
+import Titulo from '../../../app/componentes/basic/Titulo';
+import {
+    assignHorarios,
+    createFeriadosList
+} from '../../../app/utils/Helper';
+import {
+    CommaList
+} from '../../../app/componentes/basic/CommaList';
+import PromocionesTable from '../../../app/componentes/tables/PromocionesTable';
 
 export default function VerEvento (props) {
     props.nav.buttons[0].click = props.toggleModal;
-    const   data = props.data,
-            promociones = Object.values(data.promociones.data).map(
-                e => ({
-                    ...e,
-                    nombre:(
-                        <CustomLink params={{
-                                        to:`/promociones/${e.id}`,
-                                        params:{id:e.id},
-                                        route:'promociones'
-                                    }}>
-                            <span className="text">
-                                {e.nombre}
-                            </span>
-                        </CustomLink>
-                    )
-                })
-            ),
-            horarios = Object.values(data.horarios.list),
-            feriados = createFeriadosList(data.feriados.data);
+    const data = props.data,
+        promociones = Object.values(data.promociones.data).map(
+            e => ({
+                ...e,
+                nombre:(
+                    <Link to={`/promociones/${e.id}`}>
+                        <span className="text">
+                            {e.nombre}
+                        </span>
+                    </Link>
+                )
+            })
+        ),
+        horarios = Object.values(data.horarios.list),
+        feriados = createFeriadosList(data.feriados.data);
     return (
         <>
             <Titulo title={data.nombre}
-                    links={props.nav.links}
-                    buttons ={props.nav.buttons}/>
-            <div className="row justify-content-center">
-                <div className="col-md-8">
-                    <div className="mid-title">
-                        Promociones
-                    </div>
-                    {
-                        promociones.length>0
-                        ?
-                            <PromocionesTable data={promociones}/>
-                        :
-                            <div className="bold h-padding">
-                                No hay promociones asociadas
-                            </div>
-                    }
+                links={props.nav.links}
+                buttons ={props.nav.buttons}
+                changeView={props.changeView}/>
+            <div className="row col-md-12">
+                <div className="mid-title">
+                    Promociones
                 </div>
-                <div className="col-md-4">
-                    <div className="bold m-font text-right">
-                        {data.estado}
-                    </div>
+                {
+                    promociones.length>0
+                    ?
+                        <PromocionesTable data={promociones}/>
+                    :
+                        <div className="bold h-padding">
+                            No hay promociones asociadas
+                        </div>
+                }
+            </div>
+            <div className="row v-padding">
+                <div className="col-md-6">
                     <div className="m-font highlight">
                         Descripción:
                     </div>
                     <div style={{wordBreak:"break-word"}}>
                         {data.descripcion}
                     </div>
+                </div>
+                <div className="col-md-6">
                     <div>
-                        <h6 className="highlight no-margin m-font v-padding">
+                        <h6 className="highlight m-font v-padding">
                             Horarios
                         </h6>
                         {

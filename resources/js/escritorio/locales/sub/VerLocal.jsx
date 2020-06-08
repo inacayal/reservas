@@ -2,11 +2,16 @@ import React, {
     Component
 } from 'react';
 import ReactDOM from 'react-dom';
-import { Navegacion } from '../../../acciones/ActionsByView';
-import Titulo from '../../../componentes/basic/Titulo';
-import FranquiciasTable from '../../../componentes/tables/FranquiciasTable';
-import {ExpandableComponent} from '../../../hocs/ExpandableComponent';
-import Actions from '../../../componentes/basic/Actions';
+
+import {
+    Navegacion
+} from '../../../app/acciones/ActionsByView';
+import Titulo from '../../../app/componentes/basic/Titulo';
+import FranquiciasTable from '../../../app/componentes/tables/FranquiciasTable';
+import {
+    ExpandableComponent
+} from '../../../app/hocs/ExpandableComponent';
+import Actions from '../../../app/componentes/basic/Actions';
 
 const links = (key) => [
     {
@@ -40,15 +45,15 @@ export default function VerLocal (props) {
     return (
         <>
             <Titulo title={data.nombre}
-                    links={props.nav.links}
-                    buttons ={props.nav.buttons}/>
+                links={props.nav.links}
+                buttons ={props.nav.buttons}/>
             <div className="container">
                 <div className="v-padding row">
                     <FranquiciasTable   data={[data.franquicia]}
                                         withPagination={false}/>
                 </div>
-                <ExpandableComponent    title = 'Información'
-                                        show={true}>
+                <ExpandableComponent title = 'Información'
+                    show={true}>
                     <div className="row v-padding">
                         <div className="col-md-4">
                             <h6 className="full-width light-danger m-font">

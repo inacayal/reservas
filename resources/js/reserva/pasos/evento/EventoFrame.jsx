@@ -1,25 +1,24 @@
-/**
- * react basic
- */
 import React, {
     Component,
     useState,
     useEffect
 } from 'react';
 import ReactDOM from 'react-dom';
-import CalendarioEventos from './CalendarioEventos';
-import CalendarioFormulario from './CalendarioFormulario';
+
 import {
     DAYS,
     MONTHS
-} from '../../../constantes/DaysMonths';
+} from '../../../app/constantes/DaysMonths';
 import {
     generateHourArray,
     calculateOffset,
     generateAcceptedHours,
     checkValid
 } from './Handlers';
-import {compareDates} from '../../../utils/Helper';
+import CalendarioEventos from './CalendarioEventos';
+import CalendarioFormulario from './CalendarioFormulario';
+
+import {compareDates} from '../../../app/utils/Helper';
 
 export default class EventoFrame extends Component {
     constructor(props){
@@ -44,35 +43,34 @@ export default class EventoFrame extends Component {
         .then(callback)
     }
     render(){
-        const   props = this.props,
-                data = props.data.data,
-                horario = generateAcceptedHours({
-                    a: data.antelacion,
-                    g: props.current,
-                    i: data.intervalo.id,
-                    f: props.fecha,
-                    m: props.minDate
-                });
-        //console.log(props.current)
+        const props = this.props,
+            data = props.data.data,
+            horario = generateAcceptedHours({
+                a: data.antelacion,
+                g: props.current,
+                i: data.intervalo.id,
+                f: props.fecha,
+                m: props.minDate
+            });
         return (
-            <div className="container">
-                <CalendarioEventos  data={props.data}
-                                    showDate={props.fecha}
-                                    minDate={props.minDate}
-                                    clickCallback={this.changeDate}
-                                    fetch = {this.fetchData}
-                                    change={props.change}/>
+            <div className="container-fluid">
+                <CalendarioEventos data={props.data}
+                    showDate={props.fecha}
+                    minDate={props.minDate}
+                    clickCallback={this.changeDate}
+                    fetch = {this.fetchData}
+                    change={props.change}/>
                 <div className="row justify-content-end smaller-text top-padding">
                     {`Debes reservar con al menos ${data.antelacion} horas de antelación.`}
                 </div>
                 <div className="row">
-                    <CalendarioFormulario   date={props.fecha}
-                                            currentData={props.current}
-                                            ubicaciones={data.ubicaciones}
-                                            horario={horario}
-                                            fields={props.fields}
-                                            change={props.change}
-                                            errors={props.errors} />
+                    <CalendarioFormulario date={props.fecha}
+                        currentData={props.current}
+                        ubicaciones={data.ubicaciones}
+                        horario={horario}
+                        fields={props.fields}
+                        change={props.change}
+                        errors={props.errors} />
                 </div>
             </div>
         );

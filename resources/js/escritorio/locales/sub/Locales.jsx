@@ -2,11 +2,15 @@ import React, {
     Component
 } from 'react';
 import ReactDOM from 'react-dom';
-import {Redirect} from 'react-router-dom';
-import Titulo from '../../../componentes/basic/Titulo';
- import Actions from '../../../componentes/basic/Actions';
-import { Navegacion } from '../../../acciones/ActionsByView';
-import LocalesTable from '../../../componentes/tables/LocalesTable';
+import {
+    Redirect
+} from 'react-router-dom';
+
+import Titulo from '../../../app/componentes/basic/Titulo';
+import {
+    Navegacion
+} from '../../../app/acciones/ActionsByView';
+import LocalesTable from '../../../app/componentes/tables/LocalesTable';
 
 const links = (key) =>
     [
@@ -38,8 +42,8 @@ export default function Locales (props) {
     const data = Object.values(props.data).map(
             e => ({
                 ...e,
-                acciones: <Actions  links={links(e.id)}
-                                    buttons={[]}/>
+                acciones: <Actions links={links(e.id)}
+                                buttons={[]}/>
             })
         );
     return (

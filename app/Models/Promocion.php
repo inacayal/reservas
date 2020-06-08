@@ -80,7 +80,6 @@ class Promocion extends Eloquent
         ];
     }
 
-
     public static function promocionesQueryCallback ($params) {
     	return function ($query) use ($params){
     		return $query->{$params->scope}($params);

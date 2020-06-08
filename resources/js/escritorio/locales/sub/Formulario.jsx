@@ -2,14 +2,27 @@ import React, {
     Component
 } from 'react';
 import ReactDOM from 'react-dom';
-import {Redirect} from 'react-router-dom';
-import { FormularioEstablecimiento } from '../../../form/FormularioEstablecimiento';
-import { FormularioUsuario } from '../../../form/FormularioUsuario';
-import { FormularioFranquicia } from '../../../form/FormularioFranquicia';
-import { FormularioUbicacion } from '../../../form/FormularioUbicacion';
-import Actions from '../../../componentes/basic/Actions';
-import Titulo from '../../../componentes/basic/Titulo';
-import { Navegacion } from '../../../acciones/ActionsByView';
+import {
+    Redirect
+} from 'react-router-dom';
+
+import {
+    FormularioEstablecimiento
+} from '../../../app/form/FormularioEstablecimiento';
+import {
+    FormularioUsuario
+} from '../../../app/form/FormularioUsuario';
+import {
+    FormularioFranquicia
+} from '../../../app/form/FormularioFranquicia';
+import {
+    FormularioUbicacion
+} from '../../../app/form/FormularioUbicacion';
+
+import Titulo from '../../../app/componentes/basic/Titulo';
+import {
+     Navegacion 
+ } from '../../../app/acciones/ActionsByView';
 
 
 export default function Formulario (props) {

@@ -15,9 +15,7 @@ class FeriadoController extends Controller
 
     protected $model = '\\App\\Models\\Feriado';
 
-    public function getRedirect($id){
-        return ['dir' => "/feriados/$id", 'route' => 'feriados'];
-    }
+    private $consult;
 
     protected static $dependencies = [
         'list' => [
@@ -44,7 +42,12 @@ class FeriadoController extends Controller
     ];
 
     public function __construct (){
+        $this->consult = "App\\Local";
         $this->middleware('length');
+    }
+
+    public function getRedirect($id){
+        return ['dir' => "/feriados/$id", 'route' => 'feriados'];
     }
     /**
      * get all eventos by user
@@ -57,53 +60,41 @@ class FeriadoController extends Controller
         $month,
         $year
     ){
-        $dependencies = self::getDependencies($route);
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array(
-                'feriados' => (object) [
-                    'month'=>$month,
-                    'operator'=>'=',
-                    'year'=>$year,
-                    'scope'=>'thisMonth'
-                ]
-            )
-        );
-
-        $user = User::with(
-            $relations
-        )->find($id);
-
-        $data = self::formatResults(
-            $user,
-            $dependencies
-        );
-        $extra = [
-            'intervalo' => $user->intervalo->id
-        ];
-
-        return response(array_merge($data,$extra),200)->header('Content-Type','application/json');
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(
+                    'feriados' => (object) [
+                        'month'=>$month,
+                        'operator'=>'=',
+                        'year'=>$year,
+                        'scope'=>'thisMonth'
+                    ]
+                ),
+                "model" => $this->consult,
+                "extra" => array(
+                    'intervalo' => "intervalo"
+                ),
+                "uid" => $id
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
 
     public function all(
         $id,
         $route
     ){
-        $dependencies = self::getDependencies($route);
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array()
-        );
-
-        $user = User::with(
-            $relations
-        )->find($id);
-
-        $data = self::formatResults(
-            $user,
-            $dependencies
-        );
-        return response($data,200)->header('Content-Type','application/json');
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(),
+                "model" => $this->consult,
+                "extra" => array(),
+                "uid" => $id
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
 
     /**
@@ -117,74 +108,49 @@ class FeriadoController extends Controller
         $month,
         $year
     ){
-        $dependencies = self::getDependencies($route);
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array(
-                'feriados' => (object) [
-                    'month'=>$month,
-                    'operator'=>'=',
-                    'year'=>$year,
-                    'scope'=>'thisMonth'
-                ]
-            )
-        );
-
-        $user = User::with(
-            $relations
-        )->find($id);
-
-        $data = self::formatResults(
-            $user,
-            $dependencies
-        );
-
-        $extra = [
-            'intervalo' => $user->intervalo->id
-        ];
-
-        return response(array_merge($data,$extra),200)->header('Content-Type','application/json');
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(
+                    'feriados' => (object) [
+                        'month'=>$month,
+                        'operator'=>'=',
+                        'year'=>$year,
+                        'scope'=>'thisMonth'
+                    ]
+                ),
+                "model" => $this->consult,
+                "extra" => array(
+                    'intervalo' => "intervalo"
+                ),
+                "uid" => $id
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
 
     public function single(
         $route,
-        $userId,
+        $uId,
         $id
     ){
-        $dependencies = self::getDependencies($route);
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array('feriados' => (object)['id'=>$id,'scope'=>'searchId'])
-        );
-
-        $user = User::with(
-            $relations
-        )->find($userId);
-
-        $data = self::formatResults(
-            $user,
-            $dependencies
-        );
-
-        $extra = [
-            'intervalo' => $user->intervalo->id
-        ];
-
-        return response(array_merge($data,$extra),200)->header('Content-Type','application/json');
-    }
-
-    public function formatDependencyData(
-        array $dataModels,
-        User $user
-    ) {
-        $res = [];
-        foreach($dataModels as $relation=>$model){
-            $opt = $this->model===$model ? 'mainFormatOptions' : 'dependencyFormatOptions';
-            if ($model && property_exists($model,$opt)){
-                $res[$relation] = $model::getFormattedData($user->{$relation},$opt);
-            }
-        }
-        return collect($res);
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(
+                    'feriados' => (object)[
+                        'id'=>$id,
+                        'scope'=>'searchId'
+                    ]
+                ),
+                "model" => $this->consult,
+                "extra" => array(
+                    'intervalo' => "intervalo"
+                ),
+                "uid" => $uId
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
 
     public function create (Request $request){

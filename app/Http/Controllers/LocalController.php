@@ -8,7 +8,7 @@ use App\Traits\hasDependencies;
 use Illuminate\Support\Collection;
 use App\Models\Query\Provincia;
 use App\Models\Query\Intervalo;
-use App\Http\Resources\UsuarioResource as Resource;
+use App\Http\Resources\LocalesResource as Resource;
 use App\Traits\ValidatesForm;
 use App\Local;
 use Illuminate\Support\Facades\Hash;
@@ -20,9 +20,7 @@ class LocalController extends Controller
 
     protected $model = '\\App\\Local';
 
-    public function getRedirect($id){
-        return ['dir' => '/configuracion', 'route' => 'configuracion'];
-    }
+    private $consult;
 
     protected static $dependencies = [
         'list' => [],
@@ -38,28 +36,28 @@ class LocalController extends Controller
     ];
 
     public function __construct () {
+        $this->consult = "App\\Franquicia";
         $this->middleware('length');
     }
+
+    public function getRedirect($id){
+        return ['dir' => '/configuracion', 'route' => 'configuracion'];
+    }
+
     public function single(
         $route,
         $id
     ){
-        $dependencies = self::getDependencies($route);
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array(
-                'usuarios' => (object)[
-                    'scope' => 'searchLocales'
-                ]
-            )
-        );
-        $user = User::with(
-            $relations
-        )->find($id);
-
-        return response([
-            'data'=>new Resource($user)
-        ],200)->header('Content-Type','application/json');
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(),
+                "model" => $this->consult,
+                "extra" => array(),
+                "uid" => $id
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
 
     public function create (Request $request){

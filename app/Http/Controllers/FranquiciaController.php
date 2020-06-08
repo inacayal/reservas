@@ -8,7 +8,7 @@ use App\Traits\hasDependencies;
 use Illuminate\Support\Collection;
 use App\Models\Query\Provincia;
 use App\Models\Query\Intervalo;
-use App\Http\Resources\UsuarioResource as Resource;
+use App\Http\Resources\FranquiciasResource as Resource;
 use App\Traits\ValidatesForm;
 use App\Franquicia;
 use Illuminate\Support\Facades\Hash;
@@ -24,10 +24,12 @@ class FranquiciaController extends Controller
         return ['dir' => '/configuracion', 'route' => 'configuracion'];
     }
 
+    private $consult;
+
     protected static $dependencies = [
         'list' => [],
         'add' => [
-            'usuarios' => 'list'
+            'franquicias' => 'list'
         ],
         'locales'=>[
             'locales' => 'key',
@@ -42,51 +44,39 @@ class FranquiciaController extends Controller
     ];
 
     public function __construct () {
+        $this->consult = "App\\Admin";
         $this->middleware('length');
     }
+
     public function single (
         $route,
         $id
     ){
-        $dependencies = self::getDependencies($route);
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array(
-                'usuarios' => (object)[
-                    'scope' => 'searchFranquicias'
-                ]
-            )
-        );
-
-        $user = User::with(
-            $relations
-        )->find($id);
-
-        return response([
-            'data'=>new Resource($user)
-        ],200)->header('Content-Type','application/json');
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(),
+                "model" => $this->consult,
+                "extra" => array(),
+                "uid" => $id
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
 
-    public function locales (
+    public function locales(
         $route,
         $id
     ){
-        $dependencies = self::getDependencies($route);
-        $relations = $this->getDependencyScopes(
-            array_keys($dependencies),
-            array()
-        );
-        $user = User::with(
-            $relations
-        )->find($id);
-
-        $data = self::formatResults(
-            $user,
-            $dependencies
-        );
-
-        return response($data,200)->header('Content-Type','application/json');
+        return response (
+            $this->getData( (object) [
+                "depends" => self::getDependencies($route),
+                "scope" => array(),
+                "model" => $this->consult,
+                "extra" => array(),
+                "uid" => $id
+            ]),
+            200
+        )->header('Content-Type','application/json');
     }
-
-
 }

@@ -1,63 +1,66 @@
 import React, {
     Component
 } from 'react';
+import ReactDOM from 'react-dom';
+import {
+    Link
+} from 'react-router-dom';
 import {
     DAYS,
     MONTHS
-} from '../../../constantes/DaysMonths';
-import ReactDOM from 'react-dom';
-import CustomLink from '../../../componentes/basic/CustomLink';
-import Titulo from '../../../componentes/basic/Titulo';
-import {Calendario} from '../../../form/Calendario';
-import {CommaList} from '../../../componentes/basic/CommaList';
-import EventosTable from '../../../componentes/tables/EventosTable';
+} from '../../../app/constantes/DaysMonths';
+import Titulo from '../../../app/componentes/basic/Titulo';
+import {
+    Calendario
+} from '../../../app/form/Calendario';
+import {
+    CommaList
+} from '../../../app/componentes/basic/CommaList';
+import EventosTable from '../../../app/componentes/tables/EventosTable';
 
 export default function VerFeriado (props) {
     props.nav.buttons[0].click = props.toggleModal;
-    const   data = props.data,
-            date= new Date(data.data.fecha),
-            estado = data.data.estado.replace('_',' '),
-            eventos = Object.values(data.data.eventos.data).map(
-                e => ({
-                    ...e,
-                    nombre:(
-                        <CustomLink params={{
-                                        to:`/eventos/${e.id}`,
-                                        params:{id:e.id},
-                                        route:'eventos'
-                                    }}>
-                            <span className="text">
-                                {e.nombre}
-                            </span>
-                        </CustomLink>
-                    ),
-                    promociones:(
-                        <CommaList  list={e.promociones.list}
-                                    route='promociones'/>
-                    )
-                })
-            );
+    const data = props.data,
+        date= new Date(data.data.fecha),
+        estado = data.data.estado.replace('_',' '),
+        eventos = Object.values(data.data.eventos.data).map(
+            e => ({
+                ...e,
+                nombre:(
+                    <Link to={`/eventos/${e.id}`}>
+                        <span className="text">
+                            {e.nombre}
+                        </span>
+                    </Link>
+                ),
+                promociones:(
+                    <CommaList  list={e.promociones.list}
+                                route='promociones'/>
+                )
+            })
+        );
 
     return (
         <>
             <Titulo title={data.data.nombre}
-                    links={props.nav.links}
-                    buttons ={props.nav.buttons}/>
-            <div className="container full-width v-padding">
-                <div className="row justify-content-end v-padding">
-                    <div className="col-md-6">
+                links={props.nav.links}
+                buttons ={props.nav.buttons}
+                changeView={props.changeView}/>
+            <div className="container-fluid v-padding">
+                <div className="row v-padding">
+                    <div className="col-md-6 no-padding">
                         <Calendario editar={true}
-                                    date={date}
-                                    data={data.data}/>
+                            date={date}
+                            data={data.data}/>
                     </div>
                     <div className="col-md-6 container">
-                        <div className="h-padding row bold justify-content-end sub-title full-width">
-                            {`feriado ${estado}`}
-                        </div>
-                        <div className="sub-title row v-padding">
+                        <div className="sub-title bold row v-padding">
                             {`${DAYS[date.getDay()]} ${date.getDate()} de ${MONTHS[date.getMonth()]} del ${date.getFullYear()}`}
                         </div>
-                        <div className="m-font row light-danger">
+                        <div className="row sub-title full-width">
+                            {`feriado ${estado}`}
+                        </div>
+                        <div className="m-font top-padding row light-danger">
                             Horario de atención:
                         </div>
                         <div className="row">
@@ -120,8 +123,8 @@ export default function VerFeriado (props) {
                         {
                             eventos.length>0
                             ?
-                                <EventosTable   data={eventos}
-                                                showPromociones ={true}/>
+                                <EventosTable data={eventos}
+                                    showPromociones ={true}/>
                             : "No hay eventos asociados"
                         }
                     </div>

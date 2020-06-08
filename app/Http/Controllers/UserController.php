@@ -8,7 +8,7 @@ use App\Traits\hasDependencies;
 use Illuminate\Support\Collection;
 use App\Models\Query\Provincia;
 use App\Models\Query\Intervalo;
-use App\Http\Resources\UsuarioResource as Resource;
+use App\Http\Resources\UsuariosResource as Resource;
 use App\Traits\ValidatesForm;
 use App\User;
 use Illuminate\Support\Facades\Hash;
