@@ -14,6 +14,32 @@ function pushMessage (m) {
 }
 
 const messageType = {
+    customError:function (location,callback){
+        return function (err) {
+            callback()
+            .then (
+                res => {
+                    if (location.match('esctritorio')) {
+                        this.pushMessage({
+                            data:(
+                                <div className="h-padding">
+                                    {error.error}
+                                </div>
+                            ),
+                            title:(
+                                <>
+                                    <i className="far fa-exclamation-triangle bold sub-title side-margin" />
+                                    <span className="side-margin">{`Error ${error.code}`}</span>
+                                </>
+                            ),
+                            type:'failure',
+                            show:true
+                        })
+                    }
+                }
+            )
+        }
+    },
     frontEndError: function (errors){
         this.pushMessage({
             data:(
@@ -61,12 +87,12 @@ const messageType = {
     validationError: function ({error,validation,form,target}) {
         let message = {};
         if (error.response.data.errors){
-            const   rewrittenErrors = rewriteErrors(error.response.data.errors),
-                    [hasErrors,err] = searchErrors(
-                        rewrittenErrors,
-                        validation,
-                        form
-                    );
+            const rewrittenErrors = rewriteErrors(error.response.data.errors),
+                [hasErrors,err] = searchErrors(
+                    rewrittenErrors,
+                    validation,
+                    form
+                );
             target.setState(
                 {errors:err,sent:false},
                 () =>
@@ -99,6 +125,19 @@ const messageType = {
             title:(
                 <>
                     <i className="fas fa-check-circle bold sub-title side-margin" />
+                    <span className="side-margin">{data.title}</span>
+                </>
+            ),
+            type:data.type,
+            show:true
+        });
+    },
+    failure: function (data){
+        this.pushMessage({
+            data:data.message,
+            title:(
+                <>
+                    <i className="fas fa-exclamation-triangle bold sub-title side-margin" />
                     <span className="side-margin">{data.title}</span>
                 </>
             ),
@@ -148,10 +187,12 @@ export default class MessageHandler extends Component {
     }
 
     componentDidUpdate(pp){
-        const currentMessage = (this.props.location.state||{}).message || {},
-            previousMessage = (pp.location.state||{}).message || {};
-        if (currentMessage.message !== previousMessage.message && currentMessage.message)
-            this.messageType.success(currentMessage)
+        const loc = this.props.location,
+            currMsg = (loc.state||{}).message||{},
+            prevMsg = (pp.location.state||{}).message||{};
+        if (currMsg.message!=prevMsg.message && currMsg.message){
+            this.messageType[currMsg.type](currMsg)
+        }
     }
 
     render(){
@@ -166,9 +207,9 @@ export default class MessageHandler extends Component {
                                 if (m.show)
                                     return (
                                         <div key={i}>
-                                            <Message    hide={this.hideMessage}
-                                                        index={i}
-                                                        message={m}/>
+                                            <Message hide={this.hideMessage}
+                                                index={i}
+                                                message={m}/>
                                         </div>
                                     )
                             }

@@ -16,7 +16,7 @@ export const UbicacionesActions = (
                     Editar
                 </div>
             ),
-            to: `/ubicaciones/editar/${key}`
+            to: `/escritorio/ubicaciones/editar/${key}`
         }
     ],
     buttons: [

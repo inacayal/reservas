@@ -14,7 +14,7 @@ export const Navegacion = {
                         Listado
                     </div>
                 ),
-                to:`/${root}`
+                to:`/escritorio/${root}`
             }
         ]
     }),
@@ -27,7 +27,7 @@ export const Navegacion = {
                         Agregar
                     </div>
                 ),
-                to: `/${root}/agregar`
+                to: `/escritorio/${root}/agregar`
             }
         ]
     }),
@@ -44,7 +44,7 @@ export const Navegacion = {
                         Listado
                     </div>
                 ),
-                to:`/${root}`
+                to:`/escritorio/${root}`
             }, {
                 title: (
                     <div className="smaller-text text bold">
@@ -52,7 +52,7 @@ export const Navegacion = {
                         Ver
                     </div>
                 ),
-                to:`/${root}/${key}`
+                to:`/escritorio/${root}/${key}`
             }
         ],
         buttons: [
@@ -81,7 +81,7 @@ export const Navegacion = {
                         Listado
                     </div>
                 ),
-                to:`/${root}`,
+                to:`/escritorio/${root}`,
                 params:{},
                 route:root
             }, {
@@ -91,7 +91,7 @@ export const Navegacion = {
                         Editar
                     </div>
                 ),
-                to:`/${root}/editar/${key}`
+                to:`/escritorio/${root}/editar/${key}`
             }
         ],
         buttons: [
@@ -109,10 +109,17 @@ export const Navegacion = {
 };
 
 export const FormActions = (
-    sendHandler,cancelHandler
+    sendHandler,
+    cancelHandler,
+    customSend,
+    customCancel
 ) => [
     {
-        title: (
+        title: customCancel
+        ?
+            customCancel.title
+        :
+        (
             <div className="smaller-text text bold">
                 <i className="fas fa-times-circle inline-box side-margin" />
                 Cancelar
@@ -121,7 +128,11 @@ export const FormActions = (
         click: cancelHandler
     },
     {
-        title: (
+        title: customSend
+        ?
+            customSend.title
+        :
+        (
             <div className="smaller-text text bold">
                 <i className="fas fa-check-circle inline-box side-margin" />
                 Guardar

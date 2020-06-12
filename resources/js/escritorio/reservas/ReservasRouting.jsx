@@ -29,9 +29,12 @@ const ReservasRouting = (props) => (
         <Route path={props.match.url}
             exact
             render={
-                (match) =>
-                    <Calendario data={props.data}
-                                nav={Navegacion.listado('reservas')} {...match}/>
+                (match) => {
+                    return (
+                        <Calendario data={props.data}
+                            nav={Navegacion.listado('reservas')} {...match}/>
+                    )
+                }
             } />
         <Switch>
             <Route path={`${props.match.url}/agregar`}

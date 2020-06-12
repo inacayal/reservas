@@ -69,7 +69,7 @@ export default function PromocionesRouting (props) {
                                 };
                                 changeView.side = fields.scope;
                             return (
-                                <ValidationHandler  form={fields}
+                                <ValidationHandler form={fields}
                                     sendRequest={promocionesHandlers.form.edit}
                                     validation={validation}>
                                     <Formulario data={props.data}

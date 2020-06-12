@@ -10,28 +10,28 @@ import {
 export const configuracionHandlers = {
     list: [
         {
-            endpoint:'/configuracion',
-            match:/\/configuracion$/,
+            endpoint:'/escritorio/configuracion',
+            match:/\/escritorio\/configuracion$/,
             callback:({params,user}) =>
-                configuracionHandler(`usuario/local/${user.id}`,'/configuracion')
+                configuracionHandler(`usuario/local/${user.id}`,'/escritorio/configuracion')
         },
         {
-            endpoint:'/configuracion/usuario',
-            match:/\/configuracion\/(usuario)$/,
+            endpoint:'/escritorio/configuracion/usuario',
+            match:/\/escritorio\/configuracion\/(usuario)$/,
             callback:({params,user}) =>
-                usuarioHandler(`usuario/local/${user.id}`,'/configuracion/usuario')
+                usuarioHandler(`usuario/local/${user.id}`,'/escritorio/configuracion/usuario')
         },
         {
-            endpoint:'/configuracion/establecimiento',
-            match:/\/configuracion\/(establecimiento)$/,
+            endpoint:'/escritorio/configuracion/establecimiento',
+            match:/\/escritorio\/configuracion\/(establecimiento)$/,
             callback:({params,user}) =>
-                establecimientoHandler(`usuario/local/${user.id}`,'/configuracion/establecimiento')
+                establecimientoHandler(`usuario/local/${user.id}`,'/escritorio/configuracion/establecimiento')
         },
         {
-            endpoint:'/configuracion/reservas',
-            match: /\/configuracion\/(reservas)$/,
+            endpoint:'/escritorio/configuracion/reservas',
+            match: /\/escritorio\/configuracion\/(reservas)$/,
             callback: ({params,user}) =>
-                reservaHandler(`usuario/local/${user.id}`,'/configuracion/reservas')
+                reservaHandler(`usuario/local/${user.id}`,'/escritorio/configuracion/reservas')
         }
     ],
     form: {

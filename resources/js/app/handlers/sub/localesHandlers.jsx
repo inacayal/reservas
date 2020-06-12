@@ -11,28 +11,28 @@ import {
 export const localesHandlers = {
     list:[
         {
-            endpoint:'/locales',
-            match:/\/locales$/,
+            endpoint:'/escritorio/locales',
+            match:/\/escritorio\/locales$/,
             callback:({params,user}) =>
-                listHandler(`/usuario/locales/${user.id}`,'/locales')
+                listHandler(`/usuario/locales/${user.id}`,'/escritorio/locales')
         },
         {
-            endpoint:'/locales/agregar',
-            match:/\/locales\/(agregar)$/,
+            endpoint:'/escritorio/locales/agregar',
+            match:/\/escritorio\/locales\/(agregar)$/,
             callback:({params,user}) =>
-                addFormHandler(`/usuario/add/${user.id}/1`,'/locales/agregar')
+                addFormHandler(`/usuario/add/${user.id}/1`,'/escritorio/locales/agregar')
         },
         {
-            endpoint:'/locales/editar/:id',
+            endpoint:'/escritorio/locales/editar/:id',
             match:/\/locales\/(editar\/\d+)$/,
             callback:({params,user}) =>
-                editFormHandler(`/usuario/local/${params.id}`,`/locales/editar/${params.id}`)
+                editFormHandler(`/usuario/local/${params.id}`,`/escritorio/locales/editar/${params.id}`)
         },
         {
-            endpoint:'/locales/:id',
-            match: /\/locales\/(\d+)$/,
+            endpoint:'/escritorio/locales/:id',
+            match: /\/escritorio\/locales\/(\d+)$/,
             callback: ({params,user}) =>
-                singleHandler(`/usuario/local/${params.id}`,`/locales/${params.id}`)
+                singleHandler(`/usuario/local/${params.id}`,`/escritorio/locales/${params.id}`)
         }
     ],
     form: {

@@ -42,10 +42,11 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver' => 'custom',
             'provider' => 'users',
             'hash' => true,
         ],
+
     ],
 
     /*

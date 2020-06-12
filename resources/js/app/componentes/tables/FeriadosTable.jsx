@@ -22,7 +22,7 @@ export default function FeriadosTable(props) {
                 filterMethod: (filter, row) => row[filter.id].match(new RegExp(`${filter.value}*`,'gi')),
                 Cell:(props) => {
                     return (
-                        <Link to={`/feriados/${props.original.id}`}>
+                        <Link to={`/escritorio/feriados/${props.original.id}`}>
                             <span className="m-font bold">{props.original.nombre}</span>
                         </Link>
                     )

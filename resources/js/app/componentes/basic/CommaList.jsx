@@ -7,7 +7,7 @@ function CommaListMemo(props) {
                 (e,i) =>
                     <li key={i}
                         className="bold highlight-title inline-block side-margin small-v-margin smaller-text button-border border-box">
-                        <Link to={`/${props.route}/${e}`}>
+                        <Link to={`/escritorio/${props.route}/${e}`}>
                             {props.list[e]}
                         </Link>
                     </li>

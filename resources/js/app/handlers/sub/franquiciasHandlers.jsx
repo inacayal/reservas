@@ -10,28 +10,28 @@ import {
 export const franquiciasHandlers = {
     list:[
         {
-            endpoint:'/franquicias',
+            endpoint:'/escritorio/franquicias',
             match:/\/franquicias$/,
             callback:({params,user}) =>
-                listHandler(`/usuario/franquicias/${user.id}`,`/franquicias`)
+                listHandler(`/usuario/franquicias/${user.id}`,`/escritorio/franquicias`)
         },
         {
-            endpoint:'/franquicias/agregar',
+            endpoint:'/escritorio/franquicias/agregar',
             match:/\/franquicias\/(agregar)$/,
             callback:({params,user}) =>
                 addFormHandler(``,`/franquicias/agregar`)
         },
         {
-            endpoint:'/franquicias/editar/:id',
-            match:/\/franquicias\/(editar\/\d+)$/,
+            endpoint:'/escritorio/franquicias/editar/:id',
+            match:/\/escritorio\/franquicias\/(editar\/\d+)$/,
             callback:({params,user}) =>
-                editFormHandler(`/usuario/franquicia/${params.id}`,`/franquicias/editar/${params.id}`)
+                editFormHandler(`/usuario/franquicia/${params.id}`,`/escritorio/franquicias/editar/${params.id}`)
         },
         {
-            endpoint:'/franquicias/:id',
+            endpoint:'/escritorio/franquicias/:id',
             match: /\/franquicias\/(\d+)$/,
             callback: ({params,user}) =>
-                singleHandler(`/usuario/franquicia/${params.id}`,`/franquicias/${params.id}`)
+                singleHandler(`/usuario/franquicia/${params.id}`,`/escritorio/franquicias/${params.id}`)
         }
     ],
     form: {

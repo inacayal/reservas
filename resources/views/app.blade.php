@@ -12,7 +12,7 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     </head>
-    <body>
+    <body style="overflow:hidden">
         <script type = "text/javascript">
             const sidebar = {!!
                 json_encode (
@@ -21,7 +21,7 @@
                             'data'=> "1",
                             'disabled'=> false,
                             'title'=> "Reservaciones",
-                            'route'=> 'reservas',
+                            'route'=> 'escritorio/reservas',
                             'permission' => [1,2,3],
                             'sub'=> []
                         ],
@@ -29,13 +29,13 @@
                             'data'=> "2",
                             'title'=> "Horarios",
                             'disabled'=> false,
-                            'route'=> 'horarios',
+                            'route'=> 'escritorio/horarios',
                             'permission' => [1,2,3],
                             'sub'=> []
                         ],
                         [
                             'title'=> 'Feriados',
-                            'route'=> 'feriados',
+                            'route'=> 'escritorio/feriados',
                             'data'=> "3",
                             'disabled'=> false,
                             'permission' => [1,2,3],
@@ -45,7 +45,7 @@
                             'data'=> "3",
                             'disabled'=> false,
                             'title'=> "Ubicaciones",
-                            'route'=> 'ubicaciones',
+                            'route'=> 'escritorio/ubicaciones',
                             'permission' => [1,2,3],
                             'sub'=> []
                         ],
@@ -53,7 +53,7 @@
                             'data'=> "4",
                             'disabled'=> false,
                             'title'=> "Eventos",
-                            'route'=> 'eventos',
+                            'route'=> 'escritorio/eventos',
                             'permission' => [1,2,3],
                             'sub'=> []
                         ],
@@ -61,7 +61,7 @@
                             'data'=> "5",
                             'disabled'=> false,
                             'title'=> "Promociones",
-                            'route'=> 'promociones',
+                            'route'=> 'escritorio/promociones',
                             'permission' => [1,2,3],
                             'sub'=> []
                         ],
@@ -69,7 +69,7 @@
                             'data'=> "6",
                             'disabled'=> false,
                             'title'=> "Locales",
-                            'route'=> 'locales',
+                            'route'=> 'escritorio/locales',
                             'permission' => [1,2],
                             'sub'=> []
                         ],
@@ -77,7 +77,7 @@
                             'data'=> "7",
                             'disabled'=> false,
                             'title'=> "Configuración",
-                            'route'=> 'configuracion',
+                            'route'=> 'escritorio/configuracion',
                             'permission' => [1,2,3],
                             'sub'=> [
                                 [
@@ -118,7 +118,7 @@
                 )
             !!};
         </script>
-        <div id="app-container" class="relative full-width full-height">
+        <div id="app-container" >
         </div>
     </body>
     <script src="{{asset('js/app.js')}}"></script>

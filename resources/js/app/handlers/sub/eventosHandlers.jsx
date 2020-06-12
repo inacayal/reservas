@@ -13,26 +13,26 @@ import {assignHorarios} from '../../utils/Helper';
 export const eventosHandlers = {
     list: [
         {
-            endpoint:'/eventos',
-            match:/\/eventos$/,
+            endpoint:'/escritorio/eventos',
+            match:/\/escritorio\/eventos$/,
             callback:({params,user}) =>
                 listHandler(`/eventos/list/${user.id}`)
         },
         {
-            endpoint:'/eventos/agregar',
-            match:/\/eventos\/(agregar)$/,
+            endpoint:'/escritorio/eventos/agregar',
+            match:/\/escritorio\/eventos\/(agregar)$/,
             callback:({params,user}) =>
                 addFormHandler(`/eventos/add/${user.id}`)
         },
         {
-            endpoint:'/eventos/editar/:id',
-            match:/\/eventos\/(editar\/\d+)$/,
+            endpoint:'/escritorio/eventos/editar/:id',
+            match:/\/escritorio\/eventos\/(editar\/\d+)$/,
             callback:({params,user}) =>
                 editFormHandler(`eventos/single/${user.id}/${params.id}`)
         },
         {
-            endpoint:'/eventos/:id',
-            match: /\/eventos\/(\d+)$/,
+            endpoint:'/escritorio/eventos/:id',
+            match: /\/escritorio\/eventos\/(\d+)$/,
             callback: ({params,user}) =>
                 singleHandler(`/eventos/single/${user.id}/${params.id}`)
         }
@@ -49,28 +49,28 @@ const editFormHandler = (endpoint) => {
             endpoint: endpoint,
             download: this.downloadHandler
         });
-        return  request
-                .then(
-                    response => {
-                        let data =  {
-                            selected: response.data.eventos[0],
-                            all: {
-                                feriados: response.data.feriados,
-                                horarios: response.data.horarios,
-                                promociones: response.data.promociones
-                            }
-                        };
-                        data.selected.horarios.list = assignHorarios(data.selected.horarios.list)[0];
-                        data.all.horarios.list = assignHorarios(data.all.horarios.list)[0];
-                        this.setState({
-                            data: {...data},
-                            nombre:data.selected.nombre,
-                            loadFinished:true,
-                            location:this.props.location
-                        });
-                        return true;
-                    }
-                );
+        return request
+            .then(
+                response => {
+                    let data =  {
+                        selected: response.data.eventos[0],
+                        all: {
+                            feriados: response.data.feriados,
+                            horarios: response.data.horarios,
+                            promociones: response.data.promociones
+                        }
+                    };
+                    data.selected.horarios.list = assignHorarios(data.selected.horarios.list)[0];
+                    data.all.horarios.list = assignHorarios(data.all.horarios.list)[0];
+                    this.setState({
+                        data: {...data},
+                        nombre:data.selected.nombre,
+                        loadFinished:true,
+                        location:this.props.location
+                    });
+                    return true;
+                }
+            );
     }
 }
 
@@ -81,20 +81,20 @@ const addFormHandler = (endpoint) => {
             download: this.downloadHandler
         });
 
-        return  request
-                .then(
-                    response => {
-                        let data = response.data;
-                        data.horarios.list = assignHorarios(data.horarios.list)[0];
-                        this.setState({
-                            data: {...data},
-                            nombre:null,
-                            loadFinished:true,
-                            location:this.props.location
-                        });
-                        return true;
-                    }
-                )
+        return request
+            .then(
+                response => {
+                    let data = response.data;
+                    data.horarios.list = assignHorarios(data.horarios.list)[0];
+                    this.setState({
+                        data: {...data},
+                        nombre:null,
+                        loadFinished:true,
+                        location:this.props.location
+                    });
+                    return true;
+                }
+            )
     }
 }
 
@@ -105,18 +105,18 @@ const listHandler = (endpoint) => {
             download: this.downloadHandler
         });
 
-        return  request
-                .then(
-                    response => {
-                        this.setState({
-                            data: response.data.eventos.data,
-                            loadFinished:true,
-                            nombre:null,
-                            location:this.props.location
-                        });
-                        return true;
-                    }
-                )
+        return request
+            .then(
+                response => {
+                    this.setState({
+                        data: response.data.eventos.data,
+                        loadFinished:true,
+                        nombre:null,
+                        location:this.props.location
+                    });
+                    return true;
+                }
+            )
     }
 }
 
@@ -127,19 +127,19 @@ const singleHandler = (endpoint) => {
             download: this.downloadHandler
         });
 
-        return  request
-                .then(
-                    response => {
-                        const data = response.data.eventos[0];
-                        this.setState({
-                            data:data,
-                            nombre:data.nombre,
-                            loadFinished:true,
-                            location:this.props.location
-                        });
-                        return true;
-                    }
-                )
+        return request
+            .then(
+                response => {
+                    const data = response.data.eventos[0];
+                    this.setState({
+                        data:data,
+                        nombre:data.nombre,
+                        loadFinished:true,
+                        location:this.props.location
+                    });
+                    return true;
+                }
+            )
     }
 }
 

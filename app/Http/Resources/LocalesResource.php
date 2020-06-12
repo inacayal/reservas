@@ -25,7 +25,12 @@ class LocalesResource extends JsonResource
         // ],
         // 'locales.franquicias'=>[],
         'base' => [],
-        'api.login' => [
+        'auth.login' => [
+            'administrador'=>false,
+            'franquicia'=>false,
+            'usuario'=>false
+        ],
+        'auth.retrieve' => [
             'administrador'=>false,
             'franquicia'=>false,
             'usuario'=>false

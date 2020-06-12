@@ -22,7 +22,7 @@ export default function EventosTable(props){
                 minWidth:120,
                 filterMethod: (filter, row) => row[filter.id].match(new RegExp(`${filter.value}*`,'gi')),
                 Cell: (props) =>
-                    <Link to={`/eventos/${props.original.id}`}>
+                    <Link to={`/escritorio/eventos/${props.original.id}`}>
                         <span className="m-font bold">{props.original.nombre}</span>
                     </Link>
             },

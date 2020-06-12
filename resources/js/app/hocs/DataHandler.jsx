@@ -1,6 +1,3 @@
-/**
- * react basic
- */
 import React, {
     Component
 } from 'react';
@@ -18,6 +15,9 @@ import ReactDOM from 'react-dom';
 import BreadCrumb from '../componentes/control/BreadCrumb';
 import Lateral from '../componentes/control/Lateral';
 import {DisplaysMessages} from './MessageHandler';
+import Loader from 'react-loader-spinner';
+import BarraNavegacion from '../componentes/control/BarraNavegacion';
+import WaitEvent from './WaitEvent';
 
 function searchHandler (path) {
     return handlerArray.filter(
@@ -36,7 +36,7 @@ function awaitLoading ({
             fetchData: handler.callback({
                 params:route.params,
                 user
-            }).bind(this),
+            }).bind(this)
         },() => this.fetchHandler(
             this.props.location.state||{}
         )
@@ -48,20 +48,23 @@ function assignRoute (location){
     const handler = searchHandler(location);
     return {
         handler,
-        route:matchPath(location,{path:handler.endpoint})
+        route:matchPath(
+            location,
+            { path:handler.endpoint }
+        )
     };
 };
 
+
 export const WaitsLoading = React.createContext({});
 
-export default class DataHandler extends Component {
+class DataHandler extends Component {
     constructor(props){
         super(props);
         this.state = {
             data:null,
-            loading:0,
+            loading:0
         };
-        this.user = this.props.user;
         this.downloadHandler = downloadHandler.bind(this);
         this.awaitLoading = awaitLoading.bind(this);
         this.fetchHandler = this.fetchHandler.bind(this);
@@ -72,12 +75,20 @@ export default class DataHandler extends Component {
 
     routeChange (location) {
         const config = assignRoute(location.pathname);
-        this.awaitLoading({...config,user:this.user})
+        this.awaitLoading({
+            ...config,
+            user:this.props.user
+        })
     }
 
     fetchHandler(params){
         return this.state.fetchData(params)
-            .catch(this.context.backEndError)
+            .catch(
+                err => {
+                    if (err.response.status === 401)
+                        this.props.logout({err})
+                }
+            )
     }
 
     shouldComponentUpdate(np,ns){
@@ -92,74 +103,85 @@ export default class DataHandler extends Component {
     }
 
     componentDidMount() {
-        this.routeChange(this.props.location)
+        this.routeChange(this.props.location);
     }
 
     componentWillUnmount() {
     }
 
     render() {
-        const location = this.state.location
-                ? `escritorio${this.state.location.pathname}`
-                : `escritorio`,
-            path = (this.state.location||this.props.location).pathname;
+        const props = this.props,
+            user = this.props.user,
+            loc = this.state.location||{},
+            path = loc.pathname||props.location.pathname;
 
         return (
             <WaitsLoading.Provider value={this.fetchHandler}>
-                <LoadBar loaded={this.state.loading}/>
-                <div className="col-md-12 d-none d-md-block"
-                     style={{
-                         zIndex:5,
-                         height:"6vh",
-                         marginTop:"6px",
-                         backgroundColor:'rgba(255,255,255,0.95)'
-                     }} >
-                    <div className="row small-v-padding margin-left">
-                        <BreadCrumb url={location}
-                            nombre={this.state.nombre}/>
+                <div className="dark-background"
+                    style={{height:"40vh"}}>
+                    <div className="row relative justify-content-end"
+                        style={{marginRight:"0.5%"}}>
+                        <BarraNavegacion user={props.user}
+                            logout={props.logout}/>
                     </div>
                 </div>
-                <div className="sticky-top col-md-2 no-padding d-none d-md-block"
+                <div className="container-fluid white-background"
                     style={{
-                        zIndex:4,
-                        height:"100%"
-                    }} >
-                    <Lateral current={path}
-                        items={sidebar}/>
-                    <div className="text-center v-padding align-center">Designed by santiago</div>
-                </div>
-                <div className="col-md-10">
-                    {
-                        (this.state.data)
-                        ?
-                            <div style={{padding:"10px 16px"}}
-                                className="main-container">
-                                <div className="visible relative">
-                                    <div className={
-                                        this.state.loadFinished
-                                            ? "hidden"
-                                            : "top-padding full-width overlay"
-                                        }/>
-                                        {
-                                            (this.state.location.pathname === this.props.location.pathname)
-                                                ? React.cloneElement(
-                                                    this.props.children,
+                        width:"99%",
+                        borderRadius:"10px",
+                        marginTop:"-32vh",
+                        overflow:"auto",
+                        height:"100vh"
+                    }}>
+                    <LoadBar loaded={this.state.loading}/>
+                    <BreadCrumb url={`usuario${loc.pathname}`}
+                        usuario={user.nombre}
+                        nombre={this.state.nombre}/>
+                    <div className="row">
+                        <Lateral current={path}
+                            user={user}
+                            items={sidebar}/>
+                        <div className="col-md-10">
+                            {
+                                (this.state.data)
+                                ?
+                                    <div style={{padding:"10px 16px"}}
+                                        className="main-container">
+                                        <div className="visible relative">
+                                            <div className={
+                                                this.state.loadFinished
+                                                    ? "hidden"
+                                                    : "top-padding full-width overlay"
+                                                }/>
+                                                <WaitEvent cond={loc.pathname !== props.location.pathname}>
                                                     {
-                                                        data:this.state.data,
-                                                        match:this.props.global,
-                                                        location:this.state.location,
-                                                        message:this.state.message
+                                                        React.cloneElement(
+                                                            this.props.children,
+                                                            {
+                                                                data:this.state.data,
+                                                                match:props.global,
+                                                                location:loc,
+                                                                message:this.state.message
+                                                            }
+                                                        )
                                                     }
-                                                )
-                                                : <></>
-                                        }
-                                </div>
-                            </div>
-                        :
-                            <></>
-                    }
+                                                </WaitEvent>
+                                        </div>
+                                    </div>
+                                :
+                                    <></>
+                            }
+                        </div>
+                    </div>
                 </div>
             </WaitsLoading.Provider>
         );
     }
 }
+
+/*
+
+
+*/
+
+export default withRouter(DataHandler);

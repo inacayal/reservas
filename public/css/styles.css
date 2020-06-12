@@ -113,11 +113,11 @@ div,ul,body,html {
     color:var(--danger);
 }
 
-body::-webkit-scrollbar {
+div::-webkit-scrollbar {
     width: 5px;
 }
 /* Track */
-body::-webkit-scrollbar-track {
+div::-webkit-scrollbar-track {
     background: #fff;
 }
 .round-border{
@@ -127,12 +127,12 @@ body::-webkit-scrollbar-track {
     height:100vh;
 }
 /* Handle */
-body::-webkit-scrollbar-thumb {
+div::-webkit-scrollbar-thumb {
     background: #888;
 }
 
 /* Handle on hover */
-body::-webkit-scrollbar-thumb:hover {
+div::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
 .white-background{

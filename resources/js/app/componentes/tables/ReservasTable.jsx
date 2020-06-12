@@ -20,7 +20,7 @@ export default function UbicacionesTable(props){
                 Cell: (props) => {
                     const data = props.original;
                     return (
-                        <Link to={`/reservas/${data.id}`}>
+                        <Link to={`/escritorio/reservas/${data.id}`}>
                             <span className="m-font bold">{`${data.nombre} ${data.apellido}`}</span>
                         </Link>
                     )

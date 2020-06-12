@@ -11,26 +11,26 @@ import {generateHoursFromInterval} from '../../utils/Helper';
 export const feriadosHandlers = {
     list:[
         {
-            endpoint:`/feriados`,
-            match:/(\/feriados)$/,
+            endpoint:`/escritorio/feriados`,
+            match:/(\/escritorio\/feriados)$/,
             callback:({params,user}) =>
                 listHandler(`/feriados/list/${user.id}`)
         },
         {
-            endpoint:`/feriados/agregar`,
-            match:/(\/feriados\/agregar)$/,
+            endpoint:`/escritorio/feriados/agregar`,
+            match:/(\/escritorio\/feriados\/agregar)$/,
             callback:({params,user}) =>
                 addFormHandler(`/feriados/add/${user.id}/`)
         },
         {
-            endpoint:`/feriados/editar/:id`,
-            match:/\/(feriados\/editar\/\d+)$/,
+            endpoint:`/escritorio/feriados/editar/:id`,
+            match:/\/escritorio\/(feriados\/editar\/\d+)$/,
             callback:({params,user}) =>
                 editFormHandler(`/feriados/single/${user.id}/${params.id}`)
         },
         {
-            endpoint:`/feriados/:id`,
-            match: /\/feriados\/(\d+)$/,
+            endpoint:`/escritorio/feriados/:id`,
+            match: /\/escritorio\/feriados\/(\d+)$/,
             callback: ({params,user}) =>
                 singleHandler(`/feriados/single/${user.id}/${params.id}`)
         }

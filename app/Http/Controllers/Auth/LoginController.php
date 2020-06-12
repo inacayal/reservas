@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cookie;
 
 class LoginController extends Controller {
     /*
@@ -30,13 +31,15 @@ class LoginController extends Controller {
      */
     protected $redirectTo = '/escritorio';
 
+    protected $guard;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
     public function __construct() {
-        //$this->middleware('guest')->except('logout');
+        //$this->user = Auth::guard('api')->user();
     }
 
     private $userResource = [
@@ -48,17 +51,77 @@ class LoginController extends Controller {
     public function login( Request $request ){
         $credentials = $request->only('email', 'password');
         if ( Auth::attempt( $credentials ) ) {
-            $role = auth()->user()->rol->descripcion;
-            $token = auth()->user()->api_token;
-            cookie()->queue('Authorization', "Bearer $token", 2);
-            cookie()->forget('Authorization');
+            $user = auth()->user();
+            $role = $user->rol->descripcion;
+            $token = $user->api_token;
+            $type = $user->{$role};
+            cookie()->queue('Authorization', "Bearer $token", 10);
             return response([
-                "user"=> new $this->userResource[$role](auth()->user()->{$role})
+                'type'=>'success',
+                'title'=> "¡Sesión iniciada!",
+                'redirect'=>"/escritorio",
+                'route' => "escritorio",
+                'errors'=> [],
+                'message' => "Bienvenido, $type->nombre",
+                "user"=> new $this->userResource[$role]($type),
+                'status' => 200
             ],200);
         }
 
         return response([
-            "error" => "datos de acceso invalidos"
-        ],200);
+            'type'=>'failure',
+            'title'=> "Datos de acceso inválidos",
+            'status' => 422,
+            'errors'=> [
+                "email"=>["Correo o contraseña invalidos"],
+            ],
+            'message' => ""
+        ],422);
+    }
+
+    public function retrieve( Request $request ){
+        if ( $request->hasCookie('Authorization') ){
+            $user = Auth::guard('api')->user();
+            $role = $user->rol->descripcion;
+            return response([
+                "user"=> new $this->userResource[$role]( $user->{$role} )
+            ],200);
+        }
+        return response([
+            'type'=>'error',
+            'title'=> "Error",
+            'redirect'=>"/login",
+            'route' => "login",
+            'errors'=> [],
+            'message' =>  "No autenticado",
+            'status' => 401
+        ],401);
+    }
+
+    public function logout( Request $request ){
+        if ($request->hasCookie('Authorization')){
+            $user = Auth::guard('api')->user();
+            $role = $user->rol->descripcion;
+            $message =[
+                'type'=>'success',
+                'title'=> "¡Sesión finalizada!",
+                'redirect'=>"/login",
+                'route' => "login",
+                'errors'=> [],
+                'message' =>"Hasta luego, ".$user->{$role}->nombre,
+                'status' => 200
+            ];
+            Cookie::queue(Cookie::forget('Authorization'));
+            return response($message,200);
+        }
+        return response([
+            'type'=>'error',
+            'title'=> "Error",
+            'redirect'=>"/login",
+            'route' => "login",
+            'errors'=> [],
+            'message' =>  "No autenticado",
+            'status' => 401
+        ],401);
     }
 }

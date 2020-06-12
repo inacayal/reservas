@@ -19,7 +19,7 @@ export default function PromocionesTable(props){
                 fixed: "left",
                 filterMethod: (filter, row) => row[filter.id].match(new RegExp(`${filter.value}*`,'gi')),
                 Cell: (props) =>
-                    <Link to={`/promociones/${props.original.id}`}>
+                    <Link to={`/escritorio/promociones/${props.original.id}`}>
                         <span className="m-font bold">{props.original.nombre}</span>
                     </Link>
             },

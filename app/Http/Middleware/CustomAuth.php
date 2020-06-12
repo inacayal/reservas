@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Middleware;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
 use Closure;
 
@@ -15,10 +17,16 @@ class CustomAuth
      */
     public function handle($request, Closure $next)
     {
-        if ($request->hasCookie('Authorization')) {
-            //$request->headers->set('Authorization', $request->cookie('Authorization'));
-            return $next($request);
-        }
-        return response(["error"=>"No autenticado"],401);
+        if ( Auth::guard('api')->user() )
+            return $next( $request );
+        return response([
+            'type'=>'failure',
+            'title'=> "Error",
+            'redirect'=>"/login",
+            'route' => "login",
+            'errors'=> [],
+            'message' =>  "Usuario no autenticado, o sesión vencida.",
+            'status' => 401
+        ],401);
     }
 }

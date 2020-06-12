@@ -11,19 +11,19 @@ import {processData} from '../../utils/Helper';
 export const reservasHandlers = {
     list: [
         {
-            endpoint:'/reservas',
+            endpoint:'/escritorio/reservas',
             match:/\/reservas$/,
             callback:({params,user}) =>
                 listHandler(`reservas/list/${user.id}`)
         },
         {
-            endpoint:'/reservas/agregar',
+            endpoint:'/escritorio/reservas/agregar',
             match:/\/reservas\/(agregar)$/,
             callback:({params,user}) =>
                 formHandler(`reservas/add/${user.id}/`)
         },
         {
-            endpoint:'/reservas/:id',
+            endpoint:'/escritorio/reservas/:id',
             match: /\/reservas\/(\d+)$/,
             callback: ({params,user}) =>
                 singleHandler(`/reservas/single/${user.id}/${params.id}`)
@@ -37,6 +37,7 @@ export const reservasHandlers = {
 };
 
 const listHandler = (endpoint) => {
+
     return function (params) {
         const date = (params||{}).date||new Date(),
             loc = (this.props.location||{}).state||{},
@@ -44,42 +45,42 @@ const listHandler = (endpoint) => {
                 endpoint: `${endpoint}/all`,
                 download: this.downloadHandler
             });
-            return  new Promise(
-                        (resolve,reject) => {
+            return new Promise(
+                    (resolve,reject) => {
+                        this.setState({
+                                loadFinished:false,
+                                loading:0
+                            },
+                            () => resolve()
+                        )
+                    }
+                )
+                .then (
+                    request
+                    .then(
+                        response => {
                             this.setState({
-                                    loadFinished:false,
-                                    loading:0
+                                    data:{
+                                        data:processData(response.data.reservas.data),
+                                        type:'tabla'
+                                    },
+                                    location:this.props.location,
+                                    loadFinished:true,
                                 },
-                                () => resolve()
-                            )
+                                () => {
+                                    this.props.history.replace({
+                                        state:{
+                                            ...loc,
+                                            first:true,
+                                            date,
+                                            type:'tabla'
+                                        }
+                                    });
+                                }
+                            );
                         }
                     )
-                    .then (
-                        request
-                        .then(
-                            response => {
-                                this.setState({
-                                        data:{
-                                            data:processData(response.data.reservas.data),
-                                            type:'tabla'
-                                        },
-                                        location:this.props.location,
-                                        loadFinished:true,
-                                    },
-                                    () => {
-                                        this.props.history.replace({
-                                            state:{
-                                                ...loc,
-                                                first:true,
-                                                date,
-                                                type:'tabla'
-                                            }
-                                        });
-                                    }
-                                );
-                            }
-                        )
-                    )
+                )
         }
 }
 

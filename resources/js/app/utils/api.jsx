@@ -11,7 +11,7 @@ export const GET = (
         timeout: 2000,
         baseURL: 'http://localhost/api/',
         withCredentials:true,
-        onDownloadProgress:options.download
+        onDownloadProgress:options.download,
     })
 
 export const POST = (
@@ -24,7 +24,7 @@ export const POST = (
         onDownloadProgress:options.download,
         onUploadProgress:options.upload,
         baseURL: 'http://localhost/api/',
-        //withCredentials:true,
+        withCredentials:true,
         headers:{
             'Content-type':'application/json',
             'Accept':'application/json'

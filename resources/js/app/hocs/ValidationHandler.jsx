@@ -15,9 +15,15 @@ class ValidationHandler extends Component{
         this.enviarFormulario = this.enviarFormulario.bind(this);
         this.cancelarFormulario = this.cancelarFormulario.bind(this);
         this.changeFormField = this.changeFormField.bind(this);
-        this.actions = FormActions(this.enviarFormulario,this.cancelarFormulario);
         this.requestHandler = this.props.sendRequest.bind(this);
         this.requestSent = this.requestSent.bind(this);
+
+        this.actions = FormActions(
+            this.enviarFormulario,
+            this.cancelarFormulario,
+            this.props.sendTitle,
+            this.props.cancelTitle
+        );
 
         this.state = {
             form:this.props.form,
@@ -59,13 +65,14 @@ class ValidationHandler extends Component{
                         }
                     )
                     .catch(
-                        (err) =>
+                        (err) => {
                             this.context.validationError({
                                 error:err,
                                 validation:this.state.validation,
                                 form:this.state.form,
                                 target:this
                             })
+                        }
                     )
         );
     }
@@ -106,31 +113,32 @@ class ValidationHandler extends Component{
     }
 
     render(){
-        const Form = React.cloneElement(
-            this.props.children,
-            {
-                fields:this.state.form,
-                change:this.changeFormField,
-                errors:this.state.errors
-            }
-        );
         return (
             <>
                 <div className="visible relative">
-                    <div    className={this.state.sent
-                                ? "top-padding full-width overlay"
-                                : "hidden"}
-                            style={{marginLeft:"-15px"}}/>
+                    <div className={this.state.sent
+                            ? "top-padding full-width overlay"
+                            : "hidden"}
+                        style={{marginLeft:"-15px"}}/>
                     <form className="full-width">
-                        {Form}
-                        <div className="row justify-content-end h-padding">
                         {
-                            this.props.hideButtons
-                            ?
-                                <></>
-                            :
-                                <Actions buttons={Object.values(this.actions)}/>
+                            React.cloneElement(
+                                this.props.children,
+                                {
+                                    fields:this.state.form,
+                                    change:this.changeFormField,
+                                    errors:this.state.errors
+                                }
+                            )
                         }
+                        <div className="row justify-content-end h-padding">
+                            <Actions buttons={
+                                this.props.hideCancel
+                                ?
+                                    [this.actions[1]]
+                                :
+                                    this.actions
+                            }/>
                         </div>
                     </form>
                 </div>

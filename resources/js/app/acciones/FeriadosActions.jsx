@@ -23,7 +23,7 @@ export const FeriadosActions = {
                             Editar
                         </div>
                     ),
-                    to: `/feriados/editar/${key}`,
+                    to: `/escritorio/feriados/editar/${key}`,
                     params:{id:key},
                     route:'feriados'
                 }
@@ -54,7 +54,7 @@ export const FeriadosActions = {
                             <i className="fas fa-eye side-margin" />
                         </div>
                     ),
-                    to: `/feriados/${key}`,
+                    to: `/escritorio/feriados/${key}`,
                     params:{id:key},
                     route:'feriados'
                 },{
@@ -63,7 +63,7 @@ export const FeriadosActions = {
                             <i className="fas fa-pen inline-box side-margin" />
                         </div>
                     ),
-                    to: `/feriados/editar/${key}`,
+                    to: `/escritorio/feriados/editar/${key}`,
                     params:{id:key},
                     route:'feriados'
                 }

@@ -5,8 +5,8 @@ import React, {
 import ReactDOM from 'react-dom';
 
 export default function DisplaysErrors (props) {
-    const   hasError = (props.errors||[]).length>0,
-            OriginalComponent = React.cloneElement(props.children,{hasError:hasError});
+    const hasError = (props.errors||[]).length>0,
+        OriginalComponent = React.cloneElement(props.children,{hasError:hasError});
     return(
         <>
             {OriginalComponent}
@@ -16,7 +16,7 @@ export default function DisplaysErrors (props) {
                     <ul className="nav-list no-padding">
                         {
                             props.errors.map(
-                                (e,i) => 
+                                (e,i) =>
                                     <li key={i}
                                         className="smaller-text error">
                                         {

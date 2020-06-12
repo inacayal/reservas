@@ -30,66 +30,74 @@ export default class Lateral extends Component {
             hoverToggle = this.hoverToggle,
             props = this.props;
         return (
-            <ul className="nav-list sidebar-box no-padding margin-left" style={{marginTop:"10px"}}>
-            {
-                props.items.map(
-                    (e, i) => {
-                        const   isRoute = props.current.match(`/${e.route}`)||[].length>0,
-                                extraClass = i=== 0
-                                    ? "o-hidden round-b-top"
-                                    : i=== props.items.length-1
-                                        ? "o-hidden round-b-bottom"
-                                        : "";
-                        return(
-                            <ConditionalRender permission={e.permission} rol={3} key={i}>
-                                <li className={`full-width relative ${extraClass}`}
-                                    onMouseOver ={()=>hoverToggle(i)}
-                                    onMouseLeave ={()=>hoverToggle()}>
-                                    <button title={e.title}
-                                            data={i}
-                                            className={
-                                                isRoute
-                                                    ? "selected bold full-width text-left bold no-border no-padding"
-                                                    : "box-transparent full-width text-left box-padding highlight-hover bold-hover"}>
-                                        <Link to={`/${e.route}`}>
-                                            <div className={
-                                                isRoute
-                                                    ? "fat-border box-padding"
-                                                    : ""
-                                                }>
-                                                <span className="half inline-block m-font">
-                                                    {e.title}
-                                                </span>
-                                                <span className="inline-block text-right half">
-                                                    <i className={
-                                                        isRoute||hover === i
-                                                            ? "line-v-middle middle-font highlight fas fa-angle-right"
-                                                            : e.sub.length>0
-                                                                ? "line-v-middle middle-font border-font fas fa-angle-right"
-                                                                : "hidden"
-                                                    }/>
-                                                </span>
-                                            </div>
-                                        </Link>
-                                        {
-                                            (e.sub.length>0)
-                                            ?
-                                                <SubElements    isCurrent={isRoute}
-                                                                isHover={hover===i}
-                                                                index ={i}
-                                                                sub={e.sub}
-                                                                {...props}/>
-                                            :
-                                                <div></div>
-                                        }
-                                    </button>
-                                </li>
-                            </ConditionalRender>
-                        )
-                    }
-                )
-            }
-            </ul>
+            <div className="sticky-top col-md-2 no-padding d-none d-md-block"
+                style={{
+                    zIndex:4,
+                    height:"100%"
+                }} >
+                <ul className="nav-list sidebar-box no-padding margin-left" style={{marginTop:"15px"}}>
+                {
+                    props.items.map(
+                        (e, i) => {
+                            const   isRoute = props.current.match(`/${e.route}`)||[].length>0,
+                                    extraClass = i=== 0
+                                        ? "o-hidden round-b-top"
+                                        : i=== props.items.length-1
+                                            ? "o-hidden round-b-bottom"
+                                            : "";
+                            return(
+                                <ConditionalRender permission={e.permission} rol={3} key={i}>
+                                    <li className={`full-width relative ${extraClass}`}
+                                        onMouseOver ={()=>hoverToggle(i)}
+                                        onMouseLeave ={()=>hoverToggle()}>
+                                        <button title={e.title}
+                                                data={i}
+                                                className={
+                                                    isRoute
+                                                        ? "selected bold full-width text-left bold no-border no-padding"
+                                                        : "box-transparent full-width text-left box-padding highlight-hover bold-hover"}>
+                                            <Link to={`/${e.route}`}>
+                                                <div className={
+                                                    isRoute
+                                                        ? "fat-border box-padding"
+                                                        : ""
+                                                    }>
+                                                    <span className="half inline-block m-font">
+                                                        {e.title}
+                                                    </span>
+                                                    <span className="inline-block text-right half">
+                                                        <i className={
+                                                            isRoute||hover === i
+                                                                ? "line-v-middle middle-font highlight fas fa-angle-right"
+                                                                : e.sub.length>0
+                                                                    ? "line-v-middle middle-font border-font fas fa-angle-right"
+                                                                    : "hidden"
+                                                        }/>
+                                                    </span>
+                                                </div>
+                                            </Link>
+                                            {
+                                                (e.sub.length>0)
+                                                ?
+                                                    <SubElements    isCurrent={isRoute}
+                                                                    isHover={hover===i}
+                                                                    index ={i}
+                                                                    sub={e.sub}
+                                                                    {...props}/>
+                                                :
+                                                    <div></div>
+                                            }
+                                        </button>
+                                    </li>
+                                </ConditionalRender>
+                            )
+                        }
+                    )
+                }
+                </ul>
+                <div className="text-center v-padding align-center">Designed by santiago</div>
+            </div>
+
         );
     }
 }

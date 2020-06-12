@@ -10,28 +10,28 @@ import {
 export const promocionesHandlers = {
     list: [
         {
-            endpoint:'/promociones',
-            match:/\/promociones$/,
+            endpoint:'/escritorio/promociones',
+            match:/\/escritorio\/promociones$/,
             callback:({params,user}) =>
-                listHandler(`promociones/list/${user.id}`,`/promociones`)
+                listHandler(`promociones/list/${user.id}`,`/escritorio/promociones`)
         },
         {
-            endpoint:'/promociones/agregar',
-            match:/\/promociones\/(agregar)$/,
+            endpoint:'/escritorio/promociones/agregar',
+            match:/\/escritorio\/promociones\/(agregar)$/,
             callback:({params,user}) =>
-                addFormHandler(`promociones/add/${user.id}`,`/promociones/agregar`)
+                addFormHandler(`promociones/add/${user.id}`,`/escritorio/promociones/agregar`)
         },
         {
-            endpoint:'/promociones/editar/:id',
-            match:/\/promociones\/(editar\/\d+)$/,
+            endpoint:'/escritorio/promociones/editar/:id',
+            match:/\/escritorio\/promociones\/(editar\/\d+)$/,
             callback:({params,user}) =>
-                editFormHandler(`promociones/single/27/${params.id}`,`/promociones/editar/${params.id}`)
+                editFormHandler(`promociones/single/27/${params.id}`,`/escritorio/promociones/editar/${params.id}`)
         },
         {
-            endpoint:'/promociones/:id',
-            match: /\/promociones\/(\d+)$/,
+            endpoint:'/escritorio/promociones/:id',
+            match: /\/escritorio\/promociones\/(\d+)$/,
             callback: ({params,user}) =>
-                singleHandler(`/promociones/single/${user.id}/${params.id}`,`/promociones/${params.id}`)
+                singleHandler(`/promociones/single/${user.id}/${params.id}`,`/escritorio/promociones/${params.id}`)
         }
     ],
     form: {

@@ -17,7 +17,7 @@ export const HorariosActions = {
                         Editar
                     </div>
                 ),
-                to: `/horarios/editar/${key}`
+                to: `/escritorio/horarios/editar/${key}`
             }
         ],
         buttons: [
@@ -44,7 +44,7 @@ export const HorariosActions = {
                         Agregar
                     </div>
                 ),
-                to: `/horarios/agregar/${key}`
+                to: `/escritorio/horarios/agregar/${key}`
             }
         ],
         buttons: []

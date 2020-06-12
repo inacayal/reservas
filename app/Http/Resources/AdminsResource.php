@@ -16,7 +16,10 @@ class AdminsResource extends JsonResource
      */
     private static $dependencies = [
         'base' => [],
-        'api.login' => [
+        'auth.login' => [
+            'usuario' => false
+        ],
+        'auth.retrieve' => [
             'usuario' => false
         ],
         'admin.update'=>[

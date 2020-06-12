@@ -12,28 +12,28 @@ import {DAYS} from '../../constantes/DaysMonths';
 export const horariosHandlers = {
     list:[
         {
-            endpoint:'/horarios',
-            match:/\/horarios$/,
+            endpoint:'/escritorio/horarios',
+            match:/\/escritorio\/horarios$/,
             callback:({params,user}) =>
-                listHandler(`/horarios/list/${user.id}`,`/horarios`)
+                listHandler(`/horarios/list/${user.id}`,`/escritorio/horarios`)
         },
         {
-            endpoint:'/horarios/agregar/:day',
-            match:/\/horarios\/(agregar\/\d+)$/,
+            endpoint:'/escritorio/horarios/agregar/:day',
+            match:/\/escritorio\/horarios\/(agregar\/\d+)$/,
             callback:({params,user}) =>
-                addFormHandler(`/horarios/add/${user.id}`,`/horarios/agregar/${params.day}`)
+                addFormHandler(`/horarios/add/${user.id}`,`/escritorio/horarios/agregar/${params.day}`)
         },
         {
-            endpoint:'/horarios/editar/:id',
-            match:/\/horarios\/(editar\/\d+)$/,
+            endpoint:'/escritorio/horarios/editar/:id',
+            match:/\/escritorio\/horarios\/(editar\/\d+)$/,
             callback:({params,user}) =>
-                editFormHandler(`/horarios/single/${user.id}/${params.id}`,`/horarios/editar/${params.id}`)
+                editFormHandler(`/horarios/single/${user.id}/${params.id}`,`/escritorio/horarios/editar/${params.id}`)
         },
         {
-            endpoint:'/horarios/:id',
-            match: /\/horarios\/(\d+)$/,
+            endpoint:'/escritorio/horarios/:id',
+            match: /\/escritorio\/horarios\/(\d+)$/,
             callback: ({params,user}) =>
-                singleHandler(`/horarios/single/${user.id}/${params.id}`,`/horarios/${params.id}`)
+                singleHandler(`/horarios/single/${user.id}/${params.id}`,`/escritorio/horarios/${params.id}`)
         }
     ],
     form: {

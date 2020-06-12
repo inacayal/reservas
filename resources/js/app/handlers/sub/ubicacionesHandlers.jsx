@@ -10,28 +10,28 @@ import {
 export const ubicacionesHandlers = {
     list: [
         {
-            endpoint:'/ubicaciones',
-            match:/\/ubicaciones$/,
+            endpoint:'/escritorio/ubicaciones',
+            match:/\/escritorio\/ubicaciones$/,
             callback:({params,user}) =>
-                listHandler(`ubicaciones/list/${user.id}`,`/ubicaciones`)
+                listHandler(`ubicaciones/list/${user.id}`,`/escritorio/ubicaciones`)
         },
         {
-            endpoint:'/ubicaciones/agregar',
-            match:/\/ubicaciones\/(agregar)$/,
+            endpoint:'/escritorio/ubicaciones/agregar',
+            match:/\/escritorio\/ubicaciones\/(agregar)$/,
             callback:({params,user}) =>
-                addFormHandler(`ubicaciones/single/${user.id}/${params.id}`,`/ubicaciones/agregar`)
+                addFormHandler(`ubicaciones/single/${user.id}/${params.id}`,`/escritorio/ubicaciones/agregar`)
         },
         {
-            endpoint:'/ubicaciones/editar/:id',
-            match:/\/ubicaciones\/(editar\/\d+)$/,
+            endpoint:'/escritorio/ubicaciones/editar/:id',
+            match:/\/escritorio\/ubicaciones\/(editar\/\d+)$/,
             callback:({params,user}) =>
-                editFormHandler(`ubicaciones/single/${user.id}/${params.id}`,`/ubicaciones/editar/${params.id}`)
+                editFormHandler(`ubicaciones/single/${user.id}/${params.id}`,`/escritorio/ubicaciones/editar/${params.id}`)
         },
         {
-            endpoint:'/ubicaciones/:id',
-            match: /\/ubicaciones\/(\d+)$/,
+            endpoint:'/escritorio/ubicaciones/:id',
+            match: /\/escritorio\/ubicaciones\/(\d+)$/,
             callback: ({params,user}) =>
-                singleHandler(`/ubicaciones/single/${user.id}/${params.id}`,`/ubicaciones/${params.id}`)
+                singleHandler(`/ubicaciones/single/${user.id}/${params.id}`,`/escritorio/ubicaciones/${params.id}`)
 
         }
     ],

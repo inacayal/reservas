@@ -16,7 +16,7 @@ export const PromocionesActions = (
                     Editar
                 </div>
             ),
-            to: `/promociones/editar/${key}`
+            to: `/escritorio/promociones/editar/${key}`
         }
     ],
     buttons: [

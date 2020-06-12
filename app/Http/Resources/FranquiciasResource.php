@@ -23,7 +23,11 @@ class FranquiciasResource extends JsonResource
         'franquicia.add'=>[],
         'franquicia.local'=>[],
         'franquicia.franquicia'=>[],
-        'api.login' => [
+        'auth.login' => [
+            'administrador'=>false,
+            'usuario'=>false
+        ],
+        'auth.retrieve' => [
             'administrador'=>false,
             'usuario'=>false
         ]

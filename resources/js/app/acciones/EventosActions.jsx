@@ -17,7 +17,7 @@ export const EventosActions = (
                         Editar
                     </div>
                 ),
-                to: `/eventos/editar/${key}`
+                to: `/escritorio/eventos/editar/${key}`
             }
         ],
         buttons: [
