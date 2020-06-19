@@ -8,17 +8,9 @@ use App\Traits\DataFormatting;
 use App\Traits\ValidationMessages;
 use Illuminate\Validation\Rule;
 
+class Evento extends Eloquent {
 
-class Evento extends Eloquent
-{
-	use DataFormatting,
-		ValidationMessages;
-
-	protected $relationNames = [
-		'feriados',
-		'horarios',
-		'promociones'
-	];
+	use DataFormatting, ValidationMessages;
 
 	private static $dataKey = 'id';
 
@@ -29,6 +21,12 @@ class Evento extends Eloquent
 	protected $table = 'usuario_eventos';
 
 	public $timestamps = false;
+
+	protected $relationNames = [
+		'feriados',
+		'horarios',
+		'promociones'
+	];
 
 	protected $casts = [
 		'id_usuario' => 'int',
@@ -164,6 +162,37 @@ class Evento extends Eloquent
 
 	public function scopeSearchId($query,$params){
 		return $query->where('id',$params->id);
+	}
+
+	public static function getMonthQuery( $user,$utype,$uid,$month,$year ){
+		return (object) [
+            "query" => "select a1.*, nombre, count(*) as numero_reservas
+	            from (
+	                select $utype,DAY(dia_reserva) as dia,id_evento
+	                from usuario_reservas
+	                where $utype = $uid
+	                and MONTH(dia_reserva)=$month
+	                and YEAR(dia_reserva)=$year
+	            ) a1 join usuario_eventos a2
+	            on a1.id_evento = a2.id
+				group by nombre",
+            "group" => "nombre"
+		];
+	}
+
+	public static function getYearQuery( $user,$utype,$uid,$year ){
+		return (object) [
+            "query" => "select a1.*, nombre, count(*) as numero_reservas
+				from (
+					select $utype,MONTHNAME(dia_reserva) as mes,id_evento
+					from usuario_reservas
+					where $utype = $uid
+					and YEAR(dia_reserva)=$year
+				) a1 join usuario_eventos a2
+				on a1.id_evento = a2.id
+				group by mes,nombre",
+            "group" => "nombre"
+		];
 	}
 
 	public static function dataSeeding(

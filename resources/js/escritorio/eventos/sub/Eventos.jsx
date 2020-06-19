@@ -14,7 +14,7 @@ import {
 import {
     assignHorarios
 } from '../../../app/utils/Helper';
-
+import GraphicHolder from '../../../app/componentes/graphics/GraphicHolder';
 
 function NoMemoEventos (props) {
     const data = Object.values(props.data);
@@ -22,6 +22,7 @@ function NoMemoEventos (props) {
         <>
             <Titulo title="Eventos"
                 links={props.nav.links} />
+            <GraphicHolder/>
             <div className="container-fluid">
                 <div className="m-font top-padding row">
                     {`Mostrando ${data.length} eventos encontrados`}

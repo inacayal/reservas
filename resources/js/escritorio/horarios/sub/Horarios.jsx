@@ -9,6 +9,7 @@ import ReactDOM from 'react-dom';
 
 import Titulo from '../../../app/componentes/basic/Titulo';
 import horarioGenerator from '../../../app/generators/horarioGenerator';
+import GraphicHolder from '../../../app/componentes/graphics/GraphicHolder';
 
 const links = [
     {
@@ -31,6 +32,7 @@ export default function Horarios (props) {
         <>
             <Titulo title="Horarios"
                 links={links}/>
+            <GraphicHolder/>
             <div className="v-padding">
                 <ul className="v-padding justify no-padding full-width flex-column nav-list h-center">
                     {

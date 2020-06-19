@@ -8,10 +8,9 @@ use App\Traits\ValidationMessages;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
-class Horario extends Eloquent
-{
-	use DataFormatting,
-		ValidationMessages;
+class Horario extends Eloquent {
+
+	use DataFormatting, ValidationMessages;
 
 	private static $dataKey = 'id_dia_semana';
 
@@ -169,6 +168,41 @@ class Horario extends Eloquent
 
 	public function eventos(){
 		return $this->belongsToMany(\App\Models\Evento::class, 'horario_eventos','id_horario','id_evento');
+	}
+
+	public static function getMonthQuery( $user,$utype,$uid,$month,$year ){
+		return (object) [
+            "query" => "select *,descripcion, count(*) as numero_reservas
+			from (
+				select * from (
+					select $utype,DAYOFWEEK(dia_reserva) as dia from usuario_reservas
+					where $utype = $uid
+					and YEAR(dia_reserva)=$year
+					and MONTH(dia_reserva)=$month
+				) a1
+				join
+				dias_semana a2
+				on a2.id = dia
+			) a3 group by dia",
+            "group" => "descripcion"
+		];
+	}
+
+	public static function getYearQuery( $user,$utype,$uid,$year ){
+		return (object) [
+			"query" => "select *,descripcion, count(*) as numero_reservas
+			from (
+				select * from (
+					select $utype,DAYOFWEEK(dia_reserva) as dia from usuario_reservas
+					where $utype = $uid
+					and YEAR(dia_reserva)=$year
+				) a1
+				join
+				dias_semana a2
+				on a2.id = dia
+			) a3 group by dia",
+            "group" => "descripcion"
+		];
 	}
 
 	public static function dataSeeding($user){

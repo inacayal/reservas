@@ -3,19 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Http\Resources\FeriadosResource as Resource;
-use App\Traits\hasDependencies;
 use Illuminate\Http\Request;
 use App\Traits\ValidatesForm;
+use App\Traits\GeneratesResumen;
+use App\Traits\hasDependencies;
 
-class FeriadoController extends Controller
-{
-    use hasDependencies,
-        ValidatesForm;
+class FeriadoController extends Controller {
+
+    use hasDependencies, ValidatesForm, GeneratesResumen;
 
     protected $model = '\\App\\Models\\Feriado';
 
     private $consult;
+
+    protected $resumenView = "resumen_feriados";
 
     protected static $dependencies = [
         'list' => [
@@ -49,6 +50,7 @@ class FeriadoController extends Controller
     public function getRedirect($id){
         return ['dir' => "/feriados/$id", 'route' => 'feriados'];
     }
+
     /**
      * get all eventos by user
      *

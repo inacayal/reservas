@@ -13,11 +13,9 @@ use App\Traits\ValidatesForm;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 
-
 class UserController extends Controller
 {
-    use hasDependencies,
-        ValidatesForm;
+    use hasDependencies, ValidatesForm;
 
     protected $model = '\\App\\User';
 

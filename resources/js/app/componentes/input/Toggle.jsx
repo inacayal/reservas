@@ -17,13 +17,6 @@ function noMemoToggle(props) {
     const side = props.side;
     return (
         <div className="inline-block small-margin">
-            <span className="margin-box bold">
-                {
-                    (side == 1)
-                        ? props.rightTitle
-                        : props.leftTitle
-                }
-            </span>
             <div className="inline-block">
                 <div className = {
                     (side == 1)
@@ -41,6 +34,13 @@ function noMemoToggle(props) {
                         }/>
                 </div>
             </div>
+            <span className="margin-box bold">
+                {
+                    (side == 1)
+                        ? props.rightTitle
+                        : props.leftTitle
+                }
+            </span>
         </div>
     );
 }

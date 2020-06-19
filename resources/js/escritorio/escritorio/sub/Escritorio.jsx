@@ -11,6 +11,7 @@ import {
 } from '../../../app/componentes/agenda/ReservaView';
 import DateFilter from '../../../app/hocs/DateFilter';
 import Titulo from '../../../app/componentes/basic/Titulo';
+import GraphicHolder from '../../../app/componentes/graphics/GraphicHolder';
 
 export default class Escritorio extends Component {
     constructor(props){
@@ -40,6 +41,7 @@ export default class Escritorio extends Component {
             <>
                 <Titulo
                     title={"Bienvenido, "+data.username} />
+                <GraphicHolder/>
                 <DateFilter hideViews
                     data={this.props.data}
                     route={'reservas'}

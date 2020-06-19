@@ -7,10 +7,9 @@ use App\Traits\DataFormatting;
 use App\Traits\ValidationMessages;
 use Illuminate\Validation\Rule;
 
-class Promocion extends Eloquent
-{
-    use DataFormatting,
-        ValidationMessages;
+class Promocion extends Eloquent {
+
+    use DataFormatting, ValidationMessages;
 
     protected $relationNames = ['eventos'];
 
@@ -51,7 +50,7 @@ class Promocion extends Eloquent
             'eventos' => [
               'array',
               'required_if:requestType,POST',
-              Rule::exists('usuario_eventos','id')->where('id_usuario',$user)
+              Rule::exists('usuario_promociones','id')->where('id_usuario',$user)
             ],
             'eventos.*'        => 'int',
             'descuento'        => 'nullable|min:0|max:100',
@@ -95,7 +94,7 @@ class Promocion extends Eloquent
     }
 
     public function eventos(){
-        return $this->belongsToMany(\App\Models\Evento::class, 'eventos_promociones','id_promocion','id_evento');
+        return $this->belongsToMany(\App\Models\Evento::class, 'eventos_promociones','id_promocion','id_promocion');
     }
 
     public function usuario(){
@@ -109,4 +108,36 @@ class Promocion extends Eloquent
     public function estado(){
         return $this->belongsTo(\App\Models\Query\Scope::class, 'scope');
     }
+
+
+	public static function getMonthQuery( $user,$utype,$uid,$month,$year ){
+		return (object) [
+            "query" => "select a1.*, nombre,count(*) as numero_reservas
+	            from (
+	                select $utype,DAY(dia_reserva) as dia,id_promocion
+	                from usuario_reservas
+	                where $utype = $uid
+	                and MONTH(dia_reserva)=$month
+	                and YEAR(dia_reserva)=$year
+	            ) a1 join usuario_promociones a2
+	            on a1.id_promocion = a2.id
+                group by nombre",
+            "group" => "nombre"
+		];
+	}
+
+	public static function getYearQuery( $user,$utype,$uid,$year ){
+		return (object) [
+            "query" => "select a1.*, nombre, count(*) as numero_reservas
+				from (
+					select $utype,MONTHNAME(dia_reserva) as mes,id_promocion
+					from usuario_reservas
+					where $utype = $uid
+					and YEAR(dia_reserva)=$year
+				) a1 join usuario_promociones a2
+				on a1.id_promocion = a2.id
+                group by mes,nombre",
+            "group" => "nombre"
+		];
+	}
 }

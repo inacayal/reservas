@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\EventosResource as Resource;
+use App\User;
 use App\Traits\hasDependencies;
 use App\Traits\ValidatesForm;
-use Carbon\Carbon;
-use App\User;
+use App\Traits\GeneratesResumen;
+use Illuminate\Support\Facades\Auth;
 
-class EventoController extends Controller
-{
-    use hasDependencies,
-        ValidatesForm;
+class EventoController extends Controller {
+
+    use hasDependencies, ValidatesForm, GeneratesResumen;
+
+    protected $resumenView = "resumen_eventos";
 
     protected $model = '\\App\\Models\\Evento';
 
@@ -48,7 +49,7 @@ class EventoController extends Controller
             'promociones'           => 'list',
         ],
     ];
-
+    
     public function list (
         $route,
         $id

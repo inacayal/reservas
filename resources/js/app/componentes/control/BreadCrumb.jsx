@@ -144,12 +144,11 @@ export default class BreadCrumb extends Component {
         return (
             <div className="col-md-12 d-none d-md-block"
                  style={{
-                     zIndex:5,
                      height:"6vh",
                      marginTop:"6px",
                      backgroundColor:'rgba(255,255,255,0.95)'
                  }} >
-                <div className="row small-v-padding">
+                <div className="row small-v-padding justify-content-between">
                     <ul className="sticky-top flex-row nav-list no-padding">
                         {
                             items.map(

@@ -1,21 +1,24 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\User as User;
+
+use App\User;
 use Illuminate\Support\Collection;
 use App\Traits\hasDependencies;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Traits\GeneratesResumen;
 use App\Traits\ValidatesForm;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class ReservaController extends Controller
-{
-    use hasDependencies,
-        ValidatesForm;
+class ReservaController extends Controller {
+
+    use hasDependencies, ValidatesForm, GeneratesResumen;
 
     private $consult;
 
     protected $model = '\\App\\Models\\Reserva';
+
+    protected $resumenView = "resumen_reservas_mensual";
 
     protected static $dependencies = [
         'list' => [

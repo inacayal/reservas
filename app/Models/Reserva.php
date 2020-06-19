@@ -8,10 +8,9 @@ use App\Traits\DataFormatting;
 use App\Traits\ValidationMessages;
 use Illuminate\Validation\Rule;
 
-class Reserva extends Eloquent
-{
-	use DataFormatting,
-		ValidationMessages;
+class Reserva extends Eloquent {
+
+	use DataFormatting,ValidationMessages;
 
     protected $table = 'usuario_reservas';
 
@@ -170,4 +169,28 @@ class Reserva extends Eloquent
 	public function promocion(){
 		return $this->hasOne(\App\Models\Promocion::class, 'id','id_promocion');
 	}
+
+	public static function getMonthQuery( $user,$utype,$uid,$month,$year ){
+		return (object) [
+            "query" => "select DAY(dia_reserva) as dia,count(*) as numero_reservas
+                from usuario_reservas
+                where $utype = $uid
+                and MONTH(dia_reserva)=$month
+                and YEAR(dia_reserva)=$year
+				group by dia",
+            "group" => "dia"
+		];
+	}
+
+	public static function getYearQuery( $user,$utype,$uid,$year ){
+		return (object) [
+            "query" => "select MONTHNAME(dia_reserva) as mes,count(*) as numero_reservas
+                from usuario_reservas
+                where $utype = $uid
+                and YEAR(dia_reserva)=$year
+				group by mes",
+            "group" => "mes"
+		];
+	}
+
 }

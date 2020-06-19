@@ -13,10 +13,9 @@ use App\Traits\ValidatesForm;
 use App\Franquicia;
 use Illuminate\Support\Facades\Hash;
 
-class FranquiciaController extends Controller
-{
-    use hasDependencies,
-        ValidatesForm;
+class FranquiciaController extends Controller {
+    
+    use hasDependencies, ValidatesForm;
 
     protected $model = '\\App\\Franquicia';
 

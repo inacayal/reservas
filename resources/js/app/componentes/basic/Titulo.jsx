@@ -11,10 +11,10 @@ import Actions from './Actions';
 export default function Titulo (props){
     return (
         <>
-            <div className="c-title no-padding inline-block"
-                style={{overflow:"hidden"}}>
+            <h1 className="inline-block no-margin"
+                style={{overflow:"hidden",verticalAlign:"bottom"}}>
                 {props.title}
-            </div>
+            </h1>
             <div className="inline-block">
                 <Actions links={props.links}
                     buttons={props.buttons}

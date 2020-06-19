@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UbicacionesResource as Resource;
-use App\Traits\hasDependencies;
 use Illuminate\Http\Request;
-use App\User;
+use App\Traits\hasDependencies;
 use App\Traits\ValidatesForm;
+use App\Traits\GeneratesResumen;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
-class UbicacionController extends Controller
-{
-    use hasDependencies,
-        ValidatesForm;
+class UbicacionController extends Controller {
+
+    use hasDependencies, ValidatesForm, GeneratesResumen;
 
     protected $model = '\\App\\Models\\Ubicacion';
 
     private $consult;
+
+    protected $resumenView = "resumen_ubicaciones";
 
     protected static $dependencies = [
         'list' => [
@@ -38,7 +40,6 @@ class UbicacionController extends Controller
     }
 
     public function list ($route,$id){
-        //dd(csrf_token());
         return response (
             $this->getData( (object) [
                 "depends" => self::getDependencies($route),

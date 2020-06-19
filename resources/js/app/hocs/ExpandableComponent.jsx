@@ -7,25 +7,28 @@ import Titulo from '../componentes/basic/Titulo';
 
 export const ExpandableComponent = (props) => {
     let buttons = props.buttons||[];
-    const   [more,toggle] = useState(props.show),
-            title = more
-            ?
-                <div className="smaller-text text bold">
-                    menos <i className="fas fa-minus-circle inline-box side-margin" />
-                </div>
-            :
-                <div className="smaller-text text bold">
-                    más <i className="fas fa-plus-circle inline-box side-margin" />
-                </div>,
-            action = [
-                {
-                    title:title,
-                    click: (e) =>{
-                        e.preventDefault();
-                        toggle(!more);
-                    }
+    const titles = props.titulos
+        ? props.titulos
+        : {mas:"más",menos:"menos"};
+    const [more,toggle] = useState(props.show),
+        title = more
+        ?
+            <div className="smaller-text text bold">
+                {titles.menos} <i className="fas fa-minus-circle inline-box side-margin" />
+            </div>
+        :
+            <div className="smaller-text text bold">
+                {titles.mas} <i className="fas fa-plus-circle inline-box side-margin" />
+            </div>,
+        action = [
+            {
+                title:title,
+                click: (e) =>{
+                    e.preventDefault();
+                    toggle(!more);
                 }
-            ];
+            }
+        ];
 
     buttons = buttons.concat(action);
 
@@ -36,7 +39,7 @@ export const ExpandableComponent = (props) => {
                 buttons={buttons}
                 changeView={props.changeView}/>
             <div className={more
-                    ? "container-fluid"
+                    ? "container-fluid no-padding"
                     : "hidden"
                 }>
                 {props.children}

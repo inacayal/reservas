@@ -2,9 +2,9 @@ import React, {
     Component
 } from 'react';
 import ReactDOM from 'react-dom';
-
 import Titulo from '../../../app/componentes/basic/Titulo';
 import UbicacionesTable from '../../../app/componentes/tables/UbicacionesTable';
+import GraphicHolder from '../../../app/componentes/graphics/GraphicHolder';
 
 export default function Ubicaciones (props) {
     const data = Object.values(props.data);
@@ -12,6 +12,7 @@ export default function Ubicaciones (props) {
         <>
             <Titulo title="Ubicaciones"
                 links={props.nav.links}/>
+            <GraphicHolder/>
             <div className="container-fluid">
                 <div className="row">
                     <div className="m-font">

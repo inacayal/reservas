@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\HorarioResource as Resource;
-use App\Traits\hasDependencies;
 use Illuminate\Http\Request;
-use App\User;
+use App\Traits\hasDependencies;
 use App\Traits\ValidatesForm;
+use App\Traits\GeneratesResumen;
+use Illuminate\Support\Facades\Auth;
+use App\User;
 
-class HorarioController extends Controller
-{
-    use hasDependencies,
-        ValidatesForm;
+class HorarioController extends Controller {
+
+    use hasDependencies, ValidatesForm, GeneratesResumen;
 
     protected $model = '\\App\\Models\\Horario';
+
+    protected $resumenView = 'resumen_horarios';
 
     private $consult;
 
@@ -41,6 +43,21 @@ class HorarioController extends Controller
 
     public function getRedirect($id){
         return ['dir' => "/horarios/$id", 'route' => 'horarios'];
+    }
+
+    public function getResumedData( ){
+        $user = Auth::guard("api")->user();
+        $role = strtolower($user->rol->descripcion);
+        return $this->getResumen(
+            "select h1.*, nombre
+            from (
+                select id_$role,count(*) as numero_reservas,DAYOFWEEK(dia_reserva) dia
+                from usuario_reservas
+                where id_$role = ".$user->id."
+                group by dia,id_$role
+            ) h1 join dias_semana h2
+            on h1.id_dia_semana = h2.id"
+        );
     }
 
     public function list (

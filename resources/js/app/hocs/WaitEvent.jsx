@@ -2,7 +2,7 @@ import React, {
     Component,
 } from 'react';
 import ReactDOM from 'react-dom';
-import Loader from 'react-loader-spinner'
+import Loader from 'react-loader-spinner';
 
 export default function WaitEvent (props) {
     return (

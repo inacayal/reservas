@@ -14,7 +14,7 @@ import {
 import {
     CommaList
 } from '../../../app/componentes/basic/CommaList';
-
+import GraphicHolder from '../../../app/componentes/graphics/GraphicHolder';
 
 export default function Promociones (props) {
     const promociones = Object.values(props.data);
@@ -22,6 +22,7 @@ export default function Promociones (props) {
         <>
             <Titulo title="Promociones"
                     links={props.nav.links} />
+            <GraphicHolder/>
             <div className="container-fluid">
                 <div className="row">
                     <div className="m-font top-padding">
@@ -30,7 +31,7 @@ export default function Promociones (props) {
                 </div>
                 <div className="row">
                     <PromocionesTable actions={{eliminar:props.toggleModal}}
-                        data={promociones} 
+                        data={promociones}
                         showEventos
                         filter
                         showActions/>

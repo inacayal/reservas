@@ -40,6 +40,16 @@ export default function Actions (props) {
         toggle = props.toggle;
     return (
         <div className="normal">
+            {
+                toggle
+                ?
+                    <Toggle rightTitle={toggle.left}
+                        leftTitle={toggle.right}
+                        side={toggle.side}
+                        changeSide={toggle.change}/>
+                :
+                    <></>
+            }
             <div onMouseOver={format.overHandler}
                 onMouseLeave={format.leaveHandler}
                 className={format.container}>
@@ -84,16 +94,6 @@ export default function Actions (props) {
                     }
                 </ul>
             </div>
-            {
-                toggle
-                ?
-                    <Toggle rightTitle={toggle.left}
-                        leftTitle={toggle.right}
-                        side={toggle.side}
-                        changeSide={toggle.change}/>
-                :
-                    <></>
-            }
         </div>
     );
 }

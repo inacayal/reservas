@@ -8,10 +8,9 @@ use App\Traits\DataFormatting;
 use App\Traits\ValidationMessages;
 use Illuminate\Validation\Rule;
 
-class Ubicacion extends Eloquent
-{
-	use DataFormatting,
-		ValidationMessages;
+class Ubicacion extends Eloquent {
+
+	use DataFormatting, ValidationMessages;
 
     protected $relationNames = [];
 
@@ -115,6 +114,37 @@ class Ubicacion extends Eloquent
 
 	public function scopeActive($query){
 		return $query->where('id_estado',1);
+	}
+
+	public static function getMonthQuery( $user,$utype,$uid,$month,$year ){
+		return (object) [
+            "query" => "select a1.*, nombre, count(*) as numero_reservas
+	            from (
+	                select $utype,DAY(dia_reserva) as dia,id_ubicacion
+	                from usuario_reservas
+	                where $utype = $uid
+	                and MONTH(dia_reserva)=$month
+	                and YEAR(dia_reserva)=$year
+	            ) a1 join usuario_ubicaciones a2
+	            on a1.id_ubicacion = a2.id
+				group by nombre",
+            "group" => "nombre"
+		];
+	}
+
+	public static function getYearQuery( $user,$utype,$uid,$year ){
+		return (object) [
+            "query" => "select a1.*, nombre, count(*) as numero_reservas
+				from (
+					select $utype,MONTHNAME(dia_reserva) as mes,id_ubicacion
+					from usuario_reservas
+					where $utype = $uid
+					and YEAR(dia_reserva)=$year
+				) a1 join usuario_ubicaciones a2
+				on a1.id_ubicacion = a2.id
+				group by mes,nombre",
+            "group" => "nombre"
+		];
 	}
 
 	public static function dataSeeding(

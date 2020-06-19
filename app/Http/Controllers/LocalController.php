@@ -13,10 +13,9 @@ use App\Traits\ValidatesForm;
 use App\Local;
 use Illuminate\Support\Facades\Hash;
 
-class LocalController extends Controller
-{
-    use hasDependencies,
-        ValidatesForm;
+class LocalController extends Controller {
+    
+    use hasDependencies, ValidatesForm;
 
     protected $model = '\\App\\Local';
 

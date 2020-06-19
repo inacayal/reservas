@@ -221,6 +221,43 @@ class Feriado extends Eloquent
 		return $query->where('id',$params->id);
 	}
 
+	public static function getMonthQuery( $user,$utype,$uid,$month,$year ){
+		return (object) [
+            "query" => "select *,MONTHNAME(dia_reserva) as mes,count(*) as numero_reservas
+			from (
+				select * from (
+					select $utype,dia_reserva from usuario_reservas
+					where $utype = $uid
+					and YEAR(dia_reserva)=$year
+					and MONTH(dia_reserva)=$month
+				) a1 join (
+					select id as id_feriado,fecha_feriado,nombre from usuario_feriados
+					where $utype = $uid
+				) a2
+				on DATE(a2.fecha_feriado) = DATE(a1.dia_reserva)
+			) a3 group by nombre",
+            "group" => "nombre"
+		];
+	}
+
+	public static function getYearQuery( $user,$utype,$uid,$year ){
+		return (object) [
+            "query" => "select *,MONTHNAME(dia_reserva) as mes,count(*) as numero_reservas
+			from (
+				select * from (
+					select $utype,dia_reserva from usuario_reservas
+					where $utype = $uid
+					and YEAR(dia_reserva)=$year
+				) a1 join (
+					select id as id_feriado,fecha_feriado,nombre from usuario_feriados
+					where $utype = $uid
+				) a2
+				on DATE(a2.fecha_feriado) = DATE(a1.dia_reserva)
+			) a3 group by nombre",
+            "group" => "nombre"
+		];
+	}
+
 	public static function dataSeeding($user){
 		return [
 			self::class,

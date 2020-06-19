@@ -18,6 +18,7 @@ import {
 import {
     assignType
 } from '../../../app/utils/Helper';
+import GraphicHolder from '../../../app/componentes/graphics/GraphicHolder';
 
 export default class Calendario extends Component {
     constructor(props){
@@ -64,6 +65,7 @@ export default class Calendario extends Component {
             <>
                 <Titulo title="Reservaciones"
                     links={this.props.nav.links}/>
+                <GraphicHolder/>
                 <div className="container-fluid">
                     <div className="row">
                         <div className="bold text-right">

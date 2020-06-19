@@ -3,18 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\PromocionesResource as Resource;
 use App\Traits\hasDependencies;
-use Carbon\Carbon;
-use App\User;
 use App\Traits\ValidatesForm;
+use App\Traits\GeneratesResumen;
+use Illuminate\Support\Facades\Auth;
+use App\User;
 
-class PromocionController extends Controller
-{
-    use hasDependencies,
-        ValidatesForm;
+class PromocionController extends Controller {
+
+    use hasDependencies, ValidatesForm, GeneratesResumen;
 
     protected $model = '\\App\\Models\\Promocion';
+
+    protected $resumenView = "resumen_promociones";
 
     private $consult;
 

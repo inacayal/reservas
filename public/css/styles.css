@@ -42,6 +42,7 @@ html,body {
     height: 100vh;
     margin: 0;
 }
+
 div,ul,body,html {
     scrollbar-width: thin !important;
     scrollbar-color: #888 #fff !important;
@@ -112,14 +113,28 @@ div,ul,body,html {
 .error{
     color:var(--danger);
 }
+/*
+div::-webkit-scrollbar,
+ul::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    width: 5px !important;
+}
 
-div::-webkit-scrollbar {
-    width: 5px;
+div::-webkit-scrollbar-track,
+ul::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+    background-color: #fff !important;
 }
-/* Track */
-div::-webkit-scrollbar-track {
-    background: #fff;
+ */
+
+body::-webkit-scrollbar {
+    width: 5px !important;
 }
+
+body::-webkit-scrollbar-track {
+    background: #fff !important;
+}
+
 .round-border{
     border-radius:5px;
 }

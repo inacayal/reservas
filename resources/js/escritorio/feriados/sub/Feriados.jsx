@@ -20,6 +20,7 @@ import {
 import {
     assignType
 } from '../../../app/utils/Helper';
+import GraphicHolder from '../../../app/componentes/graphics/GraphicHolder';
 
 const links = [
     {
@@ -86,6 +87,7 @@ export default class Feriados extends Component {
                         side:this.props.data.type === 'agenda'
                     }}
                     links={this.props.nav.links.concat(links)}/>
+                <GraphicHolder/>
                 {
                     dataByType[this.props.data.type](this)
                 }
