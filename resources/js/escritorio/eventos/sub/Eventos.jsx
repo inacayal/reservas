@@ -22,13 +22,15 @@ function NoMemoEventos (props) {
         <>
             <Titulo title="Eventos"
                 links={props.nav.links} />
-            <GraphicHolder/>
+            <GraphicHolder titulo="Métricas para los eventos"
+                monthly="/eventos/resumen/mensual/$month/$year"
+                yearly="/eventos/resumen/anual/$year"/>
             <div className="container-fluid">
                 <div className="m-font top-padding row">
                     {`Mostrando ${data.length} eventos encontrados`}
                 </div>
                 <div className="row">
-                    <EventosTable actions = {{eliminar: props.toggleModal}}
+                    <EventosTable actions={{eliminar: props.toggleModal}}
                         data={data}
                         showPromociones
                         showHorarios

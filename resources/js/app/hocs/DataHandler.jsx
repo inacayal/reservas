@@ -114,7 +114,6 @@ class DataHandler extends Component {
             user = this.props.user,
             loc = this.state.location||{},
             path = loc.pathname||props.location.pathname;
-
         return (
             <WaitsLoading.Provider value={this.fetchHandler}>
                 <div className="dark-background"
@@ -161,7 +160,8 @@ class DataHandler extends Component {
                                                                 data:this.state.data,
                                                                 match:props.global,
                                                                 location:loc,
-                                                                message:this.state.message
+                                                                message:this.state.message,
+                                                                user:user
                                                             }
                                                         )
                                                     }

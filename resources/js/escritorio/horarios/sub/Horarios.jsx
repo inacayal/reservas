@@ -32,19 +32,19 @@ export default function Horarios (props) {
         <>
             <Titulo title="Horarios"
                 links={links}/>
-            <GraphicHolder/>
-            <div className="v-padding">
-                <ul className="v-padding justify no-padding full-width flex-column nav-list h-center">
-                    {
-                        week.map(
-                            (elem, index) =>
-                                <li key={index} className={elem.class}>
-                                    <elem.content />
-                                </li>
-                        )
-                    }
-                </ul>
-            </div>
+            <GraphicHolder titulo="Métricas para los horarios"
+                monthly="/horarios/resumen/mensual/$month/$year"
+                yearly="/horarios/resumen/anual/$year"/>
+            <ul className="v-padding justify no-padding full-width flex-column nav-list h-center">
+                {
+                    week.map(
+                        (elem, index) =>
+                            <li key={index} className={elem.class}>
+                                <elem.content />
+                            </li>
+                    )
+                }
+            </ul>
         </>
     );
 }

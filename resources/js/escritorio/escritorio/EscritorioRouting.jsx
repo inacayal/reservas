@@ -14,7 +14,7 @@ export default function EscritorioRouting (props) {
                 exact
                 render={
                     (match) =>
-                        <Escritorio data={props.data} {...match} />
+                        <Escritorio data={props.data} user={props.user} {...match} />
                 } />
         </>
     );

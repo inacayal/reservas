@@ -119,9 +119,13 @@ class Promocion extends Eloquent {
 	                where $utype = $uid
 	                and MONTH(dia_reserva)=$month
 	                and YEAR(dia_reserva)=$year
-	            ) a1 join usuario_promociones a2
+	            ) a1 join (
+					select * from
+					usuario_promociones
+					where $utype = $uid
+				) a2
 	            on a1.id_promocion = a2.id
-                group by nombre",
+                group by dia,nombre",
             "group" => "nombre"
 		];
 	}

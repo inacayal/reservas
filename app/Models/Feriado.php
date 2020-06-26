@@ -223,7 +223,7 @@ class Feriado extends Eloquent
 
 	public static function getMonthQuery( $user,$utype,$uid,$month,$year ){
 		return (object) [
-            "query" => "select *,MONTHNAME(dia_reserva) as mes,count(*) as numero_reservas
+            "query" => "select *,DAY(fecha_feriado) as dia,count(*) as numero_reservas
 			from (
 				select * from (
 					select $utype,dia_reserva from usuario_reservas
@@ -253,7 +253,7 @@ class Feriado extends Eloquent
 					where $utype = $uid
 				) a2
 				on DATE(a2.fecha_feriado) = DATE(a1.dia_reserva)
-			) a3 group by nombre",
+			) a3 group by dia,nombre",
             "group" => "nombre"
 		];
 	}

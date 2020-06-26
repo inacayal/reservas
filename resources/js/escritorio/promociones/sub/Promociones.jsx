@@ -22,11 +22,13 @@ export default function Promociones (props) {
         <>
             <Titulo title="Promociones"
                     links={props.nav.links} />
-            <GraphicHolder/>
+            <GraphicHolder titulo="Métricas para las promociones"
+                monthly="/promociones/resumen/mensual/$month/$year"
+                yearly="/promociones/resumen/anual/$year"/>
             <div className="container-fluid">
                 <div className="row">
                     <div className="m-font top-padding">
-                    {`Mostrando ${promociones.length} promociones encontradas`}
+                        {`Mostrando ${promociones.length} promociones encontradas`}
                     </div>
                 </div>
                 <div className="row">

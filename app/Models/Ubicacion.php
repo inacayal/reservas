@@ -140,7 +140,11 @@ class Ubicacion extends Eloquent {
 					from usuario_reservas
 					where $utype = $uid
 					and YEAR(dia_reserva)=$year
-				) a1 join usuario_ubicaciones a2
+				) a1 join join (
+					select * from
+					usuario_promociones
+					where $utype = $uid
+				) a2
 				on a1.id_ubicacion = a2.id
 				group by mes,nombre",
             "group" => "nombre"

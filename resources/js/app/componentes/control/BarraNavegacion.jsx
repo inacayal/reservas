@@ -18,16 +18,16 @@ function BarraNavegacion(props) {
             toggle(!showop);
         };
     return (
-        <div className="col-md-3 relative no-padding" style={{marginRight:"0.5%"}}>
+        <div className="col-md-8 col-lg-5 col-sm-12 col-xl-3 relative no-padding" style={{marginRight:"0.5%"}}>
             <button onClick={togFunc}
                 className="no-background no-border margin-box small-padding text-left full-width">
                 <div className="container-fluid no-padding">
                     <div className="row justify-content-between align-items-end">
                         <div className="col-md-2 align-items-center d-flex">
                             <img style={{
-                                borderRadius:"50%",
-                                border:"solid 2px var(--border)"
-                            }}
+                                    borderRadius:"50%",
+                                    border:"solid 2px var(--border)"
+                                }}
                                 src={user.usuario.foto_perfil}
                                 className="h-margin"
                                 height="40px"
@@ -37,7 +37,7 @@ function BarraNavegacion(props) {
                         <div className="col-md-6 white-font no-padding">
                             <span className="bold">{user.nombre}</span>
                             <div className="smaller-text">
-                                {user.franquicia.nombre}
+                                {user.usuario.email}
                             </div>
                         </div>
                         <div className="col-md-4 text-right" style={{color:"var(--border)"}}>
@@ -59,8 +59,8 @@ function BarraNavegacion(props) {
                         zIndex:50,
                         position:"relative"
                     }}/>
-                <div style={{margin:"-1px auto auto 50%"}}
-                    className="white-background shadow-result half sidebar-box round-border">
+                <div style={{margin:"-1px auto auto 30%"}}
+                    className="white-background shadow-result seventy sidebar-box round-border">
                     <ul className="nav-list no-padding">
                         <li className="box-transparent full-width text-left box-padding highlight-hover bold-hover text">
                             <button className="box-transparent"
@@ -78,47 +78,23 @@ function BarraNavegacion(props) {
                             <i className="fas small-padding fa-bell"/>
                             Notificaciones
                         </li>
+                        <li className="text-center light-background full-width text-left box-padding highlight-hover bold-hover text">
+                            <img style={{
+                                borderRadius:"50%",
+                                border:"solid 2px var(--black)"
+                            }}
+                                src={user.franquicia.usuario.foto_perfil}
+                                className="h-margin"
+                                height="30px"
+                                width="30px"
+                                alt="foto perfil"/>
+                            <span className="small-margin inline-block">{user.franquicia.nombre}</span>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
     );
 }
-
-/*
-<div className="col-md-4 no-padding text-right">
-    <div style={{
-        position:"relative",
-        bottom:"-5px"
-    }}>
-        <button className="smaller-text small-margin inline-block small-margin border-box button-border box-transparent"
-        style={{
-            border:"solid 2px white",
-            color:"white",
-        }}
-        onClick={
-            e => false
-        }>
-            <img src={user.franquicia.usuario.foto_perfil} height="25px" width="25px" alt="foto perfil" className="inline-block"/>
-            <p className="s-font no-margin inline-block">{user.franquicia.nombre}</p>
-        </button>
-        <button className="smaller-text small-margin inline-block small-margin border-box button-border box-transparent"
-        style={{
-            border:"solid 2px white",
-            color:"white"
-        }}
-        onClick={
-            e => {
-                e.preventDefault();
-                props.logout({err:null});
-            }
-        }>
-            <i className="light-danger fas fa-sign-out-alt side-margin"></i>
-            <span className="side-margin">salir</span>
-        </button>
-    </div>
-</div>
-*/
-
 
 export default React.memo(BarraNavegacion);

@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Database\Eloquent\Collection;
 use App\Traits\hasDependencies;
 
+
 class ReservaResource extends JsonResource
 {
     use hasDependencies;

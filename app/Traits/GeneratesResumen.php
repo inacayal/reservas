@@ -22,6 +22,10 @@ trait GeneratesResumen {
         "December"=>"Diciembre"
     ];
 
+    private $grouping = [
+        "reservas.resumen.mensual" => "reservas"
+    ];
+
     public function getYearData( $type,$year ){
 		$user = Auth::guard("api")->user();
 		$utype = "id_".strtolower($user->rol->descripcion);
@@ -52,9 +56,18 @@ trait GeneratesResumen {
     }
 
     public function getResumen( $queryObject ) {
+        $rname = request()
+            ->route()
+            ->action['as'];
+        $gname = isset( $this->grouping[$rname] )
+            ? $this->grouping[$rname]
+            : null;
         return response(
-            collect( DB::select( $queryObject->query ) )
-                ->groupBy( $queryObject->group )
+            New ResumenResource(
+                !is_null( $gname )
+                    ? collect( array( $gname => DB::select( $queryObject->query ) ) )
+                    : collect( DB::select( $queryObject->query ) )->groupBy( $queryObject->group )
+            )
         ,200);
     }
 }

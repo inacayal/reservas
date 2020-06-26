@@ -1,8 +1,19 @@
-import React, { Component } from 'react';
+import React, {
+    Component
+} from 'react';
 import ReactDOM from 'react-dom';
-import {DAYS,MONTHS} from '../../constantes/DaysMonths';
-import {ExpandableComponent} from '../../hocs/ExpandableComponent';
-import {generateWeek,generateMonth} from '../../generators/feriadoGenerator';
+import {
+    DAYS,
+    MONTHS
+} from '../../constantes/DaysMonths';
+import {
+    ExpandableComponent
+} from '../../hocs/ExpandableComponent';
+import {
+    generateWeek,
+    generateMonth
+} from '../../generators/feriadoGenerator';
+import GraphicHolder from '../graphics/GraphicHolder';
 
 function FeriadoMonthView(props) {
     let month = props.date.getMonth();
@@ -113,5 +124,14 @@ export default function FeriadoView (props) {
                 actions={ props.actions}/>
         )
     };
-    return elems[props.show](props);
+    return (
+        <>
+            <GraphicHolder titulo="Métricas para los feriados"
+                monthly="/feriados/resumen/mensual/$month/$year"
+                yearly="/feriados/resumen/anual/$year"
+                receivesDate={true}
+                date={props.data.date}/>
+            {elems[props.show](props)}
+        </>
+    );
 }

@@ -21,11 +21,11 @@
   --light: #f8f9fa;
   --dark: #343a40;
   --light-danger:rgb(227, 52, 47, 0.8);
-  --border:#e5e5e5;
+  --border: rgb(222, 226, 230);
   --highlight-blue:#006edc;
   --no-highlight:#e6e6e6;
   --text-color:#000000;
-  --light-border: #f2f2f2;
+  --light-border: rgb(222, 226, 230);
   --dark:rgba(0,59,120,0.95);
   --dark-border:#606060;
   --danger-transparent: rgba(227, 52, 47,0.9);
@@ -41,6 +41,7 @@ html,body {
     font-weight: 200;
     height: 100vh;
     margin: 0;
+    background-color:var(--light-border)
 }
 
 div,ul,body,html {
@@ -227,7 +228,7 @@ div::-webkit-scrollbar-thumb:hover {
 }
 .search-box{
     padding:2px 5px;
-    border:solid 1px var(--black);
+    border:solid 2px var(--black);
     border-radius:25px;
 }
 .light-bg{
@@ -924,4 +925,41 @@ button:focus {
 }
 .eighty{
     width: 80%;
+}
+.axis line{
+    stroke:var(--black);
+}
+.axisRed path{
+    stroke:var(--black);
+}
+.grid line {
+    stroke-opacity: 0;
+    stroke-width:2px
+}
+.grid path{
+    stroke: none;
+}
+.axis-y .tick line{
+    stroke: var(--border);
+    stroke-width: 2px;
+}
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 3px;
+}
+.circle {
+    fill: white !important;
+    stroke: steelblue;
+    stroke-width: 4px;
+}
+.circle:hover{
+    cursor:pointer;
+}
+text.text{
+    fill:var(--black);
+    border-radius:3px;
+}
+.rect{
+    fill:var(--border);
 }

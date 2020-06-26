@@ -12,7 +12,9 @@ export default function Ubicaciones (props) {
         <>
             <Titulo title="Ubicaciones"
                 links={props.nav.links}/>
-            <GraphicHolder/>
+            <GraphicHolder titulo="Métricas para las ubicaciones"
+                monthly="/ubicaciones/resumen/mensual/$month/$year"
+                yearly="/ubicaciones/resumen/anual/$year"/>
             <div className="container-fluid">
                 <div className="row">
                     <div className="m-font">

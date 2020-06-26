@@ -173,9 +173,13 @@ class Evento extends Eloquent {
 	                where $utype = $uid
 	                and MONTH(dia_reserva)=$month
 	                and YEAR(dia_reserva)=$year
-	            ) a1 join usuario_eventos a2
+	            ) a1 join (
+					select * from
+					usuario_eventos
+					where $utype = $uid
+				) a2
 	            on a1.id_evento = a2.id
-				group by nombre",
+				group by dia,nombre",
             "group" => "nombre"
 		];
 	}
@@ -188,7 +192,11 @@ class Evento extends Eloquent {
 					from usuario_reservas
 					where $utype = $uid
 					and YEAR(dia_reserva)=$year
-				) a1 join usuario_eventos a2
+				) a1 join (
+					select * from
+					usuario_eventos
+					where $utype = $uid
+				) a2
 				on a1.id_evento = a2.id
 				group by mes,nombre",
             "group" => "nombre"

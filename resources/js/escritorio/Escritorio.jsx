@@ -52,36 +52,42 @@ function BaseRouting (props) {
                 render={
                     (match) =>
                         <EscritorioRouting data={props.data}
+                            user={props.user}
                             {...match}/>
                 }/>
             <Route path={`${props.match.url}/reservas`}
                 render={
                     (match) =>
                         <ReservasRouting data={props.data}
+                            user={props.user}
                             {...match}/>
                 } />
             <Route path={`${props.match.url}/feriados`}
                 render={
                     (match) =>
                         <FeriadosRouting data={props.data}
+                            user={props.user}
                             {...match}/>
                 }/>
             <Route path={`${props.match.url}/horarios`}
                 render={
                     (match) =>
                         <HorariosRouting data={props.data}
+                            user={props.user}
                             {...match}/>
                 }/>
             <Route path={`${props.match.url}/ubicaciones`}
                 render={
                     (match) =>
                         <UbicacionesRouting data={props.data}
+                            user={props.user}
                             {...match}/>
                 } />
             <Route path={`${props.match.url}/eventos`}
                 render={
                     (match) =>
                         <EventosRouting data={props.data}
+                            user={props.user}
                             {...match}/>
 
                     } />
@@ -89,25 +95,29 @@ function BaseRouting (props) {
                 render={
                     (match) =>
                         <PromocionesRouting data={props.data}
+                            user={props.user}
                             {...match} />
                 } />
             <Route path={`${props.match.url}/locales`}
                 component={
                     (match) =>
                         <LocalesRouting data={props.data}
+                            user={props.user}
                             {...match} />
                 } />
             <Route path={`${props.match.url}/configuracion`}
                 render={
                     (match) =>
                         <ConfiguracionRouting data={props.data}
+                            user={props.user}
                             {...match} />
                 } />
             <Route path={`${props.match.url}/franquicias`}
                 render={
                     (match) =>
                         <FranquiciasRouting data={props.data}
-                        {...match} />
+                            user={props.user}
+                            {...match} />
                 }/>
         </Switch>
     )

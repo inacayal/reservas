@@ -19,7 +19,7 @@ export function LoadBar (progress){
             <div className="" style={
                 {
                     width:`${progress.loaded}%`,
-                    backgroundColor:"var(--light-danger)",
+                    backgroundColor:"rgb(222, 226, 230)",
                     height:"6px"
                 }
             }/>

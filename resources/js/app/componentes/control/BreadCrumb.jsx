@@ -1,9 +1,11 @@
-/**
- * react basic
- */
-import React, { Component } from 'react';
+import React, {
+    Component
+} from 'react';
 import ReactDOM from 'react-dom';
-import {Link} from 'react-router-dom';
+import {
+    Link
+} from 'react-router-dom';
+import Search from '../search/Search';
 
 const map = {
     escritorio:   () => (
@@ -149,46 +151,51 @@ export default class BreadCrumb extends Component {
                      backgroundColor:'rgba(255,255,255,0.95)'
                  }} >
                 <div className="row small-v-padding justify-content-between">
-                    <ul className="sticky-top flex-row nav-list no-padding">
-                        {
-                            items.map(
-                                (e,i) => {
-                                    stored = i!=0
-                                        ? `${trim(stored,"usuario/escritorio/")}/${e}`
-                                        : "";
+                    <div className="col-md-9">
+                        <ul className="sticky-top flex-row nav-list no-padding">
+                            {
+                                items.map(
+                                    (e,i) => {
+                                        stored = i!=0
+                                            ? `${trim(stored,"usuario/escritorio/")}/${e}`
+                                            : "";
 
-                                    display = map[e]
-                                        ? map[e](i===0 ? props.usuario : props.nombre)
-                                        : map.ver(props.nombre);
+                                        display = map[e]
+                                            ? map[e](i===0 ? props.usuario : props.nombre)
+                                            : map.ver(props.nombre);
 
-                                    if (items[i-1] === 'editar')
-                                        display = () => false;
+                                        if (items[i-1] === 'editar')
+                                            display = () => false;
 
-                                    return (
-                                        <li key={i} className="margin-box ">
-                                            {
-                                                i === items.length-1 || e === 'editar' || e === 'agregar'
-                                                ?
-                                                    <div className="smaller-text inline-block line-v-middle margin-box">
-                                                        {display()}
-                                                    </div>
-                                                :
-                                                    <>
-                                                        <Link to={ e === "usuario" ? "/escritorio/configuracion" : stored }>
-                                                            <span className="smaller-text margin-box decorate-blue-hover ms-font text inline-block line-v-middle"
-                                                                style={{fontWeight:"bold !important"}}>
-                                                                {display('bold')}
-                                                            </span>
-                                                        </Link>
-                                                        <i className={"h-padding inline-block margin-box line-v-middle highlight m-font fas fa-angle-right"}/>
-                                                    </>
-                                            }
-                                        </li>
-                                    );
-                                }
-                            )
-                        }
-                    </ul>
+                                        return (
+                                            <li key={i} className="margin-box ">
+                                                {
+                                                    i === items.length-1 || e === 'editar' || e === 'agregar'
+                                                    ?
+                                                        <div className="smaller-text inline-block line-v-middle margin-box">
+                                                            {display()}
+                                                        </div>
+                                                    :
+                                                        <>
+                                                            <Link to={ e === "usuario" ? "/escritorio/configuracion" : stored }>
+                                                                <span className="smaller-text margin-box decorate-blue-hover ms-font text inline-block line-v-middle"
+                                                                    style={{fontWeight:"bold !important"}}>
+                                                                    {display('bold')}
+                                                                </span>
+                                                            </Link>
+                                                            <i className={"h-padding inline-block margin-box line-v-middle highlight m-font fas fa-angle-right"}/>
+                                                        </>
+                                                }
+                                            </li>
+                                        );
+                                    }
+                                )
+                            }
+                        </ul>
+                    </div>
+                    <div className="col-md-3 flex no-padding">
+                        <Search route="reservas"/>
+                    </div>
                 </div>
             </div>
         )

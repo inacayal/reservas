@@ -37,13 +37,11 @@ export const ExpandableComponent = (props) => {
             <Titulo title={props.title}
                 links={props.links}
                 buttons={buttons}
+                alignEnd={props.alignEnd}
                 changeView={props.changeView}/>
-            <div className={more
-                    ? "container-fluid no-padding"
-                    : "hidden"
-                }>
-                {props.children}
-            </div>
+                <div className={more ? "container-fluid" : "hidden"}>
+                    {props.children}
+                </div>
         </>
     )
 }

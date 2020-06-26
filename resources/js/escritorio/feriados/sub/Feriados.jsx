@@ -47,7 +47,11 @@ const dataByType = {
     tabla: (par) => (
         <div className="container-fluid">
             <div className="row">
-                <FeriadosTable actions={{eliminar:par.props.toggleModal}} data={par.props.data.data}/>
+                <GraphicHolder titulo="Métricas para los feriados"
+                    monthly="/feriados/resumen/mensual/$month/$year"
+                    yearly="/feriados/resumen/anual/$year"/>
+                <FeriadosTable actions={{eliminar:par.props.toggleModal}}
+                    data={par.props.data.data}/>
             </div>
         </div>
     )
@@ -87,7 +91,6 @@ export default class Feriados extends Component {
                         side:this.props.data.type === 'agenda'
                     }}
                     links={this.props.nav.links.concat(links)}/>
-                <GraphicHolder/>
                 {
                     dataByType[this.props.data.type](this)
                 }

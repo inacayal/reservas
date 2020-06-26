@@ -19,7 +19,7 @@ import {
 import ValidationHandler from '../../app/hocs/ValidationHandler';
 
 import Formulario from './sub/Formulario';
-import Calendario from './sub/Calendario';
+import Reservas from './sub/Reservas';
 import VerReserva from './sub/VerReserva';
 import validation from './validation';
 
@@ -31,7 +31,7 @@ const ReservasRouting = (props) => (
             render={
                 (match) => {
                     return (
-                        <Calendario data={props.data}
+                        <Reservas data={props.data}
                             nav={Navegacion.listado('reservas')} {...match}/>
                     )
                 }

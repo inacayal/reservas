@@ -37,50 +37,55 @@ export const reservasHandlers = {
 };
 
 const listHandler = (endpoint) => {
-
     return function (params) {
         const date = (params||{}).date||new Date(),
             loc = (this.props.location||{}).state||{},
             request = GET({
-                endpoint: `${endpoint}/all`,
+                endpoint: `/${endpoint}/${parseInt(date.getMonth()+1)}/${date.getFullYear()}`,
                 download: this.downloadHandler
             });
             return new Promise(
-                    (resolve,reject) => {
-                        this.setState({
-                                loadFinished:false,
-                                loading:0
+                (resolve,reject) => {
+                    this.setState({
+                            loadFinished:false,
+                            loading:0
+                        },
+                        () => resolve()
+                    )
+                }
+            ).then (
+                request
+                .then(
+                    response => {
+                        this.setState(
+                            {
+                                data: {
+                                    data:response.data.reservas.data,
+                                    horarios: {
+                                        data:response.data.horarios.data,
+                                        intervalo:response.data.intervalo.id,
+                                        antelacion: response.data.antelacion,
+                                    },
+                                    date,
+                                    type:'agenda'
+                                },
+                                location:this.props.location,
+                                loadFinished:true
                             },
-                            () => resolve()
-                        )
+                            () => {
+                                this.props.history.replace({
+                                    state:{
+                                        ...loc,
+                                        first:true,
+                                        date,
+                                        type:'agenda'
+                                    }
+                                });
+                            }
+                        );
                     }
                 )
-                .then (
-                    request
-                    .then(
-                        response => {
-                            this.setState({
-                                    data:{
-                                        data:processData(response.data.reservas.data),
-                                        type:'tabla'
-                                    },
-                                    location:this.props.location,
-                                    loadFinished:true,
-                                },
-                                () => {
-                                    this.props.history.replace({
-                                        state:{
-                                            ...loc,
-                                            first:true,
-                                            date,
-                                            type:'tabla'
-                                        }
-                                    });
-                                }
-                            );
-                        }
-                    )
-                )
+            )
         }
 }
 
