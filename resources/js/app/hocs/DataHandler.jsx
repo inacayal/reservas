@@ -130,7 +130,7 @@ class DataHandler extends Component {
                         borderRadius:"10px",
                         marginTop:"-32vh",
                         overflow:"auto",
-                        height:"100vh"
+                        height:"91vh"
                     }}>
                     <LoadBar loaded={this.state.loading}/>
                     <BreadCrumb url={`usuario${loc.pathname}`}
